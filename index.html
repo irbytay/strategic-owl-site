@@ -1,55 +1,123 @@
+<!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8">
   <title>Strategic Owl – Entry Disclaimer</title>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;600&display=swap" rel="stylesheet">
   <style>
+    * {
+      box-sizing: border-box;
+    }
+
     body {
       background-color: #1A1A40;
       color: white;
-      font-family: 'Inter', sans-serif;
+      font-family: 'IBM Plex Sans', sans-serif;
       margin: 0;
+      padding: 0;
+      min-height: 100vh;
       display: flex;
-      height: 100vh;
       align-items: center;
       justify-content: center;
-      text-align: center;
-      padding: 40px;
+      overflow-y: auto;
     }
+
     .box {
       background-color: #2F2E5E;
-      padding: 30px;
+      padding: 40px;
       border-radius: 10px;
-      max-width: 600px;
-      box-shadow: 0 0 10px rgba(0,0,0,0.5);
+      max-width: 750px;
+      width: 90%;
+      box-shadow: 0 0 12px rgba(0, 0, 0, 0.5);
+      margin: 40px auto;
     }
+
+    .logo {
+      display: block;
+      margin: 0 auto 20px auto;
+      max-width: 100px;
+      height: auto;
+    }
+
     h1 {
+      font-size: 2em;
+      margin-bottom: 25px;
+      text-align: center;
+    }
+
+    p {
+      font-size: 1.05em;
+      line-height: 1.7;
+      margin-bottom: 16px;
+      text-align: left;
+    }
+
+    ul {
+      text-align: left;
+      padding-left: 20px;
       margin-bottom: 20px;
     }
-    p {
-      line-height: 1.6;
-      font-size: 0.95em;
+
+    ul li {
+      margin-bottom: 8px;
     }
+
+    strong {
+      color: #FFEB3B;
+    }
+
     button {
       margin-top: 25px;
-      padding: 12px 24px;
+      padding: 12px 26px;
       background-color: #4CAF50;
       color: white;
       border: none;
       font-weight: bold;
-      border-radius: 5px;
+      border-radius: 6px;
       cursor: pointer;
       font-size: 1em;
+      transition: background-color 0.3s ease;
+    }
+
+    button:hover {
+      background-color: #45a049;
+    }
+
+    @media (max-width: 600px) {
+      .box {
+        padding: 25px;
+      }
+
+      h1 {
+        font-size: 1.6em;
+      }
+
+      p, li {
+        font-size: 0.95em;
+      }
     }
   </style>
 </head>
 <body>
   <div class="box">
+    <img src="owl_logo_transparent.png" alt="Strategic Owl Logo" class="logo">
+
     <h1>Welcome to The Strategic Owl 🦉</h1>
-    <p>This site contains original public interest research and commentary protected by the First Amendment. The T.R.U. OWL Score is an independent credibility rating system developed to help the public understand truth, reliability, and understanding in public discourse.</p>
-    <p>All content is based on publicly available data, documented statements, and sourced materials. It is not affiliated with any government entity and does not constitute legal or financial advice.</p>
-    <p><strong>By clicking "Enter," you acknowledge that this platform presents constitutionally protected opinion, analysis, and commentary based on public information. You agree not to initiate legal action against its creators or contributors for any evaluations, scores, or conclusions shared herein.</strong></p>
-    <form action="TEST003.html">
+
+    <p>This platform contains original public interest research, commentary, and analysis, all of which are protected under the <strong>First Amendment</strong> of the United States Constitution. The <strong>T.R.U. OWL Score</strong> is an independently developed credibility rating system designed to evaluate the public statements and conduct of individuals and institutions based on documented facts, source-based verification, and transparent methodology.</p>
+
+    <p>All evaluations and scores are derived exclusively from <strong>publicly available data</strong>, <strong>verifiable statements</strong>, and <strong>sourced materials</strong>. This project is <strong>non-governmental</strong>, <strong>non-commercial</strong>, and <strong>not affiliated</strong> with any public or private institution. It does not provide legal, financial, or professional advice of any kind.</p>
+
+    <p>By proceeding, you acknowledge that:</p>
+    <ul>
+      <li>This platform expresses constitutionally protected <strong>opinion</strong>, <strong>critique</strong>, and <strong>commentary</strong>.</li>
+      <li>Its analyses and conclusions are based on the <strong>public record</strong>.</li>
+      <li>You waive any claim or attempt to pursue legal action against its creators, contributors, or hosts for the publication of ratings, evaluations, or commentary derived from public information.</li>
+    </ul>
+
+    <p>Use of this site constitutes full acceptance of these terms.</p>
+
+    <form action="welcome.html">
       <button type="submit">Enter</button>
     </form>
   </div>
