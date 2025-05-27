@@ -1,15 +1,19 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Contact – Strategic Owl</title>
-  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;600&family=IBM+Plex+Sans:wght@400;600&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600&family=Inter:wght@400;600&display=swap" rel="stylesheet" />
   <style>
+    * {
+      box-sizing: border-box;
+    }
+
     body {
-      background-color: #3C3B6E;
-      color: white;
-      font-family: 'IBM Plex Sans', sans-serif;
+      background-color: #1A1A40;
+      color: #F5F5F5;
+      font-family: 'Inter', sans-serif;
       margin: 0;
       padding: 60px 20px;
       display: flex;
@@ -17,68 +21,73 @@
     }
 
     .content {
-      max-width: 600px;
+      max-width: 700px;
       width: 100%;
       text-align: center;
     }
 
     h1 {
       font-family: 'Playfair Display', serif;
-      font-size: 2.2em;
-      margin-bottom: 30px;
+      font-size: 2.4em;
+      margin-bottom: 20px;
     }
 
     p {
       font-size: 1.05em;
-      line-height: 1.6em;
+      line-height: 1.7em;
       margin-bottom: 30px;
     }
 
-    .social-link {
-      display: inline-block;
-      margin: 10px;
-      padding: 12px 24px;
-      background-color: #4CAF50;
-      color: white;
-      text-decoration: none;
-      border-radius: 6px;
-      font-weight: 600;
-      transition: background-color 0.2s ease;
+    .link-bar {
+      margin-bottom: 40px;
     }
 
-    .social-link:hover {
-      background-color: #45a049;
+    .link-bar a {
+      display: inline-block;
+      margin: 8px 12px;
+      color: #F5F5F5;
+      text-decoration: none;
+      font-weight: 600;
+      border-bottom: 2px solid #3B6CED;
+      padding-bottom: 2px;
+      transition: color 0.2s ease, border-color 0.2s ease;
+    }
+
+    .link-bar a:hover {
+      color: #4FDBA6;
+      border-color: #4FDBA6;
     }
 
     form {
       background-color: #2F2E5E;
-      padding: 20px;
-      border-radius: 10px;
-      margin-top: 40px;
+      padding: 28px;
+      border-radius: 12px;
+      margin-top: 20px;
       text-align: left;
     }
 
     form h2 {
       font-family: 'Playfair Display', serif;
-      text-align: center;
-      font-size: 1.5em;
+      font-size: 1.6em;
       margin-bottom: 20px;
+      text-align: center;
     }
 
     label {
       display: block;
-      margin-top: 10px;
+      margin-top: 14px;
       font-weight: bold;
     }
 
-    input, textarea {
+    input,
+    textarea {
       width: 100%;
       padding: 10px;
-      margin-top: 5px;
-      margin-bottom: 15px;
+      margin-top: 6px;
+      margin-bottom: 20px;
       border-radius: 6px;
       border: none;
-      font-family: 'IBM Plex Sans', sans-serif;
+      font-family: 'Inter', sans-serif;
       font-size: 1em;
     }
 
@@ -91,6 +100,7 @@
       border-radius: 6px;
       cursor: pointer;
       transition: background-color 0.2s ease;
+      font-size: 1em;
     }
 
     button:hover {
@@ -99,46 +109,45 @@
 
     .back-link {
       display: block;
+      text-align: center;
       margin-top: 50px;
-      color: white;
-      text-decoration: underline;
-      font-weight: 600;
+    }
+
+    .back-link a {
+      color: #F5F5F5;
+      font-size: 1.05rem;
+      text-decoration: none;
+      border-bottom: 2px solid #3B6CED;
+      padding-bottom: 4px;
+      font-weight: 500;
+    }
+
+    .back-link a:hover {
+      color: #4FDBA6;
+      border-color: #4FDBA6;
     }
 
     @media (max-width: 600px) {
-      body {
-        padding: 40px 15px;
-      }
-
       h1 {
-        font-size: 1.8em;
-      }
-
-      .social-link {
-        display: block;
-        margin: 12px auto;
-        font-size: 1.05em;
-        padding: 14px 0;
-        width: 100%;
+        font-size: 2em;
       }
 
       form {
-        padding: 18px;
+        padding: 22px;
       }
 
       form h2 {
-        font-size: 1.3em;
+        font-size: 1.4em;
       }
 
-      button {
-        width: 100%;
-        padding: 14px 0;
+      .link-bar a {
+        display: block;
+        margin: 10px auto;
         font-size: 1.05em;
       }
 
-      .back-link {
-        margin-top: 40px;
-        font-size: 1.05em;
+      .back-link a {
+        font-size: 1.15rem;
       }
     }
   </style>
@@ -148,18 +157,20 @@
     <h1>Get in Touch</h1>
     <p>Follow or reach out via our official platforms. We’re building a community that values truth, accountability, and open-minded thinking.</p>
 
-    <a class="social-link" href="https://strategicowl.substack.com/" target="_blank">📬 Substack</a>
-    <a class="social-link" href="https://www.facebook.com/the.strategic.owl" target="_blank">📘 Facebook</a>
-    <a class="social-link" href="https://bsky.app/profile/thestrategicowl.bsky.social" target="_blank">🌤️ BlueSky</a>
+    <div class="link-bar">
+      <a href="https://strategicowl.substack.com/" target="_blank">Substack</a>
+      <a href="https://www.facebook.com/the.strategic.owl" target="_blank">Facebook</a>
+      <a href="https://bsky.app/profile/thestrategicowl.bsky.social" target="_blank">BlueSky</a>
+    </div>
 
     <form action="https://formspree.io/f/mwpodgrw" method="POST">
       <h2>Request a Credibility Score</h2>
 
       <label for="name">Your Name</label>
-      <input type="text" id="name" name="name" required>
+      <input type="text" id="name" name="name" required />
 
       <label for="email">Your Email (Optional)</label>
-      <input type="email" id="email" name="_replyto" required>
+      <input type="email" id="email" name="_replyto" />
 
       <label for="request">Who would you like us to score?</label>
       <textarea id="request" name="message" rows="5" placeholder="Include any context or links that help explain your request." required></textarea>
@@ -167,7 +178,9 @@
       <button type="submit">Send Request</button>
     </form>
 
-    <a class="back-link" href="TEST003.html">← Back to Home</a>
+    <div class="back-link">
+      <a href="TRUOWL.html">← Back to Home</a>
+    </div>
   </div>
 </body>
 </html>
