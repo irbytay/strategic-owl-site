@@ -1,11 +1,10 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>The Strategic Owl - T.R.U. Owl Scoring System</title>
-  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;600&family=IBM+Plex+Sans:wght@400;600&display=swap" rel="stylesheet">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>The Strategic Owl – T.R.U. OWL Score</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&family=Playfair+Display:wght@500;700&display=swap" rel="stylesheet" />
   <style>
     * {
       box-sizing: border-box;
@@ -13,8 +12,8 @@
 
     body {
       background-color: #1A1A40;
-      color: white;
-      font-family: 'IBM Plex Sans', sans-serif;
+      color: #F5F5F5;
+      font-family: 'Inter', sans-serif;
       margin: 0;
       padding: 0;
       display: flex;
@@ -42,13 +41,13 @@
 
     h1 {
       font-family: 'Playfair Display', serif;
-      font-size: 2.5em;
+      font-size: 2.4rem;
       margin-bottom: 25px;
       line-height: 1.4;
     }
 
     p {
-      font-size: 1.05em;
+      font-size: 1.05rem;
       line-height: 1.7;
       margin-bottom: 16px;
       text-align: left;
@@ -69,21 +68,39 @@
     }
 
     button {
-      margin-top: 25px;
-      padding: 12px 26px;
+      margin-top: 30px;
+      padding: 12px 28px;
       background-color: #4CAF50;
       color: white;
       border: none;
-      font-weight: bold;
+      font-weight: 600;
       border-radius: 6px;
       cursor: pointer;
-      font-size: 1em;
+      font-size: 1.05rem;
       transition: background-color 0.3s ease;
+      font-family: 'Inter', sans-serif;
     }
 
     button:hover {
       background-color: #45a049;
     }
+
+    .divider-bar {
+      display: flex;
+      justify-content: center;
+      gap: 8px;
+      margin: 10px auto 30px auto;
+    }
+
+    .divider-bar div {
+      width: 40px;
+      height: 6px;
+      border-radius: 3px;
+    }
+
+    .truth { background-color: #4CAF50; }
+    .reliability { background-color: #2196F3; }
+    .understanding { background-color: #FFC107; }
 
     @media (max-width: 600px) {
       .box {
@@ -91,11 +108,11 @@
       }
 
       h1 {
-        font-size: 2em;
+        font-size: 2rem;
       }
 
       p, li {
-        font-size: 1em;
+        font-size: 1rem;
       }
 
       button {
@@ -107,14 +124,15 @@
 </head>
 <body>
   <div class="box">
-    <img src="owl_logo_white.png" alt="Strategic Owl Logo" class="logo">
+    <img src="owl_logo_white.png" alt="Strategic Owl Logo" class="logo" />
 
     <h1>The Strategic Owl</h1>
-    <div style="display: flex; justify-content: center; gap: 8px; margin: 10px auto 30px auto;">
-<div style="width: 40px; height: 6px; background-color: #4CAF50; border-radius: 3px;"></div> <!-- Truth -->
-<div style="width: 40px; height: 6px; background-color: #2196F3; border-radius: 3px;"></div> <!-- Reliability -->
-<div style="width: 40px; height: 6px; background-color: #FFC107; border-radius: 3px;"></div> <!-- Understanding -->
-</div>
+
+    <div class="divider-bar">
+      <div class="truth"></div>
+      <div class="reliability"></div>
+      <div class="understanding"></div>
+    </div>
 
     <p>This platform contains original public interest research, commentary, and analysis, all of which are protected under the <strong>First Amendment</strong> of the United States Constitution. The <strong>T.R.U. OWL Score</strong> is an independently developed credibility rating system designed to evaluate the public statements and conduct of individuals and institutions based on documented facts, source-based verification, and transparent methodology.</p>
 
@@ -129,7 +147,7 @@
 
     <p>Use of this site constitutes full acceptance of these terms.</p>
 
-    <form action="TEST003.html">
+    <form action="TRUOWL.html">
       <button type="submit">Agree</button>
     </form>
   </div>
