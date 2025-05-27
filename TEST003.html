@@ -1,18 +1,54 @@
 <!DOCTYPE html>
-
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>Your Page Title</title>
+  <title>The Strategic Owl</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
   <style>
-    /* Paste your CSS here */
     body {
       background-color: #1A1A40;
       font-family: 'Inter', sans-serif;
       color: #F5F5F5;
+      margin: 0;
     }
 
-    .grid-boxes {
+    .content {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 40px 20px;
+    }
+
+    h1 {
+      font-size: 2.5rem;
+      text-align: center;
+    }
+
+    h2 {
+      margin-top: 60px;
+      margin-bottom: 20px;
+      font-size: 1.8rem;
+    }
+
+    h3.category-heading {
+      font-size: 1.5rem;
+      margin-bottom: 12px;
+      color: #F5F5F5;
+      border-bottom: 2px solid #3B6CED;
+      padding-bottom: 6px;
+    }
+
+    p {
+      margin-bottom: 18px;
+      line-height: 1.6;
+    }
+
+    ul {
+      margin-bottom: 20px;
+      padding-left: 20px;
+    }
+
+    .score-grid,
+    .profile-grid {
       display: flex;
       flex-wrap: wrap;
       gap: 40px;
@@ -22,14 +58,6 @@
     .role-box {
       flex: 1 1 250px;
       min-width: 250px;
-    }
-
-    .category-heading {
-      font-size: 1.5rem;
-      margin-bottom: 12px;
-      color: #F5F5F5;
-      border-bottom: 2px solid #3B6CED;
-      padding-bottom: 6px;
     }
 
     .role-box a {
@@ -45,170 +73,148 @@
     .role-box a:hover {
       color: #4FDBA6;
     }
+
+    .logo-container {
+      text-align: center;
+      margin-bottom: 20px;
+    }
+
+    .logo-container img {
+      max-width: 120px;
+      height: auto;
+    }
   </style>
 </head>
 <body>
-<div class="content">
-<div class="logo-container">
-<a href="index.html">
-<img alt="Strategic Owl Logo" src="owl_logo_white.png"/>
-</a>
-</div>
-<h1>Welcome to<br/>The Strategic Owl</h1>
-<div style="display: flex; justify-content: center; gap: 8px; margin: 10px auto 30px auto;">
-<div style="width: 40px; height: 6px; background-color: #4CAF50; border-radius: 3px;"></div> <!-- Truth -->
-<div style="width: 40px; height: 6px; background-color: #2196F3; border-radius: 3px;"></div> <!-- Reliability -->
-<div style="width: 40px; height: 6px; background-color: #FFC107; border-radius: 3px;"></div> <!-- Understanding -->
-</div>
-<p>You've entered the public research hub of the T.R.U. OWL Score — a system designed to evaluate and expose the credibility of public voices across politics, media, and culture.</p>
-<p>Our scoring framework is built to measure three pillars: <strong>Truth</strong>, <strong>Reliability</strong>, and <strong>Understanding</strong>. We don’t rely on partisanship or vibes. We use documented quotes, source-based verification, correction history, and AI-powered pattern detection to deliver transparent, structured scores.</p>
-<p>This is not a government institution. This is protected public commentary and independent analysis. We believe that when truth becomes visible, accountability follows — and public figures will eventually work for better scores.</p>
-<h2>🧩 How Truth Is Verified</h2>
-<p>
-      Our scores are grounded in subjects that are verifiably true. That means we don’t rely on vibes, viral opinions, or partisan claims—we rely on provable facts.
-    </p>
-<p>
-      We score public figures based on their accuracy in areas where truth can be independently confirmed, such as:
-    </p>
-<ul>
-<li>Historical events and public records</li>
-<li>Official court rulings and government filings</li>
-<li>Scientific consensus and peer-reviewed data</li>
-<li>Directly documented statements, votes, and legislation</li>
-</ul>
-<p>
-      When a politician denies a court ruling, when an influencer misrepresents a constitutional amendment, or when a media outlet ignores its own retraction history—those are verifiable failures of truth, reliability, or understanding.
-    </p>
-<p>
-      We don't penalize disagreement. We penalize distortion.
-    </p>
-<h2>📊 How We Score by Role</h2>
-<p>Each figure is scored within their category. Politicians are judged differently than journalists, and influencers aren’t held to the same editorial standards as media companies. Below are the multipliers that reflect the weight of their influence:</p>
-<div class="grid-boxes">
-<div class="role-box">
-<h3>🏛️ Politicians</h3>
-<p><strong>Truth:</strong> 4.0×</p>
-<p><strong>Reliability:</strong> 4.0×</p>
-<p><strong>Understanding:</strong> 5.0×</p>
-<p style="font-size: 0.9em;">Elected power demands accountability. Their words shape law and public trust.</p>
-</div>
-<div class="role-box">
-<h3>🧑‍💼 Journalists</h3>
-<p><strong>Truth:</strong> 2.0×</p>
-<p><strong>Reliability:</strong> 2.0×</p>
-<p><strong>Understanding:</strong> 2.0×</p>
-<p style="font-size: 0.9em;">They are expected to correct mistakes and document sources. Integrity is their standard.</p>
-</div>
-<div class="role-box">
-<h3>📰 Media Companies</h3>
-<p><strong>Truth:</strong> 3.0×</p>
-<p><strong>Reliability:</strong> 3.5×</p>
-<p><strong>Understanding:</strong> 3.0×</p>
-<p style="font-size: 0.9em;">Their editorial choices shape perception across millions. They must be held to scale.</p>
-</div>
-<div class="role-box">
-<h3>📱 Influencers</h3>
-<p><strong>Truth:</strong> 2.5×</p>
-<p><strong>Reliability:</strong> 2.0×</p>
-<p><strong>Understanding:</strong> 1.5×</p>
-<p style="font-size: 0.9em;">Reach without responsibility is dangerous. They’re scored on the trust they build or break.</p>
-</div>
-</div>
-<h2>🧭 Why This Matters</h2>
-<p>
-  The T.R.U. OWL Score isn’t just a measurement system — it’s a movement toward truth-based influence. It changes the incentive structure for public voices.
-</p>
-<p>
-<strong>Journalists</strong> are encouraged to source accurately, correct quickly, and educate deeply. <strong>Politicians</strong> are judged not by tribal loyalty, but by verifiable facts and civic understanding. <strong>Influencers</strong> are scored on whether they elevate their audience or mislead them. And the <strong>public</strong> gets a new tool to see through manipulation.
-</p>
-<p>
-  The goal isn’t perfection. It’s <strong>self-correction</strong>. This system rewards those who own their mistakes, cite their sources, and explain how institutions actually work. We believe truth should be visible — and that when it is, <em>accountability follows.</em>
-</p>
-<p>
-  T.R.U. OWL doesn’t just track credibility. It sparks curiosity. And that’s how we begin to rebuild public trust — not with partisanship, but with transparency.
-</p>
-<h2>Explore Credibility Profiles</h2>
-<div class="grid-boxes">
-
-  <div class="role-box">
-    <h3 class="category-heading">Politicians</h3>
-    <a href="desantis.html">Ron DeSantis</a>
-    <a href="harris.html">Kamala Harris</a>
-    <a href="jeffries.html">Hakeem Jeffries</a>
-    <a href="johnson.html">Mike Johnson</a>
-    <a href="newsom.html">Gavin Newsom</a>
-    <a href="pritzker.html">J.B. Pritzker</a>
-    <a href="rfkjr.html">Robert F. Kennedy Jr.</a>
-    <a href="santos.html">George Santos</a>
-    <a href="trump.html">Donald Trump</a>
-    <a href="vance.html">J.D. Vance</a>
-    <a href="walz.html">Tim Walz</a>
-  </div>
-
-  <div class="role-box">
-    <h3 class="category-heading">Journalists</h3>
-    <a href="acosta.html">Jim Acosta</a>
-    <a href="baier.html">Bret Baier</a>
-    <a href="beasley.html">Luke Beasley</a>
-    <a href="bernstein.html">Carl Bernstein</a>
-    <a href="cooper.html">Anderson Cooper</a>
-    <a href="maddow.html">Rachel Maddow</a>
-    <a href="taibbi.html">Matt Taibbi</a>
-    <a href="tapper.html">Jake Tapper</a>
-    <a href="woodward.html">Bob Woodward</a>
-    <a href="yamiche.html">Yamiche Alcindor</a>
-  </div>
-
-  <div class="role-box">
-    <h3 class="category-heading">Media Companies</h3>
-    <a href="abc.html">ABC News</a>
-    <a href="ap.html">Associated Press</a>
-    <a href="bloomberg.html">Bloomberg News</a>
-    <a href="cnn.html">CNN</a>
-    <a href="dailywire.html">The Daily Wire</a>
-    <a href="foxnews.html">Fox News</a>
-    <a href="msnbc.html">MSNBC</a>
-    <a href="newsmax.html">NewsMax</a>
-    <a href="newsnation.html">NewsNation</a>
-    <a href="oann.html">OANN</a>
-    <a href="reuters.html">Reuters</a>
-    <a href="wsj.html">Wall Street Journal</a>
-  </div>
-
-  <div class="role-box">
-    <h3 class="category-heading">Influencers</h3>
-    <a href="fridman.html">Lex Fridman</a>
-    <a href="kirk.html">Charlie Kirk</a>
-    <a href="mockler.html">Adam Mockler</a>
-    <a href="owens.html">Candace Owens</a>
-    <a href="peterson.html">Jordan Peterson</a>
-    <a href="reich.html">Robert Reich</a>
-    <a href="rogan.html">Joe Rogan</a>
-    <a href="shapiro.html">Ben Shapiro</a>
-    <a href="tucker.html">Tucker Carlson</a>
-    <a href="walsh.html">Matt Walsh</a>
-  </div>
-
-</div>
-<div style="text-align: center; margin-top: 60px;">
-<img alt="T.R.U. OWL Score Logo" src="web.png" style="max-width: 320px; width: 100%; height: auto;">
-</img></div>
-<div style="text-align: center; margin-top: 80px;">
-<a href="contact.html" onmouseout="this.style.backgroundColor='#4CAF50'" onmouseover="this.style.backgroundColor='#45a049'" style="
-        display: inline-block;
-        padding: 12px 28px;
-        background-color: #4CAF50;
-        color: white;
-        text-decoration: none;
-        border-radius: 6px;
-        font-weight: 600;
-        font-family: 'IBM Plex Sans', sans-serif;
-        font-size: 1em;
-        transition: background-color 0.2s ease;
-      ">
-        Contact Us
+  <div class="content">
+    <div class="logo-container">
+      <a href="index.html">
+        <img alt="Strategic Owl Logo" src="owl_logo_white.png">
       </a>
-</div>
-</div> <!-- closes .content -->
+    </div>
+
+    <h1>Welcome to<br>The Strategic Owl</h1>
+
+    <div style="display: flex; justify-content: center; gap: 8px; margin: 10px auto 30px auto;">
+      <div style="width: 40px; height: 6px; background-color: #4CAF50; border-radius: 3px;"></div>
+      <div style="width: 40px; height: 6px; background-color: #2196F3; border-radius: 3px;"></div>
+      <div style="width: 40px; height: 6px; background-color: #FFC107; border-radius: 3px;"></div>
+    </div>
+
+    <p>You've entered the public research hub of the T.R.U. OWL Score — a system designed to evaluate and expose the credibility of public voices across politics, media, and culture.</p>
+    <p>Our scoring framework is built to measure three pillars: <strong>Truth</strong>, <strong>Reliability</strong>, and <strong>Understanding</strong>. We don’t rely on partisanship or vibes. We use documented quotes, source-based verification, correction history, and AI-powered pattern detection to deliver transparent, structured scores.</p>
+    <p>This is not a government institution. This is protected public commentary and independent analysis. We believe that when truth becomes visible, accountability follows — and public figures will eventually work for better scores.</p>
+
+    <h2>How Truth Is Verified</h2>
+    <p>Our scores are grounded in subjects that are verifiably true. That means we don’t rely on vibes, viral opinions, or partisan claims—we rely on provable facts.</p>
+    <p>We score public figures based on their accuracy in areas where truth can be independently confirmed, such as:</p>
+    <ul>
+      <li>Historical events and public records</li>
+      <li>Official court rulings and government filings</li>
+      <li>Scientific consensus and peer-reviewed data</li>
+      <li>Directly documented statements, votes, and legislation</li>
+    </ul>
+    <p>When a politician denies a court ruling, when an influencer misrepresents a constitutional amendment, or when a media outlet ignores its own retraction history—those are verifiable failures of truth, reliability, or understanding.</p>
+    <p>We don't penalize disagreement. We penalize distortion.</p>
+
+    <h2>How We Score by Role</h2>
+    <p>Each figure is scored within their category. Politicians are judged differently than journalists, and influencers aren’t held to the same editorial standards as media companies. Below are the multipliers that reflect the weight of their influence:</p>
+
+    <div class="score-grid">
+      <div class="role-box">
+        <h3 class="category-heading">Politicians</h3>
+        <p><strong>Truth:</strong> 4.0×</p>
+        <p><strong>Reliability:</strong> 4.0×</p>
+        <p><strong>Understanding:</strong> 5.0×</p>
+        <p style="font-size: 0.9em;">Elected power demands accountability. Their words shape law and public trust.</p>
+      </div>
+      <div class="role-box">
+        <h3 class="category-heading">Journalists</h3>
+        <p><strong>Truth:</strong> 2.0×</p>
+        <p><strong>Reliability:</strong> 2.0×</p>
+        <p><strong>Understanding:</strong> 2.0×</p>
+        <p style="font-size: 0.9em;">They are expected to correct mistakes and document sources. Integrity is their standard.</p>
+      </div>
+      <div class="role-box">
+        <h3 class="category-heading">Media Companies</h3>
+        <p><strong>Truth:</strong> 3.0×</p>
+        <p><strong>Reliability:</strong> 3.5×</p>
+        <p><strong>Understanding:</strong> 3.0×</p>
+        <p style="font-size: 0.9em;">Their editorial choices shape perception across millions. They must be held to scale.</p>
+      </div>
+      <div class="role-box">
+        <h3 class="category-heading">Influencers</h3>
+        <p><strong>Truth:</strong> 2.5×</p>
+        <p><strong>Reliability:</strong> 2.0×</p>
+        <p><strong>Understanding:</strong> 1.5×</p>
+        <p style="font-size: 0.9em;">Reach without responsibility is dangerous. They’re scored on the trust they build or break.</p>
+      </div>
+    </div>
+
+    <h2>Why This Matters</h2>
+    <p>The T.R.U. OWL Score isn’t just a measurement system — it’s a movement toward truth-based influence. It changes the incentive structure for public voices.</p>
+    <p><strong>Journalists</strong> are encouraged to source accurately, correct quickly, and educate deeply. <strong>Politicians</strong> are judged not by tribal loyalty, but by verifiable facts and civic understanding. <strong>Influencers</strong> are scored on whether they elevate their audience or mislead them. And the <strong>public</strong> gets a new tool to see through manipulation.</p>
+    <p>The goal isn’t perfection. It’s <strong>self-correction</strong>. This system rewards those who own their mistakes, cite their sources, and explain how institutions actually work. We believe truth should be visible — and that when it is, <em>accountability follows.</em></p>
+    <p>T.R.U. OWL doesn’t just track credibility. It sparks curiosity. And that’s how we begin to rebuild public trust — not with partisanship, but with transparency.</p>
+
+    <h2>Explore Credibility Profiles</h2>
+    <div class="profile-grid">
+      <div class="role-box">
+        <h3 class="category-heading">Politicians</h3>
+        <a href="desantis.html">Ron DeSantis</a>
+        <a href="harris.html">Kamala Harris</a>
+        <a href="jeffries.html">Hakeem Jeffries</a>
+        <a href="johnson.html">Mike Johnson</a>
+        <a href="newsom.html">Gavin Newsom</a>
+        <a href="pritzker.html">J.B. Pritzker</a>
+        <a href="rfkjr.html">Robert F. Kennedy Jr.</a>
+        <a href="santos.html">George Santos</a>
+        <a href="trump.html">Donald Trump</a>
+        <a href="vance.html">J.D. Vance</a>
+        <a href="walz.html">Tim Walz</a>
+      </div>
+      <div class="role-box">
+        <h3 class="category-heading">Journalists</h3>
+        <a href="acosta.html">Jim Acosta</a>
+        <a href="baier.html">Bret Baier</a>
+        <a href="beasley.html">Luke Beasley</a>
+        <a href="bernstein.html">Carl Bernstein</a>
+        <a href="cooper.html">Anderson Cooper</a>
+        <a href="maddow.html">Rachel Maddow</a>
+        <a href="taibbi.html">Matt Taibbi</a>
+        <a href="tapper.html">Jake Tapper</a>
+        <a href="woodward.html">Bob Woodward</a>
+        <a href="yamiche.html">Yamiche Alcindor</a>
+      </div>
+      <div class="role-box">
+        <h3 class="category-heading">Media Companies</h3>
+        <a href="abc.html">ABC News</a>
+        <a href="ap.html">Associated Press</a>
+        <a href="bloomberg.html">Bloomberg News</a>
+        <a href="cnn.html">CNN</a>
+        <a href="dailywire.html">The Daily Wire</a>
+        <a href="foxnews.html">Fox News</a>
+        <a href="msnbc.html">MSNBC</a>
+        <a href="newsmax.html">NewsMax</a>
+        <a href="newsnation.html">NewsNation</a>
+        <a href="oann.html">OANN</a>
+        <a href="reuters.html">Reuters</a>
+        <a href="wsj.html">Wall Street Journal</a>
+      </div>
+      <div class="role-box">
+        <h3 class="category-heading">Influencers</h3>
+        <a href="fridman.html">Lex Fridman</a>
+        <a href="kirk.html">Charlie Kirk</a>
+        <a href="mockler.html">Adam Mockler</a>
+        <a href="owens.html">Candace Owens</a>
+        <a href="peterson.html">Jordan Peterson</a>
+        <a href="reich.html">Robert Reich</a>
+        <a href="rogan.html">Joe Rogan</a>
+        <a href="shapiro.html">Ben Shapiro</a>
+        <a href="tucker.html">Tucker Carlson</a>
+        <a href="walsh.html">Matt Walsh</a>
+      </div>
+    </div>
+  </div>
 </body>
 </html>
