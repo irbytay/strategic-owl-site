@@ -1,10 +1,10 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>The Strategic Owl</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet" />
   <style>
     :root {
       --navy: #1A1A40;
@@ -57,7 +57,6 @@
       margin-bottom: 20px;
     }
 
-    /* Grids */
     .score-grid, .profile-grid {
       display: grid;
       gap: 32px;
@@ -108,7 +107,26 @@
       color: #C0C0C0;
     }
 
-    /* Mobile-specific spacing */
+    .contact-section {
+      text-align: center;
+      margin: 80px auto 40px;
+    }
+
+    .contact-section a {
+      color: var(--text);
+      font-size: 1.1rem;
+      font-weight: 500;
+      text-decoration: none;
+      border-bottom: 2px solid var(--accent-blue);
+      padding-bottom: 4px;
+      transition: color 0.2s ease, border-color 0.2s ease;
+    }
+
+    .contact-section a:hover {
+      color: var(--hover);
+      border-color: var(--hover);
+    }
+
     @media (max-width: 600px) {
       h1 {
         font-size: 1.8rem;
@@ -128,11 +146,11 @@
   <div class="content">
     <div class="logo-container">
       <a href="index.html">
-        <img src="owl_logo_white.png" alt="Strategic Owl Logo">
+        <img src="owl_logo_white.png" alt="Strategic Owl Logo" />
       </a>
     </div>
 
-    <h1>Welcome to<br>The Strategic Owl</h1>
+    <h1>Welcome to<br />The Strategic Owl</h1>
 
     <div style="display: flex; justify-content: center; gap: 8px; margin: 10px auto 30px auto;">
       <div style="width: 40px; height: 6px; background-color: #4CAF50; border-radius: 3px;"></div>
@@ -187,6 +205,20 @@
         <small>Reach without responsibility is dangerous. They're scored on the trust they build or break.</small>
       </div>
     </div>
+
+    <h2>Why This Matters</h2>
+    <p>
+      The T.R.U. OWL Score isn’t just a measurement system — it’s a movement toward truth-based influence. It changes the incentive structure for public voices.
+    </p>
+    <p>
+      <strong>Journalists</strong> are encouraged to source accurately, correct quickly, and educate deeply. <strong>Politicians</strong> are judged not by tribal loyalty, but by verifiable facts and civic understanding. <strong>Influencers</strong> are scored on whether they elevate their audience or mislead them. And the <strong>public</strong> gets a new tool to see through manipulation.
+    </p>
+    <p>
+      The goal isn’t perfection. It’s <strong>self-correction</strong>. This system rewards those who own their mistakes, cite their sources, and explain how institutions actually work. We believe truth should be visible — and that when it is, <em>accountability follows.</em>
+    </p>
+    <p>
+      T.R.U. OWL doesn’t just track credibility. It sparks curiosity. And that’s how we begin to rebuild public trust — not with partisanship, but with transparency.
+    </p>
 
     <h2>Explore Credibility Profiles</h2>
     <div class="profile-grid">
@@ -245,6 +277,10 @@
         <a href="tucker.html">Tucker Carlson</a>
         <a href="walsh.html">Matt Walsh</a>
       </div>
+    </div>
+
+    <div class="contact-section">
+      <a href="contact.html">Contact Us</a>
     </div>
   </div>
 </body>
