@@ -48,18 +48,52 @@
       background-color: #45a049;
     }
 
+    form {
+      background-color: #2F2E5E;
+      padding: 20px;
+      border-radius: 10px;
+      margin-top: 40px;
+      text-align: left;
+    }
+
+    label {
+      display: block;
+      margin-top: 10px;
+      font-weight: bold;
+    }
+
+    input, textarea {
+      width: 100%;
+      padding: 10px;
+      margin-top: 5px;
+      margin-bottom: 15px;
+      border-radius: 6px;
+      border: none;
+      font-family: 'IBM Plex Sans', sans-serif;
+      font-size: 1em;
+    }
+
+    button {
+      background-color: #4CAF50;
+      color: white;
+      border: none;
+      padding: 12px 24px;
+      font-weight: bold;
+      border-radius: 6px;
+      cursor: pointer;
+      transition: background-color 0.2s ease;
+    }
+
+    button:hover {
+      background-color: #45a049;
+    }
+
     .back-link {
       display: block;
       margin-top: 50px;
       color: white;
       text-decoration: underline;
       font-weight: 600;
-    }
-
-    .request-note {
-      margin-top: 40px;
-      font-size: 1em;
-      color: #ccc;
     }
   </style>
 </head>
@@ -70,12 +104,21 @@
 
     <a class="social-link" href="https://strategicowl.substack.com/" target="_blank">📬 Substack</a>
     <a class="social-link" href="https://www.facebook.com/the.strategic.owl" target="_blank">📘 Facebook</a>
-    <a class="social-link" href="https://bsky.app/profile/thestrategicowl.bsky.social">🌤️ BlueSky</a>
+    <a class="social-link" href="https://bsky.app/profile/thestrategicowl.bsky.social" target="_blank">🌤️ BlueSky</a>
 
-    <p class="request-note">
-      Don’t see someone listed on the site?<br>
-      We welcome suggestions. If there’s a public figure, journalist, media outlet, or influencer you'd like us to assess, let us know through our social channels.
-    </p>
+    <form action="https://formspree.io/f/mwpodgrw" method="POST">
+      <h2 style="font-family: 'Playfair Display', serif; text-align: center;">Request a Credibility Score</h2>
+      <label for="name">Your Name</label>
+      <input type="text" id="name" name="name" required>
+
+      <label for="email">Your Email</label>
+      <input type="email" id="email" name="_replyto" required>
+
+      <label for="request">Who would you like us to score?</label>
+      <textarea id="request" name="message" rows="5" placeholder="Include any context or links that help explain your request." required></textarea>
+
+      <button type="submit">Send Request</button>
+    </form>
 
     <a class="back-link" href="TEST003.html">← Back to Home</a>
   </div>
