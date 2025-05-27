@@ -1,13 +1,13 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Anderson Cooper – T.R.U. OWL Score</title>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet" />
   <style>
     body {
-      background-color: #3C3B6E;
+      background-color: #1A1A40;
       color: white;
       font-family: 'Inter', sans-serif;
       margin: 0;
@@ -23,6 +23,13 @@
 
     h1 {
       font-size: 2em;
+      margin-bottom: 10px;
+    }
+
+    .role {
+      font-size: 1.1em;
+      font-weight: 600;
+      color: #B0B8FF;
       margin-bottom: 20px;
     }
 
@@ -31,12 +38,13 @@
       border-radius: 10px;
       padding: 20px;
       margin-bottom: 30px;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
     }
 
     .metric {
       display: flex;
       justify-content: space-between;
-      padding: 5px 0;
+      padding: 6px 0;
       font-size: 1.1em;
     }
 
@@ -53,14 +61,16 @@
     .multiplier-box {
       background-color: #1f1e45;
       border-radius: 10px;
-      padding: 15px;
-      margin-top: 20px;
+      padding: 18px;
+      margin-top: 24px;
+      font-size: 0.95em;
+      line-height: 1.6em;
     }
 
     .back-link {
       display: inline-block;
       margin-top: 30px;
-      padding: 10px 20px;
+      padding: 12px 24px;
       background-color: #4CAF50;
       color: white;
       text-decoration: none;
@@ -70,7 +80,7 @@
 
     @media (max-width: 600px) {
       body {
-        padding: 20px 15px;
+        padding: 24px;
       }
 
       h1 {
@@ -78,25 +88,33 @@
         text-align: center;
       }
 
-      .metric {
+      .role {
+        text-align: center;
         font-size: 1em;
+      }
+
+      .metric {
         flex-direction: column;
         align-items: flex-start;
+        gap: 4px;
       }
 
-      .metric span {
-        margin-bottom: 3px;
+      .score-box {
+        padding: 18px;
       }
 
-      .breakdown {
+      .multiplier-box {
+        padding: 16px;
         font-size: 1em;
       }
 
       .back-link {
         width: 100%;
         text-align: center;
-        padding: 12px 0;
-        font-size: 1em;
+        display: block;
+        padding: 14px 0;
+        font-size: 1.05em;
+        margin-top: 40px;
       }
     }
   </style>
@@ -104,6 +122,7 @@
 <body>
   <div class="content">
     <h1>Anderson Cooper – T.R.U. OWL Score</h1>
+    <div class="role">Journalist at CNN & 60 Minutes</div>
 
     <div class="score-box">
       <div class="metric"><span>Truth:</span> +96</div>
