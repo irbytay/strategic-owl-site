@@ -2,6 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Contact – Strategic Owl</title>
   <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;600&family=IBM+Plex+Sans:wght@400;600&display=swap" rel="stylesheet">
   <style>
@@ -17,6 +18,7 @@
 
     .content {
       max-width: 600px;
+      width: 100%;
       text-align: center;
     }
 
@@ -54,6 +56,13 @@
       border-radius: 10px;
       margin-top: 40px;
       text-align: left;
+    }
+
+    form h2 {
+      font-family: 'Playfair Display', serif;
+      text-align: center;
+      font-size: 1.5em;
+      margin-bottom: 20px;
     }
 
     label {
@@ -95,6 +104,43 @@
       text-decoration: underline;
       font-weight: 600;
     }
+
+    @media (max-width: 600px) {
+      body {
+        padding: 40px 15px;
+      }
+
+      h1 {
+        font-size: 1.8em;
+      }
+
+      .social-link {
+        display: block;
+        margin: 12px auto;
+        font-size: 1.05em;
+        padding: 14px 0;
+        width: 100%;
+      }
+
+      form {
+        padding: 18px;
+      }
+
+      form h2 {
+        font-size: 1.3em;
+      }
+
+      button {
+        width: 100%;
+        padding: 14px 0;
+        font-size: 1.05em;
+      }
+
+      .back-link {
+        margin-top: 40px;
+        font-size: 1.05em;
+      }
+    }
   </style>
 </head>
 <body>
@@ -107,7 +153,8 @@
     <a class="social-link" href="https://bsky.app/profile/thestrategicowl.bsky.social" target="_blank">🌤️ BlueSky</a>
 
     <form action="https://formspree.io/f/mwpodgrw" method="POST">
-      <h2 style="font-family: 'Playfair Display', serif; text-align: center;">Request a Credibility Score</h2>
+      <h2>Request a Credibility Score</h2>
+
       <label for="name">Your Name</label>
       <input type="text" id="name" name="name" required>
 
