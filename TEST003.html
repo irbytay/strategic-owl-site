@@ -3,85 +3,124 @@
 <head>
   <meta charset="UTF-8">
   <title>The Strategic Owl</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
   <style>
+    :root {
+      --navy: #1A1A40;
+      --text: #F5F5F5;
+      --accent-blue: #3B6CED;
+      --hover: #4FDBA6;
+      --border: #2F2F5F;
+    }
+
     body {
-      background-color: #1A1A40;
+      background-color: var(--navy);
       font-family: 'Inter', sans-serif;
-      color: #F5F5F5;
+      color: var(--text);
       margin: 0;
+      padding: 0;
     }
 
     .content {
-      max-width: 1100px;
+      max-width: 1200px;
       margin: 0 auto;
       padding: 40px 20px;
     }
 
     h1 {
-      font-size: 2.5rem;
+      font-size: 2.2rem;
       text-align: center;
+      margin-bottom: 10px;
     }
 
     h2 {
-      margin-top: 60px;
-      margin-bottom: 20px;
       font-size: 1.8rem;
+      margin: 60px 0 20px;
     }
 
     h3.category-heading {
-      font-size: 1.5rem;
-      margin-bottom: 12px;
-      color: #F5F5F5;
-      border-bottom: 2px solid #3B6CED;
+      font-size: 1.4rem;
+      border-bottom: 2px solid var(--accent-blue);
       padding-bottom: 6px;
+      margin-bottom: 14px;
     }
 
     p {
-      margin-bottom: 18px;
+      font-size: 1rem;
       line-height: 1.6;
+      margin-bottom: 18px;
     }
 
     ul {
+      margin-left: 20px;
       margin-bottom: 20px;
-      padding-left: 20px;
     }
 
-    .score-grid,
-    .profile-grid {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 40px;
+    /* Grids */
+    .score-grid, .profile-grid {
+      display: grid;
+      gap: 32px;
+    }
+
+    .score-grid {
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
       margin-top: 30px;
     }
 
-    .role-box {
-      flex: 1 1 250px;
-      min-width: 250px;
+    .profile-grid {
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      margin-top: 30px;
     }
 
     .role-box a {
       display: block;
-      color: #F5F5F5;
+      color: var(--text);
       padding: 6px 0;
-      font-size: 1.05rem;
       text-decoration: none;
-      border-bottom: 1px solid #2F2F5F;
+      font-size: 1rem;
+      border-bottom: 1px solid var(--border);
       transition: color 0.2s ease;
     }
 
     .role-box a:hover {
-      color: #4FDBA6;
+      color: var(--hover);
     }
 
     .logo-container {
       text-align: center;
-      margin-bottom: 20px;
+      margin-bottom: 30px;
     }
 
     .logo-container img {
       max-width: 120px;
       height: auto;
+    }
+
+    .score-grid p {
+      margin: 4px 0;
+      font-size: 0.95rem;
+    }
+
+    .score-grid small {
+      display: block;
+      font-size: 0.85rem;
+      color: #C0C0C0;
+    }
+
+    /* Mobile-specific spacing */
+    @media (max-width: 600px) {
+      h1 {
+        font-size: 1.8rem;
+      }
+
+      h2 {
+        font-size: 1.5rem;
+      }
+
+      .role-box a {
+        font-size: 0.95rem;
+      }
     }
   </style>
 </head>
@@ -89,7 +128,7 @@
   <div class="content">
     <div class="logo-container">
       <a href="index.html">
-        <img alt="Strategic Owl Logo" src="owl_logo_white.png">
+        <img src="owl_logo_white.png" alt="Strategic Owl Logo">
       </a>
     </div>
 
@@ -103,11 +142,9 @@
 
     <p>You've entered the public research hub of the T.R.U. OWL Score — a system designed to evaluate and expose the credibility of public voices across politics, media, and culture.</p>
     <p>Our scoring framework is built to measure three pillars: <strong>Truth</strong>, <strong>Reliability</strong>, and <strong>Understanding</strong>. We don’t rely on partisanship or vibes. We use documented quotes, source-based verification, correction history, and AI-powered pattern detection to deliver transparent, structured scores.</p>
-    <p>This is not a government institution. This is protected public commentary and independent analysis. We believe that when truth becomes visible, accountability follows — and public figures will eventually work for better scores.</p>
 
     <h2>How Truth Is Verified</h2>
     <p>Our scores are grounded in subjects that are verifiably true. That means we don’t rely on vibes, viral opinions, or partisan claims—we rely on provable facts.</p>
-    <p>We score public figures based on their accuracy in areas where truth can be independently confirmed, such as:</p>
     <ul>
       <li>Historical events and public records</li>
       <li>Official court rulings and government filings</li>
@@ -126,36 +163,30 @@
         <p><strong>Truth:</strong> 4.0×</p>
         <p><strong>Reliability:</strong> 4.0×</p>
         <p><strong>Understanding:</strong> 5.0×</p>
-        <p style="font-size: 0.9em;">Elected power demands accountability. Their words shape law and public trust.</p>
+        <small>Elected power demands accountability. Their words shape law and public trust.</small>
       </div>
       <div class="role-box">
         <h3 class="category-heading">Journalists</h3>
         <p><strong>Truth:</strong> 2.0×</p>
         <p><strong>Reliability:</strong> 2.0×</p>
         <p><strong>Understanding:</strong> 2.0×</p>
-        <p style="font-size: 0.9em;">They are expected to correct mistakes and document sources. Integrity is their standard.</p>
+        <small>They are expected to correct mistakes and document sources. Integrity is their standard.</small>
       </div>
       <div class="role-box">
         <h3 class="category-heading">Media Companies</h3>
         <p><strong>Truth:</strong> 3.0×</p>
         <p><strong>Reliability:</strong> 3.5×</p>
         <p><strong>Understanding:</strong> 3.0×</p>
-        <p style="font-size: 0.9em;">Their editorial choices shape perception across millions. They must be held to scale.</p>
+        <small>Their editorial choices shape perception across millions. They must be held to scale.</small>
       </div>
       <div class="role-box">
         <h3 class="category-heading">Influencers</h3>
         <p><strong>Truth:</strong> 2.5×</p>
         <p><strong>Reliability:</strong> 2.0×</p>
         <p><strong>Understanding:</strong> 1.5×</p>
-        <p style="font-size: 0.9em;">Reach without responsibility is dangerous. They’re scored on the trust they build or break.</p>
+        <small>Reach without responsibility is dangerous. They're scored on the trust they build or break.</small>
       </div>
     </div>
-
-    <h2>Why This Matters</h2>
-    <p>The T.R.U. OWL Score isn’t just a measurement system — it’s a movement toward truth-based influence. It changes the incentive structure for public voices.</p>
-    <p><strong>Journalists</strong> are encouraged to source accurately, correct quickly, and educate deeply. <strong>Politicians</strong> are judged not by tribal loyalty, but by verifiable facts and civic understanding. <strong>Influencers</strong> are scored on whether they elevate their audience or mislead them. And the <strong>public</strong> gets a new tool to see through manipulation.</p>
-    <p>The goal isn’t perfection. It’s <strong>self-correction</strong>. This system rewards those who own their mistakes, cite their sources, and explain how institutions actually work. We believe truth should be visible — and that when it is, <em>accountability follows.</em></p>
-    <p>T.R.U. OWL doesn’t just track credibility. It sparks curiosity. And that’s how we begin to rebuild public trust — not with partisanship, but with transparency.</p>
 
     <h2>Explore Credibility Profiles</h2>
     <div class="profile-grid">
