@@ -4,11 +4,15 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Tucker Carlson – T.R.U. OWL Score</title>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet"/>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&family=Playfair+Display:wght@600&display=swap" rel="stylesheet"/>
   <style>
+    * {
+      box-sizing: border-box;
+    }
+
     body {
       background-color: #1A1A40;
-      color: white;
+      color: #F5F5F5;
       font-family: 'Inter', sans-serif;
       margin: 0;
       padding: 40px 20px;
@@ -22,75 +26,115 @@
     }
 
     h1 {
-      font-size: 2em;
+      font-family: 'Playfair Display', serif;
+      font-size: 2.4rem;
       margin-bottom: 10px;
-      text-align: center;
+      line-height: 1.3;
     }
 
-    .role {
-      text-align: center;
-      font-size: 1.1em;
-      font-weight: 600;
-      margin-bottom: 30px;
-      color: #ccccff;
+    .position {
+      font-size: 1.1rem;
+      font-weight: 500;
+      color: #BBB;
+      margin-bottom: 25px;
     }
 
     .score-box {
       background-color: #2F2E5E;
-      border-radius: 10px;
-      padding: 20px;
+      border-radius: 12px;
+      padding: 24px;
       margin-bottom: 30px;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
     }
 
     .metric {
       display: flex;
       justify-content: space-between;
-      padding: 5px 0;
-      font-size: 1.1em;
+      padding: 8px 0;
+      font-size: 1.1rem;
     }
 
     .metric span {
-      font-weight: bold;
+      font-weight: 600;
     }
 
     .breakdown {
-      font-size: 0.95em;
-      line-height: 1.6em;
-      margin-top: 15px;
+      font-size: 0.97rem;
+      line-height: 1.7;
+      margin-top: 20px;
     }
 
     .multiplier-box {
       background-color: #1f1e45;
       border-radius: 10px;
-      padding: 15px;
-      margin-top: 20px;
+      padding: 20px;
+      margin-top: 28px;
+      font-size: 0.95rem;
+      line-height: 1.6;
+    }
+
+    .why-matters {
+      background-color: #1a1940;
+      border-left: 4px solid #E84A5F;
+      padding: 18px;
+      margin-top: 35px;
+      font-size: 0.96rem;
+      line-height: 1.6;
     }
 
     .back-link {
       display: block;
       text-align: center;
       margin-top: 40px;
-      color: #76C7C0;
-      text-decoration: underline;
-      font-weight: 600;
+    }
+
+    .back-link a {
+      color: #F5F5F5;
+      font-size: 1.05rem;
+      text-decoration: none;
+      border-bottom: 2px solid #E84A5F;
+      padding-bottom: 4px;
+      font-weight: 500;
+    }
+
+    .back-link a:hover {
+      color: #FF8888;
+      border-color: #FF8888;
     }
 
     @media (max-width: 600px) {
       h1 {
-        font-size: 1.6em;
+        font-size: 2rem;
+        line-height: 1.4;
+      }
+
+      .position {
+        font-size: 1rem;
       }
 
       .metric {
         flex-direction: column;
         align-items: flex-start;
+        gap: 4px;
+        padding: 10px 0;
       }
 
-      .metric span {
-        margin-bottom: 4px;
+      .score-box {
+        padding: 20px;
       }
 
-      .breakdown {
-        font-size: 1em;
+      .multiplier-box {
+        padding: 18px;
+        font-size: 1rem;
+      }
+
+      .why-matters {
+        font-size: 1rem;
+        padding: 16px;
+      }
+
+      .back-link a {
+        font-size: 1.15rem;
       }
     }
   </style>
@@ -98,7 +142,7 @@
 <body>
   <div class="content">
     <h1>Tucker Carlson – T.R.U. OWL Score</h1>
-    <div class="role">Influencer & Former TV Host</div>
+    <div class="position">Influencer & Former TV Host</div>
 
     <div class="score-box">
       <div class="metric"><span>Truth:</span> -175</div>
@@ -107,22 +151,28 @@
       <div class="metric"><span>Total Score:</span> -425</div>
 
       <div class="breakdown">
-        <strong>Truth:</strong> Carlson repeatedly amplifies narratives already proven false — including election fraud, vaccine conspiracies, and anti-immigrant theories — often with no disclaimer or fact-based framing.<br><br>
-        <strong>Reliability:</strong> He has been exposed (notably in the Dominion case) for knowingly pushing misleading stories to serve ideological purposes, while framing them as just "questions" or satire.<br><br>
+        <strong>Truth:</strong> Carlson repeatedly amplifies narratives already proven false — including election fraud, vaccine conspiracies, and anti-immigrant theories — often with no disclaimer or fact-based framing.<br>
+        <strong>Reliability:</strong> He has been exposed (notably in the Dominion case) for knowingly pushing misleading stories to serve ideological purposes, while framing them as just "questions" or satire.<br>
         <strong>Understanding:</strong> Carlson is highly articulate, but intentionally distorts complex issues to stoke grievance. His use of language shows calculated positioning, not confusion.
       </div>
 
       <div class="multiplier-box">
         <strong>Scoring Breakdown</strong><br><br>
-        <strong>Role:</strong> Influencer<br><br>
-        - Truth: -70 × 2.5 multiplier = <strong>-175</strong><br>
-        - Reliability: -80 × 2.0 multiplier = <strong>-160</strong><br>
-        - Understanding: -60 × 1.5 multiplier = <strong>-90</strong><br><br>
+        – Truth: -70 × 2.5 multiplier = <strong>-175</strong><br>
+        – Reliability: -80 × 2.0 multiplier = <strong>-160</strong><br>
+        – Understanding: -60 × 1.5 multiplier = <strong>-90</strong><br><br>
         <strong>Total: -425</strong>
       </div>
     </div>
 
-    <a class="back-link" href="TEST003.html">← Back to Overview</a>
+    <div class="why-matters">
+      <strong>Why This Matters:</strong><br>
+      Carlson has become a central figure in the media landscape, shaping the worldview of millions. His intentional distortion of truth and misuse of influence aren’t just opinion — they’re measurable harms to democratic understanding and factual discourse.
+    </div>
+
+    <div class="back-link">
+      <a href="TRUOWL.html">← Back to Overview</a>
+    </div>
   </div>
 </body>
 </html>
