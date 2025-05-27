@@ -73,21 +73,25 @@
       font-family: 'Playfair Display', serif;
     }
 
-    .button-row {
-      margin-top: 40px;
-    }
-
-    .button-row a {
+    .role-box a {
       display: inline-block;
-      margin-right: 20px;
-      margin-bottom: 10px;
-      padding: 12px 24px;
+      margin: 6px 6px 6px 0;
+      padding: 8px 16px;
       background-color: #4CAF50;
       color: white;
       text-decoration: none;
       border-radius: 6px;
-      font-weight: bold;
+      font-weight: 600;
       font-family: 'IBM Plex Sans', sans-serif;
+      transition: background-color 0.2s ease;
+    }
+
+    .role-box a:hover {
+      background-color: #45a049;
+    }
+
+    .role-box a:visited {
+      color: white;
     }
 
     @media (max-width: 600px) {
@@ -162,30 +166,29 @@
       </div>
     </div>
 
-   <h2>🔎 Explore Credibility Profiles</h2>
+    <h2>🔎 Explore Credibility Profiles</h2>
+    <div class="grid-boxes">
+      <div class="role-box">
+        <h3>🏛️ Politicians</h3>
+        <a href="trump.html">Donald Trump</a>
+        <a href="vance.html">J.D. Vance</a>
+      </div>
 
-<div class="grid-boxes">
-  <div class="role-box">
-    <h3>🏛️ Politicians</h3>
-    <a href="trump.html">Donald Trump</a><br>
-    <a href="vance.html">J.D. Vance</a>
-  </div>
+      <div class="role-box">
+        <h3>🧑‍💼 Journalists</h3>
+        <a href="woodward.html">Bob Woodward</a>
+      </div>
 
-  <div class="role-box">
-    <h3>🧑‍💼 Journalists</h3>
-    <a href="woodward.html">Bob Woodward</a>
-  </div>
+      <div class="role-box">
+        <h3>📰 Media Companies</h3>
+        <p style="font-size: 0.95em; color: #ccc;">Coming soon...</p>
+      </div>
 
-  <div class="role-box">
-    <h3>📰 Media Companies</h3>
-    <p style="font-size: 0.95em; color: #ccc;">Coming soon...</p>
-  </div>
-
-  <div class="role-box">
-    <h3>📱 Influencers</h3>
-    <p style="font-size: 0.95em; color: #ccc;">Coming soon...</p>
-  </div>
-</div>
+      <div class="role-box">
+        <h3>📱 Influencers</h3>
+        <p style="font-size: 0.95em; color: #ccc;">Coming soon...</p>
+      </div>
+    </div>
   </div>
 </body>
 </html>
