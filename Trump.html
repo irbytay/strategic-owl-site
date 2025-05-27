@@ -2,6 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Donald Trump – T.R.U. OWL Score</title>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
   <style>
@@ -17,11 +18,13 @@
 
     .content {
       max-width: 800px;
+      width: 100%;
     }
 
-    h1, h2 {
+    h1 {
       font-size: 2em;
       margin-bottom: 20px;
+      line-height: 1.3em;
     }
 
     .score-box {
@@ -69,15 +72,15 @@
       font-weight: bold;
     }
 
-    /* 🔽 Mobile-specific improvements */
+    /* Mobile improvements */
     @media (max-width: 600px) {
       body {
         padding: 24px;
       }
 
-      h1, h2 {
+      h1 {
         font-size: 1.6em;
-        line-height: 1.3em;
+        line-height: 1.4em;
       }
 
       .metric {
