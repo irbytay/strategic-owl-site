@@ -15,19 +15,29 @@
       color: #F5F5F5;
       font-family: 'Inter', sans-serif;
       margin: 0;
-      padding: 40px 20px;
-      display: flex;
-      justify-content: center;
+      padding: 0;
     }
 
     .content {
       max-width: 800px;
-      width: 100%;
+      margin: 0 auto;
+      padding: 40px 20px;
+    }
+
+    .logo-container {
+      text-align: center;
+      margin-bottom: 30px;
+    }
+
+    .logo-container img {
+      max-width: 120px;
+      height: auto;
     }
 
     h1 {
       font-family: 'Playfair Display', serif;
-      font-size: 2.4rem;
+      font-size: 2.2rem;
+      text-align: center;
       margin-bottom: 10px;
       line-height: 1.3;
     }
@@ -36,8 +46,26 @@
       font-size: 1.1rem;
       font-weight: 500;
       color: #BBB;
+      text-align: center;
       margin-bottom: 25px;
     }
+
+    .color-bars {
+      display: flex;
+      justify-content: center;
+      gap: 8px;
+      margin: 10px auto 30px auto;
+    }
+
+    .color-bars div {
+      width: 40px;
+      height: 6px;
+      border-radius: 3px;
+    }
+
+    .green { background-color: #4CAF50; }
+    .blue { background-color: #2196F3; }
+    .yellow { background-color: #FFC107; }
 
     .score-box {
       background-color: #2F2E5E;
@@ -74,12 +102,19 @@
     }
 
     .why-matters {
-      background-color: #1a1940;
+      background-color: #2a294c;
       border-left: 4px solid #E84A5F;
-      padding: 18px;
-      margin-top: 35px;
-      font-size: 0.96rem;
+      padding: 20px;
+      margin-top: 30px;
+      font-size: 0.97rem;
       line-height: 1.6;
+      border-radius: 8px;
+    }
+
+    .why-matters strong {
+      font-size: 1.05rem;
+      display: block;
+      margin-bottom: 10px;
     }
 
     .back-link {
@@ -104,7 +139,7 @@
 
     @media (max-width: 600px) {
       h1 {
-        font-size: 2rem;
+        font-size: 1.8rem;
         line-height: 1.4;
       }
 
@@ -130,7 +165,10 @@
 
       .why-matters {
         font-size: 1rem;
-        padding: 16px;
+      }
+
+      .back-link {
+        margin-top: 50px;
       }
 
       .back-link a {
@@ -141,6 +179,20 @@
 </head>
 <body>
   <div class="content">
+    <div class="logo-container">
+      <a href="TRUOWL.html">
+        <img src="owl_logo_white.png" alt="Strategic Owl Logo" />
+      </a>
+    </div>
+
+    <h1>The Strategic Owl</h1>
+
+    <div class="color-bars">
+      <div class="green"></div>
+      <div class="blue"></div>
+      <div class="yellow"></div>
+    </div>
+
     <h1>Tucker Carlson – T.R.U. OWL Score</h1>
     <div class="position">Influencer & Former TV Host</div>
 
@@ -166,9 +218,9 @@
     </div>
 
     <div class="why-matters">
-      <strong>Why This Matters:</strong><br>
-      Carlson has become a central figure in the media landscape, shaping the worldview of millions. His intentional distortion of truth and misuse of influence aren’t just opinion — they’re measurable harms to democratic understanding and factual discourse.
-    </div>
+  <strong>Why This Matters:</strong>
+  Tucker Carlson’s influence on public opinion is substantial, reaching millions through a blend of commentary and ideological framing. Under the T.R.U. OWL framework, his score reflects a pattern of selectively presenting information in ways that often distort context or amplify unverified claims. When platforms with wide reach blur the line between analysis and misrepresentation, the result is not just biased content — it’s a measurable erosion of public understanding.
+</div>
 
     <div class="back-link">
       <a href="TRUOWL.html">← Back to Overview</a>
