@@ -15,21 +15,39 @@
       color: #F5F5F5;
       font-family: 'Inter', sans-serif;
       margin: 0;
-      padding: 40px 20px;
-      display: flex;
-      justify-content: center;
+      padding: 0;
     }
 
     .content {
       max-width: 800px;
-      width: 100%;
+      margin: 0 auto;
+      padding: 40px 20px;
+    }
+
+    .logo-container {
+      text-align: center;
+      margin-bottom: 30px;
+    }
+
+    .logo-container img {
+      max-width: 120px;
+      height: auto;
     }
 
     h1 {
       font-family: 'Playfair Display', serif;
-      font-size: 2.4rem;
+      font-size: 2.2rem;
+      text-align: center;
       margin-bottom: 10px;
       line-height: 1.3;
+    }
+
+    .position {
+      font-size: 1.1rem;
+      font-weight: 500;
+      color: #BBB;
+      text-align: center;
+      margin-bottom: 25px;
     }
 
     .score-box {
@@ -102,10 +120,31 @@
       border-color: #4FDBA6;
     }
 
+    .color-bars {
+      display: flex;
+      justify-content: center;
+      gap: 8px;
+      margin: 10px auto 30px auto;
+    }
+
+    .color-bars div {
+      width: 40px;
+      height: 6px;
+      border-radius: 3px;
+    }
+
+    .green { background-color: #4CAF50; }
+    .blue { background-color: #2196F3; }
+    .yellow { background-color: #FFC107; }
+
     @media (max-width: 600px) {
       h1 {
-        font-size: 2rem;
+        font-size: 1.8rem;
         line-height: 1.4;
+      }
+
+      .position {
+        font-size: 1rem;
       }
 
       .metric {
@@ -128,6 +167,10 @@
         font-size: 1rem;
       }
 
+      .back-link {
+        margin-top: 50px;
+      }
+
       .back-link a {
         font-size: 1.15rem;
       }
@@ -136,7 +179,22 @@
 </head>
 <body>
   <div class="content">
+    <div class="logo-container">
+      <a href="TRUOWL.html">
+        <img src="owl_logo_white.png" alt="Strategic Owl Logo" />
+      </a>
+    </div>
+
+    <h1>The Strategic Owl</h1>
+
+    <div class="color-bars">
+      <div class="green"></div>
+      <div class="blue"></div>
+      <div class="yellow"></div>
+    </div>
+
     <h1>The Federalist – T.R.U. OWL Score</h1>
+    <div class="position">Media Outlet</div>
 
     <div class="score-box">
       <div class="metric"><span>Truth:</span> -210</div>
@@ -152,6 +210,7 @@
 
       <div class="multiplier-box">
         <strong>Scoring Breakdown</strong><br /><br />
+        <strong>Role:</strong> Media Outlet<br /><br />
         - Truth: -70 × 3.0 multiplier = <strong>-210</strong><br />
         - Reliability: -80 × 3.0 multiplier = <strong>-240</strong><br />
         - Understanding: -55 × 3.0 multiplier = <strong>-165</strong><br /><br />
