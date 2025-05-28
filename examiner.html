@@ -15,14 +15,41 @@
       color: #F5F5F5;
       font-family: 'Inter', sans-serif;
       margin: 0;
-      padding: 40px 20px;
-      display: flex;
-      justify-content: center;
+      padding: 0;
     }
+
+    .brand-bar {
+      background-color: #121128;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 12px 24px;
+      border-bottom: 2px solid #3B6CED;
+    }
+
+    .brand-bar img {
+      height: 40px;
+    }
+
+    .brand-bars {
+      display: flex;
+      gap: 10px;
+    }
+
+    .bar {
+      width: 14px;
+      height: 14px;
+      border-radius: 50%;
+    }
+
+    .bar.red { background-color: #FF4C4C; }
+    .bar.yellow { background-color: #FFD700; }
+    .bar.green { background-color: #4FDBA6; }
 
     .content {
       max-width: 800px;
-      width: 100%;
+      margin: 40px auto;
+      padding: 0 20px;
     }
 
     h1 {
@@ -150,6 +177,15 @@
   </style>
 </head>
 <body>
+  <div class="brand-bar">
+    <img src="logo.png" alt="Strategic Owl Logo" />
+    <div class="brand-bars">
+      <div class="bar red"></div>
+      <div class="bar yellow"></div>
+      <div class="bar green"></div>
+    </div>
+  </div>
+
   <div class="content">
     <h1>Washington Examiner – T.R.U. OWL Score</h1>
     <div class="position">Position: Media Company</div>
@@ -177,9 +213,9 @@
     </div>
 
     <div class="why-matters">
-  <strong>Why This Matters:</strong>
-  The Washington Examiner regularly fails to meet the foundational criteria of truth, reliability, and understanding. Rather than separating fact from opinion or applying consistent corrections, it often prioritizes ideological alignment over accuracy. This score reflects its measurable deviation from journalistic standards — not political bias or personal intent. Holding media to objective metrics protects public awareness from distortion.
-</div>
+      <strong>Why This Matters:</strong>
+      The Washington Examiner often blends ideology with journalism, presenting emotionally framed content without a consistent effort to clarify, correct, or separate opinion from fact. While its editorial voice is clear, its journalistic credibility suffers when facts are filtered through a political lens. This score evaluates those measurable gaps — not political opinion — and reinforces the need for media to uphold standards that protect the public from distortion.
+    </div>
 
     <div class="back-link">
       <a href="TRUOWL.html">← Back to Overview</a>
