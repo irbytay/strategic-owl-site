@@ -15,19 +15,29 @@
       color: #F5F5F5;
       font-family: 'Inter', sans-serif;
       margin: 0;
-      padding: 40px 20px;
-      display: flex;
-      justify-content: center;
+      padding: 0;
     }
 
     .content {
       max-width: 800px;
-      width: 100%;
+      margin: 0 auto;
+      padding: 40px 20px;
+    }
+
+    .logo-container {
+      text-align: center;
+      margin-bottom: 30px;
+    }
+
+    .logo-container img {
+      max-width: 120px;
+      height: auto;
     }
 
     h1 {
       font-family: 'Playfair Display', serif;
-      font-size: 2.4rem;
+      font-size: 2.2rem;
+      text-align: center;
       margin-bottom: 10px;
       line-height: 1.3;
     }
@@ -36,6 +46,7 @@
       font-size: 1.1rem;
       font-weight: 500;
       color: #BBB;
+      text-align: center;
       margin-bottom: 25px;
     }
 
@@ -109,9 +120,26 @@
       border-color: #4FDBA6;
     }
 
+    .color-bars {
+      display: flex;
+      justify-content: center;
+      gap: 8px;
+      margin: 10px auto 30px auto;
+    }
+
+    .color-bars div {
+      width: 40px;
+      height: 6px;
+      border-radius: 3px;
+    }
+
+    .green { background-color: #4CAF50; }
+    .blue { background-color: #2196F3; }
+    .yellow { background-color: #FFC107; }
+
     @media (max-width: 600px) {
       h1 {
-        font-size: 2rem;
+        font-size: 1.8rem;
         line-height: 1.4;
       }
 
@@ -150,8 +178,21 @@
   </style>
 </head>
 <body>
- 
   <div class="content">
+    <div class="logo-container">
+      <a href="index.html">
+        <img src="owl_logo_white.png" alt="Strategic Owl Logo" />
+      </a>
+    </div>
+
+    <h1>The Strategic Owl</h1>
+
+    <div class="color-bars">
+      <div class="green"></div>
+      <div class="blue"></div>
+      <div class="yellow"></div>
+    </div>
+
     <h1>Donald Trump – T.R.U. OWL Score</h1>
     <div class="position">President of the United States</div>
 
@@ -179,7 +220,7 @@
 
     <div class="why-matters">
       <strong>Why This Matters:</strong>
-      The presidency carries immense power to shape public understanding of truth, law, and democratic systems. Donald Trump, in his current role, repeatedly fails the core parameters of the T.R.U. OWL assessment — truth, reliability, and understanding. He routinely promotes false information, recycles long-debunked claims, and weaponizes disinformation to erode institutional trust. This score reflects not political bias, but a failure to meet the basic standards of credible leadership. When a president distorts reality, the consequences ripple through every level of society.
+      The presidency carries unmatched influence over how truth, law, and democracy are perceived. Donald Trump repeatedly fails the core standards of the T.R.U. OWL framework — truth, reliability, and understanding. From promoting false claims about elections and public health to elevating loyalists over qualified leaders, his pattern of disinformation erodes public trust. This score isn’t about politics — it’s about measurable harm. When a president distorts reality, the consequences aren’t abstract. They reshape the country.
     </div>
 
     <div class="back-link">
