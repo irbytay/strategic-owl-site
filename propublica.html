@@ -15,19 +15,29 @@
       color: #F5F5F5;
       font-family: 'Inter', sans-serif;
       margin: 0;
-      padding: 40px 20px;
-      display: flex;
-      justify-content: center;
+      padding: 0;
     }
 
     .content {
       max-width: 800px;
-      width: 100%;
+      margin: 0 auto;
+      padding: 40px 20px;
+    }
+
+    .logo-container {
+      text-align: center;
+      margin-bottom: 30px;
+    }
+
+    .logo-container img {
+      max-width: 120px;
+      height: auto;
     }
 
     h1 {
       font-family: 'Playfair Display', serif;
-      font-size: 2.4rem;
+      font-size: 2.2rem;
+      text-align: center;
       margin-bottom: 10px;
       line-height: 1.3;
     }
@@ -36,8 +46,26 @@
       font-size: 1.1rem;
       font-weight: 500;
       color: #BBB;
+      text-align: center;
       margin-bottom: 25px;
     }
+
+    .color-bars {
+      display: flex;
+      justify-content: center;
+      gap: 8px;
+      margin: 10px auto 30px auto;
+    }
+
+    .color-bars div {
+      width: 40px;
+      height: 6px;
+      border-radius: 3px;
+    }
+
+    .green { background-color: #4CAF50; }
+    .blue { background-color: #2196F3; }
+    .yellow { background-color: #FFC107; }
 
     .score-box {
       background-color: #2F2E5E;
@@ -111,7 +139,7 @@
 
     @media (max-width: 600px) {
       h1 {
-        font-size: 2rem;
+        font-size: 1.8rem;
         line-height: 1.4;
       }
 
@@ -151,6 +179,20 @@
 </head>
 <body>
   <div class="content">
+    <div class="logo-container">
+      <a href="TRUOWL.html">
+        <img src="owl_logo_white.png" alt="Strategic Owl Logo" />
+      </a>
+    </div>
+
+    <h1>The Strategic Owl</h1>
+
+    <div class="color-bars">
+      <div class="green"></div>
+      <div class="blue"></div>
+      <div class="yellow"></div>
+    </div>
+
     <h1>ProPublica – T.R.U. OWL Score</h1>
     <div class="position">Investigative Newsroom</div>
 
@@ -168,17 +210,17 @@
 
       <div class="multiplier-box">
         <strong>Scoring Breakdown</strong><br /><br />
-        - Truth: +90 × 3.0 multiplier = <strong>+270</strong><br />
-        - Reliability: +87 × 3.0 multiplier = <strong>+261</strong><br />
-        - Understanding: +83 × 3.0 multiplier = <strong>+249</strong><br /><br />
+        – Truth: +90 × 3.0 multiplier = <strong>+270</strong><br />
+        – Reliability: +87 × 3.0 multiplier = <strong>+261</strong><br />
+        – Understanding: +83 × 3.0 multiplier = <strong>+249</strong><br /><br />
         <strong>Total: +780</strong>
       </div>
     </div>
 
     <div class="why-matters">
-      <strong>Why This Matters:</strong>
-      ProPublica consistently passes the foundational tests of the T.R.U. OWL framework — delivering verifiable truth, maintaining a high standard of reliability, and presenting deep contextual understanding. In a climate of institutional distrust, journalism rooted in documents and transparency becomes essential to upholding democratic values.
-    </div>
+  <strong>Why This Matters:</strong>
+  ProPublica consistently meets the T.R.U. OWL standards for credible journalism by grounding its investigations in documented evidence, transparent sourcing, and timely corrections. Its nonpartisan approach reinforces the role of journalism as a public service rather than a political tool. In an era of fragmented media trust, outlets that prioritize depth, discipline, and verification help sustain informed citizenship and institutional accountability.
+</div>
 
     <div class="back-link">
       <a href="TRUOWL.html">← Back to Overview</a>
