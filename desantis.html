@@ -6,28 +6,36 @@
   <title>Ron DeSantis – T.R.U. OWL Score</title>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&family=Playfair+Display:wght@600&display=swap" rel="stylesheet" />
   <style>
-    * {
-      box-sizing: border-box;
-    }
+    * { box-sizing: border-box; }
 
     body {
       background-color: #1A1A40;
       color: #F5F5F5;
       font-family: 'Inter', sans-serif;
       margin: 0;
-      padding: 40px 20px;
-      display: flex;
-      justify-content: center;
+      padding: 0;
     }
 
     .content {
       max-width: 800px;
-      width: 100%;
+      margin: 0 auto;
+      padding: 40px 20px;
+    }
+
+    .logo-container {
+      text-align: center;
+      margin-bottom: 30px;
+    }
+
+    .logo-container img {
+      max-width: 120px;
+      height: auto;
     }
 
     h1 {
       font-family: 'Playfair Display', serif;
-      font-size: 2.4rem;
+      font-size: 2.2rem;
+      text-align: center;
       margin-bottom: 10px;
       line-height: 1.3;
     }
@@ -36,8 +44,26 @@
       font-size: 1.1rem;
       font-weight: 500;
       color: #BBB;
+      text-align: center;
       margin-bottom: 25px;
     }
+
+    .color-bars {
+      display: flex;
+      justify-content: center;
+      gap: 8px;
+      margin: 10px auto 30px auto;
+    }
+
+    .color-bars div {
+      width: 40px;
+      height: 6px;
+      border-radius: 3px;
+    }
+
+    .green { background-color: #4CAF50; }
+    .blue { background-color: #2196F3; }
+    .yellow { background-color: #FFC107; }
 
     .score-box {
       background-color: #2F2E5E;
@@ -151,6 +177,20 @@
 </head>
 <body>
   <div class="content">
+    <div class="logo-container">
+      <a href="TRUOWL.html">
+        <img src="owl_logo_white.png" alt="Strategic Owl Logo" />
+      </a>
+    </div>
+
+    <h1>The Strategic Owl</h1>
+
+    <div class="color-bars">
+      <div class="green"></div>
+      <div class="blue"></div>
+      <div class="yellow"></div>
+    </div>
+
     <h1>Ron DeSantis – T.R.U. OWL Score</h1>
     <div class="position">Governor of Florida</div>
 
@@ -177,9 +217,9 @@
     </div>
 
     <div class="why-matters">
-  <strong>Why This Matters:</strong>
-  As a Harvard-educated lawyer and sitting governor, Ron DeSantis knows exactly where constitutional lines are drawn—and how to push past them without appearing to cross them. His policies around education, voting rights, and public health often use the language of “freedom” while undermining it in practice. Within the T.R.U. OWL framework, credibility isn’t about slogans—it’s about substance. DeSantis’s score reflects how state-level disinformation, when framed as leadership, can scale into a national strategy for eroding rights and reshaping public understanding of government power.
-</div>
+      <strong>Why This Matters:</strong>
+      As a Harvard-educated lawyer and sitting governor, Ron DeSantis knows exactly where constitutional lines are drawn—and how to push past them without appearing to cross them. His policies around education, voting rights, and public health often use the language of “freedom” while undermining it in practice. Within the T.R.U. OWL framework, credibility isn’t about slogans—it’s about substance. DeSantis’s score reflects how state-level disinformation, when framed as leadership, can scale into a national strategy for eroding rights and reshaping public understanding of government power.
+    </div>
 
     <div class="back-link">
       <a href="TRUOWL.html">← Back to Overview</a>
