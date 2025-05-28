@@ -2,9 +2,9 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Matt Walsh – T.R.U. OWL Score</title>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&family=Playfair+Display:wght@600&display=swap" rel="stylesheet"/>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&family=Playfair+Display:wght@600&display=swap" rel="stylesheet" />
   <style>
     * {
       box-sizing: border-box;
@@ -15,19 +15,29 @@
       color: #F5F5F5;
       font-family: 'Inter', sans-serif;
       margin: 0;
-      padding: 40px 20px;
-      display: flex;
-      justify-content: center;
+      padding: 0;
     }
 
     .content {
       max-width: 800px;
-      width: 100%;
+      margin: 0 auto;
+      padding: 40px 20px;
+    }
+
+    .logo-container {
+      text-align: center;
+      margin-bottom: 30px;
+    }
+
+    .logo-container img {
+      max-width: 120px;
+      height: auto;
     }
 
     h1 {
       font-family: 'Playfair Display', serif;
-      font-size: 2.4rem;
+      font-size: 2.2rem;
+      text-align: center;
       margin-bottom: 10px;
       line-height: 1.3;
     }
@@ -36,6 +46,7 @@
       font-size: 1.1rem;
       font-weight: 500;
       color: #BBB;
+      text-align: center;
       margin-bottom: 25px;
     }
 
@@ -74,12 +85,19 @@
     }
 
     .why-matters {
-      background-color: #1a1940;
+      background-color: #2a294c;
       border-left: 4px solid #E84A5F;
-      padding: 18px;
-      margin-top: 35px;
-      font-size: 0.96rem;
+      padding: 20px;
+      margin-top: 30px;
+      font-size: 0.97rem;
       line-height: 1.6;
+      border-radius: 8px;
+    }
+
+    .why-matters strong {
+      font-size: 1.05rem;
+      display: block;
+      margin-bottom: 10px;
     }
 
     .back-link {
@@ -92,19 +110,36 @@
       color: #F5F5F5;
       font-size: 1.05rem;
       text-decoration: none;
-      border-bottom: 2px solid #E84A5F;
+      border-bottom: 2px solid #3B6CED;
       padding-bottom: 4px;
       font-weight: 500;
     }
 
     .back-link a:hover {
-      color: #FF8888;
-      border-color: #FF8888;
+      color: #4FDBA6;
+      border-color: #4FDBA6;
     }
+
+    .color-bars {
+      display: flex;
+      justify-content: center;
+      gap: 8px;
+      margin: 10px auto 30px auto;
+    }
+
+    .color-bars div {
+      width: 40px;
+      height: 6px;
+      border-radius: 3px;
+    }
+
+    .green { background-color: #4CAF50; }
+    .blue { background-color: #2196F3; }
+    .yellow { background-color: #FFC107; }
 
     @media (max-width: 600px) {
       h1 {
-        font-size: 2rem;
+        font-size: 1.8rem;
         line-height: 1.4;
       }
 
@@ -130,7 +165,10 @@
 
       .why-matters {
         font-size: 1rem;
-        padding: 16px;
+      }
+
+      .back-link {
+        margin-top: 50px;
       }
 
       .back-link a {
@@ -141,6 +179,20 @@
 </head>
 <body>
   <div class="content">
+    <div class="logo-container">
+      <a href="TRUOWL.html">
+        <img src="owl_logo_white.png" alt="Strategic Owl Logo" />
+      </a>
+    </div>
+
+    <h1>The Strategic Owl</h1>
+
+    <div class="color-bars">
+      <div class="green"></div>
+      <div class="blue"></div>
+      <div class="yellow"></div>
+    </div>
+
     <h1>Matt Walsh – T.R.U. OWL Score</h1>
     <div class="position">Political Influencer & Media Personality</div>
 
@@ -151,24 +203,25 @@
       <div class="metric"><span>Total Score:</span> -198</div>
 
       <div class="breakdown">
-        <strong>Truth:</strong> Walsh regularly publishes and amplifies narratives based on partial truths or misinformation — especially about trans people, DEI, education, and health. Many assertions have been widely debunked or manipulated.<br>
-        <strong>Reliability:</strong> When challenged, Walsh escalates rather than corrects. He equates accountability with censorship, framing himself as a victim while fueling outrage-driven commentary.<br>
+        <strong>Truth:</strong> Walsh regularly publishes and amplifies narratives based on partial truths or misinformation — especially about trans people, DEI, education, and health. Many assertions have been widely debunked or manipulated.<br />
+        <strong>Reliability:</strong> When challenged, Walsh escalates rather than corrects. He equates accountability with censorship, framing himself as a victim while fueling outrage-driven commentary.<br />
         <strong>Understanding:</strong> Walsh shows little grasp of medical, legal, or psychological nuance. His content simplifies complex realities into binary culture war talking points.
       </div>
 
       <div class="multiplier-box">
-        <strong>Scoring Breakdown</strong><br><br>
-        – Truth: -40 × 2.5 multiplier = <strong>-100</strong><br>
-        – Reliability: -30 × 2.0 multiplier = <strong>-60</strong><br>
-        – Understanding: -25 × 1.5 multiplier = <strong>-37.5</strong><br><br>
+        <strong>Scoring Breakdown</strong><br /><br />
+        <strong>Role:</strong> Influencer (High-Reach Platform)<br /><br />
+        – Truth: -40 × 2.5 multiplier = <strong>-100</strong><br />
+        – Reliability: -30 × 2.0 multiplier = <strong>-60</strong><br />
+        – Understanding: -25 × 1.5 multiplier = <strong>-37.5</strong><br /><br />
         <strong>Total: -198</strong>
       </div>
     </div>
 
     <div class="why-matters">
-      <strong>Why This Matters:</strong><br>
-      Walsh’s framing disguises radical messaging as moral truth. When culture war content replaces factual discourse, audiences inherit beliefs without evidence — a key step in modern ideological manipulation.
-    </div>
+  <strong>Why This Matters:</strong>
+  Matt Walsh’s content often blends moral framing with politically charged narratives, resonating strongly in culture war discourse. Under the T.R.U. OWL framework, his score reflects a pattern of presenting subjective ideology as objective fact, without consistent evidentiary support. When belief is substituted for verification, it creates a pathway for ideological reinforcement at the expense of informed public understanding.
+</div>
 
     <div class="back-link">
       <a href="TRUOWL.html">← Back to Overview</a>
