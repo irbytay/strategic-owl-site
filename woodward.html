@@ -1,17 +1,21 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Bob Woodward – T.R.U. OWL Score</title>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&family=Playfair+Display:wght@600&display=swap" rel="stylesheet"/>
   <style>
+    * {
+      box-sizing: border-box;
+    }
+
     body {
-      background-color: #3C3B6E;
-      color: white;
+      background-color: #1A1A40;
+      color: #F5F5F5;
       font-family: 'Inter', sans-serif;
       margin: 0;
-      padding: 40px;
+      padding: 40px 20px;
       display: flex;
       justify-content: center;
     }
@@ -22,81 +26,115 @@
     }
 
     h1 {
-      font-size: 2em;
-      margin-bottom: 20px;
+      font-family: 'Playfair Display', serif;
+      font-size: 2.4rem;
+      margin-bottom: 10px;
+      line-height: 1.3;
+    }
+
+    .position {
+      font-size: 1.1rem;
+      font-weight: 500;
+      color: #BBB;
+      margin-bottom: 25px;
     }
 
     .score-box {
       background-color: #2F2E5E;
-      border-radius: 10px;
-      padding: 20px;
+      border-radius: 12px;
+      padding: 24px;
       margin-bottom: 30px;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
     }
 
     .metric {
       display: flex;
       justify-content: space-between;
-      padding: 5px 0;
-      font-size: 1.1em;
+      padding: 8px 0;
+      font-size: 1.1rem;
     }
 
     .metric span {
-      font-weight: bold;
+      font-weight: 600;
     }
 
     .breakdown {
-      font-size: 0.95em;
-      line-height: 1.6em;
-      margin-top: 15px;
+      font-size: 0.97rem;
+      line-height: 1.7;
+      margin-top: 20px;
     }
 
     .multiplier-box {
       background-color: #1f1e45;
       border-radius: 10px;
-      padding: 15px;
-      margin-top: 20px;
+      padding: 20px;
+      margin-top: 28px;
+      font-size: 0.95rem;
+      line-height: 1.6;
+    }
+
+    .why-matters {
+      background-color: #1a1940;
+      border-left: 4px solid #4CAF50;
+      padding: 18px;
+      margin-top: 35px;
+      font-size: 0.96rem;
+      line-height: 1.6;
     }
 
     .back-link {
-      display: inline-block;
-      margin-top: 30px;
-      padding: 10px 20px;
-      background-color: #4CAF50;
-      color: white;
+      display: block;
+      text-align: center;
+      margin-top: 40px;
+    }
+
+    .back-link a {
+      color: #F5F5F5;
+      font-size: 1.05rem;
       text-decoration: none;
-      border-radius: 6px;
-      font-weight: bold;
+      border-bottom: 2px solid #4CAF50;
+      padding-bottom: 4px;
+      font-weight: 500;
+    }
+
+    .back-link a:hover {
+      color: #9CFF9C;
+      border-color: #9CFF9C;
     }
 
     @media (max-width: 600px) {
-      body {
-        padding: 20px 15px;
+      h1 {
+        font-size: 2rem;
+        line-height: 1.4;
       }
 
-      h1 {
-        font-size: 1.6em;
-        text-align: center;
+      .position {
+        font-size: 1rem;
       }
 
       .metric {
-        font-size: 1em;
         flex-direction: column;
         align-items: flex-start;
+        gap: 4px;
+        padding: 10px 0;
       }
 
-      .metric span {
-        margin-bottom: 3px;
+      .score-box {
+        padding: 20px;
       }
 
-      .breakdown {
-        font-size: 1em;
+      .multiplier-box {
+        padding: 18px;
+        font-size: 1rem;
       }
 
-      .back-link {
-        width: 100%;
-        text-align: center;
-        padding: 12px 0;
-        font-size: 1em;
+      .why-matters {
+        font-size: 1rem;
+        padding: 16px;
+      }
+
+      .back-link a {
+        font-size: 1.15rem;
       }
     }
   </style>
@@ -104,6 +142,7 @@
 <body>
   <div class="content">
     <h1>Bob Woodward – T.R.U. OWL Score</h1>
+    <div class="position">Investigative Journalist, Author</div>
 
     <div class="score-box">
       <div class="metric"><span>Truth:</span> +350</div>
@@ -118,16 +157,22 @@
       </div>
 
       <div class="multiplier-box">
-        <strong>📌 Scoring Breakdown</strong><br><br>
-        <strong>Role:</strong> Journalist (Standard Documentation-Based)<br><br>
-        - Truth: +175 × 2.0 multiplier = <strong>+350</strong><br>
-        - Reliability: +137.5 × 2.0 multiplier = <strong>+275</strong><br>
-        - Understanding: +85 × 2.0 multiplier = <strong>+170</strong><br><br>
+        <strong>Scoring Breakdown</strong><br><br>
+        – Truth: +175 × 2.0 multiplier = <strong>+350</strong><br>
+        – Reliability: +137.5 × 2.0 multiplier = <strong>+275</strong><br>
+        – Understanding: +85 × 2.0 multiplier = <strong>+170</strong><br><br>
         <strong>Total: +795</strong>
       </div>
     </div>
 
-    <a class="back-link" href="TEST003.html">← Back to Overview</a>
+    <div class="why-matters">
+      <strong>Why This Matters:</strong><br>
+      When trust in media is collapsing, Woodward represents what journalism is supposed to be: persistent, documented, and grounded in public accountability. His credibility isn't perfect, but it's rare — and earned.
+    </div>
+
+    <div class="back-link">
+      <a href="TRUOWL.html">← Back to Overview</a>
+    </div>
   </div>
 </body>
 </html>
