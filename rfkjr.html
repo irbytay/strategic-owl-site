@@ -1,10 +1,9 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>The Strategic Owl – T.R.U. OWL Score</title>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&family=Playfair+Display:wght@500;700&display=swap" rel="stylesheet" />
+  <meta charset="UTF-8">
+  <title>Robert F. Kennedy Jr. – T.R.U. OWL Score</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&family=Playfair+Display:wght@600&display=swap" rel="stylesheet">
   <style>
     * {
       box-sizing: border-box;
@@ -12,149 +11,194 @@
 
     body {
       background-color: #1A1A40;
-      color: #F5F5F5;
+      color: white;
       font-family: 'Inter', sans-serif;
       margin: 0;
-      padding: 0;
+      padding: 40px 20px;
       display: flex;
-      align-items: center;
       justify-content: center;
-      min-height: 100vh;
     }
 
-    .box {
-      background-color: #2F2E5E;
-      padding: 40px;
-      border-radius: 12px;
-      max-width: 750px;
-      width: 90%;
-      box-shadow: 0 0 12px rgba(0, 0, 0, 0.5);
-      margin: 40px auto;
-      text-align: center;
+    .content {
+      max-width: 800px;
+      width: 100%;
     }
 
     .logo {
-      max-width: 80px;
-      margin: 0 auto 20px;
+      width: 180px;
       display: block;
+      margin: 0 auto 20px;
     }
 
-    h1 {
-      font-family: 'Playfair Display', serif;
-      font-size: 2.4rem;
-      margin-bottom: 25px;
-      line-height: 1.4;
-    }
-
-    p {
-      font-size: 1.05rem;
-      line-height: 1.7;
-      margin-bottom: 16px;
-      text-align: left;
-    }
-
-    ul {
-      text-align: left;
-      padding-left: 20px;
-      margin-bottom: 20px;
-    }
-
-    ul li {
-      margin-bottom: 10px;
-      font-size: 1.05rem;
-      line-height: 1.6;
-    }
-
-    strong {
-      color: #FFEB3B;
-    }
-
-    .divider-bar {
+    .bars {
       display: flex;
       justify-content: center;
-      gap: 8px;
-      margin: 10px auto 30px auto;
+      gap: 10px;
+      margin-bottom: 30px;
     }
 
-    .divider-bar div {
-      width: 40px;
+    .bar {
+      width: 60px;
       height: 6px;
       border-radius: 3px;
     }
 
-    .truth { background-color: #4CAF50; }
-    .reliability { background-color: #2196F3; }
-    .understanding { background-color: #FFC107; }
+    .bar.green { background-color: #4CAF50; }
+    .bar.blue { background-color: #3B6CED; }
+    .bar.yellow { background-color: #FFCA28; }
 
-    .agree-link {
+    h1 {
+      font-family: 'Playfair Display', serif;
+      font-size: 2.4rem;
+      margin-bottom: 10px;
+      text-align: center;
+    }
+
+    .position {
+      font-size: 1.1rem;
+      font-weight: 500;
+      color: #BBB;
+      text-align: center;
+      margin-bottom: 25px;
+    }
+
+    .score-box {
+      background-color: #2F2E5E;
+      border-radius: 12px;
+      padding: 24px;
+      margin-bottom: 30px;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+    }
+
+    .metric {
+      display: flex;
+      justify-content: space-between;
+      padding: 8px 0;
+      font-size: 1.1rem;
+    }
+
+    .metric span {
+      font-weight: bold;
+    }
+
+    .breakdown {
+      font-size: 0.97rem;
+      line-height: 1.7;
+      margin-top: 20px;
+    }
+
+    .multiplier-box {
+      background-color: #1f1e45;
+      border-radius: 10px;
+      padding: 20px;
+      margin-top: 28px;
+      font-size: 0.95rem;
+      line-height: 1.6;
+    }
+
+    .why-matters {
+      background-color: #1a1940;
+      border-left: 4px solid #E84A5F;
+      padding: 18px;
+      margin-top: 35px;
+      font-size: 0.96rem;
+      line-height: 1.6;
+      border-radius: 6px;
+    }
+
+    .back-link {
+      display: block;
       text-align: center;
       margin-top: 40px;
     }
 
-    .agree-link a {
+    .back-link a {
       color: #F5F5F5;
-      font-size: 1.1rem;
-      font-weight: 500;
+      font-size: 1.05rem;
       text-decoration: none;
       border-bottom: 2px solid #3B6CED;
       padding-bottom: 4px;
-      transition: color 0.2s ease, border-color 0.2s ease;
-      font-family: 'Inter', sans-serif;
+      font-weight: 500;
     }
 
-    .agree-link a:hover {
+    .back-link a:hover {
       color: #4FDBA6;
       border-color: #4FDBA6;
     }
 
     @media (max-width: 600px) {
-      .box {
-        padding: 25px;
-      }
-
       h1 {
         font-size: 2rem;
       }
 
-      p, li {
+      .metric {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 4px;
+        padding: 10px 0;
+      }
+
+      .score-box {
+        padding: 20px;
+      }
+
+      .multiplier-box {
+        padding: 18px;
         font-size: 1rem;
       }
 
-      .agree-link a {
-        display: inline-block;
-        width: 100%;
-        padding: 12px 0;
+      .why-matters {
+        font-size: 1rem;
+        padding: 16px;
+      }
+
+      .back-link a {
+        font-size: 1.15rem;
       }
     }
   </style>
 </head>
 <body>
-  <div class="box">
-    <img src="owl_logo_white.png" alt="Strategic Owl Logo" class="logo" />
-
-    <h1>The Strategic Owl</h1>
-
-    <div class="divider-bar">
-      <div class="truth"></div>
-      <div class="reliability"></div>
-      <div class="understanding"></div>
+  <div class="content">
+    <img src="logo.png" alt="Strategic Owl Logo" class="logo" />
+    <div class="bars">
+      <div class="bar green"></div>
+      <div class="bar blue"></div>
+      <div class="bar yellow"></div>
     </div>
 
-    <p>This platform contains original public interest research, commentary, and analysis, all of which are protected under the <strong>First Amendment</strong> of the United States Constitution. The <strong>T.R.U. OWL Score</strong> is an independently developed credibility rating system designed to evaluate the public statements and conduct of individuals and institutions based on documented facts, source-based verification, and transparent methodology.</p>
+    <h1>Robert F. Kennedy Jr. – T.R.U. OWL Score</h1>
+    <div class="position">Independent Presidential Candidate</div>
 
-    <p>All evaluations and scores are derived exclusively from <strong>publicly available data</strong>, <strong>verifiable statements</strong>, and <strong>sourced materials</strong>. This project is <strong>non-governmental</strong>, <strong>non-commercial</strong>, and <strong>not affiliated</strong> with any public or private institution. It does not provide legal, financial, or professional advice of any kind.</p>
+    <div class="score-box">
+      <div class="metric"><span>Truth:</span> -240</div>
+      <div class="metric"><span>Reliability:</span> -220</div>
+      <div class="metric"><span>Understanding:</span> -250</div>
+      <div class="metric"><span>Total Score:</span> -710</div>
 
-    <p>By proceeding, you acknowledge that:</p>
-    <ul>
-      <li>This platform expresses constitutionally protected opinion, critique, and commentary.</li>
-      <li>Its analyses and conclusions are based on the public record.</li>
-      <li>You waive any claim or attempt to pursue legal action against its creators, contributors, or hosts for the publication of ratings, evaluations, or commentary derived from public information.</li>
-    </ul>
+      <div class="breakdown">
+        <strong>Truth:</strong> RFK Jr. has promoted vaccine-autism conspiracies, misrepresented COVID-19 data, and claimed nefarious collusion between public health agencies and private companies without factual grounding.<br>
+        <strong>Reliability:</strong> He repeats disproven claims and doubles down when challenged, rarely correcting misinformation. His interviews often reveal rhetorical shifts, not substantive accountability.<br>
+        <strong>Understanding:</strong> Despite his legal background, he distorts science, misinterprets peer-reviewed research, and uses constitutional language out of context to frame populist arguments.
+      </div>
 
-    <p>Use of this site constitutes full acceptance of these terms.</p>
+      <div class="multiplier-box">
+        <strong>📌 Scoring Breakdown</strong><br><br>
+        <strong>Role:</strong> Politician<br><br>
+        - Truth: -60 × 4.0 multiplier = <strong>-240</strong><br>
+        - Reliability: -55 × 4.0 multiplier = <strong>-220</strong><br>
+        - Understanding: -50 × 5.0 multiplier = <strong>-250</strong><br><br>
+        <strong>Total: -710</strong>
+      </div>
+    </div>
 
-    <div class="agree-link">
-      <a href="TRUOWL.html">I Agree and Enter</a>
+    <div class="why-matters">
+      <strong>Why This Matters:</strong><br>
+      RFK Jr.’s legal background gives his claims a veneer of credibility—but his repeated distortions of science, health policy, and the Constitution have contributed to mass disinformation. His T.R.U. OWL score reflects how influential figures can weaponize misunderstood research and populist rhetoric to erode trust in public institutions. The damage isn’t just theoretical—it shapes real-world policy and public health outcomes.
+    </div>
+
+    <div class="back-link">
+      <a href="TEST003.html">← Back to Overview</a>
     </div>
   </div>
 </body>
