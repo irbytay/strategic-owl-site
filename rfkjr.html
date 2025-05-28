@@ -1,9 +1,10 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Robert F. Kennedy Jr. – T.R.U. OWL Score</title>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&family=Playfair+Display:wght@600&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&family=Playfair+Display:wght@600&display=swap" rel="stylesheet" />
   <style>
     * {
       box-sizing: border-box;
@@ -11,47 +12,34 @@
 
     body {
       background-color: #1A1A40;
-      color: white;
+      color: #F5F5F5;
       font-family: 'Inter', sans-serif;
       margin: 0;
-      padding: 40px 20px;
-      display: flex;
-      justify-content: center;
+      padding: 0;
     }
 
     .content {
       max-width: 800px;
-      width: 100%;
+      margin: 0 auto;
+      padding: 40px 20px;
     }
 
-    .logo {
-      width: 180px;
-      display: block;
-      margin: 0 auto 20px;
-    }
-
-    .bars {
-      display: flex;
-      justify-content: center;
-      gap: 10px;
+    .logo-container {
+      text-align: center;
       margin-bottom: 30px;
     }
 
-    .bar {
-      width: 60px;
-      height: 6px;
-      border-radius: 3px;
+    .logo-container img {
+      max-width: 120px;
+      height: auto;
     }
-
-    .bar.green { background-color: #4CAF50; }
-    .bar.blue { background-color: #3B6CED; }
-    .bar.yellow { background-color: #FFCA28; }
 
     h1 {
       font-family: 'Playfair Display', serif;
-      font-size: 2.4rem;
-      margin-bottom: 10px;
+      font-size: 2.2rem;
       text-align: center;
+      margin-bottom: 10px;
+      line-height: 1.3;
     }
 
     .position {
@@ -78,7 +66,7 @@
     }
 
     .metric span {
-      font-weight: bold;
+      font-weight: 600;
     }
 
     .breakdown {
@@ -97,28 +85,34 @@
     }
 
     .why-matters {
-      background-color: #1a1940;
-      border-left: 4px solid #E84A5F;
-      padding: 18px;
-      margin-top: 35px;
-      font-size: 0.96rem;
+      background-color: #2a294c;
+      border-left: 4px solid #FF4C4C;
+      padding: 20px;
+      margin-top: 30px;
+      font-size: 0.97rem;
       line-height: 1.6;
-      border-radius: 6px;
+      border-radius: 8px;
+    }
+
+    .why-matters strong {
+      font-size: 1.05rem;
+      display: block;
+      margin-bottom: 10px;
     }
 
     .back-link {
+      display: block;
       text-align: center;
       margin-top: 40px;
     }
 
     .back-link a {
-      color: #BBBBFF;
+      color: #F5F5F5;
       font-size: 1.05rem;
       text-decoration: none;
-      border-bottom: 2px solid #BBBBFF;
+      border-bottom: 2px solid #3B6CED;
       padding-bottom: 4px;
       font-weight: 500;
-      transition: color 0.2s ease, border-color 0.2s ease;
     }
 
     .back-link a:hover {
@@ -126,9 +120,31 @@
       border-color: #4FDBA6;
     }
 
+    .color-bars {
+      display: flex;
+      justify-content: center;
+      gap: 8px;
+      margin: 10px auto 30px auto;
+    }
+
+    .color-bars div {
+      width: 40px;
+      height: 6px;
+      border-radius: 3px;
+    }
+
+    .green { background-color: #4CAF50; }
+    .blue { background-color: #2196F3; }
+    .yellow { background-color: #FFC107; }
+
     @media (max-width: 600px) {
       h1 {
-        font-size: 2rem;
+        font-size: 1.8rem;
+        line-height: 1.4;
+      }
+
+      .position {
+        font-size: 1rem;
       }
 
       .metric {
@@ -149,7 +165,10 @@
 
       .why-matters {
         font-size: 1rem;
-        padding: 16px;
+      }
+
+      .back-link {
+        margin-top: 50px;
       }
 
       .back-link a {
@@ -160,12 +179,18 @@
 </head>
 <body>
   <div class="content">
-    <img src="logo.png" alt="Strategic Owl Logo" class="logo" />
+    <div class="logo-container">
+      <a href="TRUOWL.html">
+        <img src="owl_logo_white.png" alt="Strategic Owl Logo" />
+      </a>
+    </div>
 
-    <div class="bars">
-      <div class="bar green"></div>
-      <div class="bar blue"></div>
-      <div class="bar yellow"></div>
+    <h1>The Strategic Owl</h1>
+
+    <div class="color-bars">
+      <div class="green"></div>
+      <div class="blue"></div>
+      <div class="yellow"></div>
     </div>
 
     <h1>Robert F. Kennedy Jr. – T.R.U. OWL Score</h1>
@@ -178,28 +203,28 @@
       <div class="metric"><span>Total Score:</span> -710</div>
 
       <div class="breakdown">
-        <strong>Truth:</strong> RFK Jr. has promoted vaccine-autism conspiracies, misrepresented COVID-19 data, and claimed nefarious collusion between public health agencies and private companies without factual grounding.<br>
-        <strong>Reliability:</strong> He repeats disproven claims and doubles down when challenged, rarely correcting misinformation. His interviews often reveal rhetorical shifts, not substantive accountability.<br>
+        <strong>Truth:</strong> RFK Jr. has promoted vaccine-autism conspiracies, misrepresented COVID-19 data, and claimed nefarious collusion between public health agencies and private companies without factual grounding.<br />
+        <strong>Reliability:</strong> He repeats disproven claims and doubles down when challenged, rarely correcting misinformation. His interviews often reveal rhetorical shifts, not substantive accountability.<br />
         <strong>Understanding:</strong> Despite his legal background, he distorts science, misinterprets peer-reviewed research, and uses constitutional language out of context to frame populist arguments.
       </div>
 
       <div class="multiplier-box">
-        <strong>📌 Scoring Breakdown</strong><br><br>
-        <strong>Role:</strong> Politician<br><br>
-        - Truth: -60 × 4.0 multiplier = <strong>-240</strong><br>
-        - Reliability: -55 × 4.0 multiplier = <strong>-220</strong><br>
-        - Understanding: -50 × 5.0 multiplier = <strong>-250</strong><br><br>
+        <strong>Scoring Breakdown</strong><br /><br />
+        <strong>Role:</strong> Politician<br /><br />
+        - Truth: -60 × 4.0 multiplier = <strong>-240</strong><br />
+        - Reliability: -55 × 4.0 multiplier = <strong>-220</strong><br />
+        - Understanding: -50 × 5.0 multiplier = <strong>-250</strong><br /><br />
         <strong>Total: -710</strong>
       </div>
     </div>
 
     <div class="why-matters">
-      <strong>Why This Matters:</strong><br>
+      <strong>Why This Matters:</strong>
       RFK Jr.’s legal background gives his claims a veneer of credibility—but his repeated distortions of science, health policy, and the Constitution have contributed to mass disinformation. His T.R.U. OWL score reflects how influential figures can weaponize misunderstood research and populist rhetoric to erode trust in public institutions. The damage isn’t just theoretical—it shapes real-world policy and public health outcomes.
     </div>
 
     <div class="back-link">
-      <a href="TEST003.html">← Back to Overview</a>
+      <a href="TRUOWL.html">← Back to Overview</a>
     </div>
   </div>
 </body>
