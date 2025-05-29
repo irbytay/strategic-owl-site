@@ -55,23 +55,6 @@
       text-align: left;
     }
 
-    .section-box h2 {
-      text-align: center;
-      font-size: 1.8rem;
-      margin-bottom: 20px;
-    }
-
-    .section-box p,
-    .section-box ul {
-      font-size: 1rem;
-      line-height: 1.6;
-      margin-bottom: 18px;
-    }
-
-    .section-box ul {
-      padding-left: 20px;
-    }
-
     .divider-bar {
       display: flex;
       justify-content: center;
@@ -88,6 +71,10 @@
     .truth { background-color: #4CAF50; }
     .reliability { background-color: #2196F3; }
     .understanding { background-color: #FFC107; }
+
+    .text-truth { color: #4CAF50; font-weight: bold; }
+    .text-reliability { color: #2196F3; font-weight: bold; }
+    .text-understanding { color: #FFC107; font-weight: bold; }
 
     .score-grid, .profile-grid {
       display: grid;
@@ -117,16 +104,6 @@
 
     .role-box a:hover {
       color: var(--hover);
-    }
-
-    .logo-container {
-      text-align: center;
-      margin-bottom: 30px;
-    }
-
-    .logo-container img {
-      max-width: 120px;
-      height: auto;
     }
 
     .score-grid p {
@@ -167,23 +144,14 @@
       border-color: var(--hover);
     }
 
-    @media (max-width: 600px) {
-      h1 {
-        font-size: 1.8rem;
-      }
+    .logo-container {
+      text-align: center;
+      margin-bottom: 30px;
+    }
 
-      .section-box {
-        padding: 25px;
-      }
-
-      .section-box h2,
-      .center-heading {
-        font-size: 1.5rem;
-      }
-
-      .role-box a {
-        font-size: 0.95rem;
-      }
+    .logo-container img {
+      max-width: 120px;
+      height: auto;
     }
   </style>
 </head>
@@ -191,11 +159,13 @@
   <div class="content">
     <div class="logo-container">
       <a href="index.html">
-        <img src="owl_logo_white.png" alt="Strategic Owl Logo" />
+        <img src="owl_logo_white.png" alt="Strategic Owl Logo" onerror="this.onerror=null;this.style.display='none';this.insertAdjacentHTML('afterend','<p style=\'color:white;text-align:center;font-weight:bold;\'>[ Logo not found – owl_logo_white.png ]</p>')" />
       </a>
     </div>
 
-    <h1>The Strategic Owl</h1>
+    <div class="logo-container">
+      <h1>The Strategic Owl</h1>
+    </div>
 
     <div class="divider-bar">
       <div class="truth"></div>
@@ -205,78 +175,54 @@
 
     <div class="section-box">
       <h2>Welcome to the T.R.U. OWL Score</h2>
-      <p>This is a credibility scoring system — built not on partisanship or popularity, but on <strong>verifiable truth</strong>.</p>
-      <p>In a world where narratives outpace facts, we aim for clarity. Like owls at night, we see through the noise. Public figures aren’t judged by what they claim, but by what can be proven — through court records, public data, and verified sources.</p>
-      <p>We score <strong>Truth</strong>, <strong>Reliability</strong>, and <strong>Understanding</strong>, tailored to each figure’s role. Politicians aren’t journalists. Influencers aren’t lawmakers. Each is evaluated accordingly.</p>
-      <p>This project exists because truth still matters — not for tribes, not for clicks, but for citizens trying to stay grounded in reality.</p>
-      <p>Use the scores. Share them. Challenge them. This is protected speech — and you're part of it now.</p>
-    </div>
-
-    <div class="section-box">
-      <h2>How the System Works</h2>
-      <p>This isn’t just a scoring system — it’s a dynamic framework. Each rating is built on hard evidence and filtered through adaptive standards that reflect role, behavior, and impact. These standards evolve — not to shift goalposts, but to meet rising responsibility.</p>
-      <p>This isn’t just about calling out failure. It’s about rewarding those who choose truth over spin, context over clicks, and clarity over chaos — and making credibility visible.</p>
-    </div>
-
-    <div class="section-box">
-      <h2>How Truth Is Verified</h2>
-      <p>Every score starts with documentation — not headlines, vibes, or partisanship.</p>
+      <p><strong>This isn’t a media bias site. It’s a truth system.</strong></p>
+      <p>The T.R.U. OWL Score is a credibility framework that measures public figures based on <span class="text-truth">verifiable truth</span> — not vibes, tribes, or talking points.</p>
+      <p>We don’t ask what side someone’s on. We ask: <em>Did they tell the truth?</em> Did they correct themselves when wrong? Are they consistent? Do they understand what they’re talking about?</p>
+      <p>Through <strong>court records</strong>, <strong>public data</strong>, and <strong>source-backed analysis</strong>, we track what can be proven — and score it across three pillars:</p>
       <ul>
-        <li>Public records and court rulings</li>
-        <li>Peer-reviewed research and scientific consensus</li>
-        <li>Legislative votes and direct statements</li>
+        <li><span class="text-truth">Truth</span> – Are the claims factually accurate?</li>
+        <li><span class="text-reliability">Reliability:</span> – Are they consistent and accountable?</li>
+        <li><span class="text-understanding">Understanding:</span> – Do they grasp the systems they discuss?</li>
       </ul>
-      <p>If a politician denies a ruling, an influencer distorts a constitutional amendment, or a media outlet buries its own retraction — those are measurable breakdowns of truth, reliability, or understanding.</p>
-      <p><strong>Disagreement isn’t penalized. Distortion is.</strong></p>
-    </div>
-
-    <div class="section-box">
-      <h2>Scoring by Role</h2>
-      <p>Different voices carry different responsibilities. Politicians, journalists, influencers, and media outlets are scored based on the standards their platform demands — with context, not bias.</p>
-      <p>Influencers act independently. Media outlets have editorial oversight. Politicians shape laws. Journalists investigate them. Each is judged accordingly.</p>
-      <p>These standards evolve with ethical norms, rising influence, and public trust. The goal isn’t just to measure credibility — it’s to guide people and platforms toward it.</p>
+      <p>Each role is measured differently — because journalists aren’t lawmakers, and influencers aren’t investigators. But all are held to <strong>real standards</strong>.</p>
+      <p><strong>This is about course-correction — not cancellation.</strong> We reward accuracy, transparency, and integrity. We expose distortion, evasion, and disinformation.</p>
+      <p><strong>Why this matters:</strong> In a world where influence often outruns accountability, the T.R.U. OWL Score changes the incentive structure. It rewards those who elevate truth — and reveals those who erode it.</p>
+      <p><span class="text-truth">Truth</span> isn't a matter of opinion — it’s a record. And now, for the first time, you can see it clearly, compare it publicly, and use it strategically.</p>
+      <p>This system exists not to play favorites, but to make <strong>credibility visible</strong> — so that public trust can be earned, not assumed. When <span class="text-truth">truth</span> becomes visible, <span class="text-reliability">accountability</span> follows — and that’s how we move forward.</p>
     </div>
 
     <div class="score-grid">
       <div class="role-box">
         <h3 class="category-heading">Politicians</h3>
-        <p><strong>Truth:</strong> 4.0×</p>
-        <p><strong>Reliability:</strong> 4.0×</p>
-        <p><strong>Understanding:</strong> 5.0×</p>
+        <p><span class="text-truth">Truth:</span> 4.0×</p>
+        <p><span class="text-reliability">Reliability:</span> 4.0×</p>
+        <p><span class="text-understanding">Understanding:</span> 5.0×</p>
         <small>Elected power demands accountability. Their words shape law and public trust.</small>
       </div>
       <div class="role-box">
         <h3 class="category-heading">Journalists</h3>
-        <p><strong>Truth:</strong> 2.0×</p>
-        <p><strong>Reliability:</strong> 2.0×</p>
-        <p><strong>Understanding:</strong> 2.0×</p>
+        <p><span class="text-truth">Truth:</span> 2.0×</p>
+        <p><span class="text-reliability">Reliability:</span> 2.0×</p>
+        <p><span class="text-understanding">Understanding:</span> 2.0×</p>
         <small>They are expected to correct mistakes and document sources. Integrity is their standard.</small>
       </div>
       <div class="role-box">
         <h3 class="category-heading">Media Companies</h3>
-        <p><strong>Truth:</strong> 3.0×</p>
-        <p><strong>Reliability:</strong> 3.5×</p>
-        <p><strong>Understanding:</strong> 3.0×</p>
+        <p><span class="text-truth">Truth:</span> 3.0×</p>
+        <p><span class="text-reliability">Reliability:</span> 3.5×</p>
+        <p><span class="text-understanding">Understanding:</span> 3.0×</p>
         <small>Their editorial choices shape perception across millions. They must be held to scale.</small>
       </div>
       <div class="role-box">
         <h3 class="category-heading">Influencers</h3>
-        <p><strong>Truth:</strong> 2.5×</p>
-        <p><strong>Reliability:</strong> 2.0×</p>
-        <p><strong>Understanding:</strong> 1.5×</p>
+        <p><span class="text-truth">Truth:</span> 2.5×</p>
+        <p><span class="text-reliability">Reliability:</span> 2.0×</p>
+        <p><span class="text-understanding">Understanding:</span> 1.5×</p>
         <small>Reach without responsibility is dangerous. They're scored on the trust they build or break.</small>
       </div>
     </div>
 
-    <div class="section-box">
-      <h2>Why This Matters</h2>
-      <p>The T.R.U. OWL Score isn’t just a measurement system — it’s a movement toward truth-based influence. It changes the incentive structure for public voices.</p>
-      <p><strong>Journalists</strong> are encouraged to source accurately, correct quickly, and educate deeply. <strong>Politicians</strong> are judged not by tribal loyalty, but by verifiable facts and civic understanding. <strong>Influencers</strong> are scored on whether they elevate their audience or mislead them. And the <strong>public</strong> gets a new tool to see through manipulation.</p>
-      <p>The goal isn’t perfection. It’s <strong>self-correction</strong>. This system rewards those who own their mistakes, cite their sources, and explain how institutions actually work. We believe truth should be visible — and that when it is, <em>accountability follows.</em></p>
-      <p>T.R.U. OWL doesn’t just track credibility. It sparks curiosity. And that’s how we begin to rebuild public trust — not with partisanship, but with transparency.</p>
-    </div>
-
-    <h2 class="center-heading">Explore T.R.U. Owl Credibility Scores</h2>
+    <h2 class="center-heading">Explore T.R.U. OWL Credibility Scores</h2>
 
     <div class="profile-grid">
       <div class="role-box">
@@ -354,7 +300,7 @@
     </div>
 
     <div class="contact-section">
-      <a href="contact.html">Contact Us / Request a T.R.U. Owl Score</a>
+      <a href="contact.html">Contact Us / Request a T.R.U. OWL Score</a>
     </div>
   </div>
 </body>
