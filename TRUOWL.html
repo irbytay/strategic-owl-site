@@ -2,48 +2,10 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
   <title>The Strategic Owl</title>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&family=Playfair+Display:wght@500;700&display=swap" rel="stylesheet" />
   <style>
-.top-nav {
-  background-color: #2F2E5E;
-  padding: 16px 0;
-  border-bottom: 1px solid var(--border);
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.4);
-  position: sticky;
-  top: 0;
-  z-index: 999;
-}
-
-.nav-container {
-  max-width: 1200px;
-  margin: 0 auto;
-  padding: 0 20px;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-}
-
-.nav-logo {
-  color: var(--text);
-  font-family: 'Playfair Display', serif;
-  font-size: 1.5rem;
-  text-decoration: none;
-  font-weight: bold;
-}
-
-.nav-links a {
-  color: var(--text);
-  margin-left: 24px;
-  font-weight: 500;
-  text-decoration: none;
-  transition: color 0.2s ease;
-}
-
-.nav-links a:hover {
-  color: var(--hover);
-}
     :root {
       --navy: #1A1A40;
       --text: #F5F5F5;
@@ -64,6 +26,76 @@
       font-family: 'Playfair Display', serif;
     }
 
+    .top-nav {
+      background-color: #2F2E5E;
+      padding: 16px 20px;
+      border-bottom: 1px solid var(--border);
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.4);
+      position: sticky;
+      top: 0;
+      z-index: 999;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .nav-logo {
+      color: var(--text);
+      font-size: 1.5rem;
+      font-family: 'Playfair Display', serif;
+      font-weight: bold;
+      text-decoration: none;
+    }
+
+    .nav-links a {
+      color: var(--text);
+      margin-left: 24px;
+      font-weight: 500;
+      text-decoration: none;
+      transition: color 0.2s ease;
+    }
+
+    .nav-links a:hover {
+      color: var(--hover);
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 16px;
+    }
+
+    .nav-toggle {
+      display: none;
+      font-size: 1.8rem;
+      background: none;
+      border: none;
+      color: var(--text);
+      cursor: pointer;
+    }
+
+    .mobile-nav {
+      display: none;
+      flex-direction: column;
+      background-color: #2F2E5E;
+      padding: 12px 20px;
+    }
+
+    .mobile-nav a {
+      color: var(--text);
+      padding: 8px 0;
+      text-decoration: none;
+      font-weight: 500;
+      border-top: 1px solid var(--border);
+    }
+
+    .mobile-nav a:hover {
+      color: var(--hover);
+    }
+
+    .mobile-nav.active {
+      display: flex;
+    }
+
     .content {
       max-width: 1200px;
       margin: 0 auto;
@@ -79,7 +111,6 @@
     .center-heading {
       text-align: center;
       font-size: 1.8rem;
-      font-family: 'Playfair Display', serif;
       margin: 60px auto 30px;
     }
 
@@ -90,7 +121,6 @@
       box-shadow: 0 0 12px rgba(0, 0, 0, 0.5);
       margin: 60px auto;
       max-width: 900px;
-      text-align: left;
     }
 
     .divider-bar {
@@ -191,17 +221,40 @@
       max-width: 120px;
       height: auto;
     }
+
+    /* -------------------- MOBILE -------------------- */
+    @media (max-width: 768px) {
+      .nav-links {
+        display: none;
+      }
+      .nav-toggle {
+        display: block;
+      }
+    }
   </style>
 </head>
 <body>
-<nav class="top-nav">
-  <div class="nav-container">
+  <nav class="top-nav">
     <a href="index.html" class="nav-logo">The Strategic Owl</a>
     <div class="nav-links">
       <a href="elections.html">Election Security</a>
       <a href="contact.html">Contact</a>
     </div>
+    <button class="nav-toggle" onclick="document.querySelector('.mobile-nav').classList.toggle('active')">☰</button>
+  </nav>
+  <div class="mobile-nav">
+    <a href="elections.html">Election Security</a>
+    <a href="contact.html">Contact</a>
   </div>
+
+<!-- Mobile Nav Toggle -->
+<button class="nav-toggle" onclick="document.querySelector('.mobile-nav').classList.toggle('active')">☰</button>
+
+<!-- Mobile Navigation -->
+<div class="mobile-nav">
+  <a href="elections.html">Election Security</a>
+  <a href="contact.html">Contact</a>
+</div>
 </nav>
   <div class="content">
     <div class="logo-container">
