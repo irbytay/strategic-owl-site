@@ -105,7 +105,7 @@
     margin-bottom: 40px;
     display: flex;
     flex-direction: column;
-    align-items: flex-start; /* <- changed from center to left-align content */
+    align-items: flex-start;
   }
 
   .logo {
@@ -155,13 +155,18 @@
     font-size: 1rem;
   }
 
-  table {
+  .table-wrapper {
     width: 100%;
+    display: flex;
+    justify-content: center;
+  }
+
+  #score-table {
+    width: 100%;
+    max-width: 850px;
     border-collapse: collapse;
     margin-top: 20px;
     font-size: 0.95rem;
-    margin-left: auto;
-    margin-right: auto; /* <- centers tables only */
   }
 
   .box table {
@@ -205,7 +210,6 @@
     border-color: #4FDBA6;
   }
 
-  /* Score legend styling (with improved spacing/alignment) */
   .score-legend {
     list-style: none;
     padding-left: 0;
@@ -270,6 +274,10 @@
     select {
       width: 100%;
       font-size: 1rem;
+    }
+
+    #score-table {
+      font-size: 0.9rem;
     }
   }
 </style>
