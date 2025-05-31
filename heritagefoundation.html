@@ -6,226 +6,218 @@
   <title>Voter Fraud Cases – The Strategic Owl</title>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&family=Playfair+Display:wght@500;700&display=swap" rel="stylesheet" />
   <style>
-  :root {
-    --navy: #1A1A40;
-    --text: #F5F5F5;
-    --accent-blue: #3B6CED;
-    --hover: #4FDBA6;
-    --border: #2F2F5F;
-  }
-
-  body {
-    background-color: var(--navy);
-    font-family: 'Inter', sans-serif;
-    color: var(--text);
-    margin: 0;
-    padding: 0;
-  }
-
-  h1, h2, h3 {
-    font-family: 'Playfair Display', serif;
-  }
-
-  .top-nav {
-    background-color: #2F2E5E;
-    padding: 16px 20px;
-    border-bottom: 1px solid var(--border);
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.4);
-    position: sticky;
-    top: 0;
-    z-index: 999;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-  }
-
-  .nav-logo {
-    color: var(--text);
-    font-size: 1.5rem;
-    font-family: 'Playfair Display', serif;
-    font-weight: bold;
-    text-decoration: none;
-  }
-
-  .nav-links {
-    display: flex;
-    gap: 16px;
-  }
-
-  .nav-links a {
-    color: var(--text);
-    margin-left: 24px;
-    font-weight: 500;
-    text-decoration: none;
-    transition: color 0.2s ease;
-  }
-
-  .nav-links a:hover {
-    color: var(--hover);
-  }
-
-  .content {
-    max-width: 900px;
-    margin: 0 auto;
-    padding: 40px 20px;
-  }
-
-  .logo-container {
-    text-align: center;
-    margin-bottom: 20px;
-  }
-
-  .logo-container img {
-    max-width: 120px;
-    height: auto;
-  }
-
-  h1 {
-    font-size: clamp(1.8rem, 5vw, 2.4rem);
-    text-align: center;
-    margin-bottom: 10px;
-  }
-
-  .divider-bar {
-    display: flex;
-    justify-content: center;
-    gap: 8px;
-    margin: 30px auto;
-  }
-
-  .divider-bar div {
-    width: 40px;
-    height: 6px;
-    border-radius: 3px;
-  }
-
-  .truth { background-color: #4CAF50; }
-  .reliability { background-color: #2196F3; }
-  .understanding { background-color: #FFD700; }
-
-  .section-box {
-    background-color: #2F2E5E;
-    padding: 40px 24px;
-    border-radius: 12px;
-    box-shadow: 0 0 12px rgba(0, 0, 0, 0.5);
-    margin: 0 auto 40px;
-  }
-
-  .subtext {
-    text-align: center;
-    font-size: clamp(1rem, 3.5vw, 1.15rem);
-    color: #CCCCCC;
-    margin-bottom: 30px;
-    line-height: 1.5;
-  }
-
-  .table-wrapper {
-    display: flex;
-    justify-content: center;
-    overflow-x: auto;
-    margin-top: 30px;
-    border-radius: 8px;
-  }
-
-  table {
-    width: 80%;
-    max-width: 500px;
-    min-width: 360px;
-    border-collapse: separate;
-    border-spacing: 0;
-    background-color: #1A1A40;
-  }
-
-  th, td {
-    padding: 8px 12px;
-    font-size: clamp(0.9rem, 3vw, 1rem);
-    text-align: center;
-    border-bottom: 1px solid #444;
-    border-right: 1px solid #444;
-  }
-
-  th:last-child,
-  td:last-child {
-    border-right: none;
-  }
-
-  th {
-    background-color: var(--accent-blue);
-    color: #fff;
-    position: sticky;
-    top: 0;
-    z-index: 1;
-  }
-
-  tbody tr:nth-child(even) {
-    background-color: #22224a;
-  }
-
-  .source {
-    font-size: 0.95rem;
-    text-align: center;
-    color: #AAAAAA;
-    margin-top: 24px;
-    line-height: 1.5;
-  }
-
-  .source a {
-    color: var(--hover);
-    text-decoration: underline;
-  }
-
-  .back-button {
-    text-align: center;
-    margin: 40px 0 0;
-  }
-
-  .back-button a {
-    display: inline-block;
-    background-color: var(--accent-blue);
-    color: var(--text);
-    padding: 10px 20px;
-    font-weight: 600;
-    border-radius: 6px;
-    text-decoration: none;
-    transition: background-color 0.2s ease;
-  }
-
-  .back-button a:hover {
-    background-color: var(--hover);
-  }
-
-  .back-link {
-    text-align: center;
-    margin-top: 40px;
-  }
-
-  .back-link a {
-    color: var(--text);
-    text-decoration: none;
-    font-weight: 600;
-    font-size: 1rem;
-    border-bottom: 2px solid var(--accent-blue);
-    padding-bottom: 4px;
-    transition: color 0.2s ease, border-color 0.2s ease;
-  }
-
-  .back-link a:hover {
-    color: var(--hover);
-    border-color: var(--hover);
-  }
-
-  @media (max-width: 768px) {
-    .nav-links {
-      display: none;
+    :root {
+      --navy: #1A1A40;
+      --text: #F5F5F5;
+      --accent-blue: #3B6CED;
+      --hover: #4FDBA6;
+      --border: #2F2F5F;
     }
-  }
-</style>
+
+    body {
+      background-color: var(--navy);
+      font-family: 'Inter', sans-serif;
+      color: var(--text);
+      margin: 0;
+      padding: 0;
+    }
+
+    h1, h2, h3 {
+      font-family: 'Playfair Display', serif;
+    }
+
+    .top-nav {
+      background-color: #2F2E5E;
+      padding: 16px 20px;
+      border-bottom: 1px solid var(--border);
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.4);
+      position: sticky;
+      top: 0;
+      z-index: 999;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .nav-logo {
+      color: var(--text);
+      font-size: 1.5rem;
+      font-family: 'Playfair Display', serif;
+      font-weight: bold;
+      text-decoration: none;
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 16px;
+    }
+
+    .nav-links a {
+      color: var(--text);
+      margin-left: 24px;
+      font-weight: 500;
+      text-decoration: none;
+      transition: color 0.2s ease;
+    }
+
+    .nav-links a:hover {
+      color: var(--hover);
+    }
+
+    .content {
+      max-width: 900px;
+      margin: 0 auto;
+      padding: 40px 20px;
+    }
+
+    .logo-container {
+      text-align: center;
+      margin-bottom: 20px;
+    }
+
+    .logo-container img {
+      max-width: 120px;
+      height: auto;
+    }
+
+    h1 {
+      font-size: clamp(1.8rem, 5vw, 2.4rem);
+      text-align: center;
+      margin-bottom: 10px;
+    }
+
+    .divider-bar {
+      display: flex;
+      justify-content: center;
+      gap: 8px;
+      margin: 30px auto;
+    }
+
+    .divider-bar div {
+      width: 40px;
+      height: 6px;
+      border-radius: 3px;
+    }
+
+    .truth { background-color: #4CAF50; }
+    .reliability { background-color: #2196F3; }
+    .understanding { background-color: #FFD700; }
+
+    .section-box {
+      background-color: #2F2E5E;
+      padding: 40px 24px;
+      border-radius: 12px;
+      box-shadow: 0 0 12px rgba(0, 0, 0, 0.5);
+      margin: 0 auto 40px;
+    }
+
+    .subtext {
+      text-align: center;
+      font-size: clamp(1rem, 3.5vw, 1.15rem);
+      color: #CCCCCC;
+      margin-bottom: 20px;
+      line-height: 1.5;
+    }
+
+    .table-wrapper {
+      width: 100%;
+      overflow-x: auto;
+      margin-top: 30px;
+      border-radius: 8px;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: separate;
+      border-spacing: 0;
+      background-color: #1A1A40;
+      min-width: 360px;
+    }
+
+    th, td {
+      padding: 8px 12px;
+      font-size: 1rem;
+      text-align: center;
+      border-bottom: 1px solid #444;
+      border-right: 1px solid #444;
+    }
+
+    th:last-child,
+    td:last-child {
+      border-right: none;
+    }
+
+    th {
+      background-color: var(--accent-blue);
+      color: #fff;
+      position: sticky;
+      top: 0;
+      z-index: 1;
+    }
+
+    tbody tr:nth-child(even) {
+      background-color: #22224a;
+    }
+
+    .source {
+      font-size: 0.95rem;
+      text-align: center;
+      color: #AAAAAA;
+      margin-top: 24px;
+      line-height: 1.5;
+    }
+
+    .source a {
+      color: var(--hover);
+      text-decoration: underline;
+    }
+
+    .back-link {
+      text-align: center;
+      margin-top: 40px;
+    }
+
+    .back-link a {
+      color: var(--text);
+      text-decoration: none;
+      font-weight: 600;
+      font-size: 1rem;
+      border-bottom: 2px solid var(--accent-blue);
+      padding-bottom: 4px;
+      transition: color 0.2s ease, border-color 0.2s ease;
+    }
+
+    .back-link a:hover {
+      color: var(--hover);
+      border-color: var(--hover);
+    }
+
+    @media (max-width: 768px) {
+      .nav-links {
+        display: none;
+      }
+
+      .section-box {
+        padding: 24px 16px;
+      }
+
+      th, td {
+        font-size: 0.9rem;
+        padding: 6px 8px;
+      }
+
+      h1 {
+        font-size: 1.75rem;
+      }
+    }
+  </style>
 </head>
 <body>
   <nav class="top-nav">
     <a href="index.html" class="nav-logo">The Strategic Owl</a>
     <div class="nav-links">
       <a href="elections.html">Election Security</a>
+      <a href="statefraud.html">Voter Fraud by State</a>
       <a href="contact.html">Contact</a>
     </div>
   </nav>
@@ -248,15 +240,16 @@
 
     <div class="section-box">
       <h2 style="text-align: center;">Voter Fraud Cases in the U.S.</h2>
-<p class="subtext">
-  According to the <strong>Heritage Foundation</strong> — a conservative group focused on election integrity — only <strong>1,584 cases of voter fraud</strong> have been documented since <strong>1982</strong>.
-</p>
-<p class="subtext">
-  That total spans <em>every state, every election, and every form of fraud</em> over more than four decades.
-</p>
-<p class="subtext">
-  This is their full public record — and even from a group aiming to show fraud is widespread, the data reveals just how rare it truly is.
-</p>
+
+      <p class="subtext">
+        According to the <strong>Heritage Foundation</strong> — a conservative group focused on election integrity — only <strong>1,584 cases of voter fraud</strong> have been documented since <strong>1982</strong>.
+      </p>
+      <p class="subtext">
+        That total spans <em>every state, every election, and every form of fraud</em> over more than four decades.
+      </p>
+      <p class="subtext">
+        This is their full public record — and even from a group aiming to show fraud is widespread, the data reveals just how rare it truly is.
+      </p>
 
       <div class="table-wrapper">
         <table>
@@ -315,10 +308,9 @@
       </p>
     </div>
 
-     <!-- Back Link -->
-  <div class="back-link">
-    <a href="TRUOWL.html">← Back to Overview</a>
-  </div>
+    <div class="back-link">
+      <a href="TRUOWL.html">← Back to Overview</a>
+    </div>
   </div>
 </body>
 </html>
