@@ -228,6 +228,42 @@
       font-size: 1rem;
     }
   }
+	  .score-legend {
+  list-style: none;
+  padding-left: 0;
+  margin-top: 20px;
+}
+
+.score-legend li {
+  margin-bottom: 10px;
+  line-height: 1.6;
+}
+
+.score {
+  font-weight: 600;
+  display: inline-block;
+  min-width: 100px;
+}
+
+.score.positive-high {
+  color: #4CAF50; /* green */
+}
+
+.score.positive {
+  color: #8BC34A; /* lime-green */
+}
+
+.score.neutral {
+  color: #FFEB3B; /* yellow */
+}
+
+.score.negative {
+  color: #FF9800; /* orange */
+}
+
+.score.disinfo {
+  color: #F44336; /* red */
+}
 </style>
 </head>
 <body>
@@ -271,12 +307,12 @@
         
   <h2>How the T.R.U. OWL Score Works</h2>
 <p>Each person is assessed across 10 core categories related to election security. Scores are assigned based on public statements, platform behavior, and alignment with verified facts.</p>
-<ul>
-  <li><strong>+10 to +6</strong> — Demonstrates high factual accuracy and civic literacy</li>
-  <li><strong>+5 to +1</strong> — Shows general alignment with facts, but lacks clarity or depth</li>
-  <li><strong>0</strong> — No significant engagement or neutral presence</li>
-  <li><strong>-1 to -5</strong> — Frequently misrepresents or oversimplifies key facts</li>
-  <li><strong>-6 to -10</strong> — Spreads disinformation or undermines democratic systems</li>
+<ul class="score-legend">
+  <li><span class="score positive-high">+10 to +6</span> — Demonstrates high factual accuracy and civic literacy</li>
+  <li><span class="score positive">+5 to +1</span> — Shows general alignment with facts, but lacks clarity or depth</li>
+  <li><span class="score neutral">0</span> — No significant engagement or neutral presence</li>
+  <li><span class="score negative">-1 to -5</span> — Frequently misrepresents or oversimplifies key facts</li>
+  <li><span class="score disinfo">-6 to -10</span> — Spreads disinformation or undermines democratic systems</li>
 </ul>
 <p><strong>Total Score:</strong> A summation of all category subscores. This reflects a person's overall credibility on the topic of U.S. election security — not their ideology or political alignment.</p>
 <p><em>Note:</em> A person’s stance on the 2020 election is a strong signal within this system. In many cases, denial of verified results reflects not just misinformation, but loyalty signaling — making it a direct measure of truth vs. tribalism.</p>
