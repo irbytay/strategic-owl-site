@@ -47,6 +47,19 @@
       text-decoration: none;
     }
 
+    .menu-toggle {
+      display: none;
+      cursor: pointer;
+      flex-direction: column;
+      gap: 5px;
+    }
+
+    .menu-toggle div {
+      width: 25px;
+      height: 3px;
+      background-color: white;
+    }
+
     .nav-links {
       display: flex;
       gap: 16px;
@@ -115,28 +128,30 @@
       text-align: center;
       font-size: clamp(1rem, 3.5vw, 1.15rem);
       color: #CCCCCC;
-      margin-bottom: 20px;
+      margin-bottom: 30px;
       line-height: 1.5;
     }
 
     .table-wrapper {
-      width: 100%;
+      display: flex;
+      justify-content: center;
       overflow-x: auto;
       margin-top: 30px;
       border-radius: 8px;
     }
 
     table {
-      width: 100%;
+      width: 80%;
+      max-width: 500px;
+      min-width: 360px;
       border-collapse: separate;
       border-spacing: 0;
       background-color: #1A1A40;
-      min-width: 360px;
     }
 
     th, td {
       padding: 8px 12px;
-      font-size: 1rem;
+      font-size: clamp(0.9rem, 3vw, 1rem);
       text-align: center;
       border-bottom: 1px solid #444;
       border-right: 1px solid #444;
@@ -172,6 +187,26 @@
       text-decoration: underline;
     }
 
+    .back-button {
+      text-align: center;
+      margin: 40px 0 0;
+    }
+
+    .back-button a {
+      display: inline-block;
+      background-color: var(--accent-blue);
+      color: var(--text);
+      padding: 10px 20px;
+      font-weight: 600;
+      border-radius: 6px;
+      text-decoration: none;
+      transition: background-color 0.2s ease;
+    }
+
+    .back-button a:hover {
+      background-color: var(--hover);
+    }
+
     .back-link {
       text-align: center;
       margin-top: 40px;
@@ -193,21 +228,29 @@
     }
 
     @media (max-width: 768px) {
+      .menu-toggle {
+        display: flex;
+      }
+
       .nav-links {
         display: none;
+        flex-direction: column;
+        background-color: #2F2E5E;
+        position: absolute;
+        top: 60px;
+        right: 20px;
+        padding: 10px;
+        border-radius: 6px;
+        box-shadow: 0 0 10px rgba(0,0,0,0.4);
+        z-index: 999;
       }
 
-      .section-box {
-        padding: 24px 16px;
+      .nav-links.active {
+        display: flex;
       }
 
-      th, td {
-        font-size: 0.9rem;
-        padding: 6px 8px;
-      }
-
-      h1 {
-        font-size: 1.75rem;
+      .nav-links a {
+        margin: 8px 0;
       }
     }
   </style>
@@ -215,7 +258,12 @@
 <body>
   <nav class="top-nav">
     <a href="index.html" class="nav-logo">The Strategic Owl</a>
-    <div class="nav-links">
+    <div class="menu-toggle" onclick="toggleMenu()">
+      <div></div>
+      <div></div>
+      <div></div>
+    </div>
+    <div class="nav-links" id="navLinks">
       <a href="elections.html">Election Security</a>
       <a href="statefraud.html">Voter Fraud by State</a>
       <a href="contact.html">Contact</a>
@@ -240,7 +288,6 @@
 
     <div class="section-box">
       <h2 style="text-align: center;">Voter Fraud Cases in the U.S.</h2>
-
       <p class="subtext">
         According to the <strong>Heritage Foundation</strong> — a conservative group focused on election integrity — only <strong>1,584 cases of voter fraud</strong> have been documented since <strong>1982</strong>.
       </p>
@@ -312,5 +359,11 @@
       <a href="TRUOWL.html">← Back to Overview</a>
     </div>
   </div>
+
+  <script>
+    function toggleMenu() {
+      document.getElementById('navLinks').classList.toggle('active');
+    }
+  </script>
 </body>
 </html>
