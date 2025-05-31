@@ -234,35 +234,28 @@
   </style>
 </head>
 <body>
-  <nav class="top-nav">
-    <a href="index.html" class="nav-logo">The Strategic Owl</a>
-    <div class="nav-links">
-      <a href="elections.html">Election Security</a>
-      <a href="contact.html">Contact</a>
-    </div>
-    <button class="nav-toggle" onclick="document.querySelector('.mobile-nav').classList.toggle('active')">☰</button>
-  </nav>
-  <div class="mobile-nav">
+ <nav class="top-nav">
+  <a href="index.html" class="nav-logo">The Strategic Owl</a>
+  <div class="nav-links">
     <a href="elections.html">Election Security</a>
     <a href="contact.html">Contact</a>
   </div>
+  <button class="nav-toggle" onclick="document.querySelector('.mobile-nav').classList.toggle('active')">☰</button>
+</nav>
 
-<!-- Mobile Nav Toggle -->
-<button class="nav-toggle" onclick="document.querySelector('.mobile-nav').classList.toggle('active')">☰</button>
-
-<!-- Mobile Navigation -->
+<!-- Mobile Navigation (single instance) -->
 <div class="mobile-nav">
   <a href="elections.html">Election Security</a>
   <a href="contact.html">Contact</a>
 </div>
-</nav>
-  <div class="content">
-    <div class="logo-container">
-      <a href="index.html">
-        <img src="owl_logo_white.png" alt="Strategic Owl Logo" onerror="this.onerror=null;this.style.display='none';this.insertAdjacentHTML('afterend','<p style=\'color:white;text-align:center;font-weight:bold;\'>[ Logo not found – owl_logo_white.png ]</p>')" />
-      </a>
-    </div>
 
+<div class="content">
+  <div class="logo-container">
+    <a href="index.html">
+      <img src="owl_logo_white.png" alt="Strategic Owl Logo" 
+           onerror="this.onerror=null;this.style.display='none';this.insertAdjacentHTML('afterend','<p style=\'color:white;text-align:center;font-weight:bold;\'>[ Logo not found – owl_logo_white.png ]</p>')" />
+    </a>
+  </div>
     <div class="logo-container">
       <h1>The Strategic Owl</h1>
     </div>
