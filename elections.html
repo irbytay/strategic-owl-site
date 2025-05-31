@@ -5,8 +5,10 @@
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>The Strategic Owl – Election Security Scores</title>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&family=Playfair+Display:wght@500;700&display=swap" rel="stylesheet" />
-  <style>
-  * { box-sizing: border-box; }
+ <style>
+  * {
+    box-sizing: border-box;
+  }
 
   body {
     background-color: #1A1A40;
@@ -204,6 +206,49 @@
     border-color: #4FDBA6;
   }
 
+  /* Score legend styling (improved spacing and alignment) */
+  .score-legend {
+    list-style: none;
+    padding-left: 0;
+    margin: 20px 0;
+  }
+
+  .score-legend li {
+    margin-bottom: 8px;
+    line-height: 1.5;
+    display: flex;
+    align-items: baseline;
+    justify-content: center;
+    text-align: left;
+  }
+
+  .score {
+    font-weight: 600;
+    display: inline-block;
+    min-width: 80px;
+    margin-right: 6px;
+  }
+
+  .score.positive-high {
+    color: #4CAF50;
+  }
+
+  .score.positive {
+    color: #8BC34A;
+  }
+
+  .score.neutral {
+    color: #FFEB3B;
+  }
+
+  .score.negative {
+    color: #FF9800;
+  }
+
+  .score.disinfo {
+    color: #F44336;
+  }
+
   @media (max-width: 768px) {
     .nav-links {
       display: none;
@@ -228,42 +273,6 @@
       font-size: 1rem;
     }
   }
-	  .score-legend {
-  list-style: none;
-  padding-left: 0;
-  margin-top: 20px;
-}
-
-.score-legend li {
-  margin-bottom: 10px;
-  line-height: 1.6;
-}
-
-.score {
-  font-weight: 600;
-  display: inline-block;
-  min-width: 100px;
-}
-
-.score.positive-high {
-  color: #4CAF50; /* green */
-}
-
-.score.positive {
-  color: #8BC34A; /* lime-green */
-}
-
-.score.neutral {
-  color: #FFEB3B; /* yellow */
-}
-
-.score.negative {
-  color: #FF9800; /* orange */
-}
-
-.score.disinfo {
-  color: #F44336; /* red */
-}
 </style>
 </head>
 <body>
@@ -307,12 +316,12 @@
         
   <h2>How the T.R.U. OWL Score Works</h2>
 <p>Each person is assessed across 10 core categories related to election security. Scores are assigned based on public statements, platform behavior, and alignment with verified facts.</p>
-<ul class="score-legend">
-  <li><span class="score positive-high">+10 to +6</span> — Demonstrates high factual accuracy and civic literacy</li>
-  <li><span class="score positive">+5 to +1</span> — Shows general alignment with facts, but lacks clarity or depth</li>
-  <li><span class="score neutral">0</span> — No significant engagement or neutral presence</li>
-  <li><span class="score negative">-1 to -5</span> — Frequently misrepresents or oversimplifies key facts</li>
-  <li><span class="score disinfo">-6 to -10</span> — Spreads disinformation or undermines democratic systems</li>
+<ul class="score-legend tight">
+  <li><span class="score positive-high">+10 to +6</span> Demonstrates high factual accuracy and civic literacy</li>
+  <li><span class="score positive">+5 to +1</span> Shows general alignment with facts, but lacks clarity or depth</li>
+  <li><span class="score neutral">0</span> No significant engagement or neutral presence</li>
+  <li><span class="score negative">-1 to -5</span> Frequently misrepresents or oversimplifies key facts</li>
+  <li><span class="score disinfo">-6 to -10</span> Spreads disinformation or undermines democratic systems</li>
 </ul>
 <p><strong>Total Score:</strong> A summation of all category subscores. This reflects a person's overall credibility on the topic of U.S. election security — not their ideology or political alignment.</p>
 <p><em>Note:</em> A person’s stance on the 2020 election is a strong signal within this system. In many cases, denial of verified results reflects not just misinformation, but loyalty signaling — making it a direct measure of truth vs. tribalism.</p>
