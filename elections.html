@@ -141,18 +141,29 @@
   </style>
 </head>
 <body>
+<!-- Logo and Brand Identity -->
+<div class="logo-container">
+  <a href="index.html">
+    <img src="owl_logo_white.png" alt="Strategic Owl Logo"
+         style="max-width: 120px; height: auto; display: block; margin: 0 auto 20px;" 
+         onerror="this.onerror=null;this.style.display='none';
+         this.insertAdjacentHTML('afterend',
+         '<p style=\'color:white;text-align:center;font-weight:bold;\'>[ Logo not found – owl_logo_white.png ]</p>')" />
+  </a>
+</div>
 
+<div class="logo-container">
+  <h1 style="text-align: center; font-family: 'Playfair Display', serif; font-size: 2.2rem;">Election Security Score Viewer</h1>
+</div>
+
+<div class="divider-bar">
+  <div class="truth"></div>
+  <div class="reliability"></div>
+  <div class="understanding"></div>
+</div>
   <!-- Box: Score Viewer -->
   <div class="box">
-    <img src="owl_logo_white.png" alt="Strategic Owl Logo" class="logo" />
-    <h1>Election Security Score Viewer</h1>
-
-    <div class="divider-bar">
-      <div class="truth"></div>
-      <div class="reliability"></div>
-      <div class="understanding"></div>
-    </div>
-<div class="box">
+        
   <h2>How the T.R.U. OWL Score Works</h2>
   <p>Each person is assessed across 10 core categories related to election security. Scores are assigned based on public statements, platform behavior, and alignment with verified facts.</p>
   <ul>
@@ -163,7 +174,6 @@
     <li><strong>-6 to -10</strong> — Spreads disinformation or undermines democratic systems</li>
   </ul>
   <p><strong>Total Score:</strong> A summation of all category subscores. This reflects a person's overall credibility on the topic of U.S. election security — not their ideology or political alignment.</p>
-</div>
     <label for="person-select"><strong>Select a person to view their score breakdown:</strong></label>
     <select id="person-select" onchange="showScores()">
       <option value="">-- Choose a name --</option>
@@ -414,6 +424,22 @@
   <!-- Script: Score Display -->
   <script>
     const data = {
+      strategicOwl: {
+  scores: [
+    ["Constitutional Knowledge", "+10", "Demonstrates full understanding of voting-related amendments and their implications."],
+    ["Legal Framework", "+10", "Accurately explains citizenship requirements and nuances in voter ID law."],
+    ["Federalism", "+10", "Clearly outlines state vs. federal jurisdiction over election processes."],
+    ["Election Mechanics", "+9", "Explains machine accuracy, paper audits, and election safeguards effectively."],
+    ["Electoral Count Process", "+10", "Breaks down the 12th Amendment with precision, clarifies VP’s ceremonial role."],
+    ["Disinformation Awareness", "+14", "Directly confronts false narratives, distinguishes intent, and reinforces verified truths."],
+    ["Public Impact", "+10", "Uses platform to elevate civic understanding and spread verified facts."],
+    ["Judicial Oversight", "+9", "Clarifies the legal system's role in election integrity and reviews court precedent."],
+    ["Election Worker Protections", "+5", "Highlights threats to workers and emphasizes protections for democratic function."],
+    ["Psychological Manipulation", "+8", "Introduces the Soversion concept, linking propaganda to cognitive bias."]
+  ],
+electionDenial: false,
+  summary: "A model of civic clarity — combines constitutional depth, strategic communication, and verified truth."
+},
       lukeBeasley: {
   scores: [
     ["Constitutional Knowledge", "+7", "Demonstrates a solid understanding of constitutional principles, though discussions on specific voting-related amendments are limited."],
