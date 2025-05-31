@@ -1,0 +1,312 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <title>Voter Fraud Cases – The Strategic Owl</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&family=Playfair+Display:wght@500;700&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --navy: #1A1A40;
+      --text: #F5F5F5;
+      --accent-blue: #3B6CED;
+      --hover: #4FDBA6;
+      --border: #2F2F5F;
+    }
+
+    body {
+      background-color: var(--navy);
+      font-family: 'Inter', sans-serif;
+      color: var(--text);
+      margin: 0;
+      padding: 0;
+    }
+
+    h1, h2, h3 {
+      font-family: 'Playfair Display', serif;
+    }
+
+    .top-nav {
+      background-color: #2F2E5E;
+      padding: 16px 20px;
+      border-bottom: 1px solid var(--border);
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.4);
+      position: sticky;
+      top: 0;
+      z-index: 999;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .nav-logo {
+      color: var(--text);
+      font-size: 1.5rem;
+      font-family: 'Playfair Display', serif;
+      font-weight: bold;
+      text-decoration: none;
+    }
+
+    .nav-links a {
+      color: var(--text);
+      margin-left: 24px;
+      font-weight: 500;
+      text-decoration: none;
+      transition: color 0.2s ease;
+    }
+
+    .nav-links a:hover {
+      color: var(--hover);
+    }
+
+    .content {
+      max-width: 900px;
+      margin: 0 auto;
+      padding: 40px 20px;
+    }
+
+    .logo-container {
+      text-align: center;
+      margin-bottom: 20px;
+    }
+
+    .logo-container img {
+      max-width: 120px;
+      height: auto;
+    }
+
+    h1 {
+      font-size: clamp(1.8rem, 5vw, 2.4rem);
+      text-align: center;
+      margin-bottom: 10px;
+    }
+
+    .divider-bar {
+      display: flex;
+      justify-content: center;
+      gap: 8px;
+      margin: 30px auto;
+    }
+
+    .divider-bar div {
+      width: 40px;
+      height: 6px;
+      border-radius: 3px;
+    }
+
+    .truth { background-color: #4CAF50; }
+    .reliability { background-color: #2196F3; }
+    .understanding { background-color: #FFD700; }
+
+    .section-box {
+      background-color: #2F2E5E;
+      padding: 40px 24px;
+      border-radius: 12px;
+      box-shadow: 0 0 12px rgba(0, 0, 0, 0.5);
+      margin: 0 auto 40px;
+    }
+
+    .subtext {
+      text-align: center;
+      font-size: clamp(1rem, 3.5vw, 1.15rem);
+      color: #CCCCCC;
+      margin-bottom: 30px;
+      line-height: 1.5;
+    }
+
+    .table-wrapper {
+      display: flex;
+      justify-content: center;
+      overflow-x: auto;
+      margin-top: 30px;
+      border-radius: 8px;
+    }
+
+    table {
+      width: 80%;
+      max-width: 500px;
+      min-width: 360px;
+      border-collapse: separate;
+      border-spacing: 0;
+      background-color: #1A1A40;
+    }
+
+    th, td {
+      padding: 8px 12px;
+      font-size: clamp(0.9rem, 3vw, 1rem);
+      text-align: center;
+      border-bottom: 1px solid #444;
+      border-right: 1px solid #444;
+    }
+
+    th:last-child,
+    td:last-child {
+      border-right: none;
+    }
+
+    th {
+      background-color: var(--accent-blue);
+      color: #fff;
+      position: sticky;
+      top: 0;
+      z-index: 1;
+    }
+
+    tbody tr:nth-child(even) {
+      background-color: #22224a;
+    }
+
+    .source {
+      font-size: 0.95rem;
+      text-align: center;
+      color: #AAAAAA;
+      margin-top: 24px;
+      line-height: 1.5;
+    }
+
+    .source a {
+      color: var(--hover);
+      text-decoration: underline;
+    }
+
+    .back-button {
+      text-align: center;
+      margin: 40px 0 0;
+    }
+
+    .back-button a {
+      display: inline-block;
+      background-color: var(--accent-blue);
+      color: var(--text);
+      padding: 10px 20px;
+      font-weight: 600;
+      border-radius: 6px;
+      text-decoration: none;
+      transition: background-color 0.2s ease;
+    }
+
+    .back-button a:hover {
+      background-color: var(--hover);
+    }
+.back-link {
+  text-align: center;
+  margin-top: 40px;
+}
+
+.back-link a {
+  color: var(--hover);
+  text-decoration: none;
+  font-weight: 600;
+  font-size: 1rem;
+  border-bottom: 2px solid var(--hover);
+  padding-bottom: 4px;
+  transition: color 0.2s ease, border-color 0.2s ease;
+}
+
+.back-link a:hover {
+  color: var(--accent-blue);
+  border-color: var(--accent-blue);
+}
+
+    @media (max-width: 768px) {
+      .nav-links {
+        display: none;
+      }
+    }
+  </style>
+</head>
+<body>
+  <nav class="top-nav">
+    <a href="index.html" class="nav-logo">The Strategic Owl</a>
+    <div class="nav-links">
+      <a href="elections.html">Election Security</a>
+      <a href="contact.html">Contact</a>
+    </div>
+  </nav>
+
+  <div class="content">
+    <div class="logo-container">
+      <a href="index.html">
+        <img src="owl_logo_white.png" alt="Strategic Owl Logo"
+             onerror="this.onerror=null;this.style.display='none';this.insertAdjacentHTML('afterend','<p style=\'color:white;text-align:center;font-weight:bold;\'>[ Logo not found – owl_logo_white.png ]</p>')" />
+      </a>
+    </div>
+
+    <h1>The Strategic Owl</h1>
+
+    <div class="divider-bar">
+      <div class="truth"></div>
+      <div class="reliability"></div>
+      <div class="understanding"></div>
+    </div>
+
+    <div class="section-box">
+      <h2 style="text-align: center;">Voter Fraud Cases in the U.S.</h2>
+      <p class="subtext">
+        According to the <strong>Heritage Foundation</strong>, only <strong>1,584 total voter fraud cases</strong> have been identified since 1982 — across all elections, states, and forms of fraud. This is the full, documented record from a conservative organization dedicated to election integrity.
+      </p>
+
+      <div class="table-wrapper">
+        <table>
+          <thead>
+            <tr>
+              <th>Year</th>
+              <th>Cases</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr><td>2024</td><td>23</td></tr>
+            <tr><td>2023</td><td>58</td></tr>
+            <tr><td>2022</td><td>93</td></tr>
+            <tr><td>2021</td><td>47</td></tr>
+            <tr><td>2020</td><td>30</td></tr>
+            <tr><td>2019</td><td>46</td></tr>
+            <tr><td>2018</td><td>87</td></tr>
+            <tr><td>2017</td><td>68</td></tr>
+            <tr><td>2016</td><td>70</td></tr>
+            <tr><td>2015</td><td>55</td></tr>
+            <tr><td>2014</td><td>72</td></tr>
+            <tr><td>2013</td><td>67</td></tr>
+            <tr><td>2012</td><td>83</td></tr>
+            <tr><td>2011</td><td>160</td></tr>
+            <tr><td>2010</td><td>119</td></tr>
+            <tr><td>2009</td><td>72</td></tr>
+            <tr><td>2008</td><td>43</td></tr>
+            <tr><td>2007</td><td>80</td></tr>
+            <tr><td>2006</td><td>42</td></tr>
+            <tr><td>2005</td><td>42</td></tr>
+            <tr><td>2004</td><td>31</td></tr>
+            <tr><td>2003</td><td>18</td></tr>
+            <tr><td>2002</td><td>11</td></tr>
+            <tr><td>2001</td><td>10</td></tr>
+            <tr><td>2000</td><td>18</td></tr>
+            <tr><td>1999</td><td>3</td></tr>
+            <tr><td>1998</td><td>10</td></tr>
+            <tr><td>1997</td><td>5</td></tr>
+            <tr><td>1996</td><td>2</td></tr>
+            <tr><td>1994</td><td>4</td></tr>
+            <tr><td>1993</td><td>3</td></tr>
+            <tr><td>1992</td><td>1</td></tr>
+            <tr><td>1991</td><td>1</td></tr>
+            <tr><td>1988</td><td>1</td></tr>
+            <tr><td>1986</td><td>41</td></tr>
+            <tr><td>1983</td><td>1</td></tr>
+            <tr><td>1982</td><td>67</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <p class="source">
+        Source: <a href="https://electionfraud.heritage.org/?utm_source=chatgpt.com" target="_blank" rel="noopener noreferrer">
+          Heritage Foundation Election Fraud Database
+        </a>
+      </p>
+    </div>
+
+     <!-- Back Link -->
+  <div class="back-link">
+    <a href="TRUOWL.html">← Back to Overview</a>
+  </div>
+  </div>
+</body>
+</html>
