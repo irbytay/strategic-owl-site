@@ -207,66 +207,70 @@
 </style>
 </head>
 <body>
-
+  <!-- ✅ Navigation Bar -->
   <nav class="top-nav">
-  <div class="brand-left">
-    <a href="TRUOWL.html">
-      <img src="owl_logo_white.png" alt="Strategic Owl Logo"
-           onerror="this.onerror=null;this.style.display='none';this.insertAdjacentHTML('afterend','<p style=\'color:white;font-weight:bold;\'>[ Logo not found ]</p>')" />
-    </a>
-    <a href="TRUOWL.html" class="nav-logo">The Strategic Owl</a>
-  </div>
-
-  <div class="nav-links-wrapper">
-    <div class="nav-links">
-      <a href="#" data-page="elections.html">Election Security</a>
-      <a href="#" data-page="heritagefoundation.html">Election Fraud</a>
-      <a href="#" data-page="statefraud.html">Voter Fraud by State</a>
-      <a href="#" data-page="contact.html">Contact</a>
+    <!-- 🔹 Brand section (Logo + Name) -->
+    <div class="brand-left">
+      <a href="TRUOWL.html">
+        <img src="owl_logo_white.png" alt="Strategic Owl Logo"
+             onerror="this.onerror=null;this.style.display='none';this.insertAdjacentHTML('afterend','<p style=\'color:white;font-weight:bold;\'>[ Logo not found ]</p>')" />
+      </a>
+      <a href="TRUOWL.html" class="nav-logo">The Strategic Owl</a>
     </div>
+
+    <!-- 🔹 Centered navigation links -->
+    <div class="nav-links-wrapper">
+      <div class="nav-links">
+        <a href="#" data-page="elections.html">Election Security</a>
+        <a href="#" data-page="heritagefoundation.html">Election Fraud</a>
+        <a href="#" data-page="statefraud.html">Voter Fraud by State</a>
+        <a href="#" data-page="contact.html">Contact</a>
+      </div>
+    </div>
+
+    <!-- 🔹 Mobile menu toggle -->
+    <button class="nav-toggle" onclick="toggleMobileNav()">☰</button>
+  </nav>
+
+  <!-- 🔹 Mobile navigation -->
+  <div class="mobile-nav" id="mobileNav">
+    <a href="#" data-page="elections.html">Election Security</a>
+    <a href="#" data-page="heritagefoundation.html">Election Fraud</a>
+    <a href="#" data-page="statefraud.html">Voter Fraud by State</a>
+    <a href="#" data-page="contact.html">Contact</a>
   </div>
 
-  <button class="nav-toggle" onclick="toggleMobileNav()">☰</button>
-</nav>
+  <!-- ✅ Main content area that gets replaced dynamically -->
+  <div id="page-content" class="content">
+    <h1>Welcome to the T.R.U. OWL Score</h1>
+    <p>This layout is the SPA-ready base. Use it to power a full credibility scoring app. Logo + brand stays top-left, links are centered on desktop, hamburger menu opens on mobile, and this structure can expand into any scoring framework you want.</p>
+  </div>
 
-<div class="mobile-nav" id="mobileNav">
-  <a href="#" data-page="elections.html">Election Security</a>
-  <a href="#" data-page="heritagefoundation.html">Election Fraud</a>
-  <a href="#" data-page="statefraud.html">Voter Fraud by State</a>
-  <a href="#" data-page="contact.html">Contact</a>
-</div>
+  <!-- ✅ Script for SPA navigation -->
+  <script>
+    function toggleMobileNav() {
+      document.getElementById('mobileNav').classList.toggle('active');
+    }
 
-<!-- ✅ This is where dynamic content will load -->
-<div id="page-content" class="content">
-  <h1>Welcome to the T.R.U. OWL Score</h1>
-  <p>This layout is the SPA-ready base. Use it to power a full credibility scoring app. Logo + brand stays top-left, links are centered on desktop, hamburger menu opens on mobile, and this structure can expand into any scoring framework you want.</p>
-</div>
-
- <script>
-  function toggleMobileNav() {
-    document.getElementById('mobileNav').classList.toggle('active');
-  }
-
-  document.querySelectorAll('a[data-page]').forEach(link => {
-    link.addEventListener('click', function (e) {
-      e.preventDefault();
-      const page = this.getAttribute('data-page');
-      fetch(page)
-        .then(res => {
-          if (!res.ok) throw new Error("Page not found");
-          return res.text();
-        })
-        .then(html => {
-          document.getElementById('page-content').innerHTML = html;
-          document.getElementById('mobileNav').classList.remove('active'); // Close mobile menu after click
-          window.scrollTo(0, 0);
-        })
-        .catch(err => {
-          document.getElementById('page-content').innerHTML = "<p>Error loading page.</p>";
-        });
+    document.querySelectorAll('a[data-page]').forEach(link => {
+      link.addEventListener('click', function (e) {
+        e.preventDefault();
+        const page = this.getAttribute('data-page');
+        fetch(page)
+          .then(res => {
+            if (!res.ok) throw new Error("Page not found");
+            return res.text();
+          })
+          .then(html => {
+            document.getElementById('page-content').innerHTML = html;
+            document.getElementById('mobileNav').classList.remove('active');
+            window.scrollTo(0, 0);
+          })
+          .catch(err => {
+            document.getElementById('page-content').innerHTML = "<p>Error loading page.</p>";
+          });
+      });
     });
-  });
-</script>
-
+  </script>
 </body>
 </html>
