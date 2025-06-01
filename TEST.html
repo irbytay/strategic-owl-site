@@ -306,6 +306,7 @@
         window.scrollTo(0, 0);
         if (push) history.pushState({ page }, "", "#" + page);
         bindLinks();
+        initPageScripts(); // ✅ re-binds any needed page-specific behavior
       })
       .catch(err => {
         console.error(err);
@@ -340,6 +341,15 @@
       link.removeEventListener("click", handleSPAClick);
       link.addEventListener("click", handleSPAClick);
     });
+  }
+
+  function initPageScripts() {
+    const select = document.getElementById("person-select");
+    if (select && typeof showScores === "function") {
+      select.removeEventListener("change", showScores);
+      select.addEventListener("change", showScores);
+      if (select.value) showScores();
+    }
   }
 
   window.addEventListener("popstate", (e) => {
