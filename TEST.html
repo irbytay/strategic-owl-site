@@ -14,6 +14,8 @@
       --border: #2F2F5F;
     }
 
+    * { box-sizing: border-box; }
+
     body {
       background-color: var(--navy);
       font-family: 'Inter', sans-serif;
@@ -37,7 +39,6 @@
       display: flex;
       justify-content: space-between;
       align-items: center;
-      position: relative;
     }
 
     .brand-left {
@@ -138,6 +139,84 @@
         display: block;
       }
     }
+
+    /* ✅ Modal styles */
+    .modal-overlay {
+      position: fixed;
+      top: 0; left: 0;
+      width: 100vw;
+      height: 100vh;
+      background: rgba(0,0,0,0.8);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 10000;
+      transition: opacity 0.3s ease;
+    }
+
+    .modal-overlay.hidden {
+      opacity: 0;
+      pointer-events: none;
+    }
+
+    .modal-content {
+      background-color: #2F2E5E;
+      padding: 40px;
+      border-radius: 12px;
+      max-width: 750px;
+      width: 90%;
+      box-shadow: 0 0 20px rgba(0,0,0,0.6);
+      color: #F5F5F5;
+    }
+
+    .modal-content h1 {
+      font-family: 'Playfair Display', serif;
+      text-align: center;
+    }
+
+    .modal-content ul {
+      padding-left: 20px;
+      margin-top: 16px;
+    }
+
+    .divider-bar {
+      display: flex;
+      justify-content: center;
+      gap: 8px;
+      margin: 10px 0 30px;
+    }
+
+    .divider-bar div {
+      width: 40px;
+      height: 6px;
+      border-radius: 3px;
+    }
+
+    .truth { background-color: #4CAF50; }
+    .reliability { background-color: #2196F3; }
+    .understanding { background-color: #FFC107; }
+
+    .agree-btn {
+      display: block;
+      margin: 30px auto 0;
+      background-color: var(--accent-blue);
+      color: white;
+      border: none;
+      font-size: 1rem;
+      font-weight: 600;
+      padding: 12px 24px;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+    }
+
+    .agree-btn:hover {
+      background-color: var(--hover);
+    }
+
+    strong {
+      color: #FFEB3B;
+    }
   </style>
 </head>
 <body>
@@ -145,19 +224,19 @@
   <!-- ✅ Navigation Bar -->
   <nav class="top-nav">
     <div class="brand-left">
-      <a href="#" data-page="TRUOWL.html">
+      <a href="#" data-page="newTRUOWL.html">
         <img src="owl_logo_white.png" alt="Strategic Owl Logo"
              onerror="this.onerror=null;this.style.display='none';this.insertAdjacentHTML('afterend','<p style=\'color:white;font-weight:bold;\'>[ Logo not found ]</p>')" />
       </a>
-      <a href="#" class="nav-logo" data-page="TRUOWL.html">The Strategic Owl</a>
+      <a href="#" class="nav-logo" data-page="newTRUOWL.html">The Strategic Owl</a>
     </div>
 
     <div class="nav-links-wrapper">
       <div class="nav-links">
-        <a href="#" data-page="elections.html">Election Security</a>
-        <a href="#" data-page="heritagefoundation.html">Election Fraud</a>
-        <a href="#" data-page="statefraud.html">Voter Fraud by State</a>
-        <a href="#" data-page="contact.html">Contact</a>
+        <a href="#" data-page="newelections.html">Election Security</a>
+        <a href="#" data-page="newheritagefoundation.html">Election Fraud</a>
+        <a href="#" data-page="newstatefraud.html">Voter Fraud by State</a>
+        <a href="#" data-page="newcontact.html">Contact</a>
       </div>
     </div>
 
@@ -166,10 +245,10 @@
 
   <!-- ✅ Mobile nav -->
   <div class="mobile-nav" id="mobileNav">
-    <a href="#" data-page="elections.html">Election Security</a>
-    <a href="#" data-page="heritagefoundation.html">Election Fraud</a>
-    <a href="#" data-page="statefraud.html">Voter Fraud by State</a>
-    <a href="#" data-page="contact.html">Contact</a>
+    <a href="#" data-page="newelections.html">Election Security</a>
+    <a href="#" data-page="newheritagefoundation.html">Election Fraud</a>
+    <a href="#" data-page="newstatefraud.html">Voter Fraud by State</a>
+    <a href="#" data-page="newcontact.html">Contact</a>
   </div>
 
   <!-- ✅ Content Loader -->
@@ -177,7 +256,29 @@
     <div id="page-content"></div>
   </div>
 
-  <!-- ✅ JavaScript for SPA functionality -->
+  <!-- ✅ Legal Disclaimer Modal -->
+  <div class="modal-overlay" id="disclaimerModal">
+    <div class="modal-content">
+      <h1>The Strategic Owl</h1>
+      <div class="divider-bar">
+        <div class="truth"></div>
+        <div class="reliability"></div>
+        <div class="understanding"></div>
+      </div>
+      <p>This platform contains original public interest research, commentary, and analysis, all protected under the <strong>First Amendment</strong>.</p>
+      <p>The <strong>T.R.U. OWL Score</strong> is an independent credibility system based on documented facts and verifiable sources.</p>
+      <p>By continuing, you acknowledge that:</p>
+      <ul>
+        <li>This site contains <strong>opinion</strong>, <strong>critique</strong>, and <strong>commentary</strong>.</li>
+        <li>Its analysis is based on the <strong>public record</strong>.</li>
+        <li>You waive any legal claims regarding published ratings or commentary.</li>
+      </ul>
+      <p>Use of this site implies full acceptance of these terms.</p>
+      <button class="agree-btn" onclick="agreeAndEnter()">I Agree and Enter</button>
+    </div>
+  </div>
+
+  <!-- ✅ JavaScript for SPA + Modal -->
   <script>
     function toggleMobileNav() {
       document.getElementById('mobileNav').classList.toggle('active');
@@ -185,26 +286,52 @@
 
     function loadPage(page) {
       fetch(page)
-        .then(res => res.ok ? res.text() : "<p>Error loading page.</p>")
+        .then(res => {
+          if (!res.ok) throw new Error(`Failed to load ${page}`);
+          return res.text();
+        })
         .then(html => {
           document.getElementById('page-content').innerHTML = html;
           document.getElementById('mobileNav').classList.remove('active');
           window.scrollTo(0, 0);
+          bindLinks();
+        })
+        .catch(err => {
+          console.error(err);
+          document.getElementById('page-content').innerHTML = `<p style="color:red;">${err.message}</p>`;
         });
     }
 
-    // On navigation click
-    document.querySelectorAll('a[data-page]').forEach(link => {
-      link.addEventListener('click', function (e) {
-        e.preventDefault();
-        const page = this.getAttribute('data-page');
-        loadPage(page);
-      });
-    });
+    function agreeAndEnter() {
+      localStorage.setItem("agreedToDisclaimer", "true");
+      const modal = document.getElementById("disclaimerModal");
+      modal.classList.add("hidden");
+      setTimeout(() => {
+        modal.style.display = "none";
+        loadPage("newTRUOWL.html");
+      }, 300);
+    }
 
-    // On first load, show the TRUOWL homepage
-    window.addEventListener('DOMContentLoaded', () => {
-      loadPage('TRUOWL.html');
+    function bindLinks() {
+      document.querySelectorAll('a[data-page]').forEach(link => {
+        link.removeEventListener('click', handleSPAClick);
+        link.addEventListener('click', handleSPAClick);
+      });
+    }
+
+    function handleSPAClick(e) {
+      e.preventDefault();
+      const page = this.getAttribute('data-page');
+      loadPage(page);
+    }
+
+    window.addEventListener("DOMContentLoaded", () => {
+      bindLinks();
+      if (!localStorage.getItem("agreedToDisclaimer")) {
+        document.getElementById("disclaimerModal").style.display = "flex";
+      } else {
+        loadPage("newTRUOWL.html");
+      }
     });
   </script>
 </body>
