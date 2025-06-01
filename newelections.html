@@ -470,7 +470,7 @@
 </div>
 
   <!-- Script: Score Display -->
-  <script>
+ <script>
 async function fetchTRUData() {
   const API_KEY = "AIzaSyCzuh9HBfe0r70r9U35Pe406PPZ-tz6I78";
   const SHEET_ID = "19wBEj9hEkvIyQcoR5E_mBGVAxTzMnddMxk8nuQLAumA";
@@ -484,6 +484,11 @@ async function fetchTRUData() {
     return json.values || [];
   } catch (err) {
     console.error("Failed to fetch sheet data", err);
+    // Display error message in select dropdown
+    const select = document.getElementById("person-select");
+    if (select) {
+      select.innerHTML = '<option value="">Failed to load data. Please try again later.</option>';
+    }
     return [];
   }
 }
@@ -576,6 +581,11 @@ window.initElectionPage = async function() {
 
   select.removeEventListener("change", window.showScores);
   select.addEventListener("change", window.showScores);
+};
+
+// Automatically initialize on page load
+window.onload = function() {
+  window.initElectionPage();
 };
 </script>
 </body>
