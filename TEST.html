@@ -6,224 +6,228 @@
   <title>T.R.U. OWL – Strategic Credibility</title>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&family=Playfair+Display:wght@500;700&display=swap" rel="stylesheet" />
   <style>
-    :root {
-      --navy: #1A1A40;
-      --text: #F5F5F5;
-      --accent-blue: #3B6CED;
-      --hover: #4FDBA6;
-      --border: #2F2F5F;
-    }
+  :root {
+    --navy: #1A1A40;
+    --text: #F5F5F5;
+    --accent-blue: #3B6CED;
+    --hover: #4FDBA6;
+    --border: #2F2F5F;
+  }
 
-    * { box-sizing: border-box; }
+  html, body {
+    margin: 0;
+    padding: 0;
+  }
 
-    body {
-      background-color: var(--navy);
-      font-family: 'Inter', sans-serif;
-      color: var(--text);
-      margin: 0;
-      padding: 0;
-    }
+  * {
+    box-sizing: border-box;
+  }
 
-    h1, h2, h3 {
-      font-family: 'Playfair Display', serif;
-    }
+  body {
+    background-color: var(--navy);
+    font-family: 'Inter', sans-serif;
+    color: var(--text);
+  }
 
-    .top-nav {
-      background-color: #2F2E5E;
-      padding: 16px 20px;
-      border-bottom: 1px solid var(--border);
-      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.4);
-      position: sticky;
-      top: 0;
-      z-index: 999;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-    }
+  h1, h2, h3 {
+    font-family: 'Playfair Display', serif;
+  }
 
-    .brand-left {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-    }
+  .top-nav {
+    background-color: #2F2E5E;
+    padding: 16px 20px;
+    border-bottom: 1px solid var(--border);
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.4);
+    position: sticky;
+    top: 0;
+    z-index: 999;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 0;
+  }
 
-    .brand-left img {
-      height: 36px;
-      width: auto;
-    }
+  .brand-left {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
 
-    .nav-logo {
-      color: var(--text);
-      font-size: 1.5rem;
-      font-family: 'Playfair Display', serif;
-      font-weight: bold;
-      text-decoration: none;
-    }
+  .brand-left img {
+    height: 36px;
+    width: auto;
+  }
 
+  .nav-logo {
+    color: var(--text);
+    font-size: 1.5rem;
+    font-family: 'Playfair Display', serif;
+    font-weight: bold;
+    text-decoration: none;
+  }
+
+  .nav-links-wrapper {
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+  }
+
+  .nav-links {
+    display: flex;
+    gap: 24px;
+  }
+
+  .nav-links a {
+    color: var(--text);
+    font-weight: 500;
+    text-decoration: none;
+    transition: color 0.2s ease;
+  }
+
+  .nav-links a:hover {
+    color: var(--hover);
+  }
+
+  .nav-toggle {
+    display: none;
+    font-size: 2rem;
+    background: none;
+    border: none;
+    color: var(--text);
+    cursor: pointer;
+  }
+
+  .mobile-nav {
+    display: none;
+    flex-direction: column;
+    background-color: #2F2E5E;
+    padding: 12px 20px;
+  }
+
+  .mobile-nav a {
+    color: var(--text);
+    padding: 12px 0;
+    text-decoration: none;
+    font-weight: 500;
+    border-top: 1px solid var(--border);
+  }
+
+  .mobile-nav a:hover {
+    color: var(--hover);
+  }
+
+  .mobile-nav.active {
+    display: flex;
+  }
+
+  .content {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 20px;
+  }
+
+  #page-content {
+    animation: fadeIn 0.25s ease-in-out;
+    min-height: 300px;
+  }
+
+  #page-content > *:first-child {
+    margin-top: 0;
+    padding-top: 0;
+  }
+
+  @keyframes fadeIn {
+    from { opacity: 0; transform: translateY(8px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  @media (max-width: 768px) {
     .nav-links-wrapper {
-      position: absolute;
-      left: 50%;
-      transform: translateX(-50%);
-    }
-
-    .nav-links {
-      display: flex;
-      gap: 24px;
-    }
-
-    .nav-links a {
-      color: var(--text);
-      font-weight: 500;
-      text-decoration: none;
-      transition: color 0.2s ease;
-    }
-
-    .nav-links a:hover {
-      color: var(--hover);
+      display: none;
     }
 
     .nav-toggle {
-      display: none;
-      font-size: 2rem;
-      background: none;
-      border: none;
-      color: var(--text);
-      cursor: pointer;
-    }
-
-    .mobile-nav {
-      display: none;
-      flex-direction: column;
-      background-color: #2F2E5E;
-      padding: 12px 20px;
-    }
-
-    .mobile-nav a {
-      color: var(--text);
-      padding: 12px 0;
-      text-decoration: none;
-      font-weight: 500;
-      border-top: 1px solid var(--border);
-    }
-
-    .mobile-nav a:hover {
-      color: var(--hover);
-    }
-
-    .mobile-nav.active {
-      display: flex;
-    }
-
-    .content {
-      max-width: 1200px;
-      margin: 0 auto;
-      padding: 0 20px;
-    }
-
-    #page-content {
-      animation: fadeIn 0.25s ease-in-out;
-      min-height: 300px;
-    }
-
-    /* ✅ FIX: Remove top spacing from first element in all loaded pages */
-    #page-content > *:first-child {
-      margin-top: 0;
-      padding-top: 0;
-    }
-
-    @keyframes fadeIn {
-      from { opacity: 0; transform: translateY(8px); }
-      to { opacity: 1; transform: translateY(0); }
-    }
-
-    @media (max-width: 768px) {
-      .nav-links-wrapper {
-        display: none;
-      }
-
-      .nav-toggle {
-        display: block;
-      }
-    }
-
-    /* ✅ Modal styles */
-    .modal-overlay {
-      position: fixed;
-      top: 0; left: 0;
-      width: 100vw;
-      height: 100vh;
-      background: rgba(0,0,0,0.8);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      z-index: 10000;
-      transition: opacity 0.3s ease;
-    }
-
-    .modal-overlay.hidden {
-      opacity: 0;
-      pointer-events: none;
-    }
-
-    .modal-content {
-      background-color: #2F2E5E;
-      padding: 40px;
-      border-radius: 12px;
-      max-width: 750px;
-      width: 90%;
-      box-shadow: 0 0 20px rgba(0,0,0,0.6);
-      color: #F5F5F5;
-    }
-
-    .modal-content h1 {
-      font-family: 'Playfair Display', serif;
-      text-align: center;
-    }
-
-    .modal-content ul {
-      padding-left: 20px;
-      margin-top: 16px;
-    }
-
-    .divider-bar {
-      display: flex;
-      justify-content: center;
-      gap: 8px;
-      margin: 10px 0 30px;
-    }
-
-    .divider-bar div {
-      width: 40px;
-      height: 6px;
-      border-radius: 3px;
-    }
-
-    .truth { background-color: #4CAF50; }
-    .reliability { background-color: #2196F3; }
-    .understanding { background-color: #FFC107; }
-
-    .agree-btn {
       display: block;
-      margin: 30px auto 0;
-      background-color: var(--accent-blue);
-      color: white;
-      border: none;
-      font-size: 1rem;
-      font-weight: 600;
-      padding: 12px 24px;
-      border-radius: 8px;
-      cursor: pointer;
-      transition: background-color 0.3s ease;
     }
+  }
 
-    .agree-btn:hover {
-      background-color: var(--hover);
-    }
+  .modal-overlay {
+    position: fixed;
+    top: 0; left: 0;
+    width: 100vw;
+    height: 100vh;
+    background: rgba(0,0,0,0.8);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 10000;
+    transition: opacity 0.3s ease;
+  }
 
-    strong {
-      color: #FFEB3B;
-    }
-  </style>
+  .modal-overlay.hidden {
+    opacity: 0;
+    pointer-events: none;
+  }
+
+  .modal-content {
+    background-color: #2F2E5E;
+    padding: 40px;
+    border-radius: 12px;
+    max-width: 750px;
+    width: 90%;
+    box-shadow: 0 0 20px rgba(0,0,0,0.6);
+    color: #F5F5F5;
+  }
+
+  .modal-content h1 {
+    font-family: 'Playfair Display', serif;
+    text-align: center;
+  }
+
+  .modal-content ul {
+    padding-left: 20px;
+    margin-top: 16px;
+  }
+
+  .divider-bar {
+    display: flex;
+    justify-content: center;
+    gap: 8px;
+    margin: 10px 0 30px;
+  }
+
+  .divider-bar div {
+    width: 40px;
+    height: 6px;
+    border-radius: 3px;
+  }
+
+  .truth { background-color: #4CAF50; }
+  .reliability { background-color: #2196F3; }
+  .understanding { background-color: #FFC107; }
+
+  .agree-btn {
+    display: block;
+    margin: 30px auto 0;
+    background-color: var(--accent-blue);
+    color: white;
+    border: none;
+    font-size: 1rem;
+    font-weight: 600;
+    padding: 12px 24px;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+  }
+
+  .agree-btn:hover {
+    background-color: var(--hover);
+  }
+
+  strong {
+    color: #FFEB3B;
+  }
+</style>
 </head>
 <body>
 
