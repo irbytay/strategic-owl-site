@@ -290,112 +290,96 @@
 
   <!-- ✅ JavaScript for SPA + Modal -->
  <script>
-  function toggleMobileNav() {
-    document.getElementById('mobileNav').classList.toggle('active');
-  }
+function toggleMobileNav() {
+  document.getElementById('mobileNav').classList.toggle('active');
+}
 
-  function loadPage(page, push = true) {
-    console.log(`[SPA] Loading page: ${page}`);
-    fetch(page)
-      .then(res => {
-        if (!res.ok) throw new Error(`Failed to load ${page}`);
-        return res.text();
-      })
-      .then(html => {
-        const container = document.getElementById('page-content');
-        container.innerHTML = html;
-        document.getElementById('mobileNav').classList.remove('active');
-        window.scrollTo(0, 0);
-        if (push) history.pushState({ page }, "", "#" + page);
-        bindLinks();
-        runScriptsFromHTML(container); // ✅ Runs scripts from the loaded HTML
-        setTimeout(() => initPageScripts(), 300); // ✅ Keep minimal hooks
-      })
-      .catch(err => {
-        console.error(err);
-        document.getElementById('page-content').innerHTML = `<p style="color:red;">${err.message}</p>`;
-      });
-  }
+function loadPage(page, push = true) {
+  console.log(`[SPA] Loading page: ${page}`);
+  fetch(page)
+    .then(res => {
+      if (!res.ok) throw new Error(`Failed to load ${page}`);
+      return res.text();
+    })
+    .then(html => {
+      const container = document.getElementById('page-content');
+      container.innerHTML = html;
+      document.getElementById('mobileNav').classList.remove('active');
+      window.scrollTo(0, 0);
+      if (push) history.pushState({ page }, "", "#" + page);
 
-  function runScriptsFromHTML(container) {
-    const scripts = container.querySelectorAll("script");
-    console.log(`[SPA] Running ${scripts.length} scripts from loaded HTML`);
-    scripts.forEach(oldScript => {
-      const newScript = document.createElement("script");
-      if (oldScript.src) {
-        newScript.src = oldScript.src;
-        newScript.async = false;
-      } else {
-        newScript.textContent = oldScript.textContent;
-      }
-      document.body.appendChild(newScript);
+      // After content loads, run inline scripts
+      runScriptsFromHTML(container);
+
+      // Give scripts a second to define functions, then call inits
+      setTimeout(() => {
+        callPageInits(); 
+      }, 100);
+    })
+    .catch(err => {
+      console.error(err);
+      document.getElementById('page-content').innerHTML = `<p style="color:red;">${err.message}</p>`;
     });
-  }
+}
 
-  function agreeAndEnter() {
-    localStorage.setItem("agreedToDisclaimer", "true");
-    const modal = document.getElementById("disclaimerModal");
-    modal.classList.add("hidden");
-    setTimeout(() => {
-      modal.style.display = "none";
-      loadPage("newTRUOWL.html");
-    }, 300);
-  }
-
-  function handleSPAClick(e) {
-    const anchor = e.currentTarget;
-    const href = anchor.getAttribute("href") || "";
-    const isInternalPage = href.endsWith(".html") || anchor.dataset.page;
-
-    if (isInternalPage && !href.startsWith("http")) {
-      e.preventDefault();
-      const page = anchor.dataset.page || href;
-      loadPage(page);
-    }
-  }
-
-  function bindLinks() {
-    document.querySelectorAll("a").forEach(link => {
-      link.removeEventListener("click", handleSPAClick);
-      link.addEventListener("click", handleSPAClick);
-    });
-  }
-
-  function initPageScripts() {
-    // ✅ This is now generic, only sets up UI elements found in DOM.
-    console.log(`[SPA] Generic initPageScripts running`);
-
-    const personSelect = document.getElementById("person-select");
-    if (personSelect && typeof showScores === "function") {
-      personSelect.removeEventListener("change", showScores);
-      personSelect.addEventListener("change", showScores);
-      if (personSelect.value) showScores();
-    }
-
-    const stateSelect = document.getElementById("state-select");
-    if (stateSelect && typeof init === "function") {
-      init(); // voter fraud state table init
-    }
-
-    // ✅ DO NOT hardcode page names or window.init calls here
-  }
-
-  window.addEventListener("popstate", (e) => {
-    if (e.state && e.state.page) {
-      console.log(`[SPA] Popstate event: loading ${e.state.page}`);
-      loadPage(e.state.page, false);
-    }
-  });
-
-  window.addEventListener("DOMContentLoaded", () => {
-    bindLinks();
-    if (!localStorage.getItem("agreedToDisclaimer")) {
-      document.getElementById("disclaimerModal").style.display = "flex";
+function runScriptsFromHTML(container) {
+  const scripts = container.querySelectorAll("script");
+  console.log(`[SPA] Running ${scripts.length} scripts`);
+  scripts.forEach(oldScript => {
+    const newScript = document.createElement("script");
+    if (oldScript.src) {
+      newScript.src = oldScript.src;
+      newScript.async = false;
     } else {
-      const hashPage = location.hash?.substring(1) || "newTRUOWL.html";
-      loadPage(hashPage);
+      newScript.textContent = oldScript.textContent;
+    }
+    document.body.appendChild(newScript);
+  });
+}
+
+// This calls known init functions if they exist
+function callPageInits() {
+  const possibleInits = [
+    "initTRUOWLPage",
+    "initElectionPage",
+    "initStateFraudPage"
+  ];
+
+  possibleInits.forEach(fn => {
+    if (typeof window[fn] === "function") {
+      console.log(`[SPA] Calling ${fn}()`);
+      window[fn]();
     }
   });
+}
+
+function handleSPAClick(e) {
+  const anchor = e.currentTarget;
+  const href = anchor.getAttribute("href") || "";
+  if (href.endsWith(".html") && !href.startsWith("http")) {
+    e.preventDefault();
+    loadPage(href);
+  }
+}
+
+function bindLinks() {
+  document.querySelectorAll("a").forEach(link => {
+    link.removeEventListener("click", handleSPAClick);
+    link.addEventListener("click", handleSPAClick);
+  });
+}
+
+window.addEventListener("popstate", e => {
+  if (e.state && e.state.page) {
+    loadPage(e.state.page, false);
+  }
+});
+
+window.addEventListener("DOMContentLoaded", () => {
+  bindLinks();
+  const startPage = location.hash?.substring(1) || "newTRUOWL.html";
+  loadPage(startPage);
+});
 </script>
 </body>
 </html>
