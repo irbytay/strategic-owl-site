@@ -489,7 +489,8 @@
 
   <!-- Script: Score Display -->
   <script>
-    const data = {
+document.addEventListener("DOMContentLoaded", function () {
+  const data = {
       strategicOwl: {
   scores: [
     ["Constitutional Knowledge", "+10", "Demonstrates full understanding of voting-related amendments and their implications."],
@@ -800,77 +801,77 @@ mattWalsh: {
 
 
     function showScores() {
-  const person = document.getElementById("person-select").value;
-  const table = document.getElementById("score-table");
-  const tbody = document.getElementById("score-body");
-  tbody.innerHTML = "";
-
-  if (!person || !data[person]) {
-    table.style.display = "none";
-    return;
-  }
-
-  const scores = data[person].scores;
-  let total = 0;
-
-  scores.forEach(row => {
-    const tr = document.createElement("tr");
-
-    const numeric = parseInt(row[1].replace("+", ""));
-    if (!isNaN(numeric)) {
-      total += numeric;
+    const person = document.getElementById("person-select")?.value;
+    const table = document.getElementById("score-table");
+    const tbody = document.getElementById("score-body");
+    if (!person || !table || !tbody || !data[person]) {
+      if (table) table.style.display = "none";
+      return;
     }
 
-    row.forEach(cell => {
-      const td = document.createElement("td");
-      td.textContent = cell;
-      tr.appendChild(td);
+    tbody.innerHTML = "";
+    const scores = data[person].scores;
+    let total = 0;
+
+    scores.forEach(row => {
+      const tr = document.createElement("tr");
+      const numeric = parseInt(row[1].replace("+", ""));
+      if (!isNaN(numeric)) total += numeric;
+      row.forEach(cell => {
+        const td = document.createElement("td");
+        td.textContent = cell;
+        tr.appendChild(td);
+      });
+      tbody.appendChild(tr);
     });
 
-    tbody.appendChild(tr);
-  });
+    // Election denial/affirmation score
+    const status = data[person].electionDenial;
+    let bonusRow = "";
 
-    // Election stance scoring (true = denial penalty, false = credibility boost, ambiguous = partial penalty)
-if (data[person].electionDenial === true) {
-  const denialRow = document.createElement("tr");
-  denialRow.innerHTML = `
-    <td><strong>2020 Election Denial Penalty</strong></td>
-    <td><strong>-10</strong></td>
-    <td><strong>Denial of the 2020 election outcome signals rejection of verified democratic processes and aligns with disinformation or blind loyalty.</strong></td>
-  `;
-  tbody.appendChild(denialRow);
-  total -= 10;
-} else if (data[person].electionDenial === false) {
-  const affirmRow = document.createElement("tr");
-  affirmRow.innerHTML = `
-    <td><strong>2020 Election Affirmation Bonus</strong></td>
-    <td><strong>+5</strong></td>
-    <td><strong>Publicly affirming the legitimacy of the 2020 election supports truth, counters disinformation, and helps protect democratic confidence.</strong></td>
-  `;
-  tbody.appendChild(affirmRow);
-  total += 5;
-} else if (data[person].electionDenial === "gray") {
-  const ambiguousRow = document.createElement("tr");
-  ambiguousRow.innerHTML = `
-    <td><strong>Ambiguous Stance Penalty</strong></td>
-    <td><strong>-5</strong></td>
-    <td><strong>Failure to clearly affirm the 2020 election results contributes to public doubt and enables misinformation to spread unchecked.</strong></td>
-  `;
-  tbody.appendChild(ambiguousRow);
-  total -= 5;
-}
+    if (status === true) {
+      bonusRow = `
+        <td><strong>2020 Election Denial Penalty</strong></td>
+        <td><strong>-10</strong></td>
+        <td><strong>Denial of the 2020 election outcome signals rejection of verified democratic processes and aligns with disinformation or blind loyalty.</strong></td>
+      `;
+      total -= 10;
+    } else if (status === false) {
+      bonusRow = `
+        <td><strong>2020 Election Affirmation Bonus</strong></td>
+        <td><strong>+5</strong></td>
+        <td><strong>Publicly affirming the legitimacy of the 2020 election supports truth, counters disinformation, and helps protect democratic confidence.</strong></td>
+      `;
+      total += 5;
+    } else if (status === "gray") {
+      bonusRow = `
+        <td><strong>Ambiguous Stance Penalty</strong></td>
+        <td><strong>-5</strong></td>
+        <td><strong>Failure to clearly affirm the 2020 election results contributes to public doubt and enables misinformation to spread unchecked.</strong></td>
+      `;
+      total -= 5;
+    }
 
-  const summary = data[person].summary || "This is the cumulative subscore for Election Security.";
-  const totalRow = document.createElement("tr");
-  totalRow.innerHTML = `
-    <td><strong>Total Score</strong></td>
-    <td><strong>${total >= 0 ? "+" : ""}${total}</strong></td>
-    <td><strong>${summary}</strong></td>
-  `;
-  tbody.appendChild(totalRow);
+    if (bonusRow) {
+      const row = document.createElement("tr");
+      row.innerHTML = bonusRow;
+      tbody.appendChild(row);
+    }
 
-  table.style.display = "table";
-}
+    const summary = data[person].summary || "Cumulative subscore for Election Security.";
+    const totalRow = document.createElement("tr");
+    totalRow.innerHTML = `
+      <td><strong>Total Score</strong></td>
+      <td><strong>${total >= 0 ? "+" : ""}${total}</strong></td>
+      <td><strong>${summary}</strong></td>
+    `;
+    tbody.appendChild(totalRow);
+
+    table.style.display = "table";
+  }
+
+  window.showScores = showScores;
+});
 </script>
 </div>
 </body>
