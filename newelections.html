@@ -471,45 +471,34 @@
 
   <!-- Script: Score Display -->
   <script>
-const API_KEY = "AIzaSyB3NmN4OpDutbaX6V2KkLy1p-vDLghrF5M";
-const SHEET_ID = "1p66gmWWjxJbrySxpR5T--fP8iEgUbW7RrXru61gagRA";
-const RANGE = "TRU!A2:AB998";
-
-const select = document.getElementById("person-select");
-const table = document.getElementById("score-table");
-const tbody = document.getElementById("score-body");
-
-let rowMap = {}; // key = name in column A, value = row
-
 async function fetchTRUData() {
+  const API_KEY = "...";
+  const SHEET_ID = "...";
+  const RANGE = "TRU!A2:AB998";
+
   const url = `https://sheets.googleapis.com/v4/spreadsheets/${SHEET_ID}/values/${RANGE}?key=${API_KEY}`;
-  const res = await fetch(url);
-  const json = await res.json();
-  const rows = json.values || [];
-
-  rows.forEach(row => {
-    const key = row[0];
-    if (key) rowMap[key] = row;
-  });
-
-  const sortedNames = Object.keys(rowMap).sort();
-  sortedNames.forEach(name => {
-    const opt = document.createElement("option");
-    opt.value = name;
-    // Format name: insert spaces before capitals and capitalize first letter
-    opt.textContent = name.replace(/([A-Z])/g, " $1").replace(/^./, s => s.toUpperCase());
-    select.appendChild(opt);
-  });
+  try {
+    const res = await fetch(url);
+    if (!res.ok) throw new Error(`HTTP error! Status: ${res.status}`);
+    const json = await res.json();
+    return json.values || [];
+  } catch (err) {
+    console.error("Failed to fetch sheet data", err);
+    return [];
+  }
 }
 
-function showScores() {
+window.showScores = function() {
+  const select = document.getElementById("person-select");
+  const table = document.getElementById("score-table");
+  const tbody = document.getElementById("score-body");
   const selected = select.value;
-  if (!selected || !rowMap[selected]) {
+  if (!selected || !window.rowMap || !window.rowMap[selected]) {
     table.style.display = "none";
     return;
   }
 
-  const row = rowMap[selected];
+  const row = window.rowMap[selected];
   tbody.innerHTML = "";
   let total = 0;
 
@@ -520,8 +509,6 @@ function showScores() {
     "Psychological Manipulation"
   ];
 
-  // Scores: D (3) to M (12)
-  // Explanations: R (17) to AA (26)
   for (let i = 0; i < 10; i++) {
     const label = categories[i];
     const score = parseInt(row[3 + i]) || 0;
@@ -533,7 +520,7 @@ function showScores() {
     total += score;
   }
 
-  // Election Denial Bonus/Penalty from AB (27)
+  // Election Denial Bonus
   const flag = (row[27] || "").toLowerCase();
   let bonus = 0, label = "", desc = "";
 
@@ -558,17 +545,37 @@ function showScores() {
     total += bonus;
   }
 
-  // Summary from Q (16)
   const summary = row[16] || "No summary provided.";
   const totalRow = document.createElement("tr");
   totalRow.innerHTML = `<td><strong>Total Score</strong></td><td><strong>${total >= 0 ? "+" : ""}${total}</strong></td><td><strong>${summary}</strong></td>`;
   tbody.appendChild(totalRow);
 
   table.style.display = "table";
-}
+};
 
-fetchTRUData();
-window.showScores = showScores;
+window.initElectionPage = async function() {
+  window.rowMap = {};
+
+  const data = await fetchTRUData();
+
+  data.forEach(row => {
+    const key = row[0];
+    if (key) window.rowMap[key] = row;
+  });
+
+  const select = document.getElementById("person-select");
+  select.innerHTML = '<option value="">-- Choose a name --</option>';
+
+  Object.keys(window.rowMap).sort().forEach(name => {
+    const opt = document.createElement("option");
+    opt.value = name;
+    opt.textContent = name.replace(/([A-Z])/g, " $1").replace(/^./, s => s.toUpperCase());
+    select.appendChild(opt);
+  });
+
+  select.removeEventListener("change", window.showScores);
+  select.addEventListener("change", window.showScores);
+};
 </script>
 </body>
 </html>
