@@ -289,12 +289,13 @@
   </div>
 
   <!-- ✅ JavaScript for SPA + Modal -->
-  <script>
+ <script>
   function toggleMobileNav() {
     document.getElementById('mobileNav').classList.toggle('active');
   }
 
   function loadPage(page, push = true) {
+    console.log(`[SPA] Loading page: ${page}`);
     fetch(page)
       .then(res => {
         if (!res.ok) throw new Error(`Failed to load ${page}`);
@@ -308,7 +309,7 @@
         if (push) history.pushState({ page }, "", "#" + page);
         bindLinks();
         runScriptsFromHTML(container);   // ✅ run <script> tags inside the loaded HTML
-        setTimeout(initPageScripts, 50); // ✅ delay to ensure scripts registered
+        setTimeout(() => initPageScripts(page), 300); // ✅ delay + pass page
       })
       .catch(err => {
         console.error(err);
@@ -318,15 +319,17 @@
 
   function runScriptsFromHTML(container) {
     const scripts = container.querySelectorAll("script");
+    console.log(`[SPA] Running ${scripts.length} scripts from loaded HTML`);
     scripts.forEach(oldScript => {
       const newScript = document.createElement("script");
       if (oldScript.src) {
         newScript.src = oldScript.src;
+        newScript.async = false; // preserve execution order
       } else {
         newScript.textContent = oldScript.textContent;
       }
       document.body.appendChild(newScript);
-      document.body.removeChild(newScript);
+      // Removed immediate removal so script can execute properly
     });
   }
 
@@ -359,7 +362,9 @@
     });
   }
 
-  function initPageScripts() {
+  function initPageScripts(page) {
+    console.log(`[SPA] Initializing page scripts for: ${page}`);
+
     const personSelect = document.getElementById("person-select");
     if (personSelect && typeof showScores === "function") {
       personSelect.removeEventListener("change", showScores);
@@ -371,10 +376,19 @@
     if (stateSelect && typeof init === "function") {
       init(); // voter fraud state table init
     }
+
+    // Call page-specific init if defined
+    if (page === "newelections.html" && typeof window.initElectionPage === "function") {
+      window.initElectionPage();
+    }
+    if (page === "newstatefraud.html" && typeof window.initStateFraudPage === "function") {
+      window.initStateFraudPage();
+    }
   }
 
   window.addEventListener("popstate", (e) => {
     if (e.state && e.state.page) {
+      console.log(`[SPA] Popstate event: loading ${e.state.page}`);
       loadPage(e.state.page, false);
     }
   });
