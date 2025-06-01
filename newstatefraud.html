@@ -184,89 +184,85 @@
     </div>
   </div>
 
-  <script>
-  const API_KEY = "AIzaSyB3NmN4OpDutbaX6V2KkLy1p-vDLghrF5M";
-  const SHEET_ID = "1p66gmWWjxJbrySxpR5T--fP8iEgUbW7RrXru61gagRA";
-  const RANGE = "HeritageVoterfraudRawData!B6:D1589";
+ <script>
+    const API_KEY = "AIzaSyB3NmN4OpDutbaX6V2KkLy1p-vDLghrF5M";
+    const SHEET_ID = "1p66gmWWjxJbrySxpR5T--fP8iEgUbW7RrXru61gagRA";
+    const RANGE = "HeritageVoterfraudRawData!B6:D1589";
 
-  async function fetchSheetData() {
-    const url = `https://sheets.googleapis.com/v4/spreadsheets/${SHEET_ID}/values/${RANGE}?key=${API_KEY}`;
-    try {
-      const res = await fetch(url);
-      const data = await res.json();
-      return data.values || [];
-    } catch (error) {
-      console.error("Failed to fetch data:", error);
-      return [];
-    }
-  }
-
-  function populateDropdown(statesSet, stateSelect) {
-    const sortedStates = Array.from(statesSet).sort();
-    sortedStates.forEach(state => {
-      const opt = document.createElement("option");
-      opt.value = state;
-      opt.textContent = state;
-      stateSelect.appendChild(opt);
-    });
-  }
-
-  async function init() {
-    const stateSelect = document.getElementById("state-select");
-    const tableBody = document.getElementById("state-data-body");
-    const resultsWrapper = document.getElementById("state-results");
-
-    if (!stateSelect || !tableBody || !resultsWrapper) {
-      console.warn("[statefraud] Required elements not found. Skipping init.");
-      return;
+    async function fetchSheetData() {
+      const url = `https://sheets.googleapis.com/v4/spreadsheets/${SHEET_ID}/values/${RANGE}?key=${API_KEY}`;
+      try {
+        const res = await fetch(url);
+        const data = await res.json();
+        return data.values || [];
+      } catch (error) {
+        console.error("Failed to fetch data:", error);
+        return [];
+      }
     }
 
-    const summaryLine = document.createElement("p");
-    summaryLine.id = "state-summary";
-    summaryLine.style.cssText = "text-align:center; font-weight:bold; font-size:1.05rem; margin-top:10px;";
-    resultsWrapper.parentElement.insertBefore(summaryLine, resultsWrapper);
+    function populateDropdown(statesSet, stateSelect) {
+      const sortedStates = Array.from(statesSet).sort();
+      sortedStates.forEach(state => {
+        const opt = document.createElement("option");
+        opt.value = state;
+        opt.textContent = state;
+        stateSelect.appendChild(opt);
+      });
+    }
 
-    const rows = await fetchSheetData();
-    const statesSet = new Set(rows.map(row => row[1]));
-    populateDropdown(statesSet, stateSelect);
+    async function initStateFraudPage() {
+      const stateSelect = document.getElementById("state-select");
+      const tableBody = document.getElementById("state-data-body");
+      const resultsWrapper = document.getElementById("state-results");
+      const summaryLine = document.getElementById("state-summary");
 
-    stateSelect.addEventListener("change", function () {
-      const selected = this.value;
-      tableBody.innerHTML = "";
-      summaryLine.textContent = "";
-
-      const filtered = rows.filter(row => row[1] === selected);
-
-      if (filtered.length === 0) {
-        tableBody.innerHTML = `<tr><td colspan="3">No records found for ${selected}</td></tr>`;
-        resultsWrapper.style.display = "flex";
+      if (!stateSelect || !tableBody || !resultsWrapper || !summaryLine) {
+        console.warn("[statefraud] Required elements not found.");
         return;
       }
 
-      const sorted = filtered.sort((a, b) => parseInt(a[0]) - parseInt(b[0]));
+      const rows = await fetchSheetData();
+      const statesSet = new Set(rows.map(row => row[1]));
+      populateDropdown(statesSet, stateSelect);
 
-      const years = sorted.map(row => parseInt(row[0])).filter(year => !isNaN(year));
-      const minYear = Math.min(...years);
-      const maxYear = Math.max(...years);
-      const caseCount = sorted.length;
+      stateSelect.addEventListener("change", function () {
+        const selected = this.value;
+        tableBody.innerHTML = "";
+        summaryLine.textContent = "";
 
-      summaryLine.textContent = `${caseCount} case${caseCount === 1 ? '' : 's'} found from ${minYear} to ${maxYear}`;
+        const filtered = rows.filter(row => row[1] === selected);
 
-      sorted.forEach(row => {
-        const year = row[0];
-        const state = row[1];
-        const name = row[2];
-        const tr = document.createElement("tr");
-        tr.innerHTML = `<td>${year}</td><td>${state}</td><td>${name}</td>`;
-        tableBody.appendChild(tr);
+        if (filtered.length === 0) {
+          tableBody.innerHTML = `<tr><td colspan="3">No records found for ${selected}</td></tr>`;
+          resultsWrapper.style.display = "flex";
+          return;
+        }
+
+        const sorted = filtered.sort((a, b) => parseInt(a[0]) - parseInt(b[0]));
+
+        const years = sorted.map(row => parseInt(row[0])).filter(year => !isNaN(year));
+        const minYear = Math.min(...years);
+        const maxYear = Math.max(...years);
+        const caseCount = sorted.length;
+
+        summaryLine.textContent = `${caseCount} case${caseCount === 1 ? '' : 's'} found from ${minYear} to ${maxYear}`;
+
+        sorted.forEach(row => {
+          const year = row[0];
+          const state = row[1];
+          const name = row[2];
+          const tr = document.createElement("tr");
+          tr.innerHTML = `<td>${year}</td><td>${state}</td><td>${name}</td>`;
+          tableBody.appendChild(tr);
+        });
+
+        resultsWrapper.style.display = "flex";
       });
+    }
 
-      resultsWrapper.style.display = "flex";
-    });
-  }
-
-  // ✅ Only run if loaded directly or from SPA
-  window.initStateFraudPage = init;
-</script>
+    // ✅ Enable for standalone mode
+    window.addEventListener("DOMContentLoaded", initStateFraudPage);
+  </script>
 </body>
 </html>
