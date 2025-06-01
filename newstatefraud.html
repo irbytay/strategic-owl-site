@@ -71,6 +71,14 @@
       line-height: 1.5;
     }
 
+    #state-summary {
+      text-align: center;
+      font-weight: bold;
+      font-size: 1.05rem;
+      margin-top: 10px;
+      color: #F5F5F5;
+    }
+
     .table-wrapper {
       display: flex;
       justify-content: center;
@@ -165,6 +173,8 @@
         <option value="">-- Select a State --</option>
       </select>
 
+      <p id="state-summary" class="subtext"></p>
+
       <div class="table-wrapper" style="display:none;" id="state-results">
         <table>
           <thead>
@@ -184,7 +194,7 @@
     </div>
   </div>
 
- <script>
+  <script>
     const API_KEY = "AIzaSyB3NmN4OpDutbaX6V2KkLy1p-vDLghrF5M";
     const SHEET_ID = "1p66gmWWjxJbrySxpR5T--fP8iEgUbW7RrXru61gagRA";
     const RANGE = "HeritageVoterfraudRawData!B6:D1589";
