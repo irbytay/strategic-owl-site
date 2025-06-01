@@ -2,8 +2,8 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>The Strategic Owl – T.R.U. OWL</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <title>The Strategic Owl</title>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&family=Playfair+Display:wght@500;700&display=swap" rel="stylesheet" />
   <style>
     :root {
@@ -137,38 +137,38 @@
 
   <nav class="top-nav">
     <div class="brand-left">
-      <img src="logo.png" alt="Strategic Owl Logo" />
+      <a href="TRUOWL.html">
+        <img src="owl_logo_white.png" alt="Strategic Owl Logo"
+             onerror="this.onerror=null;this.style.display='none';this.insertAdjacentHTML('afterend','<p style=\'color:white;font-weight:bold;\'>[ Logo not found ]</p>')" />
+      </a>
       <a href="TRUOWL.html" class="nav-logo">The Strategic Owl</a>
     </div>
     <div class="nav-center">
       <div class="nav-links">
-        <a href="TRUOWL.html">Home</a>
-        <a href="#">About</a>
-        <a href="#">Scores</a>
-        <a href="#">Roles</a>
-        <a href="#">Contact</a>
+        <a href="elections.html">Election Security</a>
+        <a href="heritagefoundation.html">Election Fraud</a>
+        <a href="statefraud.html">Voter Fraud by State</a>
+        <a href="contact.html">Contact</a>
       </div>
-      <button class="nav-toggle" onclick="toggleMobileMenu()">☰</button>
+      <button class="nav-toggle" onclick="toggleMobileNav()">☰</button>
     </div>
   </nav>
 
   <div class="mobile-nav" id="mobileNav">
-    <a href="TRUOWL.html">Home</a>
-    <a href="#">About</a>
-    <a href="#">Scores</a>
-    <a href="#">Roles</a>
-    <a href="#">Contact</a>
+    <a href="elections.html">Election Security</a>
+    <a href="heritagefoundation.html">Election Fraud</a>
+    <a href="statefraud.html">Voter Fraud by State</a>
+    <a href="contact.html">Contact</a>
   </div>
 
   <div class="content">
-    <h1>T.R.U. OWL Credibility Framework</h1>
-    <p>This is the beginning of the single-page application for scoring credibility across roles, based on truth, reliability, and understanding.</p>
+    <h1>Welcome to the T.R.U. OWL Score</h1>
+    <p>This layout is the SPA-ready base. Use it to power a full credibility scoring app. Logo + brand stays top-left, links are centered on desktop, hamburger menu opens on mobile, and this structure can expand into any scoring framework you want.</p>
   </div>
 
   <script>
-    function toggleMobileMenu() {
-      const menu = document.getElementById('mobileNav');
-      menu.classList.toggle('active');
+    function toggleMobileNav() {
+      document.getElementById('mobileNav').classList.toggle('active');
     }
   </script>
 
