@@ -301,17 +301,33 @@
         return res.text();
       })
       .then(html => {
-        document.getElementById('page-content').innerHTML = html;
+        const container = document.getElementById('page-content');
+        container.innerHTML = html;
         document.getElementById('mobileNav').classList.remove('active');
         window.scrollTo(0, 0);
         if (push) history.pushState({ page }, "", "#" + page);
         bindLinks();
-        initPageScripts(); // ✅ re-binds any needed page-specific behavior
+        runScriptsFromHTML(container);   // ✅ run <script> tags inside the loaded HTML
+        setTimeout(initPageScripts, 50); // ✅ delay to ensure scripts registered
       })
       .catch(err => {
         console.error(err);
         document.getElementById('page-content').innerHTML = `<p style="color:red;">${err.message}</p>`;
       });
+  }
+
+  function runScriptsFromHTML(container) {
+    const scripts = container.querySelectorAll("script");
+    scripts.forEach(oldScript => {
+      const newScript = document.createElement("script");
+      if (oldScript.src) {
+        newScript.src = oldScript.src;
+      } else {
+        newScript.textContent = oldScript.textContent;
+      }
+      document.body.appendChild(newScript);
+      document.body.removeChild(newScript);
+    });
   }
 
   function agreeAndEnter() {
@@ -344,11 +360,16 @@
   }
 
   function initPageScripts() {
-    const select = document.getElementById("person-select");
-    if (select && typeof showScores === "function") {
-      select.removeEventListener("change", showScores);
-      select.addEventListener("change", showScores);
-      if (select.value) showScores();
+    const personSelect = document.getElementById("person-select");
+    if (personSelect && typeof showScores === "function") {
+      personSelect.removeEventListener("change", showScores);
+      personSelect.addEventListener("change", showScores);
+      if (personSelect.value) showScores();
+    }
+
+    const stateSelect = document.getElementById("state-select");
+    if (stateSelect && typeof init === "function") {
+      init(); // voter fraud state table init
     }
   }
 
