@@ -569,6 +569,11 @@ window.initElectionPage = async function () {
   });
 
   const select = document.getElementById("person-select");
+  if (!select) {
+    console.warn("[Election Page] Dropdown not found.");
+    return;
+  }
+
   select.innerHTML = '<option value="">-- Choose a name --</option>';
 
   Object.keys(window.rowMap).sort().forEach(name => {
@@ -582,9 +587,7 @@ window.initElectionPage = async function () {
   select.addEventListener("change", window.showScores);
 };
 
-window.onload = function () {
-  window.initElectionPage();
-};
+// ⛔ REMOVED window.onload — use SPA init trigger instead
 </script>
 </body>
 </html>
