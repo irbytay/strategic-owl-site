@@ -6,232 +6,223 @@
   <title>T.R.U. OWL – Strategic Credibility</title>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&family=Playfair+Display:wght@500;700&display=swap" rel="stylesheet" />
   <style>
-  :root {
-    --navy: #1A1A40;
-    --text: #F5F5F5;
-    --accent-blue: #3B6CED;
-    --hover: #4FDBA6;
-    --border: #2F2F5F;
-  }
+    :root {
+      --navy: #1A1A40;
+      --text: #F5F5F5;
+      --accent-blue: #3B6CED;
+      --hover: #4FDBA6;
+      --border: #2F2F5F;
+    }
 
-  html, body {
-    margin: 0;
-    padding: 0;
-  }
+    html, body {
+      margin: 0;
+      padding: 0;
+    }
 
-  * {
-    box-sizing: border-box;
-  }
+    * { box-sizing: border-box; }
 
-  body {
-    background-color: var(--navy);
-    font-family: 'Inter', sans-serif;
-    color: var(--text);
-  }
+    body {
+      background-color: var(--navy);
+      font-family: 'Inter', sans-serif;
+      color: var(--text);
+    }
 
-  h1, h2, h3 {
-    font-family: 'Playfair Display', serif;
-  }
+    h1, h2, h3 {
+      font-family: 'Playfair Display', serif;
+    }
 
-  .top-nav {
-    background-color: #2F2E5E;
-    padding: 16px 20px;
-    border-bottom: 1px solid var(--border);
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.4);
-    position: sticky;
-    top: 0;
-    z-index: 999;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-top: 0;
-  }
+    .top-nav {
+      background-color: #2F2E5E;
+      padding: 16px 20px;
+      border-bottom: 1px solid var(--border);
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.4);
+      position: sticky;
+      top: 0;
+      z-index: 999;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
 
-  .brand-left {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-  }
+    .brand-left {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
 
-  .brand-left img {
-    height: 36px;
-    width: auto;
-  }
+    .brand-left img {
+      height: 36px;
+      width: auto;
+    }
 
-  .nav-logo {
-    color: var(--text);
-    font-size: 1.5rem;
-    font-family: 'Playfair Display', serif;
-    font-weight: bold;
-    text-decoration: none;
-  }
+    .nav-logo {
+      color: var(--text);
+      font-size: 1.5rem;
+      font-family: 'Playfair Display', serif;
+      font-weight: bold;
+      text-decoration: none;
+    }
 
-  .nav-links-wrapper {
-    position: absolute;
-    left: 50%;
-    transform: translateX(-50%);
-  }
-
-  .nav-links {
-    display: flex;
-    gap: 24px;
-  }
-
-  .nav-links a {
-    color: var(--text);
-    font-weight: 500;
-    text-decoration: none;
-    transition: color 0.2s ease;
-  }
-
-  .nav-links a:hover {
-    color: var(--hover);
-  }
-
-  .nav-toggle {
-    display: none;
-    font-size: 2rem;
-    background: none;
-    border: none;
-    color: var(--text);
-    cursor: pointer;
-  }
-
-  .mobile-nav {
-    display: none;
-    flex-direction: column;
-    background-color: #2F2E5E;
-    padding: 12px 20px;
-  }
-
-  .mobile-nav a {
-    color: var(--text);
-    padding: 12px 0;
-    text-decoration: none;
-    font-weight: 500;
-    border-top: 1px solid var(--border);
-  }
-
-  .mobile-nav a:hover {
-    color: var(--hover);
-  }
-
-  .mobile-nav.active {
-    display: flex;
-  }
-
-  .content {
-    max-width: 1200px;
-    margin: 0 auto;
-    padding: 0 20px;
-  }
-
-  #page-content {
-    animation: fadeIn 0.25s ease-in-out;
-    min-height: 300px;
-  }
-
-  #page-content > *:first-child {
-    margin-top: 0;
-    padding-top: 0;
-  }
-
-  @keyframes fadeIn {
-    from { opacity: 0; transform: translateY(8px); }
-    to { opacity: 1; transform: translateY(0); }
-  }
-
-  @media (max-width: 768px) {
     .nav-links-wrapper {
-      display: none;
+      position: absolute;
+      left: 50%;
+      transform: translateX(-50%);
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 24px;
+    }
+
+    .nav-links a {
+      color: var(--text);
+      font-weight: 500;
+      text-decoration: none;
+      transition: color 0.2s ease;
+    }
+
+    .nav-links a:hover {
+      color: var(--hover);
     }
 
     .nav-toggle {
-      display: block;
+      display: none;
+      font-size: 2rem;
+      background: none;
+      border: none;
+      color: var(--text);
+      cursor: pointer;
     }
-  }
 
-  .modal-overlay {
-    position: fixed;
-    top: 0; left: 0;
-    width: 100vw;
-    height: 100vh;
-    background: rgba(0,0,0,0.8);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    z-index: 10000;
-    transition: opacity 0.3s ease;
-  }
+    .mobile-nav {
+      display: none;
+      flex-direction: column;
+      background-color: #2F2E5E;
+      padding: 12px 20px;
+    }
 
-  .modal-overlay.hidden {
-    opacity: 0;
-    pointer-events: none;
-  }
+    .mobile-nav a {
+      color: var(--text);
+      padding: 12px 0;
+      text-decoration: none;
+      font-weight: 500;
+      border-top: 1px solid var(--border);
+    }
 
-  .modal-content {
-    background-color: #2F2E5E;
-    padding: 40px;
-    border-radius: 12px;
-    max-width: 750px;
-    width: 90%;
-    box-shadow: 0 0 20px rgba(0,0,0,0.6);
-    color: #F5F5F5;
-  }
+    .mobile-nav a:hover {
+      color: var(--hover);
+    }
 
-  .modal-content h1 {
-    font-family: 'Playfair Display', serif;
-    text-align: center;
-  }
+    .mobile-nav.active {
+      display: flex;
+    }
 
-  .modal-content ul {
-    padding-left: 20px;
-    margin-top: 16px;
-  }
+    .content {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 20px;
+    }
 
-  .divider-bar {
-    display: flex;
-    justify-content: center;
-    gap: 8px;
-    margin: 10px 0 30px;
-  }
+    #page-content {
+      animation: fadeIn 0.25s ease-in-out;
+      min-height: 300px;
+    }
 
-  .divider-bar div {
-    width: 40px;
-    height: 6px;
-    border-radius: 3px;
-  }
+    #page-content > *:first-child {
+      margin-top: 0;
+      padding-top: 0;
+    }
 
-  .truth { background-color: #4CAF50; }
-  .reliability { background-color: #2196F3; }
-  .understanding { background-color: #FFC107; }
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(8px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
 
-  .agree-btn {
-    display: block;
-    margin: 30px auto 0;
-    background-color: var(--accent-blue);
-    color: white;
-    border: none;
-    font-size: 1rem;
-    font-weight: 600;
-    padding: 12px 24px;
-    border-radius: 8px;
-    cursor: pointer;
-    transition: background-color 0.3s ease;
-  }
+    @media (max-width: 768px) {
+      .nav-links-wrapper { display: none; }
+      .nav-toggle { display: block; }
+    }
 
-  .agree-btn:hover {
-    background-color: var(--hover);
-  }
+    .modal-overlay {
+      position: fixed;
+      top: 0; left: 0;
+      width: 100vw;
+      height: 100vh;
+      background: rgba(0,0,0,0.8);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 10000;
+      transition: opacity 0.3s ease;
+    }
 
-  strong {
-    color: #FFEB3B;
-  }
-</style>
+    .modal-overlay.hidden {
+      opacity: 0;
+      pointer-events: none;
+    }
+
+    .modal-content {
+      background-color: #2F2E5E;
+      padding: 40px;
+      border-radius: 12px;
+      max-width: 750px;
+      width: 90%;
+      box-shadow: 0 0 20px rgba(0,0,0,0.6);
+      color: #F5F5F5;
+    }
+
+    .modal-content h1 {
+      font-family: 'Playfair Display', serif;
+      text-align: center;
+    }
+
+    .modal-content ul {
+      padding-left: 20px;
+      margin-top: 16px;
+    }
+
+    .divider-bar {
+      display: flex;
+      justify-content: center;
+      gap: 8px;
+      margin: 10px 0 30px;
+    }
+
+    .divider-bar div {
+      width: 40px;
+      height: 6px;
+      border-radius: 3px;
+    }
+
+    .truth { background-color: #4CAF50; }
+    .reliability { background-color: #2196F3; }
+    .understanding { background-color: #FFC107; }
+
+    .agree-btn {
+      display: block;
+      margin: 30px auto 0;
+      background-color: var(--accent-blue);
+      color: white;
+      border: none;
+      font-size: 1rem;
+      font-weight: 600;
+      padding: 12px 24px;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+    }
+
+    .agree-btn:hover {
+      background-color: var(--hover);
+    }
+
+    strong {
+      color: #FFEB3B;
+    }
+  </style>
 </head>
 <body>
 
-  <!-- ✅ Navigation Bar -->
   <nav class="top-nav">
     <div class="brand-left">
       <a href="newTRUOWL.html">
@@ -240,7 +231,6 @@
       </a>
       <a href="newTRUOWL.html" class="nav-logo">The Strategic Owl</a>
     </div>
-
     <div class="nav-links-wrapper">
       <div class="nav-links">
         <a href="newelections.html">Election Security</a>
@@ -249,11 +239,9 @@
         <a href="newcontact.html">Contact</a>
       </div>
     </div>
-
     <button class="nav-toggle" onclick="toggleMobileNav()">☰</button>
   </nav>
 
-  <!-- ✅ Mobile nav -->
   <div class="mobile-nav" id="mobileNav">
     <a href="newelections.html">Election Security</a>
     <a href="newheritagefoundation.html">Election Fraud</a>
@@ -261,12 +249,10 @@
     <a href="newcontact.html">Contact</a>
   </div>
 
-  <!-- ✅ Content Loader -->
   <div class="content">
     <div id="page-content"></div>
   </div>
 
-  <!-- ✅ Legal Disclaimer Modal -->
   <div class="modal-overlay" id="disclaimerModal">
     <div class="modal-content">
       <h1>The Strategic Owl</h1>
@@ -288,113 +274,114 @@
     </div>
   </div>
 
-  <!-- ✅ JavaScript for SPA + Modal -->
- <script>
-function toggleMobileNav() {
-  document.getElementById('mobileNav').classList.toggle('active');
-}
-
-function loadPage(page, push = true) {
-  console.log(`[SPA] Loading page: ${page}`);
-  fetch(page)
-    .then(res => {
-      if (!res.ok) throw new Error(`Failed to load ${page}`);
-      return res.text();
-    })
-    .then(html => {
-      const container = document.getElementById('page-content');
-      container.innerHTML = html;
-      document.getElementById('mobileNav').classList.remove('active');
-      window.scrollTo(0, 0);
-      if (push) history.pushState({ page }, "", "#" + page);
-
-      runScriptsFromHTML(container);
-
-      setTimeout(() => {
-        callPageInits();
-      }, 100);
-    })
-    .catch(err => {
-      console.error(err);
-      document.getElementById('page-content').innerHTML = `<p style="color:red;">${err.message}</p>`;
-    });
-}
-
-function runScriptsFromHTML(container) {
-  const scripts = container.querySelectorAll("script");
-  console.log(`[SPA] Running ${scripts.length} scripts`);
-  scripts.forEach(oldScript => {
-    const newScript = document.createElement("script");
-    if (oldScript.src) {
-      newScript.src = oldScript.src;
-      newScript.async = false;
-    } else {
-      newScript.textContent = oldScript.textContent;
+  <script>
+    function toggleMobileNav() {
+      document.getElementById('mobileNav').classList.toggle('active');
     }
-    document.body.appendChild(newScript);
-  });
-}
 
-function callPageInits() {
-  const possibleInits = [
-    "initTRUOWLPage",
-    "initElectionPage",
-    "initStateFraudPage"
-  ];
-  possibleInits.forEach(fn => {
-    if (typeof window[fn] === "function") {
-      console.log(`[SPA] Calling ${fn}()`);
-      window[fn]();
+    function loadPage(page, push = true) {
+      console.log(`[SPA] Loading page: ${page}`);
+      fetch(page)
+        .then(res => {
+          if (!res.ok) throw new Error(`Failed to load ${page}`);
+          return res.text();
+        })
+        .then(html => {
+          const container = document.getElementById('page-content');
+          container.innerHTML = html;
+          bindLinks(); // ✅ rebind internal links
+          document.getElementById('mobileNav').classList.remove('active');
+          window.scrollTo(0, 0);
+          if (push) history.pushState({ page }, "", "#" + page);
+          runScriptsFromHTML(container);
+          setTimeout(callPageInits, 100);
+        })
+        .catch(err => {
+          console.error(err);
+          document.getElementById('page-content').innerHTML = `<p style="color:red;">${err.message}</p>`;
+        });
     }
-  });
-}
 
-function handleSPAClick(e) {
-  const anchor = e.currentTarget;
-  const href = anchor.getAttribute("href") || "";
-  if (href.endsWith(".html") && !href.startsWith("http")) {
-    e.preventDefault();
-    loadPage(href);
-  }
-}
+    function runScriptsFromHTML(container) {
+      const scripts = container.querySelectorAll("script");
+      console.log(`[SPA] Running ${scripts.length} scripts`);
+      scripts.forEach(oldScript => {
+        const newScript = document.createElement("script");
+        if (oldScript.src) {
+          newScript.src = `${oldScript.src}?t=${Date.now()}`; // bust cache
+          newScript.async = false;
+        } else {
+          newScript.textContent = oldScript.textContent;
+        }
+        document.body.appendChild(newScript);
+      });
+    }
 
-function bindLinks() {
-  document.querySelectorAll("a").forEach(link => {
-    link.removeEventListener("click", handleSPAClick);
-    link.addEventListener("click", handleSPAClick);
-  });
-}
+    function callPageInits() {
+      const possibleInits = [
+        "initTRUOWLPage",
+        "initElectionPage",
+        "initStateFraudPage"
+      ];
+      possibleInits.forEach(fn => {
+        if (typeof window[fn] === "function") {
+          console.log(`[SPA] Calling ${fn}()`);
+          window[fn]();
+        }
+      });
+    }
 
-function agreeAndEnter() {
-  localStorage.setItem("agreedToDisclaimer", "true");
+    function handleSPAClick(e) {
+      const anchor = e.currentTarget;
+      const href = anchor.getAttribute("href") || "";
+      if (href.endsWith(".html") && !href.startsWith("http")) {
+        e.preventDefault();
+        loadPage(href);
+      }
+    }
 
-  const modal = document.getElementById("disclaimerModal");
-  if (modal) {
-    modal.classList.add("hidden");
-    modal.style.display = "none";
-  }
+    function bindLinks() {
+      console.log("[SPA] Binding links...");
+      document.querySelectorAll("a").forEach(link => {
+        link.removeEventListener("click", handleSPAClick);
+        link.addEventListener("click", handleSPAClick);
+      });
+    }
 
-  const hashPage = location.hash?.substring(1) || "newTRUOWL.html";
+    function agreeAndEnter() {
+      localStorage.setItem("agreedToDisclaimer", "true");
 
-  fetch(hashPage)
-    .then(res => {
-      if (!res.ok) throw new Error(`Failed to load ${hashPage}`);
-      return res.text();
-    })
-    .then(html => {
-      const container = document.getElementById('page-content');
-      container.innerHTML = html;
-      window.scrollTo(0, 0);
+      const modal = document.getElementById("disclaimerModal");
+      if (modal) {
+        modal.classList.add("hidden");
+        modal.style.display = "none";
+      }
+
+      const hashPage = location.hash?.substring(1) || "newTRUOWL.html";
+
+      fetch(hashPage)
+        .then(res => {
+          if (!res.ok) throw new Error(`Failed to load ${hashPage}`);
+          return res.text();
+        })
+        .then(html => {
+          const container = document.getElementById('page-content');
+          container.innerHTML = html;
+          bindLinks(); // ✅ SPA link binding
+          runScriptsFromHTML(container);
+          setTimeout(callPageInits, 100);
+          history.pushState({ page: hashPage }, "", "#" + hashPage);
+        })
+        .catch(err => {
+          console.error(err);
+          document.getElementById('page-content').innerHTML = `<p style="color:red;">${err.message}</p>`;
+        });
+    }
+
+    // ✅ On first load: attach link handler globally
+    window.addEventListener("DOMContentLoaded", () => {
       bindLinks();
-      runScriptsFromHTML(container);
-      setTimeout(callPageInits, 100);
-      history.pushState({ page: hashPage }, "", "#" + hashPage);
-    })
-    .catch(err => {
-      console.error(err);
-      document.getElementById('page-content').innerHTML = `<p style="color:red;">${err.message}</p>`;
     });
-}
-</script>
+  </script>
 </body>
 </html>
