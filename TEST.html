@@ -376,27 +376,25 @@ function agreeAndEnter() {
 
   const hashPage = location.hash?.substring(1) || "newTRUOWL.html";
 
-  bindLinks();
-  loadPage(hashPage);
+  fetch(hashPage)
+    .then(res => {
+      if (!res.ok) throw new Error(`Failed to load ${hashPage}`);
+      return res.text();
+    })
+    .then(html => {
+      const container = document.getElementById('page-content');
+      container.innerHTML = html;
+      window.scrollTo(0, 0);
+      bindLinks();
+      runScriptsFromHTML(container);
+      setTimeout(callPageInits, 100);
+      history.pushState({ page: hashPage }, "", "#" + hashPage);
+    })
+    .catch(err => {
+      console.error(err);
+      document.getElementById('page-content').innerHTML = `<p style="color:red;">${err.message}</p>`;
+    });
 }
-
-window.addEventListener("popstate", e => {
-  if (e.state && e.state.page) {
-    loadPage(e.state.page, false);
-  }
-});
-
-window.addEventListener("DOMContentLoaded", () => {
-  bindLinks();
-
-  if (!localStorage.getItem("agreedToDisclaimer")) {
-    const modal = document.getElementById("disclaimerModal");
-    if (modal) modal.style.display = "flex";
-  } else {
-    const startPage = location.hash?.substring(1) || "newTRUOWL.html";
-    loadPage(startPage);
-  }
-});
 </script>
 </body>
 </html>
