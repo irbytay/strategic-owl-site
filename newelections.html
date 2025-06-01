@@ -474,7 +474,7 @@
 async function fetchTRUData() {
   const API_KEY = "AIzaSyCzuh9HBfe0r70r9U35Pe406PPZ-tz6I78";
   const SHEET_ID = "19wBEj9hEkvIyQcoR5E_mBGVAxTzMnddMxk8nuQLAumA";
-  const RANGE = "TRU!A2:AB1000";
+  const RANGE = "TRU!A2:Y1000"; // Includes up to column Y (index 24)
 
   const url = `https://sheets.googleapis.com/v4/spreadsheets/${SHEET_ID}/values/${RANGE}?key=${API_KEY}`;
   try {
@@ -484,7 +484,6 @@ async function fetchTRUData() {
     return json.values || [];
   } catch (err) {
     console.error("Failed to fetch sheet data", err);
-    // Display error message in select dropdown
     const select = document.getElementById("person-select");
     if (select) {
       select.innerHTML = '<option value="">Failed to load data. Please try again later.</option>';
@@ -493,7 +492,7 @@ async function fetchTRUData() {
   }
 }
 
-window.showScores = function() {
+window.showScores = function () {
   const select = document.getElementById("person-select");
   const table = document.getElementById("score-table");
   const tbody = document.getElementById("score-body");
@@ -516,8 +515,8 @@ window.showScores = function() {
 
   for (let i = 0; i < 10; i++) {
     const label = categories[i];
-    const score = parseInt(row[3 + i]) || 0;          // Scores start from D (index 3)
-    const explanation = row[17 + i] || "";             // Explanations start from R (index 17)
+    const score = parseInt(row[3 + i]) || 0;     // D to M (index 3 to 12)
+    const explanation = row[14 + i] || "";       // O to X (index 14 to 23)
 
     const tr = document.createElement("tr");
     tr.innerHTML = `<td>${label}</td><td>${score >= 0 ? "+" : ""}${score}</td><td>${explanation}</td>`;
@@ -525,8 +524,8 @@ window.showScores = function() {
     total += score;
   }
 
-  // Election Denial Bonus/Penalty from AB (index 27)
-  const flag = (row[27] || "").toLowerCase();
+  // Election Denial Flag: Y (index 24)
+  const flag = (row[24] || "").toLowerCase();
   let bonus = 0, label = "", desc = "";
 
   if (flag === "true") {
@@ -550,8 +549,8 @@ window.showScores = function() {
     total += bonus;
   }
 
-  // Summary from Q (index 16)
-  const summary = row[16] || "No summary provided.";
+  // Summary: N (index 13)
+  const summary = row[13] || "No summary provided.";
   const totalRow = document.createElement("tr");
   totalRow.innerHTML = `<td><strong>Total Score</strong></td><td><strong>${total >= 0 ? "+" : ""}${total}</strong></td><td><strong>${summary}</strong></td>`;
   tbody.appendChild(totalRow);
@@ -559,7 +558,7 @@ window.showScores = function() {
   table.style.display = "table";
 };
 
-window.initElectionPage = async function() {
+window.initElectionPage = async function () {
   window.rowMap = {};
 
   const data = await fetchTRUData();
@@ -583,8 +582,7 @@ window.initElectionPage = async function() {
   select.addEventListener("change", window.showScores);
 };
 
-// Automatically initialize on page load
-window.onload = function() {
+window.onload = function () {
   window.initElectionPage();
 };
 </script>
