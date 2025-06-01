@@ -1,0 +1,270 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <title>Voter Fraud by State – The Strategic Owl</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&family=Playfair+Display:wght@500;700&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --navy: #1A1A40;
+      --text: #F5F5F5;
+      --accent-blue: #3B6CED;
+      --hover: #4FDBA6;
+      --border: #2F2F5F;
+    }
+
+    body {
+      background-color: var(--navy);
+      font-family: 'Inter', sans-serif;
+      color: var(--text);
+      margin: 0;
+      padding: 0;
+    }
+
+    h1, h2, h3 {
+      font-family: 'Playfair Display', serif;
+    }
+
+    .content {
+      max-width: 900px;
+      margin: 0 auto;
+      padding: 40px 20px;
+    }
+
+    h1 {
+      font-size: clamp(1.8rem, 5vw, 2.4rem);
+      text-align: center;
+      margin-bottom: 10px;
+    }
+
+    .divider-bar {
+      display: flex;
+      justify-content: center;
+      gap: 8px;
+      margin: 30px auto;
+    }
+
+    .divider-bar div {
+      width: 40px;
+      height: 6px;
+      border-radius: 3px;
+    }
+
+    .truth { background-color: #4CAF50; }
+    .reliability { background-color: #2196F3; }
+    .understanding { background-color: #FFD700; }
+
+    .section-box {
+      background-color: #2F2E5E;
+      padding: 40px 24px;
+      border-radius: 12px;
+      box-shadow: 0 0 12px rgba(0, 0, 0, 0.5);
+      margin: 0 auto 40px;
+    }
+
+    .subtext {
+      text-align: center;
+      font-size: clamp(1rem, 3.5vw, 1.15rem);
+      color: #CCCCCC;
+      margin-bottom: 30px;
+      line-height: 1.5;
+    }
+
+    .table-wrapper {
+      display: flex;
+      justify-content: center;
+      overflow-x: auto;
+      margin-top: 30px;
+      border-radius: 8px;
+    }
+
+    table {
+      width: 80%;
+      max-width: 700px;
+      min-width: 360px;
+      border-collapse: collapse;
+      background-color: #1A1A40;
+    }
+
+    th, td {
+      padding: 8px 12px;
+      font-size: clamp(0.9rem, 3vw, 1rem);
+      text-align: center;
+      border-bottom: 1px solid #444;
+    }
+
+    th {
+      background-color: var(--accent-blue);
+      color: #fff;
+    }
+
+    tbody tr:nth-child(even) {
+      background-color: #22224a;
+    }
+
+    .source {
+      font-size: 0.95rem;
+      text-align: center;
+      color: #AAAAAA;
+      margin-top: 24px;
+      line-height: 1.5;
+    }
+
+    .source a {
+      color: var(--hover);
+      text-decoration: underline;
+    }
+
+    .back-link {
+      text-align: center;
+      margin-top: 40px;
+    }
+
+    .back-link a {
+      color: var(--text);
+      font-weight: 600;
+      text-decoration: none;
+      font-size: 1rem;
+      border-bottom: 2px solid var(--accent-blue);
+      padding-bottom: 4px;
+      transition: color 0.2s ease, border-color 0.2s ease;
+    }
+
+    .back-link a:hover {
+      color: var(--hover);
+      border-color: var(--hover);
+    }
+  </style>
+</head>
+<body>
+  <div class="content">
+    <h1>Voter Fraud by State</h1>
+
+    <div class="divider-bar">
+      <div class="truth"></div>
+      <div class="reliability"></div>
+      <div class="understanding"></div>
+    </div>
+
+    <div class="section-box">
+      <p class="subtext">
+        Select a U.S. state to view documented voter fraud cases based on data from the Heritage Foundation — a conservative group that built this database to justify stricter voting laws.
+      </p>
+      <p class="subtext">
+        But the numbers tell a different story. In most states, cases are rare — often just a handful across decades. Even from a source trying to prove fraud, the data shows how minimal it really is.
+      </p>
+      <p class="subtext">
+        This isn’t just a table. It’s context. And it helps expose when fear is used to push laws like the SAVES Act that restrict access more than they protect elections.
+      </p>
+
+      <label for="state-select" style="display:block;text-align:center;margin-top:20px;font-weight:bold;">
+        Filter by State:
+      </label>
+      <select id="state-select" style="margin: 20px auto; display: block;">
+        <option value="">-- Select a State --</option>
+      </select>
+
+      <div class="table-wrapper" style="display:none;" id="state-results">
+        <table>
+          <thead>
+            <tr>
+              <th>Year</th>
+              <th>State</th>
+              <th>Name</th>
+            </tr>
+          </thead>
+          <tbody id="state-data-body"></tbody>
+        </table>
+      </div>
+
+      <p class="source">
+        Source: <a href="https://www.heritage.org/voterfraud" target="_blank">Heritage Foundation Voter Fraud Database</a>
+      </p>
+    </div>
+
+    <div class="back-link">
+      <a href="elections.html">← Back to Overview</a>
+    </div>
+  </div>
+
+  <script>
+    const API_KEY = "AIzaSyB3NmN4OpDutbaX6V2KkLy1p-vDLghrF5M";
+    const SHEET_ID = "1p66gmWWjxJbrySxpR5T--fP8iEgUbW7RrXru61gagRA";
+    const RANGE = "HeritageVoterfraudRawData!B5:D1589";
+
+    const stateSelect = document.getElementById("state-select");
+    const tableBody = document.getElementById("state-data-body");
+    const resultsWrapper = document.getElementById("state-results");
+
+    const summaryLine = document.createElement("p");
+    summaryLine.id = "state-summary";
+    summaryLine.style.cssText = "text-align:center; font-weight:bold; font-size:1.05rem; margin-top:10px;";
+    resultsWrapper.parentElement.insertBefore(summaryLine, resultsWrapper);
+
+    async function fetchSheetData() {
+      const url = `https://sheets.googleapis.com/v4/spreadsheets/${SHEET_ID}/values/${RANGE}?key=${API_KEY}`;
+      try {
+        const res = await fetch(url);
+        const data = await res.json();
+        return data.values || [];
+      } catch (error) {
+        console.error("Failed to fetch data:", error);
+        return [];
+      }
+    }
+
+    function populateDropdown(statesSet) {
+      const sortedStates = Array.from(statesSet).sort();
+      sortedStates.forEach(state => {
+        const opt = document.createElement("option");
+        opt.value = state;
+        opt.textContent = state;
+        stateSelect.appendChild(opt);
+      });
+    }
+
+    async function init() {
+      const rows = await fetchSheetData();
+      const statesSet = new Set(rows.map(row => row[1]));
+      populateDropdown(statesSet);
+
+      stateSelect.addEventListener("change", function () {
+        const selected = this.value;
+        tableBody.innerHTML = "";
+        summaryLine.textContent = "";
+
+        const filtered = rows.filter(row => row[1] === selected);
+
+        if (filtered.length === 0) {
+          tableBody.innerHTML = `<tr><td colspan="3">No records found for ${selected}</td></tr>`;
+          resultsWrapper.style.display = "flex";
+          return;
+        }
+
+        const sorted = filtered.sort((a, b) => parseInt(a[0]) - parseInt(b[0]));
+
+        const years = sorted.map(row => parseInt(row[0])).filter(year => !isNaN(year));
+        const minYear = Math.min(...years);
+        const maxYear = Math.max(...years);
+        const caseCount = sorted.length;
+
+        summaryLine.textContent = `${caseCount} case${caseCount === 1 ? '' : 's'} found from ${minYear} to ${maxYear}`;
+
+        sorted.forEach(row => {
+          const year = row[0];
+          const state = row[1];
+          const name = row[2];
+          const tr = document.createElement("tr");
+          tr.innerHTML = `<td>${year}</td><td>${state}</td><td>${name}</td>`;
+          tableBody.appendChild(tr);
+        });
+
+        resultsWrapper.style.display = "flex";
+      });
+    }
+
+    init();
+  </script>
+</body>
+</html>

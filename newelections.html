@@ -1,0 +1,877 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>The Strategic Owl – Election Security Scores</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&family=Playfair+Display:wght@500;700&display=swap" rel="stylesheet" />
+  <style>
+  * {
+    box-sizing: border-box;
+  }
+
+  body {
+    background-color: #1A1A40;
+    color: #F5F5F5;
+    font-family: 'Inter', sans-serif;
+    margin: 0;
+    padding: 0;
+  }
+
+  .container {
+    padding: 40px 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .box {
+  background-color: #2F2E5E;
+  padding: 40px;
+  border-radius: 12px;
+  width: 100%;
+  max-width: 900px;
+  margin: 0 auto 40px auto; /* ⬅️ Horizontally centers */
+  box-shadow: 0 0 12px rgba(0, 0, 0, 0.5);
+  display: flex;
+  flex-direction: column;
+  align-items: center; /* ⬅️ Center content inside too */
+}
+
+  .box h2,
+  .box h3,
+  .box p,
+  .box label,
+  .box select {
+    text-align: center;
+    width: 100%;
+  }
+
+  .box table,
+  .box ul,
+  .box .strategic-insight {
+    text-align: left;
+    width: 100%;
+  }
+
+  h1, h2, h3 {
+    font-family: 'Playfair Display', serif;
+    margin-top: 0;
+  }
+
+  h1 {
+    font-size: 2.4rem;
+    margin-bottom: 25px;
+    text-align: center;
+  }
+
+  .divider-bar {
+    display: flex;
+    justify-content: center;
+    gap: 8px;
+    margin: 10px auto 30px auto;
+  }
+
+  .divider-bar div {
+    width: 40px;
+    height: 6px;
+    border-radius: 3px;
+  }
+
+  .truth { background-color: #4CAF50; }
+  .reliability { background-color: #2196F3; }
+  .understanding { background-color: #FFC107; }
+
+  select {
+    padding: 10px;
+    margin-top: 20px;
+    background-color: #2F2E5E;
+    color: #F5F5F5;
+    border: none;
+    border-radius: 5px;
+    width: 100%;
+    max-width: 400px;
+    font-size: 1rem;
+  }
+
+  .table-wrapper {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+  }
+
+  #score-table {
+    width: 100%;
+    max-width: 850px;
+    border-collapse: collapse;
+    margin-top: 20px;
+    font-size: 0.95rem;
+  }
+
+  .box table {
+    margin-bottom: 30px;
+  }
+
+  th, td {
+    border: 1px solid #3B6CED;
+    padding: 12px;
+    text-align: left;
+  }
+
+  th {
+    background-color: #2F2E5E;
+  }
+
+  td {
+    background-color: #1A1A40;
+  }
+
+  strong {
+    color: #FFEB3B;
+  }
+
+  .back-link {
+    text-align: center;
+    margin: 20px auto 60px;
+  }
+
+  .back-link a {
+    color: #F5F5F5;
+    font-weight: 600;
+    text-decoration: none;
+    border-bottom: 2px solid #3B6CED;
+    padding-bottom: 4px;
+    transition: color 0.2s ease, border-color 0.2s ease;
+  }
+
+  .back-link a:hover {
+    color: #4FDBA6;
+    border-color: #4FDBA6;
+  }
+
+  .score-legend {
+    list-style: none;
+    padding-left: 0;
+    margin: 20px 0;
+  }
+
+  .score-legend li {
+    margin-bottom: 8px;
+    line-height: 1.5;
+    display: flex;
+    align-items: baseline;
+    justify-content: flex-start;
+    text-align: left;
+  }
+
+  .score {
+    font-weight: 600;
+    display: inline-block;
+    min-width: 80px;
+    margin-right: 6px;
+  }
+
+  .score.positive-high {
+    color: #4CAF50;
+  }
+
+  .score.positive {
+    color: #8BC34A;
+  }
+
+  .score.neutral {
+    color: #FFEB3B;
+  }
+
+  .score.negative {
+    color: #FF9800;
+  }
+
+  .score.disinfo {
+    color: #F44336;
+  }
+
+  @media (max-width: 600px) {
+    .box {
+      padding: 25px;
+    }
+
+    h1 {
+      font-size: 2rem;
+    }
+
+    select {
+      width: 100%;
+      font-size: 1rem;
+    }
+
+    #score-table {
+      font-size: 0.9rem;
+    }
+  }
+</style>
+</head>
+<div class="container">
+  <div class="logo-container">
+    <h1>Election Security Score Viewer</h1>
+  </div>
+
+  <div class="divider-bar">
+    <div class="truth"></div>
+    <div class="reliability"></div>
+    <div class="understanding"></div>
+  </div>
+</div>
+
+    <!-- Box: Score Viewer -->
+  <div class="box">
+        
+  <h2>How the T.R.U. OWL Score Works</h2>
+<p>Each person is assessed across 10 core categories related to election security. Scores are assigned based on public statements, platform behavior, and alignment with verified facts.</p>
+<ul class="score-legend tight">
+  <li><span class="score positive-high">+10 to +6</span> Demonstrates high factual accuracy and civic literacy</li>
+  <li><span class="score positive">+5 to +1</span> Shows general alignment with facts, but lacks clarity or depth</li>
+  <li><span class="score neutral">0</span> No significant engagement or neutral presence</li>
+  <li><span class="score negative">-1 to -5</span> Frequently misrepresents or oversimplifies key facts</li>
+  <li><span class="score disinfo">-6 to -10</span> Spreads disinformation or undermines democratic systems</li>
+</ul>
+<p><strong>Total Score:</strong> A summation of all category subscores. This reflects a person's overall credibility on the topic of U.S. election security — not their ideology or political alignment.</p>
+<p><em>Note:</em> A person’s stance on the 2020 election is a strong signal within this system. In many cases, denial of verified results reflects not just misinformation, but loyalty signaling — making it a direct measure of truth vs. tribalism.</p>
+    <label for="person-select"><strong>Select a person to view their score breakdown:</strong></label>
+    <select id="person-select" onchange="showScores()">
+      <option value="">-- Choose a name --</option>
+      <option value="lukeBeasley">Luke Beasley</option>
+	<option value="davidBrooks">David Brooks</option>
+	<option value="tuckerCarlson">Tucker Carlson</option>
+	<option value="francescaFiorentini">Francesca Fiorentini</option>
+	<option value="lexFridman">Lex Fridman</option>
+      <option value="bennyJohnson">Benny Johnson</option>
+	<option value="anaKasparian">Ana Kasparian</option>
+	<option value="charlieKirk">Charlie Kirk</option>
+	<option value="adamMockler">Adam Mockler</option>
+	<option value="candaceOwens">Candace Owens</option>
+	<option value="davidPakman">David Pakman</option>
+	<option value="jordanPeterson">Jordan Peterson</option>
+	<option value="timPool">Tim Pool</option>
+	<option value="robertReich">Robert Reich</option>
+	<option value="joeRogan">Joe Rogan</option>
+	<option value="samSeder">Sam Seder</option>
+	<option value="benShapiro">Ben Shapiro</option>
+	<option value="mattWalsh">Matt Walsh</option>
+    </select>
+<div class="table-wrapper">
+    <table id="score-table" style="display: none;">
+      <thead>
+        <tr>
+          <th>Category</th>
+          <th>Score</th>
+          <th>Explanation</th>
+        </tr>
+      </thead>
+      <tbody id="score-body"></tbody>
+    </table>
+  </div>
+  </div>
+
+  <!-- Box: Base Layer of Truth -->
+  <div class="box">
+<h2>Strategic Foundation - Election Security</h2>
+
+<h3>Constitutional Knowledge</h3>
+<table>
+  <tr><th>Facts</th></tr>
+  <tr>
+    <td>
+      Voting is a constitutional right — not a privilege handed out by politicians or protected by parties. Anyone who says otherwise is either misinformed or strategically misleading.
+    </td>
+  </tr>
+  <tr>
+    <td>
+      The U.S. Constitution protects voting rights through multiple amendments: 1st (expression), 12th (electoral count), 14th (equal protection), 15th (race), 17th (Senate elections), 19th (gender), 23rd (D.C. electors), 24th (poll tax), and 26th (age).
+    </td>
+  </tr>
+  <tr>
+    <td>
+      The 12th Amendment defines how Electoral College votes are counted. It does **not** give the Vice President the authority to reject certified results — that’s a lie dressed as process.
+    </td>
+  </tr>
+</table>
+<p class="strategic-insight">
+  <strong>Strategic Insight:</strong> When people frame voting as a privilege, they distort constitutional truth. This distortion justifies exclusion — intentionally or not. Clarity on this category separates civic knowledge from manipulation.
+</p>
+
+<h3>Legal Framework</h3>
+<table>
+  <tr><th>Facts</th></tr>
+  <tr>
+    <td>
+      Only U.S. citizens can vote in federal elections — this isn’t opinion, it’s federal law. Anyone claiming otherwise is either distorting the law or exploiting confusion.
+    </td>
+  </tr>
+  <tr>
+    <td>
+      Voter registration systems already require proof of citizenship: birth certificate, passport, or naturalization documentation. Claims that noncitizens are voting in mass are designed to provoke, not inform.
+    </td>
+  </tr>
+  <tr>
+    <td>
+      Three key laws govern voting access and oversight: the Voting Rights Act (1965), the National Voter Registration Act (1993), and the Help America Vote Act (2002). These laws exist to secure elections — not to rig them.
+    </td>
+  </tr>
+</table>
+<p class="strategic-insight">
+  <strong>Strategic Insight:</strong> Legal misrepresentation fuels voter suppression. Understanding the actual laws — and how they're twisted — exposes efforts to restrict rather than protect democratic access.
+</p>
+<h3>Federalism</h3>
+<table>
+  <tr><th>Facts</th></tr>
+  <tr>
+    <td>
+      Under Article I, Section 4 of the Constitution, states control how elections are run — even for federal offices. That’s not a loophole; it’s the foundation of decentralized democracy.
+    </td>
+  </tr>
+  <tr>
+    <td>
+      There is no centralized national voting system. Each state builds and manages its own process — by design. Attempts to override this are not about integrity; they’re about control.
+    </td>
+  </tr>
+</table>
+<p class="strategic-insight">
+  <strong>Strategic Insight:</strong> Federalism isn’t just structure — it’s strategy. Knowing who controls what helps reveal when someone is bypassing accountability by blaming “the feds” or “the states.”
+</p>
+<h3>Election Mechanics</h3>
+<table>
+  <tr><th>Facts</th></tr>
+  <tr>
+    <td>
+      Machine counts are statistically more accurate than hand counts — confirmed by decades of audit data. Those who push “hand counts only” are usually pushing doubt, not improvement.
+    </td>
+  </tr>
+  <tr>
+    <td>
+      Most states conduct risk-limiting audits — a scientifically proven method to verify outcomes and catch errors. It’s not just about recounts, it’s about confidence rooted in evidence.
+    </td>
+  </tr>
+  <tr>
+    <td>
+      Paper ballot backups are standard in nearly every state. They exist precisely to double-check machines. Pretending they don’t is a strategy, not a mistake.
+    </td>
+  </tr>
+</table>
+<p class="strategic-insight">
+  <strong>Strategic Insight:</strong> Doubting machines works because people don’t know the safeguards. Falsehoods spread faster than tech facts. Knowing the mechanics restores grounded trust.
+</p>
+<h3>Electoral Count Process</h3>
+<table>
+  <tr><th>Facts</th></tr>
+  <tr>
+    <td>
+      The 12th Amendment defines how Congress counts Electoral College votes — not how to dispute them. It outlines process, not power grabs.
+    </td>
+  </tr>
+  <tr>
+    <td>
+      The Vice President’s role is purely ceremonial. They open the envelopes — they don’t get to edit what’s inside. Any claim otherwise is political fiction.
+    </td>
+  </tr>
+  <tr>
+    <td>
+      Electoral votes come from the states after legal certification. Congress meets only to tally — not to veto. That’s how our system prevents chaos.
+    </td>
+  </tr>
+</table>
+<p class="strategic-insight">
+  <strong>Strategic Insight:</strong> The Vice President is ceremonial. Pretending otherwise isn't debate — it's destabilization. This process matters because it protects the handoff of power from personal agendas.
+</p>
+<h3>Disinformation Awareness</h3>
+<table>
+  <tr><th>Fact</th></tr>
+  <tr><td>Disinformation is intentional deception; misinformation is accidental.</td></tr>
+  <tr><td>There is no evidence of widespread fraud in the 2020 election — confirmed in over 60 court rulings.</td></tr>
+  <tr><td>Trump-appointed judges, DHS, and state officials (GOP and Dem) verified election legitimacy.</td></tr>
+</table>
+<p class="strategic-insight">
+  <strong>Strategic Insight:</strong> People don’t need to lie to spread disinformation — just repeat it. The danger isn’t just the source, but the echo. Identifying intent helps separate confusion from corruption.
+</p>
+<h3>Public Impact</h3>
+<table>
+  <tr><th>Facts</th></tr>
+  <tr>
+    <td>
+      Public figures shape how millions perceive reality — whether they intend to or not. Influence without responsibility is a liability to democracy.
+    </td>
+  </tr>
+  <tr>
+    <td>
+      Repeating false claims, even passively or under the guise of “just asking questions,” chips away at public trust and legitimizes chaos.
+    </td>
+  </tr>
+  <tr>
+    <td>
+      The act of correcting falsehoods — especially in front of an audience — isn’t just noble. It’s a marker of integrity and a civic responsibility.
+    </td>
+  </tr>
+</table>
+<p class="strategic-insight">
+  <strong>Strategic Insight:</strong> Influence without correction spreads distortion. Even silence has consequence. A platform without responsibility becomes a megaphone for confusion.
+</p>
+<h3>Judicial Oversight</h3>
+<table>
+  <tr><th>Facts</th></tr>
+  <tr>
+    <td>
+      More than 60 court cases in 2020 — across both state and federal courts — found zero evidence of widespread voter fraud. That’s not an opinion. That’s legal record.
+    </td>
+  </tr>
+  <tr>
+    <td>
+      Many of those rulings came from Trump-appointed judges. When even your own bench calls the bluff, the argument collapses.
+    </td>
+  </tr>
+  <tr>
+    <td>
+      Landmark rulings like <em>Bush v. Gore (2000)</em> and <em>Moore v. Harper (2023)</em> define the constitutional limits of power in elections — not Twitter threads.
+    </td>
+  </tr>
+  <tr>
+    <td>
+      Courts don’t override elections — they uphold them. Judicial review is the firewall between law and lawlessness.
+    </td>
+  </tr>
+</table>
+<p class="strategic-insight">
+  <strong>Strategic Insight:</strong> Courts are guardrails — but only if the public understands their role. Discrediting them without basis isn’t skepticism, it’s sabotage. Knowing how legal resolution works restores faith in resolution itself.
+</p>
+<h3>Election Worker Protections</h3>
+<table>
+  <tr><th>Fact</th></tr>
+  <tr><td>After the 2020 election, election workers across the country were harassed, doxxed, and threatened with violence.</td></tr>
+  <tr><td>Ruby Freeman and Shaye Moss, Georgia workers, were falsely accused and targeted by Trump allies.</td></tr>
+  <tr><td>Some states have passed laws to increase penalties for threatening election officials or disrupting ballot counting.</td></tr>
+  <tr><td>Protecting election workers is essential for the functionality and fairness of the democratic process.</td></tr>
+</table>
+<p class="strategic-insight">
+  <strong>Strategic Insight:</strong> When workers fear for their safety, democracy itself is at risk. Protecting them isn’t just policy — it’s a defense of the system’s human backbone.
+</p>
+<h3>Psychological Manipulation (Soversion Layer)</h3>
+<table>
+  <tr><th>Facts</th></tr>
+  <tr>
+    <td>
+      Disinformation doesn’t rely on logic — it thrives on emotion. Repetition and fear short-circuit critical thinking, by design.
+    </td>
+  </tr>
+  <tr>
+    <td>
+      Election lies stick not because they’re convincing, but because they activate identity, grievance, and distrust. That’s how propaganda works.
+    </td>
+  </tr>
+  <tr>
+    <td>
+      People often reject truth not out of ignorance, but out of self-protection — a product of tribal loyalty and motivated reasoning.
+    </td>
+  </tr>
+  <tr>
+    <td>
+      When false beliefs fuse with identity and override reality, that’s not confusion — that’s <strong>Soversion</strong>: a rewiring of truth through ideological capture.
+    </td>
+  </tr>
+</table>
+<p class="strategic-insight">
+  <strong>Strategic Insight:</strong> Soversion turns confusion into identity. The more people believe falsehoods reflect who they are, the harder truth becomes to hear. That’s not ignorance — that’s engineered entrenchment.
+</p>
+</div>
+
+  <!-- Back Link -->
+  <div class="back-link">
+    <a href="TRUOWL.html">← Back to Overview</a>
+  </div>
+
+  <!-- Script: Score Display -->
+  <script>
+    const data = {
+      strategicOwl: {
+  scores: [
+    ["Constitutional Knowledge", "+10", "Demonstrates full understanding of voting-related amendments and their implications."],
+    ["Legal Framework", "+10", "Accurately explains citizenship requirements and nuances in voter ID law."],
+    ["Federalism", "+10", "Clearly outlines state vs. federal jurisdiction over election processes."],
+    ["Election Mechanics", "+9", "Explains machine accuracy, paper audits, and election safeguards effectively."],
+    ["Electoral Count Process", "+10", "Breaks down the 12th Amendment with precision, clarifies VP’s ceremonial role."],
+    ["Disinformation Awareness", "+14", "Directly confronts false narratives, distinguishes intent, and reinforces verified truths."],
+    ["Public Impact", "+10", "Uses platform to elevate civic understanding and spread verified facts."],
+    ["Judicial Oversight", "+9", "Clarifies the legal system's role in election integrity and reviews court precedent."],
+    ["Election Worker Protections", "+5", "Highlights threats to workers and emphasizes protections for democratic function."],
+    ["Psychological Manipulation", "+8", "Introduces the Soversion concept, linking propaganda to cognitive bias."]
+  ],
+electionDenial: false,
+  summary: "A model of civic clarity — combines constitutional depth, strategic communication, and verified truth."
+},
+      lukeBeasley: {
+  scores: [
+    ["Constitutional Knowledge", "+7", "Demonstrates a solid understanding of constitutional principles, though discussions on specific voting-related amendments are limited."],
+    ["Legal Framework", "+8", "Effectively addresses citizenship and voter ID laws with generally accurate framing."],
+    ["Federalism", "+6", "Acknowledges state control over elections but lacks deeper legal context or structural insight."],
+    ["Election Mechanics", "+6", "Discusses voting systems and audits, providing limited technical detail."],
+    ["Electoral Count Process", "+6", "Accurately identifies the Vice President’s role, though legal nuance is limited."],
+    ["Disinformation Awareness", "+10", "Actively refutes falsehoods and promotes verified sources."],
+    ["Public Impact", "+5", "Delivers consistent messaging but doesn’t anchor in civic frameworks."],
+    ["Judicial Oversight", "+4", "References legal outcomes without fully contextualizing them."],
+    ["Election Worker Protections", "+2", "Mentions attacks on workers but offers limited analysis."],
+    ["Psychological Manipulation", "+1", "Does not explicitly explore cognitive distortion or identity entrenchment."]
+  ],
+electionDenial: false,
+  summary: "Truth-focused and well-intentioned, with room to grow in structural and legal depth."
+},
+      davidBrooks: {
+  scores: [
+    ["Constitutional Knowledge", "+9", "Displays broad civic knowledge, though legal specificity is limited."],
+    ["Legal Framework", "+8", "Speaks to fairness and norms, less on statutory structure."],
+    ["Federalism", "+9", "Effectively articulates the federal-state balance in elections."],
+    ["Election Mechanics", "+5", "Reflects on processes abstractly, but omits technical safeguards."],
+    ["Electoral Count Process", "+6", "Understands importance of process but misses constitutional specifics."],
+    ["Disinformation Awareness", "+13", "Pushes back on false claims with a principled voice."],
+    ["Public Impact", "+8", "Promotes institutional trust and reflection on democratic values."],
+    ["Judicial Oversight", "+6", "Supports lawful adjudication, but lacks depth on case precedent."],
+    ["Election Worker Protections", "+2", "Likely empathetic, though rarely discussed explicitly."],
+    ["Psychological Manipulation", "+2", "Touches on cultural bias, but not framed in cognitive terms."]
+  ],
+electionDenial: false,
+  summary: "A reflective and principled voice who champions democratic norms more than legal detail."
+},
+      bennyJohnson: {
+  scores: [
+    ["Constitutional Knowledge", "-8", "Incorrectly frames voting as a privilege, contradicting constitutional law."],
+    ["Legal Framework", "-9", "Repeatedly misrepresents legal requirements for eligibility and ID laws."],
+    ["Federalism", "-6", "Fails to respect state authority; promotes federal override claims without basis."],
+    ["Election Mechanics", "-10", "Echoes debunked claims about machine fraud and rigging."],
+    ["Electoral Count Process", "-9", "Promotes false narrative that VP can overturn certified results."],
+    ["Disinformation Awareness", "-15", "Disseminates known falsehoods despite legal rulings and bipartisan confirmations."],
+    ["Public Impact", "-5", "Leverages platform to amplify distortion and delegitimize verified outcomes."],
+    ["Judicial Oversight", "-6", "Dismisses valid court rulings as corrupt or invalid without evidence."],
+    ["Election Worker Protections", "-4", "Platform supported narratives that endangered frontline officials."],
+    ["Psychological Manipulation", "-3", "Utilizes grievance-driven rhetoric without recognizing its manipulative roots."]
+  ],
+electionDenial: true,
+  summary: "Routinely spreads election falsehoods and discredits democratic systems to fuel political narrative."
+},
+lexFridman: {
+  scores: [
+    ["Constitutional Knowledge", "+4", "Demonstrates respect for democratic structures but seldom delves into specific constitutional provisions."],
+    ["Legal Framework", "+2", "Rarely discusses election laws or voter eligibility criteria in depth."],
+    ["Federalism", "+1", "Occasionally references state versus federal roles without detailed analysis."],
+    ["Election Mechanics", "+1", "Provides limited insight into election processes, audits, or safeguards."],
+    ["Electoral Count Process", "+0", "Does not engage with the specifics of the electoral count or related constitutional procedures."],
+    ["Disinformation Awareness", "-5", "Offers a platform to guests who propagate misinformation without sufficient challenge or clarification."],
+    ["Public Impact", "+2", "Maintains a large audience but does not actively promote civic literacy or counter misinformation."],
+    ["Judicial Oversight", "+1", "Seldom references court rulings or the judiciary's role in election integrity."],
+    ["Election Worker Protections", "+0", "Does not address the safety or challenges faced by election workers."],
+    ["Psychological Manipulation", "+3", "Explores cognitive biases with guests but avoids directly addressing propaganda or manipulation tactics."]
+  ],
+electionDenial: "gray",
+  summary: "While fostering open dialogue, Lex Fridman's approach often lacks critical engagement with misinformation, potentially limiting his contribution to informed civic discourse."
+},
+charlieKirk: {
+  scores: [
+    ["Constitutional Knowledge", "-6", "Regularly misinterprets the Constitution, often framing voting as a privilege."],
+    ["Legal Framework", "-7", "Misrepresents voter ID laws and supports unfounded fraud narratives."],
+    ["Federalism", "-5", "Dismisses state authority in favor of centralized control when it suits narrative."],
+    ["Election Mechanics", "-8", "Repeatedly claims machines are rigged and undermines verified audit systems."],
+    ["Electoral Count Process", "-6", "Promoted idea that VP could reject results; lacks legal grounding."],
+    ["Disinformation Awareness", "-12", "Spreads election conspiracy theories, often doubling down after court rulings."],
+    ["Public Impact", "-7", "Leverages large audience to fuel distrust without evidence."],
+    ["Judicial Oversight", "-4", "Minimizes or discredits legitimate legal outcomes related to elections."],
+    ["Election Worker Protections", "-3", "Rarely acknowledges threats; focuses on defending accusers."],
+    ["Psychological Manipulation", "-5", "Engages in grievance-based messaging to emotionally anchor belief in fraud."]
+  ],
+electionDenial: true,
+  summary: "Uses platform to amplify falsehoods and grievance, consistently undermining democratic truth."
+},
+adamMockler: {
+  scores: [
+    ["Constitutional Knowledge", "+8", "Demonstrates a strong grasp of constitutional principles, frequently referencing relevant amendments and legal frameworks in his analyses."],
+    ["Legal Framework", "+7", "Accurately discusses voting laws and eligibility, highlighting issues like gerrymandering and voter suppression."],
+    ["Federalism", "+6", "Acknowledges the balance between state and federal powers in election administration, though occasionally focuses more on federal implications."],
+    ["Election Mechanics", "+5", "Explains election processes, including voting systems and audits, but sometimes lacks technical depth."],
+    ["Electoral Count Process", "+6", "Clarifies the roles within the electoral process, emphasizing the ceremonial role of the Vice President in vote counting."],
+    ["Disinformation Awareness", "+9", "Actively debunks false narratives and emphasizes the importance of factual reporting in maintaining democratic integrity."],
+    ["Public Impact", "+8", "Uses his platform to inform and engage the public on election-related issues, fostering civic awareness."],
+    ["Judicial Oversight", "+5", "References court decisions and legal precedents to support his analyses, though not always in extensive detail."],
+    ["Election Worker Protections", "+4", "Highlights threats to election workers and advocates for their protection, bringing attention to their critical role."],
+    ["Psychological Manipulation", "+7", "Discusses the tactics used in spreading misinformation, including emotional appeals and identity-based manipulation."]
+  ],
+electionDenial: false,
+  summary: "A committed advocate for democratic principles, Adam Mockler combines constitutional literacy with proactive debunking of disinformation, effectively informing and engaging the public on election integrity issues."
+},
+candaceOwens: {
+  scores: [
+    ["Constitutional Knowledge", "-5", "Often frames voting as a privilege rather than a constitutional right, misrepresenting the nature of voting rights."],
+    ["Legal Framework", "-6", "Advocates for strict voter ID laws and supports legislation that risks disenfranchising eligible voters."],
+    ["Federalism", "-4", "Supports federal interventions in state-run elections, challenging the Constitution’s balance of power."],
+    ["Election Mechanics", "-7", "Promotes unsubstantiated claims about voting machines and systemic fraud."],
+    ["Electoral Count Process", "-5", "Echoes narratives that the Vice President could alter electoral results, contradicting constitutional procedure."],
+    ["Disinformation Awareness", "-10", "Frequently spreads election-related misinformation and conspiracy theories."],
+    ["Public Impact", "-6", "Leverages a large audience to spread doubt about U.S. elections, eroding public trust."],
+    ["Judicial Oversight", "-3", "Dismisses court rulings that contradict her narrative, questioning judicial legitimacy."],
+    ["Election Worker Protections", "-2", "Rarely acknowledges threats faced by election workers or defends their integrity."],
+    ["Psychological Manipulation", "-4", "Uses emotionally charged rhetoric to reinforce misinformation and distrust."]
+  ],
+electionDenial: true,
+  summary: "Candace Owens consistently spreads election misinformation and challenges foundational civic norms, contributing to public distrust and undermining democratic institutions."
+},
+jordanPeterson: {
+  scores: [
+    ["Constitutional Knowledge", "-3", "Demonstrates limited engagement with U.S. constitutional principles related to voting rights, occasionally mischaracterizing the nature of these rights."],
+    ["Legal Framework", "-4", "Supports strict voter ID laws without addressing concerns about potential disenfranchisement, reflecting a partial understanding of the legal complexities involved."],
+    ["Federalism", "-2", "Shows minimal awareness of the balance between state and federal control in U.S. election administration, leading to oversimplified commentary."],
+    ["Election Mechanics", "-3", "Expresses skepticism about election integrity without providing evidence, contributing to public doubt in electoral processes."],
+    ["Electoral Count Process", "-2", "Lacks detailed discussion on the constitutional procedures governing the electoral count, resulting in superficial analysis."],
+    ["Disinformation Awareness", "-4", "Occasionally amplifies unverified claims regarding election fraud, inadvertently spreading misinformation."],
+    ["Public Impact", "-5", "Utilizes a significant platform to voice concerns about election legitimacy, potentially influencing public perception negatively."],
+    ["Judicial Oversight", "-2", "Rarely acknowledges the role of the judiciary in resolving election disputes, overlooking a critical component of electoral integrity."],
+    ["Election Worker Protections", "0", "Does not address the safety and protection of election workers, missing an important aspect of election security."],
+    ["Psychological Manipulation", "-3", "Engages in emotionally charged rhetoric that may reinforce false beliefs about election fraud, exploiting cognitive biases."]
+  ],
+electionDenial: true,
+  summary: "Jordan Peterson's commentary on election-related issues reflects a limited understanding of U.S. electoral systems, occasionally spreading misinformation and undermining public trust in democratic institutions."
+},
+robertReich: {
+  scores: [
+    ["Constitutional Knowledge", "+9", "Demonstrates a strong understanding of constitutional principles, particularly regarding voting rights and the implications of Supreme Court decisions like Shelby County v. Holder."],
+    ["Legal Framework", "+8", "Critiques laws and policies that may suppress voter turnout, emphasizing the importance of legal structures that protect voting rights."],
+    ["Federalism", "+7", "Acknowledges the balance between state and federal powers in election administration, advocating for federal oversight to prevent discriminatory practices."],
+    ["Election Mechanics", "+6", "Supports measures that enhance election integrity, such as accessible voting methods and opposition to unnecessary barriers like strict voter ID laws."],
+    ["Electoral Count Process", "+5", "Discusses the importance of adhering to constitutional procedures in the electoral count, emphasizing the ceremonial role of the Vice President."],
+    ["Disinformation Awareness", "+10", "Actively combats misinformation and disinformation, highlighting their dangers to democracy and advocating for accountability."],
+    ["Public Impact", "+9", "Utilizes his platform to educate the public on issues related to democracy and voting rights, fostering civic engagement."],
+    ["Judicial Oversight", "+7", "Analyzes and critiques judicial decisions impacting voting rights, advocating for a judiciary that upholds democratic principles."],
+    ["Election Worker Protections", "+4", "Supports the protection of election workers, acknowledging the challenges and threats they may face."],
+    ["Psychological Manipulation", "+6", "Addresses the tactics used in spreading misinformation, including emotional appeals and identity-based manipulation."]
+  ],
+electionDenial: "gray",
+  summary: "Robert Reich is a staunch advocate for democratic principles, consistently promoting policies and practices that enhance election integrity and protect voting rights. His efforts to combat misinformation and educate the public contribute significantly to a more informed and engaged electorate."
+},
+joeRogan: {
+  scores: [
+    ["Constitutional Knowledge", "+2", "Occasionally references constitutional principles but lacks depth in discussions about voting rights and related amendments."],
+    ["Legal Framework", "+1", "Rarely delves into the specifics of election laws or voter eligibility criteria."],
+    ["Federalism", "+1", "Shows limited understanding of the balance between state and federal roles in election administration."],
+    ["Election Mechanics", "+0", "Provides minimal insight into election processes, audits, or safeguards."],
+    ["Electoral Count Process", "+0", "Does not engage with the specifics of the electoral count or related constitutional procedures."],
+    ["Disinformation Awareness", "-7", "Has provided a platform for guests to propagate misinformation without sufficient challenge or clarification, including false claims about the 2020 election."],
+    ["Public Impact", "-3", "Maintains a large audience but does not consistently promote civic literacy or counter misinformation."],
+    ["Judicial Oversight", "+0", "Rarely references court rulings or the judiciary's role in election integrity."],
+    ["Election Worker Protections", "+0", "Does not address the safety or challenges faced by election workers."],
+    ["Psychological Manipulation", "+2", "Occasionally discusses cognitive biases with guests but avoids directly addressing propaganda or manipulation tactics."]
+  ],
+electionDenial: "gray",
+  summary: "Joe Rogan’s platform allows misinformation to spread without challenge. While open to diverse views, he rarely anchors those conversations in verified facts or democratic principles."
+},
+benShapiro: {
+  scores: [
+    ["Constitutional Knowledge", "+6", "Demonstrates a general understanding of constitutional principles but often lacks depth in discussions about voting rights and related amendments."],
+    ["Legal Framework", "+4", "Advocates for voter ID laws citing election integrity, yet often overlooks the rarity of voter fraud and potential disenfranchisement issues."],
+    ["Federalism", "+5", "Acknowledges state control over elections but occasionally supports federal interventions that may conflict with state authority."],
+    ["Election Mechanics", "+2", "Provides limited insight into election processes, audits, or safeguards, and sometimes promotes unverified concerns about election integrity."],
+    ["Electoral Count Process", "+3", "Recognizes the ceremonial role of the Vice President in vote counting but has shared content that could imply otherwise."],
+    ["Disinformation Awareness", "-6", "Has disseminated content that includes unsubstantiated claims about election fraud, contributing to misinformation narratives."],
+    ["Public Impact", "-3", "Utilizes a broad platform that can amplify misleading information, affecting public trust in the electoral process."],
+    ["Judicial Oversight", "+2", "Occasionally references court decisions but often questions the legitimacy of rulings that contradict his viewpoints."],
+    ["Election Worker Protections", "+0", "Rarely addresses the challenges and threats faced by election workers, missing an opportunity to support their protection."],
+    ["Psychological Manipulation", "+1", "Touches on cognitive biases but does not deeply explore the psychological tactics used in spreading election misinformation."]
+  ],
+electionDenial: false,
+  summary: "Ben Shapiro presents a mixed record on election security, combining constitutional awareness with the promotion of unverified claims that may undermine public confidence in democratic processes."
+},
+tuckerCarlson: {
+  scores: [
+    ["Constitutional Knowledge", "-6", "Often misrepresents voting rights and downplays constitutional protections."],
+    ["Legal Framework", "-7", "Supports restrictive laws without acknowledging existing safeguards."],
+    ["Federalism", "-5", "Challenges state authority when outcomes don’t align with narrative."],
+    ["Election Mechanics", "-9", "Promotes machine fraud claims and distrusts audit processes."],
+    ["Electoral Count Process", "-7", "Entertains theories that misstate the VP’s role."],
+    ["Disinformation Awareness", "-14", "Regularly broadcasts debunked election claims and guest misinformation."],
+    ["Public Impact", "-8", "Large platform used to reinforce distrust and tribal beliefs."],
+    ["Judicial Oversight", "-6", "Disregards rulings that affirm election legitimacy."],
+    ["Election Worker Protections", "-4", "Rarely defends frontline officials from targeted attacks."],
+    ["Psychological Manipulation", "-5", "Leverages fear and grievance to harden audience beliefs."]
+  ],
+  electionDenial: true,
+  summary: "Continues to promote falsehoods and grievance-based narratives that erode democratic trust and legal integrity."
+},
+davidPakman: {
+  scores: [
+    ["Constitutional Knowledge", "+9", "Demonstrates strong understanding of voting rights as constitutional, including relevant amendments."],
+    ["Legal Framework", "+8", "Clearly explains eligibility laws, citizenship requirements, and key legislation like the Voting Rights Act."],
+    ["Federalism", "+7", "Acknowledges state control over elections and critiques federal overreach, though not in depth on Article I specifics."],
+    ["Election Mechanics", "+8", "Covers risk-limiting audits and machine reliability, though typically through expert interviews rather than technical walkthroughs."],
+    ["Electoral Count Process", "+6", "Explains the Vice President's ceremonial role and the certification process in response to election denial narratives."],
+    ["Disinformation Awareness", "+10", "Routinely debunks election conspiracies, clearly differentiating between misinformation and intentional disinformation."],
+    ["Public Impact", "+6", "Educates a politically engaged audience, though occasionally assumes a high level of prior knowledge."],
+    ["Judicial Oversight", "+7", "References key court rulings affirming election outcomes, including cases dismissed by Trump-appointed judges."],
+    ["Election Worker Protections", "+5", "Highlights threats to election workers, especially Ruby Freeman and Shaye Moss, and supports accountability for harassment."],
+    ["Psychological Manipulation", "+6", "Covers tribalism, disinformation tactics, and cognitive bias with recurring guests and commentary."]
+  ],
+  electionDenial: false,
+  summary: "David Pakman consistently demonstrates a clear understanding of the U.S. election system and actively counters misinformation surrounding the 2020 election. Through thoughtful interviews and breakdowns, he upholds civic integrity while keeping his audience informed on legal and psychological dimensions of election security."
+},
+samSeder: {
+  scores: [
+    ["Constitutional Knowledge", "+9", "Regularly frames voting as a constitutional right and cites relevant amendments when discussing voter access and restrictions."],
+    ["Legal Framework", "+8", "Clearly explains the purpose of voting laws and criticizes voter suppression tactics grounded in legal context."],
+    ["Federalism", "+7", "Acknowledges the balance between state and federal authority while defending state-level protections for voters."],
+    ["Election Mechanics", "+7", "Effectively communicates the reliability of mail-in voting, audits, and machine-based verification systems."],
+    ["Electoral Count Process", "+8", "Explicitly stated that the Vice President had no constitutional authority to alter or reject certified electoral votes."],
+    ["Disinformation Awareness", "+10", "Vigorously challenges election misinformation with documented evidence and holds guests accountable for misleading claims."],
+    ["Public Impact", "+8", "Leverages his platform to promote democratic participation and debunk disinformation, especially surrounding 2020."],
+    ["Judicial Oversight", "+6", "References key legal rulings affirming election outcomes and criticizes efforts to delegitimize courts post-2020."],
+    ["Election Worker Protections", "+5", "Has spoken out against threats to election workers and supports holding agitators accountable."],
+    ["Psychological Manipulation", "+5", "Recognizes and occasionally discusses how right-wing narratives exploit grievance and identity to erode trust."]
+  ],
+  electionDenial: false,
+  summary: "Sam Seder consistently defends democratic processes, refutes disinformation with precision, and upholds constitutional principles across his media presence. His thorough analysis, commitment to public education, and rejection of conspiracy theories reflect high election security credibility."
+},
+anaKasparian: {
+  scores: [
+    ["Constitutional Knowledge", "+7", "Demonstrates a solid understanding of constitutional principles, particularly in discussions about voting rights and democratic processes."],
+    ["Legal Framework", "+6", "Engages with election laws and legal challenges, providing informed commentary on their implications."],
+    ["Federalism", "+5", "Acknowledges the balance between state and federal roles in election administration, though with less frequent focus."],
+    ["Election Mechanics", "+6", "Offers insights into voting systems and election procedures, emphasizing transparency and efficiency."],
+    ["Electoral Count Process", "+7", "Addresses the significance of the Electoral College and vote certification, advocating for adherence to established protocols."],
+    ["Disinformation Awareness", "+8", "Actively challenges election-related misinformation, promoting media literacy and factual reporting."],
+    ["Public Impact", "+7", "Utilizes her platform to educate the public on election integrity, encouraging informed civic participation."],
+    ["Judicial Oversight", "+6", "Highlights the role of the judiciary in upholding election laws and resolving disputes, supporting judicial independence."],
+    ["Election Worker Protections", "+5", "Expresses concern for the safety and recognition of election workers, though with less emphasis compared to other areas."],
+    ["Psychological Manipulation", "+6", "Critiques the use of propaganda and psychological tactics in undermining trust in elections, advocating for critical thinking."]
+  ],
+  electionDenial: false,
+  summary: "Ana Kasparian exhibits a commitment to election security through her informed analysis and public discourse. Her efforts in combating misinformation, elucidating legal frameworks, and fostering public understanding contribute significantly to the integrity of democratic processes."
+},
+francescaFiorentini: {
+  scores: [
+    ["Constitutional Knowledge", "+8", "Demonstrates strong support for voting rights and civic participation, especially in marginalized communities."],
+    ["Legal Framework", "+7", "Advocates for accessible voting laws and critiques legislation that suppresses turnout."],
+    ["Federalism", "+5", "Acknowledges state roles in elections, though often focuses on national-level issues."],
+    ["Election Mechanics", "+6", "Supports paper ballots and secure infrastructure, occasionally discusses vote audits and machine reliability."],
+    ["Electoral Count Process", "+5", "Respects the certified process and criticizes attempts to subvert it without promoting misinformation."],
+    ["Disinformation Awareness", "+9", "Actively debunks right-wing election lies and amplifies verified information."],
+    ["Public Impact", "+7", "Uses media platforms to educate audiences on election integrity and the danger of disinformation."],
+    ["Judicial Oversight", "+5", "Acknowledges the court's role in election certification but doesn't extensively cover case law."],
+    ["Election Worker Protections", "+4", "Condemns threats against election officials and supports their protection."],
+    ["Psychological Manipulation", "+6", "Discusses the emotional and identity-based appeal of disinformation in clear, accessible terms."]
+  ],
+  electionDenial: false,
+  summary: "Francesca Fiorentini consistently defends the legitimacy of elections, counters disinformation, and promotes civic literacy through a progressive lens."
+},
+mattWalsh: {
+  scores: [
+    ["Constitutional Knowledge", "-6", "Frequently downplays constitutional voting protections, framing voting as a privilege rather than a right."],
+    ["Legal Framework", "-7", "Promotes strict voter ID measures and implies widespread fraud without citing actual legal evidence."],
+    ["Federalism", "-4", "Supports federal influence when beneficial to narrative, while dismissing state-certified results."],
+    ["Election Mechanics", "-8", "Pushes narratives about machine fraud and election vulnerabilities, contradicting established safeguards."],
+    ["Electoral Count Process", "-5", "Echoes false narratives about overturning results, subtly endorsing unconstitutional ideas about the VP’s role."],
+    ["Disinformation Awareness", "-10", "Shares and amplifies misleading election content, ignoring court rulings and bipartisan confirmations."],
+    ["Public Impact", "-6", "Uses a massive platform to sow doubt about democratic outcomes without factual grounding."],
+    ["Judicial Oversight", "-3", "Avoids acknowledgment of over 60 dismissed court cases and delegitimizes legal outcomes indirectly."],
+    ["Election Worker Protections", "-2", "Neglects the threats faced by election officials and fails to defend their integrity."],
+    ["Psychological Manipulation", "-6", "Relies on emotional grievance and cultural identity to reinforce election suspicion and tribal loyalty."]
+  ],
+  electionDenial: true,
+  summary: "Matt Walsh consistently spreads election skepticism and leverages cultural grievance to question democratic processes, contributing to public mistrust and disinformation."
+},
+	    timPool: {
+  scores: [
+    ["Constitutional Knowledge", "-4", "Often misrepresents constitutional processes, suggesting irregularities without substantiated evidence."],
+    ["Legal Framework", "-5", "Promotes narratives that question the legality of election procedures, lacking credible legal backing."],
+    ["Federalism", "-3", "Downplays the role of state authorities in certifying elections, implying centralized manipulation."],
+    ["Election Mechanics", "-6", "Amplifies claims of voting irregularities and fraud, undermining confidence in electoral systems."],
+    ["Electoral Count Process", "-4", "Suggests that the electoral count was flawed, without acknowledging the constitutional safeguards in place."],
+    ["Disinformation Awareness", "-7", "Shares and legitimizes unverified information regarding election integrity, contributing to misinformation."],
+    ["Public Impact", "-6", "Utilizes his platform to disseminate content that fosters doubt about the election's legitimacy."],
+    ["Judicial Oversight", "-3", "Neglects to acknowledge the outcomes of numerous court cases upholding the election results."],
+    ["Election Worker Protections", "-2", "Fails to address the threats faced by election officials, indirectly contributing to a hostile environment."],
+    ["Psychological Manipulation", "-5", "Employs emotionally charged rhetoric that reinforces divisive narratives and skepticism."]
+  ],
+  electionDenial: true,
+  summary: "Tim Pool contributes to election skepticism by amplifying disinformation, downplaying legal clarity, and prioritizing narrative over verified processes—undermining public confidence in democratic systems."
+}
+    };
+
+//ENDS DETAILS OF SCORES
+
+
+    function showScores() {
+  const person = document.getElementById("person-select").value;
+  const table = document.getElementById("score-table");
+  const tbody = document.getElementById("score-body");
+  tbody.innerHTML = "";
+
+  if (!person || !data[person]) {
+    table.style.display = "none";
+    return;
+  }
+
+  const scores = data[person].scores;
+  let total = 0;
+
+  scores.forEach(row => {
+    const tr = document.createElement("tr");
+
+    const numeric = parseInt(row[1].replace("+", ""));
+    if (!isNaN(numeric)) {
+      total += numeric;
+    }
+
+    row.forEach(cell => {
+      const td = document.createElement("td");
+      td.textContent = cell;
+      tr.appendChild(td);
+    });
+
+    tbody.appendChild(tr);
+  });
+
+    // Election stance scoring (true = denial penalty, false = credibility boost, ambiguous = partial penalty)
+if (data[person].electionDenial === true) {
+  const denialRow = document.createElement("tr");
+  denialRow.innerHTML = `
+    <td><strong>2020 Election Denial Penalty</strong></td>
+    <td><strong>-10</strong></td>
+    <td><strong>Denial of the 2020 election outcome signals rejection of verified democratic processes and aligns with disinformation or blind loyalty.</strong></td>
+  `;
+  tbody.appendChild(denialRow);
+  total -= 10;
+} else if (data[person].electionDenial === false) {
+  const affirmRow = document.createElement("tr");
+  affirmRow.innerHTML = `
+    <td><strong>2020 Election Affirmation Bonus</strong></td>
+    <td><strong>+5</strong></td>
+    <td><strong>Publicly affirming the legitimacy of the 2020 election supports truth, counters disinformation, and helps protect democratic confidence.</strong></td>
+  `;
+  tbody.appendChild(affirmRow);
+  total += 5;
+} else if (data[person].electionDenial === "gray") {
+  const ambiguousRow = document.createElement("tr");
+  ambiguousRow.innerHTML = `
+    <td><strong>Ambiguous Stance Penalty</strong></td>
+    <td><strong>-5</strong></td>
+    <td><strong>Failure to clearly affirm the 2020 election results contributes to public doubt and enables misinformation to spread unchecked.</strong></td>
+  `;
+  tbody.appendChild(ambiguousRow);
+  total -= 5;
+}
+
+  const summary = data[person].summary || "This is the cumulative subscore for Election Security.";
+  const totalRow = document.createElement("tr");
+  totalRow.innerHTML = `
+    <td><strong>Total Score</strong></td>
+    <td><strong>${total >= 0 ? "+" : ""}${total}</strong></td>
+    <td><strong>${summary}</strong></td>
+  `;
+  tbody.appendChild(totalRow);
+
+  table.style.display = "table";
+}
+</script>
+</div>
+</body>
+</html>
