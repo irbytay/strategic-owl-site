@@ -471,124 +471,115 @@
 
   <!-- Script: Score Display -->
  <script>
-async function fetchTRUData() {
-  const API_KEY = "AIzaSyCzuh9HBfe0r70r9U35Pe406PPZ-tz6I78";
-  const SHEET_ID = "19wBEj9hEkvIyQcoR5E_mBGVAxTzMnddMxk8nuQLAumA";
-  const RANGE = "TRU!A2:Y1000"; // Includes up to column Y (index 24)
+    async function fetchTRUData() {
+      const API_KEY = "AIzaSyCzuh9HBfe0r70r9U35Pe406PPZ-tz6I78";
+      const SHEET_ID = "19wBEj9hEkvIyQcoR5E_mBGVAxTzMnddMxk8nuQLAumA";
+      const RANGE = "TRU!A2:Y1000";
+      const url = `https://sheets.googleapis.com/v4/spreadsheets/${SHEET_ID}/values/${RANGE}?key=${API_KEY}`;
 
-  const url = `https://sheets.googleapis.com/v4/spreadsheets/${SHEET_ID}/values/${RANGE}?key=${API_KEY}`;
-  try {
-    const res = await fetch(url);
-    if (!res.ok) throw new Error(`HTTP error! Status: ${res.status}`);
-    const json = await res.json();
-    return json.values || [];
-  } catch (err) {
-    console.error("Failed to fetch sheet data", err);
-    const select = document.getElementById("person-select");
-    if (select) {
-      select.innerHTML = '<option value="">Failed to load data. Please try again later.</option>';
+      try {
+        const res = await fetch(url);
+        const json = await res.json();
+        return json.values || [];
+      } catch (err) {
+        console.error("Failed to fetch sheet data", err);
+        const select = document.getElementById("person-select");
+        if (select) {
+          select.innerHTML = '<option value="">Failed to load data. Please try again later.</option>';
+        }
+        return [];
+      }
     }
-    return [];
-  }
-}
 
-window.showScores = function () {
-  const select = document.getElementById("person-select");
-  const table = document.getElementById("score-table");
-  const tbody = document.getElementById("score-body");
-  const selected = select.value;
-  if (!selected || !window.rowMap || !window.rowMap[selected]) {
-    table.style.display = "none";
-    return;
-  }
+    function showScores() {
+      const select = document.getElementById("person-select");
+      const table = document.getElementById("score-table");
+      const tbody = document.getElementById("score-body");
+      const selected = select.value;
+      if (!selected || !window.rowMap || !window.rowMap[selected]) {
+        table.style.display = "none";
+        return;
+      }
 
-  const row = window.rowMap[selected];
-  tbody.innerHTML = "";
-  let total = 0;
+      const row = window.rowMap[selected];
+      tbody.innerHTML = "";
+      let total = 0;
 
-  const categories = [
-    "Constitutional Knowledge", "Legal Framework", "Federalism",
-    "Election Mechanics", "Electoral Count Process", "Disinformation Awareness",
-    "Public Impact", "Judicial Oversight", "Election Worker Protections",
-    "Psychological Manipulation"
-  ];
+      const categories = [
+        "Constitutional Knowledge", "Legal Framework", "Federalism",
+        "Election Mechanics", "Electoral Count Process", "Disinformation Awareness",
+        "Public Impact", "Judicial Oversight", "Election Worker Protections",
+        "Psychological Manipulation"
+      ];
 
-  for (let i = 0; i < 10; i++) {
-    const label = categories[i];
-    const score = parseInt(row[3 + i]) || 0;     // D to M (index 3 to 12)
-    const explanation = row[14 + i] || "";       // O to X (index 14 to 23)
+      for (let i = 0; i < 10; i++) {
+        const label = categories[i];
+        const score = parseInt(row[3 + i]) || 0;
+        const explanation = row[14 + i] || "";
 
-    const tr = document.createElement("tr");
-    tr.innerHTML = `<td>${label}</td><td>${score >= 0 ? "+" : ""}${score}</td><td>${explanation}</td>`;
-    tbody.appendChild(tr);
-    total += score;
-  }
+        const tr = document.createElement("tr");
+        tr.innerHTML = `<td>${label}</td><td>${score >= 0 ? "+" : ""}${score}</td><td>${explanation}</td>`;
+        tbody.appendChild(tr);
+        total += score;
+      }
 
-  // Election Denial Flag: Y (index 24)
-  const flag = (row[24] || "").toLowerCase();
-  let bonus = 0, label = "", desc = "";
+      const flag = (row[24] || "").toLowerCase();
+      let bonus = 0, label = "", desc = "";
 
-  if (flag === "true") {
-    bonus = -10;
-    label = "2020 Election Denial Penalty";
-    desc = "Denial of the 2020 election outcome signals rejection of verified democratic processes and aligns with disinformation or blind loyalty.";
-  } else if (flag === "false") {
-    bonus = 5;
-    label = "2020 Election Affirmation Bonus";
-    desc = "Publicly affirming the legitimacy of the 2020 election supports truth, counters disinformation, and helps protect democratic confidence.";
-  } else if (flag === "gray") {
-    bonus = -5;
-    label = "Ambiguous Stance Penalty";
-    desc = "Failure to clearly affirm the 2020 election results contributes to public doubt and enables misinformation to spread unchecked.";
-  }
+      if (flag === "true") {
+        bonus = -10;
+        label = "2020 Election Denial Penalty";
+        desc = "Denial of the 2020 election outcome signals rejection of verified democratic processes and aligns with disinformation or blind loyalty.";
+      } else if (flag === "false") {
+        bonus = 5;
+        label = "2020 Election Affirmation Bonus";
+        desc = "Publicly affirming the legitimacy of the 2020 election supports truth, counters disinformation, and helps protect democratic confidence.";
+      } else if (flag === "gray") {
+        bonus = -5;
+        label = "Ambiguous Stance Penalty";
+        desc = "Failure to clearly affirm the 2020 election results contributes to public doubt and enables misinformation to spread unchecked.";
+      }
 
-  if (label) {
-    const tr = document.createElement("tr");
-    tr.innerHTML = `<td><strong>${label}</strong></td><td><strong>${bonus >= 0 ? "+" : ""}${bonus}</strong></td><td><strong>${desc}</strong></td>`;
-    tbody.appendChild(tr);
-    total += bonus;
-  }
+      if (label) {
+        const tr = document.createElement("tr");
+        tr.innerHTML = `<td><strong>${label}</strong></td><td><strong>${bonus >= 0 ? "+" : ""}${bonus}</strong></td><td><strong>${desc}</strong></td>`;
+        tbody.appendChild(tr);
+        total += bonus;
+      }
 
-  // Summary: N (index 13)
-  const summary = row[13] || "No summary provided.";
-  const totalRow = document.createElement("tr");
-  totalRow.innerHTML = `<td><strong>Total Score</strong></td><td><strong>${total >= 0 ? "+" : ""}${total}</strong></td><td><strong>${summary}</strong></td>`;
-  tbody.appendChild(totalRow);
+      const summary = row[13] || "No summary provided.";
+      const totalRow = document.createElement("tr");
+      totalRow.innerHTML = `<td><strong>Total Score</strong></td><td><strong>${total >= 0 ? "+" : ""}${total}</strong></td><td><strong>${summary}</strong></td>`;
+      tbody.appendChild(totalRow);
 
-  table.style.display = "table";
-};
+      table.style.display = "table";
+    }
 
-window.initElectionPage = async function () {
-  window.rowMap = {};
+    async function initElectionPage() {
+      window.rowMap = {};
+      const data = await fetchTRUData();
+      data.forEach(row => {
+        const key = row[0];
+        if (key) window.rowMap[key] = row;
+      });
 
-  const data = await fetchTRUData();
+      const select = document.getElementById("person-select");
+      if (!select) return;
 
-  data.forEach(row => {
-    const key = row[0];
-    if (key) window.rowMap[key] = row;
-  });
+      select.innerHTML = '<option value="">-- Choose a name --</option>';
+      Object.keys(window.rowMap).sort().forEach(name => {
+        const opt = document.createElement("option");
+        opt.value = name;
+        opt.textContent = name.replace(/([A-Z])/g, " $1").replace(/^./, s => s.toUpperCase());
+        select.appendChild(opt);
+      });
 
-  const select = document.getElementById("person-select");
-  if (!select) {
-    console.warn("[Election Page] Dropdown not found.");
-    return;
-  }
+      select.removeEventListener("change", showScores);
+      select.addEventListener("change", showScores);
+    }
 
-  select.innerHTML = '<option value="">-- Choose a name --</option>';
-
-  Object.keys(window.rowMap).sort().forEach(name => {
-    const opt = document.createElement("option");
-    opt.value = name;
-    opt.textContent = name.replace(/([A-Z])/g, " $1").replace(/^./, s => s.toUpperCase());
-    select.appendChild(opt);
-  });
-
-  select.removeEventListener("change", window.showScores);
-  select.addEventListener("change", window.showScores);
-};
-
-// ⛔ REMOVED window.onload — use SPA init trigger instead
-</script>
+    window.addEventListener("DOMContentLoaded", initElectionPage);
+  </script>
   <script>
   function initNewstatefraudPage() {
     console.log("[init] Newstatefraud page initialized");
