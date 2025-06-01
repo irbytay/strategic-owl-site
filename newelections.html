@@ -472,9 +472,9 @@
   <!-- Script: Score Display -->
   <script>
 async function fetchTRUData() {
-  const API_KEY = "...";
-  const SHEET_ID = "...";
-  const RANGE = "TRU!A2:AB998";
+  const API_KEY = "AIzaSyCzuh9HBfe0r70r9U35Pe406PPZ-tz6I78";
+  const SHEET_ID = "19wBEj9hEkvIyQcoR5E_mBGVAxTzMnddMxk8nuQLAumA";
+  const RANGE = "TRU!A2:AB1000";
 
   const url = `https://sheets.googleapis.com/v4/spreadsheets/${SHEET_ID}/values/${RANGE}?key=${API_KEY}`;
   try {
@@ -511,8 +511,8 @@ window.showScores = function() {
 
   for (let i = 0; i < 10; i++) {
     const label = categories[i];
-    const score = parseInt(row[3 + i]) || 0;
-    const explanation = row[17 + i] || "";
+    const score = parseInt(row[3 + i]) || 0;          // Scores start from D (index 3)
+    const explanation = row[17 + i] || "";             // Explanations start from R (index 17)
 
     const tr = document.createElement("tr");
     tr.innerHTML = `<td>${label}</td><td>${score >= 0 ? "+" : ""}${score}</td><td>${explanation}</td>`;
@@ -520,7 +520,7 @@ window.showScores = function() {
     total += score;
   }
 
-  // Election Denial Bonus
+  // Election Denial Bonus/Penalty from AB (index 27)
   const flag = (row[27] || "").toLowerCase();
   let bonus = 0, label = "", desc = "";
 
@@ -545,6 +545,7 @@ window.showScores = function() {
     total += bonus;
   }
 
+  // Summary from Q (index 16)
   const summary = row[16] || "No summary provided.";
   const totalRow = document.createElement("tr");
   totalRow.innerHTML = `<td><strong>Total Score</strong></td><td><strong>${total >= 0 ? "+" : ""}${total}</strong></td><td><strong>${summary}</strong></td>`;
