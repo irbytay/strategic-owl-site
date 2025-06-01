@@ -275,113 +275,115 @@
   </div>
 
   <script>
-    function toggleMobileNav() {
-      document.getElementById('mobileNav').classList.toggle('active');
-    }
+  function toggleMobileNav() {
+    document.getElementById('mobileNav').classList.toggle('active');
+  }
 
-    function loadPage(page, push = true) {
-      console.log(`[SPA] Loading page: ${page}`);
-      fetch(page)
-        .then(res => {
-          if (!res.ok) throw new Error(`Failed to load ${page}`);
-          return res.text();
-        })
-        .then(html => {
-          const container = document.getElementById('page-content');
-          container.innerHTML = html;
-          bindLinks(); // ✅ rebind internal links
-          document.getElementById('mobileNav').classList.remove('active');
-          window.scrollTo(0, 0);
-          if (push) history.pushState({ page }, "", "#" + page);
-          runScriptsFromHTML(container);
-          setTimeout(callPageInits, 100);
-        })
-        .catch(err => {
-          console.error(err);
-          document.getElementById('page-content').innerHTML = `<p style="color:red;">${err.message}</p>`;
-        });
-    }
-
-    function runScriptsFromHTML(container) {
-      const scripts = container.querySelectorAll("script");
-      console.log(`[SPA] Running ${scripts.length} scripts`);
-      scripts.forEach(oldScript => {
-        const newScript = document.createElement("script");
-        if (oldScript.src) {
-          newScript.src = `${oldScript.src}?t=${Date.now()}`; // bust cache
-          newScript.async = false;
-        } else {
-          newScript.textContent = oldScript.textContent;
-        }
-        document.body.appendChild(newScript);
+  function loadPage(page, push = true) {
+    console.log(`[SPA] Loading page: ${page}`);
+    fetch(page)
+      .then(res => {
+        if (!res.ok) throw new Error(`Failed to load ${page}`);
+        return res.text();
+      })
+      .then(html => {
+        const container = document.getElementById('page-content');
+        container.innerHTML = html;
+        document.getElementById('mobileNav').classList.remove('active');
+        window.scrollTo(0, 0);
+        if (push) history.pushState({ page }, "", "#" + page);
+        runScriptsFromHTML(container);
+        setTimeout(callPageInits, 100);
+      })
+      .catch(err => {
+        console.error(err);
+        document.getElementById('page-content').innerHTML = `<p style="color:red;">${err.message}</p>`;
       });
-    }
+  }
 
-    function callPageInits() {
-      const possibleInits = [
-        "initTRUOWLPage",
-        "initElectionPage",
-        "initStateFraudPage"
-      ];
-      possibleInits.forEach(fn => {
-        if (typeof window[fn] === "function") {
-          console.log(`[SPA] Calling ${fn}()`);
-          window[fn]();
-        }
-      });
-    }
+  function runScriptsFromHTML(container) {
+    const scripts = container.querySelectorAll("script");
+    console.log(`[SPA] Running ${scripts.length} scripts`);
+    scripts.forEach(oldScript => {
+      const newScript = document.createElement("script");
+      if (oldScript.src) {
+        newScript.src = `${oldScript.src}?t=${Date.now()}`; // bust cache
+        newScript.async = false;
+      } else {
+        newScript.textContent = oldScript.textContent;
+      }
+      document.body.appendChild(newScript);
+    });
+  }
 
-    function handleSPAClick(e) {
-      const anchor = e.currentTarget;
-      const href = anchor.getAttribute("href") || "";
-      if (href.endsWith(".html") && !href.startsWith("http")) {
+  function callPageInits() {
+    const hash = location.hash.replace(/^#/, '') || 'newTRUOWL.html';
+    const pageName = hash.replace('.html', '');
+    const camelName = pageName.replace(/^new/, ''); // strip 'new' if present
+    const initFn = `init${camelName.charAt(0).toUpperCase()}${camelName.slice(1)}Page`;
+
+    if (typeof window[initFn] === "function") {
+      console.log(`[SPA] Calling ${initFn}()`);
+      window[initFn]();
+    } else {
+      console.log(`[SPA] No init function found: ${initFn}`);
+    }
+  }
+
+  // ✅ Universal SPA click handler using event delegation
+  document.body.addEventListener('click', function (e) {
+    const anchor = e.target.closest('a');
+    if (anchor) {
+      const href = anchor.getAttribute('href') || '';
+      if (href.endsWith('.html') && !href.startsWith('http')) {
         e.preventDefault();
         loadPage(href);
       }
     }
+  });
 
-    function bindLinks() {
-      console.log("[SPA] Binding links...");
-      document.querySelectorAll("a").forEach(link => {
-        link.removeEventListener("click", handleSPAClick);
-        link.addEventListener("click", handleSPAClick);
+  function agreeAndEnter() {
+    localStorage.setItem("agreedToDisclaimer", "true");
+
+    const modal = document.getElementById("disclaimerModal");
+    if (modal) {
+      modal.classList.add("hidden");
+      modal.style.display = "none";
+    }
+
+    const hashPage = location.hash?.substring(1) || "newTRUOWL.html";
+
+    fetch(hashPage)
+      .then(res => {
+        if (!res.ok) throw new Error(`Failed to load ${hashPage}`);
+        return res.text();
+      })
+      .then(html => {
+        const container = document.getElementById('page-content');
+        container.innerHTML = html;
+        runScriptsFromHTML(container);
+        setTimeout(callPageInits, 100);
+        history.pushState({ page: hashPage }, "", "#" + hashPage);
+      })
+      .catch(err => {
+        console.error(err);
+        document.getElementById('page-content').innerHTML = `<p style="color:red;">${err.message}</p>`;
       });
+  }
+
+  // ✅ Initial bind/load if user already accepted
+  window.addEventListener("DOMContentLoaded", () => {
+    if (localStorage.getItem("agreedToDisclaimer")) {
+      const initialPage = location.hash?.substring(1) || "newTRUOWL.html";
+      loadPage(initialPage, false);
     }
+  });
 
-    function agreeAndEnter() {
-      localStorage.setItem("agreedToDisclaimer", "true");
-
-      const modal = document.getElementById("disclaimerModal");
-      if (modal) {
-        modal.classList.add("hidden");
-        modal.style.display = "none";
-      }
-
-      const hashPage = location.hash?.substring(1) || "newTRUOWL.html";
-
-      fetch(hashPage)
-        .then(res => {
-          if (!res.ok) throw new Error(`Failed to load ${hashPage}`);
-          return res.text();
-        })
-        .then(html => {
-          const container = document.getElementById('page-content');
-          container.innerHTML = html;
-          bindLinks(); // ✅ SPA link binding
-          runScriptsFromHTML(container);
-          setTimeout(callPageInits, 100);
-          history.pushState({ page: hashPage }, "", "#" + hashPage);
-        })
-        .catch(err => {
-          console.error(err);
-          document.getElementById('page-content').innerHTML = `<p style="color:red;">${err.message}</p>`;
-        });
-    }
-
-    // ✅ On first load: attach link handler globally
-    window.addEventListener("DOMContentLoaded", () => {
-      bindLinks();
-    });
-  </script>
+  // ✅ Back/forward browser navigation support
+  window.addEventListener('popstate', (e) => {
+    const page = e.state?.page || "newTRUOWL.html";
+    loadPage(page, false);
+  });
+</script>
 </body>
 </html>
