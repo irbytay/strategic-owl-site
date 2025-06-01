@@ -363,45 +363,48 @@
   }
 
   function initPageScripts(page) {
-    console.log(`[SPA] Initializing page scripts for: ${page}`);
+  console.log(`[SPA] Initializing page scripts for: ${page}`);
 
-    const personSelect = document.getElementById("person-select");
-    if (personSelect && typeof showScores === "function") {
-      personSelect.removeEventListener("change", showScores);
-      personSelect.addEventListener("change", showScores);
-      if (personSelect.value) showScores();
-    }
-
-    const stateSelect = document.getElementById("state-select");
-    if (stateSelect && typeof init === "function") {
-      init(); // voter fraud state table init
-    }
-
-    // Call page-specific init if defined
-    if (page === "newelections.html" && typeof window.initElectionPage === "function") {
-      window.initElectionPage();
-    }
-    if (page === "newstatefraud.html" && typeof window.initStateFraudPage === "function") {
-      window.initStateFraudPage();
-    }
+  const personSelect = document.getElementById("person-select");
+  if (personSelect && typeof showScores === "function") {
+    personSelect.removeEventListener("change", showScores);
+    personSelect.addEventListener("change", showScores);
+    if (personSelect.value) showScores();
   }
 
-  window.addEventListener("popstate", (e) => {
-    if (e.state && e.state.page) {
-      console.log(`[SPA] Popstate event: loading ${e.state.page}`);
-      loadPage(e.state.page, false);
-    }
-  });
+  const stateSelect = document.getElementById("state-select");
+  if (stateSelect && typeof init === "function") {
+    init(); // voter fraud state table init
+  }
 
-  window.addEventListener("DOMContentLoaded", () => {
-    bindLinks();
-    if (!localStorage.getItem("agreedToDisclaimer")) {
-      document.getElementById("disclaimerModal").style.display = "flex";
-    } else {
-      const hashPage = location.hash?.substring(1) || "newTRUOWL.html";
-      loadPage(hashPage);
-    }
-  });
-</script>
+  // ✅ NEW: Trigger initElectionPage for both pages that use it
+  if (
+    (page === "newelections.html" || page === "newTRUOWL.html") &&
+    typeof window.initElectionPage === "function"
+  ) {
+    window.initElectionPage();
+  }
+
+  if (page === "newstatefraud.html" && typeof window.initStateFraudPage === "function") {
+    window.initStateFraudPage();
+  }
+}
+
+window.addEventListener("popstate", (e) => {
+  if (e.state && e.state.page) {
+    console.log(`[SPA] Popstate event: loading ${e.state.page}`);
+    loadPage(e.state.page, false);
+  }
+});
+
+window.addEventListener("DOMContentLoaded", () => {
+  bindLinks();
+  if (!localStorage.getItem("agreedToDisclaimer")) {
+    document.getElementById("disclaimerModal").style.display = "flex";
+  } else {
+    const hashPage = location.hash?.substring(1) || "newTRUOWL.html";
+    loadPage(hashPage);
+  }
+});
 </body>
 </html>
