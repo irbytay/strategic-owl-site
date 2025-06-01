@@ -286,59 +286,73 @@
 
   <!-- ✅ JavaScript for SPA + Modal -->
   <script>
-    function toggleMobileNav() {
-      document.getElementById('mobileNav').classList.toggle('active');
-    }
+  function toggleMobileNav() {
+    document.getElementById('mobileNav').classList.toggle('active');
+  }
 
-    function loadPage(page) {
-      fetch(page)
-        .then(res => {
-          if (!res.ok) throw new Error(`Failed to load ${page}`);
-          return res.text();
-        })
-        .then(html => {
-          document.getElementById('page-content').innerHTML = html;
-          document.getElementById('mobileNav').classList.remove('active');
-          window.scrollTo(0, 0);
-          bindLinks();
-        })
-        .catch(err => {
-          console.error(err);
-          document.getElementById('page-content').innerHTML = `<p style="color:red;">${err.message}</p>`;
-        });
-    }
-
-    function agreeAndEnter() {
-      localStorage.setItem("agreedToDisclaimer", "true");
-      const modal = document.getElementById("disclaimerModal");
-      modal.classList.add("hidden");
-      setTimeout(() => {
-        modal.style.display = "none";
-        loadPage("newTRUOWL.html");
-      }, 300);
-    }
-
-    function bindLinks() {
-      document.querySelectorAll('a[data-page]').forEach(link => {
-        link.removeEventListener('click', handleSPAClick);
-        link.addEventListener('click', handleSPAClick);
+  function loadPage(page, push = true) {
+    fetch(page)
+      .then(res => {
+        if (!res.ok) throw new Error(`Failed to load ${page}`);
+        return res.text();
+      })
+      .then(html => {
+        document.getElementById('page-content').innerHTML = html;
+        document.getElementById('mobileNav').classList.remove('active');
+        window.scrollTo(0, 0);
+        if (push) history.pushState({ page }, "", "#" + page);
+        bindLinks();
+      })
+      .catch(err => {
+        console.error(err);
+        document.getElementById('page-content').innerHTML = `<p style="color:red;">${err.message}</p>`;
       });
-    }
+  }
 
-    function handleSPAClick(e) {
+  function agreeAndEnter() {
+    localStorage.setItem("agreedToDisclaimer", "true");
+    const modal = document.getElementById("disclaimerModal");
+    modal.classList.add("hidden");
+    setTimeout(() => {
+      modal.style.display = "none";
+      loadPage("newTRUOWL.html");
+    }, 300);
+  }
+
+  function handleSPAClick(e) {
+    const anchor = e.currentTarget;
+    const href = anchor.getAttribute("href") || "";
+    const isInternalPage = href.endsWith(".html") || anchor.dataset.page;
+
+    if (isInternalPage && !href.startsWith("http")) {
       e.preventDefault();
-      const page = this.getAttribute('data-page');
+      const page = anchor.dataset.page || href;
       loadPage(page);
     }
+  }
 
-    window.addEventListener("DOMContentLoaded", () => {
-      bindLinks();
-      if (!localStorage.getItem("agreedToDisclaimer")) {
-        document.getElementById("disclaimerModal").style.display = "flex";
-      } else {
-        loadPage("newTRUOWL.html");
-      }
+  function bindLinks() {
+    document.querySelectorAll("a").forEach(link => {
+      link.removeEventListener("click", handleSPAClick);
+      link.addEventListener("click", handleSPAClick);
     });
-  </script>
+  }
+
+  window.addEventListener("popstate", (e) => {
+    if (e.state && e.state.page) {
+      loadPage(e.state.page, false);
+    }
+  });
+
+  window.addEventListener("DOMContentLoaded", () => {
+    bindLinks();
+    if (!localStorage.getItem("agreedToDisclaimer")) {
+      document.getElementById("disclaimerModal").style.display = "flex";
+    } else {
+      const hashPage = location.hash?.substring(1) || "newTRUOWL.html";
+      loadPage(hashPage);
+    }
+  });
+</script>
 </body>
 </html>
