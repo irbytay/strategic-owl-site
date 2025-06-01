@@ -311,8 +311,8 @@
     const API_KEY = "AIzaSyCzuh9HBfe0r70r9U35Pe406PPZ-tz6I78";
     const SHEET_ID = "19wBEj9hEkvIyQcoR5E_mBGVAxTzMnddMxk8nuQLAumA";
     const RANGE = "TRU!A2:AG1000";
-    const url = `https://sheets.googleapis.com/v4/spreadsheets/${SHEET_ID}/values/${RANGE}?key=${API_KEY}`;
 
+    const url = `https://sheets.googleapis.com/v4/spreadsheets/${SHEET_ID}/values/${RANGE}?key=${API_KEY}`;
     try {
       const res = await fetch(url);
       if (!res.ok) throw new Error(`HTTP error! Status: ${res.status}`);
@@ -362,12 +362,32 @@
     const understandingFinal = understandingRaw * multiplier.understanding;
 
     const scores = [
-      { label: "Truth", value: truthFinal, raw: truthRaw, mult: multiplier.truth, comment: commentTruth },
-      { label: "Reliability", value: reliabilityFinal, raw: reliabilityRaw, mult: multiplier.reliability, comment: commentReliability },
-      { label: "Understanding", value: understandingFinal, raw: understandingRaw, mult: multiplier.understanding, comment: commentUnderstanding },
+      {
+        label: "Truth",
+        value: truthFinal,
+        raw: truthRaw,
+        mult: multiplier.truth,
+        comment: commentTruth,
+      },
+      {
+        label: "Reliability",
+        value: reliabilityFinal,
+        raw: reliabilityRaw,
+        mult: multiplier.reliability,
+        comment: commentReliability,
+      },
+      {
+        label: "Understanding",
+        value: understandingFinal,
+        raw: understandingRaw,
+        mult: multiplier.understanding,
+        comment: commentUnderstanding,
+      },
     ];
 
     let total = 0;
+
+    // Build table rows with calculation details
     scores.forEach(({ label, value, raw, mult, comment }) => {
       const tr = document.createElement("tr");
       tr.innerHTML = `
@@ -378,6 +398,7 @@
       total += value;
     });
 
+    // Append total score row
     const totalRow = document.createElement("tr");
     totalRow.innerHTML = `
       <td><strong>Total Score</strong></td>
@@ -386,13 +407,15 @@
     tbody.appendChild(totalRow);
 
     table.style.display = "table";
+
+    // Show total score box
     if (totalBox && totalCommentEl) {
       totalCommentEl.textContent = totalScoreComment;
       totalBox.style.display = "block";
     }
   };
 
-  window.initTRUOWLPage = async function () {
+  window.initElectionPage = async function () {
     window.rowMap = {};
     const data = await fetchTRUData();
     data.forEach(row => {
@@ -401,11 +424,6 @@
     });
 
     const select = document.getElementById("person-select");
-    if (!select) {
-      console.warn("[TRU OWL] Dropdown not found.");
-      return;
-    }
-
     select.innerHTML = '<option value="">-- Choose a name --</option>';
     Object.keys(window.rowMap).sort().forEach(name => {
       const opt = document.createElement("option");
@@ -416,6 +434,10 @@
 
     select.removeEventListener("change", window.showScores);
     select.addEventListener("change", window.showScores);
+  };
+
+  window.onload = function () {
+    window.initElectionPage();
   };
 </script>
 </body>
