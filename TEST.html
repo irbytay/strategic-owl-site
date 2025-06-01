@@ -29,13 +29,13 @@
 
   .top-nav {
     background-color: #2F2E5E;
-    padding: 16px 40px;
+    padding: 16px 20px;
     display: flex;
     align-items: center;
     justify-content: space-between;
     position: sticky;
     top: 0;
-    z-index: 1000;
+    z-index: 999;
     border-bottom: 1px solid var(--border);
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
   }
@@ -47,21 +47,33 @@
   }
 
   .nav-left img {
-    height: 40px;
+    height: 32px;
   }
 
   .nav-brand {
     font-family: 'Playfair Display', serif;
-    font-size: 1.5rem;
+    font-size: 1.3rem;
     font-weight: bold;
     color: var(--text);
     text-decoration: none;
-    margin-left: 8px;
+  }
+
+  .menu-toggle {
+    display: none;
+    font-size: 1.8rem;
+    background: none;
+    border: none;
+    color: var(--text);
+    cursor: pointer;
   }
 
   .nav-center {
     display: flex;
-    gap: 32px;
+  }
+
+  .nav-links {
+    display: flex;
+    gap: 24px;
   }
 
   .nav-links a {
@@ -75,14 +87,39 @@
     color: var(--hover);
   }
 
-  .menu-toggle {
-    display: none;
-    font-size: 28px;
-    color: var(--text);
-    cursor: pointer;
-    background: none;
-    border: none;
-    margin-left: auto;
+  /* ---------------- MOBILE MENU ---------------- */
+  @media (max-width: 768px) {
+    .menu-toggle {
+      display: block;
+    }
+
+    .nav-center {
+      display: none;
+      width: 100%;
+      flex-direction: column;
+      background-color: #2F2E5E;
+      padding: 12px 20px;
+      border-top: 1px solid var(--border);
+    }
+
+    .nav-center.active {
+      display: flex;
+    }
+
+    .nav-links {
+      flex-direction: column;
+      gap: 16px;
+    }
+
+    .nav-links a {
+      padding: 10px 0;
+      font-size: 1.05rem;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .nav-left {
+      flex-grow: 1;
+    }
   }
 
   h1 {
@@ -203,34 +240,6 @@
   .logo-container img {
     max-width: 120px;
     height: auto;
-  }
-
-  /* -------------------- MOBILE -------------------- */
-  @media (max-width: 768px) {
-    .nav-center {
-      display: none;
-      width: 100%;
-      flex-direction: column;
-      margin-top: 10px;
-    }
-
-    .nav-center.active {
-      display: flex;
-    }
-
-    .nav-links {
-      flex-direction: column;
-      gap: 12px;
-      padding-left: 20px;
-    }
-
-    .menu-toggle {
-      display: block;
-    }
-
-    .top-nav {
-      flex-wrap: wrap;
-    }
   }
 </style>
 </head>
