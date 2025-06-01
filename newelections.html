@@ -589,5 +589,24 @@ window.initElectionPage = async function () {
 
 // ⛔ REMOVED window.onload — use SPA init trigger instead
 </script>
+  <script>
+  function initNewstatefraudPage() {
+    console.log("[init] Newstatefraud page initialized");
+
+    const stateMenu = document.getElementById("stateSelect");
+
+    if (stateMenu) {
+      stateMenu.addEventListener("change", function () {
+        const state = stateMenu.value;
+        console.log("State selected:", state);
+
+        // You could now load fraud data for that state
+        // loadFraudDataForState(state);
+      });
+    } else {
+      console.warn("State select dropdown not found.");
+    }
+  }
+</script>
 </body>
 </html>
