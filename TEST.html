@@ -308,12 +308,10 @@ function loadPage(page, push = true) {
       window.scrollTo(0, 0);
       if (push) history.pushState({ page }, "", "#" + page);
 
-      // After content loads, run inline scripts
       runScriptsFromHTML(container);
 
-      // Give scripts a second to define functions, then call inits
       setTimeout(() => {
-        callPageInits(); 
+        callPageInits();
       }, 100);
     })
     .catch(err => {
@@ -337,14 +335,12 @@ function runScriptsFromHTML(container) {
   });
 }
 
-// This calls known init functions if they exist
 function callPageInits() {
   const possibleInits = [
     "initTRUOWLPage",
     "initElectionPage",
     "initStateFraudPage"
   ];
-
   possibleInits.forEach(fn => {
     if (typeof window[fn] === "function") {
       console.log(`[SPA] Calling ${fn}()`);
@@ -369,6 +365,21 @@ function bindLinks() {
   });
 }
 
+function agreeAndEnter() {
+  localStorage.setItem("agreedToDisclaimer", "true");
+
+  const modal = document.getElementById("disclaimerModal");
+  if (modal) {
+    modal.classList.add("hidden");
+    modal.style.display = "none";
+  }
+
+  const hashPage = location.hash?.substring(1) || "newTRUOWL.html";
+
+  bindLinks();
+  loadPage(hashPage);
+}
+
 window.addEventListener("popstate", e => {
   if (e.state && e.state.page) {
     loadPage(e.state.page, false);
@@ -377,8 +388,14 @@ window.addEventListener("popstate", e => {
 
 window.addEventListener("DOMContentLoaded", () => {
   bindLinks();
-  const startPage = location.hash?.substring(1) || "newTRUOWL.html";
-  loadPage(startPage);
+
+  if (!localStorage.getItem("agreedToDisclaimer")) {
+    const modal = document.getElementById("disclaimerModal");
+    if (modal) modal.style.display = "flex";
+  } else {
+    const startPage = location.hash?.substring(1) || "newTRUOWL.html";
+    loadPage(startPage);
+  }
 });
 </script>
 </body>
