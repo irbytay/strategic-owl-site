@@ -308,8 +308,8 @@
         window.scrollTo(0, 0);
         if (push) history.pushState({ page }, "", "#" + page);
         bindLinks();
-        runScriptsFromHTML(container);   // ✅ run <script> tags inside the loaded HTML
-        setTimeout(() => initPageScripts(page), 300); // ✅ delay + pass page
+        runScriptsFromHTML(container); // ✅ Runs scripts from the loaded HTML
+        setTimeout(() => initPageScripts(), 300); // ✅ Keep minimal hooks
       })
       .catch(err => {
         console.error(err);
@@ -324,12 +324,11 @@
       const newScript = document.createElement("script");
       if (oldScript.src) {
         newScript.src = oldScript.src;
-        newScript.async = false; // preserve execution order
+        newScript.async = false;
       } else {
         newScript.textContent = oldScript.textContent;
       }
       document.body.appendChild(newScript);
-      // Removed immediate removal so script can execute properly
     });
   }
 
@@ -362,50 +361,41 @@
     });
   }
 
-  function initPageScripts(page) {
-  console.log(`[SPA] Initializing page scripts for: ${page}`);
+  function initPageScripts() {
+    // ✅ This is now generic, only sets up UI elements found in DOM.
+    console.log(`[SPA] Generic initPageScripts running`);
 
-  const personSelect = document.getElementById("person-select");
-  if (personSelect && typeof showScores === "function") {
-    personSelect.removeEventListener("change", showScores);
-    personSelect.addEventListener("change", showScores);
-    if (personSelect.value) showScores();
+    const personSelect = document.getElementById("person-select");
+    if (personSelect && typeof showScores === "function") {
+      personSelect.removeEventListener("change", showScores);
+      personSelect.addEventListener("change", showScores);
+      if (personSelect.value) showScores();
+    }
+
+    const stateSelect = document.getElementById("state-select");
+    if (stateSelect && typeof init === "function") {
+      init(); // voter fraud state table init
+    }
+
+    // ✅ DO NOT hardcode page names or window.init calls here
   }
 
-  const stateSelect = document.getElementById("state-select");
-  if (stateSelect && typeof init === "function") {
-    init(); // voter fraud state table init
-  }
+  window.addEventListener("popstate", (e) => {
+    if (e.state && e.state.page) {
+      console.log(`[SPA] Popstate event: loading ${e.state.page}`);
+      loadPage(e.state.page, false);
+    }
+  });
 
-  // ✅ NEW: Trigger initElectionPage for both pages that use it
-  if (
-    (page === "newelections.html" || page === "newTRUOWL.html") &&
-    typeof window.initElectionPage === "function"
-  ) {
-    window.initElectionPage();
-  }
-
-  if (page === "newstatefraud.html" && typeof window.initStateFraudPage === "function") {
-    window.initStateFraudPage();
-  }
-}
-
-window.addEventListener("popstate", (e) => {
-  if (e.state && e.state.page) {
-    console.log(`[SPA] Popstate event: loading ${e.state.page}`);
-    loadPage(e.state.page, false);
-  }
-});
-
-window.addEventListener("DOMContentLoaded", () => {
-  bindLinks();
-  if (!localStorage.getItem("agreedToDisclaimer")) {
-    document.getElementById("disclaimerModal").style.display = "flex";
-  } else {
-    const hashPage = location.hash?.substring(1) || "newTRUOWL.html";
-    loadPage(hashPage);
-  }
-});
- </script>
+  window.addEventListener("DOMContentLoaded", () => {
+    bindLinks();
+    if (!localStorage.getItem("agreedToDisclaimer")) {
+      document.getElementById("disclaimerModal").style.display = "flex";
+    } else {
+      const hashPage = location.hash?.substring(1) || "newTRUOWL.html";
+      loadPage(hashPage);
+    }
+  });
+</script>
 </body>
 </html>
