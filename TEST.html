@@ -233,21 +233,21 @@
     </div>
     <div class="nav-links-wrapper">
       <div class="nav-links">
-        <a href="newelections.html" onclick="loadPage('newelections.html'); return false;">Election Security</a>
-<a href="newheritagefoundation.html" onclick="loadPage('newheritagefoundation.html'); return false;">Election Fraud</a>
-<a href="newstatefraud.html" onclick="loadPage('newstatefraud.html'); return false;">Voter Fraud by State</a>
-<a href="newcontact.html" onclick="loadPage('newcontact.html'); return false;">Contact</a>
-      </div>
+  <a href="#" data-page="newelections.html">Election Security</a>
+  <a href="#" data-page="newheritagefoundation.html">Election Fraud</a>
+  <a href="#" data-page="newstatefraud.html">Voter Fraud by State</a>
+  <a href="#" data-page="newcontact.html">Contact</a>
+</div>
     </div>
     <button class="nav-toggle" onclick="toggleMobileNav()">☰</button>
   </nav>
 
   <div class="mobile-nav" id="mobileNav">
-    <a href="newelections.html" onclick="loadPage('newelections.html'); return false;">Election Security</a>
-<a href="newheritagefoundation.html" onclick="loadPage('newheritagefoundation.html'); return false;">Election Fraud</a>
-<a href="newstatefraud.html" onclick="loadPage('newstatefraud.html'); return false;">Voter Fraud by State</a>
-<a href="newcontact.html" onclick="loadPage('newcontact.html'); return false;">Contact</a>
-  </div>
+  <a href="#" data-page="newelections.html">Election Security</a>
+  <a href="#" data-page="newheritagefoundation.html">Election Fraud</a>
+  <a href="#" data-page="newstatefraud.html">Voter Fraud by State</a>
+  <a href="#" data-page="newcontact.html">Contact</a>
+</div>
 
   <div class="content">
     <div id="page-content"></div>
@@ -330,17 +330,17 @@
     }
   }
 
-  // ✅ Universal SPA click handler using event delegation
-  document.body.addEventListener('click', function (e) {
-    const anchor = e.target.closest('a');
-    if (anchor) {
-      const href = anchor.getAttribute('href') || '';
-      if (href.endsWith('.html') && !href.startsWith('http')) {
-        e.preventDefault();
-        loadPage(href);
-      }
+  // ✅ SPA click handler only for links with data-page
+document.body.addEventListener('click', function (e) {
+  const anchor = e.target.closest('a[data-page]');
+  if (anchor) {
+    e.preventDefault();
+    const page = anchor.getAttribute('data-page');
+    if (page) {
+      loadPage(page);
     }
-  });
+  }
+});
 
   function agreeAndEnter() {
     localStorage.setItem("agreedToDisclaimer", "true");
