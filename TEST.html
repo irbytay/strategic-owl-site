@@ -1,0 +1,348 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>The Strategic Owl</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&family=Playfair+Display:wght@500;700&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --navy: #1A1A40;
+      --text: #F5F5F5;
+      --accent-blue: #3B6CED;
+      --hover: #4FDBA6;
+      --border: #2F2F5F;
+    }
+
+    body {
+      background-color: var(--navy);
+      font-family: 'Inter', sans-serif;
+      color: var(--text);
+      margin: 0;
+      padding: 0;
+    }
+
+    h1, h2, h3 {
+      font-family: 'Playfair Display', serif;
+    }
+
+    .top-nav {
+      background-color: #2F2E5E;
+      padding: 16px 20px;
+      border-bottom: 1px solid var(--border);
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.4);
+      position: sticky;
+      top: 0;
+      z-index: 999;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .nav-logo {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      color: var(--text);
+      font-size: 1.5rem;
+      font-family: 'Playfair Display', serif;
+      font-weight: bold;
+      text-decoration: none;
+    }
+
+    .nav-logo img {
+      height: 40px;
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 16px;
+    }
+
+    .nav-links a {
+      color: var(--text);
+      font-weight: 500;
+      text-decoration: none;
+      transition: color 0.2s ease;
+    }
+
+    .nav-links a:hover {
+      color: var(--hover);
+    }
+
+    a {
+      color: var(--text);
+      text-decoration: none;
+    }
+
+    a:hover {
+      color: var(--hover);
+    }
+
+    a.dynamic-link {
+      color: var(--hover);
+      cursor: pointer;
+      display: inline-block;
+      margin-bottom: 10px;
+      font-weight: 500;
+    }
+
+    a.dynamic-link:hover {
+      color: #ffffff;
+      text-decoration: underline;
+    }
+
+    .content {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 40px 20px;
+    }
+
+    .section-box {
+      background-color: #2F2E5E;
+      padding: 40px;
+      border-radius: 12px;
+      box-shadow: 0 0 12px rgba(0, 0, 0, 0.5);
+      margin: 60px auto;
+      max-width: 900px;
+    }
+
+    .score-grid,
+    .profile-grid {
+      display: grid;
+      gap: 32px;
+    }
+
+    .score-grid {
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      margin: 30px auto 60px;
+    }
+
+    .profile-grid {
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      margin-top: 30px;
+      margin-bottom: 50px;
+    }
+
+    .role-box {
+      background-color: #2F2E5E;
+      border-radius: 10px;
+      padding: 24px;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+    }
+
+    .role-box a {
+      display: block;
+      color: var(--text);
+      padding: 6px 0;
+      text-decoration: none;
+      font-size: 1rem;
+      border-bottom: 1px solid var(--border);
+      transition: color 0.2s ease;
+    }
+
+    .role-box a:hover {
+      color: var(--hover);
+    }
+
+    h3.category-heading {
+      font-size: 1.4rem;
+      border-bottom: 2px solid var(--accent-blue);
+      padding-bottom: 6px;
+      margin-bottom: 14px;
+    }
+
+    .text-truth {
+      color: #4CAF50;
+      font-weight: bold;
+    }
+
+    .text-reliability {
+      color: #2196F3;
+      font-weight: bold;
+    }
+
+    .text-understanding {
+      color: #FFD700;
+      font-weight: bold;
+    }
+
+    @media (max-width: 768px) {
+      .top-nav {
+        flex-direction: column;
+        align-items: flex-start;
+        padding: 12px;
+      }
+
+      .nav-logo {
+        flex-direction: row;
+        justify-content: space-between;
+        width: 100%;
+      }
+
+      .nav-links {
+        flex-direction: column;
+        width: 100%;
+        gap: 12px;
+        margin-top: 12px;
+      }
+
+      .nav-links a {
+        margin-left: 0;
+        padding: 8px 0;
+      }
+
+      .content {
+        padding: 20px;
+      }
+
+      h1 {
+        font-size: 1.5rem;
+      }
+
+      h2 {
+        font-size: 1.2rem;
+      }
+
+      .score-grid,
+      .profile-grid {
+        grid-template-columns: 1fr !important;
+      }
+
+      .dynamic-link {
+        display: block;
+        padding: 6px 0;
+      }
+    }
+  </style>
+</head>
+<body>
+  <nav class="top-nav">
+    <a href="index.html" class="nav-logo">
+      <img src="owl_logo_white.png" alt="Logo" />
+      <span>The Strategic Owl</span>
+    </a>
+    <div class="nav-links">
+      <a href="home.html" class="dynamic-link">Home</a>
+      <a href="elections.html" class="dynamic-link">Election Security</a>
+      <a href="heritagefoundation.html" class="dynamic-link">Election Fraud</a>
+      <a href="statefraud.html" class="dynamic-link">Voter Fraud by State</a>
+      <a href="contact.html" class="dynamic-link">Contact</a>
+    </div>
+  </nav>
+
+  <div id="main-content">
+  <div class="section-box">
+    <h1>Welcome to the T.R.U. OWL Score</h1>
+    <p><strong>This isn’t a media bias site. It’s a truth system.</strong></p>
+    <p>The T.R.U. OWL Score is a credibility framework that measures public figures based on <span class="text-truth">verifiable truth</span> — not vibes, tribes, or talking points.</p>
+    <p>We don’t ask what side someone’s on. We ask: <em>Did they tell the truth?</em> Did they correct themselves when wrong? Are they consistent? Do they understand what they’re talking about?</p>
+
+    <ul>
+      <li><span class="text-truth">Truth:</span> Are the claims factually accurate?</li>
+      <li><span class="text-reliability">Reliability:</span> Are they consistent and accountable?</li>
+      <li><span class="text-understanding">Understanding:</span> Do they grasp the systems they discuss?</li>
+    </ul>
+
+    <p><strong>This is about course-correction — not cancellation.</strong> We reward accuracy, transparency, and integrity. We expose distortion, evasion, and disinformation.</p>
+  </div>
+
+  <h2 class="center-heading">Scoring Weights by Role</h2>
+  <div class="score-grid">
+    <div class="role-box">
+      <h3 class="category-heading">Politicians</h3>
+      <p><span class="text-truth">Truth:</span> 4.0×</p>
+      <p><span class="text-reliability">Reliability:</span> 4.0×</p>
+      <p><span class="text-understanding">Understanding:</span> 5.0×</p>
+    </div>
+    <div class="role-box">
+      <h3 class="category-heading">Journalists</h3>
+      <p><span class="text-truth">Truth:</span> 2.0×</p>
+      <p><span class="text-reliability">Reliability:</span> 2.0×</p>
+      <p><span class="text-understanding">Understanding:</span> 2.0×</p>
+    </div>
+    <div class="role-box">
+      <h3 class="category-heading">Media Companies</h3>
+      <p><span class="text-truth">Truth:</span> 3.0×</p>
+      <p><span class="text-reliability">Reliability:</span> 3.5×</p>
+      <p><span class="text-understanding">Understanding:</span> 3.0×</p>
+    </div>
+    <div class="role-box">
+      <h3 class="category-heading">Influencers</h3>
+      <p><span class="text-truth">Truth:</span> 2.5×</p>
+      <p><span class="text-reliability">Reliability:</span> 2.0×</p>
+      <p><span class="text-understanding">Understanding:</span> 1.5×</p>
+    </div>
+  </div>
+
+  <h2 class="center-heading">Explore Profiles</h2>
+  <div class="profile-grid">
+    <div class="role-box">
+      <h3 class="category-heading">Politicians</h3>
+      <a href="trump.html" class="dynamic-link">Donald Trump</a>
+      <a href="desantis.html" class="dynamic-link">Ron DeSantis</a>
+      <a href="harris.html" class="dynamic-link">Kamala Harris</a>
+      <a href="santos.html" class="dynamic-link">George Santos</a>
+    </div>
+    <div class="role-box">
+      <h3 class="category-heading">Journalists</h3>
+      <a href="woodward.html" class="dynamic-link">Bob Woodward</a>
+      <a href="maddow.html" class="dynamic-link">Rachel Maddow</a>
+      <a href="beasley.html" class="dynamic-link">Luke Beasley</a>
+    </div>
+    <div class="role-box">
+      <h3 class="category-heading">Media</h3>
+      <a href="foxnews.html" class="dynamic-link">Fox News</a>
+      <a href="cnn.html" class="dynamic-link">CNN</a>
+      <a href="dailywire.html" class="dynamic-link">The Daily Wire</a>
+    </div>
+    <div class="role-box">
+      <h3 class="category-heading">Influencers</h3>
+      <a href="rogan.html" class="dynamic-link">Joe Rogan</a>
+      <a href="shapiro.html" class="dynamic-link">Ben Shapiro</a>
+      <a href="owens.html" class="dynamic-link">Candace Owens</a>
+    </div>
+  </div>
+</div>
+
+  <script>
+    const contentDiv = document.getElementById('main-content');
+
+    function loadDynamicPage(path, push = true) {
+      fetch(path)
+        .then(res => res.ok ? res.text() : "<p>Page not found.</p>")
+        .then(html => {
+          const parser = new DOMParser();
+          const doc = parser.parseFromString(html, "text/html");
+          const newContent = doc.querySelector('#main-content') || doc.body;
+          contentDiv.innerHTML = newContent.innerHTML;
+          if (push) history.pushState({ path }, '', path);
+          window.scrollTo({ top: 0, behavior: 'smooth' });
+          attachDynamicLinkHandlers();
+        });
+    }
+
+    function attachDynamicLinkHandlers() {
+      document.querySelectorAll('a.dynamic-link').forEach(link => {
+        link.onclick = (e) => {
+          e.preventDefault();
+          const path = link.getAttribute('href');
+          loadDynamicPage(path);
+        };
+      });
+    }
+
+    window.addEventListener('DOMContentLoaded', () => {
+      const defaultPage = 'home.html';
+      const path = window.location.pathname !== '/' ? window.location.pathname.substring(1) : defaultPage;
+      loadDynamicPage(path, false);
+    });
+
+    window.addEventListener('popstate', (e) => {
+      if (e.state?.path) {
+        loadDynamicPage(e.state.path, false);
+      }
+    });
+  </script>
+</body>
+</html>
