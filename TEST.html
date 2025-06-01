@@ -38,6 +38,7 @@
     z-index: 999;
     border-bottom: 1px solid var(--border);
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+    flex-wrap: wrap;
   }
 
   .nav-left {
@@ -65,10 +66,13 @@
     border: none;
     color: var(--text);
     cursor: pointer;
+    margin-left: auto;
   }
 
   .nav-center {
+    flex-grow: 1;
     display: flex;
+    justify-content: center;
   }
 
   .nav-links {
@@ -96,10 +100,10 @@
     .nav-center {
       display: none;
       width: 100%;
-      flex-direction: column;
       background-color: #2F2E5E;
       padding: 12px 20px;
       border-top: 1px solid var(--border);
+      justify-content: flex-start;
     }
 
     .nav-center.active {
@@ -108,12 +112,13 @@
 
     .nav-links {
       flex-direction: column;
-      gap: 16px;
+      gap: 12px;
+      width: 100%;
     }
 
     .nav-links a {
       padding: 10px 0;
-      font-size: 1.05rem;
+      font-size: 1.1rem;
       border-bottom: 1px solid var(--border);
     }
 
@@ -290,6 +295,7 @@
     </div>
 
     <div class="score-grid">
+      <!-- Four role summaries -->
       <div class="role-box">
         <h3 class="category-heading">Politicians</h3>
         <p><span class="text-truth">Truth:</span> 4.0×</p>
