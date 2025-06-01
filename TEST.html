@@ -37,6 +37,7 @@
       display: flex;
       justify-content: space-between;
       align-items: center;
+      position: relative;
     }
 
     .brand-left {
@@ -58,10 +59,10 @@
       text-decoration: none;
     }
 
-    .nav-center {
-      flex: 1;
-      display: flex;
-      justify-content: center;
+    .nav-links-wrapper {
+      position: absolute;
+      left: 50%;
+      transform: translateX(-50%);
     }
 
     .nav-links {
@@ -119,16 +120,12 @@
     }
 
     @media (max-width: 768px) {
-      .nav-links {
+      .nav-links-wrapper {
         display: none;
       }
 
       .nav-toggle {
         display: block;
-      }
-
-      .nav-center {
-        justify-content: flex-end;
       }
     }
   </style>
@@ -143,15 +140,17 @@
       </a>
       <a href="TRUOWL.html" class="nav-logo">The Strategic Owl</a>
     </div>
-    <div class="nav-center">
+
+    <div class="nav-links-wrapper">
       <div class="nav-links">
         <a href="elections.html">Election Security</a>
         <a href="heritagefoundation.html">Election Fraud</a>
         <a href="statefraud.html">Voter Fraud by State</a>
         <a href="contact.html">Contact</a>
       </div>
-      <button class="nav-toggle" onclick="toggleMobileNav()">☰</button>
     </div>
+
+    <button class="nav-toggle" onclick="toggleMobileNav()">☰</button>
   </nav>
 
   <div class="mobile-nav" id="mobileNav">
