@@ -70,9 +70,9 @@
   }
 
   .nav-center {
-    flex-grow: 1;
     display: flex;
     justify-content: center;
+    width: 100%;
   }
 
   .nav-links {
@@ -99,11 +99,12 @@
 
     .nav-center {
       display: none;
-      width: 100%;
+      flex-direction: column;
+      align-items: flex-start;
       background-color: #2F2E5E;
+      width: 100%;
       padding: 12px 20px;
       border-top: 1px solid var(--border);
-      justify-content: flex-start;
     }
 
     .nav-center.active {
@@ -119,6 +120,7 @@
     .nav-links a {
       padding: 10px 0;
       font-size: 1.1rem;
+      width: 100%;
       border-bottom: 1px solid var(--border);
     }
 
