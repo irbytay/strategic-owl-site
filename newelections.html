@@ -496,6 +496,7 @@ async function fetchTRUData() {
   sortedNames.forEach(name => {
     const opt = document.createElement("option");
     opt.value = name;
+    // Format name: insert spaces before capitals and capitalize first letter
     opt.textContent = name.replace(/([A-Z])/g, " $1").replace(/^./, s => s.toUpperCase());
     select.appendChild(opt);
   });
@@ -519,10 +520,12 @@ function showScores() {
     "Psychological Manipulation"
   ];
 
+  // Scores: D (3) to M (12)
+  // Explanations: R (17) to AA (26)
   for (let i = 0; i < 10; i++) {
     const label = categories[i];
-    const score = parseInt(row[i + 1]) || 0;
-    const explanation = row[i + 11] || "";
+    const score = parseInt(row[3 + i]) || 0;
+    const explanation = row[17 + i] || "";
 
     const tr = document.createElement("tr");
     tr.innerHTML = `<td>${label}</td><td>${score >= 0 ? "+" : ""}${score}</td><td>${explanation}</td>`;
@@ -530,8 +533,8 @@ function showScores() {
     total += score;
   }
 
-  // Election Denial Bonus
-  const flag = (row[21] || "").toLowerCase();
+  // Election Denial Bonus/Penalty from AB (27)
+  const flag = (row[27] || "").toLowerCase();
   let bonus = 0, label = "", desc = "";
 
   if (flag === "true") {
@@ -555,10 +558,11 @@ function showScores() {
     total += bonus;
   }
 
-  const summary = row[22] || "No summary provided.";
-  const tr = document.createElement("tr");
-  tr.innerHTML = `<td><strong>Total Score</strong></td><td><strong>${total >= 0 ? "+" : ""}${total}</strong></td><td><strong>${summary}</strong></td>`;
-  tbody.appendChild(tr);
+  // Summary from Q (16)
+  const summary = row[16] || "No summary provided.";
+  const totalRow = document.createElement("tr");
+  totalRow.innerHTML = `<td><strong>Total Score</strong></td><td><strong>${total >= 0 ? "+" : ""}${total}</strong></td><td><strong>${summary}</strong></td>`;
+  tbody.appendChild(totalRow);
 
   table.style.display = "table";
 }
