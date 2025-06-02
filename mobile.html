@@ -2,14 +2,14 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>The Strategic Owl</title>
 
-  <!-- 🖋️ Fonts -->
+  <!-- 🖋 Fonts -->
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&family=Playfair+Display:wght@500;700&display=swap" rel="stylesheet" />
 
   <style>
-    /* 🎨 Color Palette and Theming */
+    /* 🎨 Strategic Owl Color System */
     :root {
       --background: #0D1B2A;
       --surface: #112240;
@@ -26,7 +26,7 @@
       --shadow: rgba(0, 0, 0, 0.4);
     }
 
-    /* 🧱 Global Reset & Structure */
+    /* 🔧 Global Reset */
     * {
       margin: 0;
       padding: 0;
@@ -40,43 +40,39 @@
       line-height: 1.6;
     }
 
-    /* 🔝 Top Navigation Bar */
-    .top-nav {
+    /* 🧭 Navigation */
+    nav {
+      background-color: var(--highlight);
+      color: var(--text);
+      padding: 12px 20px;
       display: flex;
       align-items: center;
       justify-content: space-between;
-      background-color: var(--highlight);
-      padding: 12px 16px;
       box-shadow: 0 2px 6px var(--shadow);
-      height: 64px;
     }
 
-    /* 🦉 Logo + Brand Name */
     .nav-logo {
       display: flex;
       align-items: center;
-      text-decoration: none;
-      color: var(--text);
       font-family: 'Playfair Display', serif;
-      font-size: 1.25rem;
-      font-weight: bold;
+      font-size: 1.3rem;
+      color: var(--text);
+      text-decoration: none;
     }
 
-    .nav-logo-img {
+    .nav-logo img {
       height: 36px;
-      margin-right: 12px;
+      margin-right: 10px;
     }
 
-    /* 🧭 Navigation Links */
     .nav-links {
       display: flex;
       gap: 16px;
     }
 
     .nav-links a {
-      text-decoration: none;
       color: var(--text);
-      font-size: 1rem;
+      text-decoration: none;
       font-weight: 600;
     }
 
@@ -84,23 +80,22 @@
       color: var(--text-muted);
     }
 
-    /* 📦 Page Content Container */
+    /* 📦 Page Content Area */
     #page-content {
       padding: 24px;
     }
 
-    /* 📱 Responsive Tuning */
+    /* 📱 Mobile-first adjustments */
     @media (max-width: 600px) {
-      .top-nav {
+      nav {
         flex-direction: column;
-        height: auto;
         align-items: flex-start;
       }
 
       .nav-links {
         flex-direction: column;
-        width: 100%;
         margin-top: 8px;
+        width: 100%;
       }
 
       .nav-links a {
@@ -109,61 +104,72 @@
     }
   </style>
 </head>
-<body>
 
-  <!-- 📍Navigation Bar w/ Logo and Links -->
-  <nav class="top-nav">
-    <a href="TRUOWL.html" class="nav-logo">
-      <img src="owl_logo_white.png" alt="Owl Logo" class="nav-logo-img"
-           onerror="this.onerror=null;this.style.display='none';this.insertAdjacentHTML('afterend','<p style=\'color:white;font-weight:bold;\'>[ Logo not found ]</p>')" />
+<body>
+  <!-- 🧭 Navigation -->
+  <nav>
+    <a href="#home.html" class="nav-logo">
+      <img src="owl_logo_white.png" alt="Owl Logo" onerror="this.style.display='none'" />
       The Strategic Owl
     </a>
 
     <div class="nav-links">
-      <a href="#base.html">T.R.U. Owl</a>
+      <a href="#home.html">Home</a>
+      <a href="#base.html">T.R.U. OWL</a>
       <a href="#newelections.html">Election Security</a>
-      <a href="#newheritagefoundation.html">Election Fraud</a>
-      <a href="#newstatefraud.html">State Analysis</a>
       <a href="#newcontact.html">Contact</a>
     </div>
   </nav>
 
-  <!-- 🔄 Dynamic Page Loader Container -->
-  <div id="page-content">
-    <!-- Content will load here via JS -->
-  </div>
+  <!-- 🔄 Main View Container -->
+  <div id="page-content"></div>
 
+  <!-- ⚙️ SPA Router + Script Runner -->
   <script>
-    // 🔁 SPA Dynamic Page Loading
+    function runScripts(container) {
+      const scripts = container.querySelectorAll("script");
+      scripts.forEach(oldScript => {
+        const newScript = document.createElement("script");
+        if (oldScript.src) {
+          newScript.src = oldScript.src;
+        } else {
+          newScript.textContent = oldScript.textContent;
+        }
+        document.body.appendChild(newScript);
+        oldScript.remove();
+      });
+    }
+
     function loadPage(page, push = true) {
       fetch(page)
-        .then(res => {
-          if (!res.ok) throw new Error(`Failed to load ${page}`);
-          return res.text();
-        })
+        .then(res => res.ok ? res.text() : Promise.reject(res))
         .then(html => {
           const container = document.getElementById("page-content");
           container.innerHTML = html;
-
+          runScripts(container);
           if (push) history.pushState({ page }, "", "#" + page);
         })
         .catch(err => {
-          console.error(err);
-          document.getElementById("page-content").innerHTML = "<p style='color:red;'>Page failed to load.</p>";
+          document.getElementById("page-content").innerHTML = "<p style='color:red;'>Page not found.</p>";
+          console.error("Error loading page:", err);
         });
     }
 
-    // ⏮️ Handle browser back/forward buttons
-    window.addEventListener("popstate", (event) => {
-      if (event.state?.page) {
-        loadPage(event.state.page, false);
-      }
+    window.addEventListener("DOMContentLoaded", () => {
+      const initial = location.hash ? location.hash.substring(1) : "home.html";
+      loadPage(initial);
     });
 
-    // 🚀 Load initial page on first view
-    window.addEventListener("DOMContentLoaded", () => {
-      const initial = location.hash ? location.hash.substring(1) : "base.html";
-      loadPage(initial);
+    window.addEventListener("popstate", e => {
+      if (e.state?.page) loadPage(e.state.page, false);
+    });
+
+    document.querySelectorAll("a[href^='#']").forEach(link => {
+      link.addEventListener("click", e => {
+        e.preventDefault();
+        const target = link.getAttribute("href").substring(1);
+        loadPage(target);
+      });
     });
   </script>
 </body>
