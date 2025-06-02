@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <!-- 🌐 Meta Setup -->
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>The Strategic Owl</title>
+
+  <!-- 🅰 Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&family=Playfair+Display:wght@700&display=swap" rel="stylesheet" />
+
+  <!-- 🎨 Style Block -->
+  <style>
+    /* 🎨 Color Scheme Variables */
+    :root {
+      --navy: #1A1A40;
+      --gold: #FFD700;
+      --truth: #32CD32;
+      --reliability: #3B6CED;
+      --understanding: #D4AF37;
+      --text: #FAFAD2;
+      --dark-gray: #2C3E50;
+    }
+
+    /* 🧼 Reset + Typography */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      background-color: var(--navy);
+      color: var(--text);
+      font-family: 'Inter', sans-serif;
+      padding: 0;
+      margin: 0;
+    }
+
+    /* 🧭 Top Navigation */
+    nav {
+      background-color: var(--dark-gray);
+      padding: 12px 16px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .nav-title {
+      font-family: 'Playfair Display', serif;
+      font-size: 20px;
+      color: var(--gold);
+    }
+
+    .nav-links a {
+      margin-left: 12px;
+      color: var(--text);
+      text-decoration: none;
+      font-size: 14px;
+    }
+
+    .nav-links a:hover {
+      color: var(--gold);
+    }
+
+    /* 📦 Page Container */
+    #page-content {
+      padding: 16px;
+    }
+
+    /* 📱 Mobile Optimization */
+    @media (min-width: 768px) {
+      .nav-links a {
+        font-size: 16px;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- 🧭 Navigation -->
+  <nav>
+    <div class="nav-title">The Strategic Owl</div>
+    <div class="nav-links">
+      <a href="#home" onclick="loadPage('home.html')">Home</a>
+      <a href="#score" onclick="loadPage('score.html')">Scores</a>
+      <a href="#states" onclick="loadPage('states.html')">States</a>
+      <a href="#about" onclick="loadPage('about.html')">About</a>
+    </div>
+  </nav>
+
+  <!-- 🔄 Dynamic Content Placeholder -->
+  <main id="page-content">
+    <!-- Content will be loaded here by SPA script -->
+    <p style="padding: 20px;">Loading...</p>
+  </main>
+
+  <!-- 🧠 SPA Script Logic -->
+  <script>
+    // Load page content into #page-content without full refresh
+    function loadPage(page, push = true) {
+      fetch(page)
+        .then(res => {
+          if (!res.ok) throw new Error(`Failed to load ${page}`);
+          return res.text();
+        })
+        .then(html => {
+          const content = document.getElementById("page-content");
+          content.innerHTML = html;
+          if (push) history.pushState({ page }, "", "#" + page);
+        })
+        .catch(err => {
+          document.getElementById("page-content").innerHTML = "<p>Error loading content.</p>";
+          console.error(err);
+        });
+    }
+
+    // Load correct page on refresh or direct link
+    window.addEventListener("load", () => {
+      const defaultPage = "home.html";
+      const hash = window.location.hash.slice(1).replace(".html", "");
+      loadPage(hash ? hash + ".html" : defaultPage, false);
+    });
+
+    // Handle browser back/forward buttons
+    window.addEventListener("popstate", e => {
+      if (e.state?.page) loadPage(e.state.page, false);
+    });
+  </script>
+
+</body>
+</html>
