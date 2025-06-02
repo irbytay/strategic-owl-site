@@ -5,46 +5,147 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>The Strategic Owl</title>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&family=Playfair+Display:wght@500;700&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="styles.css" />
-  <script defer src="spa.js"></script>
+
+  <style>
+    :root {
+      --background: #0D1B2A;
+      --surface: #112240;
+      --highlight: #1A2B4C;
+
+      --text: #FFFFFF;
+      --text-muted: #7C8A9B;
+      --heading: #FFFFFF;
+
+      --truth: #28A745;
+      --reliability: #3B6CED;
+      --understanding: #D4AF37;
+
+      --border: #2F2F5F;
+      --shadow: rgba(0, 0, 0, 0.4);
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      background-color: var(--background);
+      color: var(--text);
+      font-family: 'Inter', sans-serif;
+      line-height: 1.6;
+    }
+
+    nav.top-nav {
+      background-color: var(--highlight);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 12px 20px;
+      height: 60px;
+      box-shadow: 0 2px 4px var(--shadow);
+    }
+
+    .nav-logo {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      color: var(--text);
+      text-decoration: none;
+      font-family: 'Playfair Display', serif;
+      font-size: 1.2rem;
+      font-weight: bold;
+    }
+
+    .nav-logo-img {
+      height: 32px;
+      width: 32px;
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 16px;
+    }
+
+    .nav-links a {
+      color: var(--text);
+      text-decoration: none;
+      font-size: 1rem;
+      font-weight: 600;
+      padding: 6px 10px;
+      transition: background-color 0.2s;
+    }
+
+    .nav-links a:hover {
+      background-color: var(--surface);
+      border-radius: 6px;
+    }
+
+    main#page-content {
+      padding: 24px;
+    }
+
+    @media (max-width: 768px) {
+      nav.top-nav {
+        flex-direction: column;
+        align-items: flex-start;
+        height: auto;
+      }
+
+      .nav-links {
+        flex-direction: column;
+        gap: 10px;
+        margin-top: 10px;
+      }
+
+      .nav-logo {
+        font-size: 1.4rem;
+      }
+    }
+  </style>
 </head>
+
 <body>
-  <!-- 🔝 Top Navigation Bar -->
+  <!-- 🔝 Navigation Bar with Logo -->
   <nav class="top-nav">
-    <!-- 🔗 Strategic Owl Logo linking back to TRUOWL.html -->
     <a href="TRUOWL.html" class="nav-logo">
-      <!-- 🦉 Logo image with a fallback error handler if image fails to load -->
       <img src="owl_logo_white.png" alt="Owl Logo" class="nav-logo-img"
-           onerror="this.onerror=null;this.style.display='none';this.insertAdjacentHTML('afterend','<p style=\'color:white;font-weight:bold;\'>[ Logo not found ]</p>')" />
+        onerror="this.onerror=null;this.style.display='none';this.insertAdjacentHTML('afterend','<p style=\'color:white;font-weight:bold;\'>[ Logo not found ]</p>')" />
       The Strategic Owl
     </a>
     <div class="nav-links">
-      <a href="#home.html" onclick="loadPage('home.html')">Home</a>
-      <a href="#truowl.html" onclick="loadPage('truowl.html')">T.R.U. Owl</a>
-      <a href="#elections.html" onclick="loadPage('elections.html')">Election Security</a>
-      <a href="#contact.html" onclick="loadPage('contact.html')">Contact</a>
+      <a href="#home" onclick="loadPage('home.html')">Home</a>
+      <a href="#truowl" onclick="loadPage('TRUOWL.html')">T.R.U. Owl</a>
+      <a href="#election" onclick="loadPage('newelections.html')">Election Security</a>
+      <a href="#about" onclick="loadPage('about.html')">About</a>
     </div>
   </nav>
 
-  <!-- 📄 Main Content Container -->
-  <div id="page-content">
-    <!-- Initial content or placeholder can go here -->
-    <h1>Welcome to The Strategic Owl</h1>
-    <p>Use the menu above to explore TRU OWL Scores and resources.</p>
-  </div>
+  <!-- 📄 Dynamic Page Loader -->
+  <main id="page-content">
+    <!-- Home.html or fallback content goes here -->
+  </main>
 
-  <!-- 🔻 Footer Section (e.g. divider bars) -->
-  <div class="divider-section">
-    <div class="divider-bar">
-      <div class="truth"></div>
-      <div class="reliability"></div>
-      <div class="understanding"></div>
-    </div>
-    <div class="divider-labels">
-      <span>Truth</span>
-      <span>Reliability</span>
-      <span>Understanding</span>
-    </div>
-  </div>
+  <!-- 📜 JavaScript SPA Router -->
+  <script>
+    function loadPage(page) {
+      fetch(page)
+        .then(res => res.text())
+        .then(html => {
+          document.getElementById('page-content').innerHTML = html;
+          window.scrollTo(0, 0);
+        })
+        .catch(err => {
+          document.getElementById('page-content').innerHTML = '<p style="color:red;">[ Error loading page ]</p>';
+          console.error(err);
+        });
+    }
+
+    window.addEventListener('DOMContentLoaded', () => {
+      const hash = window.location.hash.replace('#', '') || 'home.html';
+      loadPage(hash);
+    });
+  </script>
 </body>
 </html>
