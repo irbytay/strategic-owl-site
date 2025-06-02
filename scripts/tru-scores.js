@@ -11,11 +11,11 @@ async function fetchTRUData() {
   const API_KEY = "AIzaSyCzuh9HBfe0r70r9U35Pe406PPZ-tz6I78";
   const SHEET_ID = "19wBEj9hEkvIyQcoR5E_mBGVAxTzMnddMxk8nuQLAumA";
   const RANGE = "TRU!A2:AG1000";
-  const url = `https://sheets.googleapis.com/v4/spreadsheets/${SHEET_ID}/values/${RANGE}?key=${API_KEY}`;
+  const url = https://sheets.googleapis.com/v4/spreadsheets/${SHEET_ID}/values/${RANGE}?key=${API_KEY};
 
   try {
     const res = await fetch(url);
-    if (!res.ok) throw new Error(`HTTP error! Status: ${res.status}`);
+    if (!res.ok) throw new Error(HTTP error! Status: ${res.status});
     const json = await res.json();
     return json.values || [];
   } catch (err) {
@@ -92,19 +92,19 @@ window.showScores = function () {
 
   scores.forEach(({ label, value, raw, mult, comment, className }) => {
     const tr = document.createElement("tr");
-    tr.innerHTML = `
+    tr.innerHTML = 
       <td class="${className}">${label}</td>
       <td class="${className}">${value >= 0 ? "+" : ""}${value.toFixed(0)} <small>(${raw.toFixed(1)} × ${mult.toFixed(1)})</small></td>
-      <td>${comment}</td>`;
+      <td>${comment}</td>;
     tbody.appendChild(tr);
     total += value;
   });
 
   const totalRow = document.createElement("tr");
-  totalRow.innerHTML = `
+  totalRow.innerHTML = 
     <td class="total-score"><strong>Total Score</strong></td>
     <td class="total-score"><strong>${total >= 0 ? "+" : ""}${total.toFixed(0)}</strong></td>
-    <td class="total-score"><strong>${totalScoreComment}</strong></td>`;
+    <td class="total-score"><strong>${totalScoreComment}</strong></td>;
   tbody.appendChild(totalRow);
 
   table.style.display = "table";
