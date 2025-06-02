@@ -2,285 +2,264 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>The Strategic Owl – Election Security Scores</title>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&family=Playfair+Display:wght@500;700&display=swap" rel="stylesheet" />
- <style>
-  * {
-    box-sizing: border-box;
-  }
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Contact – Strategic Owl</title>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600&family=Inter:wght@400;600&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --navy: #1A1A40;
+      --text: #F5F5F5;
+      --accent-blue: #3B6CED;
+      --hover: #4FDBA6;
+      --border: #2F2F5F;
+    }
 
-  body {
-    background-color: #1A1A40;
-    color: #F5F5F5;
-    font-family: 'Inter', sans-serif;
-    margin: 0;
-    padding: 0;
-  }
+    * {
+      box-sizing: border-box;
+    }
 
-  .top-nav {
-    background-color: #2F2E5E;
-    padding: 16px 20px;
-    border-bottom: 1px solid #2F2F5F;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.4);
-    position: sticky;
-    top: 0;
-    z-index: 999;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-  }
+    body {
+      background-color: var(--navy);
+      font-family: 'Inter', sans-serif;
+      color: var(--text);
+      margin: 0;
+      padding: 60px 20px 20px;
+    }
 
-  .nav-logo {
-    color: #F5F5F5;
-    font-size: 1.5rem;
-    font-family: 'Playfair Display', serif;
-    font-weight: bold;
-    text-decoration: none;
-  }
+    .top-nav {
+      background-color: #2F2E5E;
+      padding: 16px 20px;
+      border-bottom: 1px solid var(--border);
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.4);
+      position: sticky;
+      top: 0;
+      z-index: 999;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
 
-  .nav-links {
-    display: flex;
-    gap: 24px;
-  }
+    .nav-logo {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      color: var(--text);
+      font-size: 1.5rem;
+      font-family: 'Playfair Display', serif;
+      font-weight: bold;
+      text-decoration: none;
+    }
 
-  .nav-links a {
-    color: #F5F5F5;
-    font-weight: 500;
-    text-decoration: none;
-    transition: color 0.2s ease;
-  }
+    .nav-logo-img {
+      height: 36px;
+      width: auto;
+      vertical-align: middle;
+    }
 
-  .nav-links a:hover {
-    color: #4FDBA6;
-  }
-
-  .nav-toggle {
-    display: none;
-    font-size: 1.8rem;
-    background: none;
-    border: none;
-    color: #F5F5F5;
-    cursor: pointer;
-  }
-
-  .mobile-nav {
-    display: none;
-    flex-direction: column;
-    background-color: #2F2E5E;
-    padding: 12px 20px;
-    width: 100%;
-  }
-
-  .mobile-nav a {
-    color: #F5F5F5;
-    padding: 8px 0;
-    text-decoration: none;
-    font-weight: 500;
-    border-top: 1px solid #2F2F5F;
-  }
-
-  .mobile-nav a:hover {
-    color: #4FDBA6;
-  }
-
-  .mobile-nav.active {
-    display: flex;
-  }
-
-  .container {
-    padding: 40px 20px;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-  }
-
-  .box {
-    background-color: #2F2E5E;
-    padding: 40px;
-    border-radius: 12px;
-    max-width: 900px;
-    width: 100%;
-    box-shadow: 0 0 12px rgba(0, 0, 0, 0.5);
-    margin-bottom: 40px;
-    display: flex;
-    flex-direction: column;
-    align-items: flex-start;
-  }
-
-  .logo {
-    max-width: 80px;
-    margin: 0 auto 20px;
-    display: block;
-  }
-
-  h1 {
-    font-family: 'Playfair Display', serif;
-    font-size: 2.4rem;
-    margin-bottom: 25px;
-    text-align: center;
-  }
-
-  h2, h3 {
-    font-family: 'Playfair Display', serif;
-    margin-top: 40px;
-  }
-
-  .divider-bar {
-    display: flex;
-    justify-content: center;
-    gap: 8px;
-    margin: 10px auto 30px auto;
-  }
-
-  .divider-bar div {
-    width: 40px;
-    height: 6px;
-    border-radius: 3px;
-  }
-
-  .truth { background-color: #4CAF50; }
-  .reliability { background-color: #2196F3; }
-  .understanding { background-color: #FFC107; }
-
-  select {
-    padding: 10px;
-    margin-top: 20px;
-    background-color: #2F2E5E;
-    color: #F5F5F5;
-    border: none;
-    border-radius: 5px;
-    width: 100%;
-    max-width: 400px;
-    font-size: 1rem;
-  }
-
-  .table-wrapper {
-    width: 100%;
-    display: flex;
-    justify-content: center;
-  }
-
-  #score-table {
-    width: 100%;
-    max-width: 850px;
-    border-collapse: collapse;
-    margin-top: 20px;
-    font-size: 0.95rem;
-  }
-
-  .box table {
-    margin-bottom: 30px;
-  }
-
-  th, td {
-    border: 1px solid #3B6CED;
-    padding: 12px;
-    text-align: left;
-  }
-
-  th {
-    background-color: #2F2E5E;
-  }
-
-  td {
-    background-color: #1A1A40;
-  }
-
-  strong {
-    color: #FFEB3B;
-  }
-
-  .back-link {
-    text-align: center;
-    margin: 20px auto 60px;
-  }
-
-  .back-link a {
-    color: #F5F5F5;
-    font-weight: 600;
-    text-decoration: none;
-    border-bottom: 2px solid #3B6CED;
-    padding-bottom: 4px;
-    transition: color 0.2s ease, border-color 0.2s ease;
-  }
-
-  .back-link a:hover {
-    color: #4FDBA6;
-    border-color: #4FDBA6;
-  }
-
-  .score-legend {
-    list-style: none;
-    padding-left: 0;
-    margin: 20px 0;
-  }
-
-  .score-legend li {
-    margin-bottom: 8px;
-    line-height: 1.5;
-    display: flex;
-    align-items: baseline;
-    justify-content: flex-start;
-    text-align: left;
-  }
-
-  .score {
-    font-weight: 600;
-    display: inline-block;
-    min-width: 80px;
-    margin-right: 6px;
-  }
-
-  .score.positive-high {
-    color: #4CAF50;
-  }
-
-  .score.positive {
-    color: #8BC34A;
-  }
-
-  .score.neutral {
-    color: #FFEB3B;
-  }
-
-  .score.negative {
-    color: #FF9800;
-  }
-
-  .score.disinfo {
-    color: #F44336;
-  }
-
-  @media (max-width: 768px) {
     .nav-links {
-      display: none;
+      display: flex;
+      gap: 16px;
+    }
+
+    .nav-links a {
+      color: var(--text);
+      text-decoration: none;
+      font-weight: 500;
+      transition: color 0.2s ease;
+    }
+
+    .nav-links a:hover {
+      color: var(--hover);
     }
 
     .nav-toggle {
-      display: block;
+      display: none;
+      font-size: 1.8rem;
+      background: none;
+      border: none;
+      color: var(--text);
+      cursor: pointer;
     }
-  }
 
-  @media (max-width: 600px) {
-    .box {
-      padding: 25px;
+    .mobile-nav {
+      display: none;
+      flex-direction: column;
+      background-color: #2F2E5E;
+      padding: 12px 20px;
+    }
+
+    .mobile-nav a {
+      color: var(--text);
+      padding: 8px 0;
+      text-decoration: none;
+      font-weight: 500;
+      border-top: 1px solid var(--border);
+    }
+
+    .mobile-nav a:hover {
+      color: var(--hover);
+    }
+
+    .mobile-nav.active {
+      display: flex;
+    }
+
+    .divider-bar {
+      display: flex;
+      justify-content: center;
+      gap: 8px;
+      margin: 30px auto;
+    }
+
+    .divider-bar div {
+      width: 40px;
+      height: 6px;
+      border-radius: 3px;
+    }
+
+    .truth { background-color: #4CAF50; }
+    .reliability { background-color: #2196F3; }
+    .understanding { background-color: #FFD700; }
+
+    .content {
+      max-width: 700px;
+      margin: 0 auto;
+      text-align: center;
     }
 
     h1 {
-      font-size: 2rem;
+      font-family: 'Playfair Display', serif;
+      font-size: 2.4em;
+      margin-bottom: 20px;
     }
 
-    select {
+    p {
+      font-size: 1.05em;
+      line-height: 1.7em;
+      margin-bottom: 30px;
+    }
+
+    .link-bar {
+      margin-bottom: 40px;
+    }
+
+    .link-bar a {
+      display: inline-block;
+      margin: 8px 12px;
+      color: var(--text);
+      text-decoration: none;
+      font-weight: 600;
+      border-bottom: 2px solid var(--accent-blue);
+      padding-bottom: 2px;
+      transition: color 0.2s ease, border-color 0.2s ease;
+    }
+
+    .link-bar a:hover {
+      color: var(--hover);
+      border-color: var(--hover);
+    }
+
+    form {
+      background-color: var(--border);
+      padding: 28px;
+      border-radius: 12px;
+      margin-top: 20px;
+      text-align: left;
+    }
+
+    form h2 {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.6em;
+      margin-bottom: 20px;
+      text-align: center;
+    }
+
+    label {
+      display: block;
+      margin-top: 14px;
+      font-weight: bold;
+    }
+
+    input,
+    textarea {
       width: 100%;
-      font-size: 1rem;
+      padding: 10px;
+      margin-top: 6px;
+      margin-bottom: 20px;
+      border-radius: 6px;
+      border: none;
+      font-family: 'Inter', sans-serif;
+      font-size: 1em;
     }
 
-    #score-table {
-      font-size: 0.9rem;
+    button {
+      background-color: #4CAF50;
+      color: white;
+      border: none;
+      padding: 12px 24px;
+      font-weight: bold;
+      border-radius: 6px;
+      cursor: pointer;
+      transition: background-color 0.2s ease;
+      font-size: 1em;
     }
-  }
-</style>
+
+    button:hover {
+      background-color: #45a049;
+    }
+
+    .back-link {
+      display: block;
+      text-align: center;
+      margin-top: 50px;
+    }
+
+    .back-link a {
+      color: var(--text);
+      font-size: 1.05rem;
+      text-decoration: none;
+      border-bottom: 2px solid var(--accent-blue);
+      padding-bottom: 4px;
+      font-weight: 500;
+    }
+
+    .back-link a:hover {
+      color: var(--hover);
+      border-color: var(--hover);
+    }
+
+    @media (max-width: 768px) {
+      .nav-links {
+        display: none;
+      }
+
+      .nav-toggle {
+        display: block;
+      }
+
+      h1 {
+        font-size: 2em;
+      }
+
+      form {
+        padding: 22px;
+      }
+
+      form h2 {
+        font-size: 1.4em;
+      }
+
+      .link-bar a {
+        display: block;
+        margin: 10px auto;
+        font-size: 1.05em;
+      }
+
+      .back-link a {
+        font-size: 1.15rem;
+      }
+    }
+  </style>
 </head>
 <body>
 	<!-- Navigation -->
