@@ -8,9 +8,9 @@ const TRU_MULTIPLIERS = {
 };
 
 async function fetchTRUData() {
-  const API_KEY = "AIzaSyBh1mXfcPTdBt0vCCX1CJ4vFADxp3WIQaE";
-  const SHEET_ID = "19wBEj9hEkvIyQcoR5E_mBGVAxTzMnddMxk8nuQLAumA";
-  const RANGE = "TRU!A2:J999";
+  const API_KEY = "AIzaSyBf3H_PGo8Fdl--c18_WQHZltXrvQ1QTiE";
+  const SHEET_ID = "1pXP5bzBVZst_hwyDJHdlAGoFVOe3uspwCmJ6YZzpXUw";
+  const RANGE = "TRU!A2:J1000";
   const url = `https://sheets.googleapis.com/v4/spreadsheets/${SHEET_ID}/values/${RANGE}?key=${API_KEY}`;
 
   try {
@@ -44,6 +44,11 @@ window.showScores = function () {
 
   const row = window.rowMap[selected];
   tbody.innerHTML = "";
+
+  if (row.length < 10) {
+    console.warn("⚠️ Row is missing columns:", row);
+    return;
+  }
 
   const truthRaw = parseFloat(row[2]) || 0;
   const reliabilityRaw = parseFloat(row[3]) || 0;
@@ -128,7 +133,7 @@ window.initElectionPage = async function () {
   Object.keys(window.rowMap).sort().forEach(name => {
     const opt = document.createElement("option");
     opt.value = name;
-    opt.textContent = name.replace(/([A-Z])/g, " $1").replace(/^./, s => s.toUpperCase());
+    opt.textContent = name;
     select.appendChild(opt);
   });
 
@@ -136,6 +141,6 @@ window.initElectionPage = async function () {
   select.addEventListener("change", window.showScores);
 };
 
-window.onload = function () {
+document.addEventListener("DOMContentLoaded", () => {
   window.initElectionPage();
-};
+});
