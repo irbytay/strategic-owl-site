@@ -1,5 +1,3 @@
-
-// Multiplier values based on roleFlag
 const TRU_MULTIPLIERS = {
   5: { truth: 4.0, reliability: 4.0, understanding: 5.0 },
   4: { truth: 3.5, reliability: 3.5, understanding: 4.5 },
@@ -9,13 +7,12 @@ const TRU_MULTIPLIERS = {
   0: { truth: 1.0, reliability: 1.0, understanding: 2.0 },
 };
 
-// Fetch data from Google Sheets
 async function fetchTRUData() {
   const API_KEY = "AIzaSyCzuh9HBfe0r70r9U35Pe406PPZ-tz6I78";
   const SHEET_ID = "19wBEj9hEkvIyQcoR5E_mBGVAxTzMnddMxk8nuQLAumA";
   const RANGE = "TRU!A2:AG1000";
-  const url = `https://sheets.googleapis.com/v4/spreadsheets/${SHEET_ID}/values/${RANGE}?key=${API_KEY}`;
 
+  const url = `https://sheets.googleapis.com/v4/spreadsheets/${SHEET_ID}/values/${RANGE}?key=${API_KEY}`;
   try {
     const res = await fetch(url);
     if (!res.ok) throw new Error(`HTTP error! Status: ${res.status}`);
@@ -31,7 +28,6 @@ async function fetchTRUData() {
   }
 }
 
-// Triggered when a person is selected from dropdown
 window.showScores = function () {
   const select = document.getElementById("person-select");
   const table = document.getElementById("score-table");
@@ -58,20 +54,35 @@ window.showScores = function () {
   const commentUnderstanding = row[30] || "";
   const totalScoreComment = row[31] || "Summary not available";
 
-  let roleFlag = parseInt(row[32]);
-  if (isNaN(roleFlag) || roleFlag < 0 || roleFlag > 5) {
-    roleFlag = 0;
-  }
-  const multiplier = TRU_MULTIPLIERS[roleFlag];
+  const roleFlag = parseInt(row[32]) || 0;
+  const multiplier = TRU_MULTIPLIERS[roleFlag] || TRU_MULTIPLIERS[0];
 
   const truthFinal = truthRaw * multiplier.truth;
   const reliabilityFinal = reliabilityRaw * multiplier.reliability;
   const understandingFinal = understandingRaw * multiplier.understanding;
 
   const scores = [
-    { label: "Truth", value: truthFinal, raw: truthRaw, mult: multiplier.truth, comment: commentTruth },
-    { label: "Reliability", value: reliabilityFinal, raw: reliabilityRaw, mult: multiplier.reliability, comment: commentReliability },
-    { label: "Understanding", value: understandingFinal, raw: understandingRaw, mult: multiplier.understanding, comment: commentUnderstanding },
+    {
+      label: "Truth",
+      value: truthFinal,
+      raw: truthRaw,
+      mult: multiplier.truth,
+      comment: commentTruth,
+    },
+    {
+      label: "Reliability",
+      value: reliabilityFinal,
+      raw: reliabilityRaw,
+      mult: multiplier.reliability,
+      comment: commentReliability,
+    },
+    {
+      label: "Understanding",
+      value: understandingFinal,
+      raw: understandingRaw,
+      mult: multiplier.understanding,
+      comment: commentUnderstanding,
+    },
   ];
 
   let total = 0;
@@ -94,13 +105,13 @@ window.showScores = function () {
   tbody.appendChild(totalRow);
 
   table.style.display = "table";
+
   if (totalBox && totalCommentEl) {
     totalCommentEl.textContent = totalScoreComment;
     totalBox.style.display = "block";
   }
 };
 
-// Initialization for SPA or standalone
 window.initElectionPage = async function () {
   window.rowMap = {};
   const data = await fetchTRUData();
@@ -110,11 +121,6 @@ window.initElectionPage = async function () {
   });
 
   const select = document.getElementById("person-select");
-  if (!select) {
-    console.warn("Dropdown not found.");
-    return;
-  }
-
   select.innerHTML = '<option value="">-- Choose a name --</option>';
   Object.keys(window.rowMap).sort().forEach(name => {
     const opt = document.createElement("option");
@@ -127,15 +133,6 @@ window.initElectionPage = async function () {
   select.addEventListener("change", window.showScores);
 };
 
-// Auto-init if not SPA (standalone fallback)
-if (document.readyState === "loading") {
-  document.addEventListener("DOMContentLoaded", () => {
-    if (typeof window.initElectionPage === "function") {
-      window.initElectionPage();
-    }
-  });
-} else {
-  if (typeof window.initElectionPage === "function") {
-    window.initElectionPage();
-  }
-}
+window.onload = function () {
+  window.initElectionPage();
+};
