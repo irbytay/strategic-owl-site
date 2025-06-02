@@ -140,6 +140,21 @@
   .reliability { background-color: #2196F3; }
   .understanding { background-color: #FFD700; }
 
+  .text-truth {
+    color: #4CAF50;
+    font-weight: bold;
+  }
+
+  .text-reliability {
+    color: #2196F3;
+    font-weight: bold;
+  }
+
+  .text-understanding {
+    color: #FFD700;
+    font-weight: bold;
+  }
+
   .score-grid {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
@@ -173,14 +188,6 @@
   .logo-container img {
     max-width: 120px;
     height: auto;
-  }
-
-  /* === TRU OWL Viewer Styling === */
-  .viewer-header {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    margin: 40px auto;
   }
 
   select#person-select {
@@ -243,33 +250,7 @@
     font-weight: bold;
   }
 
-  /* === Table cell class-based coloring (replaces inline styles) === */
-  #score-table td.score-label-truth,
-  #score-table td.score-value-truth {
-    color: #4CAF50;
-    font-weight: bold;
-  }
-
-  #score-table td.score-label-reliability,
-  #score-table td.score-value-reliability {
-    color: #2196F3;
-    font-weight: bold;
-  }
-
-  #score-table td.score-label-understanding,
-  #score-table td.score-value-understanding {
-    color: #FFD700;
-    font-weight: bold;
-  }
-
-  #score-table td.score-label-total,
-  #score-table td.score-value-total,
-  #score-table td.score-comment-total {
-    color: #FFD700;
-    font-weight: bold;
-  }
-
-  /* === Mobile === */
+  /* Mobile */
   @media (max-width: 768px) {
     .nav-links {
       display: none;
