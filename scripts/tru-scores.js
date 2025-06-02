@@ -28,7 +28,7 @@ async function fetchTRUData() {
   }
 }
 
-function showScores() {
+window.showScores = function () {
   const select = document.getElementById("person-select");
   const table = document.getElementById("score-table");
   const tbody = document.getElementById("score-body");
@@ -89,6 +89,7 @@ function showScores() {
   ];
 
   let total = 0;
+
   scores.forEach(({ label, value, raw, mult, comment, className }) => {
     const tr = document.createElement("tr");
     tr.innerHTML = `
@@ -107,13 +108,14 @@ function showScores() {
   tbody.appendChild(totalRow);
 
   table.style.display = "table";
+
   if (totalBox && totalCommentEl) {
     totalCommentEl.textContent = totalScoreComment;
     totalBox.style.display = "block";
   }
-}
+};
 
-async function initElectionPage() {
+window.initElectionPage = async function () {
   window.rowMap = {};
   const data = await fetchTRUData();
   data.forEach(row => {
@@ -122,23 +124,18 @@ async function initElectionPage() {
   });
 
   const select = document.getElementById("person-select");
-  if (!select) {
-    console.warn("Dropdown not found.");
-    return;
-  }
-
   select.innerHTML = '<option value="">-- Choose a name --</option>';
   Object.keys(window.rowMap).sort().forEach(name => {
     const opt = document.createElement("option");
     opt.value = name;
-    opt.textContent = name;
+    opt.textContent = name.replace(/([A-Z])/g, " $1").replace(/^./, s => s.toUpperCase());
     select.appendChild(opt);
   });
 
-  select.removeEventListener("change", showScores);
-  select.addEventListener("change", showScores);
-}
+  select.removeEventListener("change", window.showScores);
+  select.addEventListener("change", window.showScores);
+};
 
-document.addEventListener("DOMContentLoaded", () => {
-  initElectionPage();
-});
+window.onload = function () {
+  window.initElectionPage();
+};
