@@ -96,37 +96,65 @@
   </main>
 
   <!-- 🧠 SPA Script Logic -->
-  <script>
-    // Load page content into #page-content without full refresh
-    function loadPage(page, push = true) {
-      fetch(page)
-        .then(res => {
-          if (!res.ok) throw new Error(`Failed to load ${page}`);
-          return res.text();
-        })
-        .then(html => {
-          const content = document.getElementById("page-content");
-          content.innerHTML = html;
-          if (push) history.pushState({ page }, "", "#" + page);
-        })
-        .catch(err => {
-          document.getElementById("page-content").innerHTML = "<p>Error loading content.</p>";
-          console.error(err);
+ <script>
+  function loadPage(page, push = true) {
+    fetch(page)
+      .then(res => {
+        if (!res.ok) throw new Error(`Failed to load ${page}`);
+        return res.text();
+      })
+      .then(html => {
+        const content = document.getElementById("page-content");
+
+        // Parse HTML content in a temporary container
+        const temp = document.createElement("div");
+        temp.innerHTML = html;
+
+        // Extract and remove <script> tags
+        const scripts = Array.from(temp.querySelectorAll("script"));
+        scripts.forEach(script => script.remove());
+
+        // Inject remaining HTML
+        content.innerHTML = temp.innerHTML;
+
+        // Re-execute extracted scripts
+        scripts.forEach(oldScript => {
+          const newScript = document.createElement("script");
+          if (oldScript.src) {
+            newScript.src = oldScript.src;
+            newScript.defer = oldScript.defer || false;
+            newScript.async = oldScript.async || false;
+          } else {
+            newScript.textContent = oldScript.textContent;
+          }
+          document.body.appendChild(newScript);
         });
+
+        // Update browser history
+        if (push) {
+          history.pushState({ page }, "", "#" + page);
+        }
+      })
+      .catch(err => {
+        document.getElementById("page-content").innerHTML = "<p>Error loading content.</p>";
+        console.error(err);
+      });
+  }
+
+  // Load correct page on refresh or direct link
+  window.addEventListener("load", () => {
+    const defaultPage = "home.html";
+    const hash = window.location.hash.slice(1).replace(".html", "");
+    loadPage(hash ? `${hash}.html` : defaultPage, false);
+  });
+
+  // Handle back/forward button navigation
+  window.addEventListener("popstate", e => {
+    if (e.state?.page) {
+      loadPage(e.state.page, false);
     }
-
-    // Load correct page on refresh or direct link
-    window.addEventListener("load", () => {
-      const defaultPage = "home.html";
-      const hash = window.location.hash.slice(1).replace(".html", "");
-      loadPage(hash ? hash + ".html" : defaultPage, false);
-    });
-
-    // Handle browser back/forward buttons
-    window.addEventListener("popstate", e => {
-      if (e.state?.page) loadPage(e.state.page, false);
-    });
-  </script>
+  });
+</script>
 
 </body>
 </html>
