@@ -348,7 +348,7 @@
   async function fetchTRUData() {
     const API_KEY = "AIzaSyCzuh9HBfe0r70r9U35Pe406PPZ-tz6I78";
     const SHEET_ID = "19wBEj9hEkvIyQcoR5E_mBGVAxTzMnddMxk8nuQLAumA";
-    const RANGE = "TRU!A2:K1000"; // Includes role in column K
+    const RANGE = "TRU!A2:K1000"; // Includes columns A–K
     const url = `https://sheets.googleapis.com/v4/spreadsheets/${SHEET_ID}/values/${RANGE}?key=${API_KEY}`;
     try {
       const res = await fetch(url);
@@ -431,9 +431,10 @@
     const commentTruth = row[5] || "";
     const commentReliability = row[6] || "";
     const commentUnderstanding = row[7] || "";
-    const totalScoreComment = row[9] || "Summary not available";
-
+    const summaryBelowTable = row[8] || ""; // ⬅️ Column I (summary under table)
+    const totalScoreComment = row[9] || "Summary not available"; // ⬅️ Column J (yellow row)
     const roleFlag = parseInt(row[10]) || 0;
+
     const multiplier = TRU_MULTIPLIERS[roleFlag] || TRU_MULTIPLIERS[0];
 
     const truthFinal = truthRaw * multiplier.truth;
@@ -466,7 +467,7 @@
 
     table.style.display = "table";
     if (totalBox && totalCommentEl) {
-      totalCommentEl.textContent = totalScoreComment;
+      totalCommentEl.textContent = summaryBelowTable;
       totalBox.style.display = "block";
     }
   }
