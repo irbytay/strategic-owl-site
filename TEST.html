@@ -295,8 +295,7 @@
         window.scrollTo(0, 0);
 
         if (push) history.pushState({ page }, "", "#" + page);
-        runScriptsFromHTML(container);
-        setTimeout(callPageInits, 100);
+        runScriptsFromHTML(container, callPageInits);
       })
       .catch(err => {
         console.error(err);
@@ -307,19 +306,43 @@
       });
   }
 
-  function runScriptsFromHTML(container) {
+  function runScriptsFromHTML(container, callback) {
     const scripts = container.querySelectorAll("script");
-    console.log(`[SPA] Running ${scripts.length} scripts`);
-    scripts.forEach(oldScript => {
+    console.log(`[SPA] Found ${scripts.length} scripts to process`);
+
+    if (scripts.length === 0) {
+      callback?.();
+      return;
+    }
+
+    let index = 0;
+
+    function next() {
+      if (index >= scripts.length) {
+        callback?.();
+        return;
+      }
+
+      const oldScript = scripts[index++];
       const newScript = document.createElement("script");
+
       if (oldScript.src) {
-        newScript.src = `${oldScript.src}?t=${Date.now()}`; // Cache-busting
+        newScript.src = `${oldScript.src}?t=${Date.now()}`;
         newScript.async = false;
+        newScript.onload = next;
+        newScript.onerror = () => {
+          console.error("❌ Failed to load:", newScript.src);
+          next();
+        };
       } else {
         newScript.textContent = oldScript.textContent;
+        next(); // Inline scripts can proceed immediately
       }
+
       document.body.appendChild(newScript);
-    });
+    }
+
+    next();
   }
 
   function callPageInits() {
@@ -367,8 +390,7 @@
         if (!container) throw new Error("Missing #page-content container");
 
         container.innerHTML = html;
-        runScriptsFromHTML(container);
-        setTimeout(callPageInits, 100);
+        runScriptsFromHTML(container, callPageInits);
         history.pushState({ page: hashPage }, "", "#" + hashPage);
       })
       .catch(err => {
@@ -392,10 +414,10 @@
     loadPage(page, false);
   });
 
-  // ✅ Inserted SPA-safe init function
+  // ✅ Example SPA-safe init function
   function initStateFraudPage() {
     console.log("✅ State Fraud logic running");
-    // Your logic here
+    // Add your logic
   }
 </script>
 </body>
