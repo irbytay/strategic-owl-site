@@ -28,7 +28,7 @@ async function fetchTRUData() {
   }
 }
 
-window.showScores = function () {
+function showScores() {
   const select = document.getElementById("person-select");
   const table = document.getElementById("score-table");
   const tbody = document.getElementById("score-body");
@@ -113,9 +113,9 @@ window.showScores = function () {
     totalCommentEl.textContent = totalScoreComment;
     totalBox.style.display = "block";
   }
-};
+}
 
-window.initElectionPage = async function () {
+async function initTRUPage() {
   window.rowMap = {};
   const data = await fetchTRUData();
   data.forEach(row => {
@@ -124,18 +124,18 @@ window.initElectionPage = async function () {
   });
 
   const select = document.getElementById("person-select");
+  if (!select) return;
+
   select.innerHTML = '<option value="">-- Choose a name --</option>';
   Object.keys(window.rowMap).sort().forEach(name => {
     const opt = document.createElement("option");
     opt.value = name;
-    opt.textContent = name.replace(/([A-Z])/g, " $1").replace(/^./, s => s.toUpperCase());
+    opt.textContent = name;
     select.appendChild(opt);
   });
 
-  select.removeEventListener("change", window.showScores);
-  select.addEventListener("change", window.showScores);
-};
+  select.removeEventListener("change", showScores);
+  select.addEventListener("change", showScores);
+}
 
-window.onload = function () {
-  window.initElectionPage();
-};
+document.addEventListener("DOMContentLoaded", initTRUPage);
