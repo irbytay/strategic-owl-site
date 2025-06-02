@@ -1,69 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>The Strategic Owl</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&family=Playfair+Display:wght@500;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="styles.css" />
+  <script defer src="spa.js"></script>
+</head>
 <body>
-  <!-- Navigation Bar -->
-  <nav>
-    <a href="#home" onclick="loadPage('home.html')">Home</a>
-    <a href="#testing" onclick="loadPage('testing.html')">Testing</a>
+  <!-- 🔝 Top Navigation Bar -->
+  <nav class="top-nav">
+    <!-- 🔗 Strategic Owl Logo linking back to TRUOWL.html -->
+    <a href="TRUOWL.html" class="nav-logo">
+      <!-- 🦉 Logo image with a fallback error handler if image fails to load -->
+      <img src="owl_logo_white.png" alt="Owl Logo" class="nav-logo-img"
+           onerror="this.onerror=null;this.style.display='none';this.insertAdjacentHTML('afterend','<p style=\'color:white;font-weight:bold;\'>[ Logo not found ]</p>')" />
+      The Strategic Owl
+    </a>
+    <div class="nav-links">
+      <a href="#home.html" onclick="loadPage('home.html')">Home</a>
+      <a href="#truowl.html" onclick="loadPage('truowl.html')">T.R.U. Owl</a>
+      <a href="#elections.html" onclick="loadPage('elections.html')">Election Security</a>
+      <a href="#contact.html" onclick="loadPage('contact.html')">Contact</a>
+    </div>
   </nav>
 
-  <!-- This is where page content gets loaded -->
-  <div id="page-content"></div>
+  <!-- 📄 Main Content Container -->
+  <div id="page-content">
+    <!-- Initial content or placeholder can go here -->
+    <h1>Welcome to The Strategic Owl</h1>
+    <p>Use the menu above to explore TRU OWL Scores and resources.</p>
+  </div>
 
-  <!-- Your SPA script loader -->
-  <script>
-    const scriptMap = {
-      home: null,
-      testing: "https://cdn.jsdelivr.net/gh/irbytay/strategic-owl-site@main/scripts/newTRUOWLscript.js"
-    };
-
-    function loadPage(page, push = true) {
-      fetch(page)
-        .then(res => {
-          if (!res.ok) throw new Error(`Failed to load ${page}`);
-          return res.text();
-        })
-        .then(html => {
-          const content = document.getElementById("page-content");
-          const temp = document.createElement("div");
-          temp.innerHTML = html;
-
-          // Strip inline scripts
-          const inlineScripts = Array.from(temp.querySelectorAll("script"));
-          inlineScripts.forEach(script => script.remove());
-          content.innerHTML = temp.innerHTML;
-
-          // Re-run inline scripts
-          inlineScripts.forEach(oldScript => {
-            const newScript = document.createElement("script");
-            if (oldScript.src) newScript.src = oldScript.src;
-            else newScript.textContent = oldScript.textContent;
-            document.body.appendChild(newScript);
-          });
-
-          // Load external script from map
-          const route = page.replace(".html", "");
-          const extraScript = scriptMap[route];
-          if (extraScript) {
-            const s = document.createElement("script");
-            s.src = extraScript;
-            s.defer = true;
-            document.body.appendChild(s);
-          }
-
-          if (push) history.pushState({ page }, "", "#" + page);
-        })
-        .catch(err => {
-          document.getElementById("page-content").innerHTML = "<p>Error loading content.</p>";
-          console.error(err);
-        });
-    }
-
-    window.addEventListener("load", () => {
-      const hash = window.location.hash.slice(1).replace(".html", "") || "home";
-      loadPage(`${hash}.html`, false);
-    });
-
-    window.addEventListener("popstate", e => {
-      if (e.state?.page) loadPage(e.state.page, false);
-    });
-  </script>
+  <!-- 🔻 Footer Section (e.g. divider bars) -->
+  <div class="divider-section">
+    <div class="divider-bar">
+      <div class="truth"></div>
+      <div class="reliability"></div>
+      <div class="understanding"></div>
+    </div>
+    <div class="divider-labels">
+      <span>Truth</span>
+      <span>Reliability</span>
+      <span>Understanding</span>
+    </div>
+  </div>
 </body>
+</html>
