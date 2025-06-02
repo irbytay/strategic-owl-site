@@ -10,7 +10,7 @@ const TRU_MULTIPLIERS = {
 async function fetchTRUData() {
   const API_KEY = "AIzaSyCzuh9HBfe0r70r9U35Pe406PPZ-tz6I78";
   const SHEET_ID = "19wBEj9hEkvIyQcoR5E_mBGVAxTzMnddMxk8nuQLAumA";
-  const RANGE = "TRU!A2:AG1000";
+  const RANGE = "TRU!A2:J1000";
   const url = `https://sheets.googleapis.com/v4/spreadsheets/${SHEET_ID}/values/${RANGE}?key=${API_KEY}`;
 
   try {
@@ -45,16 +45,16 @@ window.showScores = function () {
   const row = window.rowMap[selected];
   tbody.innerHTML = "";
 
-  const truthRaw = parseFloat(row[25]) || 0;
-  const reliabilityRaw = parseFloat(row[26]) || 0;
-  const understandingRaw = parseFloat(row[27]) || 0;
+  const truthRaw = parseFloat(row[2]) || 0;
+  const reliabilityRaw = parseFloat(row[3]) || 0;
+  const understandingRaw = parseFloat(row[4]) || 0;
 
-  const commentTruth = row[28] || "";
-  const commentReliability = row[29] || "";
-  const commentUnderstanding = row[30] || "";
-  const totalScoreComment = row[31] || "Summary not available";
+  const commentTruth = row[5] || "";
+  const commentReliability = row[6] || "";
+  const commentUnderstanding = row[7] || "";
+  const totalScoreComment = row[8] || "Summary not available";
 
-  const roleFlag = parseInt(row[32]) || 0;
+  const roleFlag = parseInt(row[9]) || 0;
   const multiplier = TRU_MULTIPLIERS[roleFlag] || TRU_MULTIPLIERS[0];
 
   const truthFinal = truthRaw * multiplier.truth;
