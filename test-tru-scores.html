@@ -42,17 +42,14 @@
     .nav-logo {
       color: var(--text);
       font-size: 1.5rem;
+      font-family: 'Playfair Display', serif;
       font-weight: bold;
       text-decoration: none;
     }
 
-    .nav-links {
-      display: flex;
-      gap: 24px;
-    }
-
     .nav-links a {
       color: var(--text);
+      margin-left: 24px;
       font-weight: 500;
       text-decoration: none;
       transition: color 0.2s ease;
@@ -60,6 +57,11 @@
 
     .nav-links a:hover {
       color: var(--hover);
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 16px;
     }
 
     .nav-toggle {
@@ -76,7 +78,6 @@
       flex-direction: column;
       background-color: #2F2E5E;
       padding: 12px 20px;
-      width: 100%;
     }
 
     .mobile-nav a {
@@ -101,27 +102,32 @@
       padding: 40px 20px;
     }
 
-    .logo-container {
-      text-align: center;
-      margin-bottom: 30px;
-    }
-
-    .logo-container img {
-      max-width: 120px;
-      height: auto;
-    }
-
     h1 {
       font-size: 2.2rem;
       text-align: center;
-      margin-bottom: 20px;
+      margin-bottom: 10px;
+    }
+
+    .center-heading {
+      text-align: center;
+      font-size: 1.8rem;
+      margin: 60px auto 30px;
+    }
+
+    .section-box {
+      background-color: #2F2E5E;
+      padding: 40px;
+      border-radius: 12px;
+      box-shadow: 0 0 12px rgba(0, 0, 0, 0.5);
+      margin: 60px auto;
+      max-width: 900px;
     }
 
     .divider-bar {
       display: flex;
       justify-content: center;
       gap: 8px;
-      margin: 20px auto 30px auto;
+      margin: 30px auto;
     }
 
     .divider-bar div {
@@ -134,21 +140,15 @@
     .reliability { background-color: #2196F3; }
     .understanding { background-color: #FFD700; }
 
-    .box {
-      background-color: #2F2E5E;
-      padding: 40px;
-      border-radius: 12px;
-      max-width: 900px;
-      width: 100%;
-      box-shadow: 0 0 12px rgba(0, 0, 0, 0.5);
-      margin: 60px auto;
-    }
+    .text-truth { color: #4CAF50; font-weight: bold; }
+    .text-reliability { color: #2196F3; font-weight: bold; }
+    .text-understanding { color: #FFD700; font-weight: bold; }
 
     .score-grid {
       display: grid;
       grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
       gap: 32px;
-      margin-top: 30px;
+      margin: 30px auto 60px;
     }
 
     .role-box {
@@ -169,94 +169,50 @@
       margin-bottom: 14px;
     }
 
-    select {
-      padding: 10px;
-      margin-top: 20px;
-      background-color: #2F2E5E;
-      color: #F5F5F5;
-      border: none;
-      border-radius: 5px;
-      width: 100%;
-      max-width: 400px;
+    .logo-container {
+      text-align: center;
+      margin-bottom: 30px;
+    }
+
+    .logo-container img {
+      max-width: 120px;
+      height: auto;
+    }
+
+    select, table {
+      margin: 20px auto;
+      display: block;
       font-size: 1rem;
-    }
-
-    .table-wrapper {
-      width: 100%;
-      display: flex;
-      justify-content: center;
-    }
-
-    #score-table {
-      width: 100%;
-      max-width: 850px;
-      border-collapse: collapse;
-      margin-top: 20px;
-      font-size: 0.95rem;
-    }
-
-    th, td {
-      border: 1px solid #3B6CED;
-      padding: 12px;
-      text-align: left;
-    }
-
-    th {
-      background-color: #2F2E5E;
-      font-weight: 600;
-    }
-
-    td {
-      background-color: #1A1A40;
+      padding: 10px;
     }
 
     #total-score-box {
       text-align: center;
       margin-top: 20px;
-      padding: 16px;
-      background-color: #1A1A40;
-      border: 1px solid var(--border);
-      border-radius: 8px;
+    }
+
+    table {
+      border-collapse: collapse;
+      width: 100%;
       max-width: 800px;
-      margin-left: auto;
-      margin-right: auto;
-      font-size: 1rem;
     }
 
-    #total-score-box p {
-      margin: 0;
-      line-height: 1.6;
+    table th, table td {
+      padding: 12px;
+      border: 1px solid var(--border);
     }
 
-    #total-score-box p strong {
-      display: block;
-      margin-bottom: 10px;
-      font-weight: bold;
+    table th {
+      background-color: #1f1f4f;
     }
 
+    /* Mobile */
     @media (max-width: 768px) {
       .nav-links {
         display: none;
       }
-
       .nav-toggle {
         display: block;
-      }
-
-      .box {
-        padding: 25px;
-      }
-
-      h1 {
-        font-size: 2rem;
-      }
-
-      select {
-        font-size: 1rem;
-      }
-
-      #score-table {
-        font-size: 0.9rem;
       }
     }
   </style>
@@ -287,20 +243,34 @@
              onerror="this.onerror=null;this.style.display='none';this.insertAdjacentHTML('afterend','<p style=\'color:white;text-align:center;font-weight:bold;\'>[ Logo not found – owl_logo_white.png ]</p>')" />
       </a>
     </div>
+    <div class="logo-container">
+      <h1>The Strategic Owl</h1>
+    </div>
 
-    <h1>TRU OWL Viewer</h1>
     <div class="divider-bar">
       <div class="truth"></div>
       <div class="reliability"></div>
       <div class="understanding"></div>
     </div>
 
-    <div class="box">
+    <div class="section-box">
       <h2>Welcome to the T.R.U. OWL Score</h2>
       <p><strong>This isn’t a media bias site. It’s a truth system.</strong></p>
-      <p>The T.R.U. OWL Score is a credibility framework that measures public figures based on <span class="truth">verifiable truth</span> — not vibes, tribes, or talking points.</p>
+      <p>The T.R.U. OWL Score is a credibility framework that measures public figures based on <span class="text-truth">verifiable truth</span> — not vibes, tribes, or talking points.</p>
       <p>We don’t ask what side someone’s on. We ask: <em>Did they tell the truth?</em> Did they correct themselves when wrong? Are they consistent? Do they understand what they’re talking about?</p>
+      <p>Through <strong>court records</strong>, <strong>public data</strong>, and <strong>source-backed analysis</strong>, we track what can be proven — and score it across three pillars:</p>
+      <ul>
+        <li><span class="text-truth">Truth</span> – Are the claims factually accurate?</li>
+        <li><span class="text-reliability">Reliability:</span> – Are they consistent and accountable?</li>
+        <li><span class="text-understanding">Understanding:</span> – Do they grasp the systems they discuss?</li>
+      </ul>
+      <p>Each role is measured differently — because journalists aren’t lawmakers, and influencers aren’t investigators. But all are held to <strong>real standards</strong>.</p>
+      <p><strong>This is about course-correction — not cancellation.</strong> We reward accuracy, transparency, and integrity. We expose distortion, evasion, and disinformation.</p>
+      <p><strong>Why this matters:</strong> In a world where influence often outruns accountability, the T.R.U. OWL Score changes the incentive structure. It rewards those who elevate truth — and reveals those who erode it.</p>
+      <p><span class="text-truth">Truth</span> isn't a matter of opinion — it’s a record. And now, for the first time, you can see it clearly, compare it publicly, and use it strategically.</p>
+      <p>This system exists not to play favorites, but to make <strong>credibility visible</strong> — so that public trust can be earned, not assumed. When <span class="text-truth">truth</span> becomes visible, <span class="text-reliability">accountability</span> follows — and that’s how we move forward.</p>
 
+      <!-- 🔽 Score Multipliers -->
       <div class="score-grid">
         <div class="role-box">
           <h3 class="category-heading">President</h3>
@@ -339,20 +309,21 @@
         </div>
       </div>
 
+      <!-- 🔽 TRU OWL Viewer -->
+      <h1>TRU OWL Viewer</h1>
+
       <select id="person-select"></select>
 
-      <div class="table-wrapper">
-        <table id="score-table" style="display:none;">
-          <thead>
-            <tr>
-              <th>Category</th>
-              <th>Score</th>
-              <th>Explanation</th>
-            </tr>
-          </thead>
-          <tbody id="score-body"></tbody>
-        </table>
-      </div>
+      <table id="score-table" style="display:none;">
+        <thead>
+          <tr>
+            <th>Category</th>
+            <th>Score</th>
+            <th>Explanation</th>
+          </tr>
+        </thead>
+        <tbody id="score-body"></tbody>
+      </table>
 
       <div id="total-score-box" style="display:none;">
         <p id="total-score-comment"></p>
