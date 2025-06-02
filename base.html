@@ -28,7 +28,7 @@
 
   h1 {
     font-family: 'Playfair Display', serif;
-    font-size: 1.5rem; /* Same as nav-logo */
+    font-size: 1.5rem;
     font-weight: bold;
     text-align: center;
     margin: 40px auto 30px;
@@ -187,6 +187,43 @@
 
   .positive-score { color: #4FDBA6; font-weight: bold; }
   .negative-score { color: #FF6B6B; font-weight: bold; }
+
+  .score-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    gap: 24px;
+    margin: 40px auto;
+    max-width: 1000px;
+    padding: 0 20px;
+  }
+
+  .role-box {
+    background-color: #2F2E5E;
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 20px;
+    color: var(--text);
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+  }
+
+  .category-heading {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.1rem;
+    margin-bottom: 10px;
+    color: var(--text);
+  }
+
+  .role-box p {
+    margin: 4px 0;
+    font-size: 0.95rem;
+  }
+
+  .role-box small {
+    display: block;
+    margin-top: 10px;
+    font-size: 0.85rem;
+    color: #cccccc;
+  }
 
   @media (max-width: 768px) {
     .nav-links {
