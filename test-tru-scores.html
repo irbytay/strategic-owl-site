@@ -24,16 +24,16 @@
     <p id="total-score-comment"></p>
   </div>
 
-  <!-- 👇 Loads the JS file -->
-  <script src="tru-scores.js"></script>
+  <!-- ✅ Updated script path based on your file structure -->
+  <script src="scripts/tru-scores.js"></script>
 
-  <!-- 👇 Manually calls the correct init function -->
+  <!-- ✅ Manual init call for standalone testing -->
   <script>
     document.addEventListener("DOMContentLoaded", () => {
-      if (typeof initTRUScoresPage === "function") {
-        initTRUScoresPage();
+      if (typeof initElectionPage === "function") {
+        initElectionPage();
       } else {
-        console.error("❌ initTRUScoresPage not defined.");
+        console.error("❌ initElectionPage not defined.");
       }
     });
   </script>
