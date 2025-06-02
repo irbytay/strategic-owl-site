@@ -40,11 +40,19 @@
   }
 
   .nav-logo {
+    display: flex;
+    align-items: center;
+    gap: 12px;
     color: var(--text);
     font-size: 1.5rem;
     font-family: 'Playfair Display', serif;
     font-weight: bold;
     text-decoration: none;
+  }
+
+  .nav-logo-img {
+    height: 36px;
+    width: auto;
   }
 
   .nav-links a {
@@ -263,7 +271,11 @@
 </head>
 <body>
   <nav class="top-nav">
-    <a href="index.html" class="nav-logo">The Strategic Owl</a>
+    <a href="index.html" class="nav-logo">
+      <img src="owl_logo_white.png" alt="Owl Logo" class="nav-logo-img"
+           onerror="this.onerror=null;this.style.display='none';this.insertAdjacentHTML('afterend','<p style=\'color:white;font-weight:bold;\'>[ Logo not found ]</p>')" />
+      The Strategic Owl
+    </a>
     <div class="nav-links">
       <a href="elections.html">Election Security</a>
       <a href="heritagefoundation.html">Election Fraud</a>
@@ -281,16 +293,6 @@
   </div>
 
   <div class="content">
-    <div class="logo-container">
-      <a href="index.html">
-        <img src="owl_logo_white.png" alt="Strategic Owl Logo"
-             onerror="this.onerror=null;this.style.display='none';this.insertAdjacentHTML('afterend','<p style=\'color:white;text-align:center;font-weight:bold;\'>[ Logo not found – owl_logo_white.png ]</p>')" />
-      </a>
-    </div>
-    <div class="logo-container">
-      <h1>The Strategic Owl</h1>
-    </div>
-
     <div class="divider-bar">
       <div class="truth"></div>
       <div class="reliability"></div>
