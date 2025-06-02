@@ -7,16 +7,6 @@ const TRU_MULTIPLIERS = {
   0: { truth: 1.0, reliability: 1.0, understanding: 2.0 },
 };
 
-function getColor(label) {
-  switch (label.toLowerCase()) {
-    case 'truth': return '#4CAF50'; // Green
-    case 'reliability': return '#2196F3'; // Blue
-    case 'understanding': return '#FFD700'; // Gold
-    case 'total': return '#FFD700'; // Gold for Total
-    default: return '#F5F5F5';
-  }
-}
-
 async function fetchTRUData() {
   const API_KEY = "AIzaSyCzuh9HBfe0r70r9U35Pe406PPZ-tz6I78";
   const SHEET_ID = "19wBEj9hEkvIyQcoR5E_mBGVAxTzMnddMxk8nuQLAumA";
@@ -99,21 +89,19 @@ window.showScores = function () {
 
   scores.forEach(({ label, value, raw, mult, comment }) => {
     const tr = document.createElement("tr");
-    const color = getColor(label);
     tr.innerHTML = `
-      <td style="color: ${color}; font-weight: bold;">${label}</td>
-      <td style="color: ${color}; font-weight: bold;">${value >= 0 ? "+" : ""}${value.toFixed(0)} <small>(${raw.toFixed(1)} × ${mult.toFixed(1)})</small></td>
-      <td>${comment}</td>`;
+      <td class="score-label">${label}</td>
+      <td class="score-value">${value >= 0 ? "+" : ""}${value.toFixed(0)} <small>(${raw.toFixed(1)} × ${mult.toFixed(1)})</small></td>
+      <td class="score-comment">${comment}</td>`;
     tbody.appendChild(tr);
     total += value;
   });
 
   const totalRow = document.createElement("tr");
-  const gold = getColor("total");
   totalRow.innerHTML = `
-    <td style="color: ${gold}; font-weight: bold;"><strong>Total Score</strong></td>
-    <td style="color: ${gold}; font-weight: bold;"><strong>${total >= 0 ? "+" : ""}${total.toFixed(0)}</strong></td>
-    <td style="color: ${gold}; font-weight: bold;"><strong>${totalScoreComment}</strong></td>`;
+    <td class="score-total"><strong>Total Score</strong></td>
+    <td class="score-total"><strong>${total >= 0 ? "+" : ""}${total.toFixed(0)}</strong></td>
+    <td class="score-total"><strong>${totalScoreComment}</strong></td>`;
   tbody.appendChild(totalRow);
 
   table.style.display = "table";
