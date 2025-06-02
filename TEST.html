@@ -276,7 +276,7 @@
 
   <script>
   function toggleMobileNav() {
-    document.getElementById('mobileNav').classList.toggle('active');
+    document.getElementById('mobileNav')?.classList.toggle('active');
   }
 
   function loadPage(page, push = true) {
@@ -288,16 +288,22 @@
       })
       .then(html => {
         const container = document.getElementById('page-content');
+        if (!container) throw new Error("Missing #page-content container");
+
         container.innerHTML = html;
-        document.getElementById('mobileNav').classList.remove('active');
+        document.getElementById('mobileNav')?.classList.remove('active');
         window.scrollTo(0, 0);
+
         if (push) history.pushState({ page }, "", "#" + page);
         runScriptsFromHTML(container);
         setTimeout(callPageInits, 100);
       })
       .catch(err => {
         console.error(err);
-        document.getElementById('page-content').innerHTML = `<p style="color:red;">${err.message}</p>`;
+        const container = document.getElementById('page-content');
+        if (container) {
+          container.innerHTML = `<p style="color:red;">${err.message}</p>`;
+        }
       });
   }
 
@@ -307,7 +313,7 @@
     scripts.forEach(oldScript => {
       const newScript = document.createElement("script");
       if (oldScript.src) {
-        newScript.src = `${oldScript.src}?t=${Date.now()}`; // bust cache
+        newScript.src = `${oldScript.src}?t=${Date.now()}`; // Cache-busting
         newScript.async = false;
       } else {
         newScript.textContent = oldScript.textContent;
@@ -319,7 +325,7 @@
   function callPageInits() {
     const hash = location.hash.replace(/^#/, '') || 'newTRUOWL.html';
     const pageName = hash.replace('.html', '');
-    const camelName = pageName.replace(/^new/, ''); // strip 'new' if present
+    const camelName = pageName.replace(/^new/, '');
     const initFn = `init${camelName.charAt(0).toUpperCase()}${camelName.slice(1)}Page`;
 
     if (typeof window[initFn] === "function") {
@@ -330,17 +336,16 @@
     }
   }
 
-  // ✅ SPA click handler only for links with data-page
-document.body.addEventListener('click', function (e) {
-  const anchor = e.target.closest('a[data-page]');
-  if (anchor) {
-    e.preventDefault();
-    const page = anchor.getAttribute('data-page');
-    if (page) {
-      loadPage(page);
+  document.body.addEventListener('click', function (e) {
+    const anchor = e.target.closest('a[data-page]');
+    if (anchor) {
+      e.preventDefault();
+      const page = anchor.getAttribute('data-page');
+      if (page) {
+        loadPage(page);
+      }
     }
-  }
-});
+  });
 
   function agreeAndEnter() {
     localStorage.setItem("agreedToDisclaimer", "true");
@@ -352,7 +357,6 @@ document.body.addEventListener('click', function (e) {
     }
 
     const hashPage = location.hash?.substring(1) || "newTRUOWL.html";
-
     fetch(hashPage)
       .then(res => {
         if (!res.ok) throw new Error(`Failed to load ${hashPage}`);
@@ -360,6 +364,8 @@ document.body.addEventListener('click', function (e) {
       })
       .then(html => {
         const container = document.getElementById('page-content');
+        if (!container) throw new Error("Missing #page-content container");
+
         container.innerHTML = html;
         runScriptsFromHTML(container);
         setTimeout(callPageInits, 100);
@@ -367,11 +373,13 @@ document.body.addEventListener('click', function (e) {
       })
       .catch(err => {
         console.error(err);
-        document.getElementById('page-content').innerHTML = `<p style="color:red;">${err.message}</p>`;
+        const container = document.getElementById('page-content');
+        if (container) {
+          container.innerHTML = `<p style="color:red;">${err.message}</p>`;
+        }
       });
   }
 
-  // ✅ Initial bind/load if user already accepted
   window.addEventListener("DOMContentLoaded", () => {
     if (localStorage.getItem("agreedToDisclaimer")) {
       const initialPage = location.hash?.substring(1) || "newTRUOWL.html";
@@ -379,7 +387,6 @@ document.body.addEventListener('click', function (e) {
     }
   });
 
-  // ✅ Back/forward browser navigation support
   window.addEventListener('popstate', (e) => {
     const page = e.state?.page || "newTRUOWL.html";
     loadPage(page, false);
