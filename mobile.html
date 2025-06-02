@@ -8,8 +8,8 @@
   <!-- 🖋 Fonts -->
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&family=Playfair+Display:wght@500;700&display=swap" rel="stylesheet" />
 
+  <!-- 🎨 Strategic Owl Theme Colors -->
   <style>
-    /* 🎨 Strategic Owl Color System */
     :root {
       --background: #0D1B2A;
       --surface: #112240;
@@ -17,16 +17,13 @@
       --text: #FFFFFF;
       --text-muted: #7C8A9B;
       --heading: #FFFFF0;
-
       --truth: #28A745;
       --reliability: #3B6CED;
       --understanding: #D4AF37;
-
       --border: #2F2F5F;
       --shadow: rgba(0, 0, 0, 0.4);
     }
 
-    /* 🔧 Global Reset */
     * {
       margin: 0;
       padding: 0;
@@ -40,7 +37,7 @@
       line-height: 1.6;
     }
 
-    /* 🧭 Navigation */
+    /* 🧭 Navigation Bar Styling */
     nav {
       background-color: var(--highlight);
       color: var(--text);
@@ -80,12 +77,12 @@
       color: var(--text-muted);
     }
 
-    /* 📦 Page Content Area */
+    /* 📦 Dynamic Content Area */
     #page-content {
       padding: 24px;
     }
 
-    /* 📱 Mobile-first adjustments */
+    /* 📱 Mobile Responsiveness */
     @media (max-width: 600px) {
       nav {
         flex-direction: column;
@@ -106,7 +103,7 @@
 </head>
 
 <body>
-  <!-- 🧭 Navigation -->
+  <!-- 🧭 Top Navigation -->
   <nav>
     <a href="#home.html" class="nav-logo">
       <img src="owl_logo_white.png" alt="Owl Logo" onerror="this.style.display='none'" />
@@ -121,25 +118,32 @@
     </div>
   </nav>
 
-  <!-- 🔄 Main View Container -->
+  <!-- 📦 SPA View Container -->
   <div id="page-content"></div>
 
-  <!-- ⚙️ SPA Router + Script Runner -->
+  <!-- ⚙️ SPA Loader Script -->
   <script>
+    // 🛠 Run JS from loaded content (both inline and external)
     function runScripts(container) {
       const scripts = container.querySelectorAll("script");
       scripts.forEach(oldScript => {
         const newScript = document.createElement("script");
+
+        // Handle external script src
         if (oldScript.src) {
           newScript.src = oldScript.src;
+          newScript.defer = oldScript.defer || false;
         } else {
+          // Handle inline script
           newScript.textContent = oldScript.textContent;
         }
+
         document.body.appendChild(newScript);
         oldScript.remove();
       });
     }
 
+    // 📦 Load a new page dynamically into the SPA
     function loadPage(page, push = true) {
       fetch(page)
         .then(res => res.ok ? res.text() : Promise.reject(res))
@@ -155,21 +159,25 @@
         });
     }
 
+    // 🚀 Initial Load
     window.addEventListener("DOMContentLoaded", () => {
       const initial = location.hash ? location.hash.substring(1) : "home.html";
       loadPage(initial);
     });
 
+    // 🔙 Handle back/forward buttons
     window.addEventListener("popstate", e => {
       if (e.state?.page) loadPage(e.state.page, false);
     });
 
-    document.querySelectorAll("a[href^='#']").forEach(link => {
-      link.addEventListener("click", e => {
+    // ⛓ Update page when nav links are clicked
+    document.addEventListener("click", e => {
+      const target = e.target.closest("a[href^='#']");
+      if (target) {
         e.preventDefault();
-        const target = link.getAttribute("href").substring(1);
-        loadPage(target);
-      });
+        const page = target.getAttribute("href").substring(1);
+        loadPage(page);
+      }
     });
   </script>
 </body>
