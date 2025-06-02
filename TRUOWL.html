@@ -6,47 +6,52 @@
   <title>The Strategic Owl</title>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&family=Playfair+Display:wght@500;700&display=swap" rel="stylesheet" />
   <style>
+  /* 🎨 Define global color variables for reuse throughout the style */
   :root {
-    --navy: #1A1A40;
-    --text: #F5F5F5;
-    --accent-blue: #3B6CED;
-    --hover: #4FDBA6;
-    --border: #2F2F5F;
+    --navy: #1A1A40;            /* Dark navy background */
+    --text: #F5F5F5;            /* Light off-white text */
+    --accent-blue: #3B6CED;     /* Accent color used for headings/borders */
+    --hover: #4FDBA6;           /* Hover effect color (light green/teal) */
+    --border: #2F2F5F;          /* Border and secondary background */
   }
 
+  /* 🧍‍♂️ Style for the entire body of the webpage */
   body {
-    background-color: var(--navy);
-    font-family: 'Inter', sans-serif;
-    color: var(--text);
-    margin: 0;
-    padding: 0;
+    background-color: var(--navy);         /* Uses dark navy background */
+    font-family: 'Inter', sans-serif;      /* Clean, modern sans-serif font */
+    color: var(--text);                    /* Sets text color globally */
+    margin: 0;                             /* Remove default margins */
+    padding: 0;                            /* Remove default padding */
   }
 
+  /* 🧱 Font styling for headers */
   h1, h2, h3 {
-    font-family: 'Playfair Display', serif;
+    font-family: 'Playfair Display', serif;  /* Elegant serif font for contrast */
   }
 
+  /* ✏️ Specific styling for h2 headers */
   h2 {
     text-align: center;
-    font-family: 'Playfair Display', serif;
     font-size: 1.8rem;
     margin-top: 40px;
     margin-bottom: 20px;
   }
 
+  /* 📱 Navigation bar across the top */
   .top-nav {
-    background-color: #2F2E5E;
+    background-color: #2F2E5E;                      /* Slightly lighter than body */
     padding: 16px 20px;
-    border-bottom: 1px solid var(--border);
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.4);
-    position: sticky;
+    border-bottom: 1px solid var(--border);         /* Border at the bottom */
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.4);       /* Adds depth */
+    position: sticky;                               /* Sticks to top on scroll */
     top: 0;
-    z-index: 999;
+    z-index: 999;                                    /* On top of other content */
     display: flex;
     justify-content: space-between;
     align-items: center;
   }
 
+  /* 🦉 Logo section on the left side of nav bar */
   .nav-logo {
     display: flex;
     align-items: center;
@@ -58,32 +63,35 @@
     text-decoration: none;
   }
 
+  /* 🖼 Logo image styling */
   .nav-logo-img {
     height: 36px;
     width: auto;
-    margin-right: 0;
     vertical-align: middle;
   }
 
+  /* 🔗 Navigation link styles */
   .nav-links a {
     color: var(--text);
     margin-left: 24px;
     font-weight: 500;
     text-decoration: none;
-    transition: color 0.2s ease;
+    transition: color 0.2s ease;     /* Smooth hover effect */
   }
 
   .nav-links a:hover {
-    color: var(--hover);
+    color: var(--hover);             /* Change color on hover */
   }
 
+  /* 📎 Container for navigation links */
   .nav-links {
     display: flex;
     gap: 16px;
   }
 
+  /* 🍔 Hamburger menu icon for mobile */
   .nav-toggle {
-    display: none;
+    display: none;                  /* Hidden on desktop */
     font-size: 1.8rem;
     background: none;
     border: none;
@@ -91,6 +99,7 @@
     cursor: pointer;
   }
 
+  /* 📱 Mobile dropdown menu */
   .mobile-nav {
     display: none;
     flex-direction: column;
@@ -111,27 +120,31 @@
   }
 
   .mobile-nav.active {
-    display: flex;
+    display: flex; /* Shows the menu when active */
   }
 
+  /* 📦 Main content container */
   .content {
     max-width: 1200px;
     margin: 0 auto;
     padding: 40px 20px;
   }
 
+  /* 🎯 Primary title styling */
   h1 {
     font-size: 2.2rem;
     text-align: center;
     margin-bottom: 10px;
   }
 
+  /* 📌 Centered section title */
   .center-heading {
     text-align: center;
     font-size: 1.8rem;
     margin: 60px auto 30px;
   }
 
+  /* 📊 Box for section content */
   .section-box {
     background-color: #2F2E5E;
     padding: 40px;
@@ -141,6 +154,7 @@
     max-width: 900px;
   }
 
+  /* 🟦 Divider bar with colored blocks (used visually between sections) */
   .divider-bar {
     display: flex;
     justify-content: center;
@@ -154,10 +168,12 @@
     border-radius: 3px;
   }
 
-  .truth { background-color: #4CAF50; }
-  .reliability { background-color: #2196F3; }
-  .understanding { background-color: #FFD700; }
+  /* 🟥 Color indicators for truth, reliability, understanding */
+  .truth { background-color: #4CAF50; }        /* Green */
+  .reliability { background-color: #2196F3; }  /* Blue */
+  .understanding { background-color: #FFD700; }/* Yellow */
 
+  /* 🔤 Text color coding with emphasis */
   .text-truth {
     color: #4CAF50;
     font-weight: bold;
@@ -173,6 +189,7 @@
     font-weight: bold;
   }
 
+  /* 🧮 Grid layout for role/category scores */
   .score-grid {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
@@ -180,6 +197,7 @@
     margin: 30px auto 60px;
   }
 
+  /* 📦 Box for each role or profile */
   .role-box {
     padding: 16px;
     background-color: #1A1A40;
@@ -191,6 +209,7 @@
     margin: 4px 0;
   }
 
+  /* 🧩 Category headings inside each role box */
   h3.category-heading {
     font-size: 1.4rem;
     border-bottom: 2px solid var(--accent-blue);
@@ -198,6 +217,7 @@
     margin-bottom: 14px;
   }
 
+  /* 🦉 Strategic Owl logo container */
   .logo-container {
     text-align: center;
     margin-bottom: 30px;
@@ -208,6 +228,7 @@
     height: auto;
   }
 
+  /* 🔽 Dropdown selector for person list */
   select#person-select {
     background-color: var(--navy);
     color: var(--text);
@@ -222,6 +243,7 @@
     text-align: center;
   }
 
+  /* 📋 Score table styling */
   #score-table {
     background-color: #1A1A40;
     color: var(--text);
@@ -242,6 +264,7 @@
     padding: 12px;
   }
 
+  /* 📊 Final score box summary */
   #total-score-box {
     color: var(--text);
     background-color: #2F2E5E;
@@ -253,6 +276,7 @@
     text-align: center;
   }
 
+  /* 🟢 Positive/🔴 Negative/🟡 Total color emphasis */
   .positive-score {
     color: #4FDBA6;
     font-weight: bold;
@@ -268,12 +292,13 @@
     font-weight: bold;
   }
 
+  /* 📱 Responsive tweaks for screens smaller than 768px */
   @media (max-width: 768px) {
     .nav-links {
-      display: none;
+      display: none;     /* Hide full nav menu on mobile */
     }
     .nav-toggle {
-      display: block;
+      display: block;    /* Show hamburger menu */
     }
   }
 </style>
