@@ -224,13 +224,13 @@
 <body>
 
   <nav class="top-nav">
-    <div class="brand-left">
-      <a href="newTRUOWL.html">
-        <img src="owl_logo_white.png" alt="Strategic Owl Logo"
-             onerror="this.onerror=null;this.style.display='none';this.insertAdjacentHTML('afterend','<p style=\'color:white;font-weight:bold;\'>[ Logo not found ]</p>')" />
-      </a>
-      <a href="newTRUOWL.html" class="nav-logo">The Strategic Owl</a>
-    </div>
+  <div class="brand-left">
+    <a href="#" data-page="newTRUOWL.html">
+      <img src="owl_logo_white.png" alt="Strategic Owl Logo"
+           onerror="this.onerror=null;this.style.display='none';this.insertAdjacentHTML('afterend','<p style=\'color:white;font-weight:bold;\'>[ Logo not found ]</p>')" />
+    </a>
+    <a href="#" data-page="newTRUOWL.html" class="nav-logo">The Strategic Owl</a>
+  </div>
     <div class="nav-links-wrapper">
       <div class="nav-links">
   <a href="#" data-page="newelections.html">Election Security</a>
@@ -391,6 +391,12 @@
     const page = e.state?.page || "newTRUOWL.html";
     loadPage(page, false);
   });
+
+  // ✅ Inserted SPA-safe init function
+  function initStateFraudPage() {
+    console.log("✅ State Fraud logic running");
+    // Your logic here
+  }
 </script>
 </body>
 </html>
