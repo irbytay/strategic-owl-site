@@ -107,7 +107,6 @@
     color: #FFEB3B;
   }
 
-  /* ✅ Responsive, Centered Role Grid */
   .score-grid {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
@@ -145,7 +144,6 @@
     margin-bottom: 14px;
   }
 
-  /* ✅ Total Score Section */
   .total-score-box {
     background-color: #2F2E5E;
     color: var(--text);
@@ -171,7 +169,6 @@
     color: #DDDDDD;
   }
 
-  /* ✅ Mobile Optimization */
   @media (max-width: 600px) {
     .score-grid {
       grid-template-columns: 1fr !important;
@@ -204,7 +201,7 @@
       font-size: 0.95rem;
     }
   }
-</style>
+  </style>
 </head>
 <body>
   <div class="content">
@@ -245,200 +242,57 @@
         <tbody id="score-body"></tbody>
       </table>
     </div>
-<!-- ✅ Updated Weighted Role Grid (fixed layout to match the horizontal cards view) -->
-<div class="score-grid">
-  <div class="role-box">
-    <h3 class="category-heading">President</h3>
-    <p><span class="text-truth">Truth:</span> 4.0×</p>
-    <p><span class="text-reliability">Reliability:</span> 4.0×</p>
-    <p><span class="text-understanding">Understanding:</span> 5.0×</p>
-    <small>The highest office holds the highest responsibility. Their words move the world.</small>
+
+    <div class="score-grid">
+      <div class="role-box">
+        <h3 class="category-heading">President</h3>
+        <p><span class="text-truth">Truth:</span> 4.0×</p>
+        <p><span class="text-reliability">Reliability:</span> 4.0×</p>
+        <p><span class="text-understanding">Understanding:</span> 5.0×</p>
+        <small>The highest office holds the highest responsibility. Their words move the world.</small>
+      </div>
+      <div class="role-box">
+        <h3 class="category-heading">Executive</h3>
+        <p><span class="text-truth">Truth:</span> 3.5×</p>
+        <p><span class="text-reliability">Reliability:</span> 3.5×</p>
+        <p><span class="text-understanding">Understanding:</span> 4.5×</p>
+        <small>Includes VP, Cabinet-level leaders, and Justices. Their decisions shape national systems.</small>
+      </div>
+      <div class="role-box">
+        <h3 class="category-heading">Politicians</h3>
+        <p><span class="text-truth">Truth:</span> 3.0×</p>
+        <p><span class="text-reliability">Reliability:</span> 3.0×</p>
+        <p><span class="text-understanding">Understanding:</span> 4.0×</p>
+        <small>Elected voices must be held to the laws they create and the oaths they swear.</small>
+      </div>
+      <div class="role-box">
+        <h3 class="category-heading">Journalists</h3>
+        <p><span class="text-truth">Truth:</span> 3.0×</p>
+        <p><span class="text-reliability">Reliability:</span> 3.0×</p>
+        <p><span class="text-understanding">Understanding:</span> 4.0×</p>
+        <small>Responsible for informing the public. Corrections, context, and clarity are essential.</small>
+      </div>
+      <div class="role-box">
+        <h3 class="category-heading">Influencers</h3>
+        <p><span class="text-truth">Truth:</span> 1.3×</p>
+        <p><span class="text-reliability">Reliability:</span> 1.3×</p>
+        <p><span class="text-understanding">Understanding:</span> 2.0×</p>
+        <small>They shape minds without formal power. Trust is earned by how truthfully they speak.</small>
+      </div>
+    </div>
+
+    <p style="text-align: center; font-size: 0.9rem; color: #C0C0C0; margin-top: -10px;">
+      <em>Note:</em> The T.R.U. OWL Score focuses on public figures with influence. This is not a social credit system, and private individuals are not evaluated.
+    </p>
+
+    <div class="divider-bar">
+      <div class="truth"></div>
+      <div class="reliability"></div>
+      <div class="understanding"></div>
+    </div>
   </div>
-  <div class="role-box">
-    <h3 class="category-heading">Executive</h3>
-    <p><span class="text-truth">Truth:</span> 3.5×</p>
-    <p><span class="text-reliability">Reliability:</span> 3.5×</p>
-    <p><span class="text-understanding">Understanding:</span> 4.5×</p>
-    <small>Includes VP, Cabinet-level leaders, and Justices. Their decisions shape national systems.</small>
-  </div>
-  <div class="role-box">
-    <h3 class="category-heading">Politicians</h3>
-    <p><span class="text-truth">Truth:</span> 3.0×</p>
-    <p><span class="text-reliability">Reliability:</span> 3.0×</p>
-    <p><span class="text-understanding">Understanding:</span> 4.0×</p>
-    <small>Elected voices must be held to the laws they create and the oaths they swear.</small>
-  </div>
-  <div class="role-box">
-    <h3 class="category-heading">Journalists</h3>
-    <p><span class="text-truth">Truth:</span> 3.0×</p>
-    <p><span class="text-reliability">Reliability:</span> 3.0×</p>
-    <p><span class="text-understanding">Understanding:</span> 4.0×</p>
-    <small>Responsible for informing the public. Corrections, context, and clarity are essential.</small>
-  </div>
-  <div class="role-box">
-    <h3 class="category-heading">Influencers</h3>
-    <p><span class="text-truth">Truth:</span> 1.3×</p>
-    <p><span class="text-reliability">Reliability:</span> 1.3×</p>
-    <p><span class="text-understanding">Understanding:</span> 2.0×</p>
-    <small>They shape minds without formal power. Trust is earned by how truthfully they speak.</small>
-  </div>
-</div>
 
-<!-- ✅ Transparency Note -->
-<p style="text-align: center; font-size: 0.9rem; color: #C0C0C0; margin-top: -10px;">
-  <em>Note:</em> The T.R.U. OWL Score focuses on public figures with influence. This is not a social credit system, and private individuals are not evaluated.
-</p>
-
-<!-- ✅ Divider after the grid -->
-<div class="divider-bar">
-  <div class="truth"></div>
-  <div class="reliability"></div>
-  <div class="understanding"></div>
-</div>
-
-  <!-- Include your scoring script here -->
-  <script>
-  const TRU_MULTIPLIERS = {
-    5: { truth: 4.0, reliability: 4.0, understanding: 5.0 },
-    4: { truth: 3.5, reliability: 3.5, understanding: 4.5 },
-    3: { truth: 3.0, reliability: 3.0, understanding: 4.0 },
-    2: { truth: 3.0, reliability: 3.0, understanding: 4.0 },
-    1: { truth: 1.3, reliability: 1.3, understanding: 2.0 },
-    0: { truth: 1.0, reliability: 1.0, understanding: 2.0 },
-  };
-
-  async function fetchTRUData() {
-    const API_KEY = "AIzaSyCzuh9HBfe0r70r9U35Pe406PPZ-tz6I78";
-    const SHEET_ID = "19wBEj9hEkvIyQcoR5E_mBGVAxTzMnddMxk8nuQLAumA";
-    const RANGE = "TRU!A2:AG1000";
-
-    const url = https://sheets.googleapis.com/v4/spreadsheets/${SHEET_ID}/values/${RANGE}?key=${API_KEY};
-    try {
-      const res = await fetch(url);
-      if (!res.ok) throw new Error(HTTP error! Status: ${res.status});
-      const json = await res.json();
-      return json.values || [];
-    } catch (err) {
-      console.error("Failed to fetch sheet data", err);
-      const select = document.getElementById("person-select");
-      if (select) {
-        select.innerHTML = '<option value="">Failed to load data.</option>';
-      }
-      return [];
-    }
-  }
-
-  window.showScores = function () {
-    const select = document.getElementById("person-select");
-    const table = document.getElementById("score-table");
-    const tbody = document.getElementById("score-body");
-    const totalBox = document.getElementById("total-score-box");
-    const totalCommentEl = document.getElementById("total-score-comment");
-
-    const selected = select.value;
-    if (!selected || !window.rowMap || !window.rowMap[selected]) {
-      table.style.display = "none";
-      if (totalBox) totalBox.style.display = "none";
-      return;
-    }
-
-    const row = window.rowMap[selected];
-    tbody.innerHTML = "";
-
-    const truthRaw = parseFloat(row[25]) || 0;
-    const reliabilityRaw = parseFloat(row[26]) || 0;
-    const understandingRaw = parseFloat(row[27]) || 0;
-
-    const commentTruth = row[28] || "";
-    const commentReliability = row[29] || "";
-    const commentUnderstanding = row[30] || "";
-    const totalScoreComment = row[31] || "Summary not available";
-
-    const roleFlag = parseInt(row[32]) || 0;
-    const multiplier = TRU_MULTIPLIERS[roleFlag] || TRU_MULTIPLIERS[0];
-
-    const truthFinal = truthRaw * multiplier.truth;
-    const reliabilityFinal = reliabilityRaw * multiplier.reliability;
-    const understandingFinal = understandingRaw * multiplier.understanding;
-
-    const scores = [
-      {
-        label: "Truth",
-        value: truthFinal,
-        raw: truthRaw,
-        mult: multiplier.truth,
-        comment: commentTruth,
-      },
-      {
-        label: "Reliability",
-        value: reliabilityFinal,
-        raw: reliabilityRaw,
-        mult: multiplier.reliability,
-        comment: commentReliability,
-      },
-      {
-        label: "Understanding",
-        value: understandingFinal,
-        raw: understandingRaw,
-        mult: multiplier.understanding,
-        comment: commentUnderstanding,
-      },
-    ];
-
-    let total = 0;
-
-    // Build table rows with calculation details
-    scores.forEach(({ label, value, raw, mult, comment }) => {
-      const tr = document.createElement("tr");
-      tr.innerHTML = 
-        <td>${label}</td>
-        <td>${value >= 0 ? "+" : ""}${value.toFixed(0)} <small>(${raw.toFixed(1)} × ${mult.toFixed(1)})</small></td>
-        <td>${comment}</td>;
-      tbody.appendChild(tr);
-      total += value;
-    });
-
-    // Append total score row
-    const totalRow = document.createElement("tr");
-    totalRow.innerHTML = 
-      <td><strong>Total Score</strong></td>
-      <td><strong>${total >= 0 ? "+" : ""}${total.toFixed(0)}</strong></td>
-      <td><strong>${totalScoreComment}</strong></td>;
-    tbody.appendChild(totalRow);
-
-    table.style.display = "table";
-
-    // Show total score box
-    if (totalBox && totalCommentEl) {
-      totalCommentEl.textContent = totalScoreComment;
-      totalBox.style.display = "block";
-    }
-  };
-
-  window.initElectionPage = async function () {
-    window.rowMap = {};
-    const data = await fetchTRUData();
-    data.forEach(row => {
-      const key = row[0];
-      if (key) window.rowMap[key] = row;
-    });
-
-    const select = document.getElementById("person-select");
-    select.innerHTML = '<option value="">-- Choose a name --</option>';
-    Object.keys(window.rowMap).sort().forEach(name => {
-      const opt = document.createElement("option");
-      opt.value = name;
-      opt.textContent = name.replace(/([A-Z])/g, " $1").replace(/^./, s => s.toUpperCase());
-      select.appendChild(opt);
-    });
-
-    select.removeEventListener("change", window.showScores);
-    select.addEventListener("change", window.showScores);
-  };
-
-  window.onload = function () {
-    window.initElectionPage();
-  };
-</script>
+  <!-- ✅ External Script -->
+  <script src="tru-scores.js"></script>
 </body>
 </html>
