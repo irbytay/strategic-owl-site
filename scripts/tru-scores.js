@@ -89,9 +89,10 @@ window.showScores = function () {
 
   scores.forEach(({ label, value, raw, mult, comment }) => {
     const tr = document.createElement("tr");
+    const labelClass = `text-${label.toLowerCase()}`;
     tr.innerHTML = `
-      <td class="text-${label.toLowerCase()}">${label}</td>
-      <td>${value >= 0 ? "+" : ""}${value.toFixed(0)} <small>(${raw.toFixed(1)} × ${mult.toFixed(1)})</small></td>
+      <td class="${labelClass}">${label}</td>
+      <td class="${labelClass}">${value >= 0 ? "+" : ""}${value.toFixed(0)} <small>(${raw.toFixed(1)} × ${mult.toFixed(1)})</small></td>
       <td>${comment}</td>`;
     tbody.appendChild(tr);
     total += value;
@@ -99,9 +100,9 @@ window.showScores = function () {
 
   const totalRow = document.createElement("tr");
   totalRow.innerHTML = `
-    <td class="text-understanding"><strong>Total Score</strong></td>
-    <td class="text-understanding"><strong>${total >= 0 ? "+" : ""}${total.toFixed(0)}</strong></td>
-    <td class="text-understanding"><strong>${totalScoreComment}</strong></td>`;
+    <td class="total-score"><strong>Total Score</strong></td>
+    <td class="total-score"><strong>${total >= 0 ? "+" : ""}${total.toFixed(0)}</strong></td>
+    <td class="total-score"><strong>${totalScoreComment}</strong></td>`;
   tbody.appendChild(totalRow);
 
   table.style.display = "table";
