@@ -1,114 +1,30 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>T.R.U. OWL | Strategic Score Index</title>
-  
-  <!-- ✅ Fonts -->
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&family=Playfair+Display:wght@700&display=swap" rel="stylesheet" />
+<!-- ✅ testing.html as SPA-compatible fragment -->
 
-  <!-- 🎨 Style Variables & Base Styles -->
-  <style>
-    :root {
-      --navy: #1A1A40;
-      --gold: #FFD700;
-      --truth: #32CD32;
-      --reliability: #3B6CED;
-      --understanding: #D4AF37;
-      --text: #FAFAD2;
-      --border: #2F2F5F;
-    }
+<h1 class="nav-style-heading">T.R.U. OWL | Strategic Score Index</h1>
 
-    body {
-      margin: 0;
-      padding: 20px;
-      background-color: var(--navy);
-      color: var(--text);
-      font-family: 'Inter', sans-serif;
-    }
+<h2 class="nav-style-heading">Start by Choosing a Category of Influence</h2>
+<select id="role-filter">
+  <option value="All">All</option>
+</select>
 
-    h1, h2 {
-      font-family: 'Playfair Display', serif;
-      text-align: center;
-      margin-bottom: 20px;
-      color: var(--gold);
-    }
+<h2 class="nav-style-heading">Now, Select a Profile to View Their T.R.U. Owl Score</h2>
+<select id="person-select">
+  <option value="">-- Choose a name --</option>
+</select>
 
-    select {
-      background-color: var(--navy);
-      color: var(--text);
-      border: 1px solid var(--border);
-      border-radius: 6px;
-      padding: 10px 14px;
-      font-size: 1rem;
-      display: block;
-      margin: 0 auto 20px;
-      width: 100%;
-      max-width: 320px;
-      text-align: center;
-    }
+<table id="score-table" style="display: none;">
+  <thead>
+    <tr>
+      <th>Category</th>
+      <th>Score</th>
+      <th>Explanation</th>
+    </tr>
+  </thead>
+  <tbody id="score-body"></tbody>
+</table>
 
-    table {
-      width: 100%;
-      max-width: 800px;
-      margin: 0 auto 30px;
-      border-collapse: collapse;
-      background-color: var(--border);
-      color: var(--text);
-    }
+<div id="total-score-box" style="display: none;">
+  <p id="total-score-comment"></p>
+</div>
 
-    table th, table td {
-      border: 1px solid var(--gold);
-      padding: 12px;
-      text-align: left;
-    }
-
-    table th {
-      background-color: var(--dark-gray, #2C3E50);
-    }
-
-    #total-score-box {
-      max-width: 800px;
-      margin: 0 auto;
-      text-align: center;
-      font-size: 1.2rem;
-    }
-  </style>
-</head>
-
-<body>
-  <!-- 🔠 Headings -->
-  <h1 class="nav-style-heading">T.R.U. OWL | Strategic Score Index</h1>
-
-  <h2 class="nav-style-heading">Start by Choosing a Category of Influence</h2>
-  <select id="role-filter">
-    <option value="All">All</option>
-  </select>
-
-  <h2 class="nav-style-heading">Now, Select a Profile to View Their T.R.U. Owl Score</h2>
-  <select id="person-select">
-    <option value="">-- Choose a name --</option>
-  </select>
-
-  <!-- 📊 Score Table -->
-  <table id="score-table" style="display: none;">
-    <thead>
-      <tr>
-        <th>Category</th>
-        <th>Score</th>
-        <th>Explanation</th>
-      </tr>
-    </thead>
-    <tbody id="score-body"></tbody>
-  </table>
-
-  <!-- 📦 Summary Box -->
-  <div id="total-score-box" style="display: none;">
-    <p id="total-score-comment"></p>
-  </div>
-
-  <!-- 🧠 Link External Script -->
-  <script src="https://cdn.jsdelivr.net/gh/irbytay/strategic-owl-site@main/scripts/newTRUOWLscript.js" defer></script>
-</body>
-</html>
+<!-- External Script Injected via SPA (scriptMap in mobile.html) -->
