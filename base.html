@@ -431,9 +431,9 @@
     const commentTruth = row[5] || "";
     const commentReliability = row[6] || "";
     const commentUnderstanding = row[7] || "";
-    const totalScoreComment = row[10] || "Summary not available";
+    const totalScoreComment = row[9] || "Summary not available";
 
-    const roleFlag = parseInt(row[9]) || 0;
+    const roleFlag = parseInt(row[10]) || 0;
     const multiplier = TRU_MULTIPLIERS[roleFlag] || TRU_MULTIPLIERS[0];
 
     const truthFinal = truthRaw * multiplier.truth;
