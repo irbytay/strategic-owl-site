@@ -1,3 +1,4 @@
+
 // Multiplier values based on roleFlag
 const TRU_MULTIPLIERS = {
   5: { truth: 4.0, reliability: 4.0, understanding: 5.0 },
@@ -57,8 +58,11 @@ window.showScores = function () {
   const commentUnderstanding = row[30] || "";
   const totalScoreComment = row[31] || "Summary not available";
 
-  const roleFlag = parseInt(row[32]) || 0;
-  const multiplier = TRU_MULTIPLIERS[roleFlag] || TRU_MULTIPLIERS[0];
+  let roleFlag = parseInt(row[32]);
+  if (isNaN(roleFlag) || roleFlag < 0 || roleFlag > 5) {
+    roleFlag = 0;
+  }
+  const multiplier = TRU_MULTIPLIERS[roleFlag];
 
   const truthFinal = truthRaw * multiplier.truth;
   const reliabilityFinal = reliabilityRaw * multiplier.reliability;
