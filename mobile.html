@@ -82,7 +82,7 @@
   <nav>
     <div class="nav-title">The Strategic Owl</div>
     <div class="nav-links">
-      <a href="#home" onclick="loadPage('home.html')">Home</a>
+      <a href="#home" onclick="loadPage('testing.html')">Home</a>
       <a href="#score" onclick="loadPage('score.html')">Scores</a>
       <a href="#states" onclick="loadPage('states.html')">States</a>
       <a href="#about" onclick="loadPage('about.html')">About</a>
@@ -143,7 +143,7 @@
 
   // Load correct page on refresh or direct link
   window.addEventListener("load", () => {
-    const defaultPage = "home.html";
+    const defaultPage = "testing.html";
     const hash = window.location.hash.slice(1).replace(".html", "");
     loadPage(hash ? `${hash}.html` : defaultPage, false);
   });
