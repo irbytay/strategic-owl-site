@@ -28,15 +28,6 @@ async function fetchTRUData() {
   }
 }
 
-function getCategoryClass(label) {
-  switch (label.toLowerCase()) {
-    case "truth": return "text-truth";
-    case "reliability": return "text-reliability";
-    case "understanding": return "text-understanding";
-    default: return "";
-  }
-}
-
 window.showScores = function () {
   const select = document.getElementById("person-select");
   const table = document.getElementById("score-table");
@@ -77,6 +68,7 @@ window.showScores = function () {
       raw: truthRaw,
       mult: multiplier.truth,
       comment: commentTruth,
+      className: "text-truth"
     },
     {
       label: "Reliability",
@@ -84,6 +76,7 @@ window.showScores = function () {
       raw: reliabilityRaw,
       mult: multiplier.reliability,
       comment: commentReliability,
+      className: "text-reliability"
     },
     {
       label: "Understanding",
@@ -91,54 +84,31 @@ window.showScores = function () {
       raw: understandingRaw,
       mult: multiplier.understanding,
       comment: commentUnderstanding,
+      className: "text-understanding"
     },
   ];
 
   let total = 0;
 
-  scores.forEach(({ label, value, raw, mult, comment }) => {
+  scores.forEach(({ label, value, raw, mult, comment, className }) => {
     const tr = document.createElement("tr");
-    const cssClass = getCategoryClass(label);
-
-    const tdLabel = document.createElement("td");
-    tdLabel.textContent = label;
-    tdLabel.classList.add(cssClass);
-
-    const tdValue = document.createElement("td");
-    tdValue.innerHTML = `${value >= 0 ? "+" : ""}${value.toFixed(0)} <small>(${raw.toFixed(1)} × ${mult.toFixed(1)})</small>`;
-    tdValue.classList.add(cssClass);
-
-    const tdComment = document.createElement("td");
-    tdComment.textContent = comment;
-
-    tr.appendChild(tdLabel);
-    tr.appendChild(tdValue);
-    tr.appendChild(tdComment);
+    tr.innerHTML = `
+      <td class="${className}">${label}</td>
+      <td class="${className}">${value >= 0 ? "+" : ""}${value.toFixed(0)} <small>(${raw.toFixed(1)} × ${mult.toFixed(1)})</small></td>
+      <td>${comment}</td>`;
     tbody.appendChild(tr);
-
     total += value;
   });
 
   const totalRow = document.createElement("tr");
-
-  const tdTotalLabel = document.createElement("td");
-  tdTotalLabel.textContent = "Total Score";
-  tdTotalLabel.classList.add("total-score");
-
-  const tdTotalValue = document.createElement("td");
-  tdTotalValue.innerHTML = `<strong>${total >= 0 ? "+" : ""}${total.toFixed(0)}</strong>`;
-  tdTotalValue.classList.add("total-score");
-
-  const tdTotalComment = document.createElement("td");
-  tdTotalComment.innerHTML = `<strong>${totalScoreComment}</strong>`;
-  tdTotalComment.classList.add("total-score");
-
-  totalRow.appendChild(tdTotalLabel);
-  totalRow.appendChild(tdTotalValue);
-  totalRow.appendChild(tdTotalComment);
+  totalRow.innerHTML = `
+    <td class="total-score"><strong>Total Score</strong></td>
+    <td class="total-score"><strong>${total >= 0 ? "+" : ""}${total.toFixed(0)}</strong></td>
+    <td class="total-score"><strong>${totalScoreComment}</strong></td>`;
   tbody.appendChild(totalRow);
 
   table.style.display = "table";
+
   if (totalBox && totalCommentEl) {
     totalCommentEl.textContent = totalScoreComment;
     totalBox.style.display = "block";
