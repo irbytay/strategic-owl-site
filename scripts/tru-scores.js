@@ -11,8 +11,8 @@ async function fetchTRUData() {
   const API_KEY = "AIzaSyCzuh9HBfe0r70r9U35Pe406PPZ-tz6I78";
   const SHEET_ID = "19wBEj9hEkvIyQcoR5E_mBGVAxTzMnddMxk8nuQLAumA";
   const RANGE = "TRU!A2:AG1000";
-
   const url = `https://sheets.googleapis.com/v4/spreadsheets/${SHEET_ID}/values/${RANGE}?key=${API_KEY}`;
+
   try {
     const res = await fetch(url);
     if (!res.ok) throw new Error(`HTTP error! Status: ${res.status}`);
@@ -25,6 +25,15 @@ async function fetchTRUData() {
       select.innerHTML = '<option value="">Failed to load data.</option>';
     }
     return [];
+  }
+}
+
+function getCategoryClass(label) {
+  switch (label.toLowerCase()) {
+    case "truth": return "text-truth";
+    case "reliability": return "text-reliability";
+    case "understanding": return "text-understanding";
+    default: return "";
   }
 }
 
@@ -89,23 +98,47 @@ window.showScores = function () {
 
   scores.forEach(({ label, value, raw, mult, comment }) => {
     const tr = document.createElement("tr");
-    tr.innerHTML = `
-      <td class="score-label">${label}</td>
-      <td class="score-value">${value >= 0 ? "+" : ""}${value.toFixed(0)} <small>(${raw.toFixed(1)} × ${mult.toFixed(1)})</small></td>
-      <td class="score-comment">${comment}</td>`;
+    const cssClass = getCategoryClass(label);
+
+    const tdLabel = document.createElement("td");
+    tdLabel.textContent = label;
+    tdLabel.classList.add(cssClass);
+
+    const tdValue = document.createElement("td");
+    tdValue.innerHTML = `${value >= 0 ? "+" : ""}${value.toFixed(0)} <small>(${raw.toFixed(1)} × ${mult.toFixed(1)})</small>`;
+    tdValue.classList.add(cssClass);
+
+    const tdComment = document.createElement("td");
+    tdComment.textContent = comment;
+
+    tr.appendChild(tdLabel);
+    tr.appendChild(tdValue);
+    tr.appendChild(tdComment);
     tbody.appendChild(tr);
+
     total += value;
   });
 
   const totalRow = document.createElement("tr");
-  totalRow.innerHTML = `
-    <td class="score-total"><strong>Total Score</strong></td>
-    <td class="score-total"><strong>${total >= 0 ? "+" : ""}${total.toFixed(0)}</strong></td>
-    <td class="score-total"><strong>${totalScoreComment}</strong></td>`;
+
+  const tdTotalLabel = document.createElement("td");
+  tdTotalLabel.textContent = "Total Score";
+  tdTotalLabel.classList.add("total-score");
+
+  const tdTotalValue = document.createElement("td");
+  tdTotalValue.innerHTML = `<strong>${total >= 0 ? "+" : ""}${total.toFixed(0)}</strong>`;
+  tdTotalValue.classList.add("total-score");
+
+  const tdTotalComment = document.createElement("td");
+  tdTotalComment.innerHTML = `<strong>${totalScoreComment}</strong>`;
+  tdTotalComment.classList.add("total-score");
+
+  totalRow.appendChild(tdTotalLabel);
+  totalRow.appendChild(tdTotalValue);
+  totalRow.appendChild(tdTotalComment);
   tbody.appendChild(totalRow);
 
   table.style.display = "table";
-
   if (totalBox && totalCommentEl) {
     totalCommentEl.textContent = totalScoreComment;
     totalBox.style.display = "block";
