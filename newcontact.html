@@ -14,10 +14,6 @@
       --border: #2F2F5F;
     }
 
-    .text-truth { color: #4CAF50; font-weight: bold; }
-    .text-reliability { color: #2196F3; font-weight: bold; }
-    .text-understanding { color: #FFD700; font-weight: bold; }
-
     * { box-sizing: border-box; }
 
     body {
@@ -25,7 +21,102 @@
       font-family: 'Inter', sans-serif;
       color: var(--text);
       margin: 0;
-      padding: 0px 0px;
+      padding: 0;
+    }
+
+    h1, h2, h3 {
+      font-family: 'Playfair Display', serif;
+    }
+
+    .top-nav {
+      background-color: #2F2E5E;
+      padding: 16px 20px;
+      border-bottom: 1px solid var(--border);
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.4);
+      position: sticky;
+      top: 0;
+      z-index: 999;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .nav-logo {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      color: var(--text);
+      font-size: 1.5rem;
+      font-weight: bold;
+      text-decoration: none;
+      font-family: 'Playfair Display', serif;
+    }
+
+    .nav-logo-img {
+      height: 36px;
+      width: auto;
+      vertical-align: middle;
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 16px;
+    }
+
+    .nav-links a {
+      color: var(--text);
+      margin-left: 24px;
+      font-weight: 500;
+      text-decoration: none;
+      transition: color 0.2s ease;
+    }
+
+    .nav-links a:hover {
+      color: var(--hover);
+    }
+
+    .nav-toggle {
+      display: none;
+      font-size: 1.8rem;
+      background: none;
+      border: none;
+      color: var(--text);
+      cursor: pointer;
+    }
+
+    .mobile-nav {
+      display: none;
+      flex-direction: column;
+      background-color: #2F2E5E;
+      padding: 12px 20px;
+    }
+
+    .mobile-nav a {
+      color: var(--text);
+      padding: 8px 0;
+      text-decoration: none;
+      font-weight: 500;
+      border-top: 1px solid var(--border);
+    }
+
+    .mobile-nav a:hover {
+      color: var(--hover);
+    }
+
+    .mobile-nav.active {
+      display: flex;
+    }
+
+    .content {
+      max-width: 700px;
+      margin: 0 auto;
+      padding: 40px 20px;
+      text-align: center;
+    }
+
+    h1 {
+      font-size: 2.4em;
+      margin-bottom: 20px;
     }
 
     .divider-bar {
@@ -44,18 +135,6 @@
     .truth { background-color: #4CAF50; }
     .reliability { background-color: #2196F3; }
     .understanding { background-color: #FFD700; }
-
-    .content {
-      max-width: 700px;
-      margin: 0 auto;
-      text-align: center;
-    }
-
-    h1 {
-      font-family: 'Playfair Display', serif;
-      font-size: 2.4em;
-      margin-bottom: 20px;
-    }
 
     p {
       font-size: 1.05em;
@@ -92,7 +171,6 @@
     }
 
     form h2 {
-      font-family: 'Playfair Display', serif;
       font-size: 1.6em;
       margin-bottom: 20px;
       text-align: center;
@@ -158,19 +236,42 @@
       form h2 { font-size: 1.4em; }
       .link-bar a { display: block; margin: 10px auto; font-size: 1.05em; }
       .back-link a { font-size: 1.15rem; }
+      .nav-links { display: none; }
+      .nav-toggle { display: block; }
     }
   </style>
 </head>
 <body>
+  <nav class="top-nav">
+    <a href="TRUOWL.html" class="nav-logo">
+      <img src="owl_logo_white.png" alt="Owl Logo" class="nav-logo-img"
+           onerror="this.onerror=null;this.style.display='none';this.insertAdjacentHTML('afterend','<p style=\'color:white;font-weight:bold;\'>[ Logo not found ]</p>')" />
+      The Strategic Owl
+    </a>
+    <div class="nav-links">
+      <a href="elections.html">Election Security</a>
+      <a href="heritagefoundation.html">Election Fraud</a>
+      <a href="statefraud.html">Voter Fraud by State</a>
+      <a href="contact.html">Contact</a>
+    </div>
+    <button class="nav-toggle" onclick="document.querySelector('.mobile-nav').classList.toggle('active')">☰</button>
+  </nav>
 
- <div class="content" style="padding-top: 0; margin-top: 0;">
-  <h1>Get in Touch</h1>
-
-  <div class="divider-bar">
-    <div class="truth" style="background-color: #4CAF50; width: 40px; height: 6px; border-radius: 3px;"></div>
-    <div class="reliability" style="background-color: #2196F3; width: 40px; height: 6px; border-radius: 3px;"></div>
-    <div class="understanding" style="background-color: #FFD700; width: 40px; height: 6px; border-radius: 3px;"></div>
+  <div class="mobile-nav">
+    <a href="elections.html">Election Security</a>
+    <a href="heritagefoundation.html">Election Fraud</a>
+    <a href="statefraud.html">Voter Fraud by State</a>
+    <a href="contact.html">Contact</a>
   </div>
+
+  <div class="content">
+    <h1>Get in Touch</h1>
+
+    <div class="divider-bar">
+      <div class="truth"></div>
+      <div class="reliability"></div>
+      <div class="understanding"></div>
+    </div>
 
   <p>
     Follow or reach out via our official platforms. We’re building a community that values 
