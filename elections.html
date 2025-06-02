@@ -264,23 +264,32 @@
 <body>
 	<!-- Navigation -->
 <nav class="top-nav">
-  <a href="TRUOWL.html" class="nav-logo">The Strategic Owl</a>
+  <a href="TRUOWL.html" class="nav-logo">
+    <img src="owl_logo_white.png" alt="Strategic Owl Logo" class="nav-logo-img"
+         onerror="this.onerror=null;this.style.display='none';
+         this.insertAdjacentHTML('afterend',
+         \`<p style='color:white;font-weight:bold;'>[ Logo not found ]</p>\`)" />
+    The Strategic Owl
+  </a>
   <div class="nav-links">
+    <a href="elections.html">Election Security</a>
     <a href="heritagefoundation.html">Election Fraud</a>
     <a href="statefraud.html">Voter Fraud by State</a>
     <a href="contact.html">Contact</a>
   </div>
   <button class="nav-toggle" onclick="document.querySelector('.mobile-nav').classList.toggle('active')">☰</button>
 </nav>
+
+<!-- Mobile Nav -->
 <div class="mobile-nav">
+  <a href="elections.html">Election Security</a>
   <a href="heritagefoundation.html">Election Fraud</a>
   <a href="statefraud.html">Voter Fraud by State</a>
   <a href="contact.html">Contact</a>
 </div>
-<!-- Logo and Brand Identity -->
-<div class="container">
-  <!-- Logo and Brand Identity -->
-  <div class="logo-container">
+
+<!-- Logo + Page Heading -->
+<div class="logo-container">
   <a href="TRUOWL.html">
     <img src="owl_logo_white.png" alt="Strategic Owl Logo"
          style="max-width: 120px; height: auto; display: block; margin: 0 auto 20px;" 
