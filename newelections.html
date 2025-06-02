@@ -26,17 +26,17 @@
   }
 
   .box {
-  background-color: #2F2E5E;
-  padding: 40px;
-  border-radius: 12px;
-  width: 100%;
-  max-width: 900px;
-  margin: 0 auto 40px auto; /* ⬅️ Horizontally centers */
-  box-shadow: 0 0 12px rgba(0, 0, 0, 0.5);
-  display: flex;
-  flex-direction: column;
-  align-items: center; /* ⬅️ Center content inside too */
-}
+    background-color: #2F2E5E;
+    padding: 40px;
+    border-radius: 12px;
+    width: 100%;
+    max-width: 900px;
+    margin: 0 auto 40px auto;
+    box-shadow: 0 0 12px rgba(0, 0, 0, 0.5);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
 
   .box h2,
   .box h3,
@@ -191,6 +191,87 @@
     color: #F44336;
   }
 
+  /* 🔽 ADDED NAVIGATION STYLES */
+  .top-nav {
+    background-color: #2F2E5E;
+    padding: 16px 20px;
+    border-bottom: 1px solid #2F2F5F;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.4);
+    position: sticky;
+    top: 0;
+    z-index: 999;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .nav-logo {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    color: #F5F5F5;
+    font-size: 1.5rem;
+    font-family: 'Playfair Display', serif;
+    font-weight: bold;
+    text-decoration: none;
+  }
+
+  .nav-logo-img {
+    height: 36px;
+    width: auto;
+    margin-right: 0;
+    vertical-align: middle;
+  }
+
+  .nav-links a {
+    color: #F5F5F5;
+    margin-left: 24px;
+    font-weight: 500;
+    text-decoration: none;
+    transition: color 0.2s ease;
+  }
+
+  .nav-links a:hover {
+    color: #4FDBA6;
+  }
+
+  .nav-links {
+    display: flex;
+    gap: 16px;
+  }
+
+  .nav-toggle {
+    display: none;
+    font-size: 1.8rem;
+    background: none;
+    border: none;
+    color: #F5F5F5;
+    cursor: pointer;
+  }
+
+  .mobile-nav {
+    display: none;
+    flex-direction: column;
+    background-color: #2F2E5E;
+    padding: 12px 20px;
+  }
+
+  .mobile-nav a {
+    color: #F5F5F5;
+    padding: 8px 0;
+    text-decoration: none;
+    font-weight: 500;
+    border-top: 1px solid #2F2F5F;
+  }
+
+  .mobile-nav a:hover {
+    color: #4FDBA6;
+  }
+
+  .mobile-nav.active {
+    display: flex;
+  }
+
   @media (max-width: 600px) {
     .box {
       padding: 25px;
@@ -208,10 +289,39 @@
     #score-table {
       font-size: 0.9rem;
     }
+
+    .nav-links {
+      display: none;
+    }
+
+    .nav-toggle {
+      display: block;
+    }
   }
 </style>
 </head>
 <body>
+  <nav class="top-nav">
+  <a href="TRUOWL.html" class="nav-logo">
+    <img src="owl_logo_white.png" alt="Owl Logo" class="nav-logo-img"
+         onerror="this.onerror=null;this.style.display='none';this.insertAdjacentHTML('afterend','<p style=\'color:white;font-weight:bold;\'>[ Logo not found ]</p>')" />
+    The Strategic Owl
+  </a>
+  <div class="nav-links">
+    <a href="elections.html">Election Security</a>
+    <a href="heritagefoundation.html">Election Fraud</a>
+    <a href="statefraud.html">Voter Fraud by State</a>
+    <a href="contact.html">Contact</a>
+  </div>
+  <button class="nav-toggle" onclick="document.querySelector('.mobile-nav').classList.toggle('active')">☰</button>
+</nav>
+
+<div class="mobile-nav">
+  <a href="elections.html">Election Security</a>
+  <a href="heritagefoundation.html">Election Fraud</a>
+  <a href="statefraud.html">Voter Fraud by State</a>
+  <a href="contact.html">Contact</a>
+</div>
 <div class="container">
   <div class="logo-container">
     <h1>Election Security Score Viewer</h1>
