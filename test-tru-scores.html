@@ -180,13 +180,25 @@
   }
 
   /* === TRU OWL Viewer Styling === */
+  .viewer-header {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin: 40px auto;
+  }
+
   select#person-select {
     background-color: var(--navy);
     color: var(--text);
     border: 1px solid var(--border);
     border-radius: 6px;
-    padding: 10px;
+    padding: 10px 14px;
     font-size: 1rem;
+    display: block;
+    margin: 20px auto;
+    width: 100%;
+    max-width: 320px;
+    text-align: center;
   }
 
   #score-table {
@@ -229,7 +241,8 @@
     color: #FF6B6B;
     font-weight: bold;
   }
-      .total-score {
+
+  .total-score {
     color: #FFD700;
     font-weight: bold;
   }
