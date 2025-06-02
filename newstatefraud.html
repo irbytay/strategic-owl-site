@@ -26,6 +26,85 @@
       font-family: 'Playfair Display', serif;
     }
 
+    .top-nav {
+      background-color: #2F2E5E;
+      padding: 16px 20px;
+      border-bottom: 1px solid var(--border);
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.4);
+      position: sticky;
+      top: 0;
+      z-index: 999;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .nav-logo {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      color: var(--text);
+      font-size: 1.5rem;
+      font-family: 'Playfair Display', serif;
+      font-weight: bold;
+      text-decoration: none;
+    }
+
+    .nav-logo-img {
+      height: 36px;
+      width: auto;
+      vertical-align: middle;
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 16px;
+    }
+
+    .nav-links a {
+      color: var(--text);
+      margin-left: 24px;
+      font-weight: 500;
+      text-decoration: none;
+      transition: color 0.2s ease;
+    }
+
+    .nav-links a:hover {
+      color: var(--hover);
+    }
+
+    .nav-toggle {
+      display: none;
+      font-size: 1.8rem;
+      background: none;
+      border: none;
+      color: var(--text);
+      cursor: pointer;
+    }
+
+    .mobile-nav {
+      display: none;
+      flex-direction: column;
+      background-color: #2F2E5E;
+      padding: 12px 20px;
+    }
+
+    .mobile-nav a {
+      color: var(--text);
+      padding: 8px 0;
+      text-decoration: none;
+      font-weight: 500;
+      border-top: 1px solid var(--border);
+    }
+
+    .mobile-nav a:hover {
+      color: var(--hover);
+    }
+
+    .mobile-nav.active {
+      display: flex;
+    }
+
     .content {
       max-width: 900px;
       margin: 0 auto;
@@ -143,9 +222,41 @@
       color: var(--hover);
       border-color: var(--hover);
     }
+
+    @media (max-width: 768px) {
+      .nav-links {
+        display: none;
+      }
+
+      .nav-toggle {
+        display: block;
+      }
+    }
   </style>
 </head>
 <body>
+  <nav class="top-nav">
+    <a href="TRUOWL.html" class="nav-logo">
+      <img src="owl_logo_white.png" alt="Owl Logo" class="nav-logo-img"
+           onerror="this.onerror=null;this.style.display='none';this.insertAdjacentHTML('afterend','<p style=\'color:white;font-weight:bold;\'>[ Logo not found ]</p>')" />
+      The Strategic Owl
+    </a>
+    <div class="nav-links">
+      <a href="elections.html">Election Security</a>
+      <a href="heritagefoundation.html">Election Fraud</a>
+      <a href="statefraud.html">Voter Fraud by State</a>
+      <a href="contact.html">Contact</a>
+    </div>
+    <button class="nav-toggle" onclick="document.querySelector('.mobile-nav').classList.toggle('active')">☰</button>
+  </nav>
+
+  <div class="mobile-nav">
+    <a href="elections.html">Election Security</a>
+    <a href="heritagefoundation.html">Election Fraud</a>
+    <a href="statefraud.html">Voter Fraud by State</a>
+    <a href="contact.html">Contact</a>
+  </div>
+
   <div class="content">
     <h1>Voter Fraud by State</h1>
 
