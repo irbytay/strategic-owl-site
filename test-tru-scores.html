@@ -2,12 +2,14 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <title>Test T.R.U. OWL Script</title>
+  <title>TRU OWL Score Test</title>
 </head>
 <body>
-  <!-- Dropdown must come before the script loads -->
+  <h1>TRU OWL Viewer</h1>
+
   <select id="person-select"></select>
-  <table id="score-table" style="display:none;">
+
+  <table id="score-table" border="1" style="display:none;">
     <thead>
       <tr>
         <th>Category</th>
@@ -17,11 +19,23 @@
     </thead>
     <tbody id="score-body"></tbody>
   </table>
+
   <div id="total-score-box" style="display:none;">
     <p id="total-score-comment"></p>
   </div>
 
-  <!-- Your main script -->
+  <!-- 👇 This is your working JS -->
   <script src="tru-scores.js"></script>
+
+  <!-- 👇 Call init function manually -->
+  <script>
+    document.addEventListener("DOMContentLoaded", () => {
+      if (typeof initElectionPage === "function") {
+        initElectionPage();
+      } else {
+        console.error("❌ initElectionPage not defined.");
+      }
+    });
+  </script>
 </body>
 </html>
