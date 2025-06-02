@@ -97,6 +97,13 @@
 
   <!-- 🧠 SPA Script Logic -->
  <script>
+  const scriptMap = {
+    home: "https://cdn.jsdelivr.net/gh/irbytay/strategic-owl-site@main/scripts/newTRUOWLscript.js",
+    score: "scripts/score-script.js",
+    states: "scripts/states-map.js",
+    about: null // no script needed
+  };
+
   function loadPage(page, push = true) {
     fetch(page)
       .then(res => {
@@ -105,35 +112,36 @@
       })
       .then(html => {
         const content = document.getElementById("page-content");
-
-        // Parse HTML content in a temporary container
         const temp = document.createElement("div");
         temp.innerHTML = html;
 
-        // Extract and remove <script> tags
-        const scripts = Array.from(temp.querySelectorAll("script"));
-        scripts.forEach(script => script.remove());
-
-        // Inject remaining HTML
+        // Strip inline scripts from loaded HTML
+        const inlineScripts = Array.from(temp.querySelectorAll("script"));
+        inlineScripts.forEach(script => script.remove());
         content.innerHTML = temp.innerHTML;
 
-        // Re-execute extracted scripts
-        scripts.forEach(oldScript => {
+        // Re-run inline scripts
+        inlineScripts.forEach(oldScript => {
           const newScript = document.createElement("script");
           if (oldScript.src) {
             newScript.src = oldScript.src;
-            newScript.defer = oldScript.defer || false;
-            newScript.async = oldScript.async || false;
           } else {
             newScript.textContent = oldScript.textContent;
           }
           document.body.appendChild(newScript);
         });
 
-        // Update browser history
-        if (push) {
-          history.pushState({ page }, "", "#" + page);
+        // Load external script if defined
+        const route = page.replace(".html", "");
+        const extraScript = scriptMap[route];
+        if (extraScript) {
+          const s = document.createElement("script");
+          s.src = extraScript;
+          s.defer = true;
+          document.body.appendChild(s);
         }
+
+        if (push) history.pushState({ page }, "", "#" + page);
       })
       .catch(err => {
         document.getElementById("page-content").innerHTML = "<p>Error loading content.</p>";
@@ -141,18 +149,13 @@
       });
   }
 
-  // Load correct page on refresh or direct link
   window.addEventListener("load", () => {
-    const defaultPage = "testing.html";
-    const hash = window.location.hash.slice(1).replace(".html", "");
-    loadPage(hash ? `${hash}.html` : defaultPage, false);
+    const hash = window.location.hash.slice(1).replace(".html", "") || "home";
+    loadPage(`${hash}.html`, false);
   });
 
-  // Handle back/forward button navigation
   window.addEventListener("popstate", e => {
-    if (e.state?.page) {
-      loadPage(e.state.page, false);
-    }
+    if (e.state?.page) loadPage(e.state.page, false);
   });
 </script>
 
