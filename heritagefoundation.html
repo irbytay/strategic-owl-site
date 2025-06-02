@@ -257,26 +257,40 @@
 </head>
 <body>
   <nav class="top-nav">
-    <a href="index.html" class="nav-logo">The Strategic Owl</a>
-    <div class="menu-toggle" onclick="toggleMenu()">
-      <div></div>
-      <div></div>
-      <div></div>
-    </div>
-    <div class="nav-links" id="navLinks">
-      <a href="elections.html">Election Security</a>
-      <a href="statefraud.html">Voter Fraud by State</a>
-      <a href="contact.html">Contact</a>
-    </div>
-  </nav>
+  <a href="TRUOWL.html" class="nav-logo">
+    <img src="owl_logo_white.png" alt="Strategic Owl Logo" class="nav-logo-img"
+         onerror="this.onerror=null;this.style.display='none';
+         this.insertAdjacentHTML('afterend',
+         \`<p style='color:white;font-weight:bold;'>[ Logo not found ]</p>\`)" />
+    The Strategic Owl
+  </a>
+  <div class="nav-links">
+    <a href="elections.html">Election Security</a>
+    <a href="heritagefoundation.html">Election Fraud</a>
+    <a href="statefraud.html">Voter Fraud by State</a>
+    <a href="contact.html">Contact</a>
+  </div>
+  <button class="nav-toggle" onclick="document.querySelector('.mobile-nav').classList.toggle('active')">☰</button>
+</nav>
 
-  <div class="content">
-    <div class="logo-container">
-      <a href="index.html">
-        <img src="owl_logo_white.png" alt="Strategic Owl Logo"
-             onerror="this.onerror=null;this.style.display='none';this.insertAdjacentHTML('afterend','<p style=\'color:white;text-align:center;font-weight:bold;\'>[ Logo not found – owl_logo_white.png ]</p>')" />
-      </a>
-    </div>
+<!-- Mobile Nav -->
+<div class="mobile-nav">
+  <a href="elections.html">Election Security</a>
+  <a href="heritagefoundation.html">Election Fraud</a>
+  <a href="statefraud.html">Voter Fraud by State</a>
+  <a href="contact.html">Contact</a>
+</div>
+
+<!-- Logo + Page Heading -->
+<div class="logo-container">
+  <a href="TRUOWL.html">
+    <img src="owl_logo_white.png" alt="Strategic Owl Logo"
+         style="max-width: 120px; height: auto; display: block; margin: 0 auto 20px;" 
+         onerror="this.onerror=null;this.style.display='none';
+         this.insertAdjacentHTML('afterend',
+         '<p style=\'color:white;text-align:center;font-weight:bold;\'>[ Logo not found – owl_logo_white.png ]</p>')" />
+  </a>
+</div>
 
     <h1>The Strategic Owl</h1>
 
