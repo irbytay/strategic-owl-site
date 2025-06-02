@@ -149,4 +149,4 @@ const TRU_MULTIPLIERS = {
     });
 
     personSelect.addEventListener("change", showScores);
-  }
+  });
