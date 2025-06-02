@@ -304,12 +304,17 @@
 </style>
 </head>
 <body>
+  <!-- 🔝 Top Navigation Bar -->
   <nav class="top-nav">
+    <!-- 🔗 Strategic Owl Logo linking back to TRUOWL.html -->
     <a href="TRUOWL.html" class="nav-logo">
+      <!-- 🦉 Logo image with a fallback error handler if image fails to load -->
       <img src="owl_logo_white.png" alt="Owl Logo" class="nav-logo-img"
            onerror="this.onerror=null;this.style.display='none';this.insertAdjacentHTML('afterend','<p style=\'color:white;font-weight:bold;\'>[ Logo not found ]</p>')" />
       The Strategic Owl
     </a>
+
+    <!-- 🔗 Desktop navigation links (visible on wide screens) -->
     <div class="nav-links">
       <a href="base.html">T.R.U. Owl</a>
       <a href="newelections.html">Election Security</a>
@@ -317,9 +322,15 @@
       <a href="newstatefraud.html">Voter Fraud by State</a>
       <a href="newcontact.html">Contact</a>
     </div>
-    <button class="nav-toggle" onclick="document.querySelector('.mobile-nav').classList.toggle('active')">☰</button>
+
+    <!-- 🍔 Mobile menu toggle button (☰) -->
+    <button class="nav-toggle"
+      onclick="document.querySelector('.mobile-nav').classList.toggle('active')">
+      ☰
+    </button>
   </nav>
 
+  <!-- 📱 Mobile nav menu (only appears when .active is added) -->
   <div class="mobile-nav">
     <a href="base.html">T.R.U. Owl</a>
     <a href="newelections.html">Election Security</a>
@@ -328,30 +339,81 @@
     <a href="newcontact.html">Contact</a>
   </div>
 
+  <!-- 🧠 Page Header Title -->
   <h2>Welcome to the T.R.U. OWL Score</h2>
+
+  <!-- 📦 Main content container -->
   <div class="content">
+
+    <!-- 🟪 Visual divider bar using colored blocks -->
     <div class="divider-bar">
-      <div class="truth"></div>
-      <div class="reliability"></div>
-      <div class="understanding"></div>
+      <div class="truth"></div>         <!-- Green block for truth -->
+      <div class="reliability"></div>   <!-- Blue block for reliability -->
+      <div class="understanding"></div> <!-- Yellow block for understanding -->
     </div>
+
+    <!-- 📘 Introduction section explaining the system -->
     <div class="section-box">
       <p><strong>This isn’t a media bias site. It’s a truth system.</strong></p>
-      <p>The T.R.U. OWL Score is a credibility framework that measures public figures based on <span class="text-truth">verifiable truth</span> — not vibes, tribes, or talking points.</p>
-      <p>We don’t ask what side someone’s on. We ask: <em>Did they tell the truth?</em> Did they correct themselves when wrong? Are they consistent? Do they understand what they’re talking about?</p>
-      <p>Through <strong>court records</strong>, <strong>public data</strong>, and <strong>source-backed analysis</strong>, we track what can be proven — and score it across three pillars:</p>
+
+      <p>
+        The T.R.U. OWL Score is a credibility framework that measures public figures
+        based on <span class="text-truth">verifiable truth</span> — not vibes, tribes, or talking points.
+      </p>
+
+      <p>
+        We don’t ask what side someone’s on. We ask:
+        <em>Did they tell the truth?</em> Did they correct themselves when wrong?
+        Are they consistent? Do they understand what they’re talking about?
+      </p>
+
+      <p>
+        Through <strong>court records</strong>, <strong>public data</strong>, and
+        <strong>source-backed analysis</strong>, we track what can be proven —
+        and score it across three pillars:
+      </p>
+
+      <!-- 📌 Explanation list of the 3 pillars -->
       <ul>
         <li><span class="text-truth">Truth</span> – Are the claims factually accurate?</li>
         <li><span class="text-reliability">Reliability:</span> – Are they consistent and accountable?</li>
         <li><span class="text-understanding">Understanding:</span> – Do they grasp the systems they discuss?</li>
       </ul>
-      <p>Each role is measured differently — because journalists aren’t lawmakers, and influencers aren’t investigators. But all are held to <strong>real standards</strong>.</p>
-      <p><strong>This is about course-correction — not cancellation.</strong> We reward accuracy, transparency, and integrity. We expose distortion, evasion, and disinformation.</p>
-      <p><strong>Why this matters:</strong> In a world where influence often outruns accountability, the T.R.U. OWL Score changes the incentive structure. It rewards those who elevate truth — and reveals those who erode it.</p>
-      <p><span class="text-truth">Truth</span> isn't a matter of opinion — it’s a record. And now, for the first time, you can see it clearly, compare it publicly, and use it strategically.</p>
-      <p>This system exists not to play favorites, but to make <strong>credibility visible</strong> — so that public trust can be earned, not assumed. When <span class="text-truth">truth</span> becomes visible, <span class="text-reliability">accountability</span> follows — and that’s how we move forward.</p>
 
+      <p>
+        Each role is measured differently — because journalists aren’t lawmakers,
+        and influencers aren’t investigators. But all are held to <strong>real standards</strong>.
+      </p>
+
+      <p>
+        <strong>This is about course-correction — not cancellation.</strong>
+        We reward accuracy, transparency, and integrity.
+        We expose distortion, evasion, and disinformation.
+      </p>
+
+      <p>
+        <strong>Why this matters:</strong> In a world where influence often outruns accountability,
+        the T.R.U. OWL Score changes the incentive structure.
+        It rewards those who elevate truth — and reveals those who erode it.
+      </p>
+
+      <p>
+        <span class="text-truth">Truth</span> isn't a matter of opinion — it’s a record.
+        And now, for the first time, you can see it clearly, compare it publicly,
+        and use it strategically.
+      </p>
+
+      <p>
+        This system exists not to play favorites, but to make
+        <strong>credibility visible</strong> — so that public trust can be earned,
+        not assumed. When <span class="text-truth">truth</span> becomes visible,
+        <span class="text-reliability">accountability</span> follows — and that’s how we move forward.
+      </p>
+
+      <!-- 🧮 Grid of role-based multiplier tiers -->
       <div class="score-grid">
+
+        <!-- 🏛️ Tier for President / VP / Supreme Court -->
         <div class="role-box">
           <h3 class="category-heading">President / VP / Supreme Court</h3>
           <p><span class="text-truth">Truth:</span> 4.0×</p>
@@ -359,6 +421,8 @@
           <p><span class="text-understanding">Understanding:</span> 5.0×</p>
           <small>The highest offices hold the highest responsibility. Their words and rulings move the world.</small>
         </div>
+
+        <!-- 🧑‍⚖️ Tier for Executives and Federal Politicians -->
         <div class="role-box">
           <h3 class="category-heading">Executives / Federal Politicians</h3>
           <p><span class="text-truth">Truth:</span> 3.5×</p>
@@ -366,6 +430,8 @@
           <p><span class="text-understanding">Understanding:</span> 4.5×</p>
           <small>Includes Cabinet members, federal legislators, and top officials shaping national policy.</small>
         </div>
+
+        <!-- 📰 Tier for Media Companies -->
         <div class="role-box">
           <h3 class="category-heading">Media Organizations</h3>
           <p><span class="text-truth">Truth:</span> 3.0×</p>
@@ -373,6 +439,8 @@
           <p><span class="text-understanding">Understanding:</span> 4.0×</p>
           <small>Networks and publishers shape public perception and drive national narratives.</small>
         </div>
+
+        <!-- ✍️ Tier for Journalists -->
         <div class="role-box">
           <h3 class="category-heading">Journalists</h3>
           <p><span class="text-truth">Truth:</span> 2.5×</p>
@@ -380,6 +448,8 @@
           <p><span class="text-understanding">Understanding:</span> 3.5×</p>
           <small>Reporters and editors are trusted to verify facts, provide context, and admit when wrong.</small>
         </div>
+
+        <!-- 📱 Tier for Influencers -->
         <div class="role-box">
           <h3 class="category-heading">Influencers</h3>
           <p><span class="text-truth">Truth:</span> 1.3×</p>
@@ -388,7 +458,7 @@
           <small>They shape opinions without institutional power. Credibility depends on earned trust.</small>
         </div>
       </div>
-    </div>
-  </div>
+    </div> <!-- /section-box -->
+  </div> <!-- /content -->
 </body>
 </html>
