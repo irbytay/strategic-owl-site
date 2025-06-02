@@ -268,7 +268,6 @@
     font-weight: bold;
   }
 
-  /* Mobile */
   @media (max-width: 768px) {
     .nav-links {
       display: none;
@@ -301,32 +300,34 @@
     <a href="newstatefraud.html">Voter Fraud by State</a>
     <a href="newcontact.html">Contact</a>
   </div>
-<h2>Welcome to the T.R.U. OWL Score</h2>
+
+  <h2>Welcome to the T.R.U. OWL Score</h2>
   <div class="content">
     <div class="divider-bar">
       <div class="truth"></div>
       <div class="reliability"></div>
       <div class="understanding"></div>
     </div>
-   <!-- 🔽 TRU OWL Viewer -->
-      <h1>TRU OWL Viewer</h1>
 
-      <select id="person-select"></select>
+    <h1>TRU OWL Viewer</h1>
 
-      <table id="score-table" style="display:none;">
-        <thead>
-          <tr>
-            <th>Category</th>
-            <th>Score</th>
-            <th>Explanation</th>
-          </tr>
-        </thead>
-        <tbody id="score-body"></tbody>
-      </table>
+    <select id="person-select"></select>
 
-      <div id="total-score-box" style="display:none;">
-        <p id="total-score-comment"></p>
-      </div>
+    <table id="score-table" style="display:none;">
+      <thead>
+        <tr>
+          <th>Category</th>
+          <th>Score</th>
+          <th>Explanation</th>
+        </tr>
+      </thead>
+      <tbody id="score-body"></tbody>
+    </table>
+
+    <div id="total-score-box" style="display:none;">
+      <p id="total-score-comment"></p>
+    </div>
+
     <div class="section-box">
       <p><strong>This isn’t a media bias site. It’s a truth system.</strong></p>
       <p>The T.R.U. OWL Score is a credibility framework that measures public figures based on <span class="text-truth">verifiable truth</span> — not vibes, tribes, or talking points.</p>
@@ -343,58 +344,55 @@
       <p><span class="text-truth">Truth</span> isn't a matter of opinion — it’s a record. And now, for the first time, you can see it clearly, compare it publicly, and use it strategically.</p>
       <p>This system exists not to play favorites, but to make <strong>credibility visible</strong> — so that public trust can be earned, not assumed. When <span class="text-truth">truth</span> becomes visible, <span class="text-reliability">accountability</span> follows — and that’s how we move forward.</p>
 
-      <!-- 🔽 Score Multipliers -->
-<div class="score-grid">
-  <div class="role-box">
-    <h3 class="category-heading">President / VP / Supreme Court</h3>
-    <p><span class="text-truth">Truth:</span> 4.0×</p>
-    <p><span class="text-reliability">Reliability:</span> 4.0×</p>
-    <p><span class="text-understanding">Understanding:</span> 5.0×</p>
-    <small>The highest offices hold the highest responsibility. Their words and rulings move the world.</small>
+      <div class="score-grid">
+        <div class="role-box">
+          <h3 class="category-heading">President / VP / Supreme Court</h3>
+          <p><span class="text-truth">Truth:</span> 4.0×</p>
+          <p><span class="text-reliability">Reliability:</span> 4.0×</p>
+          <p><span class="text-understanding">Understanding:</span> 5.0×</p>
+          <small>The highest offices hold the highest responsibility. Their words and rulings move the world.</small>
+        </div>
+        <div class="role-box">
+          <h3 class="category-heading">Executives / Federal Politicians</h3>
+          <p><span class="text-truth">Truth:</span> 3.5×</p>
+          <p><span class="text-reliability">Reliability:</span> 3.5×</p>
+          <p><span class="text-understanding">Understanding:</span> 4.5×</p>
+          <small>Includes Cabinet members, federal legislators, and top officials shaping national policy.</small>
+        </div>
+        <div class="role-box">
+          <h3 class="category-heading">Media Organizations</h3>
+          <p><span class="text-truth">Truth:</span> 3.0×</p>
+          <p><span class="text-reliability">Reliability:</span> 3.0×</p>
+          <p><span class="text-understanding">Understanding:</span> 4.0×</p>
+          <small>Networks and publishers shape public perception and drive national narratives.</small>
+        </div>
+        <div class="role-box">
+          <h3 class="category-heading">Journalists</h3>
+          <p><span class="text-truth">Truth:</span> 2.5×</p>
+          <p><span class="text-reliability">Reliability:</span> 2.5×</p>
+          <p><span class="text-understanding">Understanding:</span> 3.5×</p>
+          <small>Reporters and editors are trusted to verify facts, provide context, and admit when wrong.</small>
+        </div>
+        <div class="role-box">
+          <h3 class="category-heading">Influencers</h3>
+          <p><span class="text-truth">Truth:</span> 1.3×</p>
+          <p><span class="text-reliability">Reliability:</span> 1.3×</p>
+          <p><span class="text-understanding">Understanding:</span> 2.0×</p>
+          <small>They shape opinions without institutional power. Credibility depends on earned trust.</small>
+        </div>
+      </div>
+    </div>
   </div>
-  
-  <div class="role-box">
-    <h3 class="category-heading">Executives / Federal Politicians</h3>
-    <p><span class="text-truth">Truth:</span> 3.5×</p>
-    <p><span class="text-reliability">Reliability:</span> 3.5×</p>
-    <p><span class="text-understanding">Understanding:</span> 4.5×</p>
-    <small>Includes Cabinet members, federal legislators, and top officials shaping national policy.</small>
-  </div>
-  
-  <div class="role-box">
-    <h3 class="category-heading">Media Organizations</h3>
-    <p><span class="text-truth">Truth:</span> 3.0×</p>
-    <p><span class="text-reliability">Reliability:</span> 3.0×</p>
-    <p><span class="text-understanding">Understanding:</span> 4.0×</p>
-    <small>Networks and publishers shape public perception and drive national narratives.</small>
-  </div>
-  
-  <div class="role-box">
-    <h3 class="category-heading">Journalists</h3>
-    <p><span class="text-truth">Truth:</span> 2.5×</p>
-    <p><span class="text-reliability">Reliability:</span> 2.5×</p>
-    <p><span class="text-understanding">Understanding:</span> 3.5×</p>
-    <small>Reporters and editors are trusted to verify facts, provide context, and admit when wrong.</small>
-  </div>
-  
-  <div class="role-box">
-    <h3 class="category-heading">Influencers</h3>
-    <p><span class="text-truth">Truth:</span> 1.3×</p>
-    <p><span class="text-reliability">Reliability:</span> 1.3×</p>
-    <p><span class="text-understanding">Understanding:</span> 2.0×</p>
-    <small>They shape opinions without institutional power. Credibility depends on earned trust.</small>
-  </div>
-</div>
 
-      <script src="scripts/tru-scores.js"></script>
-      <script>
-        document.addEventListener("DOMContentLoaded", () => {
-          if (typeof initElectionPage === "function") {
-            initElectionPage();
-          } else {
-            console.error("❌ initElectionPage not defined.");
-          }
-        });
-      </script>
+  <script src="scripts/tru-scores.js"></script>
+  <script>
+    document.addEventListener("DOMContentLoaded", () => {
+      if (typeof initTRUPage === "function") {
+        initTRUPage();
+      } else {
+        console.error("❌ initTRUPage not defined.");
+      }
+    });
+  </script>
 </body>
 </html>
