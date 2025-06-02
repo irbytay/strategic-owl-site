@@ -1,163 +1,69 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <!-- 🌐 Meta Setup -->
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>The Strategic Owl</title>
-
-  <!-- 🅰 Fonts -->
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&family=Playfair+Display:wght@700&display=swap" rel="stylesheet" />
-
-  <!-- 🎨 Style Block -->
-  <style>
-    /* 🎨 Color Scheme Variables */
-    :root {
-      --navy: #1A1A40;
-      --gold: #FFD700;
-      --truth: #32CD32;
-      --reliability: #3B6CED;
-      --understanding: #D4AF37;
-      --text: #FAFAD2;
-      --dark-gray: #2C3E50;
-    }
-
-    /* 🧼 Reset + Typography */
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-    }
-
-    body {
-      background-color: var(--navy);
-      color: var(--text);
-      font-family: 'Inter', sans-serif;
-      padding: 0;
-      margin: 0;
-    }
-
-    /* 🧭 Top Navigation */
-    nav {
-      background-color: var(--dark-gray);
-      padding: 12px 16px;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-    }
-
-    .nav-title {
-      font-family: 'Playfair Display', serif;
-      font-size: 20px;
-      color: var(--gold);
-    }
-
-    .nav-links a {
-      margin-left: 12px;
-      color: var(--text);
-      text-decoration: none;
-      font-size: 14px;
-    }
-
-    .nav-links a:hover {
-      color: var(--gold);
-    }
-
-    /* 📦 Page Container */
-    #page-content {
-      padding: 16px;
-    }
-
-    /* 📱 Mobile Optimization */
-    @media (min-width: 768px) {
-      .nav-links a {
-        font-size: 16px;
-      }
-    }
-  </style>
-</head>
 <body>
-
-  <!-- 🧭 Navigation -->
+  <!-- Navigation Bar -->
   <nav>
-    <div class="nav-title">The Strategic Owl</div>
-    <div class="nav-links">
-      <a href="#home" onclick="loadPage('testing.html')">Home</a>
-      <a href="#score" onclick="loadPage('score.html')">Scores</a>
-      <a href="#states" onclick="loadPage('states.html')">States</a>
-      <a href="#about" onclick="loadPage('about.html')">About</a>
-    </div>
+    <a href="#home" onclick="loadPage('home.html')">Home</a>
+    <a href="#testing" onclick="loadPage('testing.html')">Testing</a>
   </nav>
 
-  <!-- 🔄 Dynamic Content Placeholder -->
-  <main id="page-content">
-    <!-- Content will be loaded here by SPA script -->
-    <p style="padding: 20px;">Loading...</p>
-  </main>
+  <!-- This is where page content gets loaded -->
+  <div id="page-content"></div>
 
-  <!-- 🧠 SPA Script Logic -->
- <script>
-  const scriptMap = {
-    home: "https://cdn.jsdelivr.net/gh/irbytay/strategic-owl-site@main/scripts/newTRUOWLscript.js",
-    score: "scripts/score-script.js",
-    states: "scripts/states-map.js",
-    about: null // no script needed
-  };
+  <!-- Your SPA script loader -->
+  <script>
+    const scriptMap = {
+      home: null,
+      testing: "https://cdn.jsdelivr.net/gh/irbytay/strategic-owl-site@main/scripts/newTRUOWLscript.js"
+    };
 
-  function loadPage(page, push = true) {
-    fetch(page)
-      .then(res => {
-        if (!res.ok) throw new Error(`Failed to load ${page}`);
-        return res.text();
-      })
-      .then(html => {
-        const content = document.getElementById("page-content");
-        const temp = document.createElement("div");
-        temp.innerHTML = html;
+    function loadPage(page, push = true) {
+      fetch(page)
+        .then(res => {
+          if (!res.ok) throw new Error(`Failed to load ${page}`);
+          return res.text();
+        })
+        .then(html => {
+          const content = document.getElementById("page-content");
+          const temp = document.createElement("div");
+          temp.innerHTML = html;
 
-        // Strip inline scripts from loaded HTML
-        const inlineScripts = Array.from(temp.querySelectorAll("script"));
-        inlineScripts.forEach(script => script.remove());
-        content.innerHTML = temp.innerHTML;
+          // Strip inline scripts
+          const inlineScripts = Array.from(temp.querySelectorAll("script"));
+          inlineScripts.forEach(script => script.remove());
+          content.innerHTML = temp.innerHTML;
 
-        // Re-run inline scripts
-        inlineScripts.forEach(oldScript => {
-          const newScript = document.createElement("script");
-          if (oldScript.src) {
-            newScript.src = oldScript.src;
-          } else {
-            newScript.textContent = oldScript.textContent;
+          // Re-run inline scripts
+          inlineScripts.forEach(oldScript => {
+            const newScript = document.createElement("script");
+            if (oldScript.src) newScript.src = oldScript.src;
+            else newScript.textContent = oldScript.textContent;
+            document.body.appendChild(newScript);
+          });
+
+          // Load external script from map
+          const route = page.replace(".html", "");
+          const extraScript = scriptMap[route];
+          if (extraScript) {
+            const s = document.createElement("script");
+            s.src = extraScript;
+            s.defer = true;
+            document.body.appendChild(s);
           }
-          document.body.appendChild(newScript);
+
+          if (push) history.pushState({ page }, "", "#" + page);
+        })
+        .catch(err => {
+          document.getElementById("page-content").innerHTML = "<p>Error loading content.</p>";
+          console.error(err);
         });
+    }
 
-        // Load external script if defined
-        const route = page.replace(".html", "");
-        const extraScript = scriptMap[route];
-        if (extraScript) {
-          const s = document.createElement("script");
-          s.src = extraScript;
-          s.defer = true;
-          document.body.appendChild(s);
-        }
+    window.addEventListener("load", () => {
+      const hash = window.location.hash.slice(1).replace(".html", "") || "home";
+      loadPage(`${hash}.html`, false);
+    });
 
-        if (push) history.pushState({ page }, "", "#" + page);
-      })
-      .catch(err => {
-        document.getElementById("page-content").innerHTML = "<p>Error loading content.</p>";
-        console.error(err);
-      });
-  }
-
-  window.addEventListener("load", () => {
-    const hash = window.location.hash.slice(1).replace(".html", "") || "home";
-    loadPage(`${hash}.html`, false);
-  });
-
-  window.addEventListener("popstate", e => {
-    if (e.state?.page) loadPage(e.state.page, false);
-  });
-</script>
-
+    window.addEventListener("popstate", e => {
+      if (e.state?.page) loadPage(e.state.page, false);
+    });
+  </script>
 </body>
-</html>
