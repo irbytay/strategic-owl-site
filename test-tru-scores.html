@@ -386,13 +386,13 @@
 
       <script src="scripts/tru-scores.js"></script>
       <script>
-        document.addEventListener("DOMContentLoaded", () => {
-          if (typeof initElectionPage === "function") {
-            initElectionPage();
-          } else {
-            console.error("❌ initElectionPage not defined.");
-          }
-        });
-      </script>
+  document.addEventListener("DOMContentLoaded", () => {
+    if (typeof initTRUPage === "function") {
+      initTRUPage();
+    } else {
+      console.error("❌ initTRUPage not defined.");
+    }
+  });
+</script>
 </body>
 </html>
