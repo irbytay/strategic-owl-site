@@ -26,14 +26,12 @@
       --shadow: rgba(0, 0, 0, 0.4);
     }
 
-    /* 🔄 Reset */
     * {
       margin: 0;
       padding: 0;
       box-sizing: border-box;
     }
 
-    /* 📄 Universal Base Styling */
     body {
       background-color: var(--background);
       color: var(--text);
@@ -42,7 +40,6 @@
       text-align: center;
     }
 
-    /* 🧭 Sticky Navigation */
     nav {
       background-color: var(--highlight);
       color: var(--text);
@@ -85,12 +82,12 @@
       color: var(--text-muted);
     }
 
-    /* 📱 Hamburger (Three-Bar) Menu Icon */
     .hamburger {
       display: none;
       flex-direction: column;
       cursor: pointer;
       gap: 5px;
+      margin-left: auto;
     }
 
     .hamburger div {
@@ -100,12 +97,10 @@
       border-radius: 2px;
     }
 
-    /* 🔽 Main Content Container */
     main {
       padding: 24px;
     }
 
-    /* 📊 T.R.U. OWL Score Bars */
     .divider-bar {
       display: flex;
       justify-content: space-between;
@@ -139,8 +134,7 @@
       text-align: center;
     }
 
-    /* 📱 Responsive Mobile Nav Behavior */
-    @media (max-width: 600px) {
+    @media (max-width: 768px) {
       .hamburger {
         display: flex;
       }
@@ -148,22 +142,24 @@
       .nav-links {
         display: none;
         flex-direction: row;
+        flex-wrap: wrap;
+        justify-content: center;
         width: 100%;
-        justify-content: space-around;
-        margin-top: 12px;
+        padding-top: 10px;
       }
 
       .nav-links.show {
         display: flex;
       }
 
-      nav {
-        flex-direction: column;
-        align-items: flex-start;
+      .nav-links a {
+        padding: 10px;
+        flex: 1;
+        text-align: center;
       }
 
-      .nav-links a {
-        padding: 8px;
+      nav {
+        flex-wrap: wrap;
       }
     }
   </style>
@@ -172,13 +168,12 @@
 <body>
   <!-- 🧭 Sticky Top Navigation -->
   <nav>
-    <!-- 🔗 Logo Links to Home -->
     <a href="home.html" class="nav-logo">
       <img src="owl_logo_white.png" alt="Owl Logo" onerror="this.style.display='none'" />
       The Strategic Owl
     </a>
 
-    <!-- 🍔 Mobile Hamburger Icon -->
+    <!-- 🍔 Mobile Toggle Icon -->
     <div class="hamburger" onclick="toggleMenu()">
       <div></div>
       <div></div>
@@ -194,12 +189,12 @@
     </div>
   </nav>
 
-  <!-- 📃 Page Body -->
+  <!-- 📃 Main Page Content -->
   <main>
     <h1>Welcome to The Strategic Owl</h1>
     <p>This project is built to restore trust through truth — not tribes.</p>
 
-    <!-- 📊 Truth/Reliability/Understanding Score Bars -->
+    <!-- 📊 Truth/Reliability/Understanding Bars -->
     <section class="tru-bars">
       <div class="divider-bar">
         <div class="truth"></div>
@@ -214,11 +209,10 @@
     </section>
   </main>
 
-  <!-- ⚙️ Script to toggle mobile menu -->
+  <!-- ⚙️ Toggle Menu Script -->
   <script>
     function toggleMenu() {
-      const links = document.getElementById('mobileLinks');
-      links.classList.toggle('show');
+      document.getElementById('mobileLinks').classList.toggle('show');
     }
   </script>
 </body>
