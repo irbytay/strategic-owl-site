@@ -155,30 +155,41 @@
   <div class="container">
     <h1>Legal Disclosure</h1>
     <p>This site is protected by the First Amendment. By continuing, you agree that this platform exists to seek and share truth—not to protect feelings or parties.</p>
-    <button onclick="handleAgreement()">Enter the OWL System</button>
+
+    <!-- Button Option -->
+    <button id="agree-button">Enter the OWL System</button>
+
     <small>Your click will be remembered for 30 days.</small>
   </div>
 
+  <!-- Hidden Form -->
   <form id="agreement-form" action="https://formspree.io/f/mwpbekge" method="POST" style="display: none;">
-  <input type="hidden" name="agreement" value="User agreed to disclosure" />
-</form>
-  <a href="#" id="enter-link">Enter Site</a>
+    <input type="hidden" name="agreement" value="User agreed to disclosure" />
+  </form>
 
   <script>
-  document.getElementById('agree-button').addEventListener('click', function () {
-    // Optional: Save agreement locally for 30 days
-    const now = new Date();
-    const expiry = new Date(now.getTime() + 30 * 24 * 60 * 60 * 1000); // 30 days
-    localStorage.setItem('agreedToDisclosure', expiry.toISOString());
+    function handleAgreementClick() {
+      const now = new Date();
+      const expiry = new Date(now.getTime() + 30 * 24 * 60 * 60 * 1000); // 30 days
+      localStorage.setItem('agreedToDisclosure', expiry.toISOString());
 
-    // Submit hidden form to Formspree
-    document.getElementById('agreement-form').submit();
+      document.getElementById('agreement-form').submit();
 
-    // Optional: Redirect after submission
-    setTimeout(() => {
-      window.location.href = "about.html"; // your main site or page
-    }, 300);
-  });
-</script>
+      setTimeout(() => {
+        window.location.href = "about.html"; // change to your actual page
+      }, 300);
+    }
+
+    document.getElementById('agree-button').addEventListener('click', function (e) {
+      e.preventDefault();
+      handleAgreementClick();
+    });
+
+    document.getElementById('enter-link').addEventListener('click', function (e) {
+      e.preventDefault();
+      handleAgreementClick();
+    });
+  </script>
+</body>
 </body>
 </html>
