@@ -5,6 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>T.R.U. OWL Viewer</title>
 
+  <!-- Fonts -->
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet" />
 
   <style>
@@ -15,14 +16,12 @@
       padding: 20px;
     }
 
-    .positive-score {
-      color: #4FDBA6;
-      font-weight: bold;
-    }
-
-    .negative-score {
-      color: #FF6B6B;
-      font-weight: bold;
+    select {
+      padding: 8px;
+      margin-right: 10px;
+      background-color: #112240;
+      color: white;
+      border: 1px solid #444;
     }
 
     #score-table {
@@ -37,8 +36,53 @@
       text-align: center;
     }
 
+    .text-truth {
+      color: #28A745;
+      font-weight: bold;
+    }
+
+    .text-reliability {
+      color: #3B6CED;
+      font-weight: bold;
+    }
+
+    .text-understanding {
+      color: #D4AF37;
+      font-weight: bold;
+    }
+
     .total-score {
       background-color: #1A2B4C;
+    }
+
+    .positive-score {
+      color: #4FDBA6;
+      font-weight: bold;
+    }
+
+    .negative-score {
+      color: #FF6B6B;
+      font-weight: bold;
+    }
+
+    .score-bar {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .bar-indicator {
+      width: 10px;
+      height: 20px;
+      border-radius: 3px;
+    }
+
+    .bar-green {
+      background-color: #4FDBA6;
+    }
+
+    .bar-red {
+      background-color: #FF6B6B;
     }
   </style>
 </head>
@@ -174,30 +218,35 @@
       const understandingFinal = understandingRaw * multiplier.understanding;
 
       const scores = [
-        { label: "Truth", value: truthFinal, comment: commentTruth },
-        { label: "Reliability", value: reliabilityFinal, comment: commentReliability },
-        { label: "Understanding", value: understandingFinal, comment: commentUnderstanding },
+        { label: "Truth", value: truthFinal, raw: truthRaw, mult: multiplier.truth, comment: commentTruth, className: "text-truth" },
+        { label: "Reliability", value: reliabilityFinal, raw: reliabilityRaw, mult: multiplier.reliability, comment: commentReliability, className: "text-reliability" },
+        { label: "Understanding", value: understandingFinal, raw: understandingRaw, mult: multiplier.understanding, comment: commentUnderstanding, className: "text-understanding" },
       ];
 
       let total = 0;
-
-      scores.forEach(({ label, value, comment }) => {
-        const scoreClass = value >= 0 ? "positive-score" : "negative-score";
+      scores.forEach(({ label, value, raw, mult, comment, className }) => {
         const tr = document.createElement("tr");
         tr.innerHTML = `
-          <td>${label}</td>
-          <td class="${scoreClass}">${value >= 0 ? "+" : ""}${value.toFixed(0)}</td>
+          <td class="${className}">${label}</td>
+          <td class="${className}">${value >= 0 ? "+" : ""}${value.toFixed(0)}</td>
           <td>${comment}</td>`;
         tbody.appendChild(tr);
         total += value;
       });
 
-      const totalScoreClass = total >= 0 ? "positive-score" : "negative-score";
+      const barClass = total >= 0 ? "bar-green" : "bar-red";
       const totalRow = document.createElement("tr");
       totalRow.innerHTML = `
         <td class="total-score"><strong>Total Score</strong></td>
-        <td class="total-score ${totalScoreClass}"><strong>${total >= 0 ? "+" : ""}${total.toFixed(0)}</strong></td>
-        <td class="total-score"><strong>${totalScoreComment}</strong></td>`;
+        <td class="total-score ${total >= 0 ? "positive-score" : "negative-score"}">
+          <strong>${total >= 0 ? "+" : ""}${total.toFixed(0)}</strong>
+        </td>
+        <td class="total-score">
+          <div class="score-bar">
+            <div class="bar-indicator ${barClass}"></div>
+            <span style="color: white;"><strong>${totalScoreComment}</strong></span>
+          </div>
+        </td>`;
       tbody.appendChild(totalRow);
 
       table.style.display = "table";
@@ -211,7 +260,7 @@
       const data = await fetchTRUData();
       populateDropdowns(data);
 
-      document.getElementById("role-filter").addEventListener("change", (e) => {
+      document.getElementById("role-filter").addEventListener("change", e => {
         updatePersonDropdown(e.target.value);
       });
 
