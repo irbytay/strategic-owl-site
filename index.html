@@ -176,26 +176,40 @@
     <small style="display: block; margin-top: 8px;">This moment will be remembered for 30 days.</small>
   </div>
 
-  <form id="agreement-form" action="https://formspree.io/f/mwpbekge" method="POST" style="display: none;">
-    <input type="hidden" name="agreement" value="User agreed to Strategic Owl legal terms and joined the OWL Watch." />
-    <input type="hidden" id="submitted-initials" name="submitted-initials" value="" />
-  </form>
+ <form id="agreement-form" style="display: none;">
+  <input type="hidden" name="agreement" value="User agreed to Strategic Owl legal terms and joined the OWL Watch." />
+  <input type="hidden" id="submitted-initials" name="submitted-initials" value="" />
+</form>
 
-  <script>
-    function handleAgreement() {
-      const initials = document.getElementById('initials').value.trim() || "Anonymous";
-      document.getElementById('submitted-initials').value = initials;
+<script>
+  async function handleAgreement() {
+    const initials = document.getElementById('initials').value.trim() || "Anonymous";
+    document.getElementById('submitted-initials').value = initials;
 
-      const now = new Date();
-      const expiry = new Date(now.getTime() + 30 * 24 * 60 * 60 * 1000);
-      localStorage.setItem('agreedToDisclosure', expiry.toISOString());
+    // Save consent in localStorage for 30 days
+    const now = new Date();
+    const expiry = new Date(now.getTime() + 30 * 24 * 60 * 60 * 1000);
+    localStorage.setItem('agreedToDisclosure', expiry.toISOString());
 
-      document.getElementById('agreement-form').submit();
+    // Gather data
+    const formData = new FormData(document.getElementById('agreement-form'));
 
-      setTimeout(() => {
-        window.location.href = "about.html"; // Adjust to your desired landing page
-      }, 300);
+    try {
+      await fetch("https://formspree.io/f/mwpbekge", {
+        method: "POST",
+        body: formData,
+        headers: {
+          Accept: "application/json"
+        }
+      });
+
+      // Redirect only after successful submission
+      window.location.href = "about.html"; // 🔁 Your desired redirect
+    } catch (err) {
+      alert("There was a problem submitting. Please try again later.");
+      console.error("Form submission error:", err);
     }
-  </script>
+  }
+</script>
 </body>
 </html>
