@@ -5,7 +5,6 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>The Strategic Owl | Template</title>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&family=Playfair+Display:wght@700&display=swap" rel="stylesheet" />
-
   <style>
     :root {
       --background: #0D1B2A;
@@ -85,22 +84,26 @@
       cursor: pointer;
     }
 
-    /* 📱 Mobile Nav */
     @media (max-width: 600px) {
+      nav {
+        flex-wrap: wrap;
+      }
+
       .nav-links {
         display: none;
-        flex-direction: row;
-        justify-content: space-around;
+        flex-direction: column;
         width: 100%;
         background-color: var(--highlight);
-        position: absolute;
-        top: 60px;
-        left: 0;
         padding: 10px 0;
       }
 
       .nav-links.show {
         display: flex;
+      }
+
+      .nav-links a {
+        padding: 12px 20px;
+        border-top: 1px solid var(--border);
       }
 
       .nav-toggle {
@@ -174,8 +177,8 @@
     }
   </style>
 </head>
-
 <body>
+
   <!-- 🧭 Navigation -->
   <nav>
     <a href="home.html" class="nav-logo">
@@ -215,5 +218,6 @@
   <div class="main-placeholder">
     <p>This is your Strategic Owl template. Add your custom content below this line.</p>
   </div>
+
 </body>
 </html>
