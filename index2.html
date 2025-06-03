@@ -159,25 +159,25 @@
     <small>Your click will be remembered for 30 days.</small>
   </div>
 
-  <form id="agreementForm" action="https://formspree.io/f/mwpbekge" method="POST" style="display: none;">
-    <input type="hidden" name="event" value="User agreed to Strategic Owl Disclosure">
-    <input type="hidden" name="timestamp" id="timestampField">
-  </form>
+  <form id="agreement-form" action="https://formspree.io/f/mwpbekge" method="POST" style="display: none;">
+  <input type="hidden" name="agreement" value="User agreed to disclosure" />
+</form>
 
   <script>
-    function handleAgreement() {
-      const expiry = new Date();
-      expiry.setDate(expiry.getDate() + 30);
-      localStorage.setItem('strategicOwlConsent', expiry.toISOString());
-      document.getElementById('timestampField').value = new Date().toISOString();
-      document.getElementById('agreementForm').submit();
-      window.location.href = "about.html"; // 🔁 update this as needed
-    }
+  document.getElementById('agree-button').addEventListener('click', function () {
+    // Optional: Save agreement locally for 30 days
+    const now = new Date();
+    const expiry = new Date(now.getTime() + 30 * 24 * 60 * 60 * 1000); // 30 days
+    localStorage.setItem('agreedToDisclosure', expiry.toISOString());
 
-    const consent = localStorage.getItem('strategicOwlConsent');
-    if (consent && new Date(consent) > new Date()) {
-      window.location.href = "about.html"; // 🔁 auto-forward if already agreed
-    }
-  </script>
+    // Submit hidden form to Formspree
+    document.getElementById('agreement-form').submit();
+
+    // Optional: Redirect after submission
+    setTimeout(() => {
+      window.location.href = "TRUOWL.html"; // your main site or page
+    }, 300);
+  });
+</script>
 </body>
 </html>
