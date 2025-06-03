@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>The Strategic Owl – Template</title>
 
-  <!-- Fonts -->
+  <!-- 🖋 Fonts: Inter for body, Playfair for logo text -->
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&family=Playfair+Display:wght@500;700&display=swap" rel="stylesheet" />
 
   <style>
@@ -26,7 +26,7 @@
       --shadow: rgba(0, 0, 0, 0.4);
     }
 
-    /* Reset */
+    /* 🔧 Reset & Base Styles */
     * {
       margin: 0;
       padding: 0;
@@ -80,12 +80,12 @@
       color: var(--text-muted);
     }
 
-    /* Main page content */
+    /* 📦 Main Content Area */
     main {
       padding: 24px;
     }
 
-    /* 📱 Mobile adjustments */
+    /* 📱 Mobile-first Design */
     @media (max-width: 600px) {
       nav {
         flex-direction: column;
@@ -106,13 +106,15 @@
 </head>
 
 <body>
-  <!-- 🧭 Navigation -->
+  <!-- 🧭 Top Navigation Bar -->
   <nav>
+    <!-- 🦉 Logo with fallback -->
     <a href="TRUOWL.html" class="nav-logo">
       <img src="owl_logo_white.png" alt="Owl Logo" onerror="this.style.display='none'" />
       The Strategic Owl
     </a>
 
+    <!-- 🔗 Navigation Links -->
     <div class="nav-links">
       <a href="home.html">Home</a>
       <a href="base3.html">T.R.U. OWL</a>
@@ -121,9 +123,8 @@
     </div>
   </nav>
 
-  <!-- 🔽 Main Content Area -->
+  <!-- 🔽 Main Content Container -->
   <main>
-    <!-- Replace this with your page content -->
     <h1>Welcome to the Strategic Owl Template</h1>
     <p>This is a reusable template page. Add your content here.</p>
   </main>
