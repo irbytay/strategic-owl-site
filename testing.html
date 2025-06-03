@@ -3,11 +3,11 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>The Strategic Owl</title>
+  <title>The Strategic Owl | Template</title>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&family=Playfair+Display:wght@700&display=swap" rel="stylesheet" />
 
   <style>
-    /* 🌌 Color Variables */
+    /* 🎨 Theme Colors */
     :root {
       --background: #0D1B2A;
       --surface: #112240;
@@ -25,6 +25,7 @@
       --shadow: rgba(0, 0, 0, 0.4);
     }
 
+    /* 🔧 Reset + Typography */
     * {
       margin: 0;
       padding: 0;
@@ -33,17 +34,18 @@
 
     body {
       background-color: var(--background);
-      font-family: 'Inter', sans-serif;
       color: var(--text);
+      font-family: 'Inter', sans-serif;
     }
 
-    /* 🔝 Nav */
+    /* 🧭 Navigation Bar */
     nav {
       background-color: var(--highlight);
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
+      width: 100%;
       height: 60px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
       padding: 0 24px;
       box-shadow: 0 2px 4px var(--shadow);
     }
@@ -52,6 +54,7 @@
       font-family: 'Playfair Display', serif;
       font-size: 1.5rem;
       color: var(--text);
+      line-height: 60px;
     }
 
     .nav-links {
@@ -65,9 +68,18 @@
       color: var(--text);
       font-weight: 600;
       font-size: 1rem;
+      line-height: 60px;
     }
 
-    /* 🎯 Section Divider */
+    /* 📚 Headings */
+    h1, h2 {
+      font-family: 'Playfair Display', serif;
+      text-align: center;
+      color: var(--heading);
+      margin: 32px 0 20px;
+    }
+
+    /* 🔷 TRU Indicator Section */
     .divider-section {
       display: flex;
       flex-direction: column;
@@ -79,7 +91,7 @@
       display: flex;
       justify-content: space-between;
       gap: 12px;
-      width: 340px;
+      width: 340px; /* 108px × 3 + 12px × 2 gaps */
     }
 
     .divider-bar div {
@@ -92,9 +104,11 @@
     .truth {
       background-color: var(--truth);
     }
+
     .reliability {
       background-color: var(--reliability);
     }
+
     .understanding {
       background-color: var(--understanding);
     }
@@ -114,46 +128,39 @@
       color: var(--text-muted);
     }
 
-    /* 🧾 Main Content */
-    main {
-      padding: 40px 20px;
+    /* 💬 Placeholder Content Area */
+    .main-placeholder {
+      max-width: 800px;
+      margin: 40px auto;
       text-align: center;
-    }
-
-    h1 {
-      font-family: 'Playfair Display', serif;
-      font-size: 2rem;
-      color: var(--heading);
-      margin-bottom: 20px;
-    }
-
-    p {
-      font-size: 1.05rem;
-      line-height: 1.6;
-      max-width: 700px;
-      margin: 0 auto;
+      padding: 0 20px;
+      color: var(--text-muted);
+      font-size: 1rem;
     }
   </style>
 </head>
 
 <body>
-  <!-- 🧭 Navigation -->
+  <!-- 🔝 Navigation Menu -->
   <nav>
     <div class="nav-title">The Strategic Owl</div>
     <div class="nav-links">
       <a href="#">Home</a>
-      <a href="#">T.R.U. OWL</a>
-      <a href="#">Security</a>
-      <a href="#">Contact</a>
+      <a href="#">Scores</a>
+      <a href="#">States</a>
+      <a href="#">About</a>
     </div>
   </nav>
 
-  <!-- 🟩 Visual TRU Legend -->
+  <!-- 🧠 Welcome Headline (Optional) -->
+  <h1>Welcome to The Strategic Owl</h1>
+
+  <!-- 🔹 Visual Legend Divider with Labels -->
   <div class="divider-section">
     <div class="divider-bar">
-      <div class="truth"></div>
-      <div class="reliability"></div>
-      <div class="understanding"></div>
+      <div class="bar truth"></div>
+      <div class="bar reliability"></div>
+      <div class="bar understanding"></div>
     </div>
     <div class="divider-labels">
       <span>Truth</span>
@@ -162,13 +169,9 @@
     </div>
   </div>
 
-  <!-- 📝 Content -->
-  <main>
-    <h1>Truth. Measured.</h1>
-    <p>
-      This isn’t about which side you’re on. It’s about who’s telling the truth.
-      The T.R.U. OWL Score is your nonpartisan, strategic index for measuring credibility.
-    </p>
-  </main>
+  <!-- 📌 Placeholder Main Content -->
+  <div class="main-placeholder">
+    <p>This is a clean, reusable template. Add your HTML content here.</p>
+  </div>
 </body>
 </html>
