@@ -266,28 +266,30 @@
   <select id="role-filter"></select>
 </div>
 
-<div class="dropdown-wrapper">
-  <label for="person-select">Select a Profile:</label>
-  <select id="person-select"></select>
-</div>
-    <table id="score-table" style="display:none;">
-      <thead>
-        <tr>
-          <th>Category</th>
-          <th>Score</th>
-          <th>Explanation</th>
-        </tr>
-      </thead>
-      <tbody id="score-body"></tbody>
-    </table>
-
-    <div id="total-score-box" style="margin-top: 20px; display:none;">
-      <div class="score-bar" style="margin-top: 16px;">
-        <div id="indicator-bar" class="bar-indicator"></div>
-        <span id="total-score-comment" style="color: white;"></span>
-      </div>
-    </div>
+<div class="dropdown-container" style="display: flex; flex-direction: column; align-items: center; gap: 20px; margin-top: 30px;">
+  <div class="dropdown-wrapper" style="text-align: left;">
+    <label for="person-select" style="display: block; margin-bottom: 6px; font-weight: 600;">Select a Profile:</label>
+    <select id="person-select"></select>
   </div>
+</div>
+
+<table id="score-table" style="display:none;">
+  <thead>
+    <tr>
+      <th>Category</th>
+      <th>Score</th>
+      <th>Explanation</th>
+    </tr>
+  </thead>
+  <tbody id="score-body"></tbody>
+</table>
+
+<div id="total-score-box" style="margin-top: 20px; display:none;">
+  <div class="score-bar" style="margin-top: 16px;">
+    <div id="indicator-bar" class="bar-indicator"></div>
+    <span id="total-score-comment" style="color: white;"></span>
+  </div>
+</div>
 
   <script>
   const TRU_MULTIPLIERS = {
