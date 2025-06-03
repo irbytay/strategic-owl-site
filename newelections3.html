@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
   <title>Strategic Owl | TRU OWL Viewer</title>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&family=Playfair+Display:wght@600;700&display=swap" rel="stylesheet" />
 
@@ -250,6 +250,8 @@
     background-color: var(--bar-green);
   }
 </style>
+</head>
+  <body>
 
 <nav class="top-nav">
 <a href="about.html" class="nav-logo">
@@ -299,7 +301,6 @@
     <tbody id="score-body"></tbody>
   </table>
 </div>
-  </div>
 
      <!-- 🎯 Divider -->
     <section class="divider-section">
@@ -427,12 +428,6 @@
 
     window.addEventListener("DOMContentLoaded", initElectionPage);
   </script>
-  <script>
-  function toggleMenu() {
-    const menu = document.getElementById("navMenu");
-    menu.classList.toggle("show");
-  }
-</script>
   <script>
   function toggleMenu() {
     document.getElementById("navMenu").classList.toggle("show");
