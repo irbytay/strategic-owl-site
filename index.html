@@ -259,6 +259,51 @@
 .match-nav-link:hover {
   color: var(--understanding);
 }
+    .important-link {
+  color: var(--understanding);
+  font-weight: 700;
+  text-decoration: underline;
+  text-underline-offset: 4px;
+  position: relative;
+  transition: color 0.3s ease, text-shadow 0.3s ease;
+}
+
+.important-link::before {
+  content: '→ ';
+  display: inline-block;
+  margin-right: 6px;
+  transition: transform 0.3s ease;
+}
+
+.important-link:hover::before {
+  transform: translateX(4px);
+}
+
+.important-link:hover {
+  text-shadow: 0 0 8px var(--understanding);
+  color: var(--truth); /* Optional: changes color slightly on hover */
+}.important-link {
+  color: var(--understanding);
+  font-weight: 600;
+  text-decoration: none;
+  position: relative;
+  transition: all 0.3s ease;
+}
+
+.important-link::after {
+  content: '→';
+  margin-left: 6px;
+  transition: transform 0.3s ease;
+  display: inline-block;
+}
+
+.important-link:hover::after {
+  transform: translateX(4px);
+}
+
+.important-link:hover {
+  text-shadow: 0 0 6px var(--understanding);
+}
 </style>
 
 <nav class="top-nav">
@@ -276,10 +321,10 @@
 </nav>
   <div class="container">
     <h1>About TRU OWL</h1>
-    <p>If you've lost trust in the system, you're not wrong. That’s by design. Now let's build one that earns it back.</p>
-    <p>
+<p>If you've lost trust in the system, you're not wrong. That’s by design. Now let's build one that earns it back.</p>
+<p>
   To see how it works in action, check out 
-  <a href="about.html" class="match-nav-link">T.R.U. Owl</a> — 
+  <a href="TRUOWL3.html" class="important-link">T.R.U. Owl</a> — 
   a tool that scores public figures based on 
   <span class="text-truth">truth</span>, 
   <span class="text-reliability">reliability</span>, and 
