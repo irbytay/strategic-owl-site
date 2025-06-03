@@ -215,8 +215,8 @@
 
   <!-- 📄 Page Content -->
   <div id="page-content">
-    <h1>Welcome</h1>
-    <p>This is the mobile-first version of The Strategic Owl.</p>
+    <h1>Your Voice, Our Radar</h1>
+    <p>Whether it’s feedback, a correction, or a name we haven’t scored yet — your input keeps this system sharp.</p>
 
     <!-- 🎯 TRU Divider Bars -->
     <section class="divider-section">
@@ -232,7 +232,28 @@
       </div>
     </section>
   </div>
+<div class="link-bar" style="margin-bottom: 40px;">
+    <a href="https://strategicowl.substack.com/" target="_blank" style="margin: 8px 12px; color: #F5F5F5; text-decoration: none; font-weight: 600; border-bottom: 2px solid #3B6CED; padding-bottom: 2px;">Substack</a>
+    <a href="https://www.facebook.com/the.strategic.owl" target="_blank" style="margin: 8px 12px; color: #F5F5F5; text-decoration: none; font-weight: 600; border-bottom: 2px solid #3B6CED; padding-bottom: 2px;">Facebook</a>
+    <a href="https://bsky.app/profile/thestrategicowl.bsky.social" target="_blank" style="margin: 8px 12px; color: #F5F5F5; text-decoration: none; font-weight: 600; border-bottom: 2px solid #3B6CED; padding-bottom: 2px;">BlueSky</a>
+    <a href="mailto:team@thestrategicowl.com" style="margin: 8px 12px; color: #F5F5F5; text-decoration: none; font-weight: 600; border-bottom: 2px solid #3B6CED; padding-bottom: 2px;">Email Us</a>
+  </div>
 
+  <form action="https://formspree.io/f/mwpodgrw" method="POST" style="background-color: #2F2F5F; padding: 28px; border-radius: 12px; text-align: left;">
+    <h2 style="font-family: 'Playfair Display', serif; font-size: 1.6em; margin-bottom: 20px; text-align: center;">Request a Credibility Score</h2>
+
+    <label for="name" style="display: block; margin-top: 14px; font-weight: bold;">Your Name (Alias)</label>
+    <input type="text" id="name" name="name" required style="width: 100%; padding: 10px; margin-top: 6px; margin-bottom: 20px; border-radius: 6px; border: none; font-size: 1em;" />
+
+    <label for="email" style="display: block; margin-top: 14px; font-weight: bold;">Your Email (Optional)</label>
+    <input type="email" id="email" name="_replyto" style="width: 100%; padding: 10px; margin-top: 6px; margin-bottom: 20px; border-radius: 6px; border: none; font-size: 1em;" />
+
+    <label for="request" style="display: block; margin-top: 14px; font-weight: bold;">Who would you like us to score?</label>
+    <textarea id="request" name="message" rows="5" placeholder="Include any context or links that help explain your request." required style="width: 100%; padding: 10px; margin-top: 6px; margin-bottom: 20px; border-radius: 6px; border: none; font-size: 1em;"></textarea>
+
+    <button type="submit" style="background-color: #4CAF50; color: white; border: none; padding: 12px 24px; font-weight: bold; border-radius: 6px; cursor: pointer; font-size: 1em;">Send Request</button>
+  </form>
+</div>
   <!-- 📜 Mobile Nav Script -->
   <script>
     function toggleMobileNav() {
