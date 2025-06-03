@@ -1,11 +1,11 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
+  <meta charset="UTF" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>The Strategic Owl</title>
 
-  <!-- ✅ Only Playfair Display font -->
+  <!-- Font: Only Playfair Display -->
   <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;600;700&display=swap" rel="stylesheet" />
 
   <style>
@@ -72,6 +72,15 @@
       width: 30px;
     }
 
+    .menu-icon {
+      display: none;
+      font-size: 28px;
+      background: none;
+      border: none;
+      color: var(--text);
+      cursor: pointer;
+    }
+
     nav.nav-links {
       display: flex;
       gap: 28px;
@@ -100,9 +109,33 @@
       width: 100%;
     }
 
+    /* 🎯 Mobile Styles */
     @media (max-width: 768px) {
+      .menu-icon {
+        display: block;
+      }
+
       nav.nav-links {
         display: none;
+        position: absolute;
+        top: 64px;
+        left: 0;
+        right: 0;
+        background-color: var(--surface);
+        flex-direction: column;
+        gap: 18px;
+        padding: 20px 0;
+        border-bottom: 2px solid var(--reliability);
+        z-index: 999;
+      }
+
+      nav.nav-links.active {
+        display: flex;
+      }
+
+      nav.nav-links a {
+        font-size: 1.1rem;
+        padding: 10px 0;
       }
     }
 
@@ -171,7 +204,8 @@
       <img src="owl_logo_white.png" alt="Owl Logo" onerror="this.style.display='none';" />
       The Strategic Owl
     </a>
-    <nav class="nav-links">
+    <button class="menu-icon" onclick="toggleMobileNav()">☰</button>
+    <nav id="mainNav" class="nav-links">
       <a href="base.html">T.R.U. OWL</a>
       <a href="newelections.html">Election Security</a>
       <a href="newstatefraud.html">State Fraud</a>
@@ -198,6 +232,13 @@
       </div>
     </section>
   </div>
+
+  <!-- 📜 Mobile Nav Script -->
+  <script>
+    function toggleMobileNav() {
+      document.getElementById('mainNav')?.classList.toggle('active');
+    }
+  </script>
 
 </body>
 </html>
