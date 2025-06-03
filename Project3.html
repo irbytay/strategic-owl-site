@@ -2,10 +2,9 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>The Strategic Owl</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <title>The Strategic Owl | Mobile First</title>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&family=Playfair+Display:wght@700&display=swap" rel="stylesheet" />
-
   <style>
     :root {
       --background: #0D1B2A;
@@ -17,121 +16,95 @@
       --truth: #28A745;
       --reliability: #3B6CED;
       --understanding: #D4AF37;
-      --border: #2F2F5F;
-      --shadow: rgba(0, 0, 0, 0.4);
+      --shadow: rgba(0, 0, 0, 0.3);
     }
 
     * {
-      margin: 0;
-      padding: 0;
       box-sizing: border-box;
     }
 
     body {
+      margin: 0;
+      font-family: 'Inter', sans-serif;
       background-color: var(--background);
       color: var(--text);
-      font-family: 'Inter', sans-serif;
     }
 
-    /* Navigation */
-    nav {
+    header {
       background-color: var(--highlight);
       display: flex;
-      align-items: center;
       justify-content: space-between;
-      padding: 12px 16px;
-      box-shadow: 0 2px 4px var(--shadow);
-      position: sticky;
-      top: 0;
+      align-items: center;
+      padding: 14px 20px;
+      position: relative;
       z-index: 1000;
     }
 
-    .nav-left {
+    .nav-logo {
       display: flex;
       align-items: center;
-    }
-
-    .nav-left img {
-      height: 32px;
-      margin-right: 10px;
-    }
-
-    .nav-title {
-      font-family: 'Playfair Display', serif;
-      font-size: 1.4rem;
+      gap: 8px;
       color: var(--text);
-      white-space: nowrap;
+      text-decoration: none;
+      font-family: 'Playfair Display', serif;
+      font-size: 1.1rem;
     }
 
-    .nav-toggle {
+    .nav-logo img {
+      height: 28px;
+      width: 28px;
+    }
+
+    .menu-icon {
       background: none;
       border: none;
       color: var(--text);
-      font-size: 1.8rem;
+      font-size: 24px;
       cursor: pointer;
+    }
+
+    .mobile-nav {
+      position: absolute;
+      top: 60px;
+      left: 0;
+      background-color: var(--surface);
+      width: 100%;
+      max-width: 260px;
+      padding: 12px 20px;
       display: none;
+      flex-direction: column;
+      gap: 12px;
+      border-right: 2px solid var(--truth);
+      box-shadow: 2px 0 6px rgba(0,0,0,0.4);
     }
 
-    .nav-links {
+    .mobile-nav.active {
       display: flex;
-      gap: 16px;
     }
 
-    .nav-links a {
+    .mobile-nav a {
       text-decoration: none;
       color: var(--text);
       font-weight: 600;
-      font-size: 1rem;
+      position: relative;
+      padding-bottom: 6px;
     }
 
-    @media (max-width: 700px) {
-  nav {
-    position: relative;
-  }
-
-  .nav-toggle {
-    display: block;
-  }
-
-  .nav-links {
-    display: none;
-    flex-direction: column;
-    position: absolute;
-    top: 60px;
-    left: 0;
-    width: 100%;
-    background-color: var(--highlight);
-    z-index: 999;
-    box-shadow: 0 2px 5px var(--shadow);
-  }
-
-  .nav-links.show {
-    display: flex;
-  }
-
-  .nav-links a {
-    padding: 12px 20px;
-    border-top: 1px solid var(--border);
-  }
-}
-
-    h1, h2 {
-      font-family: 'Playfair Display', serif;
-      text-align: center;
-      color: var(--heading);
-      margin: 32px 0 20px;
-      padding: 0 16px;
+    .mobile-nav a::after {
+      content: "";
+      position: absolute;
+      left: 0;
+      bottom: 0;
+      height: 2px;
+      width: 100%;
+      background-color: var(--truth);
     }
 
-    .subtext {
-      text-align: center;
-      color: var(--text-muted);
-      font-size: 1rem;
-      margin-bottom: 28px;
-      padding: 0 16px;
+    #page-content {
+      padding: 20px;
     }
 
-    /* TRU Bars */
+    /* 🎨 TRU Divider Bars */
     .divider-section {
       display: flex;
       flex-direction: column;
@@ -143,12 +116,11 @@
       display: flex;
       justify-content: space-between;
       gap: 12px;
-      width: 90%;
-      max-width: 340px;
+      width: 340px;
     }
 
     .divider-bar div {
-      flex: 1;
+      width: 108px;
       height: 6px;
       border-radius: 3px;
       box-shadow: 0 0 4px var(--shadow);
@@ -162,71 +134,84 @@
       display: flex;
       justify-content: space-between;
       gap: 12px;
-      width: 90%;
-      max-width: 340px;
+      width: 340px;
       margin-top: 8px;
     }
 
     .divider-labels span {
-      flex: 1;
+      width: 108px;
       text-align: center;
       font-size: 0.85rem;
       color: var(--text-muted);
     }
 
-    .main-placeholder {
-      max-width: 800px;
-      margin: 40px auto;
-      text-align: center;
-      padding: 0 20px;
-      color: var(--text-muted);
-      font-size: 1rem;
+    @media (min-width: 768px) {
+      .menu-icon {
+        display: none;
+      }
+
+      .mobile-nav {
+        display: flex !important;
+        position: static;
+        flex-direction: row;
+        background: none;
+        border: none;
+        box-shadow: none;
+        max-width: none;
+        padding: 0;
+        gap: 24px;
+      }
+
+      .mobile-nav a::after {
+        background-color: transparent;
+        border-bottom: 2px solid var(--truth);
+        bottom: -6px;
+      }
     }
   </style>
 </head>
-
 <body>
-  <!-- Navigation -->
-  <nav>
-    <div class="nav-left">
-      <img src="logo.png" alt="Logo" />
-      <div class="nav-title">The Strategic Owl</div>
-    </div>
-    <button class="nav-toggle" onclick="document.querySelector('.nav-links').classList.toggle('show')">☰</button>
-    <div class="nav-links">
-      <a href="home.html">Home</a>
-      <a href="base3.html">Scores</a>
-      <a href="newelections3.html">States</a>
-      <a href="newcontact3.html">About</a>
-    </div>
+
+  <header>
+    <a href="home.html" class="nav-logo">
+      <img src="owl_logo_white.png" alt="Owl Logo" onerror="this.style.display='none';" />
+      The Strategic Owl
+    </a>
+    <button class="menu-icon" onclick="toggleMobileNav()">☰</button>
+  </header>
+
+  <nav id="mobileNav" class="mobile-nav">
+    <a href="base.html">T.R.U. OWL</a>
+    <a href="newelections.html">Election Security</a>
+    <a href="newstatefraud.html">State Fraud</a>
+    <a href="newcontact.html">Contact</a>
   </nav>
 
-  <!-- Page Content -->
-  <h1>Welcome to The Strategic Owl</h1>
-  <p class="subtext">This project is built to restore trust through truth — not tribes.</p>
+  <div id="page-content">
+    <h1>Welcome</h1>
+    <p>This is the mobile-first version of The Strategic Owl.</p>
 
-  <div class="divider-section">
-    <div class="divider-bar">
-      <div class="truth"></div>
-      <div class="reliability"></div>
-      <div class="understanding"></div>
-    </div>
-    <div class="divider-labels">
-      <span>Truth</span>
-      <span>Reliability</span>
-      <span>Understanding</span>
-    </div>
-  </div>
+    <!-- 🎨 Divider Bars -->
+    <section class="divider-section">
+      <div class="divider-bar">
+        <div class="truth"></div>
+        <div class="reliability"></div>
+        <div class="understanding"></div>
+      </div>
+      <div class="divider-labels">
+        <span>Truth</span>
+        <span>Reliability</span>
+        <span>Understanding</span>
+      </div>
+    </section>
 
-  <div class="main-placeholder">
-    <p>This is your Strategic Owl mobile-first template. Add your custom content below this line.</p>
   </div>
 
   <script>
-    // Toggle mobile menu
-    document.querySelector('.nav-toggle').addEventListener('click', () => {
-      document.querySelector('.nav-links').classList.toggle('show');
-    });
+    function toggleMobileNav() {
+      document.getElementById('mobileNav')?.classList.toggle('active');
+    }
   </script>
+
 </body>
 </html>
