@@ -360,6 +360,27 @@
       font-size: 1.1rem;
       padding: 10px 0;
     }
+    .category-truth {
+  color: var(--truth);
+  font-weight: 600;
+}
+
+.category-reliability {
+  color: var(--reliability);
+  font-weight: 600;
+}
+
+.category-understanding {
+  color: var(--understanding);
+  font-weight: 600;
+}
+
+.score-explanation {
+  font-size: 1.05rem;
+  color: var(--text-muted);
+  line-height: 1.6;
+  font-family: 'Playfair Display', serif;
+}
   }
 </style>
 </head>
@@ -423,7 +444,12 @@
         <th scope="col">Explanation</th>
       </tr>
     </thead>
-    <tbody id="score-body"></tbody>
+    <tbody id="score-body">
+             <tr>
+             <td class="category-truth">Truth</td>
+             <td>4.0</td>
+             <td class="score-explanation">Backed by court-verified facts.</td>
+           </tr></tbody>
   </table>
     </div>
   <!-- 📜 Mobile Nav Script -->
