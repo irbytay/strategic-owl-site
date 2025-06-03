@@ -289,11 +289,6 @@
     line-height: 1.6;
     font-family: 'Playfair Display', serif;
   }
-    .explanation-text {
-  color: var(--text-muted);
-  font-size: 1.05rem;
-  line-height: 1.6;
-}
 
   /* 🧱 Mobile Responsive Table */
   @media (max-width: 600px) {
@@ -317,20 +312,6 @@
       padding: 10px 0;
     }
   }
-    .category-truth {
-  color: var(--truth);
-  font-weight: 600;
-}
-
-.category-reliability {
-  color: var(--reliability);
-  font-weight: 600;
-}
-
-.category-understanding {
-  color: var(--understanding);
-  font-weight: 600;
-}
 
   /* 📱 Nav Mobile */
   @media (max-width: 768px) {
@@ -360,27 +341,6 @@
       font-size: 1.1rem;
       padding: 10px 0;
     }
-    .category-truth {
-  color: var(--truth);
-  font-weight: 600;
-}
-
-.category-reliability {
-  color: var(--reliability);
-  font-weight: 600;
-}
-
-.category-understanding {
-  color: var(--understanding);
-  font-weight: 600;
-}
-
-.score-explanation {
-  font-size: 1.05rem;
-  color: var(--text-muted);
-  line-height: 1.6;
-  font-family: 'Playfair Display', serif;
-}
   }
 </style>
 </head>
@@ -434,23 +394,16 @@
   <option value="">-- Choose a name --</option>
 </select>
 
-<!-- 📊 Table now wrapped for visibility control -->
-<div id="score-wrapper" style="display: none;">
-  <table id="score-table">
-    <thead>
-      <tr>
-        <th scope="col">Category</th>
-        <th scope="col">Score</th>
-        <th scope="col">Explanation</th>
-      </tr>
-    </thead>
-    <tbody id="score-body">
-             <tr>
-             <td class="category-truth">Truth</td>
-             <td>4.0</td>
-             <td class="score-explanation">Backed by court-verified facts.</td>
-           </tr></tbody>
-  </table>
+<table id="score-table">
+  <thead>
+  <tr>
+    <th scope="col">Category</th>
+    <th scope="col">Score</th>
+    <th scope="col">Explanation</th>
+  </tr>
+</thead>
+  <tbody id="score-body"></tbody>
+</table>
     </div>
   <!-- 📜 Mobile Nav Script -->
   <script>
