@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>The Strategic Owl</title>
 
-  <!-- Font: Only Playfair Display -->
+  <!-- Font: Playfair Display -->
   <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;600;700&display=swap" rel="stylesheet" />
 
   <style>
@@ -109,7 +109,6 @@
       width: 100%;
     }
 
-    /* 🎯 Mobile Styles */
     @media (max-width: 768px) {
       .menu-icon {
         display: block;
@@ -154,7 +153,6 @@
       color: var(--text-muted);
     }
 
-    /* 🎨 TRU Divider Bars */
     .divider-section {
       display: flex;
       flex-direction: column;
@@ -194,6 +192,15 @@
       font-size: 0.85rem;
       color: var(--text-muted);
     }
+
+    input, textarea {
+      background-color: #F5F5F5;
+      color: #111;
+    }
+
+    input:focus, textarea:focus {
+      outline: 2px solid var(--reliability);
+    }
   </style>
 </head>
 <body>
@@ -215,8 +222,8 @@
 
   <!-- 📄 Page Content -->
   <div id="page-content">
-    <h1>Your Voice, Our Radar</h1>
-    <p>Whether it’s feedback, a correction, or a name we haven’t scored yet — your input keeps this system sharp.</p>
+    <h1>Help Us Sharpen the Signal</h1>
+    <p>Seen someone bending the truth? Missing from the list? Let us know — your input shapes the score and strengthens the system.</p>
 
     <!-- 🎯 TRU Divider Bars -->
     <section class="divider-section">
@@ -232,28 +239,35 @@
       </div>
     </section>
   </div>
-<div class="link-bar" style="margin-bottom: 40px;">
+
+  <!-- 🔗 Contact Links -->
+  <div class="link-bar" style="margin-bottom: 40px;">
     <a href="https://strategicowl.substack.com/" target="_blank" style="margin: 8px 12px; color: #F5F5F5; text-decoration: none; font-weight: 600; border-bottom: 2px solid #3B6CED; padding-bottom: 2px;">Substack</a>
     <a href="https://www.facebook.com/the.strategic.owl" target="_blank" style="margin: 8px 12px; color: #F5F5F5; text-decoration: none; font-weight: 600; border-bottom: 2px solid #3B6CED; padding-bottom: 2px;">Facebook</a>
     <a href="https://bsky.app/profile/thestrategicowl.bsky.social" target="_blank" style="margin: 8px 12px; color: #F5F5F5; text-decoration: none; font-weight: 600; border-bottom: 2px solid #3B6CED; padding-bottom: 2px;">BlueSky</a>
     <a href="mailto:team@thestrategicowl.com" style="margin: 8px 12px; color: #F5F5F5; text-decoration: none; font-weight: 600; border-bottom: 2px solid #3B6CED; padding-bottom: 2px;">Email Us</a>
   </div>
 
-  <form action="https://formspree.io/f/mwpodgrw" method="POST" style="background-color: #2F2F5F; padding: 28px; border-radius: 12px; text-align: left;">
-    <h2 style="font-family: 'Playfair Display', serif; font-size: 1.6em; margin-bottom: 20px; text-align: center;">Request a Credibility Score</h2>
+  <!-- 📬 Request Form -->
+  <form action="https://formspree.io/f/mwpodgrw" method="POST" style="background-color: #2F2F5F; padding: 28px; border-radius: 12px; text-align: left; margin: 0 auto 60px; max-width: 640px; box-shadow: 0 4px 12px rgba(0,0,0,0.3);">
+    <h2 style="font-size: 1.6em; margin-bottom: 20px; text-align: center;">Submit a Score Request</h2>
 
-    <label for="name" style="display: block; margin-top: 14px; font-weight: bold;">Your Name (Alias)</label>
+    <label for="name" style="display: block; margin-top: 14px; font-weight: bold;">Your Name or Alias</label>
     <input type="text" id="name" name="name" required style="width: 100%; padding: 10px; margin-top: 6px; margin-bottom: 20px; border-radius: 6px; border: none; font-size: 1em;" />
 
-    <label for="email" style="display: block; margin-top: 14px; font-weight: bold;">Your Email (Optional)</label>
+    <label for="email" style="display: block; margin-top: 14px; font-weight: bold;">Email (optional, never shared)</label>
     <input type="email" id="email" name="_replyto" style="width: 100%; padding: 10px; margin-top: 6px; margin-bottom: 20px; border-radius: 6px; border: none; font-size: 1em;" />
 
-    <label for="request" style="display: block; margin-top: 14px; font-weight: bold;">Who would you like us to score?</label>
-    <textarea id="request" name="message" rows="5" placeholder="Include any context or links that help explain your request." required style="width: 100%; padding: 10px; margin-top: 6px; margin-bottom: 20px; border-radius: 6px; border: none; font-size: 1em;"></textarea>
+    <label for="request" style="display: block; margin-top: 14px; font-weight: bold;">Who should we score, and why?</label>
+    <textarea id="request" name="message" rows="5" placeholder="Links or context help us verify faster. Say as much or as little as you like." required style="width: 100%; padding: 10px; margin-top: 6px; margin-bottom: 20px; border-radius: 6px; border: none; font-size: 1em;"></textarea>
 
     <button type="submit" style="background-color: #4CAF50; color: white; border: none; padding: 12px 24px; font-weight: bold; border-radius: 6px; cursor: pointer; font-size: 1em;">Send Request</button>
+
+    <p style="margin-top: 16px; font-size: 0.9em; color: var(--text-muted); text-align: center;">
+      Every message is reviewed. Credibility is measured, not assumed.
+    </p>
   </form>
-</div>
+
   <!-- 📜 Mobile Nav Script -->
   <script>
     function toggleMobileNav() {
