@@ -262,6 +262,35 @@
   margin-bottom: 24px;
   text-align: center;
 }
+    .role-box {
+  background-color: var(--surface);
+  padding: 24px;
+  margin: 48px auto 60px; /* Top spacing fix here */
+  border-radius: 12px;
+  max-width: 640px;
+  text-align: center;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+}
+
+.role-box h3 {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.3rem;
+  color: var(--heading);
+  margin-bottom: 8px;
+}
+
+.role-box p {
+  margin: 4px 0;
+  font-size: 1.05rem;
+  color: var(--text);
+}
+
+.role-box small {
+  display: block;
+  margin-top: 12px;
+  font-size: 0.9rem;
+  color: var(--text-muted);
+}
 </style>
 
 <nav class="top-nav">
@@ -322,6 +351,7 @@
   </div>
 </div>
     <div class="role-breakdown">
+    <div class="role-box">
   <h3>High Office</h3>
   <p><strong>Truth:</strong> 4.0×</p>
   <p><strong>Reliability:</strong> 4.0×</p>
@@ -352,6 +382,8 @@
   <p><strong>Understanding:</strong> 2.0×</p>
   <small>They shape opinions without institutional power. Credibility depends on earned trust.</small>
 </div>
+    </div>
+  
     <!-- 🎯 Divider -->
     <section class="divider-section">
       <div class="divider-bar">
