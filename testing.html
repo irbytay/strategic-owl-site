@@ -7,7 +7,6 @@
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&family=Playfair+Display:wght@700&display=swap" rel="stylesheet" />
 
   <style>
-    /* 🎨 Theme Colors */
     :root {
       --background: #0D1B2A;
       --surface: #112240;
@@ -25,7 +24,6 @@
       --shadow: rgba(0, 0, 0, 0.4);
     }
 
-    /* 🔧 Reset + Typography */
     * {
       margin: 0;
       padding: 0;
@@ -38,7 +36,6 @@
       font-family: 'Inter', sans-serif;
     }
 
-    /* 🧭 Navigation Bar */
     nav {
       background-color: var(--highlight);
       width: 100%;
@@ -48,13 +45,16 @@
       justify-content: space-between;
       padding: 0 24px;
       box-shadow: 0 2px 4px var(--shadow);
+      position: sticky;
+      top: 0;
+      z-index: 1000;
     }
 
     .nav-title {
       font-family: 'Playfair Display', serif;
       font-size: 1.5rem;
       color: var(--text);
-      line-height: 60px;
+      text-decoration: none;
     }
 
     .nav-links {
@@ -68,10 +68,8 @@
       color: var(--text);
       font-weight: 600;
       font-size: 1rem;
-      line-height: 60px;
     }
 
-    /* 📚 Headings */
     h1, h2 {
       font-family: 'Playfair Display', serif;
       text-align: center;
@@ -79,7 +77,6 @@
       margin: 32px 0 20px;
     }
 
-    /* 🔷 TRU Indicator Section */
     .divider-section {
       display: flex;
       flex-direction: column;
@@ -91,7 +88,7 @@
       display: flex;
       justify-content: space-between;
       gap: 12px;
-      width: 340px; /* 108px × 3 + 12px × 2 gaps */
+      width: 340px;
     }
 
     .divider-bar div {
@@ -101,17 +98,9 @@
       box-shadow: 0 0 4px var(--shadow);
     }
 
-    .truth {
-      background-color: var(--truth);
-    }
-
-    .reliability {
-      background-color: var(--reliability);
-    }
-
-    .understanding {
-      background-color: var(--understanding);
-    }
+    .truth { background-color: var(--truth); }
+    .reliability { background-color: var(--reliability); }
+    .understanding { background-color: var(--understanding); }
 
     .divider-labels {
       display: flex;
@@ -128,7 +117,6 @@
       color: var(--text-muted);
     }
 
-    /* 💬 Placeholder Content Area */
     .main-placeholder {
       max-width: 800px;
       margin: 40px auto;
@@ -143,19 +131,20 @@
 <body>
   <!-- 🔝 Navigation Menu -->
   <nav>
-    <div class="nav-title">The Strategic Owl</div>
+    <a href="home.html" class="nav-title">The Strategic Owl</a>
     <div class="nav-links">
-      <a href="#">Home</a>
-      <a href="#">Scores</a>
-      <a href="#">States</a>
-      <a href="#">About</a>
+      <a href="home.html">Home</a>
+      <a href="base3.html">T.R.U. OWL</a>
+      <a href="newelections3.html">Election Security</a>
+      <a href="newcontact3.html">Contact</a>
     </div>
   </nav>
 
-  <!-- 🧠 Welcome Headline (Optional) -->
+  <!-- 🎯 Welcome Heading -->
   <h1>Welcome to The Strategic Owl</h1>
+  <h2>This project is built to restore trust through truth — not tribes.</h2>
 
-  <!-- 🔹 Visual Legend Divider with Labels -->
+  <!-- 🎨 TRU Legend -->
   <div class="divider-section">
     <div class="divider-bar">
       <div class="bar truth"></div>
@@ -169,9 +158,9 @@
     </div>
   </div>
 
-  <!-- 📌 Placeholder Main Content -->
+  <!-- 🧱 Placeholder Section -->
   <div class="main-placeholder">
-    <p>This is a clean, reusable template. Add your HTML content here.</p>
+    <p>This is a blank template page. Add your unique content here as needed.</p>
   </div>
 </body>
 </html>
