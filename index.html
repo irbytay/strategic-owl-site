@@ -259,29 +259,46 @@
 .match-nav-link:hover {
   color: var(--understanding);
 }
-  .important-link {
-  color: var(--understanding);
-  font-weight: 700;
-  text-decoration: underline;
-  text-underline-offset: 4px;
-  position: relative;
-  transition: color 0.3s ease, text-shadow 0.3s ease;
+ /* Style the link itself */
+.important-link {
+  color: var(--understanding);               /* Gold color from your theme */
+  font-weight: 700;                          /* Bold for visibility */
+  text-decoration: underline;                /* Underline to signal it's a link */
+  text-underline-offset: 4px;                /* Adds spacing between text and underline */
+  position: relative;                        /* Required for pseudo-elements */
+  transition: color 0.3s ease, text-shadow 0.3s ease;  /* Smooth hover transitions */
 }
 
+/* Add a right-pointing arrow BEFORE the link text */
 .important-link::before {
-  content: '→ ';
-  display: inline-block;
-  margin-right: 6px;
-  transition: transform 0.3s ease;
+  content: '→ ';                             /* Arrow pointing right */
+  display: inline-block;                     /* So we can animate it */
+  margin-right: 6px;                         /* Space between arrow and text */
+  transition: transform 0.3s ease;           /* Smooth movement on hover */
 }
 
+/* Add a left-pointing arrow AFTER the link text */
+.important-link::after {
+  content: ' ←';                             /* Arrow pointing left */
+  display: inline-block;                     /* Enables transform */
+  margin-left: 6px;                          /* Space between text and arrow */
+  transition: transform 0.3s ease;           /* Smooth hover animation */
+}
+
+/* Animate the left-side arrow to move right on hover */
 .important-link:hover::before {
-  transform: translateX(4px);
+  transform: translateX(4px);                /* Moves → arrow to the right */
 }
 
+/* Animate the right-side arrow to move left on hover */
+.important-link:hover::after {
+  transform: translateX(-4px);               /* Moves ← arrow to the left */
+}
+
+/* Add glow and optional color change on hover */
 .important-link:hover {
-  text-shadow: 0 0 8px var(--understanding);
-  color: var(--truth); /* Optional: changes color slightly on hover */
+  text-shadow: 0 0 8px var(--understanding); /* Subtle glow using gold tone */
+  color: var(--truth);                       /* Optional: changes to green (truth color) */
 }
 </style>
 
