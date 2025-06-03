@@ -1,0 +1,270 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>The Strategic Owl</title>
+
+  <!-- Font: Only Playfair Display -->
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;600;700&display=swap" rel="stylesheet" />
+
+  <style>
+    :root {
+      --background: #0D1B2A;
+      --surface: #112240;
+      --highlight: #1A2B4C;
+      --text: #FFFFFF;
+      --text-muted: #7C8A9B;
+      --heading: #FFFFF0;
+      --truth: #28A745;
+      --reliability: #3B6CED;
+      --understanding: #D4AF37;
+      --shadow: rgba(0, 0, 0, 0.3);
+    }
+
+    html {
+      font-family: 'Playfair Display', serif !important;
+    }
+
+    *, *::before, *::after {
+      font-family: 'Playfair Display', serif !important;
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    body {
+      background-color: var(--background);
+      color: var(--text);
+      padding-top: 64px;
+      text-align: center;
+    }
+
+    header {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 64px;
+      background-color: var(--highlight);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 0 20px;
+      z-index: 1000;
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
+    }
+
+    .nav-logo {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      text-decoration: none;
+      font-weight: 600;
+      color: var(--text);
+      font-size: 1.25rem;
+      white-space: nowrap;
+    }
+
+    .nav-logo img {
+      height: 30px;
+      width: 30px;
+    }
+
+    .menu-icon {
+      display: none;
+      font-size: 28px;
+      background: none;
+      border: none;
+      color: var(--text);
+      cursor: pointer;
+    }
+
+    nav.nav-links {
+      display: flex;
+      gap: 28px;
+    }
+
+    nav.nav-links a {
+      color: var(--text);
+      text-decoration: none;
+      font-weight: 600;
+      font-size: 1rem;
+      position: relative;
+    }
+
+    nav.nav-links a::after {
+      content: "";
+      position: absolute;
+      left: 0;
+      bottom: -4px;
+      width: 0%;
+      height: 2px;
+      background-color: var(--reliability);
+      transition: width 0.3s ease;
+    }
+
+    nav.nav-links a:hover::after {
+      width: 100%;
+    }
+
+    /* 🎯 Mobile Styles */
+    @media (max-width: 768px) {
+      .menu-icon {
+        display: block;
+      }
+
+      nav.nav-links {
+        display: none;
+        position: absolute;
+        top: 64px;
+        left: 0;
+        right: 0;
+        background-color: var(--surface);
+        flex-direction: column;
+        gap: 18px;
+        padding: 20px 0;
+        border-bottom: 2px solid var(--reliability);
+        z-index: 999;
+      }
+
+      nav.nav-links.active {
+        display: flex;
+      }
+
+      nav.nav-links a {
+        font-size: 1.1rem;
+        padding: 10px 0;
+      }
+    }
+
+    #page-content {
+      padding: 20px;
+    }
+
+    h1 {
+      font-weight: 700;
+      font-size: 2rem;
+      margin-bottom: 10px;
+    }
+
+    p {
+      font-size: 1rem;
+      color: var(--text-muted);
+    }
+
+    /* 🎨 TRU Divider Bars */
+    .divider-section {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      margin: 40px auto;
+    }
+
+    .divider-bar {
+      display: flex;
+      justify-content: space-between;
+      gap: 12px;
+      width: 340px;
+    }
+
+    .divider-bar div {
+      width: 108px;
+      height: 6px;
+      border-radius: 3px;
+      box-shadow: 0 0 4px var(--shadow);
+    }
+
+    .truth { background-color: var(--truth); }
+    .reliability { background-color: var(--reliability); }
+    .understanding { background-color: var(--understanding); }
+
+    .divider-labels {
+      display: flex;
+      justify-content: space-between;
+      gap: 12px;
+      width: 340px;
+      margin-top: 8px;
+    }
+
+    .divider-labels span {
+      width: 108px;
+      text-align: center;
+      font-size: 0.85rem;
+      color: var(--text-muted);
+    }
+  </style>
+</head>
+<body>
+
+  <!-- 🔒 Fixed Nav -->
+  <header>
+    <a href="home.html" class="nav-logo">
+      <img src="owl_logo_white.png" alt="Owl Logo" onerror="this.style.display='none';" />
+      The Strategic Owl
+    </a>
+    <button class="menu-icon" onclick="toggleMobileNav()">☰</button>
+    <nav id="mainNav" class="nav-links">
+      <a href="base.html">T.R.U. OWL</a>
+      <a href="newelections.html">Election Security</a>
+      <a href="newstatefraud.html">State Fraud</a>
+      <a href="newcontact3test.html">Contact</a>
+    </nav>
+  </header>
+
+  <!-- 📄 Page Content -->
+  <div id="page-content">
+    <h1>The Owl Mission</h1>
+    <p>If you've lost trust in the system, you're not wrong. That’s by design. Now let's build one that earns it back.</p>
+
+    <!-- 🎯 TRU Divider Bars -->
+    <section class="divider-section">
+      <div class="divider-bar">
+        <div class="truth"></div>
+        <div class="reliability"></div>
+        <div class="understanding"></div>
+      </div>
+      <div class="divider-labels">
+        <span>Truth</span>
+        <span>Reliability</span>
+        <span>Understanding</span>
+      </div>
+    </section>
+  </div>
+<h1>Why This Exists</h1>
+<p>
+We’ve been trained to care more about who said something than whether it’s true. 
+We’ve been stuck in a loop—team vs. team, headline vs. headline—while the truth gets lost somewhere in between. 
+That’s not sustainable. So I built a system that cuts through it.
+</p>
+
+<h1>The T.R.U. OWL Score</h1>
+<p>
+Truth. Reliability. Understanding. These three pillars make up the framework. 
+It’s not about politics—it’s about performance. Did they get the facts right? 
+Did they correct themselves when wrong? Do they actually understand the topic, 
+or are they just performing for clicks and applause?
+</p>
+
+<h1>It’s Not Just a Score</h1>
+<p>
+This system is designed to grow over time—with every subject scored and every correction made. 
+It tracks credibility the way it works in real life: you earn it, you lose it, and if you lie, you don’t get to just hit reset.
+</p>
+
+<h1>The End Goal</h1>
+<p>
+If more people start asking “Who’s telling the truth?” instead of “Whose side are you on?”—everything changes. 
+Politicians, media, influencers—they’ll have to compete on honesty, not just volume. 
+This is how we take back the conversation.
+</p>
+  <!-- 📜 Mobile Nav Script -->
+  <script>
+    function toggleMobileNav() {
+      document.getElementById('mainNav')?.classList.toggle('active');
+    }
+  </script>
+
+</body>
+</html>
