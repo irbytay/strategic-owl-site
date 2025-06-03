@@ -30,6 +30,7 @@
     padding: 0;
   }
 
+  /* 🧭 NAVBAR & MENU */
   nav.top-nav {
     position: fixed;
     top: 0;
@@ -82,16 +83,16 @@
 
     .nav-links {
       display: none;
-      flex-direction: row;
-      flex-wrap: wrap;
+      flex-direction: row; /* 👈 links side-by-side on mobile */
       justify-content: center;
+      background-color: var(--highlight);
       position: absolute;
-      top: 60px;
+      top: 58px;
       left: 0;
       width: 100%;
-      background-color: var(--highlight);
-      padding: 12px 0;
+      padding: 10px 0;
       gap: 20px;
+      box-shadow: 0 3px 8px var(--shadow);
     }
 
     .nav-links.show {
@@ -110,6 +111,71 @@
       }
     }
   }
+
+  /* ✅ YOUR ORIGINAL STYLES BELOW */
+  .container {
+    max-width: 960px;
+    margin: 100px auto 0 auto;
+    padding: 24px;
+  }
+
+  h1 {
+    font-family: 'Playfair Display', serif;
+    color: var(--heading);
+    margin-bottom: 16px;
+  }
+
+  select {
+    padding: 8px;
+    margin-bottom: 16px;
+    background-color: var(--surface);
+    color: var(--text);
+    border: 1px solid var(--highlight);
+  }
+
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    background-color: var(--surface);
+    margin-top: 12px;
+  }
+
+  th, td {
+    padding: 12px;
+    border-bottom: 1px solid var(--highlight);
+    text-align: left;
+  }
+
+  .text-truth { color: var(--truth); }
+  .text-reliability { color: var(--reliability); }
+  .text-understanding { color: var(--understanding); }
+
+  .total-score {
+    font-weight: bold;
+  }
+
+  .positive-score { color: var(--bar-green); }
+  .negative-score { color: var(--bar-red); }
+
+  .score-bar {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .bar-indicator {
+    width: 10px;
+    height: 24px;
+    border-radius: 2px;
+  }
+
+  .bar-red {
+    background-color: var(--bar-red);
+  }
+
+  .bar-green {
+    background-color: var(--bar-green);
+  }
 </style>
 
 <nav class="top-nav">
@@ -122,13 +188,6 @@
     <a href="newcontact.html">Contact</a>
   </div>
 </nav>
-
-<script>
-  function toggleMenu() {
-    document.getElementById("navMenu").classList.toggle("show");
-  }
-</script>
-
   <div class="container">
     <h1>TRU OWL Viewer</h1>
     <select id="role-filter"></select>
@@ -295,5 +354,11 @@
     menu.classList.toggle("show");
   }
 </script>
+  <script>
+  function toggleMenu() {
+    document.getElementById("navMenu").classList.toggle("show");
+  }
+</script>
+
 </body>
 </html>
