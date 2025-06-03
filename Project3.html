@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
   <title>The Strategic Owl | Mobile First</title>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&family=Playfair+Display:wght@700&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet" />
   <style>
     :root {
       --background: #0D1B2A;
@@ -13,8 +13,9 @@
       --text: #FFFFFF;
       --text-muted: #7C8A9B;
       --heading: #FFFFF0;
+
       --truth: #28A745;
-      --reliability: #3B6CED;
+      --reliability: #3B6CED; /* 🔵 Blue accent */
       --understanding: #D4AF37;
       --shadow: rgba(0, 0, 0, 0.3);
     }
@@ -23,14 +24,15 @@
       box-sizing: border-box;
       margin: 0;
       padding: 0;
-      -webkit-tap-highlight-color: transparent; /* 🚫 Remove weird green highlight on tap */
+      -webkit-tap-highlight-color: transparent;
     }
 
-    body {
+    html, body {
       font-family: 'Inter', sans-serif; /* ✅ Universal font */
       background-color: var(--background);
       color: var(--text);
-      padding-top: 60px; /* ✅ Space below fixed nav */
+      padding-top: 60px;
+      text-align: center; /* ✅ Center all text */
     }
 
     header {
@@ -39,7 +41,7 @@
       justify-content: space-between;
       align-items: center;
       padding: 14px 20px;
-      position: fixed; /* ✅ Stay at the top */
+      position: fixed;
       top: 0;
       left: 0;
       right: 0;
@@ -54,8 +56,8 @@
       gap: 8px;
       color: var(--text);
       text-decoration: none;
-      font-family: 'Playfair Display', serif;
-      font-size: 1.1rem;
+      font-weight: 600;
+      font-size: 1.2rem;
     }
 
     .nav-logo img {
@@ -67,10 +69,11 @@
       background: none;
       border: none;
       color: var(--text);
-      font-size: 24px;
+      font-size: 28px; /* Increased */
       cursor: pointer;
     }
 
+    /* ✅ MOBILE NAV */
     .mobile-nav {
       position: absolute;
       top: 60px;
@@ -81,8 +84,8 @@
       padding: 12px 20px;
       display: none;
       flex-direction: column;
-      gap: 12px;
-      border-right: 2px solid var(--truth);
+      gap: 16px;
+      border-right: 2px solid var(--reliability);
       box-shadow: 2px 0 6px rgba(0, 0, 0, 0.4);
     }
 
@@ -95,8 +98,8 @@
       color: var(--text);
       font-weight: 600;
       position: relative;
+      font-size: 1rem;
       padding-bottom: 6px;
-      font-family: 'Inter', sans-serif; /* Consistency */
     }
 
     .mobile-nav a::after {
@@ -106,7 +109,7 @@
       bottom: 0;
       height: 2px;
       width: 100%;
-      background-color: var(--truth);
+      background-color: var(--reliability); /* 🔵 Blue underline */
     }
 
     #page-content {
@@ -154,6 +157,7 @@
       color: var(--text-muted);
     }
 
+    /* ✅ DESKTOP FIXES */
     @media (min-width: 768px) {
       .menu-icon {
         display: none;
@@ -161,20 +165,29 @@
 
       .mobile-nav {
         display: flex !important;
-        position: static;
         flex-direction: row;
+        justify-content: flex-end;
+        align-items: center;
+        position: absolute;
+        top: 0;
+        right: 20px;
         background: none;
         border: none;
         box-shadow: none;
-        max-width: none;
+        width: auto;
         padding: 0;
+        height: 60px;
         gap: 24px;
       }
 
+      .mobile-nav a {
+        font-size: 1rem;
+        padding: 6px 0;
+      }
+
       .mobile-nav a::after {
-        background-color: transparent;
-        border-bottom: 2px solid var(--truth);
-        bottom: -6px;
+        height: 2px;
+        background-color: var(--reliability); /* Keep blue underline */
       }
     }
   </style>
@@ -187,14 +200,15 @@
       The Strategic Owl
     </a>
     <button class="menu-icon" onclick="toggleMobileNav()">☰</button>
-  </header>
 
-  <nav id="mobileNav" class="mobile-nav">
-    <a href="base.html">T.R.U. OWL</a>
-    <a href="newelections.html">Election Security</a>
-    <a href="newstatefraud.html">State Fraud</a>
-    <a href="newcontact.html">Contact</a>
-  </nav>
+    <!-- ✅ Desktop nav stays inline and to the right -->
+    <nav id="mobileNav" class="mobile-nav">
+      <a href="base.html">T.R.U. OWL</a>
+      <a href="newelections.html">Election Security</a>
+      <a href="newstatefraud.html">State Fraud</a>
+      <a href="newcontact.html">Contact</a>
+    </nav>
+  </header>
 
   <div id="page-content">
     <h1>Welcome</h1>
