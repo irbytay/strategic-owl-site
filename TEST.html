@@ -2,423 +2,74 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
-  <title>T.R.U. OWL – Strategic Credibility</title>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&family=Playfair+Display:wght@500;700&display=swap" rel="stylesheet" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>T.R.U. OWL Viewer</title>
+
+  <!-- Font (Optional) -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet" />
+
+  <!-- Your CSS -->
   <style>
-    :root {
-      --navy: #1A1A40;
-      --text: #F5F5F5;
-      --accent-blue: #3B6CED;
-      --hover: #4FDBA6;
-      --border: #2F2F5F;
-    }
-
-    html, body {
-      margin: 0;
-      padding: 0;
-    }
-
-    * { box-sizing: border-box; }
-
     body {
-      background-color: var(--navy);
+      background-color: #0D1B2A;
+      color: #FFFFFF;
       font-family: 'Inter', sans-serif;
-      color: var(--text);
+      padding: 20px;
     }
 
-    h1, h2, h3 {
-      font-family: 'Playfair Display', serif;
-    }
-
-    .top-nav {
-      background-color: #2F2E5E;
-      padding: 16px 20px;
-      border-bottom: 1px solid var(--border);
-      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.4);
-      position: sticky;
-      top: 0;
-      z-index: 999;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-    }
-
-    .brand-left {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-    }
-
-    .brand-left img {
-      height: 36px;
-      width: auto;
-    }
-
-    .nav-logo {
-      color: var(--text);
-      font-size: 1.5rem;
-      font-family: 'Playfair Display', serif;
+    .positive-score {
+      color: #4FDBA6;
       font-weight: bold;
-      text-decoration: none;
     }
 
-    .nav-links-wrapper {
-      position: absolute;
-      left: 50%;
-      transform: translateX(-50%);
+    .negative-score {
+      color: #FF6B6B;
+      font-weight: bold;
     }
 
-    .nav-links {
-      display: flex;
-      gap: 24px;
+    #score-table {
+      width: 100%;
+      margin-top: 20px;
+      border-collapse: collapse;
     }
 
-    .nav-links a {
-      color: var(--text);
-      font-weight: 500;
-      text-decoration: none;
-      transition: color 0.2s ease;
-    }
-
-    .nav-links a:hover {
-      color: var(--hover);
-    }
-
-    .nav-toggle {
-      display: none;
-      font-size: 2rem;
-      background: none;
-      border: none;
-      color: var(--text);
-      cursor: pointer;
-    }
-
-    .mobile-nav {
-      display: none;
-      flex-direction: column;
-      background-color: #2F2E5E;
-      padding: 12px 20px;
-    }
-
-    .mobile-nav a {
-      color: var(--text);
-      padding: 12px 0;
-      text-decoration: none;
-      font-weight: 500;
-      border-top: 1px solid var(--border);
-    }
-
-    .mobile-nav a:hover {
-      color: var(--hover);
-    }
-
-    .mobile-nav.active {
-      display: flex;
-    }
-
-    .content {
-      max-width: 1200px;
-      margin: 0 auto;
-      padding: 0 20px;
-    }
-
-    #page-content {
-      animation: fadeIn 0.25s ease-in-out;
-      min-height: 300px;
-    }
-
-    #page-content > *:first-child {
-      margin-top: 0;
-      padding-top: 0;
-    }
-
-    @keyframes fadeIn {
-      from { opacity: 0; transform: translateY(8px); }
-      to { opacity: 1; transform: translateY(0); }
-    }
-
-    @media (max-width: 768px) {
-      .nav-links-wrapper { display: none; }
-      .nav-toggle { display: block; }
-    }
-
-    .modal-overlay {
-      position: fixed;
-      top: 0; left: 0;
-      width: 100vw;
-      height: 100vh;
-      background: rgba(0,0,0,0.8);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      z-index: 10000;
-      transition: opacity 0.3s ease;
-    }
-
-    .modal-overlay.hidden {
-      opacity: 0;
-      pointer-events: none;
-    }
-
-    .modal-content {
-      background-color: #2F2E5E;
-      padding: 40px;
-      border-radius: 12px;
-      max-width: 750px;
-      width: 90%;
-      box-shadow: 0 0 20px rgba(0,0,0,0.6);
-      color: #F5F5F5;
-    }
-
-    .modal-content h1 {
-      font-family: 'Playfair Display', serif;
+    #score-table th, #score-table td {
+      border: 1px solid #444;
+      padding: 10px;
       text-align: center;
     }
 
-    .modal-content ul {
-      padding-left: 20px;
-      margin-top: 16px;
-    }
-
-    .divider-bar {
-      display: flex;
-      justify-content: center;
-      gap: 8px;
-      margin: 10px 0 30px;
-    }
-
-    .divider-bar div {
-      width: 40px;
-      height: 6px;
-      border-radius: 3px;
-    }
-
-    .truth { background-color: #4CAF50; }
-    .reliability { background-color: #2196F3; }
-    .understanding { background-color: #FFC107; }
-
-    .agree-btn {
-      display: block;
-      margin: 30px auto 0;
-      background-color: var(--accent-blue);
-      color: white;
-      border: none;
-      font-size: 1rem;
-      font-weight: 600;
-      padding: 12px 24px;
-      border-radius: 8px;
-      cursor: pointer;
-      transition: background-color 0.3s ease;
-    }
-
-    .agree-btn:hover {
-      background-color: var(--hover);
-    }
-
-    strong {
-      color: #FFEB3B;
+    .total-score {
+      background-color: #1A2B4C;
     }
   </style>
 </head>
 <body>
 
-  <nav class="top-nav">
-  <div class="brand-left">
-    <a href="#" data-page="newTRUOWL.html">
-      <img src="owl_logo_white.png" alt="Strategic Owl Logo"
-           onerror="this.onerror=null;this.style.display='none';this.insertAdjacentHTML('afterend','<p style=\'color:white;font-weight:bold;\'>[ Logo not found ]</p>')" />
-    </a>
-    <a href="#" data-page="newTRUOWL.html" class="nav-logo">The Strategic Owl</a>
-  </div>
-    <div class="nav-links-wrapper">
-      <div class="nav-links">
-  <a href="#" data-page="newelections.html">Election Security</a>
-  <a href="#" data-page="newheritagefoundation.html">Election Fraud</a>
-  <a href="#" data-page="newstatefraud.html">Voter Fraud by State</a>
-  <a href="#" data-page="newcontact.html">Contact</a>
-</div>
-    </div>
-    <button class="nav-toggle" onclick="toggleMobileNav()">☰</button>
-  </nav>
+  <h1>T.R.U. OWL Score Viewer</h1>
 
-  <div class="mobile-nav" id="mobileNav">
-  <a href="#" data-page="newelections.html">Election Security</a>
-  <a href="#" data-page="newheritagefoundation.html">Election Fraud</a>
-  <a href="#" data-page="newstatefraud.html">Voter Fraud by State</a>
-  <a href="#" data-page="newcontact.html">Contact</a>
-</div>
+  <!-- Role filter and person dropdown -->
+  <select id="role-filter"></select>
+  <select id="person-select"></select>
 
-  <div class="content">
-    <div id="page-content"></div>
+  <!-- Score Table -->
+  <table id="score-table" style="display:none;">
+    <thead>
+      <tr>
+        <th>Category</th>
+        <th>Score</th>
+        <th>Explanation</th>
+      </tr>
+    </thead>
+    <tbody id="score-body"></tbody>
+  </table>
+
+  <!-- Optional summary box -->
+  <div id="total-score-box" style="display:none;">
+    <p id="total-score-comment"></p>
   </div>
 
-  <div class="modal-overlay" id="disclaimerModal">
-    <div class="modal-content">
-      <h1>The Strategic Owl</h1>
-      <div class="divider-bar">
-        <div class="truth"></div>
-        <div class="reliability"></div>
-        <div class="understanding"></div>
-      </div>
-      <p>This platform contains original public interest research, commentary, and analysis, all protected under the <strong>First Amendment</strong>.</p>
-      <p>The <strong>T.R.U. OWL Score</strong> is an independent credibility system based on documented facts and verifiable sources.</p>
-      <p>By continuing, you acknowledge that:</p>
-      <ul>
-        <li>This site contains <strong>opinion</strong>, <strong>critique</strong>, and <strong>commentary</strong>.</li>
-        <li>Its analysis is based on the <strong>public record</strong>.</li>
-        <li>You waive any legal claims regarding published ratings or commentary.</li>
-      </ul>
-      <p>Use of this site implies full acceptance of these terms.</p>
-      <button class="agree-btn" onclick="agreeAndEnter()">I Agree and Enter</button>
-    </div>
-  </div>
-
-  <script>
-  function toggleMobileNav() {
-    document.getElementById('mobileNav')?.classList.toggle('active');
-  }
-
-  function loadPage(page, push = true) {
-    console.log(`[SPA] Loading page: ${page}`);
-    fetch(page)
-      .then(res => {
-        if (!res.ok) throw new Error(`Failed to load ${page}`);
-        return res.text();
-      })
-      .then(html => {
-        const container = document.getElementById('page-content');
-        if (!container) throw new Error("Missing #page-content container");
-
-        container.innerHTML = html;
-        document.getElementById('mobileNav')?.classList.remove('active');
-        window.scrollTo(0, 0);
-
-        if (push) history.pushState({ page }, "", "#" + page);
-        runScriptsFromHTML(container, callPageInits);
-      })
-      .catch(err => {
-        console.error(err);
-        const container = document.getElementById('page-content');
-        if (container) {
-          container.innerHTML = `<p style="color:red;">${err.message}</p>`;
-        }
-      });
-  }
-
-  function runScriptsFromHTML(container, callback) {
-    const scripts = container.querySelectorAll("script");
-    console.log(`[SPA] Found ${scripts.length} scripts to process`);
-
-    if (scripts.length === 0) {
-      callback?.();
-      return;
-    }
-
-    let index = 0;
-
-    function next() {
-      if (index >= scripts.length) {
-        callback?.();
-        return;
-      }
-
-      const oldScript = scripts[index++];
-      const newScript = document.createElement("script");
-
-      if (oldScript.src) {
-        newScript.src = `${oldScript.src}?t=${Date.now()}`;
-        newScript.async = false;
-        newScript.onload = next;
-        newScript.onerror = () => {
-          console.error("❌ Failed to load:", newScript.src);
-          next();
-        };
-      } else {
-        newScript.textContent = oldScript.textContent;
-        next(); // Inline scripts can proceed immediately
-      }
-
-      document.body.appendChild(newScript);
-    }
-
-    next();
-  }
-
-  function callPageInits() {
-    const hash = location.hash.replace(/^#/, '') || 'newTRUOWL.html';
-    const pageName = hash.replace('.html', '');
-    const camelName = pageName.replace(/^new/, '');
-    const initFn = `init${camelName.charAt(0).toUpperCase()}${camelName.slice(1)}Page`;
-
-    if (typeof window[initFn] === "function") {
-      console.log(`[SPA] Calling ${initFn}()`);
-      window[initFn]();
-    } else {
-      console.log(`[SPA] No init function found: ${initFn}`);
-    }
-  }
-
-  document.body.addEventListener('click', function (e) {
-    const anchor = e.target.closest('a[data-page]');
-    if (anchor) {
-      e.preventDefault();
-      const page = anchor.getAttribute('data-page');
-      if (page) {
-        loadPage(page);
-      }
-    }
-  });
-
-  function agreeAndEnter() {
-    localStorage.setItem("agreedToDisclaimer", "true");
-
-    const modal = document.getElementById("disclaimerModal");
-    if (modal) {
-      modal.classList.add("hidden");
-      modal.style.display = "none";
-    }
-
-    const hashPage = location.hash?.substring(1) || "newTRUOWL.html";
-    fetch(hashPage)
-      .then(res => {
-        if (!res.ok) throw new Error(`Failed to load ${hashPage}`);
-        return res.text();
-      })
-      .then(html => {
-        const container = document.getElementById('page-content');
-        if (!container) throw new Error("Missing #page-content container");
-
-        container.innerHTML = html;
-        runScriptsFromHTML(container, callPageInits);
-        history.pushState({ page: hashPage }, "", "#" + hashPage);
-      })
-      .catch(err => {
-        console.error(err);
-        const container = document.getElementById('page-content');
-        if (container) {
-          container.innerHTML = `<p style="color:red;">${err.message}</p>`;
-        }
-      });
-  }
-
-  window.addEventListener("DOMContentLoaded", () => {
-    if (localStorage.getItem("agreedToDisclaimer")) {
-      const initialPage = location.hash?.substring(1) || "newTRUOWL.html";
-      loadPage(initialPage, false);
-    }
-  });
-
-  window.addEventListener('popstate', (e) => {
-    const page = e.state?.page || "newTRUOWL.html";
-    loadPage(page, false);
-  });
-
-  // ✅ Example SPA-safe init function
-  function initStateFraudPage() {
-    console.log("✅ State Fraud logic running");
-    // Add your logic
-  }
-</script>
+  <!-- Link to your JS file -->
+  <script src="your-script.js"></script>
 </body>
 </html>
