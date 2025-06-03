@@ -8,238 +8,239 @@
   <!-- Font: Only Playfair Display -->
   <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;600;700&display=swap" rel="stylesheet" />
 
-  <style>
-    :root {
-      --background: #0D1B2A;
-      --surface: #112240;
-      --highlight: #1A2B4C;
-      --text: #FFFFFF;
-      --text-muted: #7C8A9B;
-      --heading: #FFFFF0;
-      --truth: #28A745;
-      --reliability: #3B6CED;
-      --understanding: #D4AF37;
-      --shadow: rgba(0, 0, 0, 0.3);
-    }
+ <style>
+  :root {
+    --background: #0D1B2A;
+    --surface: #112240;
+    --highlight: #1A2B4C;
+    --text: #FFFFFF;
+    --text-muted: #7C8A9B;
+    --heading: #FFFFF0;
+    --truth: #28A745;
+    --reliability: #3B6CED;
+    --understanding: #D4AF37;
+    --shadow: rgba(0, 0, 0, 0.3);
+  }
 
-    html {
-      font-family: 'Playfair Display', serif !important;
-    }
+  html, body, *, *::before, *::after {
+    font-family: 'Playfair Display', serif !important;
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    -webkit-tap-highlight-color: transparent;
+  }
 
-    *, *::before, *::after {
-      font-family: 'Playfair Display', serif !important;
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
-      -webkit-tap-highlight-color: transparent;
-    }
+  body {
+    background-color: var(--background);
+    color: var(--text);
+    padding-top: 64px;
+    text-align: center;
+  }
 
-    body {
-      background-color: var(--background);
-      color: var(--text);
-      padding-top: 64px;
-      text-align: center;
-    }
+  header {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 64px;
+    background-color: var(--highlight);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 20px;
+    z-index: 1000;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
+  }
 
-    header {
-      position: fixed;
-      top: 0;
-      left: 0;
-      right: 0;
-      height: 64px;
-      background-color: var(--highlight);
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      padding: 0 20px;
-      z-index: 1000;
-      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
-    }
+  .nav-logo {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    text-decoration: none;
+    font-weight: 600;
+    color: var(--text);
+    font-size: 1.25rem;
+    white-space: nowrap;
+  }
 
-    .nav-logo {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      text-decoration: none;
-      font-weight: 600;
-      color: var(--text);
-      font-size: 1.25rem;
-      white-space: nowrap;
-    }
+  .nav-logo img {
+    height: 30px;
+    width: 30px;
+  }
 
-    .nav-logo img {
-      height: 30px;
-      width: 30px;
-    }
+  .menu-icon {
+    display: none;
+    font-size: 28px;
+    background: none;
+    border: none;
+    color: var(--text);
+    cursor: pointer;
+  }
 
+  nav.nav-links {
+    display: flex;
+    gap: 28px;
+  }
+
+  nav.nav-links a {
+    color: var(--text);
+    text-decoration: none;
+    font-weight: 600;
+    font-size: 1rem;
+    position: relative;
+  }
+
+  nav.nav-links a::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    bottom: -4px;
+    width: 0%;
+    height: 2px;
+    background-color: var(--reliability);
+    transition: width 0.3s ease;
+  }
+
+  nav.nav-links a:hover::after {
+    width: 100%;
+  }
+
+  @media (max-width: 768px) {
     .menu-icon {
-      display: none;
-      font-size: 28px;
-      background: none;
-      border: none;
-      color: var(--text);
-      cursor: pointer;
+      display: block;
     }
 
     nav.nav-links {
+      display: none;
+      position: absolute;
+      top: 64px;
+      left: 0;
+      right: 0;
+      background-color: var(--surface);
+      flex-direction: column;
+      gap: 18px;
+      padding: 20px 0;
+      border-bottom: 2px solid var(--reliability);
+      z-index: 999;
+    }
+
+    nav.nav-links.active {
       display: flex;
-      gap: 28px;
     }
 
     nav.nav-links a {
-      color: var(--text);
-      text-decoration: none;
-      font-weight: 600;
-      font-size: 1rem;
-      position: relative;
+      font-size: 1.1rem;
+      padding: 10px 0;
     }
+  }
 
-    nav.nav-links a::after {
-      content: "";
-      position: absolute;
-      left: 0;
-      bottom: -4px;
-      width: 0%;
-      height: 2px;
-      background-color: var(--reliability);
-      transition: width 0.3s ease;
-    }
+  #page-content {
+    padding: 20px;
+    max-width: 700px;
+    margin: 0 auto;
+  }
 
-    nav.nav-links a:hover::after {
-      width: 100%;
-    }
+  h1, h2, h3, h4, h5, h6,
+  p, a, label, input, textarea, button, select {
+    font-family: 'Playfair Display', serif !important;
+  }
 
-    @media (max-width: 768px) {
-      .menu-icon {
-        display: block;
-      }
+  h1 {
+    font-weight: 700;
+    font-size: 2.4em;
+    margin-bottom: 20px;
+  }
 
-      nav.nav-links {
-        display: none;
-        position: absolute;
-        top: 64px;
-        left: 0;
-        right: 0;
-        background-color: var(--surface);
-        flex-direction: column;
-        gap: 18px;
-        padding: 20px 0;
-        border-bottom: 2px solid var(--reliability);
-        z-index: 999;
-      }
+  p {
+    font-size: 1.05em;
+    line-height: 1.7em;
+    margin-bottom: 30px;
+  }
 
-      nav.nav-links.active {
-        display: flex;
-      }
+  .divider-bar {
+    display: flex;
+    justify-content: center;
+    gap: 8px;
+    margin: 30px auto;
+  }
 
-      nav.nav-links a {
-        font-size: 1.1rem;
-        padding: 10px 0;
-      }
-    }
+  .divider-bar div {
+    width: 40px;
+    height: 6px;
+    border-radius: 3px;
+  }
 
-    #page-content {
-      padding: 20px;
-      max-width: 700px;
-      margin: 0 auto;
-    }
+  .truth { background-color: var(--truth); }
+  .reliability { background-color: var(--reliability); }
+  .understanding { background-color: var(--understanding); }
 
-    h1 {
-      font-weight: 700;
-      font-size: 2.4em;
-      margin-bottom: 20px;
-    }
+  .link-bar {
+    margin-bottom: 40px;
+  }
 
-    p {
-      font-size: 1.05em;
-      line-height: 1.7em;
-      margin-bottom: 30px;
-    }
+  .link-bar a {
+    display: inline-block;
+    margin: 8px 12px;
+    color: var(--text);
+    text-decoration: none;
+    font-weight: 600;
+    border-bottom: 2px solid var(--reliability);
+    padding-bottom: 2px;
+    transition: color 0.2s ease, border-color 0.2s ease;
+  }
 
-    .divider-bar {
-      display: flex;
-      justify-content: center;
-      gap: 8px;
-      margin: 30px auto;
-    }
+  .link-bar a:hover {
+    color: var(--truth);
+    border-color: var(--truth);
+  }
 
-    .divider-bar div {
-      width: 40px;
-      height: 6px;
-      border-radius: 3px;
-    }
+  form {
+    background-color: var(--surface);
+    padding: 28px;
+    border-radius: 12px;
+    margin-top: 20px;
+    text-align: left;
+  }
 
-    .truth { background-color: var(--truth); }
-    .reliability { background-color: var(--reliability); }
-    .understanding { background-color: var(--understanding); }
+  form h2 {
+    font-size: 1.6em;
+    margin-bottom: 20px;
+    text-align: center;
+  }
 
-    .link-bar {
-      margin-bottom: 40px;
-    }
+  label {
+    display: block;
+    margin-top: 14px;
+    font-weight: bold;
+  }
 
-    .link-bar a {
-      display: inline-block;
-      margin: 8px 12px;
-      color: var(--text);
-      text-decoration: none;
-      font-weight: 600;
-      border-bottom: 2px solid var(--reliability);
-      padding-bottom: 2px;
-      transition: color 0.2s ease, border-color 0.2s ease;
-    }
+  input,
+  textarea {
+    width: 100%;
+    padding: 10px;
+    margin-top: 6px;
+    margin-bottom: 20px;
+    border-radius: 6px;
+    border: none;
+    font-size: 1em;
+  }
 
-    .link-bar a:hover {
-      color: var(--truth);
-      border-color: var(--truth);
-    }
+  button {
+    background-color: var(--truth);
+    color: white;
+    border: none;
+    padding: 12px 24px;
+    font-weight: bold;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+    font-size: 1em;
+  }
 
-    form {
-      background-color: var(--surface);
-      padding: 28px;
-      border-radius: 12px;
-      margin-top: 20px;
-      text-align: left;
-    }
-
-    form h2 {
-      font-size: 1.6em;
-      margin-bottom: 20px;
-      text-align: center;
-    }
-
-    label {
-      display: block;
-      margin-top: 14px;
-      font-weight: bold;
-    }
-
-    input,
-    textarea {
-      width: 100%;
-      padding: 10px;
-      margin-top: 6px;
-      margin-bottom: 20px;
-      border-radius: 6px;
-      border: none;
-      font-size: 1em;
-    }
-
-    button {
-      background-color: var(--truth);
-      color: white;
-      border: none;
-      padding: 12px 24px;
-      font-weight: bold;
-      border-radius: 6px;
-      cursor: pointer;
-      transition: background-color 0.2s ease;
-      font-size: 1em;
-    }
-
-    button:hover {
-      background-color: #45a049;
-    }
-  </style>
+  button:hover {
+    background-color: #45a049;
+  }
+</style>
 </head>
 <body>
 
