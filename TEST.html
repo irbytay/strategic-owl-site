@@ -30,7 +30,6 @@
       padding: 0;
     }
 
-    /* 🔝 Fixed Navigation Bar */
     nav.top-nav {
       background-color: var(--highlight);
       padding: 14px 20px;
@@ -106,14 +105,52 @@
 
     .container {
       max-width: 960px;
-      margin: 100px auto 0 auto;
+      margin: 120px auto 0 auto;
       padding: 24px;
+    }
+
+    .bar-indicator {
+      height: 20px;
+      width: 100%;
+      margin-bottom: 10px;
+    }
+
+    .bar-green {
+      background-color: var(--bar-green);
+    }
+
+    .bar-red {
+      background-color: var(--bar-red);
+    }
+
+    .text-truth {
+      color: var(--truth);
+    }
+
+    .text-reliability {
+      color: var(--reliability);
+    }
+
+    .text-understanding {
+      color: var(--understanding);
+    }
+
+    .total-score {
+      font-weight: bold;
+    }
+
+    .positive-score {
+      color: var(--truth);
+    }
+
+    .negative-score {
+      color: var(--bar-red);
     }
   </style>
 </head>
 
 <body>
- <nav class="top-nav">
+  <nav class="top-nav">
     <div class="nav-title">The Strategic Owl</div>
     <button class="menu-toggle" onclick="toggleMenu()">&#9776;</button>
     <div class="nav-links" id="mobileMenu">
@@ -283,12 +320,10 @@
       document.getElementById("role-filter").addEventListener("change", e => updatePersonDropdown(e.target.value));
       document.getElementById("person-select").addEventListener("change", showScores);
     });
+
+    function toggleMenu() {
+      document.getElementById("mobileMenu").classList.toggle("show");
+    }
   </script>
-  <script>
-  function toggleMenu() {
-    const menu = document.getElementById("navMenu");
-    menu.classList.toggle("show");
-  }
-</script>
 </body>
 </html>
