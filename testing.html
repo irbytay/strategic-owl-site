@@ -94,10 +94,11 @@
       cursor: pointer;
     }
 
+    /* 📱 Mobile Nav Fixes */
     @media (max-width: 600px) {
       nav {
         flex-direction: column;
-        align-items: flex-start;
+        align-items: stretch;
         padding: 12px;
       }
 
@@ -109,10 +110,12 @@
 
       .nav-links {
         display: none;
-        width: 100%;
         flex-direction: column;
-        gap: 8px;
-        margin-top: 10px;
+        gap: 6px;
+        width: 100%;
+        background-color: var(--highlight);
+        padding: 10px 0;
+        border-radius: 8px;
       }
 
       .nav-links.show {
@@ -121,11 +124,18 @@
 
       .nav-links a {
         font-size: 1rem;
-        padding: 10px 12px;
-        background-color: var(--surface);
-        width: 100%;
+        font-weight: 500;
+        padding: 12px 20px;
         text-align: left;
-        border-radius: 6px;
+        width: 100%;
+        color: var(--text);
+        background-color: transparent;
+        border: none;
+        transition: background-color 0.2s ease;
+      }
+
+      .nav-links a:hover {
+        background-color: var(--surface);
       }
     }
 
