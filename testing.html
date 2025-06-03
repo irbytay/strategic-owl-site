@@ -1,30 +1,182 @@
-<!-- ✅ testing.html as SPA-compatible fragment -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>The Strategic Owl – Home</title>
 
-<h1 class="nav-style-heading">T.R.U. OWL | Strategic Score Index</h1>
+  <!-- 🖋 Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&family=Playfair+Display:wght@500;700&display=swap" rel="stylesheet" />
 
-<h2 class="nav-style-heading">Start by Choosing a Category of Influence</h2>
-<select id="role-filter">
-  <option value="All">All</option>
-</select>
+  <style>
+    /* 🎨 Strategic Owl Color System */
+    :root {
+      --background: #0D1B2A;
+      --surface: #112240;
+      --highlight: #1A2B4C;
+      --text: #FFFFFF;
+      --text-muted: #7C8A9B;
+      --heading: #FFFFF0;
 
-<h2 class="nav-style-heading">Now, Select a Profile to View Their T.R.U. Owl Score</h2>
-<select id="person-select">
-  <option value="">-- Choose a name --</option>
-</select>
+      --truth: #28A745;
+      --reliability: #3B6CED;
+      --understanding: #D4AF37;
 
-<table id="score-table" style="display: none;">
-  <thead>
-    <tr>
-      <th>Category</th>
-      <th>Score</th>
-      <th>Explanation</th>
-    </tr>
-  </thead>
-  <tbody id="score-body"></tbody>
-</table>
+      --border: #2F2F5F;
+      --shadow: rgba(0, 0, 0, 0.4);
+    }
 
-<div id="total-score-box" style="display: none;">
-  <p id="total-score-comment"></p>
-</div>
+    /* 🔄 Reset */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
 
-<!-- External Script Injected via SPA (scriptMap in mobile.html) -->
+    /* 📄 Base Styling */
+    body {
+      background-color: var(--background);
+      color: var(--text);
+      font-family: 'Inter', sans-serif;
+      line-height: 1.6;
+      text-align: center;
+    }
+
+    /* 🧭 Navigation Bar */
+    nav {
+      background-color: var(--highlight);
+      color: var(--text);
+      padding: 12px 20px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      box-shadow: 0 2px 6px var(--shadow);
+    }
+
+    .nav-logo {
+      display: flex;
+      align-items: center;
+      font-family: 'Playfair Display', serif;
+      font-size: 1.3rem;
+      color: var(--text);
+      text-decoration: none;
+    }
+
+    .nav-logo img {
+      height: 36px;
+      margin-right: 10px;
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 16px;
+    }
+
+    .nav-links a {
+      color: var(--text);
+      text-decoration: none;
+      font-weight: 600;
+    }
+
+    .nav-links a:hover {
+      color: var(--text-muted);
+    }
+
+    /* 🧱 Main Content Container */
+    main {
+      padding: 24px;
+    }
+
+    /* 📊 T.R.U. OWL Score Pillars */
+    .divider-bar {
+      display: flex;
+      justify-content: space-between;
+      gap: 32px;
+      max-width: 360px;
+      margin: 40px auto 8px;
+    }
+
+    .divider-bar div {
+      height: 6px;
+      flex: 1;
+      border-radius: 3px;
+      box-shadow: 0 0 4px var(--shadow);
+    }
+
+    .truth { background-color: var(--truth); }
+    .reliability { background-color: var(--reliability); }
+    .understanding { background-color: var(--understanding); }
+
+    .divider-labels {
+      display: flex;
+      justify-content: space-between;
+      max-width: 360px;
+      margin: 0 auto 24px;
+      font-size: 0.85rem;
+      color: var(--text-muted);
+    }
+
+    .divider-labels span {
+      flex: 1;
+      text-align: center;
+    }
+
+    /* 📱 Mobile Navigation Layout */
+    @media (max-width: 600px) {
+      nav {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+
+      .nav-links {
+        flex-direction: column;
+        margin-top: 8px;
+        width: 100%;
+      }
+
+      .nav-links a {
+        padding: 8px 0;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <!-- 🧭 Navigation Header -->
+  <nav>
+    <!-- 🔗 Logo and Brand Text linking to home -->
+    <a href="home.html" class="nav-logo">
+      <img src="owl_logo_white.png" alt="Owl Logo" onerror="this.style.display='none'" />
+      The Strategic Owl
+    </a>
+
+    <!-- 📌 Page Links -->
+    <div class="nav-links">
+      <a href="home.html">Home</a>
+      <a href="base3.html">T.R.U. OWL</a>
+      <a href="newelections3.html">Election Security</a>
+      <a href="newcontact3.html">Contact</a>
+    </div>
+  </nav>
+
+  <!-- 🔽 Page Content -->
+  <main>
+    <h1>Welcome to The Strategic Owl</h1>
+    <p>This project is built to restore trust through truth, not tribalism.</p>
+
+    <!-- 📊 Truth / Reliability / Understanding Bars -->
+    <section class="tru-bars">
+      <div class="divider-bar">
+        <div class="truth"></div>
+        <div class="reliability"></div>
+        <div class="understanding"></div>
+      </div>
+      <div class="divider-labels">
+        <span>Truth</span>
+        <span>Reliability</span>
+        <span>Understanding</span>
+      </div>
+    </section>
+  </main>
+</body>
+</html>
