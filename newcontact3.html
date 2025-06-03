@@ -311,47 +311,45 @@
   </div>
 
   <!-- 📬 Request Form -->
-<form action="https://formspree.io/f/mwpodgrw" method="POST" style="background-color: #1A2B4C; padding: 28px; border-radius: 12px; text-align: left; margin: 0 auto 60px; max-width: 640px; box-shadow: 0 4px 12px rgba(0,0,0,0.3);">
+<form id="score-request-form" style="background-color: #1A2B4C; padding: 28px; border-radius: 12px; text-align: left; margin: 0 auto 60px; max-width: 640px; box-shadow: 0 4px 12px rgba(0,0,0,0.3);">
   <h2 style="font-size: 1.6em; margin-bottom: 20px; text-align: center;">Submit a Score Request</h2>
 
   <label for="name" style="display: block; margin-top: 14px; font-weight: bold;">Your Name or Alias</label>
   <input type="text" id="name" name="name" required style="width: 100%; padding: 10px; margin-top: 6px; margin-bottom: 20px; border-radius: 6px; border: none; font-size: 1em;" />
 
   <label for="request" style="display: block; margin-top: 14px; font-weight: bold;">Who should we score, and why?</label>
-  <textarea id="request" name="message" rows="5" placeholder="Links or context help us verify faster. Say as much or as little as you like." required style="width: 100%; padding: 10px; margin-top: 6px; margin-bottom: 20px; border-radius: 6px; border: none; font-size: 1em;"></textarea>
+  <textarea id="request" name="message" rows="5" required style="width: 100%; padding: 10px; margin-top: 6px; margin-bottom: 20px; border-radius: 6px; border: none; font-size: 1em;" placeholder="Links or context help us verify faster. Say as much or as little as you like."></textarea>
 
   <button type="submit" style="background-color: #4CAF50; color: white; border: none; padding: 12px 24px; font-weight: bold; border-radius: 6px; cursor: pointer; font-size: 1em;">Send Request</button>
 
-  <p style="margin-top: 16px; font-size: 0.9em; color: var(--text-muted); text-align: center;">
-    Every message is reviewed. Credibility is measured, not assumed.
-  </p>
+  <p id="form-response" style="margin-top: 16px; font-size: 0.9em; color: var(--text-muted); text-align: center;"></p>
 </form>
-     <!-- 🎯 Divider -->
-    <section class="divider-section">
-      <div class="divider-bar">
-        <div class="truth"></div>
-        <div class="reliability"></div>
-        <div class="understanding"></div>
-      </div>
-      <div class="divider-labels">
-        <span>Truth</span>
-        <span>Reliability</span>
-        <span>Understanding</span>
-      </div>
-    </section>
-  </div>
-  
-  </script>
-  <script>
-  function toggleMenu() {
-    const menu = document.getElementById("navMenu");
-    menu.classList.toggle("show");
-  }
-</script>
-  <script>
-  function toggleMenu() {
-    document.getElementById("navMenu").classList.toggle("show");
-  }
+
+<script>
+  document.getElementById('score-request-form').addEventListener('submit', async function (e) {
+    e.preventDefault();
+
+    const form = e.target;
+    const formData = new FormData(form);
+
+    try {
+      const res = await fetch("https://formspree.io/f/mwpodgrw", {
+        method: "POST",
+        body: formData,
+        headers: { 'Accept': 'application/json' }
+      });
+
+      const responseText = document.getElementById('form-response');
+      if (res.ok) {
+        responseText.textContent = "✅ Thanks for your submission! We'll review it shortly.";
+        form.reset();
+      } else {
+        responseText.textContent = "⚠️ There was a problem submitting your request. Try again later.";
+      }
+    } catch (err) {
+      document.getElementById('form-response').textContent = "⚠️ Network error. Please try again.";
+    }
+  });
 </script>
 
 </body>
