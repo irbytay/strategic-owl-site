@@ -4,10 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>T.R.U. OWL Viewer</title>
-
-  <!-- Fonts -->
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet" />
-
   <style>
     body {
       background-color: #0D1B2A;
@@ -17,64 +14,40 @@
     }
 
     select {
-      padding: 8px;
-      margin-right: 10px;
-      background-color: #112240;
-      color: white;
-      border: 1px solid #444;
+      margin: 10px 10px 20px 0;
+      padding: 5px 10px;
     }
 
-    #score-table {
+    table {
       width: 100%;
-      margin-top: 20px;
       border-collapse: collapse;
+      margin-top: 20px;
     }
 
-    #score-table th, #score-table td {
+    th, td {
+      padding: 12px;
       border: 1px solid #444;
-      padding: 10px;
       text-align: center;
     }
 
-    .text-truth {
-      color: #28A745;
-      font-weight: bold;
-    }
+    .text-truth { color: #28A745; font-weight: bold; }
+    .text-reliability { color: #3B6CED; font-weight: bold; }
+    .text-understanding { color: #D4AF37; font-weight: bold; }
 
-    .text-reliability {
-      color: #3B6CED;
-      font-weight: bold;
-    }
-
-    .text-understanding {
-      color: #D4AF37;
-      font-weight: bold;
-    }
-
-    .total-score {
-      background-color: #1A2B4C;
-    }
-
-    .positive-score {
-      color: #4FDBA6;
-      font-weight: bold;
-    }
-
-    .negative-score {
-      color: #FF6B6B;
-      font-weight: bold;
-    }
+    .positive-score { color: #4FDBA6; font-weight: bold; }
+    .negative-score { color: #FF6B6B; font-weight: bold; }
 
     .score-bar {
-      display: inline-flex;
+      display: flex;
       align-items: center;
-      gap: 8px;
+      justify-content: center;
+      gap: 10px;
     }
 
     .bar-indicator {
-      width: 10px;
-      height: 20px;
-      border-radius: 3px;
+      width: 14px;
+      height: 14px;
+      border-radius: 7px;
     }
 
     .bar-green {
@@ -83,6 +56,10 @@
 
     .bar-red {
       background-color: #FF6B6B;
+    }
+
+    .total-score {
+      background-color: #1A2B4C;
     }
   </style>
 </head>
@@ -93,7 +70,7 @@
   <select id="role-filter"></select>
   <select id="person-select"></select>
 
-  <table id="score-table" style="display:none;">
+  <table id="score-table" style="display: none;">
     <thead>
       <tr>
         <th>Category</th>
@@ -104,7 +81,7 @@
     <tbody id="score-body"></tbody>
   </table>
 
-  <div id="total-score-box" style="display:none;">
+  <div id="total-score-box" style="display: none;">
     <p id="total-score-comment"></p>
   </div>
 
@@ -224,7 +201,7 @@
       ];
 
       let total = 0;
-      scores.forEach(({ label, value, raw, mult, comment, className }) => {
+      scores.forEach(({ label, value, comment, className }) => {
         const tr = document.createElement("tr");
         tr.innerHTML = `
           <td class="${className}">${label}</td>
@@ -234,7 +211,10 @@
         total += value;
       });
 
-      const barClass = total >= 0 ? "bar-green" : "bar-red";
+      const lowerSummary = summaryBelowTable.toLowerCase();
+      const isPositive = /credible|strong|accurate|well-informed|trusted/.test(lowerSummary);
+      const barClass = isPositive ? "bar-green" : "bar-red";
+
       const totalRow = document.createElement("tr");
       totalRow.innerHTML = `
         <td class="total-score"><strong>Total Score</strong></td>
