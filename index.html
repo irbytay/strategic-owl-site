@@ -249,6 +249,12 @@
   .bar-green {
     background-color: var(--bar-green);
   }
+    @media (max-width: 500px) {
+  #legal-popup > div {
+    padding: 24px 16px;
+  }
+}
+    
 </style>
 
 <nav class="top-nav">
@@ -280,8 +286,30 @@
         <span>Understanding</span>
       </div>
     </section>
-   <div id="legal-popup" style="position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-color: rgba(13, 27, 42, 0.95); color: white; display: flex; justify-content: center; align-items: center; z-index: 9999;">
-  <div style="max-width: 680px; background-color: #112240; padding: 32px; border-radius: 12px; box-shadow: 0 4px 20px rgba(0,0,0,0.4); text-align: center;">
+   <div id="legal-popup" style="
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(13, 27, 42, 0.95);
+  color: white;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 9999;
+">
+  <div style="
+    width: 90%;
+    max-width: 680px;
+    background-color: #112240;
+    padding: 32px;
+    border-radius: 12px;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.4);
+    text-align: center;
+    overflow-y: auto;
+    max-height: 90vh;
+  ">
     <h1 style="color: var(--heading);">Legal Disclosure</h1>
     <p>
       This site is protected under the First Amendment of the United States Constitution. All content herein is published for educational and informational purposes and does not intend to defame, mislead, or incite. Every claim is supported by public records, sourced materials, or verifiable data — and transparency is built into the system to ensure I’m held to the same standards I use to assess others.
@@ -299,8 +327,21 @@
       Your initials are optional, but your participation is part of a broader mission to restore trust in what’s real.
     </p>
 
-    <button onclick="handleAgreement()" style="margin-top: 16px; padding: 10px 20px; background-color: var(--understanding); color: #0D1B2A; border: none; border-radius: 6px; font-weight: bold;">Join the OWL Network</button>
-    <small style="display: block; margin-top: 10px; color: var(--text-muted);">This moment will be remembered for 30 days.</small>
+    <button onclick="handleAgreement()" style="
+      margin-top: 16px;
+      padding: 10px 20px;
+      background-color: var(--understanding);
+      color: #0D1B2A;
+      border: none;
+      border-radius: 6px;
+      font-weight: bold;
+    ">Join the OWL Network</button>
+    
+    <small style="
+      display: block;
+      margin-top: 10px;
+      color: var(--text-muted);
+    ">This moment will be remembered for 30 days.</small>
   </div>
 </div>
    
