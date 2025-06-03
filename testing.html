@@ -36,52 +36,93 @@
       font-family: 'Inter', sans-serif;
     }
 
+    /* 🌐 Top Nav */
     nav {
       background-color: var(--highlight);
-      width: 100%;
-      height: 60px;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      padding: 0 24px;
-      box-shadow: 0 2px 4px var(--shadow);
       position: sticky;
       top: 0;
       z-index: 1000;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 12px 20px;
+      box-shadow: 0 2px 4px var(--shadow);
     }
 
-    .nav-title {
+    .nav-logo {
+      display: flex;
+      align-items: center;
       font-family: 'Playfair Display', serif;
-      font-size: 1.5rem;
+      font-size: 1.4rem;
       color: var(--text);
       text-decoration: none;
     }
 
     .nav-links {
       display: flex;
-      align-items: center;
+      gap: 20px;
     }
 
     .nav-links a {
-      margin-left: 20px;
-      text-decoration: none;
       color: var(--text);
+      text-decoration: none;
       font-weight: 600;
       font-size: 1rem;
     }
 
+    .nav-toggle {
+      display: none;
+      font-size: 1.8rem;
+      background: none;
+      border: none;
+      color: var(--text);
+      cursor: pointer;
+    }
+
+    /* 📱 Mobile Nav */
+    @media (max-width: 600px) {
+      .nav-links {
+        display: none;
+        flex-direction: row;
+        justify-content: space-around;
+        width: 100%;
+        background-color: var(--highlight);
+        position: absolute;
+        top: 60px;
+        left: 0;
+        padding: 10px 0;
+      }
+
+      .nav-links.show {
+        display: flex;
+      }
+
+      .nav-toggle {
+        display: block;
+      }
+    }
+
+    /* 📚 Headings */
     h1, h2 {
       font-family: 'Playfair Display', serif;
       text-align: center;
       color: var(--heading);
-      margin: 32px 0 20px;
+      margin: 32px 0 12px;
     }
 
+    .subtext {
+      text-align: center;
+      color: var(--text-muted);
+      font-size: 1rem;
+      margin-bottom: 28px;
+    }
+
+    /* 🎨 TRU Divider Bars */
     .divider-section {
       display: flex;
       flex-direction: column;
       align-items: center;
-      margin: 40px auto 20px;
+      margin: 30px auto;
     }
 
     .divider-bar {
@@ -98,8 +139,8 @@
       box-shadow: 0 0 4px var(--shadow);
     }
 
-    .truth { background-color: var(--truth); }
-    .reliability { background-color: var(--reliability); }
+    .truth        { background-color: var(--truth); }
+    .reliability  { background-color: var(--reliability); }
     .understanding { background-color: var(--understanding); }
 
     .divider-labels {
@@ -129,9 +170,10 @@
 </head>
 
 <body>
-  <!-- 🔝 Navigation Menu -->
+  <!-- 🧭 Navigation -->
   <nav>
-    <a href="home.html" class="nav-title">The Strategic Owl</a>
+    <a href="home.html" class="nav-logo">The Strategic Owl</a>
+    <button class="nav-toggle" onclick="document.querySelector('.nav-links').classList.toggle('show')">☰</button>
     <div class="nav-links">
       <a href="home.html">Home</a>
       <a href="base3.html">T.R.U. OWL</a>
@@ -140,9 +182,9 @@
     </div>
   </nav>
 
-  <!-- 🎯 Welcome Heading -->
+  <!-- 🪶 Welcome Message -->
   <h1>Welcome to The Strategic Owl</h1>
-  <h2>This project is built to restore trust through truth — not tribes.</h2>
+  <p class="subtext">This project is built to restore trust through truth — not tribes.</p>
 
   <!-- 🎨 TRU Legend -->
   <div class="divider-section">
@@ -158,9 +200,9 @@
     </div>
   </div>
 
-  <!-- 🧱 Placeholder Section -->
+  <!-- 🧱 Template Body Placeholder -->
   <div class="main-placeholder">
-    <p>This is a blank template page. Add your unique content here as needed.</p>
+    <p>This is your Strategic Owl template. Add your custom content below this line.</p>
   </div>
 </body>
 </html>
