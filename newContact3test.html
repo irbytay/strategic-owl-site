@@ -1,10 +1,13 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
+  <meta charset="UTF" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Contact Us – The Strategic Owl</title>
-  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600&display=swap" rel="stylesheet" />
+  <title>The Strategic Owl</title>
+
+  <!-- Font: Only Playfair Display -->
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;600;700&display=swap" rel="stylesheet" />
+
   <style>
     :root {
       --background: #0D1B2A;
@@ -19,12 +22,23 @@
       --shadow: rgba(0, 0, 0, 0.3);
     }
 
-    html, body {
-      font-family: 'Playfair Display', serif;
+    html {
+      font-family: 'Playfair Display', serif !important;
+    }
+
+    *, *::before, *::after {
+      font-family: 'Playfair Display', serif !important;
+      box-sizing: border-box;
       margin: 0;
       padding: 0;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    body {
       background-color: var(--background);
       color: var(--text);
+      padding-top: 64px;
+      text-align: center;
     }
 
     header {
@@ -39,7 +53,7 @@
       align-items: center;
       padding: 0 20px;
       z-index: 1000;
-      box-shadow: 0 2px 6px var(--shadow);
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
     }
 
     .nav-logo {
@@ -50,6 +64,7 @@
       font-weight: 600;
       color: var(--text);
       font-size: 1.25rem;
+      white-space: nowrap;
     }
 
     .nav-logo img {
@@ -76,12 +91,25 @@
       text-decoration: none;
       font-weight: 600;
       font-size: 1rem;
+      position: relative;
     }
 
-    nav.nav-links a:hover {
-      color: var(--truth);
+    nav.nav-links a::after {
+      content: "";
+      position: absolute;
+      left: 0;
+      bottom: -4px;
+      width: 0%;
+      height: 2px;
+      background-color: var(--reliability);
+      transition: width 0.3s ease;
     }
 
+    nav.nav-links a:hover::after {
+      width: 100%;
+    }
+
+    /* 🎯 Mobile Styles */
     @media (max-width: 768px) {
       .menu-icon {
         display: block;
@@ -98,30 +126,40 @@
         gap: 18px;
         padding: 20px 0;
         border-bottom: 2px solid var(--reliability);
+        z-index: 999;
       }
 
       nav.nav-links.active {
         display: flex;
       }
+
+      nav.nav-links a {
+        font-size: 1.1rem;
+        padding: 10px 0;
+      }
     }
 
     #page-content {
-      padding: 100px 20px 40px;
-      max-width: 700px;
-      margin: 0 auto;
-      text-align: center;
+      padding: 20px;
     }
 
     h1 {
-      font-size: 2.4em;
+      font-weight: 700;
+      font-size: 2rem;
       margin-bottom: 10px;
     }
 
+    p {
+      font-size: 1rem;
+      color: var(--text-muted);
+    }
+
+    /* 🎨 TRU Divider Bars */
     .divider-section {
       display: flex;
       flex-direction: column;
       align-items: center;
-      margin: 30px auto 20px;
+      margin: 40px auto;
     }
 
     .divider-bar {
@@ -156,92 +194,31 @@
       font-size: 0.85rem;
       color: var(--text-muted);
     }
-
-    .link-bar {
-      margin: 30px 0;
-    }
-
-    .link-bar a {
-      display: inline-block;
-      margin: 8px 12px;
-      color: var(--text);
-      text-decoration: none;
-      font-weight: 600;
-      border-bottom: 2px solid var(--reliability);
-      padding-bottom: 2px;
-      transition: color 0.2s ease, border-color 0.2s ease;
-    }
-
-    .link-bar a:hover {
-      color: var(--truth);
-      border-color: var(--truth);
-    }
-
-    form {
-      background-color: var(--surface);
-      padding: 28px;
-      border-radius: 12px;
-      margin-top: 20px;
-      text-align: left;
-    }
-
-    form h2 {
-      text-align: center;
-      font-size: 1.6em;
-      margin-bottom: 20px;
-    }
-
-    label {
-      display: block;
-      margin-top: 14px;
-      font-weight: bold;
-    }
-
-    input, textarea {
-      width: 100%;
-      padding: 10px;
-      margin-top: 6px;
-      margin-bottom: 20px;
-      border-radius: 6px;
-      border: none;
-      font-size: 1em;
-    }
-
-    button {
-      background-color: var(--truth);
-      color: white;
-      border: none;
-      padding: 12px 24px;
-      font-weight: bold;
-      border-radius: 6px;
-      cursor: pointer;
-      font-size: 1em;
-    }
-
-    button:hover {
-      background-color: #219E3A;
-    }
   </style>
 </head>
 <body>
+
+  <!-- 🔒 Fixed Nav -->
   <header>
-    <a href="TRUOWL.html" class="nav-logo">
-      <img src="owl_logo_white.png" alt="Owl Logo" />
+    <a href="home.html" class="nav-logo">
+      <img src="owl_logo_white.png" alt="Owl Logo" onerror="this.style.display='none';" />
       The Strategic Owl
     </a>
-    <button class="menu-icon" onclick="document.querySelector('nav.nav-links').classList.toggle('active')">☰</button>
-    <nav class="nav-links">
-      <a href="base.html">T.R.U. Owl</a>
+    <button class="menu-icon" onclick="toggleMobileNav()">☰</button>
+    <nav id="mainNav" class="nav-links">
+      <a href="base.html">T.R.U. OWL</a>
       <a href="newelections.html">Election Security</a>
-      <a href="newheritagefoundation.html">Election Fraud</a>
-      <a href="newstatefraud.html">Voter Fraud by State</a>
-      <a href="newcontact.html">Contact</a>
+      <a href="newstatefraud.html">State Fraud</a>
+      <a href="newcontact3test.html">Contact</a>
     </nav>
   </header>
 
+  <!-- 📄 Page Content -->
   <div id="page-content">
-    <h1>Contact Us</h1>
+    <h1>Welcome</h1>
+    <p>This is the mobile-first version of The Strategic Owl.</p>
 
+    <!-- 🎯 TRU Divider Bars -->
     <section class="divider-section">
       <div class="divider-bar">
         <div class="truth"></div>
@@ -254,28 +231,14 @@
         <span>Understanding</span>
       </div>
     </section>
-
-    <div class="link-bar">
-      <a href="https://strategicowl.substack.com/" target="_blank">Substack</a>
-      <a href="https://www.facebook.com/the.strategic.owl" target="_blank">Facebook</a>
-      <a href="https://bsky.app/profile/thestrategicowl.bsky.social" target="_blank">BlueSky</a>
-      <a href="mailto:team@thestrategicowl.com">Email Us</a>
-    </div>
-
-    <form action="https://formspree.io/f/mwpodgrw" method="POST">
-      <h2>Request a Credibility Score</h2>
-
-      <label for="name">Your Name (Alias)</label>
-      <input type="text" id="name" name="name" required />
-
-      <label for="email">Your Email (Optional)</label>
-      <input type="email" id="email" name="_replyto" />
-
-      <label for="request">Who would you like us to score?</label>
-      <textarea id="request" name="message" rows="5" placeholder="Include any context or links that help explain your request." required></textarea>
-
-      <button type="submit">Send Request</button>
-    </form>
   </div>
+
+  <!-- 📜 Mobile Nav Script -->
+  <script>
+    function toggleMobileNav() {
+      document.getElementById('mainNav')?.classList.toggle('active');
+    }
+  </script>
+
 </body>
 </html>
