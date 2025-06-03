@@ -146,6 +146,12 @@
       gap: 20px;
       box-shadow: 0 3px 8px var(--shadow);
     }
+    @media (max-width: 600px) {
+  .dropdown-container {
+    flex-direction: column;
+    align-items: center;
+  }
+}
 
     .nav-links.show {
       display: flex;
@@ -255,6 +261,11 @@
   font-weight: 600;
   color: inherit;
 }
+    .dropdown-container {
+  display: flex;
+  justify-content: center;
+  margin: 20px 0;
+}
 </style>
 </head>
   <body>
@@ -291,9 +302,11 @@
       </div>
     </section>
    
-   <select id="person-select" onchange="showScores()">
-  <option value="">-- Choose a name --</option>
-</select>
+   <div class="dropdown-container">
+  <select id="person-select" onchange="showScores()">
+    <option value="">-- Choose a name --</option>
+  </select>
+</div>
 
 <div class="table-wrapper">
   <table id="score-table" style="display: none;">
