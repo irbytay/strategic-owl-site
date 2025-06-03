@@ -88,6 +88,45 @@
   color: var(--text);
   font-size: 1.25rem;
 }
+    /* 🎨 TRU Bars */
+  .divider-section {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin: 40px auto;
+  }
+
+  .divider-bar {
+    display: flex;
+    gap: 12px;
+    width: 340px;
+  }
+
+  .divider-bar div {
+    width: 108px;
+    height: 6px;
+    border-radius: 3px;
+    box-shadow: 0 0 4px var(--shadow);
+  }
+
+  .truth { background-color: var(--truth); }
+  .reliability { background-color: var(--reliability); }
+  .understanding { background-color: var(--understanding); }
+
+  .divider-labels {
+    display: flex;
+    justify-content: space-between;
+    gap: 12px;
+    width: 340px;
+    margin-top: 8px;
+  }
+
+  .divider-labels span {
+    width: 108px;
+    text-align: center;
+    font-size: 0.85rem;
+    color: var(--text-muted);
+  }
 
   @media (max-width: 768px) {
     .menu-toggle {
@@ -206,6 +245,19 @@
 </nav>
   <div class="container">
     <h1>TRU OWL Viewer</h1>
+    <!-- 🎯 Divider -->
+    <section class="divider-section">
+      <div class="divider-bar">
+        <div class="truth"></div>
+        <div class="reliability"></div>
+        <div class="understanding"></div>
+      </div>
+      <div class="divider-labels">
+        <span>Truth</span>
+        <span>Reliability</span>
+        <span>Understanding</span>
+      </div>
+    </section>
     <select id="role-filter"></select>
     <select id="person-select"></select>
 
