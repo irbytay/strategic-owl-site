@@ -283,7 +283,23 @@
       </div>
     </section>
    
-   
+   <select id="person-select" onchange="showScores()">
+  <option value="">-- Choose a name --</option>
+</select>
+
+<div class="table-wrapper">
+  <table id="score-table" style="display: none;">
+    <thead>
+      <tr>
+        <th>Category</th>
+        <th>Score</th>
+        <th>Explanation</th>
+      </tr>
+    </thead>
+    <tbody id="score-body"></tbody>
+  </table>
+</div>
+  </div>
 
      <!-- 🎯 Divider -->
     <section class="divider-section">
