@@ -21,6 +21,88 @@
       --bar-red: #FF4C4C;
       --bar-green: #28A745;
     }
+    /* 🧭 Responsive Nav Menu */
+nav.top-nav {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 999;
+  background-color: var(--highlight);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 14px 20px;
+  box-shadow: 0 2px 6px var(--shadow);
+}
+
+.nav-title {
+  font-family: 'Playfair Display', serif;
+  font-size: 22px;
+  color: var(--understanding);
+}
+
+.menu-toggle {
+  display: none;
+  font-size: 24px;
+  cursor: pointer;
+  color: var(--text);
+  background: none;
+  border: none;
+}
+
+.nav-links {
+  display: flex;
+  gap: 28px;
+}
+
+.nav-links a {
+  color: var(--text-muted);
+  text-decoration: none;
+  font-size: 15px;
+  transition: color 0.3s ease;
+}
+
+.nav-links a:hover {
+  color: var(--understanding);
+}
+
+/* 📱 Mobile Behavior */
+@media (max-width: 768px) {
+  .menu-toggle {
+    display: block;
+  }
+
+  .nav-links {
+    display: none;
+    flex-direction: column;
+    align-items: center;
+    background-color: var(--highlight);
+    position: absolute;
+    top: 58px;
+    left: 0;
+    width: 100%;
+    padding: 10px 0;
+    gap: 16px;
+    box-shadow: 0 3px 8px var(--shadow);
+  }
+
+  .nav-links.show {
+    display: flex;
+    animation: fadeSlideDown 0.3s ease;
+  }
+
+  @keyframes fadeSlideDown {
+    from {
+      opacity: 0;
+      transform: translateY(-10px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+}
 
     body {
       background-color: var(--background);
@@ -147,6 +229,15 @@
 
 <body>
   <nav class="top-nav">
+  <div class="nav-title">The Strategic Owl</div>
+  <button class="menu-toggle" onclick="toggleMenu()">☰</button>
+  <div class="nav-links" id="navMenu">
+    <a href="index.html">Home</a>
+    <a href="TRUOWL.html">T.R.U. Owl</a>
+    <a href="newelections.html">Election Security</a>
+    <a href="newcontact.html">Contact</a>
+  </div>
+</nav><nav class="top-nav">
     <div class="nav-title">The Strategic Owl</div>
     <div class="nav-links">
       <a href="index.html">Home</a>
@@ -316,5 +407,11 @@
       document.getElementById("person-select").addEventListener("change", showScores);
     });
   </script>
+  <script>
+  function toggleMenu() {
+    const menu = document.getElementById("navMenu");
+    menu.classList.toggle("show");
+  }
+</script>
 </body>
 </html>
