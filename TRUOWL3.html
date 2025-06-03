@@ -291,9 +291,15 @@
   font-size: 0.9rem;
   color: var(--text-muted);
 }
-    .role-box p strong {
-  color: var(--understanding); /* or whatever color you want */
-  font-weight: 600;
+   /* Fix so span color wins over the strong override */
+.text-truth strong {
+  color: var(--truth) !important;
+}
+.text-reliability strong {
+  color: var(--reliability) !important;
+}
+.text-understanding strong {
+  color: var(--understanding) !important;
 }
 </style>
 
