@@ -117,7 +117,7 @@ const TRU_MULTIPLIERS = {
       const tr = document.createElement("tr");
       tr.innerHTML = `
         <td class="${className}">${label}</td>
-        <td class="${className}">${value >= 0 ? "+" : ""}${value.toFixed(0)} <small>(${raw.toFixed(1)} × ${mult.toFixed(1)})</small></td>
+        <td class="${className}">${value >= 0 ? "+" : ""}${value.toFixed(0)}</td>
         <td>${comment}</td>`;
       tbody.appendChild(tr);
       total += value;
