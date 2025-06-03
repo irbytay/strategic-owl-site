@@ -154,42 +154,48 @@
 <body>
   <div class="container">
     <h1>Legal Disclosure</h1>
-    <p>This site is protected by the First Amendment. By continuing, you agree that this platform exists to seek and share truth—not to protect feelings or parties.</p>
+    <p>
+      This site is protected under the First Amendment of the United States Constitution. All content herein is published for educational and informational purposes and does not intend to defame, mislead, or incite. Every claim is supported by public records, sourced materials, or verifiable data — and transparency is built into the system to ensure I’m held to the same standards I use to assess others.
+    </p>
+    <p>
+      Now, if that sounds threatening… it shouldn’t.  
+      Unless you’re more comfortable in a world where questions are threats and facts feel suspicious.  
+      Here, we don’t censor — we cite.  
+      And if the truth stings a little, maybe it’s because the T.R.U. OWL Score hits closer to home than expected.
+    </p>
 
-    <!-- Button Option -->
-    <button id="agree-button">Enter the OWL System</button>
+    <h2>Join the Watch</h2>
+    <p>
+      By continuing, you’re not just entering a site — you’re stepping into a movement rooted in facts, accountability, and independent thinking.  
+      Your initials are optional, but your participation is part of a broader mission to restore trust in what’s real.
+    </p>
 
-    <small>Your click will be remembered for 30 days.</small>
+    <input type="text" id="initials" name="initials" placeholder="Your initials (optional, but logged for transparency)" style="margin-bottom: 12px; padding: 6px; width: 280px;" />
+
+    <button onclick="handleAgreement()">Join the OWL Network</button>
+    <small style="display: block; margin-top: 8px;">This moment will be remembered for 30 days.</small>
   </div>
 
-  <!-- Hidden Form -->
   <form id="agreement-form" action="https://formspree.io/f/mwpbekge" method="POST" style="display: none;">
-    <input type="hidden" name="agreement" value="User agreed to disclosure" />
+    <input type="hidden" name="agreement" value="User agreed to Strategic Owl legal terms and joined the OWL Watch." />
+    <input type="hidden" id="submitted-initials" name="submitted-initials" value="" />
   </form>
 
   <script>
-    function handleAgreementClick() {
+    function handleAgreement() {
+      const initials = document.getElementById('initials').value.trim() || "Anonymous";
+      document.getElementById('submitted-initials').value = initials;
+
       const now = new Date();
-      const expiry = new Date(now.getTime() + 30 * 24 * 60 * 60 * 1000); // 30 days
+      const expiry = new Date(now.getTime() + 30 * 24 * 60 * 60 * 1000);
       localStorage.setItem('agreedToDisclosure', expiry.toISOString());
 
       document.getElementById('agreement-form').submit();
 
       setTimeout(() => {
-        window.location.href = "about.html"; // change to your actual page
+        window.location.href = "about.html"; // Adjust to your desired landing page
       }, 300);
     }
-
-    document.getElementById('agree-button').addEventListener('click', function (e) {
-      e.preventDefault();
-      handleAgreementClick();
-    });
-
-    document.getElementById('enter-link').addEventListener('click', function (e) {
-      e.preventDefault();
-      handleAgreementClick();
-    });
   </script>
-</body>
 </body>
 </html>
