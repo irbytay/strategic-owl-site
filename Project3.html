@@ -2,8 +2,8 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
-  <title>The Strategic Owl | Mobile First</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>The Strategic Owl</title>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet" />
   <style>
     :root {
@@ -13,9 +13,8 @@
       --text: #FFFFFF;
       --text-muted: #7C8A9B;
       --heading: #FFFFF0;
-
       --truth: #28A745;
-      --reliability: #3B6CED; /* 🔵 Blue accent */
+      --reliability: #3B6CED;
       --understanding: #D4AF37;
       --shadow: rgba(0, 0, 0, 0.3);
     }
@@ -27,25 +26,25 @@
       -webkit-tap-highlight-color: transparent;
     }
 
-    html, body {
-      font-family: 'Inter', sans-serif; /* ✅ Universal font */
+    body {
+      font-family: 'Inter', sans-serif;
       background-color: var(--background);
       color: var(--text);
-      padding-top: 60px;
-      text-align: center; /* ✅ Center all text */
+      padding-top: 64px;
+      text-align: center;
     }
 
     header {
-      background-color: var(--highlight);
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      padding: 14px 20px;
       position: fixed;
       top: 0;
       left: 0;
       right: 0;
-      height: 60px;
+      height: 64px;
+      background-color: var(--highlight);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 0 20px;
       z-index: 1000;
       box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
     }
@@ -53,142 +52,66 @@
     .nav-logo {
       display: flex;
       align-items: center;
-      gap: 8px;
-      color: var(--text);
+      gap: 10px;
       text-decoration: none;
       font-weight: 600;
-      font-size: 1.2rem;
+      color: var(--text);
+      font-size: 1.25rem;
+      white-space: nowrap;
     }
 
     .nav-logo img {
-      height: 28px;
-      width: 28px;
+      height: 30px;
+      width: 30px;
     }
 
-    .menu-icon {
-      background: none;
-      border: none;
-      color: var(--text);
-      font-size: 28px; /* Increased */
-      cursor: pointer;
-    }
-
-    /* ✅ MOBILE NAV */
-    .mobile-nav {
-      position: absolute;
-      top: 60px;
-      left: 0;
-      background-color: var(--surface);
-      width: 100%;
-      max-width: 260px;
-      padding: 12px 20px;
-      display: none;
-      flex-direction: column;
-      gap: 16px;
-      border-right: 2px solid var(--reliability);
-      box-shadow: 2px 0 6px rgba(0, 0, 0, 0.4);
-    }
-
-    .mobile-nav.active {
+    nav.nav-links {
       display: flex;
+      gap: 28px;
     }
 
-    .mobile-nav a {
-      text-decoration: none;
+    nav.nav-links a {
       color: var(--text);
+      text-decoration: none;
       font-weight: 600;
-      position: relative;
       font-size: 1rem;
-      padding-bottom: 6px;
+      position: relative;
     }
 
-    .mobile-nav a::after {
+    nav.nav-links a::after {
       content: "";
       position: absolute;
       left: 0;
-      bottom: 0;
+      bottom: -4px;
+      width: 0%;
       height: 2px;
+      background-color: var(--reliability); /* Blue underline */
+      transition: width 0.3s ease;
+    }
+
+    nav.nav-links a:hover::after {
       width: 100%;
-      background-color: var(--reliability); /* 🔵 Blue underline */
+    }
+
+    @media (max-width: 768px) {
+      nav.nav-links {
+        display: none;
+      }
     }
 
     #page-content {
       padding: 20px;
     }
 
-    /* 🎨 TRU Divider Bars */
-    .divider-section {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      margin: 30px auto;
+    h1 {
+      font-weight: 700;
+      font-size: 2rem;
+      margin-bottom: 10px;
     }
 
-    .divider-bar {
-      display: flex;
-      justify-content: space-between;
-      gap: 12px;
-      width: 340px;
-    }
-
-    .divider-bar div {
-      width: 108px;
-      height: 6px;
-      border-radius: 3px;
-      box-shadow: 0 0 4px var(--shadow);
-    }
-
-    .truth { background-color: var(--truth); }
-    .reliability { background-color: var(--reliability); }
-    .understanding { background-color: var(--understanding); }
-
-    .divider-labels {
-      display: flex;
-      justify-content: space-between;
-      gap: 12px;
-      width: 340px;
-      margin-top: 8px;
-    }
-
-    .divider-labels span {
-      width: 108px;
-      text-align: center;
-      font-size: 0.85rem;
+    p {
+      font-size: 1rem;
       color: var(--text-muted);
-    }
-
-    /* ✅ DESKTOP FIXES */
-    @media (min-width: 768px) {
-      .menu-icon {
-        display: none;
-      }
-
-      .mobile-nav {
-        display: flex !important;
-        flex-direction: row;
-        justify-content: flex-end;
-        align-items: center;
-        position: absolute;
-        top: 0;
-        right: 20px;
-        background: none;
-        border: none;
-        box-shadow: none;
-        width: auto;
-        padding: 0;
-        height: 60px;
-        gap: 24px;
-      }
-
-      .mobile-nav a {
-        font-size: 1rem;
-        padding: 6px 0;
-      }
-
-      .mobile-nav a::after {
-        height: 2px;
-        background-color: var(--reliability); /* Keep blue underline */
-      }
     }
   </style>
 </head>
@@ -199,10 +122,7 @@
       <img src="owl_logo_white.png" alt="Owl Logo" onerror="this.style.display='none';" />
       The Strategic Owl
     </a>
-    <button class="menu-icon" onclick="toggleMobileNav()">☰</button>
-
-    <!-- ✅ Desktop nav stays inline and to the right -->
-    <nav id="mobileNav" class="mobile-nav">
+    <nav class="nav-links">
       <a href="base.html">T.R.U. OWL</a>
       <a href="newelections.html">Election Security</a>
       <a href="newstatefraud.html">State Fraud</a>
@@ -213,27 +133,7 @@
   <div id="page-content">
     <h1>Welcome</h1>
     <p>This is the mobile-first version of The Strategic Owl.</p>
-
-    <!-- 🎨 Divider Bars -->
-    <section class="divider-section">
-      <div class="divider-bar">
-        <div class="truth"></div>
-        <div class="reliability"></div>
-        <div class="understanding"></div>
-      </div>
-      <div class="divider-labels">
-        <span>Truth</span>
-        <span>Reliability</span>
-        <span>Understanding</span>
-      </div>
-    </section>
   </div>
-
-  <script>
-    function toggleMobileNav() {
-      document.getElementById('mobileNav')?.classList.toggle('active');
-    }
-  </script>
 
 </body>
 </html>
