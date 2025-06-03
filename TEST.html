@@ -408,7 +408,7 @@
     let total = 0;
     scores.forEach(({ label, value, comment, className }) => {
       const tr = document.createElement("tr");
-      tr.innerHTML = `<td class="${className}">${label}</td><td class="${className}">${value >= 0 ? "+" : ""}${value.toFixed(0)}</td><td>${comment}</td>`;
+      tr.innerHTML = `<td class="${className}">${label}</td><td>${value >= 0 ? "+" : ""}${value.toFixed(0)}</td><td>${comment}</td>`;
       tbody.appendChild(tr);
       total += value;
     });
