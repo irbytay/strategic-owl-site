@@ -4,7 +4,10 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>The Strategic Owl</title>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet" />
+
+  <!-- 🎨 Font Imports -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&family=Playfair+Display:wght@500;700&display=swap" rel="stylesheet" />
+
   <style>
     :root {
       --background: #0D1B2A;
@@ -26,12 +29,17 @@
       -webkit-tap-highlight-color: transparent;
     }
 
-    body {
-      font-family: 'Inter', sans-serif;
+    html, body {
+      font-family: 'Inter', sans-serif; /* ✅ Universal font */
       background-color: var(--background);
       color: var(--text);
       padding-top: 64px;
       text-align: center;
+    }
+
+    /* Optional override when needed */
+    .playfair {
+      font-family: 'Playfair Display', serif;
     }
 
     header {
@@ -85,7 +93,7 @@
       bottom: -4px;
       width: 0%;
       height: 2px;
-      background-color: var(--reliability); /* Blue underline */
+      background-color: var(--reliability);
       transition: width 0.3s ease;
     }
 
@@ -117,6 +125,7 @@
 </head>
 <body>
 
+  <!-- 🔒 Fixed Top Navigation -->
   <header>
     <a href="home.html" class="nav-logo">
       <img src="owl_logo_white.png" alt="Owl Logo" onerror="this.style.display='none';" />
@@ -130,6 +139,7 @@
     </nav>
   </header>
 
+  <!-- 📄 Main Content -->
   <div id="page-content">
     <h1>Welcome</h1>
     <p>This is the mobile-first version of The Strategic Owl.</p>
