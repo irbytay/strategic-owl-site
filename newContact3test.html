@@ -3,39 +3,26 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>The Strategic Owl</title>
-  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;700&display=swap" rel="stylesheet" />
+  <title>Contact Us – The Strategic Owl</title>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600&display=swap" rel="stylesheet" />
   <style>
     :root {
       --background: #0D1B2A;
       --surface: #112240;
       --highlight: #1A2B4C;
       --text: #FFFFFF;
-      --text-muted: #7C8A9B;
-      --heading: #FFFFF0;
       --truth: #28A745;
       --reliability: #3B6CED;
       --understanding: #D4AF37;
       --shadow: rgba(0, 0, 0, 0.3);
     }
 
-    html {
-      font-family: 'Playfair Display', serif !important;
-    }
-
-    *, *::before, *::after {
-      font-family: 'Playfair Display', serif !important;
-      box-sizing: border-box;
+    html, body {
+      font-family: 'Playfair Display', serif;
       margin: 0;
       padding: 0;
-      -webkit-tap-highlight-color: transparent;
-    }
-
-    body {
       background-color: var(--background);
       color: var(--text);
-      padding-top: 64px;
-      text-align: center;
     }
 
     header {
@@ -50,7 +37,7 @@
       align-items: center;
       padding: 0 20px;
       z-index: 1000;
-      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
+      box-shadow: 0 2px 6px var(--shadow);
     }
 
     .nav-logo {
@@ -61,7 +48,6 @@
       font-weight: 600;
       color: var(--text);
       font-size: 1.25rem;
-      white-space: nowrap;
     }
 
     .nav-logo img {
@@ -88,22 +74,10 @@
       text-decoration: none;
       font-weight: 600;
       font-size: 1rem;
-      position: relative;
     }
 
-    nav.nav-links a::after {
-      content: "";
-      position: absolute;
-      left: 0;
-      bottom: -4px;
-      width: 0%;
-      height: 2px;
-      background-color: var(--reliability);
-      transition: width 0.3s ease;
-    }
-
-    nav.nav-links a:hover::after {
-      width: 100%;
+    nav.nav-links a:hover {
+      color: var(--truth);
     }
 
     @media (max-width: 768px) {
@@ -122,42 +96,30 @@
         gap: 18px;
         padding: 20px 0;
         border-bottom: 2px solid var(--reliability);
-        z-index: 999;
       }
 
       nav.nav-links.active {
         display: flex;
       }
-
-      nav.nav-links a {
-        font-size: 1.1rem;
-        padding: 10px 0;
-      }
     }
 
     #page-content {
-      padding: 20px;
+      padding: 100px 20px 40px;
       max-width: 700px;
       margin: 0 auto;
+      text-align: center;
     }
 
     h1 {
-      font-weight: 700;
       font-size: 2.4em;
-      margin-bottom: 20px;
-    }
-
-    p {
-      font-size: 1.05em;
-      line-height: 1.7em;
-      margin-bottom: 30px;
+      margin-bottom: 10px;
     }
 
     .divider-bar {
       display: flex;
       justify-content: center;
       gap: 8px;
-      margin: 30px auto;
+      margin: 20px 0 10px;
     }
 
     .divider-bar div {
@@ -169,6 +131,20 @@
     .truth { background-color: var(--truth); }
     .reliability { background-color: var(--reliability); }
     .understanding { background-color: var(--understanding); }
+
+    .labels {
+      display: flex;
+      justify-content: center;
+      gap: 36px;
+      font-size: 0.95em;
+      margin-bottom: 30px;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    .labels span {
+      font-weight: bold;
+    }
 
     .link-bar {
       margin-bottom: 40px;
@@ -199,9 +175,9 @@
     }
 
     form h2 {
+      text-align: center;
       font-size: 1.6em;
       margin-bottom: 20px;
-      text-align: center;
     }
 
     label {
@@ -210,8 +186,7 @@
       font-weight: bold;
     }
 
-    input,
-    textarea {
+    input, textarea {
       width: 100%;
       padding: 10px;
       margin-top: 6px;
@@ -229,19 +204,18 @@
       font-weight: bold;
       border-radius: 6px;
       cursor: pointer;
-      transition: background-color 0.2s ease;
       font-size: 1em;
     }
 
     button:hover {
-      background-color: #45a049;
+      background-color: #219E3A;
     }
   </style>
 </head>
 <body>
   <header>
     <a href="TRUOWL.html" class="nav-logo">
-      <img src="owl_logo_white.png" alt="Owl Logo" onerror="this.onerror=null;this.style.display='none';this.insertAdjacentHTML('afterend','<p style=\'color:white;font-weight:bold;\'>[ Logo not found ]</p>')" />
+      <img src="owl_logo_white.png" alt="Owl Logo" />
       The Strategic Owl
     </a>
     <button class="menu-icon" onclick="document.querySelector('nav.nav-links').classList.toggle('active')">☰</button>
@@ -255,7 +229,7 @@
   </header>
 
   <div id="page-content">
-    <h1>Request a Credibility Score</h1>
+    <h1>Contact Us</h1>
 
     <div class="divider-bar">
       <div class="truth"></div>
@@ -263,12 +237,21 @@
       <div class="understanding"></div>
     </div>
 
-    <p>
-      Want us to score someone? Submit a request below with any context or links.
-    </p>
+    <div class="labels">
+      <span>Truth</span>
+      <span>Reliability</span>
+      <span>Understanding</span>
+    </div>
+
+    <div class="link-bar">
+      <a href="https://strategicowl.substack.com/" target="_blank">Substack</a>
+      <a href="https://www.facebook.com/the.strategic.owl" target="_blank">Facebook</a>
+      <a href="https://bsky.app/profile/thestrategicowl.bsky.social" target="_blank">BlueSky</a>
+      <a href="mailto:team@thestrategicowl.com">Email Us</a>
+    </div>
 
     <form action="https://formspree.io/f/mwpodgrw" method="POST">
-      <h2>Submit a Score Request</h2>
+      <h2>Request a Credibility Score</h2>
 
       <label for="name">Your Name (Alias)</label>
       <input type="text" id="name" name="name" required />
