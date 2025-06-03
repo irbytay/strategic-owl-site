@@ -30,7 +30,6 @@
       padding: 0;
     }
 
-    /* 🔝 Navigation Bar */
     nav.top-nav {
       background-color: var(--highlight);
       padding: 14px 20px;
@@ -70,19 +69,16 @@
         flex-direction: column;
         align-items: flex-start;
       }
-
       .nav-links {
         margin-top: 10px;
         flex-direction: column;
         width: 100%;
       }
-
       .nav-links a {
         margin: 6px 0;
       }
     }
 
-    /* 🔽 Page Structure */
     .container {
       max-width: 960px;
       margin: 0 auto;
@@ -150,7 +146,6 @@
 </head>
 
 <body>
-  <!-- 🔝 Navigation -->
   <nav class="top-nav">
     <div class="nav-title">The Strategic Owl</div>
     <div class="nav-links">
@@ -161,7 +156,6 @@
     </div>
   </nav>
 
-  <!-- 📊 Content -->
   <div class="container">
     <h1>TRU OWL Viewer</h1>
     <select id="role-filter"></select>
@@ -179,11 +173,13 @@
     </table>
 
     <div id="total-score-box" style="margin-top: 20px; display:none;">
-      <p id="total-score-comment"></p>
+      <div class="score-bar" style="margin-top: 16px;">
+        <div id="indicator-bar" class="bar-indicator"></div>
+        <span id="total-score-comment" style="color: white;"></span>
+      </div>
     </div>
   </div>
 
-  <!-- ⚙️ Script -->
   <script>
     const TRU_MULTIPLIERS = {
       5: { truth: 4.0, reliability: 4.0, understanding: 5.0 },
@@ -194,8 +190,7 @@
       0: { truth: 1.0, reliability: 1.0, understanding: 2.0 },
     };
 
-    let rowMap = {};
-    let roleMap = {};
+    let rowMap = {}, roleMap = {};
 
     async function fetchTRUData() {
       const API_KEY = "AIzaSyCzuh9HBfe0r70r9U35Pe406PPZ-tz6I78";
@@ -255,11 +250,12 @@
       const tbody = document.getElementById("score-body");
       const totalBox = document.getElementById("total-score-box");
       const totalCommentEl = document.getElementById("total-score-comment");
+      const indicatorBar = document.getElementById("indicator-bar");
 
       const selected = select.value;
       if (!selected || !rowMap[selected]) {
         table.style.display = "none";
-        if (totalBox) totalBox.style.display = "none";
+        totalBox.style.display = "none";
         return;
       }
 
@@ -269,7 +265,6 @@
       const truthRaw = parseFloat(row[2]) || 0;
       const reliabilityRaw = parseFloat(row[3]) || 0;
       const understandingRaw = parseFloat(row[4]) || 0;
-
       const commentTruth = row[5] || "";
       const commentReliability = row[6] || "";
       const commentUnderstanding = row[7] || "";
@@ -296,26 +291,21 @@
         total += value;
       });
 
-      const lowerSummary = summaryBelowTable.toLowerCase();
-      const isPositive = /credible|strong|accurate|well-informed|trusted/.test(lowerSummary);
-      const barClass = isPositive ? "bar-green" : "bar-red";
-
       const totalRow = document.createElement("tr");
       totalRow.innerHTML = `
         <td class="total-score">Total Score</td>
         <td class="total-score ${total >= 0 ? "positive-score" : "negative-score"}">
           <strong>${total >= 0 ? "+" : ""}${total.toFixed(0)}</strong>
         </td>
-        <td class="total-score">
-          <div class="score-bar">
-            <div class="bar-indicator ${barClass}"></div>
-            <span style="color: white;"><strong>${totalScoreComment}</strong></span>
-          </div>
-        </td>`;
+        <td class="total-score"><strong>${totalScoreComment}</strong></td>`;
       tbody.appendChild(totalRow);
 
-      table.style.display = "table";
+      const lowerSummary = summaryBelowTable.toLowerCase();
+      const isPositive = /credible|strong|accurate|well-informed|trusted|balanced|informed/.test(lowerSummary);
+      indicatorBar.className = "bar-indicator " + (isPositive ? "bar-green" : "bar-red");
       totalCommentEl.textContent = summaryBelowTable;
+
+      table.style.display = "table";
       totalBox.style.display = "block";
     }
 
