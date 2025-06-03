@@ -306,33 +306,30 @@
         <span>Understanding</span>
       </div>
     </section>
-<h1>Why This Exists</h1>
-<p class="owl-text">
-  We’ve been trained to care more about who said something than whether it’s true. 
-  We’ve been stuck in a loop—team vs. team, headline vs. headline—while the truth gets lost somewhere in between. 
-  That’s not sustainable. So I built a system that cuts through it.
-</p>
+<h1>Start by Choosing a Category</h1>
+<p class="owl-text">Pick a type—politician, journalist, influencer, or go all in to view them all.</p>
 
-<h1>The T.R.U. OWL Score</h1>
-<p class="owl-text">
-  Truth. Reliability. Understanding. These three pillars make up the framework. 
-  It’s not about politics—it’s about performance. Did they get the facts right? 
-  Did they correct themselves when wrong? Do they actually understand the topic, 
-  or are they just performing for clicks and applause?
-</p>
+<select id="role-filter" style="background-color: var(--navy); color: var(--text); border: 1px solid var(--border); border-radius: 6px; padding: 10px 14px; font-size: 1rem; display: block; margin: 0 auto 20px; width: 100%; max-width: 320px; text-align: center;">
+  <option value="All">All</option>
+</select>
 
-<h1>It’s Not Just a Score</h1>
-<p class="owl-text">
-  This system is designed to grow over time—with every subject scored and every correction made. 
-  It tracks credibility the way it works in real life: you earn it, you lose it, and if you lie, you don’t get to just hit reset.
-</p>
+<h1>Now Select a Profile</h1>
+<p class="owl-text">Everyone here has been scored under the same credibility system. Choose a name to see how they stack up.</p>
 
-<h1>The End Goal</h1>
-<p class="owl-text">
-  If more people start asking “Who’s telling the truth?” instead of “Whose side are you on?”—everything changes. 
-  Politicians, media, influencers—they’ll have to compete on honesty, not just volume. 
-  This is how we take back the conversation.
-</p>
+<select id="person-select" style="background-color: var(--navy); color: var(--text); border: 1px solid var(--border); border-radius: 6px; padding: 10px 14px; font-size: 1rem; display: block; margin: 0 auto 30px; width: 100%; max-width: 320px; text-align: center;">
+  <option value="">-- Choose a name --</option>
+</select>
+
+<table id="score-table">
+  <thead>
+    <tr>
+      <th>Category</th>
+      <th>Score</th>
+      <th>Explanation</th>
+    </tr>
+  </thead>
+  <tbody id="score-body"></tbody>
+</table>
     </div>
   <!-- 📜 Mobile Nav Script -->
   <script>
@@ -340,6 +337,7 @@
       document.getElementById('mainNav')?.classList.toggle('active');
     }
   </script>
+  <script src="https://cdn.jsdelivr.net/gh/irbytay/strategic-owl-site@main/scripts/newTRUOWLscript.js" defer></script>
 
 </body>
 </html>
