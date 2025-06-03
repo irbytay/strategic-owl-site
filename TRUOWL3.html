@@ -259,7 +259,7 @@
   border: 1px solid var(--border); /* adds full border */
   vertical-align: top;
 }
-    #score-table td:first-child,
+#score-table td:first-child,
 #score-table td:nth-child(2),
 #score-table th:first-child,
 #score-table th:nth-child(2) {
@@ -274,88 +274,99 @@
   background-color: rgba(255, 255, 255, 0.03); /* subtle striping */
 }
 
-  #score-table th {
-    color: var(--heading);
-    font-weight: 600;
+#score-table th {
+  color: var(--heading);
+  font-weight: 600;
+  font-size: 0.95rem;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.category-truth {
+  color: var(--truth);
+  font-weight: 600;
+}
+
+.category-reliability {
+  color: var(--reliability);
+  font-weight: 600;
+}
+
+.category-understanding {
+  color: var(--understanding);
+  font-weight: 600;
+}
+
+.score-explanation {
+  font-size: 1.05rem;
+  color: var(--text-muted);
+  line-height: 1.6;
+  font-family: 'Playfair Display', serif;
+}
+
+/* ✅ Score coloring logic */
+.positive-score {
+  color: #4FDBA6;
+  font-weight: bold;
+}
+
+.negative-score {
+  color: #FF6B6B;
+  font-weight: bold;
+}
+
+/* 🧱 Mobile Responsive Table */
+@media (max-width: 600px) {
+  #score-table {
     font-size: 0.95rem;
-    text-transform: uppercase;
-    letter-spacing: 0.5px;
   }
 
-  .category-truth {
-    color: var(--truth);
-    font-weight: 600;
+  #score-table th {
+    display: none;
   }
 
-  .category-reliability {
-    color: var(--reliability);
-    font-weight: 600;
+  #score-table tr {
+    display: block;
+    margin-bottom: 20px;
+    border-bottom: 2px solid var(--border);
   }
 
-  .category-understanding {
-    color: var(--understanding);
-    font-weight: 600;
+  #score-table td {
+    display: block;
+    width: 100%;
+    padding: 10px 0;
+  }
+}
+
+/* 📱 Nav Mobile */
+@media (max-width: 768px) {
+  .menu-icon {
+    display: block;
   }
 
-  .score-explanation {
-    font-size: 1.05rem;
-    color: var(--text-muted);
-    line-height: 1.6;
-    font-family: 'Playfair Display', serif;
+  nav.nav-links {
+    display: none;
+    position: absolute;
+    top: 64px;
+    left: 0;
+    right: 0;
+    background-color: var(--surface);
+    flex-direction: column;
+    gap: 18px;
+    padding: 20px 0;
+    border-bottom: 2px solid var(--reliability);
+    z-index: 999;
   }
 
-  /* 🧱 Mobile Responsive Table */
-  @media (max-width: 600px) {
-    #score-table {
-      font-size: 0.95rem;
-    }
-
-    #score-table th {
-      display: none;
-    }
-
-    #score-table tr {
-      display: block;
-      margin-bottom: 20px;
-      border-bottom: 2px solid var(--border);
-    }
-
-    #score-table td {
-      display: block;
-      width: 100%;
-      padding: 10px 0;
-    }
+  nav.nav-links.active {
+    display: flex;
   }
 
-  /* 📱 Nav Mobile */
-  @media (max-width: 768px) {
-    .menu-icon {
-      display: block;
-    }
-
-    nav.nav-links {
-      display: none;
-      position: absolute;
-      top: 64px;
-      left: 0;
-      right: 0;
-      background-color: var(--surface);
-      flex-direction: column;
-      gap: 18px;
-      padding: 20px 0;
-      border-bottom: 2px solid var(--reliability);
-      z-index: 999;
-    }
-
-    nav.nav-links.active {
-      display: flex;
-    }
-
-    nav.nav-links a {
-      font-size: 1.1rem;
-      padding: 10px 0;
-    }
+  nav.nav-links a {
+    font-size: 1.1rem;
+    padding: 10px 0;
   }
+}
 </style>
 </head>
 <body>
