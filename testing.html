@@ -49,21 +49,15 @@
       justify-content: space-between;
       align-items: center;
       padding: 12px 20px;
-      flex-wrap: wrap;
-    }
-
-    .nav-brand {
-      display: flex;
-      align-items: center;
     }
 
     .nav-logo {
+      display: flex;
+      align-items: center;
       font-family: 'Playfair Display', serif;
       font-size: 1.2rem;
       color: var(--text);
       text-decoration: none;
-      display: flex;
-      align-items: center;
     }
 
     .nav-logo img {
@@ -100,20 +94,9 @@
 
     /* 📱 Mobile Navigation */
     @media (max-width: 600px) {
-      .nav-container {
-        flex-direction: column;
-        align-items: stretch;
-        padding: 12px;
-      }
-
-      .nav-toggle {
-        display: block;
-      }
-
       .nav-links {
         display: none;
         flex-direction: column;
-        gap: 6px;
         width: 100%;
         background-color: var(--highlight);
         padding: 10px 0;
@@ -138,6 +121,10 @@
 
       .nav-links a:hover {
         background-color: var(--surface);
+      }
+
+      .nav-toggle {
+        display: block;
       }
     }
 
@@ -211,12 +198,10 @@
   <!-- 🧭 Navigation -->
   <nav>
     <div class="nav-container">
-      <div class="nav-brand">
-        <a href="home.html" class="nav-logo">
-          <img src="owl_logo_white.png" alt="Owl Logo" onerror="this.style.display='none';" />
-          The Strategic Owl
-        </a>
-      </div>
+      <a href="home.html" class="nav-logo">
+        <img src="owl_logo_white.png" alt="Owl Logo" onerror="this.style.display='none';" />
+        The Strategic Owl
+      </a>
       <button class="nav-toggle" onclick="document.querySelector('.nav-links').classList.toggle('show')">☰</button>
     </div>
     <div class="nav-links">
