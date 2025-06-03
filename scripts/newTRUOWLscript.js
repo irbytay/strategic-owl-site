@@ -115,10 +115,11 @@ const TRU_MULTIPLIERS = {
     let total = 0;
     scores.forEach(({ label, value, raw, mult, comment, className }) => {
       const tr = document.createElement("tr");
-      tr.innerHTML = `
-        <td class="${className}">${label}</td>
-        <td class="${className}">${value >= 0 ? "+" : ""}${value.toFixed(0)}</td>
-        <td>${comment}</td>`;
+      const scoreColor = value >= 0 ? 'positive-score' : 'negative-score';
+tr.innerHTML = `
+  <td class="${className}">${label}</td>
+  <td class="${scoreColor}">${value >= 0 ? "+" : ""}${value.toFixed(0)}</td>
+  <td>${comment}</td>`;
       tbody.appendChild(tr);
       total += value;
     });
