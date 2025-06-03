@@ -3,254 +3,249 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Contact – The Strategic Owl</title>
+  <title>The Strategic Owl</title>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;700&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --background: #0D1B2A;
+      --surface: #112240;
+      --highlight: #1A2B4C;
+      --text: #FFFFFF;
+      --text-muted: #7C8A9B;
+      --heading: #FFFFF0;
+      --truth: #28A745;
+      --reliability: #3B6CED;
+      --understanding: #D4AF37;
+      --shadow: rgba(0, 0, 0, 0.3);
+    }
 
-  <!-- Font: Only Playfair Display -->
-  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;600;700&display=swap" rel="stylesheet" />
+    html {
+      font-family: 'Playfair Display', serif !important;
+    }
 
- <style>
-  :root {
-    --background: #0D1B2A;
-    --surface: #112240;
-    --highlight: #1A2B4C;
-    --text: #FFFFFF;
-    --text-muted: #7C8A9B;
-    --heading: #FFFFF0;
-    --truth: #28A745;
-    --reliability: #3B6CED;
-    --understanding: #D4AF37;
-    --shadow: rgba(0, 0, 0, 0.3);
-  }
+    *, *::before, *::after {
+      font-family: 'Playfair Display', serif !important;
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      -webkit-tap-highlight-color: transparent;
+    }
 
-  html, body, *, *::before, *::after {
-    font-family: 'Playfair Display', serif !important;
-    box-sizing: border-box;
-    margin: 0;
-    padding: 0;
-    -webkit-tap-highlight-color: transparent;
-  }
+    body {
+      background-color: var(--background);
+      color: var(--text);
+      padding-top: 64px;
+      text-align: center;
+    }
 
-  body {
-    background-color: var(--background);
-    color: var(--text);
-    padding-top: 64px;
-    text-align: center;
-  }
+    header {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 64px;
+      background-color: var(--highlight);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 0 20px;
+      z-index: 1000;
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
+    }
 
-  header {
-    position: fixed;
-    top: 0;
-    left: 0;
-    right: 0;
-    height: 64px;
-    background-color: var(--highlight);
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 0 20px;
-    z-index: 1000;
-    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
-  }
+    .nav-logo {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      text-decoration: none;
+      font-weight: 600;
+      color: var(--text);
+      font-size: 1.25rem;
+      white-space: nowrap;
+    }
 
-  .nav-logo {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    text-decoration: none;
-    font-weight: 600;
-    color: var(--text);
-    font-size: 1.25rem;
-    white-space: nowrap;
-  }
+    .nav-logo img {
+      height: 30px;
+      width: 30px;
+    }
 
-  .nav-logo img {
-    height: 30px;
-    width: 30px;
-  }
-
-  .menu-icon {
-    display: none;
-    font-size: 28px;
-    background: none;
-    border: none;
-    color: var(--text);
-    cursor: pointer;
-  }
-
-  nav.nav-links {
-    display: flex;
-    gap: 28px;
-  }
-
-  nav.nav-links a {
-    color: var(--text);
-    text-decoration: none;
-    font-weight: 600;
-    font-size: 1rem;
-    position: relative;
-  }
-
-  nav.nav-links a::after {
-    content: "";
-    position: absolute;
-    left: 0;
-    bottom: -4px;
-    width: 0%;
-    height: 2px;
-    background-color: var(--reliability);
-    transition: width 0.3s ease;
-  }
-
-  nav.nav-links a:hover::after {
-    width: 100%;
-  }
-
-  @media (max-width: 768px) {
     .menu-icon {
-      display: block;
+      display: none;
+      font-size: 28px;
+      background: none;
+      border: none;
+      color: var(--text);
+      cursor: pointer;
     }
 
     nav.nav-links {
-      display: none;
-      position: absolute;
-      top: 64px;
-      left: 0;
-      right: 0;
-      background-color: var(--surface);
-      flex-direction: column;
-      gap: 18px;
-      padding: 20px 0;
-      border-bottom: 2px solid var(--reliability);
-      z-index: 999;
-    }
-
-    nav.nav-links.active {
       display: flex;
+      gap: 28px;
     }
 
     nav.nav-links a {
-      font-size: 1.1rem;
-      padding: 10px 0;
+      color: var(--text);
+      text-decoration: none;
+      font-weight: 600;
+      font-size: 1rem;
+      position: relative;
     }
-  }
 
-  #page-content {
-    padding: 20px;
-    max-width: 700px;
-    margin: 0 auto;
-  }
+    nav.nav-links a::after {
+      content: "";
+      position: absolute;
+      left: 0;
+      bottom: -4px;
+      width: 0%;
+      height: 2px;
+      background-color: var(--reliability);
+      transition: width 0.3s ease;
+    }
 
-  h1, h2, h3, h4, h5, h6,
-  p, a, label, input, textarea, button, select {
-    font-family: 'Playfair Display', serif !important;
-  }
+    nav.nav-links a:hover::after {
+      width: 100%;
+    }
 
-  h1 {
-    font-weight: 700;
-    font-size: 2.4em;
-    margin-bottom: 20px;
-  }
+    @media (max-width: 768px) {
+      .menu-icon {
+        display: block;
+      }
 
-  p {
-    font-size: 1.05em;
-    line-height: 1.7em;
-    margin-bottom: 30px;
-  }
+      nav.nav-links {
+        display: none;
+        position: absolute;
+        top: 64px;
+        left: 0;
+        right: 0;
+        background-color: var(--surface);
+        flex-direction: column;
+        gap: 18px;
+        padding: 20px 0;
+        border-bottom: 2px solid var(--reliability);
+        z-index: 999;
+      }
 
-  .divider-bar {
-    display: flex;
-    justify-content: center;
-    gap: 8px;
-    margin: 30px auto;
-  }
+      nav.nav-links.active {
+        display: flex;
+      }
 
-  .divider-bar div {
-    width: 40px;
-    height: 6px;
-    border-radius: 3px;
-  }
+      nav.nav-links a {
+        font-size: 1.1rem;
+        padding: 10px 0;
+      }
+    }
 
-  .truth { background-color: var(--truth); }
-  .reliability { background-color: var(--reliability); }
-  .understanding { background-color: var(--understanding); }
+    #page-content {
+      padding: 20px;
+      max-width: 700px;
+      margin: 0 auto;
+    }
 
-  .link-bar {
-    margin-bottom: 40px;
-  }
+    h1 {
+      font-weight: 700;
+      font-size: 2.4em;
+      margin-bottom: 20px;
+    }
 
-  .link-bar a {
-    display: inline-block;
-    margin: 8px 12px;
-    color: var(--text);
-    text-decoration: none;
-    font-weight: 600;
-    border-bottom: 2px solid var(--reliability);
-    padding-bottom: 2px;
-    transition: color 0.2s ease, border-color 0.2s ease;
-  }
+    p {
+      font-size: 1.05em;
+      line-height: 1.7em;
+      margin-bottom: 30px;
+    }
 
-  .link-bar a:hover {
-    color: var(--truth);
-    border-color: var(--truth);
-  }
+    .divider-bar {
+      display: flex;
+      justify-content: center;
+      gap: 8px;
+      margin: 30px auto;
+    }
 
-  form {
-    background-color: var(--surface);
-    padding: 28px;
-    border-radius: 12px;
-    margin-top: 20px;
-    text-align: left;
-  }
+    .divider-bar div {
+      width: 40px;
+      height: 6px;
+      border-radius: 3px;
+    }
 
-  form h2 {
-    font-size: 1.6em;
-    margin-bottom: 20px;
-    text-align: center;
-  }
+    .truth { background-color: var(--truth); }
+    .reliability { background-color: var(--reliability); }
+    .understanding { background-color: var(--understanding); }
 
-  label {
-    display: block;
-    margin-top: 14px;
-    font-weight: bold;
-  }
+    .link-bar {
+      margin-bottom: 40px;
+    }
 
-  input,
-  textarea {
-    width: 100%;
-    padding: 10px;
-    margin-top: 6px;
-    margin-bottom: 20px;
-    border-radius: 6px;
-    border: none;
-    font-size: 1em;
-  }
+    .link-bar a {
+      display: inline-block;
+      margin: 8px 12px;
+      color: var(--text);
+      text-decoration: none;
+      font-weight: 600;
+      border-bottom: 2px solid var(--reliability);
+      padding-bottom: 2px;
+      transition: color 0.2s ease, border-color 0.2s ease;
+    }
 
-  button {
-    background-color: var(--truth);
-    color: white;
-    border: none;
-    padding: 12px 24px;
-    font-weight: bold;
-    border-radius: 6px;
-    cursor: pointer;
-    transition: background-color 0.2s ease;
-    font-size: 1em;
-  }
+    .link-bar a:hover {
+      color: var(--truth);
+      border-color: var(--truth);
+    }
 
-  button:hover {
-    background-color: #45a049;
-  }
-</style>
+    form {
+      background-color: var(--surface);
+      padding: 28px;
+      border-radius: 12px;
+      margin-top: 20px;
+      text-align: left;
+    }
+
+    form h2 {
+      font-size: 1.6em;
+      margin-bottom: 20px;
+      text-align: center;
+    }
+
+    label {
+      display: block;
+      margin-top: 14px;
+      font-weight: bold;
+    }
+
+    input,
+    textarea {
+      width: 100%;
+      padding: 10px;
+      margin-top: 6px;
+      margin-bottom: 20px;
+      border-radius: 6px;
+      border: none;
+      font-size: 1em;
+    }
+
+    button {
+      background-color: var(--truth);
+      color: white;
+      border: none;
+      padding: 12px 24px;
+      font-weight: bold;
+      border-radius: 6px;
+      cursor: pointer;
+      transition: background-color 0.2s ease;
+      font-size: 1em;
+    }
+
+    button:hover {
+      background-color: #45a049;
+    }
+  </style>
 </head>
 <body>
-
   <header>
-    <a href="home.html" class="nav-logo">
-      <img src="owl_logo_white.png" alt="Owl Logo" onerror="this.style.display='none';" />
+    <a href="TRUOWL.html" class="nav-logo">
+      <img src="owl_logo_white.png" alt="Owl Logo" onerror="this.onerror=null;this.style.display='none';this.insertAdjacentHTML('afterend','<p style=\'color:white;font-weight:bold;\'>[ Logo not found ]</p>')" />
       The Strategic Owl
     </a>
-    <button class="menu-icon" onclick="document.getElementById('mainNav').classList.toggle('active')">☰</button>
-    <nav id="mainNav" class="nav-links">
+    <button class="menu-icon" onclick="document.querySelector('nav.nav-links').classList.toggle('active')">☰</button>
+    <nav class="nav-links">
       <a href="base.html">T.R.U. Owl</a>
       <a href="newelections.html">Election Security</a>
       <a href="newheritagefoundation.html">Election Fraud</a>
@@ -260,37 +255,20 @@
   </header>
 
   <div id="page-content">
-    <h1>Get in Touch</h1>
+    <h1>Request a Credibility Score</h1>
 
-   <section class="divider-section">
-  <div class="divider-bar">
-    <div class="truth"></div>
-    <div class="reliability"></div>
-    <div class="understanding"></div>
-  </div>
-  <div class="divider-labels">
-    <span>Truth</span>
-    <span>Reliability</span>
-    <span>Understanding</span>
-  </div>
-</section>
-
-    <p>
-      Follow or reach out via our official platforms. We’re building a community that values 
-      <span style="color: #4CAF50; font-weight: bold;">truth</span>, 
-      <span style="color: #2196F3; font-weight: bold;">accountability</span>, and 
-      <span style="color: #FFD700; font-weight: bold;">open-minded thinking</span>.
-    </p>
-
-    <div class="link-bar">
-      <a href="https://strategicowl.substack.com/" target="_blank">Substack</a>
-      <a href="https://www.facebook.com/the.strategic.owl" target="_blank">Facebook</a>
-      <a href="https://bsky.app/profile/thestrategicowl.bsky.social" target="_blank">BlueSky</a>
-      <a href="mailto:team@thestrategicowl.com">Email Us</a>
+    <div class="divider-bar">
+      <div class="truth"></div>
+      <div class="reliability"></div>
+      <div class="understanding"></div>
     </div>
 
+    <p>
+      Want us to score someone? Submit a request below with any context or links.
+    </p>
+
     <form action="https://formspree.io/f/mwpodgrw" method="POST">
-      <h2>Request a Credibility Score</h2>
+      <h2>Submit a Score Request</h2>
 
       <label for="name">Your Name (Alias)</label>
       <input type="text" id="name" name="name" required />
@@ -304,6 +282,5 @@
       <button type="submit">Send Request</button>
     </form>
   </div>
-
 </body>
 </html>
