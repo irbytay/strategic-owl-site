@@ -3,117 +3,92 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>The Strategic Owl</title>
-
-  <!-- Font -->
-  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;600;700&display=swap" rel="stylesheet" />
+  <title>Strategic Owl | TRU OWL Viewer</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&family=Playfair+Display:wght@600;700&display=swap" rel="stylesheet" />
 
   <style>
   :root {
     --background: #0D1B2A;
     --surface: #112240;
     --highlight: #1A2B4C;
-    --text: #FFFFFF;
-    --text-muted: #7C8A9B;
-    --heading: #FFFFF0;
     --truth: #28A745;
     --reliability: #3B6CED;
     --understanding: #D4AF37;
+    --text: #FFFFFF;
+    --text-muted: #7C8A9B;
+    --heading: #FFFFF0;
     --shadow: rgba(0, 0, 0, 0.3);
-    --border: #2F2F5F;
+    --bar-red: #FF4C4C;
+    --bar-green: #28A745;
   }
 
-  html, body {
-    font-family: 'Playfair Display', serif;
+  body {
     background-color: var(--background);
     color: var(--text);
-    padding-top: 64px;
+    font-family: 'Inter', sans-serif;
     margin: 0;
-    text-align: center;
+    padding: 0;
   }
 
-  *, *::before, *::after {
-    box-sizing: border-box;
-    -webkit-tap-highlight-color: transparent;
-  }
-
-  header {
+  /* 🧭 NAVBAR & MENU */
+  nav.top-nav {
     position: fixed;
     top: 0;
     left: 0;
     right: 0;
-    height: 64px;
+    z-index: 999;
     background-color: var(--highlight);
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 0 20px;
-    z-index: 1000;
+    padding: 14px 20px;
     box-shadow: 0 2px 6px var(--shadow);
   }
 
-  .nav-logo {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    text-decoration: none;
-    font-weight: 600;
-    color: var(--text);
-    font-size: 1.25rem;
+  .nav-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 22px;
+    color: var(--understanding);
   }
 
-  .nav-logo img {
-    height: 30px;
-    width: 30px;
-  }
-
-  .menu-icon {
+  .menu-toggle {
     display: none;
-    font-size: 28px;
+    font-size: 24px;
+    cursor: pointer;
+    color: var(--text);
     background: none;
     border: none;
-    color: var(--text);
-    cursor: pointer;
   }
 
-  nav.nav-links {
+  .nav-links {
     display: flex;
     gap: 28px;
   }
 
-  nav.nav-links a {
-    color: var(--text);
-    text-decoration: none;
-    font-weight: 600;
-    font-size: 1rem;
-    position: relative;
-  }
-
-  nav.nav-links a::after {
-    content: "";
-    position: absolute;
-    left: 0;
-    bottom: -4px;
-    width: 0%;
-    height: 2px;
-    background-color: var(--reliability);
-    transition: width 0.3s ease;
-  }
-
-  nav.nav-links a:hover::after {
-    width: 100%;
-  }
-
-  .owl-text {
-    font-size: 1.15rem;
+  .nav-links a {
     color: var(--text-muted);
-    font-weight: 400;
-    line-height: 1.7;
-    margin-bottom: 24px;
-    text-align: center;
+    text-decoration: none;
+    font-size: 15px;
+    transition: color 0.3s ease;
   }
 
-  /* 🎨 TRU Bars */
+  .nav-links a:hover {
+    color: var(--understanding);
+  }
+    .nav-logo img {
+  height: 40px;
+  width: 40px;
+}
+    .nav-logo {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  text-decoration: none;
+  font-weight: 600;
+  color: var(--text);
+  font-size: 1.25rem;
+}
+    /* 🎨 TRU Bars */
   .divider-section {
     display: flex;
     flex-direction: column;
@@ -140,7 +115,7 @@
 
   .divider-labels {
     display: flex;
-    justify-content: space-between;
+    justify-content: center;
     gap: 12px;
     width: 340px;
     margin-top: 8px;
@@ -153,149 +128,166 @@
     color: var(--text-muted);
   }
 
-  /* 📊 Score Table */
-  #score-table {
-    width: 100%;
-    max-width: 880px;
-    margin: 0 auto 40px;
-    border-collapse: collapse;
-    font-size: 1rem;
+  @media (max-width: 768px) {
+    .menu-toggle {
+      display: block;
+    }
+
+    .nav-links {
+      display: none;
+      flex-direction: row; /* 👈 links side-by-side on mobile */
+      justify-content: center;
+      background-color: var(--highlight);
+      position: absolute;
+      top: 58px;
+      left: 0;
+      width: 100%;
+      padding: 10px 0;
+      gap: 20px;
+      box-shadow: 0 3px 8px var(--shadow);
+    }
+
+    .nav-links.show {
+      display: flex;
+      animation: fadeSlideDown 0.3s ease;
+    }
+
+    @keyframes fadeSlideDown {
+      from {
+        opacity: 0;
+        transform: translateY(-10px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
   }
 
-  #score-table th, #score-table td {
-    padding: 14px;
-    border: 1px solid var(--border);
-    vertical-align: top;
+  /* ✅ YOUR ORIGINAL STYLES BELOW */
+  .container {
+    max-width: 960px;
+    margin: 100px auto 0 auto;
+    padding: 24px;
   }
 
-  #score-table td:first-child,
-  #score-table td:nth-child(2),
-  #score-table th:first-child,
-  #score-table th:nth-child(2) {
+  h1 {
+    font-family: 'Playfair Display', serif;
+    color: var(--heading);
+    margin-bottom: 16px;
     text-align: center;
   }
 
-  #score-table th {
-    background-color: var(--highlight);
-    color: var(--heading);
-    font-weight: 600;
-    font-size: 0.95rem;
-    text-transform: uppercase;
-    letter-spacing: 0.5px;
+  select {
+    padding: 8px;
+    margin-bottom: 16px;
+    background-color: var(--surface);
+    color: var(--text);
+    border: 1px solid var(--highlight);
   }
 
-  #score-table tr:nth-child(even) {
-    background-color: rgba(255, 255, 255, 0.03);
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    background-color: var(--surface);
+    margin-top: 12px;
   }
 
-  .category-truth { color: var(--truth); font-weight: 600; }
-  .category-reliability { color: var(--reliability); font-weight: 600; }
-  .category-understanding { color: var(--understanding); font-weight: 600; }
-
-  .score-explanation {
-    font-size: 1.05rem;
-    color: var(--text-muted);
-    line-height: 1.6;
+  th, td {
+    padding: 12px;
+    border-bottom: 1px solid var(--highlight);
+    text-align: left;
   }
 
-  /* ✅ Score coloring logic */
-  .positive-score {
-    color: #4FDBA6;
+  .text-truth { color: var(--truth); }
+  .text-reliability { color: var(--reliability); }
+  .text-understanding { color: var(--understanding); }
+
+  .total-score {
     font-weight: bold;
-    border-left: 4px solid #4FDBA6;
   }
 
-  .negative-score {
-    color: #FF6B6B;
-    font-weight: bold;
-    border-left: 4px solid #FF6B6B;
+  .positive-score { color: var(--bar-green); }
+  .negative-score { color: var(--bar-red); }
+
+  .score-bar {
+    display: flex;
+    align-items: center;
+    gap: 10px;
   }
 
-  .quote {
-    font-size: 1.1rem;
-    font-style: italic;
-    padding-left: 12px;
-    margin: 20px 0;
+  .bar-indicator {
+    width: 10px;
+    height: 24px;
+    border-radius: 2px;
   }
 
-  /* 🧱 Mobile Table */
-  @media (max-width: 600px) {
-    #score-table {
-      font-size: 0.95rem;
-    }
-
-    #score-table th {
-      display: none;
-    }
-
-    #score-table tr {
-      display: block;
-      margin-bottom: 20px;
-      border-bottom: 2px solid var(--border);
-    }
-
-    #score-table td {
-      display: block;
-      width: 100%;
-      padding: 10px 0;
-    }
+  .bar-red {
+    background-color: var(--bar-red);
   }
 
-  /* 📱 Mobile Nav */
-  @media (max-width: 768px) {
-    .menu-icon {
-      display: block;
-    }
-
-    nav.nav-links {
-      display: none;
-      position: absolute;
-      top: 64px;
-      left: 0;
-      right: 0;
-      background-color: var(--surface);
-      flex-direction: column;
-      gap: 18px;
-      padding: 20px 0;
-      border-bottom: 2px solid var(--reliability);
-      z-index: 999;
-    }
-
-    nav.nav-links.active {
-      display: flex;
-    }
-
-    nav.nav-links a {
-      font-size: 1.1rem;
-      padding: 10px 0;
-    }
+  .bar-green {
+    background-color: var(--bar-green);
   }
-  </style>
-</head>
+</style>
 
-<body>
+<nav class="top-nav">
+<a href="home.html" class="nav-logo">
+  <img src="owl_logo_white.png" alt="Owl Logo" onerror="this.style.display='none';" />
+  <div class="nav-title">The Strategic Owl</div>
+</a>
+  <button class="menu-toggle" onclick="toggleMenu()">☰</button>
+  <div class="nav-links" id="navMenu">
+    <a href="index.html">Home</a>
+    <a href="TRUOWL.html">T.R.U. Owl</a>
+    <a href="newelections.html">Election Security</a>
+    <a href="newcontact.html">Contact</a>
+  </div>
+</nav>
+  <div class="container">
+    <h1>TRU OWL Viewer</h1>
+    <!-- 🎯 Divider -->
+    <section class="divider-section">
+      <div class="divider-bar">
+        <div class="truth"></div>
+        <div class="reliability"></div>
+        <div class="understanding"></div>
+      </div>
+      <div class="divider-labels">
+        <span>Truth</span>
+        <span>Reliability</span>
+        <span>Understanding</span>
+      </div>
+    </section>
+    <div class="dropdowns-wrapper" style="display: flex; justify-content: center; gap: 40px; margin: 40px 0;">
+  <div class="dropdown-group" style="text-align: left;">
+    <label for="role-filter" style="display: block; margin-bottom: 6px; font-weight: 600;">Filter by Role:</label>
+    <select id="role-filter"></select>
+  </div>
 
-  <!-- 🔒 Nav -->
-  <header>
-    <a href="home.html" class="nav-logo">
-      <img src="owl_logo_white.png" alt="Owl Logo" onerror="this.style.display='none';" />
-      The Strategic Owl
-    </a>
-    <button class="menu-icon" onclick="toggleMobileNav()">☰</button>
-    <nav id="mainNav" class="nav-links">
-      <a href="about3.html">About</a>
-      <a href="TRUOWL3.html">T.R.U. OWL</a>
-      <a href="newelections.html">Election Security</a>
-      <a href="newstatefraud.html">State Fraud</a>
-      <a href="newcontact3test.html">Contact</a>
-    </nav>
-  </header>
+  <div class="dropdown-group" style="text-align: left;">
+    <label for="person-select" style="display: block; margin-bottom: 6px; font-weight: 600;">Select a Profile:</label>
+    <select id="person-select"></select>
+  </div>
+</div>
 
-  <!-- 📄 Content -->
-  <div id="page-content">
-    <h1>T. R. U. Owl</h1>
-    <p class="owl-text">You're not here for opinions. You're here to see who actually tells the truth. That’s what this tool is for.</p>
+<table id="score-table" style="display:none;">
+  <thead>
+    <tr>
+      <th>Category</th>
+      <th>Score</th>
+      <th>Explanation</th>
+    </tr>
+  </thead>
+  <tbody id="score-body"></tbody>
+</table>
 
+<div id="total-score-box" style="margin-top: 20px; display:none;">
+  <div class="score-bar" style="margin-top: 16px;">
+    <div id="indicator-bar" class="bar-indicator"></div>
+    <span id="total-score-comment" style="color: white;"></span>
+  </div>
+</div>
     <!-- 🎯 Divider -->
     <section class="divider-section">
       <div class="divider-bar">
@@ -310,44 +302,154 @@
       </div>
     </section>
 
-    <h1>Start by Choosing a Category</h1>
-    <p class="owl-text">Pick a type—politician, journalist, influencer, or go all in to view them all.</p>
-
-    <select id="role-filter" style="background-color: var(--navy); color: var(--text); border: 1px solid var(--border); border-radius: 6px; padding: 10px 14px; font-size: 1rem; margin: 0 auto 20px; width: 100%; max-width: 320px;">
-      <option value="All">All</option>
-    </select>
-
-    <h1>Now Select a Profile</h1>
-    <p class="owl-text">Everyone here has been scored under the same credibility system. Choose a name to see how they stack up.</p>
-
-    <select id="person-select" style="background-color: var(--navy); color: var(--text); border: 1px solid var(--border); border-radius: 6px; padding: 10px 14px; font-size: 1rem; margin: 0 auto 30px; width: 100%; max-width: 320px;">
-      <option value="">-- Choose a name --</option>
-    </select>
-
-    <table id="score-table">
-      <thead>
-        <tr>
-          <th>Category</th>
-          <th>Score</th>
-          <th>Explanation</th>
-        </tr>
-      </thead>
-      <tbody id="score-body"></tbody>
-    </table>
-
-    <!-- 🟢 Total Score Summary -->
-    <div id="total-score-box" style="display: none; margin-top: 30px;">
-      <p id="total-score-comment" class="quote"></p>
-    </div>
-  </div>
-
-  <!-- 🔧 Scripts -->
   <script>
-    function toggleMobileNav() {
-      document.getElementById('mainNav')?.classList.toggle('active');
+  const TRU_MULTIPLIERS = {
+    5: { truth: 4.0, reliability: 4.0, understanding: 5.0 },
+    4: { truth: 3.5, reliability: 3.5, understanding: 4.5 },
+    3: { truth: 3.0, reliability: 3.0, understanding: 4.0 },
+    2: { truth: 3.0, reliability: 3.0, understanding: 4.0 },
+    1: { truth: 1.3, reliability: 1.3, understanding: 2.0 },
+    0: { truth: 1.0, reliability: 1.0, understanding: 2.0 },
+  };
+
+  let rowMap = {}, roleMap = {};
+
+  async function fetchTRUData() {
+    const API_KEY = "AIzaSyCzuh9HBfe0r70r9U35Pe406PPZ-tz6I78";
+    const SHEET_ID = "19wBEj9hEkvIyQcoR5E_mBGVAxTzMnddMxk8nuQLAumA";
+    const RANGE = "TRU!A2:K1000";
+    const url = `https://sheets.googleapis.com/v4/spreadsheets/${SHEET_ID}/values/${RANGE}?key=${API_KEY}`;
+    try {
+      const res = await fetch(url);
+      if (!res.ok) throw new Error(`HTTP error! Status: ${res.status}`);
+      const json = await res.json();
+      return json.values || [];
+    } catch (err) {
+      console.error("Failed to fetch sheet data", err);
+      return [];
     }
+  }
+
+  function populateDropdowns(data) {
+    rowMap = {};
+    roleMap = {};
+    data.forEach(row => {
+      const name = row[0];
+      const role = row[1] || "Uncategorized";
+      if (!roleMap[role]) roleMap[role] = [];
+      roleMap[role].push(name);
+      if (name) rowMap[name] = row;
+    });
+
+    const roleSelect = document.getElementById("role-filter");
+    roleSelect.innerHTML = '<option value="All">All</option>';
+    Object.keys(roleMap).sort().forEach(role => {
+      const opt = document.createElement("option");
+      opt.value = role;
+      opt.textContent = role;
+      roleSelect.appendChild(opt);
+    });
+
+    updatePersonDropdown("All");
+  }
+
+  function updatePersonDropdown(role) {
+    const personSelect = document.getElementById("person-select");
+    personSelect.innerHTML = '<option value="">-- Choose a name --</option>';
+    let names = (role === "All") ? Object.keys(rowMap) : roleMap[role] || [];
+    names.sort().forEach(name => {
+      const opt = document.createElement("option");
+      opt.value = name;
+      opt.textContent = name;
+      personSelect.appendChild(opt);
+    });
+    personSelect.disabled = names.length === 0;
+  }
+
+  function showScores() {
+    const select = document.getElementById("person-select");
+    const table = document.getElementById("score-table");
+    const tbody = document.getElementById("score-body");
+    const totalBox = document.getElementById("total-score-box");
+    const totalCommentEl = document.getElementById("total-score-comment");
+    const indicatorBar = document.getElementById("indicator-bar");
+
+    const selected = select.value;
+    if (!selected || !rowMap[selected]) {
+      table.style.display = "none";
+      totalBox.style.display = "none";
+      return;
+    }
+
+    const row = rowMap[selected];
+    tbody.innerHTML = "";
+
+    const truthRaw = parseFloat(row[2]) || 0;
+    const reliabilityRaw = parseFloat(row[3]) || 0;
+    const understandingRaw = parseFloat(row[4]) || 0;
+    const commentTruth = row[5] || "";
+    const commentReliability = row[6] || "";
+    const commentUnderstanding = row[7] || "";
+    const summaryBelowTable = row[8] || "";
+    const totalScoreComment = row[9] || "Summary not available";
+    const roleFlag = parseInt(row[10]) || 0;
+
+    const multiplier = TRU_MULTIPLIERS[roleFlag] || TRU_MULTIPLIERS[0];
+    const truthFinal = truthRaw * multiplier.truth;
+    const reliabilityFinal = reliabilityRaw * multiplier.reliability;
+    const understandingFinal = understandingRaw * multiplier.understanding;
+
+    const scores = [
+      { label: "Truth", value: truthFinal, comment: commentTruth, className: "text-truth" },
+      { label: "Reliability", value: reliabilityFinal, comment: commentReliability, className: "text-reliability" },
+      { label: "Understanding", value: understandingFinal, comment: commentUnderstanding, className: "text-understanding" },
+    ];
+
+    let total = 0;
+    scores.forEach(({ label, value, comment, className }) => {
+      const tr = document.createElement("tr");
+      tr.innerHTML = `<td class="${className}">${label}</td><td>${value >= 0 ? "+" : ""}${value.toFixed(0)}</td><td>${comment}</td>`;
+      tbody.appendChild(tr);
+      total += value;
+    });
+
+    const totalRow = document.createElement("tr");
+    totalRow.innerHTML = `
+      <td class="total-score">Total Score</td>
+      <td class="total-score ${total >= 0 ? "positive-score" : "negative-score"}">
+        <strong>${total >= 0 ? "+" : ""}${total.toFixed(0)}</strong>
+      </td>
+      <td class="total-score"><strong>${totalScoreComment}</strong></td>`;
+    tbody.appendChild(totalRow);
+
+    // ✅ Fixed here: use actual score to determine bar color
+    const isPositive = total >= 0;
+    indicatorBar.className = "bar-indicator " + (isPositive ? "bar-green" : "bar-red");
+    totalCommentEl.textContent = summaryBelowTable;
+
+    table.style.display = "table";
+    totalBox.style.display = "block";
+  }
+
+  document.addEventListener("DOMContentLoaded", async () => {
+    const data = await fetchTRUData();
+    populateDropdowns(data);
+    document.getElementById("role-filter").addEventListener("change", e => updatePersonDropdown(e.target.value));
+    document.getElementById("person-select").addEventListener("change", showScores);
+  });
+</script>
   </script>
-  <script src="https://cdn.jsdelivr.net/gh/irbytay/strategic-owl-site@main/scripts/newTRUOWLscript.js" defer></script>
+  <script>
+  function toggleMenu() {
+    const menu = document.getElementById("navMenu");
+    menu.classList.toggle("show");
+  }
+</script>
+  <script>
+  function toggleMenu() {
+    document.getElementById("navMenu").classList.toggle("show");
+  }
+</script>
 
 </body>
 </html>
