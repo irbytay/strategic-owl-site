@@ -357,6 +357,29 @@ table.tru-table td:nth-child(3) {
     display: block;
     margin-bottom: 6px;
   }
+}@media (max-width: 600px) {
+  table.tru-table td:nth-child(1) {
+    display: flex;
+    flex-direction: column;
+    font-size: 0.9rem;
+    white-space: normal;
+    min-width: 80px;
+    line-height: 1.2;
+    padding-right: 6px;
+  }
+
+  table.tru-table td:nth-child(2) {
+    display: none; /* Hide the Score column — it’s now stacked */
+  }
+
+  table.tru-table th:nth-child(2) {
+    display: none;
+  }
+
+  table.tru-table td:nth-child(3),
+  table.tru-table th:nth-child(3) {
+    width: 100%;
+  }
 }
 </style>
 
