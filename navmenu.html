@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Strategic Owl Nav Preview</title>
+
+  <!-- Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@500;600&family=Playfair+Display:wght@700&display=swap" rel="stylesheet" />
+
+  <style>
+    :root {
+      --background: #0D1B2A;
+      --surface: #112240;
+      --highlight: #1A2B4C;
+      --text: #FFFFFF;
+      --text-muted: #7C8A9B;
+      --heading: #FFFFF0;
+      --truth: #28A745;
+      --reliability: #3B6CED;
+      --understanding: #D4AF37;
+    }
+
+    body {
+      margin: 0;
+      background-color: var(--background);
+      color: var(--text);
+      font-family: 'Inter', sans-serif;
+    }
+
+    nav.top-nav {
+      background-color: var(--surface);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 1rem 1.5rem;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.3);
+      position: sticky;
+      top: 0;
+      z-index: 999;
+    }
+
+    .nav-logo {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.3rem;
+      font-weight: 700;
+      color: var(--heading);
+    }
+
+    .nav-items {
+      display: flex;
+      gap: 1.4rem;
+    }
+
+    .nav-item {
+      color: var(--text);
+      font-weight: 600;
+      font-size: 0.95rem;
+      cursor: default;
+      text-transform: uppercase;
+    }
+  </style>
+</head>
+<body>
+
+  <nav class="top-nav">
+    <div class="nav-logo">The Strategic Owl</div>
+    <div class="nav-items">
+      <div class="nav-item">Home</div>
+      <div class="nav-item">Why?</div>
+      <div class="nav-item">T.R.U. Owl</div>
+      <div class="nav-item">Election Security</div>
+      <div class="nav-item">Voter Fraud</div>
+      <div class="nav-item">Contact</div>
+    </div>
+  </nav>
+
+</body>
+</html>
