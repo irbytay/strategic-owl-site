@@ -337,6 +337,232 @@
     const menu = document.getElementById("navMenu");
     menu.classList.toggle("show");
   }
+    const rootStyles = getComputedStyle(document.documentElement);
+  const colors = {
+    background: rootStyles.getPropertyValue('--background').trim() || "#0D1B2A",
+    surface: rootStyles.getPropertyValue('--surface').trim() || "#112240",
+    highlight: rootStyles.getPropertyValue('--highlight').trim() || "#1A2B4C",
+    truth: rootStyles.getPropertyValue('--truth').trim() || "#28A745",
+    reliability: rootStyles.getPropertyValue('--reliability').trim() || "#3B6CED",
+    understanding: rootStyles.getPropertyValue('--understanding').trim() || "#D4AF37",
+    text: rootStyles.getPropertyValue('--text').trim() || "#FFFFFF",
+    muted: rootStyles.getPropertyValue('--text-muted').trim() || "#7C8A9B",
+    heading: rootStyles.getPropertyValue('--heading').trim() || "#FFFFF0",
+    shadow: rootStyles.getPropertyValue('--shadow').trim() || "rgba(0, 0, 0, 0.3)",
+    red: rootStyles.getPropertyValue('--bar-red').trim() || "#FF4C4C",
+    green: rootStyles.getPropertyValue('--bar-green').trim() || "#28A745"
+  };
+
+  async function fetchTRUData() {
+    const API_KEY = "AIzaSyCzuh9HBfe0r70r9U35Pe406PPZ-tz6I78";
+    const SHEET_ID = "19wBEj9hEkvIyQcoR5E_mBGVAxTzMnddMxk8nuQLAumA";
+    const RANGE = "ElectionTRU!A2:Y1000";
+    const url = `https://sheets.googleapis.com/v4/spreadsheets/${SHEET_ID}/values/${RANGE}?key=${API_KEY}`;
+
+    try {
+      const res = await fetch(url);
+      const json = await res.json();
+      return json.values || [];
+    } catch (err) {
+      console.error("Failed to fetch sheet data", err);
+      return [];
+    }
+  }
+
+  function showScores() {
+    const select = document.getElementById("person-select");
+    const table = document.getElementById("score-table");
+    const tbody = document.getElementById("score-body");
+    const selected = select.value;
+
+    if (!selected || !window.rowMap || !window.rowMap[selected]) {
+      table.style.display = "none";
+      return;
+    }
+
+    const row = window.rowMap[selected];
+    tbody.innerHTML = "";
+    let total = 0;
+
+    const categories = [
+      "Constitutional Knowledge", "Legal Framework", "Federalism",
+      "Election Mechanics", "Electoral Count Process", "Disinformation Awareness",
+      "Public Impact", "Judicial Oversight", "Election Worker Protections",
+      "Psychological Manipulation"
+    ];
+
+    // 🎨 STYLE TABLE (WHOLE TABLE LEVEL)
+    if (table) {
+      table.style.width = "100%";
+      table.style.borderCollapse = "collapse";
+      table.style.fontFamily = "'Montserrat', sans-serif";
+      table.style.backgroundColor = colors.surface;
+      table.style.color = colors.text;
+      table.style.marginTop = "20px";
+    }
+
+    // 📊 CATEGORY SCORES
+    for (let i = 0; i < 10; i++) {
+      const label = categories[i];
+      const score = parseInt(row[3 + i]) || 0;
+      const explanation = row[14 + i] || "";
+
+      const tr = document.createElement("tr");
+      tr.style.borderBottom = `1px solid ${colors.highlight}`;
+      tr.style.backgroundColor = colors.surface;
+      tr.style.color = colors.text;
+
+      const tdLabel = document.createElement("td");
+      tdLabel.textContent = label;
+      tdLabel.style.padding = "12px";
+
+      const tdScore = document.createElement("td");
+      tdScore.textContent = (score >= 0 ? "+" : "") + score;
+      tdScore.style.padding = "12px";
+      tdScore.style.color = score >= 0 ? colors.green : colors.red;
+      tdScore.style.fontWeight = "bold";
+
+      const tdExplanation = document.createElement("td");
+      tdExplanation.textContent = explanation;
+      tdExplanation.style.padding = "12px";
+      tdExplanation.style.color = colors.muted;
+
+      tr.appendChild(tdLabel);
+      tr.appendChild(tdScore);
+      tr.appendChild(tdExplanation);
+      tbody.appendChild(tr);
+
+      total += score;
+    }
+
+    // 🏁 2020 Election Flag Bonus
+    const flag = (row[24] || "").toLowerCase();
+    let bonus = 0, label = "", desc = "";
+
+    if (flag === "true") {
+      bonus = -10;
+      label = "2020 Election Denial Penalty";
+      desc = "Denial of the 2020 election outcome signals rejection of verified democratic processes and aligns with disinformation or blind loyalty.";
+    } else if (flag === "false") {
+      bonus = 5;
+      label = "2020 Election Affirmation Bonus";
+      desc = "Publicly affirming the legitimacy of the 2020 election supports truth, counters disinformation, and helps protect democratic confidence.";
+    } else if (flag === "gray") {
+      bonus = -5;
+      label = "Ambiguous Stance Penalty";
+      desc = "Failure to clearly affirm the 2020 election results contributes to public doubt and enables misinformation to spread unchecked.";
+    }
+
+    if (label) {
+      const tr = document.createElement("tr");
+      tr.style.backgroundColor = colors.surface;
+      tr.style.borderBottom = `1px solid ${colors.highlight}`;
+
+      const tdLabel = document.createElement("td");
+      tdLabel.innerHTML = `<strong>${label}</strong>`;
+      tdLabel.style.padding = "12px";
+
+      const tdBonus = document.createElement("td");
+      tdBonus.innerHTML = `<strong>${bonus >= 0 ? "+" : ""}${bonus}</strong>`;
+      tdBonus.style.color = bonus >= 0 ? colors.green : colors.red;
+      tdBonus.style.padding = "12px";
+
+      const tdDesc = document.createElement("td");
+      tdDesc.innerHTML = `<strong>${desc}</strong>`;
+      tdDesc.style.padding = "12px";
+      tdDesc.style.color = colors.muted;
+
+      tr.appendChild(tdLabel);
+      tr.appendChild(tdBonus);
+      tr.appendChild(tdDesc);
+      tbody.appendChild(tr);
+
+      total += bonus;
+    }
+
+    // 🧮 TOTAL SCORE ROW
+    const summary = row[13] || "No summary provided.";
+    const trTotal = document.createElement("tr");
+    trTotal.style.backgroundColor = colors.highlight;
+
+    const tdTotalLabel = document.createElement("td");
+    tdTotalLabel.innerHTML = "<strong>Total Score</strong>";
+    tdTotalLabel.style.padding = "12px";
+
+    const tdTotalScore = document.createElement("td");
+    tdTotalScore.innerHTML = `<strong>${total >= 0 ? "+" : ""}${total}</strong>`;
+    tdTotalScore.style.color = total >= 0 ? colors.green : colors.red;
+    tdTotalScore.style.padding = "12px";
+    tdTotalScore.style.fontSize = "1.1rem";
+
+    const tdSummary = document.createElement("td");
+    tdSummary.innerHTML = `<strong>${summary}</strong>`;
+    tdSummary.style.color = colors.understanding;
+    tdSummary.style.padding = "12px";
+
+    trTotal.appendChild(tdTotalLabel);
+    trTotal.appendChild(tdTotalScore);
+    trTotal.appendChild(tdSummary);
+    tbody.appendChild(trTotal);
+
+    table.style.display = "table";
+  }
+
+  async function initElectionPage() {
+    window.rowMap = {};
+    const data = await fetchTRUData();
+    const subjectsSet = new Set();
+
+    data.forEach(row => {
+      const name = row[0];
+      const subject = row[2] || "Uncategorized";
+      if (name) {
+        window.rowMap[name] = row;
+        subjectsSet.add(subject);
+      }
+    });
+
+    const subjectSelect = document.getElementById("subject-select");
+    const personSelect = document.getElementById("person-select");
+    if (!subjectSelect || !personSelect) return;
+
+    // 🎯 Populate subject dropdown
+    subjectSelect.innerHTML = `<option value="">All Subjects</option>`;
+    Array.from(subjectsSet).sort().forEach(subject => {
+      const opt = document.createElement("option");
+      opt.value = subject;
+      opt.textContent = subject;
+      subjectSelect.appendChild(opt);
+    });
+
+    // 🧠 Update people dropdown based on subject
+    function populatePeopleDropdown(selectedSubject = "") {
+      personSelect.innerHTML = `<option value="">-- Choose a name --</option>`;
+      Object.keys(window.rowMap)
+        .filter(name => {
+          const row = window.rowMap[name];
+          return selectedSubject ? (row[2] || "").trim() === selectedSubject : true;
+        })
+        .sort()
+        .forEach(name => {
+          const opt = document.createElement("option");
+          opt.value = name;
+          opt.textContent = name.replace(/([A-Z])/g, " $1").replace(/^./, s => s.toUpperCase());
+          personSelect.appendChild(opt);
+        });
+    }
+
+    populatePeopleDropdown();
+
+    subjectSelect.addEventListener("change", () => {
+      populatePeopleDropdown(subjectSelect.value);
+    });
+
+    personSelect.removeEventListener("change", showScores);
+    personSelect.addEventListener("change", showScores);
+  }
+
+  window.addEventListener("DOMContentLoaded", initElectionPage);
 </script>
 
 </body>
