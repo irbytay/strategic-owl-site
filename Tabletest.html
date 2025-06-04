@@ -670,16 +670,16 @@ table.tru-table td:nth-child(2) {
       const tr = document.createElement("tr");
 
       const tdScore = document.createElement("td");
-      tdScore.className = className;
-      tdScore.setAttribute("data-label", "Score");
-      tdScore.innerHTML = `
-        <div style="display: flex; flex-direction: column; align-items: center;">
-          <span>${label}</span>
-          <span style="font-weight: bold; font-size: 0.9rem;">
-            ${value >= 0 ? "+" : ""}${value.toFixed(0)}
-          </span>
-        </div>
-      `;
+     tdScore.className = "";
+tdScore.setAttribute("data-label", "Score");
+tdScore.innerHTML = `
+  <div style="display: flex; flex-direction: column; align-items: center;">
+    <span class="${className}">${label}</span>
+    <span style="color: var(--text); font-weight: bold; font-size: 0.9rem;">
+      ${value >= 0 ? "+" : ""}${value.toFixed(0)}
+    </span>
+  </div>
+`;
 
       const tdComment = document.createElement("td");
       tdComment.setAttribute("data-label", "Explanation");
