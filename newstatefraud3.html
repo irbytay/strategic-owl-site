@@ -382,6 +382,17 @@
 .source a {
   display: inline-block;      /* Ensures pseudo-elements render correctly */
 }
+    /* Ensures visited links match the normal link style */
+.important-link:visited {
+  color: var(--understanding);               /* Prevent purple default */
+  text-decoration: underline;
+}
+
+/* Optional: Add this if you want the hover effect to still work after visit */
+.important-link:visited:hover {
+  color: var(--truth);
+  text-shadow: 0 0 8px var(--understanding);
+}
 </style>
 </head>
   <body>
