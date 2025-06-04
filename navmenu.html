@@ -448,42 +448,35 @@
       table.style.marginTop = "20px";
     }
 
-    // 📊 CATEGORY SCORES
-    for (let i = 0; i < 10; i++) {
-      const label = categories[i];
-      const score = parseInt(row[3 + i]) || 0;
-      const explanation = row[14 + i] || "";
+    // 📊 CATEGORY SCORES (Updated to stack score & explanation under label)
+for (let i = 0; i < 10; i++) {
+  const label = categories[i];
+  const score = parseInt(row[3 + i]) || 0;
+  const explanation = row[14 + i] || "";
 
-      const tr = document.createElement("tr");
-      tr.style.borderBottom = `1px solid ${colors.highlight}`;
-      tr.style.backgroundColor = colors.surface;
-      tr.style.color = colors.text;
+  const tr = document.createElement("tr");
+  tr.style.borderBottom = `1px solid ${colors.highlight}`;
+  tr.style.backgroundColor = colors.surface;
 
-      const tdLabel = document.createElement("td");
-tdLabel.textContent = label;
-tdLabel.style.padding = "12px";
-tdLabel.style.fontFamily = "'Montserrat', sans-serif";  // ✅ FONT CONTROL
-tdLabel.style.color = "#BFC9D4";
-tdLabel.style.fontWeight = "600"; // Optional bold for category
+  const tdCombined = document.createElement("td");
+  tdCombined.style.padding = "12px";
+  tdCombined.style.fontFamily = "'Montserrat', sans-serif";
+  tdCombined.style.color = "#BFC9D4";
+  tdCombined.style.fontWeight = "600";
 
-      const tdScore = document.createElement("td");
-      tdScore.textContent = (score >= 0 ? "+" : "") + score;
-      tdScore.style.padding = "12px";
-      tdScore.style.color = score >= 0 ? colors.green : colors.red;
-      tdScore.style.fontWeight = "bold";
+  tdCombined.innerHTML = `
+    ${label}<br/>
+    <span style="color: ${score >= 0 ? colors.green : colors.red}; font-weight: bold;">
+      ${(score >= 0 ? "+" : "") + score}
+    </span><br/>
+    <span style="color: ${colors.muted}; font-weight: 400;">${explanation}</span>
+  `;
 
-      const tdExplanation = document.createElement("td");
-      tdExplanation.textContent = explanation;
-      tdExplanation.style.padding = "12px";
-      tdExplanation.style.color = colors.muted;
+  tr.appendChild(tdCombined);
+  tbody.appendChild(tr);
 
-      tr.appendChild(tdLabel);
-      tr.appendChild(tdScore);
-      tr.appendChild(tdExplanation);
-      tbody.appendChild(tr);
-
-      total += score;
-    }
+  total += score;
+}
 
     // 🏁 2020 Election Flag Bonus
     const flag = (row[24] || "").toLowerCase();
