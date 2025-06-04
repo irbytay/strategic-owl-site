@@ -473,6 +473,24 @@ table.tru-table td:nth-child(2) {
   line-height: 1.5;
   margin-left: 12px;
 }
+    /* Target both filter labels */
+.dropdowns-wrapper label {
+  font-family: 'Playfair Display', serif;
+  font-size: 1rem;
+  color: var(--text);
+}
+
+/* Target the dropdown selects */
+.dropdowns-wrapper select {
+  font-family: 'Playfair Display', serif;
+  font-size: 1rem;
+  padding: 6px 10px;
+  border-radius: 6px;
+  border: 1px solid var(--highlight);
+  background-color: var(--surface);
+  color: var(--text);
+  outline: none;
+}
 </style>
 
 <nav class="top-nav">
@@ -503,7 +521,7 @@ table.tru-table td:nth-child(2) {
         <span>Understanding</span>
       </div>
     </section>
-    <div class="dropdowns-wrapper" style="display: flex; justify-content: center; gap: 40px; margin: 40px 0;">
+   <div class="dropdowns-wrapper" style="display: flex; justify-content: center; gap: 40px; margin: 40px 0;">
   <div class="dropdown-group" style="text-align: left;">
     <label for="role-filter" style="display: block; margin-bottom: 6px; font-weight: 600;">Filter by Role:</label>
     <select id="role-filter"></select>
