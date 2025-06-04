@@ -439,6 +439,66 @@
 
       total += score;
     }
+
+    const flag = (row[24] || "").toLowerCase();
+    let bonus = 0, label = "", desc = "";
+
+    if (flag === "true") {
+      bonus = -10;
+      label = "2020 Election Denial Penalty";
+      desc = "Denial of the 2020 election outcome signals rejection of verified democratic processes and aligns with disinformation or blind loyalty.";
+    } else if (flag === "false") {
+      bonus = 5;
+      label = "2020 Election Affirmation Bonus";
+      desc = "Publicly affirming the legitimacy of the 2020 election supports truth, counters disinformation, and helps protect democratic confidence.";
+    } else if (flag === "gray") {
+      bonus = -5;
+      label = "Ambiguous Stance Penalty";
+      desc = "Failure to clearly affirm the 2020 election results contributes to public doubt and enables misinformation to spread unchecked.";
+    }
+
+    if (label) {
+      const tr = document.createElement("tr");
+      tr.style.borderBottom = `1px solid ${colors.highlight}`;
+
+      const tdBonus = document.createElement("td");
+      tdBonus.style.padding = "12px";
+      tdBonus.innerHTML = `<strong>${label}</strong><br>
+        <span style="color: ${bonus >= 0 ? colors.green : colors.red}; font-weight: bold;">
+          ${(bonus >= 0 ? "+" : "") + bonus}
+        </span>`;
+
+      const tdDesc = document.createElement("td");
+      tdDesc.style.padding = "12px";
+      tdDesc.style.color = colors.muted;
+      tdDesc.textContent = desc;
+
+      tr.appendChild(tdBonus);
+      tr.appendChild(tdDesc);
+      tbody.appendChild(tr);
+
+      total += bonus;
+    }
+
+    const summary = row[13] || "No summary provided.";
+    const trTotal = document.createElement("tr");
+    trTotal.style.backgroundColor = colors.highlight;
+
+    const tdTotal = document.createElement("td");
+    tdTotal.style.padding = "12px";
+    tdTotal.innerHTML = `<strong>Total Score</strong><br>
+      <span style="color: ${total >= 0 ? colors.green : colors.red}; font-size: 1.1rem; font-weight: bold;">
+        ${(total >= 0 ? "+" : "") + total}
+      </span>`;
+
+    const tdSummary = document.createElement("td");
+    tdSummary.style.padding = "12px";
+    tdSummary.style.color = colors.understanding;
+    tdSummary.textContent = summary;
+
+    trTotal.appendChild(tdTotal);
+    trTotal.appendChild(tdSummary);
+    tbody.appendChild(trTotal);
   }
 
   async function initElectionPage() {
@@ -487,6 +547,8 @@
     subjectSelect.addEventListener("change", () => {
       populatePeopleDropdown(subjectSelect.value);
     });
+
+    personSelect.addEventListener("change", showScores);
   }
 
   window.addEventListener("DOMContentLoaded", initElectionPage);
