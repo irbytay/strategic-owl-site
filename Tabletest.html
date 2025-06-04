@@ -553,31 +553,60 @@ table.tru-table td:nth-child(2) {
         <span>Understanding</span>
       </div>
     </section>
-   <div class="dropdowns-wrapper" style="display: flex; justify-content: center; gap: 40px; margin: 40px 0;">
+   <!-- 🌐 Wrapper for both dropdowns (Filter by Role and Select a Profile) -->
+<div class="dropdowns-wrapper" 
+     style="display: flex; justify-content: center; gap: 40px; margin: 40px 0;">
+  <!-- 🧩 Each dropdown is grouped in its own container -->
+
+  <!-- 🔍 Dropdown: Filter by Role -->
   <div class="dropdown-group" style="text-align: left;">
-    <label for="role-filter" style="display: block; margin-bottom: 6px; font-weight: 600;">Filter by Role:</label>
+    <!-- 🏷️ Label for the dropdown -->
+    <label for="role-filter" 
+           style="display: block; margin-bottom: 6px; font-weight: 600;">
+      Filter by Role:
+    </label>
+
+    <!-- 🔽 The actual dropdown <select> element -->
     <select id="role-filter"></select>
   </div>
 
+  <!-- 👤 Dropdown: Select a Profile -->
   <div class="dropdown-group" style="text-align: left;">
-    <label for="person-select" style="display: block; margin-bottom: 6px; font-weight: 600;">Select a Profile:</label>
+    <!-- 🏷️ Label for the dropdown -->
+    <label for="person-select" 
+           style="display: block; margin-bottom: 6px; font-weight: 600;">
+      Select a Profile:
+    </label>
+
+    <!-- 🔽 The actual dropdown <select> element -->
     <select id="person-select"></select>
   </div>
 </div>
 
+<!-- 📊 The main data table for showing scores (initially hidden) -->
 <table id="score-table" style="display:none;">
   <thead>
     <tr>
+      <!-- 🟩 Score column header (includes Truth, Reliability, etc.) -->
       <th style="text-align: center;">Score</th>
+
+      <!-- 🟨 Explanation column header -->
       <th>Explanation</th>
     </tr>
   </thead>
+
+  <!-- 📥 Populated dynamically by JavaScript with score rows -->
   <tbody id="score-body"></tbody>
 </table>
 
+<!-- 🔻 Container for displaying the total score and commentary -->
 <div id="total-score-box" style="margin-top: 20px; display:none;">
+  <!-- 📶 Visual bar and summary commentary -->
   <div class="score-bar">
+    <!-- 🎯 Vertical color bar (red/green) based on total score -->
     <div id="indicator-bar" class="bar-indicator"></div>
+
+    <!-- 🗣️ Text summary under the table (updated via JS) -->
     <div id="total-score-comment" class="total-score-comment-text"></div>
   </div>
 </div>
