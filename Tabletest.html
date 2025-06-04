@@ -818,9 +818,9 @@ tdComment.textContent = comment;
     tdTotalScore.className = "total-score";
     tdTotalScore.setAttribute("data-label", "Score");
    tdTotalScore.innerHTML = `
-  <div style="display: flex; flex-direction: column; align-items: center; font-family: 'Playfair Display', serif;">
+  <div style="display: flex; flex-direction: column; align-items: center;">
     <strong>Total Score</strong>
-    <span class="${total >= 0 ? "positive-score" : "negative-score"}" style="font-family: 'Playfair Display', serif;">
+    <span class="num-font ${total >= 0 ? "positive-score" : "negative-score"}">
       <strong>${total >= 0 ? "+" : ""}${total.toFixed(0)}</strong>
     </span>
   </div>
