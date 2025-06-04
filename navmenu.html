@@ -347,7 +347,7 @@
 <table id="score-table" style="width: 100%; max-width: 960px; margin: 40px auto 0; border-collapse: collapse; display: none; font-family: 'Montserrat', sans-serif; background-color: var(--surface); color: var(--text);">
   <thead>
     <tr style="background-color: var(--highlight);">
-      <th style="padding: 12px; text-align: left;">Category & Score</th>
+      <th style="padding: 12px; text-align: left;">Score</th>
       <th style="padding: 12px; text-align: left;">Explanation</th>
     </tr>
   </thead>
@@ -423,6 +423,9 @@
 
       const tdScore = document.createElement("td");
       tdScore.style.padding = "12px";
+      tdScore.style.textAlign = "center";
+      tdScore.style.fontFamily = "'Montserrat', sans-serif"; // Set font
+      tdScore.style.color = "#BFC9D4"; // Light muted blue for category
       tdScore.innerHTML = `<strong>${category}</strong><br>
         <span style="color: ${score >= 0 ? colors.green : colors.red}; font-weight: bold;">
           ${(score >= 0 ? "+" : "") + score}
@@ -463,6 +466,10 @@
 
       const tdBonus = document.createElement("td");
       tdBonus.style.padding = "12px";
+      tdBonus.style.textAlign = "center"; // Center horizontally
+      tdBonus.style.fontFamily = "'Montserrat', sans-serif"; // Match font
+      tdBonus.style.color = "#BFC9D4"; // Muted text color
+      tdBonus.style.fontWeight = "600"; // Bold for label
       tdBonus.innerHTML = `<strong>${label}</strong><br>
         <span style="color: ${bonus >= 0 ? colors.green : colors.red}; font-weight: bold;">
           ${(bonus >= 0 ? "+" : "") + bonus}
