@@ -370,7 +370,6 @@
 ">
   <thead>
     <tr style="background-color: var(--highlight);">
-      <th style="padding: 12px; text-align: left;">Category</th>
       <th style="padding: 12px; text-align: left;">Score</th>
       <th style="padding: 12px; text-align: left;">Explanation</th>
     </tr>
@@ -417,145 +416,35 @@
   }
 
   function showScores() {
-    const select = document.getElementById("person-select");
-    const table = document.getElementById("score-table");
-    const tbody = document.getElementById("score-body");
-    const selected = select.value;
+  const select = document.getElementById("person-select");
+  const table = document.getElementById("score-table");
+  const tbody = document.getElementById("score-body");
+  const selected = select.value;
 
-    if (!selected || !window.rowMap || !window.rowMap[selected]) {
-      table.style.display = "none";
-      return;
-    }
+  if (!selected || !window.rowMap || !window.rowMap[selected]) {
+    table.style.display = "none";
+    return;
+  }
 
-    const row = window.rowMap[selected];
-    tbody.innerHTML = "";
-    let total = 0;
+  const row = window.rowMap[selected];
+  tbody.innerHTML = "";
+  let total = 0;
 
-    const categories = [
-      "Constitutional Knowledge", "Legal Framework", "Federalism",
-      "Election Mechanics", "Electoral Count Process", "Disinformation Awareness",
-      "Public Impact", "Judicial Oversight", "Election Worker Protections",
-      "Psychological Manipulation"
-    ];
+  const categories = [
+    "Constitutional Knowledge", "Legal Framework", "Federalism",
+    "Election Mechanics", "Electoral Count Process", "Disinformation Awareness",
+    "Public Impact", "Judicial Oversight", "Election Worker Protections",
+    "Psychological Manipulation"
+  ];
 
-    // 🎨 STYLE TABLE (WHOLE TABLE LEVEL)
-    if (table) {
-      table.style.width = "100%";
-      table.style.borderCollapse = "collapse";
-      table.style.fontFamily = "'Montserrat', sans-serif";
-      table.style.backgroundColor = colors.surface;
-      table.style.color = "#BFC9D4";
-      table.style.marginTop = "20px";
-    }
-
-    // 📊 CATEGORY SCORES
-    for (let i = 0; i < 10; i++) {
-      const label = categories[i];
-      const score = parseInt(row[3 + i]) || 0;
-      const explanation = row[14 + i] || "";
-
-      const tr = document.createElement("tr");
-      tr.style.borderBottom = `1px solid ${colors.highlight}`;
-      tr.style.backgroundColor = colors.surface;
-      tr.style.color = colors.text;
-
-      const tdLabel = document.createElement("td");
-tdLabel.textContent = label;
-tdLabel.style.padding = "12px";
-tdLabel.style.fontFamily = "'Montserrat', sans-serif";  // ✅ FONT CONTROL
-tdLabel.style.color = "#BFC9D4";
-tdLabel.style.fontWeight = "600"; // Optional bold for category
-
-      const tdScore = document.createElement("td");
-      tdScore.textContent = (score >= 0 ? "+" : "") + score;
-      tdScore.style.padding = "12px";
-      tdScore.style.color = score >= 0 ? colors.green : colors.red;
-      tdScore.style.fontWeight = "bold";
-
-      const tdExplanation = document.createElement("td");
-      tdExplanation.textContent = explanation;
-      tdExplanation.style.padding = "12px";
-      tdExplanation.style.color = colors.muted;
-
-      tr.appendChild(tdLabel);
-      tr.appendChild(tdScore);
-      tr.appendChild(tdExplanation);
-      tbody.appendChild(tr);
-
-      total += score;
-    }
-
-    // 🏁 2020 Election Flag Bonus
-    const flag = (row[24] || "").toLowerCase();
-    let bonus = 0, label = "", desc = "";
-
-    if (flag === "true") {
-      bonus = -10;
-      label = "2020 Election Denial Penalty";
-      desc = "Denial of the 2020 election outcome signals rejection of verified democratic processes and aligns with disinformation or blind loyalty.";
-    } else if (flag === "false") {
-      bonus = 5;
-      label = "2020 Election Affirmation Bonus";
-      desc = "Publicly affirming the legitimacy of the 2020 election supports truth, counters disinformation, and helps protect democratic confidence.";
-    } else if (flag === "gray") {
-      bonus = -5;
-      label = "Ambiguous Stance Penalty";
-      desc = "Failure to clearly affirm the 2020 election results contributes to public doubt and enables misinformation to spread unchecked.";
-    }
-
-    if (label) {
-      const tr = document.createElement("tr");
-      tr.style.backgroundColor = colors.surface;
-      tr.style.borderBottom = `1px solid ${colors.highlight}`;
-
-      const tdLabel = document.createElement("td");
-      tdLabel.innerHTML = `<strong>${label}</strong>`;
-      tdLabel.style.padding = "12px";
-
-      const tdBonus = document.createElement("td");
-      tdBonus.innerHTML = `<strong>${bonus >= 0 ? "+" : ""}${bonus}</strong>`;
-      tdBonus.style.color = bonus >= 0 ? colors.green : colors.red;
-      tdBonus.style.padding = "12px";
-
-      const tdDesc = document.createElement("td");
-      tdDesc.innerHTML = `<strong>${desc}</strong>`;
-      tdDesc.style.padding = "12px";
-      tdDesc.style.color = colors.muted;
-
-      tr.appendChild(tdLabel);
-      tr.appendChild(tdBonus);
-      tr.appendChild(tdDesc);
-      tbody.appendChild(tr);
-
-      total += bonus;
-    }
-
-    // 🧮 TOTAL SCORE ROW
-    const summary = row[13] || "No summary provided.";
-    const trTotal = document.createElement("tr");
-    trTotal.style.backgroundColor = colors.highlight;
-
-    const tdTotalLabel = document.createElement("td");
-    tdTotalLabel.innerHTML = "<strong>Total Score</strong>";
-    tdTotalLabel.style.padding = "12px";
-
-    const tdTotalScore = document.createElement("td");
-    tdTotalScore.innerHTML = `<strong>${total >= 0 ? "+" : ""}${total}</strong>`;
-    tdTotalScore.style.color = total >= 0 ? colors.green : colors.red;
-    tdTotalScore.style.padding = "12px";
-    tdTotalScore.style.fontSize = "1.1rem";
-
-    const tdSummary = document.createElement("td");
-    tdSummary.innerHTML = `<strong>${summary}</strong>`;
-    tdSummary.style.color = colors.understanding;
-    tdSummary.style.padding = "12px";
-
-    trTotal.appendChild(tdTotalLabel);
-    trTotal.appendChild(tdTotalScore);
-    trTotal.appendChild(tdSummary);
-    tbody.appendChild(trTotal);
-
-    table.style.display = "table";
+  // 🎨 STYLE TABLE (WHOLE TABLE LEVEL)
+  if (table) {
+    table.style.width = "100%";
+    table.style.borderCollapse = "collapse";
+    table.style.fontFamily = "'Montserrat', sans-serif";
+    table.style.backgroundColor = colors.surface;
+    table.style.color = "#BFC9D4";
+    table.style.marginTop = "20px";
   }
 
   async function initElectionPage() {
