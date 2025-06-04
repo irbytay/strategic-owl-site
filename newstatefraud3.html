@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Strategic Owl | TRU OWL Viewer</title>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&family=Playfair+Display:wght@600;700&display=swap" rel="stylesheet" />
 
@@ -146,12 +146,6 @@
       gap: 20px;
       box-shadow: 0 3px 8px var(--shadow);
     }
-    @media (max-width: 600px) {
-  .dropdown-container {
-    flex-direction: column;
-    align-items: center;
-  }
-}
 
     .nav-links.show {
       display: flex;
@@ -175,7 +169,11 @@
     max-width: 960px;
     margin: 100px auto 0 auto;
     padding: 24px;
-  }
+  display: flex;
+  flex-direction: column;
+  align-items: center;          /* centers all direct child elements horizontally */
+  text-align: center;           /* ensures text-based elements also align visually */
+}
 
   h1 {
     font-family: 'Playfair Display', serif;
@@ -255,79 +253,17 @@
   .bar-green {
     background-color: var(--bar-green);
   }
-    .positive-score strong,
-.negative-score strong {
-  font-family: 'Inter', sans-serif;
-  font-weight: 600;
-  color: inherit;
-}
-    .dropdown-container {
-  display: flex;
-  justify-content: center;
-  margin: 20px 0;
-}
-    .foundation-section {
-  padding: 40px 20px;
-  max-width: 800px;
-  margin: 0 auto;
-}
-
-.section-intro {
-  font-size: 1.1rem;
+    .match-nav-link {
   color: var(--text-muted);
-  text-align: center;
-  margin-bottom: 36px;
+  text-decoration: none;
+  font-size: 15px;
+  transition: color 0.3s ease;
 }
 
-.foundation-section h1 {
-  font-family: 'Playfair Display', serif;
-  font-size: 2rem;
+.match-nav-link:hover {
   color: var(--understanding);
-  text-align: center;
-  margin-bottom: 16px;
 }
-
-.foundation-section h2 {
-  font-family: 'Playfair Display', serif;
-  font-size: 1.4rem;
-  margin-top: 40px;
-  color: var(--understanding;
-  text-align: center;
-}
-
-.foundation-section table {
-  width: 100%;
-  background-color: var(--surface);
-  border-radius: 6px;
-  border-collapse: collapse;
-  margin: 20px 0;
-}
-
-.foundation-section th {
-  background-color: var(--highlight);
-  padding: 12px;
-  font-weight: 600;
-  text-align: left;
-  color: var(--text-muted)
-}
-
-.foundation-section td {
-  padding: 12px;
-  border-bottom: 1px solid var(--highlight);
-  color: var(--text);
-  line-height: 1.6;
-}
-
-.strategic-insight {
-  font-size: 1rem;
-  background-color: #1A2B4C;
-  border-left: 4px solid var(--understanding);
-  padding: 16px;
-  margin-top: 12px;
-  margin-bottom: 40px;
-  color: var(--text-muted);
-}
-    /* Style the link itself */
+ /* Style the link itself */
 .important-link {
   color: var(--understanding);               /* Gold color from your theme */
   font-weight: 700;                          /* Bold for visibility */
@@ -368,40 +304,7 @@
   text-shadow: 0 0 8px var(--understanding); /* Subtle glow using gold tone */
   color: var(--truth);                       /* Optional: changes to green (truth color) */
 }
-    .source {
-  font-size: 0.85rem;
-  color: var(--text-muted);
-  font-style: italic;
-  text-align: left;           /* Overrides the default center alignment */
-  margin-top: 24px;
-  margin-left: auto;
-  margin-right: auto;
-  max-width: 700px;           /* Keep consistent width */
-}
-
-.source a {
-  display: inline-block;      /* Ensures pseudo-elements render correctly */
-}
-    /* Ensures visited links match the normal link style */
-.important-link:visited {
-  color: var(--understanding);               /* Prevent purple default */
-  text-decoration: underline;
-}
-
-/* Optional: Add this if you want the hover effect to still work after visit */
-.important-link:visited:hover {
-  color: var(--truth);
-  text-shadow: 0 0 8px var(--understanding);
-}
-    .source a.important-link {
-  font-style: normal;                 /* Undo italic */
-  font-size: 1rem;                    /* Restore standard size */
-  font-weight: 700;                   /* Bold like your original intent */
-  color: var(--understanding) !important; /* Force your color */
-}
 </style>
-</head>
-  <body>
 
 <nav class="top-nav">
 <a href="about.html" class="nav-logo">
@@ -419,9 +322,7 @@
 </nav>
   <div class="container">
     <h1>Voter Fraud?</h1>
-    <p>
-  Voter Fraud by state, Numbers don't lie. 
-</p>
+<p>Look past the headlines. Here’s the actual data.</p>
     <!-- 🎯 Divider -->
     <section class="divider-section">
       <div class="divider-bar">
@@ -435,14 +336,25 @@
         <span>Understanding</span>
       </div>
     </section>
- <label for="state-select" style="display:block;text-align:center;margin-top:20px;font-weight:bold;">
-        Filter by State:
-      </label>
-      <select id="state-select" style="margin: 20px auto; display: block;">
-        <option value="">-- Select a State --</option>
-      </select>
+<p>
+You’ve heard the claims. Some say voter fraud is everywhere. Others say it barely exists. Let’s look at the actual records.
+</p>
 
-      <p id="state-summary" class="subtext"></p>
+<p>
+The Heritage Foundation tracks every confirmed case of voter fraud — often to suggest it’s a bigger threat than it is. This tool lets you explore that same data, with the context it’s missing.
+</p>
+
+<p>
+Because yes, voter fraud exists. But it’s not what you’ve been led to believe.
+</p>
+   
+   <label for="state-select" style="display: block; margin-bottom: 8px; font-weight: bold;">
+  Select a State:
+</label>
+<select id="state-select" style="padding: 6px; font-size: 1rem;">
+  <option value="">-- Choose a state --</option>
+</select>
+<p id="state-summary" class="subtext"></p>
 
       <div class="table-wrapper" style="display:none;" id="state-results">
         <table>
