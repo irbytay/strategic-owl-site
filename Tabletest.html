@@ -456,6 +456,10 @@ table.tru-table td:nth-child(2) {
   color: var(--heading);
   text-align: left;
 }
+    #score-table th,
+#score-table td {
+  font-family: 'Playfair Display', serif;
+}
 </style>
 
 <nav class="top-nav">
@@ -705,10 +709,10 @@ tdComment.textContent = comment;
     const tdTotalScore = document.createElement("td");
     tdTotalScore.className = "total-score";
     tdTotalScore.setAttribute("data-label", "Score");
-    tdTotalScore.innerHTML = `
-  <div style="display: flex; flex-direction: column; align-items: center;">
+   tdTotalScore.innerHTML = `
+  <div style="display: flex; flex-direction: column; align-items: center; font-family: 'Playfair Display', serif;">
     <strong>Total Score</strong>
-    <span class="${total >= 0 ? "positive-score" : "negative-score"}">
+    <span class="${total >= 0 ? "positive-score" : "negative-score"}" style="font-family: 'Playfair Display', serif;">
       <strong>${total >= 0 ? "+" : ""}${total.toFixed(0)}</strong>
     </span>
   </div>
@@ -717,7 +721,7 @@ tdComment.textContent = comment;
     const tdTotalComment = document.createElement("td");
     tdTotalComment.className = "total-score";
     tdTotalComment.setAttribute("data-label", "Explanation");
-    tdTotalComment.innerHTML = `<strong>${totalScoreComment}</strong>`;
+    tdTotalComment.innerHTML = `<strong style="font-family: 'Playfair Display', serif;">${totalScoreComment}</strong>`;
 
     totalRow.appendChild(tdTotalScore);
     totalRow.appendChild(tdTotalComment);
