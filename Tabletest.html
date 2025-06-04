@@ -612,7 +612,8 @@ tdLabel.innerHTML = `
       tdComment.textContent = comment;
 
       tr.appendChild(tdLabel);
-      tr.appendChild(tdValue);
+      tr.appendChild(tdLabel); 
+      tr.appendChild(tdComment);
       tr.appendChild(tdComment);
       tbody.appendChild(tr);
 
