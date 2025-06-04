@@ -169,7 +169,11 @@
     max-width: 960px;
     margin: 100px auto 0 auto;
     padding: 24px;
-  }
+  display: flex;
+  flex-direction: column;
+  align-items: center;          /* centers all direct child elements horizontally */
+  text-align: center;           /* ensures text-based elements also align visually */
+}
 
   h1 {
     font-family: 'Playfair Display', serif;
