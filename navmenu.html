@@ -609,6 +609,8 @@ tbody.appendChild(trTotal);
 
     subjectSelect.addEventListener("change", () => {
       populatePeopleDropdown(subjectSelect.value);
+      personSelect.addEventListener("change", showScores);
+      console.log("Running showScores for:", selected);
     });
 
     personSelect.removeEventListener("change", showScores);
