@@ -460,8 +460,11 @@
       tr.style.color = colors.text;
 
       const tdLabel = document.createElement("td");
-      tdLabel.textContent = label;
-      tdLabel.style.padding = "12px";
+tdLabel.textContent = label;
+tdLabel.style.padding = "12px";
+tdLabel.style.fontFamily = "'Montserrat', sans-serif";  // ✅ FONT CONTROL
+tdLabel.style.color = colors.text;
+tdLabel.style.fontWeight = "600"; // Optional bold for category
 
       const tdScore = document.createElement("td");
       tdScore.textContent = (score >= 0 ? "+" : "") + score;
