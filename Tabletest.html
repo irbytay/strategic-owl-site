@@ -820,8 +820,8 @@ tdComment.textContent = comment;
    tdTotalScore.innerHTML = `
   <div style="display: flex; flex-direction: column; align-items: center;">
     <strong>Total Score</strong>
-    <span class="num-font ${total >= 0 ? "positive-score" : "negative-score"}">
-      <strong>${total >= 0 ? "+" : ""}${total.toFixed(0)}</strong>
+    <span class="num-font" style="color: ${total >= 0 ? 'var(--bar-green)' : 'var(--bar-red)'}; font-weight: bold;">
+      ${total >= 0 ? "+" : ""}${total.toFixed(0)}
     </span>
   </div>
 `;
