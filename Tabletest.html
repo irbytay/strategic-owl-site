@@ -596,16 +596,13 @@ table.tru-table td:nth-child(3) {
       const tr = document.createElement("tr");
 
       const tdLabel = document.createElement("td");
-tdLabel.className = className;
-tdLabel.setAttribute("data-label", "Category");
-tdLabel.innerHTML = `
-  <div style="display: flex; flex-direction: column;">
-    <span>${label}</span>
-    <span style="font-weight: bold; font-size: 0.9rem;">
-      ${value >= 0 ? "+" : ""}${value.toFixed(0)}
-    </span>
-  </div>
-`;
+      tdLabel.className = className;
+      tdLabel.setAttribute("data-label", "Category");
+      tdLabel.textContent = label;
+
+      const tdValue = document.createElement("td");
+      tdValue.setAttribute("data-label", "Score");
+      tdValue.textContent = `${value >= 0 ? "+" : ""}${value.toFixed(0)}`;
 
       const tdComment = document.createElement("td");
       tdComment.setAttribute("data-label", "Explanation");
