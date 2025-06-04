@@ -466,6 +466,13 @@ table.tru-table td:nth-child(2) {
 #score-table td {
   font-family: 'Playfair Display', serif;
 }
+    .total-score-comment-text {
+  font-family: 'Playfair Display', serif;
+  font-size: 1rem;
+  color: var(--text);
+  line-height: 1.5;
+  margin-left: 12px;
+}
 </style>
 
 <nav class="top-nav">
@@ -519,9 +526,9 @@ table.tru-table td:nth-child(2) {
 </table>
 
 <div id="total-score-box" style="margin-top: 20px; display:none;">
-  <div class="score-bar" style="margin-top: 16px;">
+  <div class="score-bar">
     <div id="indicator-bar" class="bar-indicator"></div>
-    <span id="total-score-comment" style="color: white;"></span>
+    <div id="total-score-comment" class="total-score-comment-text"></div>
   </div>
 </div>
   
@@ -734,7 +741,7 @@ tdComment.textContent = comment;
     tbody.appendChild(totalRow);
 
     indicatorBar.className = "bar-indicator " + (total >= 0 ? "bar-green" : "bar-red");
-    totalCommentEl.textContent = summaryBelowTable;
+    totalCommentEl.innerHTML = summaryBelowTable;
 
     table.style.display = "table";
     totalBox.style.display = "block";
