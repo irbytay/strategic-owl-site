@@ -369,11 +369,12 @@
   color: var(--text);
 ">
   <thead>
-  <tr style="background-color: var(--highlight);">
-    <th>Score</th>
-    <th>Explanation</th>
-  </tr>
-</thead>
+    <tr style="background-color: var(--highlight);">
+      <th style="padding: 12px; text-align: left;">Category</th>
+      <th style="padding: 12px; text-align: left;">Score</th>
+      <th style="padding: 12px; text-align: left;">Explanation</th>
+    </tr>
+  </thead>
   <tbody id="score-body">
     <!-- JS will inject rows here -->
   </tbody>
@@ -447,42 +448,42 @@
       table.style.marginTop = "20px";
     }
 
+    // 📊 CATEGORY SCORES
     for (let i = 0; i < 10; i++) {
-  const label = categories[i];
-  const score = parseInt(row[3 + i]) || 0;
-  const explanation = row[14 + i] || "";
+      const label = categories[i];
+      const score = parseInt(row[3 + i]) || 0;
+      const explanation = row[14 + i] || "";
 
-  const tr = document.createElement("tr");
-  tr.style.borderBottom = `1px solid ${colors.highlight}`;
-  tr.style.backgroundColor = colors.surface;
+      const tr = document.createElement("tr");
+      tr.style.borderBottom = `1px solid ${colors.highlight}`;
+      tr.style.backgroundColor = colors.surface;
+      tr.style.color = colors.text;
 
-  // Left column: Label + Score
-  const tdLabelScore = document.createElement("td");
-  tdLabelScore.style.padding = "12px";
-  tdLabelScore.style.fontFamily = "'Montserrat', sans-serif";
-  tdLabelScore.style.color = "#BFC9D4";
-  tdLabelScore.style.fontWeight = "600";
-  tdLabelScore.innerHTML = `
-    ${label}<br/>
-    <span style="color: ${score >= 0 ? colors.green : colors.red}; font-weight: bold;">
-      ${(score >= 0 ? "+" : "") + score}
-    </span>
-  `;
+      const tdLabel = document.createElement("td");
+tdLabel.textContent = label;
+tdLabel.style.padding = "12px";
+tdLabel.style.fontFamily = "'Montserrat', sans-serif";  // ✅ FONT CONTROL
+tdLabel.style.color = "#BFC9D4";
+tdLabel.style.fontWeight = "600"; // Optional bold for category
 
-  // Right column: Explanation only
-  const tdExplanation = document.createElement("td");
-  tdExplanation.style.padding = "12px";
-  tdExplanation.style.fontFamily = "'Montserrat', sans-serif";
-  tdExplanation.style.color = colors.muted;
-  tdExplanation.style.fontWeight = "400";
-  tdExplanation.textContent = explanation;
+      const tdScore = document.createElement("td");
+      tdScore.textContent = (score >= 0 ? "+" : "") + score;
+      tdScore.style.padding = "12px";
+      tdScore.style.color = score >= 0 ? colors.green : colors.red;
+      tdScore.style.fontWeight = "bold";
 
-  tr.appendChild(tdLabelScore);
-  tr.appendChild(tdExplanation);
-  tbody.appendChild(tr);
+      const tdExplanation = document.createElement("td");
+      tdExplanation.textContent = explanation;
+      tdExplanation.style.padding = "12px";
+      tdExplanation.style.color = colors.muted;
 
-  total += score;
-}
+      tr.appendChild(tdLabel);
+      tr.appendChild(tdScore);
+      tr.appendChild(tdExplanation);
+      tbody.appendChild(tr);
+
+      total += score;
+    }
 
     // 🏁 2020 Election Flag Bonus
     const flag = (row[24] || "").toLowerCase();
@@ -503,63 +504,59 @@
     }
 
     if (label) {
-  const tr = document.createElement("tr");
-  tr.style.backgroundColor = colors.surface;
-  tr.style.borderBottom = `1px solid ${colors.highlight}`;
+      const tr = document.createElement("tr");
+      tr.style.backgroundColor = colors.surface;
+      tr.style.borderBottom = `1px solid ${colors.highlight}`;
 
-  // Left column: Label + Bonus stacked
-  const tdLabelBonus = document.createElement("td");
-  tdLabelBonus.style.padding = "12px";
-  tdLabelBonus.style.fontFamily = "'Montserrat', sans-serif";
-  tdLabelBonus.style.color = "#BFC9D4";
-  tdLabelBonus.style.fontWeight = "600";
-  tdLabelBonus.innerHTML = `
-    ${label}<br/>
-    <span style="color: ${bonus >= 0 ? colors.green : colors.red}; font-weight: bold;">
-      ${(bonus >= 0 ? "+" : "") + bonus}
-    </span>
-  `;
+      const tdLabel = document.createElement("td");
+      tdLabel.innerHTML = `<strong>${label}</strong>`;
+      tdLabel.style.padding = "12px";
 
-  // Right column: Description
-  const tdDesc = document.createElement("td");
-  tdDesc.textContent = desc;
-  tdDesc.style.padding = "12px";
-  tdDesc.style.fontFamily = "'Montserrat', sans-serif";
-  tdDesc.style.color = colors.muted;
+      const tdBonus = document.createElement("td");
+      tdBonus.innerHTML = `<strong>${bonus >= 0 ? "+" : ""}${bonus}</strong>`;
+      tdBonus.style.color = bonus >= 0 ? colors.green : colors.red;
+      tdBonus.style.padding = "12px";
 
-  tr.appendChild(tdLabelBonus);
-  tr.appendChild(tdDesc);
-  tbody.appendChild(tr);
+      const tdDesc = document.createElement("td");
+      tdDesc.innerHTML = `<strong>${desc}</strong>`;
+      tdDesc.style.padding = "12px";
+      tdDesc.style.color = colors.muted;
 
-  total += bonus;
-}
+      tr.appendChild(tdLabel);
+      tr.appendChild(tdBonus);
+      tr.appendChild(tdDesc);
+      tbody.appendChild(tr);
 
+      total += bonus;
+    }
+
+    // 🧮 TOTAL SCORE ROW
+    const summary = row[13] || "No summary provided.";
     const trTotal = document.createElement("tr");
-trTotal.style.backgroundColor = colors.highlight;
+    trTotal.style.backgroundColor = colors.highlight;
 
-// Left column: Total Score + Value
-const tdTotalLabel = document.createElement("td");
-tdTotalLabel.style.padding = "12px";
-tdTotalLabel.style.fontFamily = "'Montserrat', sans-serif";
-tdTotalLabel.style.fontWeight = "600";
-tdTotalLabel.style.color = "#FFFFFF";
-tdTotalLabel.innerHTML = `
-  <strong>Total Score</strong><br/>
-  <span style="color:${total >= 0 ? colors.green : colors.red}; font-size: 1.1rem;">
-    ${(total >= 0 ? "+" : "") + total}
-  </span>
-`;
+    const tdTotalLabel = document.createElement("td");
+    tdTotalLabel.innerHTML = "<strong>Total Score</strong>";
+    tdTotalLabel.style.padding = "12px";
 
-// Right column: Summary
-const tdSummary = document.createElement("td");
-tdSummary.style.padding = "12px";
-tdSummary.style.fontFamily = "'Montserrat', sans-serif";
-tdSummary.style.color = colors.understanding;
-tdSummary.innerHTML = `<strong>${summary}</strong>`;
+    const tdTotalScore = document.createElement("td");
+    tdTotalScore.innerHTML = `<strong>${total >= 0 ? "+" : ""}${total}</strong>`;
+    tdTotalScore.style.color = total >= 0 ? colors.green : colors.red;
+    tdTotalScore.style.padding = "12px";
+    tdTotalScore.style.fontSize = "1.1rem";
 
-trTotal.appendChild(tdTotalLabel);
-trTotal.appendChild(tdSummary);
-tbody.appendChild(trTotal);
+    const tdSummary = document.createElement("td");
+    tdSummary.innerHTML = `<strong>${summary}</strong>`;
+    tdSummary.style.color = colors.understanding;
+    tdSummary.style.padding = "12px";
+
+    trTotal.appendChild(tdTotalLabel);
+    trTotal.appendChild(tdTotalScore);
+    trTotal.appendChild(tdSummary);
+    tbody.appendChild(trTotal);
+
+    table.style.display = "table";
+  }
 
   async function initElectionPage() {
     window.rowMap = {};
@@ -609,8 +606,6 @@ tbody.appendChild(trTotal);
 
     subjectSelect.addEventListener("change", () => {
       populatePeopleDropdown(subjectSelect.value);
-      personSelect.addEventListener("change", showScores);
-      console.log("Running showScores for:", selected);
     });
 
     personSelect.removeEventListener("change", showScores);
