@@ -479,6 +479,38 @@ table.tru-table td:nth-child(2) {
   font-size: 1rem;
   color: var(--text);
 }
+    @media (max-width: 600px) {
+    .dropdowns-wrapper {
+      flex-direction: column !important;
+      align-items: center;
+      gap: 20px !important;
+    }
+
+    .dropdown-group {
+      width: 100%;
+      max-width: 320px;
+      text-align: center !important;
+    }
+
+    .dropdown-group select {
+      width: 100%;
+      padding: 10px;
+      font-family: 'Playfair Display', serif;
+      font-size: 1rem;
+      background-color: var(--surface);
+      color: var(--text);
+      border: 1px solid var(--highlight);
+      border-radius: 6px;
+    }
+
+    .dropdown-group label {
+      font-family: 'Playfair Display', serif;
+      font-size: 1rem;
+      color: var(--text-muted);
+      margin-bottom: 6px;
+      display: block;
+    }
+  }
 
 /* Target the dropdown selects */
 .dropdowns-wrapper select {
