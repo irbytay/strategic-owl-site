@@ -370,7 +370,6 @@
 ">
   <thead>
     <tr style="background-color: var(--highlight);">
-      <th style="padding: 12px; text-align: left;">Category</th>
       <th style="padding: 12px; text-align: left;">Score</th>
       <th style="padding: 12px; text-align: left;">Explanation</th>
     </tr>
@@ -497,59 +496,63 @@ for (let i = 0; i < 10; i++) {
     }
 
     if (label) {
-      const tr = document.createElement("tr");
-      tr.style.backgroundColor = colors.surface;
-      tr.style.borderBottom = `1px solid ${colors.highlight}`;
+  const tr = document.createElement("tr");
+  tr.style.backgroundColor = colors.surface;
+  tr.style.borderBottom = `1px solid ${colors.highlight}`;
 
-      const tdLabel = document.createElement("td");
-      tdLabel.innerHTML = `<strong>${label}</strong>`;
-      tdLabel.style.padding = "12px";
+  // Left column: Label + Bonus stacked
+  const tdLabelBonus = document.createElement("td");
+  tdLabelBonus.style.padding = "12px";
+  tdLabelBonus.style.fontFamily = "'Montserrat', sans-serif";
+  tdLabelBonus.style.color = "#BFC9D4";
+  tdLabelBonus.style.fontWeight = "600";
+  tdLabelBonus.innerHTML = `
+    ${label}<br/>
+    <span style="color: ${bonus >= 0 ? colors.green : colors.red}; font-weight: bold;">
+      ${(bonus >= 0 ? "+" : "") + bonus}
+    </span>
+  `;
 
-      const tdBonus = document.createElement("td");
-      tdBonus.innerHTML = `<strong>${bonus >= 0 ? "+" : ""}${bonus}</strong>`;
-      tdBonus.style.color = bonus >= 0 ? colors.green : colors.red;
-      tdBonus.style.padding = "12px";
+  // Right column: Description
+  const tdDesc = document.createElement("td");
+  tdDesc.textContent = desc;
+  tdDesc.style.padding = "12px";
+  tdDesc.style.fontFamily = "'Montserrat', sans-serif";
+  tdDesc.style.color = colors.muted;
 
-      const tdDesc = document.createElement("td");
-      tdDesc.innerHTML = `<strong>${desc}</strong>`;
-      tdDesc.style.padding = "12px";
-      tdDesc.style.color = colors.muted;
+  tr.appendChild(tdLabelBonus);
+  tr.appendChild(tdDesc);
+  tbody.appendChild(tr);
 
-      tr.appendChild(tdLabel);
-      tr.appendChild(tdBonus);
-      tr.appendChild(tdDesc);
-      tbody.appendChild(tr);
+  total += bonus;
+}
 
-      total += bonus;
-    }
-
-    // 🧮 TOTAL SCORE ROW
-    const summary = row[13] || "No summary provided.";
     const trTotal = document.createElement("tr");
-    trTotal.style.backgroundColor = colors.highlight;
+trTotal.style.backgroundColor = colors.highlight;
 
-    const tdTotalLabel = document.createElement("td");
-    tdTotalLabel.innerHTML = "<strong>Total Score</strong>";
-    tdTotalLabel.style.padding = "12px";
+// Left column: Total Score + Value
+const tdTotalLabel = document.createElement("td");
+tdTotalLabel.style.padding = "12px";
+tdTotalLabel.style.fontFamily = "'Montserrat', sans-serif";
+tdTotalLabel.style.fontWeight = "600";
+tdTotalLabel.style.color = "#FFFFFF";
+tdTotalLabel.innerHTML = `
+  <strong>Total Score</strong><br/>
+  <span style="color:${total >= 0 ? colors.green : colors.red}; font-size: 1.1rem;">
+    ${(total >= 0 ? "+" : "") + total}
+  </span>
+`;
 
-    const tdTotalScore = document.createElement("td");
-    tdTotalScore.innerHTML = `<strong>${total >= 0 ? "+" : ""}${total}</strong>`;
-    tdTotalScore.style.color = total >= 0 ? colors.green : colors.red;
-    tdTotalScore.style.padding = "12px";
-    tdTotalScore.style.fontSize = "1.1rem";
+// Right column: Summary
+const tdSummary = document.createElement("td");
+tdSummary.style.padding = "12px";
+tdSummary.style.fontFamily = "'Montserrat', sans-serif";
+tdSummary.style.color = colors.understanding;
+tdSummary.innerHTML = `<strong>${summary}</strong>`;
 
-    const tdSummary = document.createElement("td");
-    tdSummary.innerHTML = `<strong>${summary}</strong>`;
-    tdSummary.style.color = colors.understanding;
-    tdSummary.style.padding = "12px";
-
-    trTotal.appendChild(tdTotalLabel);
-    trTotal.appendChild(tdTotalScore);
-    trTotal.appendChild(tdSummary);
-    tbody.appendChild(trTotal);
-
-    table.style.display = "table";
-  }
+trTotal.appendChild(tdTotalLabel);
+trTotal.appendChild(tdSummary);
+tbody.appendChild(trTotal);
 
   async function initElectionPage() {
     window.rowMap = {};
