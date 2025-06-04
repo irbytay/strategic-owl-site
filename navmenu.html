@@ -447,8 +447,7 @@
       table.style.marginTop = "20px";
     }
 
-    // 📊 CATEGORY SCORES (Updated to stack score & explanation under label)
-for (let i = 0; i < 10; i++) {
+    for (let i = 0; i < 10; i++) {
   const label = categories[i];
   const score = parseInt(row[3 + i]) || 0;
   const explanation = row[14 + i] || "";
@@ -457,21 +456,29 @@ for (let i = 0; i < 10; i++) {
   tr.style.borderBottom = `1px solid ${colors.highlight}`;
   tr.style.backgroundColor = colors.surface;
 
-  const tdCombined = document.createElement("td");
-  tdCombined.style.padding = "12px";
-  tdCombined.style.fontFamily = "'Montserrat', sans-serif";
-  tdCombined.style.color = "#BFC9D4";
-  tdCombined.style.fontWeight = "600";
-
-  tdCombined.innerHTML = `
+  // Left column: Label + Score
+  const tdLabelScore = document.createElement("td");
+  tdLabelScore.style.padding = "12px";
+  tdLabelScore.style.fontFamily = "'Montserrat', sans-serif";
+  tdLabelScore.style.color = "#BFC9D4";
+  tdLabelScore.style.fontWeight = "600";
+  tdLabelScore.innerHTML = `
     ${label}<br/>
     <span style="color: ${score >= 0 ? colors.green : colors.red}; font-weight: bold;">
       ${(score >= 0 ? "+" : "") + score}
-    </span><br/>
-    <span style="color: ${colors.muted}; font-weight: 400;">${explanation}</span>
+    </span>
   `;
 
-  tr.appendChild(tdCombined);
+  // Right column: Explanation only
+  const tdExplanation = document.createElement("td");
+  tdExplanation.style.padding = "12px";
+  tdExplanation.style.fontFamily = "'Montserrat', sans-serif";
+  tdExplanation.style.color = colors.muted;
+  tdExplanation.style.fontWeight = "400";
+  tdExplanation.textContent = explanation;
+
+  tr.appendChild(tdLabelScore);
+  tr.appendChild(tdExplanation);
   tbody.appendChild(tr);
 
   total += score;
