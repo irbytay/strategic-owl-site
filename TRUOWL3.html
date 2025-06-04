@@ -23,13 +23,23 @@
   }
 
   body {
-    background-color: var(--background);
-    color: var(--text);
-    font-family: 'Inter', sans-serif;
-    margin: 0;
-    padding: 0;
-  }
-
+  background-color: var(--background);
+  color: var(--text);
+  font-family: 'Playfair Display', serif;
+  margin: 0;
+  padding: 0;
+}
+    .num-font {
+  font-family: 'Inter', sans-serif;
+  font-variant-numeric: tabular-nums;
+}
+    span.num-font {
+  font-family: 'Inter', sans-serif !important;
+  font-variant-numeric: tabular-nums;
+  font-size: 1.035rem !important;
+  font-weight: bold;
+  color: var(--text);
+}
   /* 🧭 NAVBAR & MENU */
   nav.top-nav {
     position: fixed;
@@ -192,6 +202,12 @@
     background-color: var(--surface);
     margin-top: 12px;
   }
+    #score-table th,
+#score-table td,
+#score-body span,
+#score-body strong {
+  font-family: 'Playfair Display', serif;
+}
 
   th, td {
     padding: 12px;
@@ -301,6 +317,228 @@
 .text-understanding strong {
   color: var(--understanding) !important;
 }
+    /* 📏 Make table columns responsive */
+table.tru-table {
+  width: 100%;
+  border-collapse: collapse;
+  table-layout: fixed;
+}
+
+table.tru-table th:nth-child(1),
+table.tru-table td:nth-child(1) {
+  width: 20%;
+  min-width: 70px;
+  white-space: nowrap;
+}
+
+table.tru-table th:nth-child(2),
+table.tru-table td:nth-child(2) {
+  width: 15%;
+  min-width: 60px;
+  text-align: center;
+}
+
+table.tru-table th:nth-child(3),
+table.tru-table td:nth-child(3) {
+  width: 65%;
+  word-wrap: break-word;
+}
+
+/* 🪶 Mobile stacking fallback (optional) */
+@media (max-width: 480px) {
+  table.tru-table,
+  table.tru-table thead,
+  table.tru-table tbody,
+  table.tru-table th,
+  table.tru-table td,
+  table.tru-table tr {
+    display: block;
+    width: 100%;
+  }
+
+  table.tru-table thead {
+    display: none;
+  }
+
+  table.tru-table td {
+    padding: 12px;
+    border-bottom: 1px solid var(--highlight);
+    position: relative;
+  }
+
+  table.tru-table td::before {
+    content: attr(data-label);
+    font-weight: bold;
+    color: var(--text-muted);
+    display: block;
+    margin-bottom: 6px;
+  }
+}@media (max-width: 600px) {
+  table.tru-table td:nth-child(1) {
+    display: flex;
+    flex-direction: column;
+    font-size: 0.9rem;
+    white-space: normal;
+    min-width: 80px;
+    line-height: 1.2;
+    padding-right: 6px;
+  }
+
+  table.tru-table td:nth-child(2) {
+    display: none; /* Hide the Score column — it’s now stacked */
+  }
+
+  table.tru-table th:nth-child(2) {
+    display: none;
+  }
+
+  table.tru-table td:nth-child(3),
+  table.tru-table th:nth-child(3) {
+    width: 100%;
+  }
+}
+    /* ✅ Updated table layout for 2 columns: Score + Explanation */
+table.tru-table th:nth-child(1),
+table.tru-table td:nth-child(1) {
+  width: 35%;
+  min-width: 100px;
+  text-align: center;
+  vertical-align: middle;
+}
+
+table.tru-table th:nth-child(2),
+table.tru-table td:nth-child(2) {
+  width: 65%;
+  text-align: left;
+  vertical-align: top;
+  word-wrap: break-word;
+}
+
+/* 📱 Responsive stacking for mobile */
+@media (max-width: 600px) {
+  table.tru-table,
+  table.tru-table thead,
+  table.tru-table tbody,
+  table.tru-table th,
+  table.tru-table td,
+  table.tru-table tr {
+    display: block;
+    width: 100%;
+  }
+
+  table.tru-table thead {
+    display: none;
+  }
+
+  table.tru-table td {
+    padding: 12px;
+    border-bottom: 1px solid var(--highlight);
+    position: relative;
+  }
+
+  table.tru-table td::before {
+    content: attr(data-label);
+    font-weight: bold;
+    color: var(--text-muted);
+    display: block;
+    margin-bottom: 6px;
+  }
+
+  /* Adjust stacked score cell layout */
+  table.tru-table td[data-label="Score"] {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+  }
+
+  /* Explanation stays full width on mobile */
+  table.tru-table td[data-label="Explanation"] {
+    text-align: left;
+  }
+}
+    #score-table th:nth-child(1) {
+  font-family: 'Playfair Display', serif;
+  font-size: 1rem;
+  font-weight: 700;
+  color: var(--heading); /* Try var(--text) for pure white instead */
+  text-align: center;
+}
+
+#score-table th:nth-child(2) {
+  font-family: 'Playfair Display', serif;
+  font-size: 1rem;
+  font-weight: 700;
+  color: var(--heading);
+  text-align: left;
+}
+    #score-table th,
+#score-table td {
+  font-family: 'Playfair Display', serif;
+}
+    .total-score-comment-text {
+  font-family: 'Playfair Display', serif;
+  font-size: 1rem;
+  color: var(--text);
+  line-height: 1.5;
+  margin-left: 12px;
+}
+    /* Target both filter labels */
+.dropdowns-wrapper label {
+  font-family: 'Playfair Display', serif;
+  font-size: 1rem;
+  color: var(--text);
+}
+    @media (max-width: 600px) {
+    .dropdowns-wrapper {
+      flex-direction: column !important;
+      align-items: center;
+      gap: 20px !important;
+    }
+
+    .dropdown-group {
+      width: 100%;
+      max-width: 320px;
+      text-align: center !important;
+    }
+
+    .dropdown-group select {
+      width: 100%;
+      padding: 10px;
+      font-family: 'Playfair Display', serif;
+      font-size: 1rem;
+      background-color: var(--surface);
+      color: var(--text);
+      border: 1px solid var(--highlight);
+      border-radius: 6px;
+    }
+
+    .dropdown-group label {
+      font-family: 'Playfair Display', serif;
+      font-size: 1rem;
+      color: var(--text-muted);
+      margin-bottom: 6px;
+      display: block;
+    }
+  }
+
+/* Target the dropdown selects */
+.dropdowns-wrapper select {
+  font-family: 'Playfair Display', serif;
+  font-size: 1rem;
+  padding: 6px 10px;
+  border-radius: 6px;
+  border: 1px solid var(--highlight);
+  background-color: var(--surface);
+  color: var(--text);
+  outline: none;
+}
+    .dropdowns-wrapper label,
+.dropdowns-wrapper select {
+  font-family: 'Playfair Display', serif;
+  font-size: 1rem;
+  color: var(--text);
+}
 </style>
 
 <nav class="top-nav">
@@ -331,65 +569,93 @@
         <span>Understanding</span>
       </div>
     </section>
-    <div class="dropdowns-wrapper" style="display: flex; justify-content: center; gap: 40px; margin: 40px 0;">
+   <!-- 🌐 Wrapper for both dropdowns (Filter by Role and Select a Profile) -->
+<div class="dropdowns-wrapper" 
+     style="display: flex; justify-content: center; gap: 40px; margin: 40px 0;">
+  <!-- 🧩 Each dropdown is grouped in its own container -->
+
+  <!-- 🔍 Dropdown: Filter by Role -->
   <div class="dropdown-group" style="text-align: left;">
-    <label for="role-filter" style="display: block; margin-bottom: 6px; font-weight: 600;">Filter by Role:</label>
+    <!-- 🏷️ Label for the dropdown -->
+    <label for="role-filter" 
+           style="display: block; margin-bottom: 6px; font-weight: 600;">
+      Filter by Role:
+    </label>
+
+    <!-- 🔽 The actual dropdown <select> element -->
     <select id="role-filter"></select>
   </div>
 
+  <!-- 👤 Dropdown: Select a Profile -->
   <div class="dropdown-group" style="text-align: left;">
-    <label for="person-select" style="display: block; margin-bottom: 6px; font-weight: 600;">Select a Profile:</label>
+    <!-- 🏷️ Label for the dropdown -->
+    <label for="person-select" 
+           style="display: block; margin-bottom: 6px; font-weight: 600;">
+      Select a Profile:
+    </label>
+
+    <!-- 🔽 The actual dropdown <select> element -->
     <select id="person-select"></select>
   </div>
 </div>
 
+<!-- 📊 The main data table for showing scores (initially hidden) -->
 <table id="score-table" style="display:none;">
   <thead>
     <tr>
-      <th>Category</th>
-      <th>Score</th>
+      <!-- 🟩 Score column header (includes Truth, Reliability, etc.) -->
+      <th style="text-align: center;">Score</th>
+
+      <!-- 🟨 Explanation column header -->
       <th>Explanation</th>
     </tr>
   </thead>
+
+  <!-- 📥 Populated dynamically by JavaScript with score rows -->
   <tbody id="score-body"></tbody>
 </table>
 
+<!-- 🔻 Container for displaying the total score and commentary -->
 <div id="total-score-box" style="margin-top: 20px; display:none;">
-  <div class="score-bar" style="margin-top: 16px;">
+  <!-- 📶 Visual bar and summary commentary -->
+  <div class="score-bar">
+    <!-- 🎯 Vertical color bar (red/green) based on total score -->
     <div id="indicator-bar" class="bar-indicator"></div>
-    <span id="total-score-comment" style="color: white;"></span>
+
+    <!-- 🗣️ Text summary under the table (updated via JS) -->
+    <div id="total-score-comment" class="total-score-comment-text"></div>
   </div>
 </div>
   
     <div class="role-box">
   <h3>High Office</h3>
-  <p><span class="text-truth"><strong>Truth:</strong></span> 4.0×</p>
-  <p><span class="text-reliability"><strong>Reliability:</strong></span> 4.0×</p>
-  <p><span class="text-understanding"><strong>Understanding:</strong></span> 5.0×</p>
-  <small>The highest offices hold the highest responsibility. Their words and rulings move the world.</small>
+  <p><span class="text-truth"><strong>Truth:</strong></span> <span class="num-font">4.0×</span></p>
+<p><span class="text-reliability"><strong>Reliability:</strong></span> <span class="num-font">4.0×</span></p>
+<p><span class="text-understanding"><strong>Understanding:</strong></span> <span class="num-font">5.0×</span></p>
+<small>The highest offices hold the highest responsibility. Their words and rulings move the world.</small>
 
-  <h3>Politicians</h3>
-  <p><span class="text-truth"><strong>Truth:</strong></span> 3.5×</p>
-  <p><span class="text-reliability"><strong>Reliability:</strong></span> 3.5×</p>
-  <p><span class="text-understanding"><strong>Understanding:</strong></span> 4.5×</p>
-  <small>Includes Cabinet members, federal legislators, and top officials shaping national policy.</small>
+<h3>Politicians</h3>
+<p><span class="text-truth"><strong>Truth:</strong></span> <span class="num-font">3.5×</span></p>
+<p><span class="text-reliability"><strong>Reliability:</strong></span> <span class="num-font">3.5×</span></p>
+<p><span class="text-understanding"><strong>Understanding:</strong></span> <span class="num-font">4.5×</span></p>
+<small>Includes Cabinet members, federal legislators, and top officials shaping national policy.</small>
 
-  <h3>Media Organizations</h3>
-  <p><span class="text-truth"><strong>Truth:</strong></span> 3.0×</p>
-  <p><span class="text-reliability"><strong>Reliability:</strong></span> 3.0×</p>
-  <p><span class="text-understanding"><strong>Understanding:</strong></span> 4.0×</p>
-  <small>Networks and publishers shape public perception and drive national narratives.</small>
+<h3>Media Organizations</h3>
+<p><span class="text-truth"><strong>Truth:</strong></span> <span class="num-font">3.0×</span></p>
+<p><span class="text-reliability"><strong>Reliability:</strong></span> <span class="num-font">3.0×</span></p>
+<p><span class="text-understanding"><strong>Understanding:</strong></span> <span class="num-font">4.0×</span></p>
+<small>Networks and publishers shape public perception and drive national narratives.</small>
 
-  <h3>Journalists</h3>
-  <p><span class="text-truth"><strong>Truth:</strong></span> 2.5×</p>
-  <p><span class="text-reliability"><strong>Reliability:</strong></span> 2.5×</p>
-  <p><span class="text-understanding"><strong>Understanding:</strong></span> 3.5×</p>
-  <small>Reporters and editors are trusted to verify facts, provide context, and admit when wrong.</small>
+<h3>Journalists</h3>
+<p><span class="text-truth"><strong>Truth:</strong></span> <span class="num-font">2.5×</span></p>
+<p><span class="text-reliability"><strong>Reliability:</strong></span> <span class="num-font">2.5×</span></p>
+<p><span class="text-understanding"><strong>Understanding:</strong></span> <span class="num-font">3.5×</span></p>
+<small>Reporters and editors are trusted to verify facts, provide context, and admit when wrong.</small>
 
-  <h3>Influencers</h3>
-  <p><span class="text-truth"><strong>Truth:</strong></span> 1.3×</p>
-  <p><span class="text-reliability"><strong>Reliability:</strong></span> 1.3×</p>
-  <p><span class="text-understanding"><strong>Understanding:</strong></span> 2.0×</p>
+<h3>Influencers</h3>
+<p><span class="text-truth"><strong>Truth:</strong></span> <span class="num-font">1.3×</span></p>
+<p><span class="text-reliability"><strong>Reliability:</strong></span> <span class="num-font">1.3×</span></p>
+<p><span class="text-understanding"><strong>Understanding:</strong></span> <span class="num-font">2.0×</span></p>
   <small>They shape opinions without institutional power. Credibility depends on earned trust.</small>
 </div>
     
@@ -514,24 +780,63 @@
     let total = 0;
     scores.forEach(({ label, value, comment, className }) => {
       const tr = document.createElement("tr");
-      tr.innerHTML = `<td class="${className}">${label}</td><td>${value >= 0 ? "+" : ""}${value.toFixed(0)}</td><td>${comment}</td>`;
+
+      const tdScore = document.createElement("td");
+     tdScore.className = "";
+tdScore.setAttribute("data-label", "Score");
+tdScore.innerHTML = `
+  <div style="display: flex; flex-direction: column; align-items: center;">
+    <span class="${className}">${label}</span>
+    <span class="num-font" style="color: var(--text); font-weight: bold; font-size: 1.035rem;">
+  ${value >= 0 ? "+" : ""}${value.toFixed(0)}
+</span>
+  </div>
+`;
+
+      const tdComment = document.createElement("td");
+tdComment.setAttribute("data-label", "Explanation");
+tdComment.setAttribute("style", `
+  font-family: 'Playfair Display', serif;
+  font-size: 1.035rem;
+  color: var(--text);
+  text-align: left;
+  line-height: 1.5;
+  padding: 8px 12px;
+`);
+tdComment.textContent = comment;
+
+      tr.appendChild(tdScore);
+      tr.appendChild(tdComment);
       tbody.appendChild(tr);
+
       total += value;
     });
 
     const totalRow = document.createElement("tr");
-    totalRow.innerHTML = `
-      <td class="total-score">Total Score</td>
-      <td class="total-score ${total >= 0 ? "positive-score" : "negative-score"}">
-        <strong>${total >= 0 ? "+" : ""}${total.toFixed(0)}</strong>
-      </td>
-      <td class="total-score"><strong>${totalScoreComment}</strong></td>`;
+
+    const tdTotalScore = document.createElement("td");
+    tdTotalScore.className = "total-score";
+    tdTotalScore.setAttribute("data-label", "Score");
+   tdTotalScore.innerHTML = `
+  <div style="display: flex; flex-direction: column; align-items: center;">
+    <strong>Total Score</strong>
+    <span class="num-font" style="color: ${total >= 0 ? 'var(--bar-green)' : 'var(--bar-red)'}; font-weight: bold;">
+      ${total >= 0 ? "+" : ""}${total.toFixed(0)}
+    </span>
+  </div>
+`;
+
+    const tdTotalComment = document.createElement("td");
+    tdTotalComment.className = "total-score";
+    tdTotalComment.setAttribute("data-label", "Explanation");
+    tdTotalComment.innerHTML = `<strong style="font-family: 'Playfair Display', serif;">${totalScoreComment}</strong>`;
+
+    totalRow.appendChild(tdTotalScore);
+    totalRow.appendChild(tdTotalComment);
     tbody.appendChild(totalRow);
 
-    // ✅ Fixed here: use actual score to determine bar color
-    const isPositive = total >= 0;
-    indicatorBar.className = "bar-indicator " + (isPositive ? "bar-green" : "bar-red");
-    totalCommentEl.textContent = summaryBelowTable;
+    indicatorBar.className = "bar-indicator " + (total >= 0 ? "bar-green" : "bar-red");
+    totalCommentEl.innerHTML = summaryBelowTable;
 
     table.style.display = "table";
     totalBox.style.display = "block";
