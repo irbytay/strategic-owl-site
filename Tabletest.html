@@ -682,9 +682,16 @@ tdScore.innerHTML = `
 `;
 
       const tdComment = document.createElement("td");
-      tdComment.setAttribute("data-label", "Explanation");
-      tdComment.style.textAlign = "left";
-      tdComment.textContent = comment;
+tdComment.setAttribute("data-label", "Explanation");
+tdComment.setAttribute("style", `
+  font-family: 'Playfair Display', serif;
+  font-size: 1rem;
+  color: var(--text);
+  text-align: left;
+  line-height: 1.5;
+  padding: 8px 12px;
+`);
+tdComment.textContent = comment;
 
       tr.appendChild(tdScore);
       tr.appendChild(tdComment);
