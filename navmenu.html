@@ -493,6 +493,14 @@
 
     const tdTotal = document.createElement("td");
     tdTotal.style.padding = "12px";
+    tdTotal.style.textAlign = "center";
+    tdTotal.style.fontFamily = "'Montserrat', sans-serif";
+
+// Manually set color values
+const labelColor = "#E0E0E0"; // Light gray for "Total Score" label
+const positiveColor = "#00FFAA"; // Bright greenish for positive score
+const negativeColor = "#FF5577"; // Bright red for negative score
+
     tdTotal.innerHTML = `<strong>Total Score</strong><br>
       <span style="color: ${total >= 0 ? colors.green : colors.red}; font-size: 1.1rem; font-weight: bold;">
         ${(total >= 0 ? "+" : "") + total}
