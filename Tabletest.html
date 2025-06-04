@@ -381,6 +381,66 @@ table.tru-table td:nth-child(3) {
     width: 100%;
   }
 }
+    /* ✅ Updated table layout for 2 columns: Score + Explanation */
+table.tru-table th:nth-child(1),
+table.tru-table td:nth-child(1) {
+  width: 35%;
+  min-width: 100px;
+  text-align: center;
+  vertical-align: middle;
+}
+
+table.tru-table th:nth-child(2),
+table.tru-table td:nth-child(2) {
+  width: 65%;
+  text-align: left;
+  vertical-align: top;
+  word-wrap: break-word;
+}
+
+/* 📱 Responsive stacking for mobile */
+@media (max-width: 600px) {
+  table.tru-table,
+  table.tru-table thead,
+  table.tru-table tbody,
+  table.tru-table th,
+  table.tru-table td,
+  table.tru-table tr {
+    display: block;
+    width: 100%;
+  }
+
+  table.tru-table thead {
+    display: none;
+  }
+
+  table.tru-table td {
+    padding: 12px;
+    border-bottom: 1px solid var(--highlight);
+    position: relative;
+  }
+
+  table.tru-table td::before {
+    content: attr(data-label);
+    font-weight: bold;
+    color: var(--text-muted);
+    display: block;
+    margin-bottom: 6px;
+  }
+
+  /* Adjust stacked score cell layout */
+  table.tru-table td[data-label="Score"] {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+  }
+
+  /* Explanation stays full width on mobile */
+  table.tru-table td[data-label="Explanation"] {
+    text-align: left;
+  }
+}
 </style>
 
 <nav class="top-nav">
@@ -595,21 +655,24 @@ table.tru-table td:nth-child(3) {
     scores.forEach(({ label, value, comment, className }) => {
       const tr = document.createElement("tr");
 
-      const tdLabel = document.createElement("td");
-      tdLabel.className = className;
-      tdLabel.setAttribute("data-label", "Category");
-      tdLabel.textContent = label;
-
-      const tdValue = document.createElement("td");
-      tdValue.setAttribute("data-label", "Score");
-      tdValue.textContent = `${value >= 0 ? "+" : ""}${value.toFixed(0)}`;
+      const tdScore = document.createElement("td");
+      tdScore.className = className;
+      tdScore.setAttribute("data-label", "Score");
+      tdScore.innerHTML = `
+        <div style="display: flex; flex-direction: column; align-items: center;">
+          <span>${label}</span>
+          <span style="font-weight: bold; font-size: 0.9rem;">
+            ${value >= 0 ? "+" : ""}${value.toFixed(0)}
+          </span>
+        </div>
+      `;
 
       const tdComment = document.createElement("td");
       tdComment.setAttribute("data-label", "Explanation");
+      tdComment.style.textAlign = "left";
       tdComment.textContent = comment;
 
-      tr.appendChild(tdLabel);
-      tr.appendChild(tdValue);
+      tr.appendChild(tdScore);
       tr.appendChild(tdComment);
       tbody.appendChild(tr);
 
@@ -618,23 +681,22 @@ table.tru-table td:nth-child(3) {
 
     const totalRow = document.createElement("tr");
 
-    const tdTotalLabel = document.createElement("td");
-    tdTotalLabel.className = "total-score";
-    tdTotalLabel.setAttribute("data-label", "Category");
-    tdTotalLabel.textContent = "Total Score";
-
-    const tdTotalValue = document.createElement("td");
-    tdTotalValue.className = `total-score ${total >= 0 ? "positive-score" : "negative-score"}`;
-    tdTotalValue.setAttribute("data-label", "Score");
-    tdTotalValue.innerHTML = `<strong>${total >= 0 ? "+" : ""}${total.toFixed(0)}</strong>`;
+    const tdTotalScore = document.createElement("td");
+    tdTotalScore.className = "total-score";
+    tdTotalScore.setAttribute("data-label", "Score");
+    tdTotalScore.innerHTML = `
+      <div style="display: flex; flex-direction: column; align-items: center;">
+        <strong>Total Score</strong>
+        <span style="font-weight: bold;">${total >= 0 ? "+" : ""}${total.toFixed(0)}</span>
+      </div>
+    `;
 
     const tdTotalComment = document.createElement("td");
     tdTotalComment.className = "total-score";
     tdTotalComment.setAttribute("data-label", "Explanation");
     tdTotalComment.innerHTML = `<strong>${totalScoreComment}</strong>`;
 
-    totalRow.appendChild(tdTotalLabel);
-    totalRow.appendChild(tdTotalValue);
+    totalRow.appendChild(tdTotalScore);
     totalRow.appendChild(tdTotalComment);
     tbody.appendChild(totalRow);
 
