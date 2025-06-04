@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Font Showcase</title>
+  <title>Font Comparison – Strategic Owl</title>
 
   <!-- Google Fonts -->
   <link href="https://fonts.googleapis.com/css2?family=Inter&family=Roboto&family=Open+Sans&family=Source+Sans+3&family=Work+Sans&family=IBM+Plex+Sans&family=Source+Serif+4&family=Nunito+Sans&family=Crimson+Text&family=Overpass&family=Domine&family=PT+Sans&family=EB+Garamond&family=Heebo&family=Karla&family=Barlow&family=Arvo&family=Quicksand&family=PT+Serif&family=Assistant&family=Merriweather&family=Poppins&family=Nunito&family=Libre+Baskerville&family=Montserrat&family=Noto+Sans&family=Raleway&family=Spectral&family=Merriweather+Sans&family=Fira+Sans&display=swap" rel="stylesheet" />
@@ -12,24 +12,26 @@
     :root {
       --background: #0D1B2A;
       --text: #FFFFFF;
+      --label: #7C8A9B;
     }
 
     body {
       background-color: var(--background);
       color: var(--text);
-      font-size: 1.1rem;
+      font-size: 1.05rem;
+      line-height: 1.7rem;
       padding: 1rem;
       font-family: Inter, sans-serif;
     }
 
     .font-row {
-      margin-bottom: 1.2rem;
+      margin-bottom: 2rem;
     }
 
     .label {
       font-size: 0.9rem;
-      color: #7C8A9B;
-      margin-bottom: 0.2rem;
+      color: var(--label);
+      margin-bottom: 0.3rem;
     }
 
     .Inter { font-family: 'Inter', sans-serif; }
@@ -66,155 +68,23 @@
 </head>
 <body>
 
-  <div class="font-row Inter">
-    <div class="label">Inter</div>
-    Curiosity guides the wise.
-  </div>
+<!-- One block per font -->
+<script>
+const fonts = [
+  'Inter','Roboto','OpenSans','SourceSans3','WorkSans','IBMPlex','SourceSerif4','NunitoSans','CrimsonText','Overpass',
+  'Domine','PTSans','EBGaramond','Heebo','Karla','Barlow','Arvo','Quicksand','PTSerif','Assistant',
+  'Merriweather','Poppins','Nunito','LibreBaskerville','Montserrat','NotoSans','Raleway','Spectral','MerriweatherSans','FiraSans'
+];
 
-  <div class="font-row Roboto">
-    <div class="label">Roboto</div>
-    Facts don’t fear your feelings.
-  </div>
+const text = `Ben Shapiro’s reach among younger conservative audiences gives his commentary substantial influence on political identity and discourse. Under the T.R.U. OWL framework, his score reflects a tendency to present ideologically driven arguments that often omit critical context or nuance. When complex issues are reduced to rhetorical simplicity, it can deepen polarization rather than foster informed understanding.`;
 
-  <div class="font-row OpenSans">
-    <div class="label">Open Sans</div>
-    Build your mind like a library.
+document.write(fonts.map(font => `
+  <div class="font-row ${font}">
+    <div class="label">${font.replace(/([A-Z])/g, ' $1').trim()}</div>
+    ${text}
   </div>
-
-  <div class="font-row SourceSans3">
-    <div class="label">Source Sans 3</div>
-    Stay sharp, stay humble.
-  </div>
-
-  <div class="font-row WorkSans">
-    <div class="label">Work Sans</div>
-    Silence is a form of strategy.
-  </div>
-
-  <div class="font-row IBMPlex">
-    <div class="label">IBM Plex Sans</div>
-    Don’t let apathy win.
-  </div>
-
-  <div class="font-row SourceSerif4">
-    <div class="label">Source Serif 4</div>
-    Freedom demands focus.
-  </div>
-
-  <div class="font-row NunitoSans">
-    <div class="label">Nunito Sans</div>
-    Truth is not a team sport.
-  </div>
-
-  <div class="font-row CrimsonText">
-    <div class="label">Crimson Text</div>
-    Facts, not factions.
-  </div>
-
-  <div class="font-row Overpass">
-    <div class="label">Overpass</div>
-    Hear the signal, not the noise.
-  </div>
-
-  <div class="font-row Domine">
-    <div class="label">Domine</div>
-    Stay awake, stay aware.
-  </div>
-
-  <div class="font-row PTSans">
-    <div class="label">PT Sans</div>
-    Question with boldness.
-  </div>
-
-  <div class="font-row EBGaramond">
-    <div class="label">EB Garamond</div>
-    Complexity reveals truth.
-  </div>
-
-  <div class="font-row Heebo">
-    <div class="label">Heebo</div>
-    You are your algorithm.
-  </div>
-
-  <div class="font-row Karla">
-    <div class="label">Karla</div>
-    Thinking is a revolutionary act.
-  </div>
-
-  <div class="font-row Barlow">
-    <div class="label">Barlow</div>
-    Data before drama.
-  </div>
-
-  <div class="font-row Arvo">
-    <div class="label">Arvo</div>
-    Certainty is not clarity.
-  </div>
-
-  <div class="font-row Quicksand">
-    <div class="label">Quicksand</div>
-    Ideas over identity.
-  </div>
-
-  <div class="font-row PTSerif">
-    <div class="label">PT Serif</div>
-    Truth is strategic.
-  </div>
-
-  <div class="font-row Assistant">
-    <div class="label">Assistant</div>
-    Be informed or be led.
-  </div>
-
-  <div class="font-row Merriweather">
-    <div class="label">Merriweather</div>
-    Ask better questions.
-  </div>
-
-  <div class="font-row Poppins">
-    <div class="label">Poppins</div>
-    Doubt can be divine.
-  </div>
-
-  <div class="font-row Nunito">
-    <div class="label">Nunito</div>
-    Don’t outsource your brain.
-  </div>
-
-  <div class="font-row LibreBaskerville">
-    <div class="label">Libre Baskerville</div>
-    Democracy is a decision.
-  </div>
-
-  <div class="font-row Montserrat">
-    <div class="label">Montserrat</div>
-    Own your lens.
-  </div>
-
-  <div class="font-row NotoSans">
-    <div class="label">Noto Sans</div>
-    Reality has receipts.
-  </div>
-
-  <div class="font-row Raleway">
-    <div class="label">Raleway</div>
-    Learn to listen well.
-  </div>
-
-  <div class="font-row Spectral">
-    <div class="label">Spectral</div>
-    Simplicity reveals deception.
-  </div>
-
-  <div class="font-row MerriweatherSans">
-    <div class="label">Merriweather Sans</div>
-    Ask what you're missing.
-  </div>
-
-  <div class="font-row FiraSans">
-    <div class="label">Fira Sans</div>
-    Bias is a blindfold.
-  </div>
+`).join(''));
+</script>
 
 </body>
 </html>
