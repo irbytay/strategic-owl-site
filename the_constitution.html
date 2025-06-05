@@ -373,7 +373,7 @@
 <script>
   const SHEET_ID = "19wBEj9hEkvIyQcoR5E_mBGVAxTzMnddMxk8nuQLAumA";
   const API_KEY = "AIzaSyCzuh9HBfe0r70r9U35Pe406PPZ-tz6I78";
-  const RANGE = "the_constitution!A3:D1000";
+  const RANGE = "the_constitution!A3:E1000";
 
   const colors = {
     gold: "#D4AF37",
@@ -395,7 +395,7 @@
     const outputDiv = document.getElementById("insight-output");
 
     const grouped = {};
-    data.forEach(([amendment, section, text, insight]) => {
+    data.forEach(([amendment, section, text, insight, learning]) => {
       if (!grouped[amendment]) grouped[amendment] = [];
       grouped[amendment].push({ section, text, insight });
     });
@@ -455,7 +455,29 @@
   insightDiv.style.color = "var(--understanding)";
   insightDiv.style.fontWeight = "500";
   wrapper.appendChild(insightDiv);
-});
+});// Strategic Learning block (copyable)
+const learnLabel = document.createElement("h4");
+learnLabel.textContent = "Strategic Learning";
+learnLabel.style.fontFamily = "'Playfair Display', serif";
+learnLabel.style.color = "#D4AF37";
+learnLabel.style.margin = "8px 0 4px";
+learnLabel.style.textAlign = "center";
+wrapper.appendChild(learnLabel);
+
+const copyBox = document.createElement("textarea");
+copyBox.textContent = learning || "No additional notes available.";
+copyBox.readOnly = true;
+copyBox.style.width = "100%";
+copyBox.style.padding = "12px";
+copyBox.style.marginBottom = "32px";
+copyBox.style.backgroundColor = "#0D1B2A";
+copyBox.style.color = "var(--text)";
+copyBox.style.border = "1px solid var(--understanding)";
+copyBox.style.borderRadius = "8px";
+copyBox.style.fontFamily = "'Inter', sans-serif";
+copyBox.style.fontSize = "0.95rem";
+copyBox.rows = 4;
+wrapper.appendChild(copyBox);
 
       outputDiv.appendChild(wrapper);
     });
