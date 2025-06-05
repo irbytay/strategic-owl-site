@@ -21,10 +21,6 @@
     --bar-red: #FF4C4C;
     --bar-green: #28A745;
   }
-      #accept-btn {
-      width: 100%;
-    }
-  }
 
   body {
     background-color: var(--background);
@@ -132,80 +128,55 @@
     color: var(--text-muted);
   }
 
-  /* 📱 Mobile: Up to 500px */
-@media (max-width: 500px) {
+  @media (max-width: 768px) {
+    .menu-toggle {
+      display: block;
+    }
+
+    .nav-links {
+      display: none;
+      flex-direction: row; /* 👈 links side-by-side on mobile */
+      justify-content: center;
+      background-color: var(--highlight);
+      position: absolute;
+      top: 58px;
+      left: 0;
+      width: 100%;
+      padding: 10px 0;
+      gap: 20px;
+      box-shadow: 0 3px 8px var(--shadow);
+    }
+
+    .nav-links.show {
+      display: flex;
+      animation: fadeSlideDown 0.3s ease;
+    }
+
+    @keyframes fadeSlideDown {
+      from {
+        opacity: 0;
+        transform: translateY(-10px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+  }
+    @media (max-width: 500px) {
   #legal-popup > div {
-    padding: 16px 12px;
+    padding: 12px;
     font-size: 0.95rem;
   }
 
   #accept-btn {
     width: 100%;
     font-size: 1rem;
-    padding: 10px 0;
   }
 
   p {
     font-size: 0.95rem;
     margin-bottom: 16px;
-  }
-
-  h1, h2 {
-    font-size: 1.4rem;
-    text-align: center;
-  }
-}
-
-/* 📱📲 Mid-Range Devices: 501px to 640px */
-@media (max-width: 640px) {
-  #legal-popup > div {
-    padding: 20px 16px;
-    font-size: 0.97rem;
-  }
-
-  p {
-    font-size: 0.98rem;
-  }
-
-  h1, h2 {
-    font-size: 1.6rem;
-  }
-}
-
-/* 💻 Tablets: Up to 768px */
-@media (max-width: 768px) {
-  .menu-toggle {
-    display: block;
-  }
-
-  .nav-links {
-    display: none;
-    flex-direction: row; /* 👈 links side-by-side on mobile */
-    justify-content: center;
-    background-color: var(--highlight);
-    position: absolute;
-    top: 58px;
-    left: 0;
-    width: 100%;
-    padding: 10px 0;
-    gap: 20px;
-    box-shadow: 0 3px 8px var(--shadow);
-  }
-
-  .nav-links.show {
-    display: flex;
-    animation: fadeSlideDown 0.3s ease;
-  }
-
-  @keyframes fadeSlideDown {
-    from {
-      opacity: 0;
-      transform: translateY(-10px);
-    }
-    to {
-      opacity: 1;
-      transform: translateY(0);
-    }
   }
 }
 
@@ -554,5 +525,34 @@
     legalPopup.style.display = 'none';
   });
 </script>
+
+<!-- Root CSS Variables -->
+<style>
+  :root {
+    --background: #0D1B2A;
+    --surface: #112240;
+    --highlight: #1A2B4C;
+    --truth: #28A745;
+    --reliability: #3B6CED;
+    --understanding: #D4AF37;
+    --text: #FFFFFF;
+    --text-muted: #7C8A9B;
+    --heading: #FFFFF0;
+    --shadow: rgba(0, 0, 0, 0.3);
+    --bar-red: #FF4C4C;
+    --bar-green: #28A745;
+  }
+
+  @media (max-width: 500px) {
+    #legal-popup > div {
+      padding: 16px 12px !important;
+      font-size: 0.95rem;
+    }
+
+    #accept-btn {
+      width: 100%;
+    }
+  }
+</style>
 </body>
 </html>
