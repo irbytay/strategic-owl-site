@@ -135,7 +135,8 @@
 
     .nav-links {
       display: none;
-      flex-direction: row; /* 👈 links side-by-side on mobile */
+      flex-direction: column;
+      align-items: center;/* 👈 links side-by-side on mobile */
       justify-content: center;
       background-color: var(--highlight);
       position: absolute;
@@ -146,6 +147,12 @@
       gap: 20px;
       box-shadow: 0 3px 8px var(--shadow);
     }
+    .nav-links a {
+  padding: 10px 0;
+  width: 100%;
+  text-align: center;
+  font-size: 1rem;
+}
 
     .nav-links.show {
       display: flex;
@@ -163,6 +170,22 @@
       }
     }
   }
+    @media (max-width: 500px) {
+  #legal-popup > div {
+    padding: 12px;
+    font-size: 0.95rem;
+  }
+
+  #accept-btn {
+    width: 100%;
+    font-size: 1rem;
+  }
+
+  p {
+    font-size: 0.95rem;
+    margin-bottom: 16px;
+  }
+}
 
   /* ✅ YOUR ORIGINAL STYLES BELOW */
   .container {
@@ -249,25 +272,76 @@
   .bar-green {
     background-color: var(--bar-green);
   }
+    .match-nav-link {
+  color: var(--text-muted);
+  text-decoration: none;
+  font-size: 15px;
+  transition: color 0.3s ease;
+}
+
+.match-nav-link:hover {
+  color: var(--understanding);
+}
+ /* Style the link itself */
+.important-link {
+  color: var(--understanding);               /* Gold color from your theme */
+  font-weight: 700;                          /* Bold for visibility */
+  text-decoration: underline;                /* Underline to signal it's a link */
+  text-underline-offset: 4px;                /* Adds spacing between text and underline */
+  position: relative;                        /* Required for pseudo-elements */
+  transition: color 0.3s ease, text-shadow 0.3s ease;  /* Smooth hover transitions */
+}
+
+/* Add a right-pointing arrow BEFORE the link text */
+.important-link::before {
+  content: '→ ';                             /* Arrow pointing right */
+  display: inline-block;                     /* So we can animate it */
+  margin-right: 6px;                         /* Space between arrow and text */
+  transition: transform 0.3s ease;           /* Smooth movement on hover */
+}
+
+/* Add a left-pointing arrow AFTER the link text */
+.important-link::after {
+  content: ' ←';                             /* Arrow pointing left */
+  display: inline-block;                     /* Enables transform */
+  margin-left: 6px;                          /* Space between text and arrow */
+  transition: transform 0.3s ease;           /* Smooth hover animation */
+}
+
+/* Animate the left-side arrow to move right on hover */
+.important-link:hover::before {
+  transform: translateX(4px);                /* Moves → arrow to the right */
+}
+
+/* Animate the right-side arrow to move left on hover */
+.important-link:hover::after {
+  transform: translateX(-4px);               /* Moves ← arrow to the left */
+}
+
+/* Add glow and optional color change on hover */
+.important-link:hover {
+  text-shadow: 0 0 8px var(--understanding); /* Subtle glow using gold tone */
+  color: var(--truth);                       /* Optional: changes to green (truth color) */
+}
 </style>
 
 <nav class="top-nav">
-<a href="about.html" class="nav-logo">
+<a href="TRUOWL3.html" class="nav-logo">
   <img src="owl_logo_white.png" alt="Owl Logo" onerror="this.style.display='none';" />
   <div class="nav-title">The Strategic Owl</div>
 </a>
   <button class="menu-toggle" onclick="toggleMenu()">☰</button>
   <div class="nav-links" id="navMenu">
-    <a href="about.html">Home</a>
+   <a href="Index.html">Home</a>
     <a href="TRUOWL3.html">T.R.U. Owl</a>
     <a href="newelections3.html">Election Security</a>
+    <a href="the_constitution.html">The Constitution</a>
     <a href="newcontact3.html">Contact</a>
   </div>
 </nav>
   <div class="container">
-    <h1>About TRU OWL</h1>
-    <p>If you've lost trust in the system, you're not wrong. That’s by design. Now let's build one that earns it back.</p>
-    <!-- 🎯 Divider -->
+    <h1>The Constitution</h1>
+<!-- 🎯 Divider -->
     <section class="divider-section">
       <div class="divider-bar">
         <div class="truth"></div>
@@ -280,102 +354,137 @@
         <span>Understanding</span>
       </div>
     </section>
-   <div id="legal-popup" style="position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-color: rgba(13, 27, 42, 0.95); color: white; display: flex; justify-content: center; align-items: center; z-index: 9999;">
-  <div style="max-width: 680px; background-color: #112240; padding: 32px; border-radius: 12px; box-shadow: 0 4px 20px rgba(0,0,0,0.4); text-align: center;">
-    <h1 style="color: var(--heading);">Legal Disclosure</h1>
-    <p>
-      This site is protected under the First Amendment of the United States Constitution. All content herein is published for educational and informational purposes and does not intend to defame, mislead, or incite. Every claim is supported by public records, sourced materials, or verifiable data — and transparency is built into the system to ensure I’m held to the same standards I use to assess others.
-    </p>
-    <p>
-      Now, if that sounds threatening… it shouldn’t.  
-      Unless you’re more comfortable in a world where questions are threats and facts feel suspicious.  
-      Here, we don’t censor — we cite.  
-      And if the truth stings a little, maybe it’s because the T.R.U. OWL Score hits closer to home than expected.
-    </p>
+ <!-- 📜 Amendment Selector -->
+<div style="display: flex; flex-direction: column; gap: 12px; align-items: center; margin-top: 40px;">
+  <label for="subject-select" style="color: var(--text); font-family: 'Playfair Display', serif; font-size: 1.2rem;">
+    Select an Amendment
+  </label>
+  <select id="subject-select" style="padding: 10px; background-color: var(--surface); color: var(--text); border: 1px solid var(--highlight); font-family: 'Montserrat', sans-serif; font-size: 1rem;">
+    <option value="">-- Choose an Amendment --</option>
+  </select>
+</div>
 
-    <h2 style="color: var(--understanding);">Join the Watch</h2>
-    <p>
-      By continuing, you’re not just entering a site — you’re stepping into a movement rooted in facts, accountability, and independent thinking.  
-      Your initials are optional, but your participation is part of a broader mission to restore trust in what’s real.
-    </p>
+<!-- 📘 Strategic Constitution Viewer -->
+<div id="insight-output" style="max-width: 960px; margin: 40px auto 0; font-family: 'Montserrat', sans-serif; background-color: var(--surface); color: var(--text); padding: 24px; border-radius: 12px;">
 
-    <button onclick="handleAgreement()" style="margin-top: 16px; padding: 10px 20px; background-color: var(--understanding); color: #0D1B2A; border: none; border-radius: 6px; font-weight: bold;">Join the OWL Network</button>
-    <small style="display: block; margin-top: 10px; color: var(--text-muted);">This moment will be remembered for 30 days.</small>
+  <!-- Amendment Title -->
+  <h2 id="amendment-title" style="text-align: center; color: var(--heading); margin-bottom: 24px;"></h2>
+
+  <!-- Visible Table Shell -->
+  <table style="width: 100%; border-collapse: collapse; margin-top: 20px;">
+    <thead>
+      <tr>
+        <th style="padding: 12px; border-bottom: 1px solid var(--highlight); color: var(--understanding);">Section</th>
+        <th style="padding: 12px; border-bottom: 1px solid var(--highlight); color: var(--understanding);">Text</th>
+        <th style="padding: 12px; border-bottom: 1px solid var(--highlight); color: var(--understanding);">Strategic Insight</th>
+      </tr>
+    </thead>
+    <tbody id="amendment-table-body">
+      <!-- Rows will be inserted here by JavaScript -->
+    </tbody>
+  </table>
+
+  <!-- 🧠 AI Prompt Output -->
+  <div id="ai-prompt-section" style="margin-top: 40px;">
+    <h4 style="text-align: center; color: var(--understanding); font-family: 'Playfair Display', serif;">AI Prompt</h4>
+    <textarea id="ai-prompt-box" readonly style="width: 100%; padding: 12px; background-color: #0D1B2A; color: var(--text); border: 1px solid var(--understanding); border-radius: 8px; font-family: 'Inter', sans-serif; font-size: 0.95rem;" rows="4">
+      <!-- Will be populated by JS -->
+    </textarea>
   </div>
 </div>
+
    
-<h2>Why This Exists</h2>
-<p>
-  We’ve been trained to care more about who said something than whether it’s true. 
-  We’ve been stuck in a loop—team vs. team, headline vs. headline—while the truth gets lost somewhere in between. 
-  That’s not sustainable. So I built a system that cuts through it.
-</p>
-
-<h2>The T.R.U. OWL Score</h2>
-<p>
-  Truth. Reliability. Understanding. These three pillars make up the framework. 
-  It’s not about politics—it’s about performance. Did they get the facts right? 
-  Did they correct themselves when wrong? Do they actually understand the topic, 
-  or are they just performing for clicks and applause?
-</p>
-
-<h2>It’s Not Just a Score</h2>
-<p>
-  This system is designed to grow over time—with every subject scored and every correction made. 
-  It tracks credibility the way it works in real life: you earn it, you lose it, and if you lie, you don’t get to just hit reset.
-</p>
-
-<h2>The End Goal</h2>
-<p>
-  If more people start asking “Who’s telling the truth?” instead of “Whose side are you on?”—everything changes. 
-  Politicians, media, journalists, and influencers—they’ll have to compete on honesty, not just volume. 
-  This is how we take back the conversation.
-</p>
-     <!-- 🎯 Divider -->
-    <section class="divider-section">
-      <div class="divider-bar">
-        <div class="truth"></div>
-        <div class="reliability"></div>
-        <div class="understanding"></div>
-      </div>
-      <div class="divider-labels">
-        <span>Truth</span>
-        <span>Reliability</span>
-        <span>Understanding</span>
-      </div>
-    </section>
   </div>
-  
-  <script>
-  function handleAgreement() {
-    const now = new Date();
-    localStorage.setItem('owlDisclosureAccepted', now.getTime());
-    document.getElementById('legal-popup').style.display = 'none';
+</div>
+<script>
+  const SHEET_ID = "19wBEj9hEkvIyQcoR5E_mBGVAxTzMnddMxk8nuQLAumA";
+  const API_KEY = "AIzaSyCzuh9HBfe0r70r9U35Pe406PPZ-tz6I78";
+  const RANGE = "the_constitution!A3:E1000";
+
+  const colors = {
+    gold: "#D4AF37",
+    text: "#FFFFFF",
+    bullet: "#7C8A9B",
+    heading: "#FFFFF0"
+  };
+
+  async function fetchAmendmentData() {
+    const url = `https://sheets.googleapis.com/v4/spreadsheets/${SHEET_ID}/values/${RANGE}?key=${API_KEY}`;
+    const res = await fetch(url);
+    const json = await res.json();
+    return json.values || [];
   }
 
-  window.addEventListener('DOMContentLoaded', () => {
-    const lastAccepted = localStorage.getItem('owlDisclosureAccepted');
-    const now = new Date().getTime();
-    const thirtyDays = 1000 * 60 * 60 * 24 * 30;
+  async function initAmendmentDropdown() {
+    const data = await fetchAmendmentData();
+    const amendmentSelect = document.getElementById("subject-select");
+    const amendmentTitle = document.getElementById("amendment-title");
+    const tableBody = document.getElementById("amendment-table-body");
+    const promptBox = document.getElementById("ai-prompt-box");
 
-    if (!lastAccepted || now - lastAccepted > thirtyDays) {
-      document.getElementById('legal-popup').style.display = 'flex';
-    } else {
-      document.getElementById('legal-popup').style.display = 'none';
-    }
-  });
-</script>
-  <script>
-  function toggleMenu() {
-    const menu = document.getElementById("navMenu");
-    menu.classList.toggle("show");
+    const grouped = {};
+    const prompts = {};
+
+    data.forEach(([amendment, section, text, insight, prompt]) => {
+      if (!grouped[amendment]) grouped[amendment] = [];
+      grouped[amendment].push({ section, text, insight });
+      prompts[amendment] = prompt;
+    });
+
+    Object.keys(grouped).forEach(amendment => {
+      const opt = document.createElement("option");
+      opt.value = amendment;
+      opt.textContent = amendment;
+      amendmentSelect.appendChild(opt);
+    });
+
+    amendmentSelect.addEventListener("change", () => {
+      const selected = amendmentSelect.value;
+      amendmentTitle.textContent = "";
+      tableBody.innerHTML = "";
+      promptBox.value = "";
+
+      if (!selected || !grouped[selected]) return;
+
+      amendmentTitle.textContent = selected;
+
+      grouped[selected].forEach(({ section, text, insight }) => {
+        const row = document.createElement("tr");
+
+        const tdSection = document.createElement("td");
+        tdSection.textContent = section;
+        tdSection.style.padding = "12px";
+        tdSection.style.borderBottom = "1px solid var(--highlight)";
+        row.appendChild(tdSection);
+
+        const tdText = document.createElement("td");
+        tdText.textContent = text;
+        tdText.style.padding = "12px";
+        tdText.style.borderBottom = "1px solid var(--highlight)";
+        row.appendChild(tdText);
+
+        const tdInsight = document.createElement("td");
+        tdInsight.textContent = insight;
+        tdInsight.style.padding = "12px";
+        tdInsight.style.borderBottom = "1px solid var(--highlight)";
+        row.appendChild(tdInsight);
+
+        tableBody.appendChild(row);
+      });
+
+      // Update the AI prompt
+      const prompt = prompts[selected];
+      if (prompt) {
+        promptBox.value = prompt;
+      }
+    });
   }
-</script>
-  <script>
+
+  window.addEventListener("DOMContentLoaded", initAmendmentDropdown);
+
   function toggleMenu() {
     document.getElementById("navMenu").classList.toggle("show");
   }
 </script>
-
 </body>
 </html>
