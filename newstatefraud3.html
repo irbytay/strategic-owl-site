@@ -466,6 +466,10 @@ Because yes, voter fraud exists. But it’s not what you’ve been led to believ
         resultsWrapper.style.display = "flex";
       });
     }
+   function toggleMenu() {
+    const menu = document.getElementById("navMenu");
+    menu.classList.toggle("show");
+  }
 
     // ✅ Enable for standalone mode
     window.addEventListener("DOMContentLoaded", initStateFraudPage);
