@@ -354,9 +354,11 @@
         <span>Understanding</span>
       </div>
     </section>
-  <!-- 📜 Amendment Selector -->
+ <!-- 📜 Amendment Selector -->
 <div style="display: flex; flex-direction: column; gap: 12px; align-items: center; margin-top: 40px;">
-  <label for="subject-select" style="color: var(--text); font-family: 'Playfair Display', serif; font-size: 1.2rem;">Select an Amendment</label>
+  <label for="subject-select" style="color: var(--text); font-family: 'Playfair Display', serif; font-size: 1.2rem;">
+    Select an Amendment
+  </label>
   <select id="subject-select" style="padding: 10px; background-color: var(--surface); color: var(--text); border: 1px solid var(--highlight); font-family: 'Montserrat', sans-serif; font-size: 1rem;">
     <option value="">-- Choose an Amendment --</option>
   </select>
@@ -364,16 +366,13 @@
 
 <!-- 📘 Strategic Constitution Viewer -->
 <div id="insight-output" style="max-width: 960px; margin: 40px auto 0; font-family: 'Montserrat', sans-serif; background-color: var(--surface); color: var(--text); padding: 24px; border-radius: 12px;">
-  <!-- Content will be inserted here dynamically via JS -->
+  <!-- Content is inserted here dynamically -->
 </div>
 
-   
-  </div>
-</div>
 <script>
   const SHEET_ID = "19wBEj9hEkvIyQcoR5E_mBGVAxTzMnddMxk8nuQLAumA";
   const API_KEY = "AIzaSyCzuh9HBfe0r70r9U35Pe406PPZ-tz6I78";
-  const RANGE = "the_constitution!A3:D1000";
+  const RANGE = "the_constitution!A3:E1000";
 
   const colors = {
     gold: "#D4AF37",
@@ -395,9 +394,12 @@
     const outputDiv = document.getElementById("insight-output");
 
     const grouped = {};
-    data.forEach(([amendment, section, text, insight]) => {
+    const prompts = {};
+
+    data.forEach(([amendment, section, text, insight, prompt]) => {
       if (!grouped[amendment]) grouped[amendment] = [];
       grouped[amendment].push({ section, text, insight });
+      prompts[amendment] = prompt;
     });
 
     Object.keys(grouped).forEach(amendment => {
@@ -415,53 +417,128 @@
       const sections = grouped[selected];
       const wrapper = document.createElement("div");
 
+      // Amendment Title
       const h2 = document.createElement("h2");
       h2.textContent = selected;
       h2.style.color = colors.heading;
-      h2.style.marginBottom = "16px";
+      h2.style.marginBottom = "24px";
+      h2.style.textAlign = "center";
+      h2.style.fontFamily = "'Playfair Display', serif";
       wrapper.appendChild(h2);
 
-      sections.forEach(({ section, text, insight }) => {
-  // Section title (h3) - lighter golden tone
-  const h3 = document.createElement("h3");
-  h3.textContent = `Section ${section}`;
-  h3.style.fontFamily = "'Playfair Display', serif";
-  h3.style.fontSize = "1.15rem";
-  h3.style.fontWeight = "600";
-  h3.style.color = "#E5C878"; // soft gold, lighter than h2
-  h3.style.marginTop = "20px";
-  h3.style.marginBottom = "6px";
-  h3.style.textAlign = "center";
-  wrapper.appendChild(h3);
+      sections.forEach(({ section, text, insight }, index) => {
+        // Section header
+        const h3 = document.createElement("h3");
+        h3.textContent = `Section ${section}`;
+        h3.style.fontFamily = "'Playfair Display', serif";
+        h3.style.fontSize = "1.15rem";
+        h3.style.fontWeight = "600";
+        h3.style.color = "#E5C878";
+        h3.style.marginTop = "20px";
+        h3.style.marginBottom = "6px";
+        h3.style.textAlign = "center";
+        wrapper.appendChild(h3);
 
-  // Full constitutional text (p)
-  const p = document.createElement("p");
-  p.textContent = text;
-  p.style.fontFamily = "'Montserrat', sans-serif";
-  p.style.color = "var(--text-muted)";
-  p.style.fontSize = "1.05rem";
-  p.style.lineHeight = "1.6";
-  p.style.marginBottom = "10px";
-  wrapper.appendChild(p);
+        // Paragraph
+        const p = document.createElement("p");
+        p.textContent = text;
+        p.style.fontFamily = "'Montserrat', sans-serif";
+        p.style.color = "var(--text-muted)";
+        p.style.fontSize = "1.05rem";
+        p.style.lineHeight = "1.6";
+        p.style.marginBottom = "10px";
+        p.style.textAlign = "center";
+        wrapper.appendChild(p);
 
-  // Strategic Insight block (div)
-  const insightDiv = document.createElement("div");
-  insightDiv.textContent = insight;
-  insightDiv.style.fontFamily = "'Montserrat', sans-serif";
-  insightDiv.style.borderLeft = `4px solid var(--understanding)`; // gold accent
-  insightDiv.style.padding = "10px 16px";
-  insightDiv.style.marginBottom = "24px";
-  insightDiv.style.backgroundColor = "#1A2B4C";
-  insightDiv.style.color = "var(--understanding)";
-  insightDiv.style.fontWeight = "500";
-  wrapper.appendChild(insightDiv);
-});
+        // Strategic Insight (Gold Block)
+        const insightDiv = document.createElement("div");
+        insightDiv.textContent = insight;
+        insightDiv.style.fontFamily = "'Montserrat', sans-serif";
+        insightDiv.style.borderLeft = `4px solid var(--understanding)`;
+        insightDiv.style.padding = "10px 16px";
+        insightDiv.style.marginBottom = "24px";
+        insightDiv.style.backgroundColor = "#1A2B4C";
+        insightDiv.style.color = "var(--understanding)";
+        insightDiv.style.fontWeight = "500";
+        wrapper.appendChild(insightDiv);
+
+        // Only insert the prompt after the last section
+        if (index === sections.length - 1 && prompts[selected]) {
+  // Prompt block container
+  const promptDiv = document.createElement("div");
+  promptDiv.style.marginTop = "8px";
+  promptDiv.style.marginBottom = "24px";
+
+ const promptBox = document.createElement("textarea");
+promptBox.value = prompts[selected];
+promptBox.readOnly = true;
+promptBox.style.width = "100%";
+promptBox.style.padding = "12px";
+promptBox.style.backgroundColor = "#1C2B3A"; // refined dark tone
+promptBox.style.border = "1px solid #D4AF37";
+promptBox.style.borderLeft = "4px solid #D4AF37";
+promptBox.style.borderRadius = "8px";
+promptBox.style.color = "#D4AF37";
+promptBox.style.fontFamily = "'Courier New', monospace";
+promptBox.style.fontSize = "0.95rem";
+promptBox.style.lineHeight = "1.5";
+promptBox.style.overflow = "hidden";
+promptBox.style.resize = "none";
+promptBox.style.boxSizing = "border-box";
+promptBox.style.height = "auto";
+
+// 🪄 Auto-resize to fit content
+setTimeout(() => {
+  promptBox.style.height = "auto";
+  promptBox.style.height = promptBox.scrollHeight + "px";
+}, 0);
+
+  // Copy button
+const copyButton = document.createElement("button");
+copyButton.textContent = "Copy";
+copyButton.style.marginTop = "8px";
+copyButton.style.backgroundColor = "#3C465C"; // AI-style blue-gray
+copyButton.style.color = "#F0F0F0"; // Soft white
+copyButton.style.padding = "6px 16px";
+copyButton.style.border = "none";
+copyButton.style.borderRadius = "8px";
+copyButton.style.cursor = "pointer";
+copyButton.style.fontFamily = "'Inter', sans-serif";
+copyButton.style.fontSize = "0.95rem";
+copyButton.style.transition = "background-color 0.3s ease, transform 0.2s ease";
+
+// Hover effect
+copyButton.onmouseenter = () => {
+  copyButton.style.backgroundColor = "#4D5A70"; // Slightly lighter
+};
+copyButton.onmouseleave = () => {
+  copyButton.style.backgroundColor = "#3C465C";
+};
+
+// Click (copy) behavior
+copyButton.onclick = () => {
+  promptBox.select();
+  document.execCommand("copy");
+  copyButton.textContent = "Copied!";
+  copyButton.style.transform = "scale(0.97)";
+  setTimeout(() => {
+    copyButton.textContent = "Copy";
+    copyButton.style.transform = "scale(1)";
+  }, 1500);
+};
+
+  promptDiv.appendChild(promptBox);
+  promptDiv.appendChild(copyButton);
+  wrapper.appendChild(promptDiv);
+}
+      });
 
       outputDiv.appendChild(wrapper);
     });
   }
 
   window.addEventListener("DOMContentLoaded", initAmendmentDropdown);
+
   function toggleMenu() {
     document.getElementById("navMenu").classList.toggle("show");
   }
