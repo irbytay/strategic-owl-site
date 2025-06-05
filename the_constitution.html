@@ -416,29 +416,39 @@
       wrapper.appendChild(h2);
 
       sections.forEach(({ section, text, insight }) => {
-        const h3 = document.createElement("h3");
-        h3.textContent = `Section ${section}`;
-        h3.style.color = colors.text;
-        h3.style.marginBottom = "8px";
-        wrapper.appendChild(h3);
+  // Section title (h3) - lighter golden tone
+  const h3 = document.createElement("h3");
+  h3.textContent = `Section ${section}`;
+  h3.style.fontFamily = "'Montserrat', sans-serif";
+  h3.style.fontSize = "1.15rem";
+  h3.style.fontWeight = "600";
+  h3.style.color = "#E5C878"; // soft gold, lighter than h2
+  h3.style.marginTop = "20px";
+  h3.style.marginBottom = "6px";
+  wrapper.appendChild(h3);
 
-        const p = document.createElement("p");
-        p.textContent = text;
-        p.style.lineHeight = "1.6";
-        p.style.color = colors.text;
-        p.style.marginBottom = "10px";
-        wrapper.appendChild(p);
+  // Full constitutional text (p)
+  const p = document.createElement("p");
+  p.textContent = text;
+  p.style.fontFamily = "'Montserrat', sans-serif";
+  p.style.color = "var(--text-muted)";
+  p.style.fontSize = "1.05rem";
+  p.style.lineHeight = "1.6";
+  p.style.marginBottom = "10px";
+  wrapper.appendChild(p);
 
-        const insightDiv = document.createElement("div");
-        insightDiv.textContent = insight;
-        insightDiv.style.borderLeft = `4px solid ${colors.gold}`;
-        insightDiv.style.padding = "10px 16px";
-        insightDiv.style.marginBottom = "24px";
-        insightDiv.style.backgroundColor = "#1A2B4C";
-        insightDiv.style.color = colors.gold;
-        insightDiv.style.fontWeight = "500";
-        wrapper.appendChild(insightDiv);
-      });
+  // Strategic Insight block (div)
+  const insightDiv = document.createElement("div");
+  insightDiv.textContent = insight;
+  insightDiv.style.fontFamily = "'Montserrat', sans-serif";
+  insightDiv.style.borderLeft = `4px solid var(--understanding)`; // gold accent
+  insightDiv.style.padding = "10px 16px";
+  insightDiv.style.marginBottom = "24px";
+  insightDiv.style.backgroundColor = "#1A2B4C";
+  insightDiv.style.color = "var(--understanding)";
+  insightDiv.style.fontWeight = "500";
+  wrapper.appendChild(insightDiv);
+});
 
       outputDiv.appendChild(wrapper);
     });
