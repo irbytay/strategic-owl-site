@@ -169,7 +169,11 @@
     max-width: 960px;
     margin: 100px auto 0 auto;
     padding: 24px;
-  }
+  display: flex;
+  flex-direction: column;
+  align-items: center;          /* centers all direct child elements horizontally */
+  text-align: center;           /* ensures text-based elements also align visually */
+}
 
   h1 {
     font-family: 'Playfair Display', serif;
@@ -380,6 +384,74 @@
   </table>
 </div>
   </div>
+    <div class="container">
+    <h1>Voter Fraud?</h1>
+<p>Look past the headlines. Here’s the actual data.</p>
+    <!-- 🎯 Divider -->
+    <section class="divider-section">
+      <div class="divider-bar">
+        <div class="truth"></div>
+        <div class="reliability"></div>
+        <div class="understanding"></div>
+      </div>
+      <div class="divider-labels">
+        <span>Truth</span>
+        <span>Reliability</span>
+        <span>Understanding</span>
+      </div>
+    </section>
+<p>
+You’ve heard the claims. Some say voter fraud is everywhere. Others say it barely exists. Let’s look at the actual records.
+</p>
+
+<p>
+The Heritage Foundation tracks every confirmed case of voter fraud — often to suggest it’s a bigger threat than it is. This tool lets you explore that same data, with the context it’s missing.
+</p>
+
+<p>
+Because yes, voter fraud exists. But it’s not what you’ve been led to believe.
+</p>
+   
+   <label for="state-select" style="display: block; margin-bottom: 8px; font-weight: bold;">
+  Select a State:
+</label>
+<select id="state-select" style="padding: 6px; font-size: 1rem;">
+  <option value="">-- Choose a state --</option>
+</select>
+<p id="state-summary" class="subtext"></p>
+
+      <div class="table-wrapper" style="display:none;" id="state-results">
+        <table>
+          <thead>
+            <tr>
+              <th>Year</th>
+              <th>State</th>
+              <th>Name</th>
+            </tr>
+          </thead>
+          <tbody id="state-data-body"></tbody>
+        </table>
+      </div>
+
+      <p class="source">Source:</p>
+<p><a href="https://www.heritage.org/voterfraud" class="important-link" target="_blank">Heritage Foundation Voter Fraud Database</a></p>
+    </div>
+
+    <!-- 🎯 Divider -->
+    <section class="divider-section">
+      <div class="divider-bar">
+        <div class="truth"></div>
+        <div class="reliability"></div>
+        <div class="understanding"></div>
+      </div>
+      <div class="divider-labels">
+        <span>Truth</span>
+        <span>Reliability</span>
+        <span>Understanding</span>
+      </div>
+    </section>
+  </div>
+
     <section class="foundation-section">
   <h1>Strategic Foundation – Election Security</h1>
   <p class="section-intro">
@@ -625,8 +697,88 @@
   }
 
   window.addEventListener("DOMContentLoaded", initElectionPage);
-</script>
-  <script>
+   const API_KEY = "AIzaSyB3NmN4OpDutbaX6V2KkLy1p-vDLghrF5M";
+    const SHEET_ID = "1p66gmWWjxJbrySxpR5T--fP8iEgUbW7RrXru61gagRA";
+    const RANGE = "HeritageVoterfraudRawData!B6:D1589";
+
+    async function fetchSheetData() {
+      const url = `https://sheets.googleapis.com/v4/spreadsheets/${SHEET_ID}/values/${RANGE}?key=${API_KEY}`;
+      try {
+        const res = await fetch(url);
+        const data = await res.json();
+        return data.values || [];
+      } catch (error) {
+        console.error("Failed to fetch data:", error);
+        return [];
+      }
+    }
+
+    function populateDropdown(statesSet, stateSelect) {
+      const sortedStates = Array.from(statesSet).sort();
+      sortedStates.forEach(state => {
+        const opt = document.createElement("option");
+        opt.value = state;
+        opt.textContent = state;
+        stateSelect.appendChild(opt);
+      });
+    }
+
+    async function initStateFraudPage() {
+      const stateSelect = document.getElementById("state-select");
+      const tableBody = document.getElementById("state-data-body");
+      const resultsWrapper = document.getElementById("state-results");
+      const summaryLine = document.getElementById("state-summary");
+
+      if (!stateSelect || !tableBody || !resultsWrapper || !summaryLine) {
+        console.warn("[statefraud] Required elements not found.");
+        return;
+      }
+
+      const rows = await fetchSheetData();
+      const statesSet = new Set(rows.map(row => row[1]));
+      populateDropdown(statesSet, stateSelect);
+
+      stateSelect.addEventListener("change", function () {
+        const selected = this.value;
+        tableBody.innerHTML = "";
+        summaryLine.textContent = "";
+
+        const filtered = rows.filter(row => row[1] === selected);
+
+        if (filtered.length === 0) {
+          tableBody.innerHTML = `<tr><td colspan="3">No records found for ${selected}</td></tr>`;
+          resultsWrapper.style.display = "flex";
+          return;
+        }
+
+        const sorted = filtered.sort((a, b) => parseInt(a[0]) - parseInt(b[0]));
+
+        const years = sorted.map(row => parseInt(row[0])).filter(year => !isNaN(year));
+        const minYear = Math.min(...years);
+        const maxYear = Math.max(...years);
+        const caseCount = sorted.length;
+
+        summaryLine.textContent = `${caseCount} case${caseCount === 1 ? '' : 's'} found from ${minYear} to ${maxYear}`;
+
+        sorted.forEach(row => {
+          const year = row[0];
+          const state = row[1];
+          const name = row[2];
+          const tr = document.createElement("tr");
+          tr.innerHTML = `<td>${year}</td><td>${state}</td><td>${name}</td>`;
+          tableBody.appendChild(tr);
+        });
+
+        resultsWrapper.style.display = "flex";
+      });
+    }
+   function toggleMenu() {
+    const menu = document.getElementById("navMenu");
+    menu.classList.toggle("show");
+  }
+
+    // ✅ Enable for standalone mode
+    window.addEventListener("DOMContentLoaded", initStateFraudPage);
   function toggleMenu() {
     document.getElementById("navMenu").classList.toggle("show");
   }
