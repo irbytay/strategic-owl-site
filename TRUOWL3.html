@@ -489,38 +489,48 @@ table.tru-table td:nth-child(2) {
   font-size: 1rem;
   color: var(--text);
 }
-    @media (max-width: 600px) {
-    .dropdowns-wrapper {
-      flex-direction: column !important;
-      align-items: center;
-      gap: 20px !important;
-    }
+    @media (max-width: 768px) {
+  .menu-toggle {
+    display: block;
+  }
 
-    .dropdown-group {
-      width: 100%;
-      max-width: 320px;
-      text-align: center !important;
-    }
+  .nav-links {
+    display: none;
+    flex-direction: column;
+    align-items: center;
+    background-color: var(--highlight);
+    position: absolute;
+    top: 58px;
+    left: 0;
+    width: 100%;
+    padding: 12px 0;
+    gap: 12px;
+    box-shadow: 0 3px 8px var(--shadow);
+  }
 
-    .dropdown-group select {
-      width: 100%;
-      padding: 10px;
-      font-family: 'Playfair Display', serif;
-      font-size: 1rem;
-      background-color: var(--surface);
-      color: var(--text);
-      border: 1px solid var(--highlight);
-      border-radius: 6px;
-    }
+  .nav-links.show {
+    display: flex;
+    animation: fadeSlideDown 0.3s ease;
+  }
 
-    .dropdown-group label {
-      font-family: 'Playfair Display', serif;
-      font-size: 1rem;
-      color: var(--text-muted);
-      margin-bottom: 6px;
-      display: block;
+  .nav-links a {
+    padding: 10px 0;
+    width: 100%;
+    text-align: center;
+    font-size: 1rem;
+  }
+
+  @keyframes fadeSlideDown {
+    from {
+      opacity: 0;
+      transform: translateY(-10px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
     }
   }
+}
 
 /* Target the dropdown selects */
 .dropdowns-wrapper select {
@@ -542,19 +552,20 @@ table.tru-table td:nth-child(2) {
 </style>
 
 <nav class="top-nav">
-<a href="about.html" class="nav-logo">
+<a href="TRUOWL3.html" class="nav-logo">
   <img src="owl_logo_white.png" alt="Owl Logo" onerror="this.style.display='none';" />
   <div class="nav-title">The Strategic Owl</div>
 </a>
   <button class="menu-toggle" onclick="toggleMenu()">☰</button>
   <div class="nav-links" id="navMenu">
-     <a href="Index.html">Home</a>
-    <a href="about.html">Why?</a>
-    <a href="TRUOWL3.html">T.R.U. Owl</a>
-    <a href="newelections3.html">Election Security</a>
-    <a href="newstatefraud3.html">Voter Fraud?</a>
-    <a href="newcontact3.html">Contact</a>
-  </div>
+  <a href="Index.html">Home</a>
+  <a href="about.html">Why?</a>
+  <a href="TRUOWL3.html">T.R.U. Owl</a>
+  <a href="the_constitution.html">The Constitution</a> <!-- ✅ Newly added -->
+  <a href="newelections3.html">Election Security</a>
+  <a href="newstatefraud3.html">Voter Fraud?</a>
+  <a href="newcontact3.html">Contact</a>
+</div>
 </nav>
   <div class="container">
     <h1>T.R.U. Owl Viewer</h1>
@@ -850,15 +861,7 @@ tdComment.textContent = comment;
     document.getElementById("role-filter").addEventListener("change", e => updatePersonDropdown(e.target.value));
     document.getElementById("person-select").addEventListener("change", showScores);
   });
-</script>
-  </script>
-  <script>
-  function toggleMenu() {
-    const menu = document.getElementById("navMenu");
-    menu.classList.toggle("show");
-  }
-</script>
-  <script>
+
   function toggleMenu() {
     document.getElementById("navMenu").classList.toggle("show");
   }
