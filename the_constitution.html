@@ -1,0 +1,507 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Strategic Owl | TRU OWL Viewer</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&family=Playfair+Display:wght@600;700&display=swap" rel="stylesheet" />
+
+  <style>
+  :root {
+    --background: #0D1B2A;
+    --surface: #112240;
+    --highlight: #1A2B4C;
+    --truth: #28A745;
+    --reliability: #3B6CED;
+    --understanding: #D4AF37;
+    --text: #FFFFFF;
+    --text-muted: #7C8A9B;
+    --heading: #FFFFF0;
+    --shadow: rgba(0, 0, 0, 0.3);
+    --bar-red: #FF4C4C;
+    --bar-green: #28A745;
+  }
+
+  body {
+    background-color: var(--background);
+    color: var(--text);
+    font-family: 'Inter', sans-serif;
+    margin: 0;
+    padding: 0;
+  }
+
+  /* 🧭 NAVBAR & MENU */
+  nav.top-nav {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 999;
+    background-color: var(--highlight);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 14px 20px;
+    box-shadow: 0 2px 6px var(--shadow);
+  }
+
+  .nav-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 22px;
+    color: var(--understanding);
+  }
+
+  .menu-toggle {
+    display: none;
+    font-size: 24px;
+    cursor: pointer;
+    color: var(--text);
+    background: none;
+    border: none;
+  }
+
+  .nav-links {
+    display: flex;
+    gap: 28px;
+  }
+
+  .nav-links a {
+    color: var(--text-muted);
+    text-decoration: none;
+    font-size: 15px;
+    transition: color 0.3s ease;
+  }
+
+  .nav-links a:hover {
+    color: var(--understanding);
+  }
+    .nav-logo img {
+  height: 40px;
+  width: 40px;
+}
+    .nav-logo {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  text-decoration: none;
+  font-weight: 600;
+  color: var(--text);
+  font-size: 1.25rem;
+}
+    /* 🎨 TRU Bars */
+  .divider-section {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin: 40px auto;
+  }
+
+  .divider-bar {
+    display: flex;
+    gap: 12px;
+    width: 340px;
+  }
+
+  .divider-bar div {
+    width: 108px;
+    height: 6px;
+    border-radius: 3px;
+    box-shadow: 0 0 4px var(--shadow);
+  }
+
+  .truth { background-color: var(--truth); }
+  .reliability { background-color: var(--reliability); }
+  .understanding { background-color: var(--understanding); }
+
+  .divider-labels {
+    display: flex;
+    justify-content: center;
+    gap: 12px;
+    width: 340px;
+    margin-top: 8px;
+  }
+
+  .divider-labels span {
+    width: 108px;
+    text-align: center;
+    font-size: 0.85rem;
+    color: var(--text-muted);
+  }
+
+  @media (max-width: 768px) {
+    .menu-toggle {
+      display: block;
+    }
+
+    .nav-links {
+      display: none;
+      flex-direction: row; /* 👈 links side-by-side on mobile */
+      justify-content: center;
+      background-color: var(--highlight);
+      position: absolute;
+      top: 58px;
+      left: 0;
+      width: 100%;
+      padding: 10px 0;
+      gap: 20px;
+      box-shadow: 0 3px 8px var(--shadow);
+    }
+
+    .nav-links.show {
+      display: flex;
+      animation: fadeSlideDown 0.3s ease;
+    }
+
+    @keyframes fadeSlideDown {
+      from {
+        opacity: 0;
+        transform: translateY(-10px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+  }
+    @media (max-width: 500px) {
+  #legal-popup > div {
+    padding: 12px;
+    font-size: 0.95rem;
+  }
+
+  #accept-btn {
+    width: 100%;
+    font-size: 1rem;
+  }
+
+  p {
+    font-size: 0.95rem;
+    margin-bottom: 16px;
+  }
+}
+
+  /* ✅ YOUR ORIGINAL STYLES BELOW */
+  .container {
+    max-width: 960px;
+    margin: 100px auto 0 auto;
+    padding: 24px;
+  }
+
+  h1 {
+    font-family: 'Playfair Display', serif;
+    color: var(--heading);
+    margin-bottom: 16px;
+    text-align: center;
+  }
+  h2 {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.5rem;
+  color: var(--understanding); /* golden highlight */
+  font-weight: 600;
+  margin-top: 32px;
+  margin-bottom: 12px;
+  text-align: center;
+}
+  p {
+  font-family: 'Inter', sans-serif;
+  font-size: 1.05rem;
+  color: var(--text-muted);
+  line-height: 1.6;
+  margin-bottom: 20px;
+  text-align: center;
+  max-width: 700px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+  select {
+    padding: 8px;
+    margin-bottom: 16px;
+    background-color: var(--surface);
+    color: var(--text);
+    border: 1px solid var(--highlight);
+  }
+
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    background-color: var(--surface);
+    margin-top: 12px;
+  }
+
+  th, td {
+    padding: 12px;
+    border-bottom: 1px solid var(--highlight);
+    text-align: left;
+  }
+
+  .text-truth { color: var(--truth); }
+  .text-reliability { color: var(--reliability); }
+  .text-understanding { color: var(--understanding); }
+
+  .total-score {
+    font-weight: bold;
+  }
+
+  .positive-score { color: var(--bar-green); }
+  .negative-score { color: var(--bar-red); }
+
+  .score-bar {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .bar-indicator {
+    width: 10px;
+    height: 24px;
+    border-radius: 2px;
+  }
+
+  .bar-red {
+    background-color: var(--bar-red);
+  }
+
+  .bar-green {
+    background-color: var(--bar-green);
+  }
+    .match-nav-link {
+  color: var(--text-muted);
+  text-decoration: none;
+  font-size: 15px;
+  transition: color 0.3s ease;
+}
+
+.match-nav-link:hover {
+  color: var(--understanding);
+}
+ /* Style the link itself */
+.important-link {
+  color: var(--understanding);               /* Gold color from your theme */
+  font-weight: 700;                          /* Bold for visibility */
+  text-decoration: underline;                /* Underline to signal it's a link */
+  text-underline-offset: 4px;                /* Adds spacing between text and underline */
+  position: relative;                        /* Required for pseudo-elements */
+  transition: color 0.3s ease, text-shadow 0.3s ease;  /* Smooth hover transitions */
+}
+
+/* Add a right-pointing arrow BEFORE the link text */
+.important-link::before {
+  content: '→ ';                             /* Arrow pointing right */
+  display: inline-block;                     /* So we can animate it */
+  margin-right: 6px;                         /* Space between arrow and text */
+  transition: transform 0.3s ease;           /* Smooth movement on hover */
+}
+
+/* Add a left-pointing arrow AFTER the link text */
+.important-link::after {
+  content: ' ←';                             /* Arrow pointing left */
+  display: inline-block;                     /* Enables transform */
+  margin-left: 6px;                          /* Space between text and arrow */
+  transition: transform 0.3s ease;           /* Smooth hover animation */
+}
+
+/* Animate the left-side arrow to move right on hover */
+.important-link:hover::before {
+  transform: translateX(4px);                /* Moves → arrow to the right */
+}
+
+/* Animate the right-side arrow to move left on hover */
+.important-link:hover::after {
+  transform: translateX(-4px);               /* Moves ← arrow to the left */
+}
+
+/* Add glow and optional color change on hover */
+.important-link:hover {
+  text-shadow: 0 0 8px var(--understanding); /* Subtle glow using gold tone */
+  color: var(--truth);                       /* Optional: changes to green (truth color) */
+}
+</style>
+
+<nav class="top-nav">
+<a href="about.html" class="nav-logo">
+  <img src="owl_logo_white.png" alt="Owl Logo" onerror="this.style.display='none';" />
+  <div class="nav-title">The Strategic Owl</div>
+</a>
+  <button class="menu-toggle" onclick="toggleMenu()">☰</button>
+  <div class="nav-links" id="navMenu">
+    <a href="Index.html">Home</a>
+    <a href="about.html">Why?</a>
+    <a href="TRUOWL3.html">T.R.U. Owl</a>
+    <a href="newelections3.html">Election Security</a>
+    <a href="newstatefraud3.html">Voter Fraud?</a>
+    <a href="newcontact3.html">Contact</a>
+  </div>
+</nav>
+  <div class="container">
+    <h1>The Strategic Owl</h1>
+<!-- 🎯 Divider -->
+    <section class="divider-section">
+      <div class="divider-bar">
+        <div class="truth"></div>
+        <div class="reliability"></div>
+        <div class="understanding"></div>
+      </div>
+      <div class="divider-labels">
+        <span>Truth</span>
+        <span>Reliability</span>
+        <span>Understanding</span>
+      </div>
+    </section>
+  <!-- 📜 Amendment Selector -->
+<div style="display: flex; flex-direction: column; gap: 12px; align-items: center; margin-top: 40px;">
+  <label for="subject-select" style="color: var(--text); font-family: 'Playfair Display', serif; font-size: 1.2rem;">Select an Amendment</label>
+  <select id="subject-select" style="padding: 10px; background-color: var(--surface); color: var(--text); border: 1px solid var(--highlight); font-family: 'Montserrat', sans-serif; font-size: 1rem;">
+    <option value="">-- Choose an Amendment --</option>
+  </select>
+</div>
+
+<!-- 📘 Strategic Constitution Viewer -->
+<div id="insight-output" style="max-width: 960px; margin: 40px auto 0; font-family: 'Montserrat', sans-serif; background-color: var(--surface); color: var(--text); padding: 24px; border-radius: 12px;">
+  <!-- Content will be inserted here dynamically via JS -->
+</div>
+
+<!-- 🔐 Legal Popup -->
+<div id="legal-popup" style="
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(13, 27, 42, 0.95);
+  z-index: 9999;
+  overflow-y: auto;
+  padding: 40px 20px;
+  box-sizing: border-box;
+">
+  <div style="
+    max-width: 680px;
+    width: 100%;
+    margin: 0 auto;
+    background-color: var(--surface);
+    padding: 30px;
+    border-radius: 8px;
+    box-shadow: 0 0 20px var(--shadow);
+    font-family: 'Montserrat', sans-serif;
+    color: var(--text);
+  ">
+
+    <h1 style="font-family: 'Playfair Display', serif; color: var(--heading); margin-bottom: 20px;">Well hello there.</h1>
+
+    <p style="line-height: 1.6;">How do you even know what's real anymore?</p>
+    <p style="line-height: 1.6;">If you've lost trust in the system, you're not wrong. That’s by design.</p>
+
+    <p style="line-height: 1.6; margin-top: 24px;">Now let me get the legal stuff out of the way.</p>
+
+    <p style="line-height: 1.6;">
+      This site is protected under the <strong>First Amendment</strong> of the United States Constitution.<br>
+      All content herein is published for educational and informational purposes.<br>
+      It is not intended to defame, mislead, or incite.<br>
+      Every claim is supported by public records, sourced materials, or verifiable data — and transparency is built into the system to ensure I’m held to the same standards I use to assess others.
+    </p>
+
+    <p style="line-height: 1.6; font-weight: bold; margin-top: 16px;">
+      Truth-telling is still legal — even if it ruffles a few red hats.
+    </p>
+
+    <h2 style="font-family: 'Playfair Display', serif; color: var(--heading); margin-top: 32px;">Join the Watch</h2>
+
+    <p style="line-height: 1.6;">
+      By continuing, you're not just entering a site — you're stepping into an experience designed to make you think.<br>
+      You're part of a broader mission to restore trust in what’s real.
+    </p>
+
+    <div style="text-align: center; margin-top: 24px;">
+      <a href="#" id="accept-link" class="important-link">I understand. Let me in.</a>
+    </div>
+
+    <p style="margin-top: 12px; font-size: 0.8rem; color: var(--text-muted);">
+      This moment will be remembered for 30 days.<br>
+      This website uses publicly available data, court records, and verifiable sources. Nothing here is hidden — it’s all in the open.
+    </p>
+  </div>
+</div>
+<script>
+  const SHEET_ID = "19wBEj9hEkvIyQcoR5E_mBGVAxTzMnddMxk8nuQLAumA";
+  const API_KEY = "AIzaSyCzuh9HBfe0r70r9U35Pe406PPZ-tz6I78";
+  const RANGE = "the_constitution!A3:D1000";
+
+  const colors = {
+    gold: "#D4AF37",
+    text: "#FFFFFF",
+    bullet: "#7C8A9B",
+    heading: "#FFFFF0"
+  };
+
+  async function fetchAmendmentData() {
+    const url = `https://sheets.googleapis.com/v4/spreadsheets/${SHEET_ID}/values/${RANGE}?key=${API_KEY}`;
+    const res = await fetch(url);
+    const json = await res.json();
+    return json.values || [];
+  }
+
+  async function initAmendmentDropdown() {
+    const data = await fetchAmendmentData();
+    const amendmentSelect = document.getElementById("subject-select");
+    const outputDiv = document.getElementById("insight-output");
+
+    const grouped = {};
+    data.forEach(([amendment, section, text, insight]) => {
+      if (!grouped[amendment]) grouped[amendment] = [];
+      grouped[amendment].push({ section, text, insight });
+    });
+
+    Object.keys(grouped).forEach(amendment => {
+      const opt = document.createElement("option");
+      opt.value = amendment;
+      opt.textContent = amendment;
+      amendmentSelect.appendChild(opt);
+    });
+
+    amendmentSelect.addEventListener("change", () => {
+      const selected = amendmentSelect.value;
+      outputDiv.innerHTML = "";
+      if (!selected || !grouped[selected]) return;
+
+      const sections = grouped[selected];
+      const wrapper = document.createElement("div");
+
+      const h2 = document.createElement("h2");
+      h2.textContent = selected;
+      h2.style.color = colors.heading;
+      h2.style.marginBottom = "16px";
+      wrapper.appendChild(h2);
+
+      sections.forEach(({ section, text, insight }) => {
+        const h3 = document.createElement("h3");
+        h3.textContent = `Section ${section}`;
+        h3.style.color = colors.text;
+        h3.style.marginBottom = "8px";
+        wrapper.appendChild(h3);
+
+        const p = document.createElement("p");
+        p.textContent = text;
+        p.style.lineHeight = "1.6";
+        p.style.color = colors.text;
+        p.style.marginBottom = "10px";
+        wrapper.appendChild(p);
+
+        const insightDiv = document.createElement("div");
+        insightDiv.textContent = insight;
+        insightDiv.style.borderLeft = `4px solid ${colors.gold}`;
+        insightDiv.style.padding = "10px 16px";
+        insightDiv.style.marginBottom = "24px";
+        insightDiv.style.backgroundColor = "#1A2B4C";
+        insightDiv.style.color = colors.gold;
+        insightDiv.style.fontWeight = "500";
+        wrapper.appendChild(insightDiv);
+      });
+
+      outputDiv.appendChild(wrapper);
+    });
+  }
+
+  window.addEventListener("DOMContentLoaded", initAmendmentDropdown);
+</script>
+</body>
+</html>
