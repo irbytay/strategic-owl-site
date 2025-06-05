@@ -450,24 +450,45 @@
         p.style.textAlign = "center";
         wrapper.appendChild(p);
 
-        // Strategic Insight (Gold Block)
-        const insightDiv = document.createElement("div");
-        insightDiv.textContent = insight;
-        insightDiv.style.fontFamily = "'Montserrat', sans-serif";
-        insightDiv.style.borderLeft = `4px solid var(--understanding)`;
-        insightDiv.style.padding = "10px 16px";
-        insightDiv.style.marginBottom = "24px";
-        insightDiv.style.backgroundColor = "#1A2B4C";
-        insightDiv.style.color = "var(--understanding)";
-        insightDiv.style.fontWeight = "500";
-        wrapper.appendChild(insightDiv);
+        // Strategic Insight Label
+const insightLabel = document.createElement("p");
+insightLabel.textContent = "Strategic Insight";
+insightLabel.style.color = colors.gold;
+insightLabel.style.fontFamily = "'Inter', sans-serif";
+insightLabel.style.fontSize = "1rem";
+insightLabel.style.marginBottom = "6px";
+insightLabel.style.marginTop = "10px";
+insightLabel.style.textAlign = "center";
+wrapper.appendChild(insightLabel);
+
+// Strategic Insight Block
+const insightDiv = document.createElement("div");
+insightDiv.textContent = insight;
+insightDiv.style.fontFamily = "'Montserrat', sans-serif";
+insightDiv.style.borderLeft = `4px solid var(--understanding)`;
+insightDiv.style.padding = "10px 16px";
+insightDiv.style.marginBottom = "24px";
+insightDiv.style.backgroundColor = "#1A2B4C";
+insightDiv.style.color = "var(--understanding)";
+insightDiv.style.fontWeight = "500";
+wrapper.appendChild(insightDiv);
 
         // Only insert the prompt after the last section
         if (index === sections.length - 1 && prompts[selected]) {
-  // Prompt block container
-  const promptDiv = document.createElement("div");
-  promptDiv.style.marginTop = "8px";
-  promptDiv.style.marginBottom = "24px";
+ // Prompt block container
+const promptDiv = document.createElement("div");
+promptDiv.style.marginTop = "8px";
+promptDiv.style.marginBottom = "24px";
+
+// Label
+const promptLabel = document.createElement("p");
+promptLabel.textContent = "Copy and Paste to explore this amendment";
+promptLabel.style.color = colors.gold;
+promptLabel.style.fontFamily = "'Inter', sans-serif";
+promptLabel.style.fontSize = "1rem";
+promptLabel.style.marginBottom = "6px";
+promptLabel.style.textAlign = "center";
+promptDiv.appendChild(promptLabel);
 
  const promptBox = document.createElement("textarea");
 promptBox.value = prompts[selected];
