@@ -138,41 +138,83 @@
     color: var(--text-muted);
   }
 
-  @media (max-width: 768px) {
-    .menu-toggle {
-      display: block;
-    }
+  /* 👇 DROPDOWNS STACK ON MOBILE */
+@media (max-width: 600px) {
+  .dropdowns-wrapper {
+    flex-direction: column !important;
+    align-items: center;
+    gap: 20px !important;
+  }
 
-    .nav-links {
-      display: none;
-      flex-direction: row; /* 👈 links side-by-side on mobile */
-      justify-content: center;
-      background-color: var(--highlight);
-      position: absolute;
-      top: 58px;
-      left: 0;
-      width: 100%;
-      padding: 10px 0;
-      gap: 20px;
-      box-shadow: 0 3px 8px var(--shadow);
-    }
+  .dropdown-group {
+    width: 100%;
+    max-width: 320px;
+    text-align: center !important;
+  }
 
-    .nav-links.show {
-      display: flex;
-      animation: fadeSlideDown 0.3s ease;
-    }
+  .dropdown-group select {
+    width: 100%;
+    padding: 10px;
+    font-family: 'Playfair Display', serif;
+    font-size: 1rem;
+    background-color: var(--surface);
+    color: var(--text);
+    border: 1px solid var(--highlight);
+    border-radius: 6px;
+  }
 
-    @keyframes fadeSlideDown {
-      from {
-        opacity: 0;
-        transform: translateY(-10px);
-      }
-      to {
-        opacity: 1;
-        transform: translateY(0);
-      }
+  .dropdown-group label {
+    font-family: 'Playfair Display', serif;
+    font-size: 1rem;
+    color: var(--text-muted);
+    margin-bottom: 6px;
+    display: block;
+  }
+}
+
+/* 👇 NAV MENU STACK ON MOBILE */
+@media (max-width: 768px) {
+  .menu-toggle {
+    display: block;
+  }
+
+  .nav-links {
+    display: none;
+    flex-direction: column;
+    align-items: center;
+    background-color: var(--highlight);
+    position: absolute;
+    top: 58px;
+    left: 0;
+    width: 100%;
+    padding: 12px 0;
+    gap: 12px;
+    box-shadow: 0 3px 8px var(--shadow);
+  }
+
+  .nav-links.show {
+    display: flex;
+    animation: fadeSlideDown 0.3s ease;
+  }
+
+  .nav-links a {
+    padding: 10px 0;
+    width: 100%;
+    text-align: center;
+    font-size: 1rem;
+  }
+
+  @keyframes fadeSlideDown {
+    from {
+      opacity: 0;
+      transform: translateY(-10px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
     }
   }
+}
 
   /* ✅ YOUR ORIGINAL STYLES BELOW */
   .container {
