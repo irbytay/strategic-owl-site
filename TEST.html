@@ -469,18 +469,17 @@
   promptDiv.style.marginTop = "8px";
   promptDiv.style.marginBottom = "24px";
 
- // The prompt text
-const promptBox = document.createElement("textarea");
+ const promptBox = document.createElement("textarea");
 promptBox.value = prompts[selected];
 promptBox.readOnly = true;
 promptBox.style.width = "100%";
 promptBox.style.padding = "12px";
-promptBox.style.backgroundColor = "#1C2B3A"; // Deep navy for contrast
-promptBox.style.border = "1px solid #D4AF37"; // Gold border
-promptBox.style.borderLeft = "4px solid #D4AF37"; // Gold accent
+promptBox.style.backgroundColor = "#1C2B3A"; // refined dark tone
+promptBox.style.border = "1px solid #D4AF37";
+promptBox.style.borderLeft = "4px solid #D4AF37";
 promptBox.style.borderRadius = "8px";
-promptBox.style.color = "#D4AF37"; // Gold text
-promptBox.style.fontFamily = "'Courier New', monospace"; // Data-style font
+promptBox.style.color = "#D4AF37";
+promptBox.style.fontFamily = "'Courier New', monospace";
 promptBox.style.fontSize = "0.95rem";
 promptBox.style.lineHeight = "1.5";
 promptBox.style.overflow = "hidden";
@@ -488,8 +487,11 @@ promptBox.style.resize = "none";
 promptBox.style.boxSizing = "border-box";
 promptBox.style.height = "auto";
 
-// Auto-adjust height to content
-promptBox.style.height = promptBox.scrollHeight + "px";
+// 🪄 Auto-resize to fit content
+setTimeout(() => {
+  promptBox.style.height = "auto";
+  promptBox.style.height = promptBox.scrollHeight + "px";
+}, 0);
 
   // Copy button
 const copyButton = document.createElement("button");
