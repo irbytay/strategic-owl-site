@@ -135,7 +135,8 @@
 
     .nav-links {
       display: none;
-      flex-direction: column; /* 👈 links side-by-side on mobile */
+      flex-direction: column;
+      align-items: center;/* 👈 links side-by-side on mobile */
       justify-content: center;
       background-color: var(--highlight);
       position: absolute;
@@ -146,6 +147,12 @@
       gap: 20px;
       box-shadow: 0 3px 8px var(--shadow);
     }
+    .nav-links a {
+  padding: 10px 0;
+  width: 100%;
+  text-align: center;
+  font-size: 1rem;
+}
 
     .nav-links.show {
       display: flex;
