@@ -479,6 +479,22 @@ copyBox.style.fontFamily = "'Inter', sans-serif";
 copyBox.style.fontSize = "0.95rem";
 copyBox.rows = 4;
 wrapper.appendChild(copyBox);
+      const copyButton = document.createElement("button");
+copyButton.textContent = "Copy";
+copyButton.style.marginTop = "8px";
+copyButton.style.backgroundColor = "var(--understanding)";
+copyButton.style.color = "#0D1B2A";
+copyButton.style.padding = "6px 12px";
+copyButton.style.border = "none";
+copyButton.style.borderRadius = "6px";
+copyButton.style.cursor = "pointer";
+copyButton.onclick = () => {
+  copyBox.select();
+  document.execCommand("copy");
+  copyButton.textContent = "Copied!";
+  setTimeout(() => (copyButton.textContent = "Copy"), 2000);
+};
+wrapper.appendChild(copyButton); // ✅ This adds it directly below the box
 
       outputDiv.appendChild(wrapper);
     });
