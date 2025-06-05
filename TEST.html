@@ -469,37 +469,61 @@
   promptDiv.style.marginTop = "8px";
   promptDiv.style.marginBottom = "24px";
 
-  // The prompt text
-  const promptBox = document.createElement("textarea");
-  promptBox.value = prompts[selected];
-  promptBox.readOnly = true;
-  promptBox.style.width = "100%";
-  promptBox.style.padding = "12px";
-  promptBox.style.backgroundColor = "#112240";
-  promptBox.style.border = "1px solid var(--truth)";
-  promptBox.style.borderLeft = "4px solid var(--truth)";
-  promptBox.style.borderRadius = "8px";
-  promptBox.style.color = "#D4AF37";
-  promptBox.style.fontFamily = "'Inter', sans-serif";
-  promptBox.style.fontSize = "0.95rem";
-  promptBox.rows = 4;
+ // The prompt text
+const promptBox = document.createElement("textarea");
+promptBox.value = prompts[selected];
+promptBox.readOnly = true;
+promptBox.style.width = "100%";
+promptBox.style.padding = "12px";
+promptBox.style.backgroundColor = "#1C2B3A"; // Deep navy for contrast
+promptBox.style.border = "1px solid #D4AF37"; // Gold border
+promptBox.style.borderLeft = "4px solid #D4AF37"; // Gold accent
+promptBox.style.borderRadius = "8px";
+promptBox.style.color = "#D4AF37"; // Gold text
+promptBox.style.fontFamily = "'Courier New', monospace"; // Data-style font
+promptBox.style.fontSize = "0.95rem";
+promptBox.style.lineHeight = "1.5";
+promptBox.style.overflow = "hidden";
+promptBox.style.resize = "none";
+promptBox.style.boxSizing = "border-box";
+promptBox.style.height = "auto";
+
+// Auto-adjust height to content
+promptBox.style.height = promptBox.scrollHeight + "px";
 
   // Copy button
-  const copyButton = document.createElement("button");
-  copyButton.textContent = "Copy";
-  copyButton.style.marginTop = "8px";
-  copyButton.style.backgroundColor = "var(--truth)";
-  copyButton.style.color = "#0D1B2A";
-  copyButton.style.padding = "6px 12px";
-  copyButton.style.border = "none";
-  copyButton.style.borderRadius = "6px";
-  copyButton.style.cursor = "pointer";
-  copyButton.onclick = () => {
-    promptBox.select();
-    document.execCommand("copy");
-    copyButton.textContent = "Copied!";
-    setTimeout(() => (copyButton.textContent = "Copy"), 2000);
-  };
+const copyButton = document.createElement("button");
+copyButton.textContent = "Copy";
+copyButton.style.marginTop = "8px";
+copyButton.style.backgroundColor = "#3C465C"; // AI-style blue-gray
+copyButton.style.color = "#F0F0F0"; // Soft white
+copyButton.style.padding = "6px 16px";
+copyButton.style.border = "none";
+copyButton.style.borderRadius = "8px";
+copyButton.style.cursor = "pointer";
+copyButton.style.fontFamily = "'Inter', sans-serif";
+copyButton.style.fontSize = "0.95rem";
+copyButton.style.transition = "background-color 0.3s ease, transform 0.2s ease";
+
+// Hover effect
+copyButton.onmouseenter = () => {
+  copyButton.style.backgroundColor = "#4D5A70"; // Slightly lighter
+};
+copyButton.onmouseleave = () => {
+  copyButton.style.backgroundColor = "#3C465C";
+};
+
+// Click (copy) behavior
+copyButton.onclick = () => {
+  promptBox.select();
+  document.execCommand("copy");
+  copyButton.textContent = "Copied!";
+  copyButton.style.transform = "scale(0.97)";
+  setTimeout(() => {
+    copyButton.textContent = "Copy";
+    copyButton.style.transform = "scale(1)";
+  }, 1500);
+};
 
   promptDiv.appendChild(promptBox);
   promptDiv.appendChild(copyButton);
