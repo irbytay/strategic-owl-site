@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Strategic Owl | TRU OWL Viewer</title>
+  <title>Strategic Owl | The Constitution</title>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&family=Playfair+Display:wght@600;700&display=swap" rel="stylesheet" />
 
   <style>
@@ -464,10 +464,23 @@
 
         // Only insert the prompt after the last section
         if (index === sections.length - 1 && prompts[selected]) {
-  // Prompt block container
-  const promptDiv = document.createElement("div");
-  promptDiv.style.marginTop = "8px";
-  promptDiv.style.marginBottom = "24px";
+ // Prompt block container
+const promptDiv = document.createElement("div");
+promptDiv.style.marginTop = "8px";
+promptDiv.style.marginBottom = "24px";
+
+// Label
+const promptLabel = document.createElement("p");
+promptLabel.textContent = "Copy and Paste to explore this amendment";
+promptLabel.style.color = colors.gold;
+promptLabel.style.fontFamily = "'Inter', sans-serif";
+promptLabel.style.fontSize = "1rem";
+promptLabel.style.marginBottom = "6px";
+promptLabel.style.textAlign = "center";
+promptDiv.appendChild(promptLabel);
+
+// Prompt box
+const promptBox = document.createElement("textarea");
 
  const promptBox = document.createElement("textarea");
 promptBox.value = prompts[selected];
