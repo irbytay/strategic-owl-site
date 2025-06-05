@@ -515,7 +515,7 @@
   const thirtyDays = 1000 * 60 * 60 * 24 * 30;
 
   if (!lastAccepted || now - parseInt(lastAccepted) > thirtyDays) {
-    legalPopup.style.display = 'flex';
+    legalPopup.style.display = 'block';
   } else {
     legalPopup.style.display = 'none';
   }
