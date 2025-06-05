@@ -366,36 +366,9 @@
 
 <!-- 📘 Strategic Constitution Viewer -->
 <div id="insight-output" style="max-width: 960px; margin: 40px auto 0; font-family: 'Montserrat', sans-serif; background-color: var(--surface); color: var(--text); padding: 24px; border-radius: 12px;">
-
-  <!-- Amendment Title -->
-  <h2 id="amendment-title" style="text-align: center; color: var(--heading); margin-bottom: 24px;"></h2>
-
-  <!-- Visible Table Shell -->
-  <table style="width: 100%; border-collapse: collapse; margin-top: 20px;">
-    <thead>
-      <tr>
-        <th style="padding: 12px; border-bottom: 1px solid var(--highlight); color: var(--understanding);">Section</th>
-        <th style="padding: 12px; border-bottom: 1px solid var(--highlight); color: var(--understanding);">Text</th>
-        <th style="padding: 12px; border-bottom: 1px solid var(--highlight); color: var(--understanding);">Strategic Insight</th>
-      </tr>
-    </thead>
-    <tbody id="amendment-table-body">
-      <!-- Rows will be inserted here by JavaScript -->
-    </tbody>
-  </table>
-
-  <!-- 🧠 AI Prompt Output -->
-  <div id="ai-prompt-section" style="margin-top: 40px;">
-    <h4 style="text-align: center; color: var(--understanding); font-family: 'Playfair Display', serif;">AI Prompt</h4>
-    <textarea id="ai-prompt-box" readonly style="width: 100%; padding: 12px; background-color: #0D1B2A; color: var(--text); border: 1px solid var(--understanding); border-radius: 8px; font-family: 'Inter', sans-serif; font-size: 0.95rem;" rows="4">
-      <!-- Will be populated by JS -->
-    </textarea>
-  </div>
+  <!-- Content is inserted here dynamically -->
 </div>
 
-   
-  </div>
-</div>
 <script>
   const SHEET_ID = "19wBEj9hEkvIyQcoR5E_mBGVAxTzMnddMxk8nuQLAumA";
   const API_KEY = "AIzaSyCzuh9HBfe0r70r9U35Pe406PPZ-tz6I78";
@@ -418,9 +391,7 @@
   async function initAmendmentDropdown() {
     const data = await fetchAmendmentData();
     const amendmentSelect = document.getElementById("subject-select");
-    const amendmentTitle = document.getElementById("amendment-title");
-    const tableBody = document.getElementById("amendment-table-body");
-    const promptBox = document.getElementById("ai-prompt-box");
+    const outputDiv = document.getElementById("insight-output");
 
     const grouped = {};
     const prompts = {};
@@ -440,43 +411,75 @@
 
     amendmentSelect.addEventListener("change", () => {
       const selected = amendmentSelect.value;
-      amendmentTitle.textContent = "";
-      tableBody.innerHTML = "";
-      promptBox.value = "";
-
+      outputDiv.innerHTML = "";
       if (!selected || !grouped[selected]) return;
 
-      amendmentTitle.textContent = selected;
+      const sections = grouped[selected];
+      const wrapper = document.createElement("div");
 
-      grouped[selected].forEach(({ section, text, insight }) => {
-        const row = document.createElement("tr");
+      // Amendment Title
+      const h2 = document.createElement("h2");
+      h2.textContent = selected;
+      h2.style.color = colors.heading;
+      h2.style.marginBottom = "24px";
+      h2.style.textAlign = "center";
+      h2.style.fontFamily = "'Playfair Display', serif";
+      wrapper.appendChild(h2);
 
-        const tdSection = document.createElement("td");
-        tdSection.textContent = section;
-        tdSection.style.padding = "12px";
-        tdSection.style.borderBottom = "1px solid var(--highlight)";
-        row.appendChild(tdSection);
+      sections.forEach(({ section, text, insight }, index) => {
+        // Section header
+        const h3 = document.createElement("h3");
+        h3.textContent = `Section ${section}`;
+        h3.style.fontFamily = "'Playfair Display', serif";
+        h3.style.fontSize = "1.15rem";
+        h3.style.fontWeight = "600";
+        h3.style.color = "#E5C878";
+        h3.style.marginTop = "20px";
+        h3.style.marginBottom = "6px";
+        h3.style.textAlign = "center";
+        wrapper.appendChild(h3);
 
-        const tdText = document.createElement("td");
-        tdText.textContent = text;
-        tdText.style.padding = "12px";
-        tdText.style.borderBottom = "1px solid var(--highlight)";
-        row.appendChild(tdText);
+        // Paragraph
+        const p = document.createElement("p");
+        p.textContent = text;
+        p.style.fontFamily = "'Montserrat', sans-serif";
+        p.style.color = "var(--text-muted)";
+        p.style.fontSize = "1.05rem";
+        p.style.lineHeight = "1.6";
+        p.style.marginBottom = "10px";
+        p.style.textAlign = "center";
+        wrapper.appendChild(p);
 
-        const tdInsight = document.createElement("td");
-        tdInsight.textContent = insight;
-        tdInsight.style.padding = "12px";
-        tdInsight.style.borderBottom = "1px solid var(--highlight)";
-        row.appendChild(tdInsight);
+        // Strategic Insight (Gold Block)
+        const insightDiv = document.createElement("div");
+        insightDiv.textContent = insight;
+        insightDiv.style.fontFamily = "'Montserrat', sans-serif";
+        insightDiv.style.borderLeft = `4px solid var(--understanding)`;
+        insightDiv.style.padding = "10px 16px";
+        insightDiv.style.marginBottom = "24px";
+        insightDiv.style.backgroundColor = "#1A2B4C";
+        insightDiv.style.color = "var(--understanding)";
+        insightDiv.style.fontWeight = "500";
+        wrapper.appendChild(insightDiv);
 
-        tableBody.appendChild(row);
+        // Only insert the prompt after the last section
+        if (index === sections.length - 1 && prompts[selected]) {
+          const promptDiv = document.createElement("div");
+          promptDiv.textContent = prompts[selected];
+          promptDiv.style.fontFamily = "'Inter', sans-serif";
+          promptDiv.style.backgroundColor = "#112240";
+          promptDiv.style.borderLeft = "4px solid var(--truth)";
+          promptDiv.style.padding = "10px 16px";
+          promptDiv.style.marginTop = "8px";
+          promptDiv.style.marginBottom = "24px";
+          promptDiv.style.color = "#28A745";
+          promptDiv.style.fontSize = "0.95rem";
+          promptDiv.style.textAlign = "center";
+          wrapper.appendChild(promptDiv);
+        }
       });
 
-      // Update the AI prompt
-      const prompt = prompts[selected];
-      if (prompt) {
-        promptBox.value = prompt;
-      }
+      outputDiv.appendChild(wrapper);
     });
   }
 
