@@ -400,7 +400,7 @@
     </p>
 
     <div style="text-align: center; margin-top: 24px;">
-      <a href="#" id="accept-link" class="important-link">I understand. Let me in.</a>
+      <a href="index.html" id="accept-link" class="important-link">I understand. Let me in.</a>
     </div>
 
     <p style="margin-top: 12px; font-size: 0.8rem; color: var(--text-muted);">
@@ -486,11 +486,9 @@
     legalPopup.style.display = 'block';
   }
 
-  document.getElementById('accept-link').addEventListener('click', (e) => {
-    e.preventDefault();
-    localStorage.setItem('legalPopupAccepted', now.toString());
-    legalPopup.style.display = 'none';
-  });
+  document.getElementById('accept-link').addEventListener('click', () => {
+  localStorage.setItem('legalPopupAccepted', Date.now().toString());
+});
   function toggleMenu() {
     document.getElementById("navMenu").classList.toggle("show");
   }
