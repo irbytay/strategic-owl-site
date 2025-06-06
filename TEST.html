@@ -354,6 +354,17 @@
         <span>Understanding</span>
       </div>
     </section>
+    <!-- 🦉 Subject → Amendment Lookup (Strategic Owl Style) -->
+<div style="display: flex; flex-direction: column; align-items: center; margin-bottom: 28px; margin-top: 20px;">
+  <label for="subject-quick" style="color: var(--text); font-family: 'Playfair Display', serif; font-size: 1.15rem; margin-bottom: 8px;">
+    What right are you curious about?
+  </label>
+  <select id="subject-quick" style="padding: 10px; background-color: var(--surface); color: var(--text); border: 1px solid var(--highlight); font-family: 'Montserrat', sans-serif; font-size: 1rem;">
+    <option value="">-- Choose a Subject --</option>
+  </select>
+
+  <div id="subject-quick-output" style="margin-top: 14px; font-size: 1.05rem; color: var(--understanding); font-family: 'Montserrat', sans-serif;"></div>
+</div>
  <!-- 📜 Amendment Selector -->
 <div style="display: flex; flex-direction: column; gap: 12px; align-items: center; margin-top: 40px;">
 
@@ -378,7 +389,7 @@
 <script>
   const SHEET_ID = "19wBEj9hEkvIyQcoR5E_mBGVAxTzMnddMxk8nuQLAumA";
   const API_KEY = "AIzaSyCzuh9HBfe0r70r9U35Pe406PPZ-tz6I78";
-  const RANGE = "the_constitution!A3:E1000";
+  const RANGE = "the_constitution!A2:G1000";
 
   const colors = {
     gold: "#D4AF37",
@@ -414,6 +425,7 @@
       opt.textContent = amendment;
       amendmentSelect.appendChild(opt);
     });
+    
 
     amendmentSelect.addEventListener("change", () => {
       const selected = amendmentSelect.value;
@@ -563,12 +575,46 @@ copyButton.onclick = () => {
       outputDiv.appendChild(wrapper);
     });
   }
+  const SUBJECT_LOOKUP_RANGE = "the_constitution!F2:G100";
 
-  window.addEventListener("DOMContentLoaded", initAmendmentDropdown);
+async function fetchSubjectMap() {
+  const url = `https://sheets.googleapis.com/v4/spreadsheets/${SHEET_ID}/values/${SUBJECT_LOOKUP_RANGE}?key=${API_KEY}`;
+  const res = await fetch(url);
+  const json = await res.json();
+  return json.values || [];
+}
+
+async function initSubjectLookupDropdown() {
+  const data = await fetchSubjectMap();
+  const dropdown = document.getElementById("subject-quick");
+  const output = document.getElementById("subject-quick-output");
+
+  const subjectToAmendment = {};
+  data.forEach(([subject, amendment]) => {
+    subjectToAmendment[subject] = amendment;
+    const opt = document.createElement("option");
+    opt.value = subject;
+    opt.textContent = subject;
+    dropdown.appendChild(opt);
+  });
+
+  dropdown.addEventListener("change", () => {
+    const selected = dropdown.value;
+    output.textContent = selected && subjectToAmendment[selected]
+      ? `→ Amendment: ${subjectToAmendment[selected]}`
+      : "";
+  });
+}
+
+  window.addEventListener("DOMContentLoaded", () => {
+  initAmendmentDropdown();
+  initSubjectLookupDropdown();
+});
 
   function toggleMenu() {
     document.getElementById("navMenu").classList.toggle("show");
   }
+  
 </script>
 </body>
 </html>
