@@ -486,8 +486,10 @@
 
           // Auto-resize height
           setTimeout(() => {
-            promptBox.style.height = promptBox.scrollHeight + "px";
-          }, 0);
+            promptBox.style.height = "140px";            // fixed height
+            promptBox.style.overflowY = "auto";          // vertical scroll if content overflows
+            promptBox.style.whiteSpace = "pre-wrap";     // keeps formatting
+            promptBox.style.wordBreak = "break-word";    // prevents overflow from long words
 
           const copyButton = document.createElement("button");
           copyButton.textContent = "Copy";
