@@ -468,28 +468,24 @@
           promptLabel.style.textAlign = "center";
 
           const promptBox = document.createElement("textarea");
-          promptBox.value = categories[category].prompt;
-          promptBox.readOnly = true;
-          promptBox.style.width = "100%";
-          promptBox.style.padding = "12px";
-          promptBox.style.backgroundColor = "#1C2B3A";
-          promptBox.style.border = "1px solid #D4AF37";
-          promptBox.style.borderLeft = "4px solid #D4AF37";
-          promptBox.style.borderRadius = "8px";
-          promptBox.style.color = "#D4AF37";
-          promptBox.style.fontFamily = "'Courier New', monospace";
-          promptBox.style.fontSize = "0.95rem";
-          promptBox.style.lineHeight = "1.5";
-          promptBox.style.overflow = "hidden";
-          promptBox.style.resize = "none";
-          promptBox.style.boxSizing = "border-box";
-
-          // Auto-resize height
-          setTimeout(() => {
-            promptBox.style.height = "140px";            // fixed height
-            promptBox.style.overflowY = "auto";          // vertical scroll if content overflows
-            promptBox.style.whiteSpace = "pre-wrap";     // keeps formatting
-            promptBox.style.wordBreak = "break-word";    // prevents overflow from long words
+promptBox.value = categories[category].prompt;
+promptBox.readOnly = true;
+promptBox.style.width = "100%";
+promptBox.style.height = "140px";                  // fixed height
+promptBox.style.padding = "12px";
+promptBox.style.backgroundColor = "#1C2B3A";
+promptBox.style.border = "1px solid #D4AF37";
+promptBox.style.borderLeft = "4px solid #D4AF37";
+promptBox.style.borderRadius = "8px";
+promptBox.style.color = "#D4AF37";
+promptBox.style.fontFamily = "'Courier New', monospace";
+promptBox.style.fontSize = "0.95rem";
+promptBox.style.lineHeight = "1.5";
+promptBox.style.overflowY = "auto";                // scrollable
+promptBox.style.whiteSpace = "pre-wrap";           // keeps formatting
+promptBox.style.wordBreak = "break-word";          // prevents long lines from breaking layout
+promptBox.style.resize = "none";                   // user can’t resize it
+promptBox.style.boxSizing = "border-box";
 
           const copyButton = document.createElement("button");
           copyButton.textContent = "Copy";
