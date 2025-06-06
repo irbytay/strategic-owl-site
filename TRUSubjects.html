@@ -359,73 +359,11 @@
 <div id="insight-output" style="max-width: 960px; margin: 40px auto 0; font-family: 'Montserrat', sans-serif; background-color: var(--surface); color: var(--text); padding: 20px; border-radius: 12px;">
   <!-- JS will populate this -->
 </div>
-<!-- Legal Popup Container -->
-<div id="legal-popup" style="
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background-color: rgba(13, 27, 42, 0.95);
-  z-index: 9999;
-  overflow-y: auto;
-  padding: 40px 20px;
-  box-sizing: border-box;
-">
-  <!-- Centered Inner Content -->
-  <div style="
-    max-width: 680px;
-    width: 100%;
-    margin: 0 auto;
-    background-color: var(--surface);
-    padding: 30px;
-    border-radius: 8px;
-    box-shadow: 0 0 20px var(--shadow);
-    font-family: 'Montserrat', sans-serif;
-    color: var(--text);
-  ">
-    
-    <h1 style="font-family: 'Playfair Display', serif; color: var(--heading); margin-bottom: 20px;">Well hello there.</h1>
-    
-    <p style="line-height: 1.6;">How do you even know what's real anymore?</p>
-    <p style="line-height: 1.6;">If you've lost trust in the system, you're not wrong. That’s by design.</p>
 
-    <p style="line-height: 1.6; margin-top: 24px;">
-      Now let me get the legal stuff out of the way.
-    </p>
-
-    <p style="line-height: 1.6;">
-      This site is protected under the <strong>First Amendment</strong> of the United States Constitution.<br>
-      All content herein is published for educational and informational purposes.<br>
-      It is not intended to defame, mislead, or incite.<br>
-      Every claim is supported by public records, sourced materials, or verifiable data — and transparency is built into the system to ensure I’m held to the same standards I use to assess others.
-    </p>
-
-    <p style="line-height: 1.6; font-weight: bold; margin-top: 16px;">
-      Truth-telling is still legal — even if it ruffles a few red hats.
-    </p>
-
-    <h2 style="font-family: 'Playfair Display', serif; color: var(--heading); margin-top: 32px;">Join the Watch</h2>
-
-    <p style="line-height: 1.6;">
-      By continuing, you're not just entering a site — you're stepping into an experience designed to make you think.<br>
-      You're part of a broader mission to restore trust in what’s real.
-    </p>
-
-    <div style="text-align: center; margin-top: 24px;">
-  <a href="#" id="accept-link" class="important-link">I understand. Let me in.</a>
-</div>
-
-    <p style="margin-top: 12px; font-size: 0.8rem; color: var(--text-muted);">
-      This moment will be remembered for 30 days.<br>
-      This website uses publicly available data, court records, and verifiable sources. Nothing here is hidden — it’s all in the open.
-    </p>
-  </div>
-</div>
 <script>
   const SHEET_ID = "19wBEj9hEkvIyQcoR5E_mBGVAxTzMnddMxk8nuQLAumA";
   const API_KEY = "AIzaSyCzuh9HBfe0r70r9U35Pe406PPZ-tz6I78";
-  const RANGE = "TRUOWLSubjects!A2:D1000";
+  const RANGE = "TRUOWLSubjects!A2:E1000";
   const colors = {
     highlight: "#D4AF37",
     text: "#FFFFFF",
@@ -447,9 +385,15 @@
 
     const subjectMap = {};
 
-    data.forEach(([subject, category, fact, insight]) => {
+    data.forEach(([subject, category, fact, insight, prompt]) => {
       if (!subjectMap[subject]) subjectMap[subject] = {};
-      if (!subjectMap[subject][category]) subjectMap[subject][category] = { facts: [], insight };
+      if (!subjectMap[subject][category]) {
+        subjectMap[subject][category] = {
+          facts: [],
+          insight: insight || "",
+          prompt: prompt || ""
+        };
+      }
       if (!subjectMap[subject][category].facts.includes(fact)) {
         subjectMap[subject][category].facts.push(fact);
       }
@@ -501,6 +445,73 @@
         section.appendChild(factsList);
         section.appendChild(insightBox);
 
+        // ⬇️ Prompt Section
+        if (categories[category].prompt) {
+          const promptLabel = document.createElement("p");
+          promptLabel.textContent = "Copy and paste to challenge this insight";
+          promptLabel.style.color = colors.highlight;
+          promptLabel.style.fontFamily = "'Inter', sans-serif";
+          promptLabel.style.fontSize = "1rem";
+          promptLabel.style.marginBottom = "6px";
+          promptLabel.style.textAlign = "center";
+
+          const promptBox = document.createElement("textarea");
+          promptBox.value = categories[category].prompt;
+          promptBox.readOnly = true;
+          promptBox.style.width = "100%";
+          promptBox.style.padding = "12px";
+          promptBox.style.backgroundColor = "#1C2B3A";
+          promptBox.style.border = "1px solid #D4AF37";
+          promptBox.style.borderLeft = "4px solid #D4AF37";
+          promptBox.style.borderRadius = "8px";
+          promptBox.style.color = "#D4AF37";
+          promptBox.style.fontFamily = "'Courier New', monospace";
+          promptBox.style.fontSize = "0.95rem";
+          promptBox.style.lineHeight = "1.5";
+          promptBox.style.overflow = "hidden";
+          promptBox.style.resize = "none";
+          promptBox.style.boxSizing = "border-box";
+
+          // Auto-resize height
+          setTimeout(() => {
+            promptBox.style.height = promptBox.scrollHeight + "px";
+          }, 0);
+
+          const copyButton = document.createElement("button");
+          copyButton.textContent = "Copy";
+          copyButton.style.marginTop = "8px";
+          copyButton.style.backgroundColor = "#3C465C";
+          copyButton.style.color = "#F0F0F0";
+          copyButton.style.padding = "6px 16px";
+          copyButton.style.border = "none";
+          copyButton.style.borderRadius = "8px";
+          copyButton.style.cursor = "pointer";
+          copyButton.style.fontFamily = "'Inter', sans-serif";
+          copyButton.style.fontSize = "0.95rem";
+          copyButton.style.transition = "background-color 0.3s ease, transform 0.2s ease";
+
+          copyButton.onmouseenter = () => {
+            copyButton.style.backgroundColor = "#4D5A70";
+          };
+          copyButton.onmouseleave = () => {
+            copyButton.style.backgroundColor = "#3C465C";
+          };
+          copyButton.onclick = () => {
+            promptBox.select();
+            document.execCommand("copy");
+            copyButton.textContent = "Copied!";
+            copyButton.style.transform = "scale(0.97)";
+            setTimeout(() => {
+              copyButton.textContent = "Copy";
+              copyButton.style.transform = "scale(1)";
+            }, 1500);
+          };
+
+          section.appendChild(promptLabel);
+          section.appendChild(promptBox);
+          section.appendChild(copyButton);
+        }
+
         insightOutput.appendChild(section);
       });
     });
@@ -508,51 +519,5 @@
 
   window.addEventListener("DOMContentLoaded", initSubjectDropdown);
 </script>
-<script>
-  const legalPopup = document.getElementById('legal-popup');
-  const lastAccepted = localStorage.getItem('legalPopupAccepted');
-  const now = new Date().getTime();
-  const thirtyDays = 1000 * 60 * 60 * 24 * 30;
-
-  if (!lastAccepted || now - parseInt(lastAccepted) > thirtyDays) {
-    legalPopup.style.display = 'block';
-  } else {
-    legalPopup.style.display = 'none';
-  }
-
-  document.getElementById('accept-link').addEventListener('click', (e) => {   e.preventDefault();
-    localStorage.setItem('legalPopupAccepted', now.toString());
-    legalPopup.style.display = 'none';
-  });
-</script>
-
-<!-- Root CSS Variables -->
-<style>
-  :root {
-    --background: #0D1B2A;
-    --surface: #112240;
-    --highlight: #1A2B4C;
-    --truth: #28A745;
-    --reliability: #3B6CED;
-    --understanding: #D4AF37;
-    --text: #FFFFFF;
-    --text-muted: #7C8A9B;
-    --heading: #FFFFF0;
-    --shadow: rgba(0, 0, 0, 0.3);
-    --bar-red: #FF4C4C;
-    --bar-green: #28A745;
-  }
-
-  @media (max-width: 500px) {
-    #legal-popup > div {
-      padding: 16px 12px !important;
-      font-size: 0.95rem;
-    }
-
-    #accept-btn {
-      width: 100%;
-    }
-  }
-</style>
 </body>
 </html>
