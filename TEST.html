@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Strategic Owl | The Constitution</title>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&family=Playfair+Display:wght@600;700&display=swap" rel="stylesheet" />
-
+ <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@500;600&display=swap" rel="stylesheet" />
   <style>
   :root {
     --background: #0D1B2A;
@@ -336,9 +336,9 @@
         <span>Understanding</span>
       </div>
     </section>
- <!-- 🦉 Strategic Owl Radicalization Quiz -->
+  <!-- 🦉 Strategic Owl Radicalization Quiz -->
 <div id="quiz-container" class="container">
-  <h2 style="text-align: center; color: var(--understanding); font-family: 'Playfair Display', serif;">
+  <h2 style="text-align: center; color: var(--understanding); font-family: 'Montserrat', sans-serif;">
     How Strategically Grounded Are You?
   </h2>
 
@@ -346,14 +346,17 @@
     Use the scale below to answer honestly. This helps evaluate civic perception — not partisanship.
   </p>
 
-  <!-- Dynamically loaded question as <h2> from JS -->
+  <!-- Injected question using Montserrat to match title -->
   <div id="quiz-question" style="
     margin-top: 40px;
     text-align: center;
-    font-family: 'Playfair Display', serif;
+    font-family: 'Montserrat', sans-serif;
     color: var(--understanding);
+    font-size: 1.4rem;
+    font-weight: 600;
   "></div>
 
+  <!-- Numeric answer buttons -->
   <div id="quiz-scale" style="
     display: flex;
     flex-wrap: wrap;
@@ -377,7 +380,7 @@
     text-align: center;
   "></div>
 
-  <!-- Fallback next button -->
+  <!-- Deprecated fallback button -->
   <button id="next-question" style="
     display: none;
     margin: 0 auto;
@@ -393,10 +396,18 @@
     Next
   </button>
 
+  <!-- Final result rendered here -->
   <div id="quiz-result" style="margin-top: 40px;"></div>
 </div>
 
 <script>
+const SHEET_ID = "19wBEj9hEkvIyQcoR5E_mBGVAxTzMnddMxk8nuQLAumA";
+const API_KEY = "AIzaSyCzuh9HBfe0r70r9U35Pe406PPZ-tz6I78";
+const RANGE = "TRUTest!A3:G100";
+
+let quizData = [];
+let currentIndex = 0;
+let userScores = [];
 
 async function fetchQuizData() {
   const SHEET_ID = 'YOUR_SHEET_ID';
@@ -415,7 +426,7 @@ function loadQuestion(index) {
   const narrativeBox = document.getElementById("narrative-display");
   const resultBox = document.getElementById("quiz-result");
 
-  container.innerHTML = `<h2 style="text-align: center; color: var(--understanding); font-family: 'Playfair Display', serif;">${question}</h2>`;
+  container.innerHTML = `<h2 style="text-align: center; color: var(--understanding); font-family: 'Montserrat', sans-serif;">${question}</h2>`;
   scale.innerHTML = "";
   narrativeBox.innerHTML = "";
   resultBox.innerHTML = "";
