@@ -4,17 +4,6 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Strategic Owl | The Constitution</title>
-
-  <!-- Open Graph Meta for Social Sharing -->
-  <meta property="og:title" content="Strategic Owl | The Constitution" />
-<meta property="og:description" content="A pocket-sized digital Constitution with AI prompts for deeper learning." />
-<meta property="og:image" content="https://thestrategicowl.com/TSO.png" />
-<meta property="og:image:type" content="image/png" />
-<meta property="og:image:width" content="1200" />
-<meta property="og:image:height" content="630" />
-<meta property="og:url" content="https://thestrategicowl.com/test" />
-<meta property="og:type" content="website" />
-
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&family=Playfair+Display:wght@600;700&display=swap" rel="stylesheet" />
 
   <style>
@@ -365,271 +354,92 @@
         <span>Understanding</span>
       </div>
     </section>
-   <!-- 🦉 Subject → Amendment Lookup (Strategic Owl Style) -->
-<div style="display: flex; flex-direction: column; gap: 12px; align-items: center; margin-top: 40px;">
-
-  <!-- 🔍 Simple Instruction -->
-  <p style="color: var(--text-muted); font-family: 'Montserrat', sans-serif; font-size: 1rem; max-width: 600px; text-align: center;">
-    Curious what Amendment protects your right? Use the subject selector below.
+  <!-- 🦉 Strategic Owl Radicalization Quiz -->
+<div id="quiz-container" class="container">
+  <h2>How Strategically Grounded Are You?</h2>
+  <p style="text-align: center; max-width: 600px; margin: 0 auto; color: var(--text-muted);">
+    Use the scale below to answer honestly. This helps evaluate civic perception — not partisanship.
   </p>
 
-  <label for="subject-quick" style="color: var(--text); font-family: 'Playfair Display', serif; font-size: 1.2rem;">
-    Choose a Subject
-  </label>
+  <div id="quiz-question" style="margin-top: 40px; text-align: center;"></div>
 
-  <select id="subject-quick"
-    style="padding: 10px; background-color: var(--surface); color: var(--text); border: 1px solid var(--highlight); font-family: 'Montserrat', sans-serif; font-size: 1rem; width: 100%; max-width: 420px;">
-    <option value="">-- Choose a Subject --</option>
-  </select>
+  <div id="quiz-scale" style="display: flex; justify-content: center; gap: 6px; margin: 20px 0;"></div>
 
-  <div id="subject-quick-output"
-    style="margin-top: 4px; font-size: 1.05rem; color: var(--understanding); font-family: 'Montserrat', sans-serif; text-align: center;">
-  </div>
-</div>
- <!-- 📜 Amendment Selector -->
-<div style="display: flex; flex-direction: column; gap: 12px; align-items: center; margin-top: 40px;">
+  <button id="next-question" style="margin: 0 auto; display: block; background-color: var(--highlight); color: white; padding: 10px 20px; border: none; border-radius: 6px; font-size: 1rem; cursor: pointer;">
+    Next
+  </button>
 
-  <!-- 🔍 Simple Instruction -->
-  <p style="color: var(--text-muted); font-family: 'Montserrat', sans-serif; font-size: 1rem; max-width: 600px; text-align: center;">
-    Curious about what each amendment really says? Start by selecting one below.
-  </p>
-
-  <label for="subject-select" style="color: var(--text); font-family: 'Playfair Display', serif; font-size: 1.2rem;">
-    Select an Amendment
-  </label>
-  <select id="subject-select" style="padding: 10px; background-color: var(--surface); color: var(--text); border: 1px solid var(--highlight); font-family: 'Montserrat', sans-serif; font-size: 1rem;">
-    <option value="">-- Choose an Amendment --</option>
-  </select>
-</div>
-
-<!-- 📘 Strategic Constitution Viewer -->
-<div id="insight-output" style="max-width: 960px; margin: 40px auto 0; font-family: 'Montserrat', sans-serif; background-color: var(--surface); color: var(--text); padding: 24px; border-radius: 12px;">
-  <!-- Content is inserted here dynamically -->
+  <div id="quiz-result" style="margin-top: 40px;"></div>
 </div>
 
 <script>
-  const SHEET_ID = "19wBEj9hEkvIyQcoR5E_mBGVAxTzMnddMxk8nuQLAumA";
-  const API_KEY = "AIzaSyCzuh9HBfe0r70r9U35Pe406PPZ-tz6I78";
-  const RANGE = "the_constitution!A2:G1000";
+const SHEET_ID = "19wBEj9hEkvIyQcoR5E_mBGVAxTzMnddMxk8nuQLAumA";
+const API_KEY = "AIzaSyCzuh9HBfe0r70r9U35Pe406PPZ-tz6I78";
+const RANGE = "TRUTest!A3:R100";
 
-  const colors = {
-    gold: "#D4AF37",
-    text: "#FFFFFF",
-    bullet: "#7C8A9B",
-    heading: "#FFFFF0"
-  };
-
-  async function fetchAmendmentData() {
-    const url = `https://sheets.googleapis.com/v4/spreadsheets/${SHEET_ID}/values/${RANGE}?key=${API_KEY}`;
-    const res = await fetch(url);
-    const json = await res.json();
-    return json.values || [];
-  }
-
-  async function initAmendmentDropdown() {
-    const data = await fetchAmendmentData();
-    const amendmentSelect = document.getElementById("subject-select");
-    const outputDiv = document.getElementById("insight-output");
-
-    const grouped = {};
-    const prompts = {};
-
-    data.forEach(([amendment, section, text, insight, prompt]) => {
-      if (!grouped[amendment]) grouped[amendment] = [];
-      grouped[amendment].push({ section, text, insight });
-      prompts[amendment] = prompt;
-    });
-
-    Object.keys(grouped).forEach(amendment => {
-      const opt = document.createElement("option");
-      opt.value = amendment;
-      opt.textContent = amendment;
-      amendmentSelect.appendChild(opt);
-    });
-    
-
-    amendmentSelect.addEventListener("change", () => {
-      const selected = amendmentSelect.value;
-      outputDiv.innerHTML = "";
-      if (!selected || !grouped[selected]) return;
-
-      const sections = grouped[selected];
-      const wrapper = document.createElement("div");
-
-      // Amendment Title
-      const h2 = document.createElement("h2");
-      h2.textContent = selected;
-      h2.style.color = colors.heading;
-      h2.style.marginBottom = "24px";
-      h2.style.textAlign = "center";
-      h2.style.fontFamily = "'Playfair Display', serif";
-      wrapper.appendChild(h2);
-
-      sections.forEach(({ section, text, insight }, index) => {
-        // Section header
-        const h3 = document.createElement("h3");
-        h3.textContent = `Section ${section}`;
-        h3.style.fontFamily = "'Playfair Display', serif";
-        h3.style.fontSize = "1.15rem";
-        h3.style.fontWeight = "600";
-        h3.style.color = "#E5C878";
-        h3.style.marginTop = "20px";
-        h3.style.marginBottom = "6px";
-        h3.style.textAlign = "center";
-        wrapper.appendChild(h3);
-
-        // Paragraph
-        const p = document.createElement("p");
-        p.textContent = text;
-        p.style.fontFamily = "'Montserrat', sans-serif";
-        p.style.color = "var(--text-muted)";
-        p.style.fontSize = "1.05rem";
-        p.style.lineHeight = "1.6";
-        p.style.marginBottom = "10px";
-        p.style.textAlign = "center";
-        wrapper.appendChild(p);
-
-        // Strategic Insight Label
-const insightLabel = document.createElement("p");
-insightLabel.textContent = "Strategic Insight";
-insightLabel.style.color = colors.gold;
-insightLabel.style.fontFamily = "'Inter', sans-serif";
-insightLabel.style.fontSize = "1rem";
-insightLabel.style.marginBottom = "6px";
-insightLabel.style.marginTop = "10px";
-insightLabel.style.textAlign = "center";
-wrapper.appendChild(insightLabel);
-
-// Strategic Insight Block
-const insightDiv = document.createElement("div");
-insightDiv.textContent = insight;
-insightDiv.style.fontFamily = "'Montserrat', sans-serif";
-insightDiv.style.borderLeft = `4px solid var(--understanding)`;
-insightDiv.style.padding = "10px 16px";
-insightDiv.style.marginBottom = "24px";
-insightDiv.style.backgroundColor = "#1A2B4C";
-insightDiv.style.color = "var(--understanding)";
-insightDiv.style.fontWeight = "500";
-wrapper.appendChild(insightDiv);
-
-        // Only insert the prompt after the last section
-        if (index === sections.length - 1 && prompts[selected]) {
- // Prompt block container
-const promptDiv = document.createElement("div");
-promptDiv.style.marginTop = "8px";
-promptDiv.style.marginBottom = "24px";
-
-// Label
-const promptLabel = document.createElement("p");
-promptLabel.textContent = "Copy and Paste to explore this amendment";
-promptLabel.style.color = colors.gold;
-promptLabel.style.fontFamily = "'Inter', sans-serif";
-promptLabel.style.fontSize = "1rem";
-promptLabel.style.marginBottom = "6px";
-promptLabel.style.textAlign = "center";
-promptDiv.appendChild(promptLabel);
-
- const promptBox = document.createElement("textarea");
-promptBox.value = prompts[selected];
-promptBox.readOnly = true;
-promptBox.style.width = "100%";
-promptBox.style.padding = "12px";
-promptBox.style.backgroundColor = "#1C2B3A"; // refined dark tone
-promptBox.style.border = "1px solid #D4AF37";
-promptBox.style.borderLeft = "4px solid #D4AF37";
-promptBox.style.borderRadius = "8px";
-promptBox.style.color = "#D4AF37";
-promptBox.style.fontFamily = "'Courier New', monospace";
-promptBox.style.fontSize = "0.95rem";
-promptBox.style.lineHeight = "1.5";
-promptBox.style.overflow = "hidden";
-promptBox.style.resize = "none";
-promptBox.style.boxSizing = "border-box";
-promptBox.style.height = "auto";
-
-// 🪄 Auto-resize to fit content
-setTimeout(() => {
-  promptBox.style.height = "auto";
-  promptBox.style.height = promptBox.scrollHeight + "px";
-}, 0);
-
-  // Copy button
-const copyButton = document.createElement("button");
-copyButton.textContent = "Copy";
-copyButton.style.marginTop = "8px";
-copyButton.style.backgroundColor = "#3C465C"; // AI-style blue-gray
-copyButton.style.color = "#F0F0F0"; // Soft white
-copyButton.style.padding = "6px 16px";
-copyButton.style.border = "none";
-copyButton.style.borderRadius = "8px";
-copyButton.style.cursor = "pointer";
-copyButton.style.fontFamily = "'Inter', sans-serif";
-copyButton.style.fontSize = "0.95rem";
-copyButton.style.transition = "background-color 0.3s ease, transform 0.2s ease";
-
-// Hover effect
-copyButton.onmouseenter = () => {
-  copyButton.style.backgroundColor = "#4D5A70"; // Slightly lighter
-};
-copyButton.onmouseleave = () => {
-  copyButton.style.backgroundColor = "#3C465C";
-};
-
-// Click (copy) behavior
-copyButton.onclick = () => {
-  promptBox.select();
-  document.execCommand("copy");
-  copyButton.textContent = "Copied!";
-  copyButton.style.transform = "scale(0.97)";
-  setTimeout(() => {
-    copyButton.textContent = "Copy";
-    copyButton.style.transform = "scale(1)";
-  }, 1500);
-};
-
-  promptDiv.appendChild(promptBox);
-  promptDiv.appendChild(copyButton);
-  wrapper.appendChild(promptDiv);
-}
-      });
-
-      outputDiv.appendChild(wrapper);
-    });
-  }
-  const SUBJECT_LOOKUP_RANGE = "the_constitution!F2:G100";
-
-async function fetchSubjectMap() {
-  const url = `https://sheets.googleapis.com/v4/spreadsheets/${SHEET_ID}/values/${SUBJECT_LOOKUP_RANGE}?key=${API_KEY}`;
+async function fetchTRUData() {
+  const url = `https://sheets.googleapis.com/v4/spreadsheets/${SHEET_ID}/values/${RANGE}?key=${API_KEY}`;
   const res = await fetch(url);
   const json = await res.json();
-  return json.values || [];
+  return json.values;
 }
 
-async function initSubjectLookupDropdown() {
-  const data = await fetchSubjectMap();
-  const dropdown = document.getElementById("subject-quick");
-  const output = document.getElementById("subject-quick-output");
+function renderQuestions(data) {
+  const container = document.getElementById("question-area");
+  container.innerHTML = "";
 
-  const subjectToAmendment = {};
-  data.forEach(([subject, amendment]) => {
-    subjectToAmendment[subject] = amendment;
-    const opt = document.createElement("option");
-    opt.value = subject;
-    opt.textContent = subject;
-    dropdown.appendChild(opt);
-  });
+  data.forEach((row, index) => {
+    const [level, label, question, narrative0, narrative5, narrative10, weight, ...scores] = row;
+    const qDiv = document.createElement("div");
+    qDiv.style.marginBottom = "32px";
 
-  dropdown.addEventListener("change", () => {
-    const selected = dropdown.value;
-    output.textContent = selected && subjectToAmendment[selected]
-      ? `→ Amendment: ${subjectToAmendment[selected]}`
-      : "";
+    const qText = document.createElement("p");
+    qText.textContent = question;
+    qText.style.fontSize = "1.1rem";
+    qText.style.fontWeight = "600";
+    qText.style.marginBottom = "12px";
+    qDiv.appendChild(qText);
+
+    const btnGroup = document.createElement("div");
+    btnGroup.style.display = "flex";
+    btnGroup.style.flexWrap = "wrap";
+    btnGroup.style.gap = "8px";
+
+    for (let i = 0; i <= 10; i++) {
+      const btn = document.createElement("button");
+      btn.textContent = i;
+      btn.style.padding = "10px 14px";
+      btn.style.backgroundColor = "#3B6CED";
+      btn.style.border = "none";
+      btn.style.borderRadius = "6px";
+      btn.style.color = "#fff";
+      btn.style.cursor = "pointer";
+      btn.onclick = () => {
+        let narrative = narrative5;
+        if (i <= 3) narrative = narrative0;
+        if (i >= 8) narrative = narrative10;
+        showNarrative(narrative);
+      };
+      btnGroup.appendChild(btn);
+    }
+
+    qDiv.appendChild(btnGroup);
+    container.appendChild(qDiv);
   });
 }
 
-  window.addEventListener("DOMContentLoaded", () => {
-  initAmendmentDropdown();
-  initSubjectLookupDropdown();
+function showNarrative(text) {
+  document.getElementById("narrative-text").textContent = text;
+  document.getElementById("narrative-modal").style.display = "flex";
+}
+
+function closeModal() {
+  document.getElementById("narrative-modal").style.display = "none";
+}
+
+window.addEventListener("DOMContentLoaded", async () => {
+  const data = await fetchTRUData();
+  renderQuestions(data);
 });
 
   function toggleMenu() {
