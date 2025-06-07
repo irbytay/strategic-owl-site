@@ -416,7 +416,8 @@ function loadQuestion(index) {
       if (i <= 3) narrative = narrative0;
       if (i >= 8) narrative = narrative10;
 
-      userScores[currentIndex] = { score: i, weight: parseFloat(weight) };
+      const sheetScore = parseFloat(quizData[index][7 + i]); // column H is index 7
+userScores[currentIndex] = { score: sheetScore, weight: parseFloat(weight) };userScores[currentIndex] = { score: i, weight: parseFloat(weight) };
 
       // Display narrative
       narrativeBox.innerHTML = `<p style="margin-top: 20px; font-family: 'Inter', sans-serif; font-size: 1rem; color: var(--text);">${narrative}</p>`;
