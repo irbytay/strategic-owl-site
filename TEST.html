@@ -398,7 +398,7 @@ async function fetchTRUData() {
   const url = `https://sheets.googleapis.com/v4/spreadsheets/${SHEET_ID}/values/${QUIZ_RANGE}?key=${API_KEY}`;
   const res = await fetch(url);
   const json = await res.json();
-  return json.values.slice(1);
+  return json.values;
 }
 
 async function fetchInsightMessages() {
@@ -419,7 +419,7 @@ function loadQuestion(index) {
   ] = quizData[index];
 
   const scoreRow = rest.slice(0, 11);
-  const flipLogic = rest[11]?.toLowerCase() === 'false';
+  const flipLogic = rest[11]?.toLowerCase() === "false";
 
   const container = document.getElementById("quiz-question");
   const scale = document.getElementById("quiz-scale");
@@ -432,43 +432,44 @@ function loadQuestion(index) {
   narrativeBox.style.display = "none";
   nextBtn.style.display = "none";
 
-  let selectedBtn = null;
+  const labelRow = document.createElement("div");
+  labelRow.style.display = "flex";
+  labelRow.style.justifyContent = "space-between";
+  labelRow.style.width = "100%";
+  labelRow.style.maxWidth = "500px";
+  labelRow.style.margin = "0 auto 10px auto";
+  labelRow.innerHTML = `
+    <span style="font-size: 0.9rem; color: var(--text-muted);">Fully Disagree</span>
+    <span style="font-size: 0.9rem; color: var(--text-muted);">Fully Agree</span>
+  `;
+  scale.appendChild(labelRow);
+
   const scaleWrapper = document.createElement("div");
   scaleWrapper.style.display = "flex";
-  scaleWrapper.style.justifyContent = "space-between";
-  scaleWrapper.style.gap = "6px";
-  scaleWrapper.style.marginTop = "24px";
+  scaleWrapper.style.justifyContent = "center";
+  scaleWrapper.style.gap = "8px";
   scaleWrapper.style.flexWrap = "wrap";
-  scaleWrapper.style.maxWidth = "400px";
-  scaleWrapper.style.marginInline = "auto";
+
+  let selectedBtn = null;
 
   for (let i = 0; i <= 10; i++) {
     const btn = document.createElement("button");
     btn.textContent = i;
     btn.className = "owl-button";
-    btn.style.flex = "1";
-    btn.style.minWidth = "32px";
-    btn.style.padding = "12px";
     btn.style.border = "1px solid var(--understanding)";
-    btn.style.borderRadius = "10px";
-    btn.style.background = "#0D1B2A";
+    btn.style.backgroundColor = "transparent";
     btn.style.color = "var(--understanding)";
-    btn.style.fontWeight = "600";
-    btn.style.fontFamily = "Inter, sans-serif";
+    btn.style.borderRadius = "8px";
+    btn.style.padding = "10px 16px";
+    btn.style.fontWeight = "bold";
     btn.style.cursor = "pointer";
     btn.style.transition = "all 0.2s ease";
 
-    btn.onmouseover = () => btn.style.background = "#1A2233";
-    btn.onmouseout = () => {
-      if (btn !== selectedBtn) btn.style.background = "#0D1B2A";
-    };
-
     btn.onclick = () => {
-      if (selectedBtn) selectedBtn.style.background = "#0D1B2A";
+      if (selectedBtn) selectedBtn.style.backgroundColor = "transparent";
+      btn.style.backgroundColor = "var(--understanding)";
+      btn.style.color = "var(--navy)";
       selectedBtn = btn;
-      btn.style.background = "var(--understanding)";
-      btn.style.color = "#0D1B2A";
-      btn.style.boxShadow = "0 0 6px var(--understanding)";
 
       const adjustedScore = flipLogic ? i : 10 - i;
 
@@ -507,31 +508,16 @@ function loadQuestion(index) {
   }
 
   scale.appendChild(scaleWrapper);
-
-  const labelRow = document.createElement("div");
-  labelRow.style.display = "flex";
-  labelRow.style.justifyContent = "space-between";
-  labelRow.style.marginTop = "10px";
-  labelRow.style.width = "100%";
-  labelRow.style.maxWidth = "400px";
-  labelRow.style.marginInline = "auto";
-  labelRow.innerHTML = `
-    <span style="font-size: 0.9rem; color: var(--text-muted);">Fully Disagree</span>
-    <span style="font-size: 0.9rem; color: var(--text-muted);">Fully Agree</span>
-  `;
-  scale.appendChild(labelRow);
 }
 
 function showFinalResult() {
   let total = 0, weightTotal = 0;
-
   userScores.forEach(entry => {
     total += entry.score * entry.weight;
     weightTotal += entry.weight;
   });
 
   const avg = total / weightTotal;
-
   let label = "⚠️ Domestic Threat";
   if (avg >= 1.0) label = "🕳️ Accelerationist";
   if (avg >= 1.8) label = "🔥 Militant Mindset";
@@ -548,37 +534,37 @@ function showFinalResult() {
   const strategicInsight = insightMessages[insightIndex] || "";
 
   const insightBox = `
-  <div style="
-    background: #fffef8;
-    border: 1px solid #cbb994;
-    border-radius: 12px;
-    padding: 28px;
-    max-width: 700px;
-    margin: 0 auto 32px;
-    font-family: 'Crimson Text', serif;
-    color: #4a3f35;
-    box-shadow: 0 0 8px rgba(0, 0, 0, 0.15);
-  ">
     <div style="
-      font-family: 'Playfair Display', serif;
-      text-align: center;
-      font-size: 1.2rem;
-      font-weight: bold;
-      color: #6a5525;
-      margin-bottom: 16px;
-      border-bottom: 1px solid #d6c7a6;
-      padding-bottom: 8px;
+      background: #fffef8;
+      border: 1px solid #cbb994;
+      border-radius: 12px;
+      padding: 28px;
+      max-width: 700px;
+      margin: 0 auto 32px;
+      font-family: 'Crimson Text', serif;
+      color: #4a3f35;
+      box-shadow: 0 0 8px rgba(0, 0, 0, 0.15);
     ">
-      Strategic Insight
-    </div>
-    <div style="
-      font-size: 1.1rem;
-      line-height: 1.8;
-      text-align: justify;
-    ">
-      ${strategicInsight}
-    </div>
-  </div>`;
+      <div style="
+        font-family: 'Playfair Display', serif;
+        text-align: center;
+        font-size: 1.2rem;
+        font-weight: bold;
+        color: #6a5525;
+        margin-bottom: 16px;
+        border-bottom: 1px solid #d6c7a6;
+        padding-bottom: 8px;
+      ">
+        Strategic Insight
+      </div>
+      <div style="
+        font-size: 1.1rem;
+        line-height: 1.8;
+        text-align: justify;
+      ">
+        ${strategicInsight}
+      </div>
+    </div>`;
 
   const resultList = userScores.map(entry => {
     return `
@@ -608,8 +594,10 @@ function showFinalResult() {
 }
 
 window.addEventListener("DOMContentLoaded", async () => {
-  quizData = await fetchTRUData();
-  insightMessages = await fetchInsightMessages();
+  [quizData, insightMessages] = await Promise.all([
+    fetchTRUData(),
+    fetchInsightMessages()
+  ]);
   loadQuestion(currentIndex);
 });
 
