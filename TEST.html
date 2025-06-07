@@ -336,7 +336,7 @@
         <span>Understanding</span>
       </div>
     </section>
-  <!-- 🦉 Strategic Owl Radicalization Quiz -->
+ <!-- 🦉 Strategic Owl Radicalization Quiz -->
 <div id="quiz-container" class="container">
   <h2 style="text-align: center; color: var(--understanding); font-family: 'Playfair Display', serif;">
     How Strategically Grounded Are You?
@@ -346,14 +346,38 @@
     Use the scale below to answer honestly. This helps evaluate civic perception — not partisanship.
   </p>
 
-  <div id="quiz-question" style="margin-top: 40px; text-align: center;"></div>
+  <!-- Dynamically loaded question as <h2> from JS -->
+  <div id="quiz-question" style="
+    margin-top: 40px;
+    text-align: center;
+    font-family: 'Playfair Display', serif;
+    color: var(--understanding);
+  "></div>
 
-  <div id="quiz-scale" style="display: flex; flex-wrap: wrap; justify-content: center; gap: 10px; margin: 20px 0;"></div>
+  <div id="quiz-scale" style="
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 10px;
+    margin: 20px 0;
+  "></div>
 
   <!-- Inline narrative response area -->
-  <div id="narrative-display" style="max-width: 600px; margin: 0 auto; padding: 20px; display: none; background-color: var(--surface); color: var(--text); border-left: 4px solid var(--reliability); border-radius: 8px; font-size: 1rem; font-family: 'Inter', sans-serif;"></div>
+  <div id="narrative-display" style="
+    max-width: 600px;
+    margin: 0 auto;
+    padding: 20px;
+    display: none;
+    background-color: var(--surface);
+    color: var(--text);
+    border-left: 4px solid var(--reliability);
+    border-radius: 8px;
+    font-size: 1rem;
+    font-family: 'Inter', sans-serif;
+    text-align: center;
+  "></div>
 
-  <!-- Deprecated button (no longer needed but kept for fallback use if reactivated) -->
+  <!-- Fallback next button -->
   <button id="next-question" style="
     display: none;
     margin: 0 auto;
