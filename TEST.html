@@ -377,8 +377,9 @@
 <script>
 const SHEET_ID = "19wBEj9hEkvIyQcoR5E_mBGVAxTzMnddMxk8nuQLAumA";
 const API_KEY = "AIzaSyCzuh9HBfe0r70r9U35Pe406PPZ-tz6I78";
-const RANGE = "TRUTest!A3:R100";
+const RANGE = "TRUTest!A2:R100"; // now includes row 2 for score mapping
 
+let scoreMapRow = [];
 let quizData = [];
 let currentIndex = 0;
 let userScores = [];
@@ -387,19 +388,17 @@ async function fetchTRUData() {
   const url = `https://sheets.googleapis.com/v4/spreadsheets/${SHEET_ID}/values/${RANGE}?key=${API_KEY}`;
   const res = await fetch(url);
   const json = await res.json();
-  return json.values;
+  [scoreMapRow, ...quizData] = json.values; // split out row 2
 }
 
 function loadQuestion(index) {
   const [
-    , // skip level
-    , // skip label
-    question,
-    highNarrative,   // D
-    moderateNarrative, // E
-    lowNarrative,    // F
+    , , question,
+    highNarrative,    // column D
+    moderateNarrative,// column E
+    lowNarrative,     // column F
     weight,
-    ...scoreRow      // H through R (index 7–17)
+    ...rawScores      // columns H through R (11 values)
   ] = quizData[index];
 
   const container = document.getElementById("quiz-question");
@@ -419,22 +418,22 @@ function loadQuestion(index) {
     btn.className = "owl-button";
 
     btn.onclick = () => {
-      const score = parseFloat(scoreRow[i]) || 0;
+      const mappedScore = parseFloat(rawScores[i]) || 0;
 
-      // Narrative logic based on button number selected
+      // Determine narrative based on button (not score)
       let narrative = moderateNarrative;
       if (i <= 3) narrative = lowNarrative;
       else if (i >= 8) narrative = highNarrative;
 
       userScores[currentIndex] = {
-        score: score,
+        score: mappedScore,
         weight: parseFloat(weight)
       };
 
       narrativeBox.innerHTML = `<p style="margin-top: 20px; font-family: 'Inter', sans-serif; font-size: 1rem; color: var(--text);">${narrative}</p>`;
       narrativeBox.style.display = "block";
 
-      // Delay to show "Next" button
+      // Show next button after delay
       nextBtn.style.display = "none";
       setTimeout(() => {
         nextBtn.style.display = "block";
@@ -457,7 +456,8 @@ function loadQuestion(index) {
 }
 
 function showFinalResult() {
-  let total = 0, weightTotal = 0;
+  let total = 0;
+  let weightTotal = 0;
 
   userScores.forEach(entry => {
     total += entry.score * entry.weight;
@@ -479,7 +479,7 @@ function showFinalResult() {
 }
 
 window.addEventListener("DOMContentLoaded", async () => {
-  quizData = await fetchTRUData();
+  await fetchTRUData();
   loadQuestion(currentIndex);
 });
 
