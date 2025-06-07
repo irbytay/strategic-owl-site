@@ -305,29 +305,6 @@
   color: var(--navy);                       /* Invert text color */
   box-shadow: 0 0 12px var(--reliability);  /* Glow on hover */
 }
-    .owl-next-button {
-  background-color: var(--reliability);
-  color: white;
-  font-family: 'Montserrat', sans-serif;
-  font-weight: 600;
-  font-size: 1rem;
-  padding: 10px 24px;
-  border: none;
-  border-radius: 12px;
-  cursor: pointer;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.25);
-  transition: background-color 0.3s ease, transform 0.2s ease;
-}
-
-.owl-next-button:hover {
-  background-color: var(--truth); /* Slight hue shift on hover */
-  transform: translateY(-2px); /* Subtle lift */
-}
-
-.owl-next-button:active {
-  transform: translateY(1px); /* Button press effect */
-  background-color: var(--reliability);
-}
 </style>
 
 <nav class="top-nav">
@@ -377,9 +354,22 @@
   <div id="narrative-display" style="max-width: 600px; margin: 0 auto; padding: 20px; display: none; background-color: var(--surface); color: var(--text); border-left: 4px solid var(--reliability); border-radius: 8px; font-size: 1rem; font-family: 'Inter', sans-serif;"></div>
 
   <!-- "Next" button shown AFTER delay -->
-  <button id="next-question" class="owl-next-button" style="display: none;">
-  Next Question →
-</button>
+  <button id="next-question" style="
+    display: none;
+    margin: 20px auto 0;
+    background-color: var(--reliability);
+    color: white;
+    padding: 10px 24px;
+    border: none;
+    border-radius: 8px;
+    font-size: 1rem;
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+  ">
+    Next Question →
+  </button>
 
   <div id="quiz-result" style="margin-top: 40px;"></div>
 </div>
