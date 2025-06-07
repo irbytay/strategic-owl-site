@@ -3,7 +3,25 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>The Strategic Owl | Strategic Grounding</title>
+  <title>The Strategic Owl | Truth, Measured.</title>
+
+  <!-- Open Graph Meta (Facebook, LinkedIn, Discord, etc.) -->
+  <meta property="og:title" content="The Strategic Owl | Truth, Measured." />
+  <meta property="og:description" content="Measure credibility and uncover truth using the TRU OWL Score — a tool for independent thinkers." />
+  <meta property="og:image" content="https://thestrategicowl.com/TSO.png" />
+  <meta property="og:image:type" content="image/png" />
+  <meta property="og:image:width" content="1200" />
+  <meta property="og:image:height" content="630" />
+  <meta property="og:url" content="https://thestrategicowl.com" />
+  <meta property="og:type" content="website" />
+
+  <!-- Twitter Card Meta -->
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="The Strategic Owl | TRU OWL Viewer" />
+  <meta name="twitter:description" content="Measure credibility and uncover truth using the TRU OWL Score — a tool for independent thinkers." />
+  <meta name="twitter:image" content="https://thestrategicowl.com/TSO.png" />
+
+  <!-- Fonts -->
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&family=Playfair+Display:wght@600;700&display=swap" rel="stylesheet" />
 
   <style>
@@ -41,7 +59,7 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 14px 20px;  /* 🟡 Controls vertical height of navbar */
+    padding: 14px 20px;
     box-shadow: 0 2px 6px var(--shadow);
   }
 
@@ -93,7 +111,7 @@
     display: flex;
     flex-direction: column;
     align-items: center;
-    margin: 40px auto; /* 🟡 Adjust this to reduce space around the TRU bar (try 24px auto or 24px auto 12px) */
+    margin: 40px auto;
   }
 
   .divider-bar {
@@ -118,7 +136,7 @@
     justify-content: center;
     gap: 12px;
     width: 340px;
-    margin-top: 8px;/* 🟡 Adjust this to pull labels closer to bars (try 4px if needed) */
+    margin-top: 8px;
   }
 
   .divider-labels span {
@@ -129,113 +147,91 @@
   }
 
   @media (max-width: 768px) {
-    .menu-toggle {
-      display: block;
-    }
-
-    .nav-links {
-      display: none;
-      flex-direction: column;
-      align-items: center;/* 👈 links side-by-side on mobile */
-      justify-content: center;
-      background-color: var(--highlight);
-      position: absolute;
-      top: 58px;
-      left: 0;
-      width: 100%;
-      padding: 10px 0;
-      gap: 20px;
-      box-shadow: 0 3px 8px var(--shadow);
-    }
-    .nav-links a {
-  padding: 10px 0;
-  width: 100%;
-  text-align: center;
-  font-size: 1rem;
-}
-
-    .nav-links.show {
-      display: flex;
-      animation: fadeSlideDown 0.3s ease;
-    }
-
-    @keyframes fadeSlideDown {
-      from {
-        opacity: 0;
-        transform: translateY(-10px);
-      }
-      to {
-        opacity: 1;
-        transform: translateY(0);
-      }
-    }
-  }
-    @media (max-width: 500px) {
-  #legal-popup > div {
-    padding: 12px;
-    font-size: 0.95rem;
-  }
-      @media (max-width: 500px) {
-  .container {
-    padding: 16px;
-    margin-top: 48px; /* Tighten space for mobile */
+  .menu-toggle {
+    display: block;
   }
 
-  h1, h2 {
-    font-size: 1.25rem;
-    margin-bottom: 10px;
-  }
-
-  p {
-    font-size: 0.9rem;
-    margin-bottom: 14px;
-  }
-
-  .divider-section {
-    margin: 24px auto 8px auto; /* Pull TRU bars closer */
-  }
-
-  .divider-bar {
-    width: 280px;
-    gap: 8px;
-  }
-
-  .divider-bar div {
-    width: 84px;
-  }
-
-  .divider-labels {
-    width: 280px;
-    gap: 8px;
-    margin-top: 6px;
-  }
-
-  .divider-labels span {
-    width: 84px;
-    font-size: 0.75rem;
-  }
-
-  .owl-button {
-    padding: 8px 14px;
-    font-size: 0.95rem;
-  }
-}
-
-  #accept-btn {
+  .nav-links {
+    display: none;
+    flex-direction: column; /* ✅ stack vertically */
+    align-items: center;
+    background-color: var(--highlight);
+    position: absolute;
+    top: 58px;
+    left: 0;
     width: 100%;
+    padding: 12px 0;
+    gap: 12px;
+    box-shadow: 0 3px 8px var(--shadow);
+  }
+
+  .nav-links.show {
+    display: flex;
+    animation: fadeSlideDown 0.3s ease;
+  }
+
+  .nav-links a {
+    padding: 10px 0;
+    width: 100%;
+    text-align: center;
     font-size: 1rem;
   }
 
-  p {
+  @keyframes fadeSlideDown {
+    from {
+      opacity: 0;
+      transform: translateY(-10px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+}
+    #legal-popup {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(13, 27, 42, 0.95);
+  z-index: 9999;
+  overflow-y: auto;
+  padding: 40px 20px;
+  box-sizing: border-box;
+  display: none;
+}
+
+#legal-popup > div {
+  max-width: 680px;
+  width: 100%;
+  margin: 0 auto;
+  background-color: var(--surface);
+  padding: 30px;
+  border-radius: 8px;
+  box-shadow: 0 0 20px var(--shadow);
+  font-family: 'Montserrat', sans-serif;
+  color: var(--text);
+  line-height: 1.6;
+}
+
+@media (max-width: 500px) {
+  #legal-popup > div {
+    padding: 16px 12px;
     font-size: 0.95rem;
-    margin-bottom: 16px;/* 🟡 Mobile-specific paragraph margin */
+  }
+
+  .important-link {
+    display: block;
+    text-align: center;
+    margin-top: 16px;
   }
 }
 
   /* ✅ YOUR ORIGINAL STYLES BELOW */
   .container {
     max-width: 960px;
-    margin: 72px auto 0 auto; /* 🟡 Adjust this top margin to tighten space below nav (try 72px or 60px) */
+    margin: 100px auto 0 auto;
     padding: 24px;
   }
 
@@ -250,7 +246,7 @@
   font-size: 1.5rem;
   color: var(--understanding); /* golden highlight */
   font-weight: 600;
-  margin-top: 4px; /* 🟡 Reduce this if h2 spacing feels too large (try 12px–20px) */
+  margin-top: 32px;
   margin-bottom: 12px;
   text-align: center;
 }
@@ -259,7 +255,7 @@
   font-size: 1.05rem;
   color: var(--text-muted);
   line-height: 1.6;
-  margin-bottom: 20px; /* 🟡 You can tighten this to 12px or 16px for stacked content */
+  margin-bottom: 20px;
   text-align: center;
   max-width: 700px;
   margin-left: auto;
@@ -327,28 +323,46 @@
 .match-nav-link:hover {
   color: var(--understanding);
 }
- /* 🦉 Strategic Owl Button Style */
-.owl-button {
-  background-color: var(--navy);            /* Deep base color */
-  color: white;                             /* Clean readable text */
-  font-weight: 600;                         /* Medium-bold */
-  padding: 10px 18px;
-  border: 1px solid var(--reliability);     /* Outline in reliability yellow */
-  border-radius: 8px;
-  font-family: 'Inter', sans-serif;
-  font-size: 1rem;
-  cursor: pointer;
-  text-decoration: none;
-  transition: 
-    background-color 0.3s ease, 
-    color 0.3s ease,
-    box-shadow 0.3s ease;
+ /* Style the link itself */
+.important-link {
+  color: var(--understanding);               /* Gold color from your theme */
+  font-weight: 700;                          /* Bold for visibility */
+  text-decoration: underline;                /* Underline to signal it's a link */
+  text-underline-offset: 4px;                /* Adds spacing between text and underline */
+  position: relative;                        /* Required for pseudo-elements */
+  transition: color 0.3s ease, text-shadow 0.3s ease;  /* Smooth hover transitions */
 }
 
-.owl-button:hover {
-  background-color: var(--reliability);     /* Hover color = yellow */
-  color: var(--navy);                       /* Invert text color */
-  box-shadow: 0 0 12px var(--reliability);  /* Glow on hover */
+/* Add a right-pointing arrow BEFORE the link text */
+.important-link::before {
+  content: '→ ';                             /* Arrow pointing right */
+  display: inline-block;                     /* So we can animate it */
+  margin-right: 6px;                         /* Space between arrow and text */
+  transition: transform 0.3s ease;           /* Smooth movement on hover */
+}
+
+/* Add a left-pointing arrow AFTER the link text */
+.important-link::after {
+  content: ' ←';                             /* Arrow pointing left */
+  display: inline-block;                     /* Enables transform */
+  margin-left: 6px;                          /* Space between text and arrow */
+  transition: transform 0.3s ease;           /* Smooth hover animation */
+}
+
+/* Animate the left-side arrow to move right on hover */
+.important-link:hover::before {
+  transform: translateX(4px);                /* Moves → arrow to the right */
+}
+
+/* Animate the right-side arrow to move left on hover */
+.important-link:hover::after {
+  transform: translateX(-4px);               /* Moves ← arrow to the left */
+}
+
+/* Add glow and optional color change on hover */
+.important-link:hover {
+  text-shadow: 0 0 8px var(--understanding); /* Subtle glow using gold tone */
+  color: var(--truth);                       /* Optional: changes to green (truth color) */
 }
 </style>
 
@@ -359,15 +373,17 @@
 </a>
   <button class="menu-toggle" onclick="toggleMenu()">☰</button>
   <div class="nav-links" id="navMenu">
-   <a href="Index.html">Home</a>
-    <a href="TRUOWL3.html">T.R.U. Owl</a>
-    <a href="newelections3.html">Election Security</a>
-    <a href="the_constitution.html">The Constitution</a>
-    <a href="newcontact3.html">Contact</a>
+    <a href="Index.html">Home</a>
+  <a href="TRUOWL3.html">T.R.U. Owl</a>
+  <a href="strategic-owl-insight-quiz.html">Insight Quiz</a>
+  <a href="newelections3.html">Election Security</a>
+  <a href="the_constitution.html">The Constitution</a>
+  <a href="newcontact3.html">Contact</a>
+  </div>
   </div>
 </nav>
   <div class="container">
-    <h1>Strategic Grounding</h1>
+    <h1>The Strategic Owl</h1>
 <!-- 🎯 Divider -->
     <section class="divider-section">
       <div class="divider-bar">
@@ -381,269 +397,165 @@
         <span>Understanding</span>
       </div>
     </section>
- <!-- 🦉 Strategic Owl Radicalization Quiz -->
-<div id="quiz-container" class="container">
-  <h2 style="text-align: center; color: var(--understanding); font-family: 'Playfair Display', serif;">
-    How Strategically Grounded Are You?
-  </h2>
+    <!-- Legal Popup -->
+<div id="legal-popup">
+  <div>
+    <h1 style="font-family: 'Playfair Display', serif; color: var(--heading); margin-bottom: 20px;">Well hello there.</h1>
 
-  <p style="text-align: center; max-width: 700px; margin: 0 auto 16px; color: var(--text-muted); font-family: 'Inter', sans-serif; font-size: 1rem;">
-    This interactive tool helps assess your civic positioning — not your politics. It’s completely anonymous and your answers are stored nowhere.
-  </p>
-  
-  <p style="text-align: center; max-width: 700px; margin: 0 auto 30px; color: var(--text-muted); font-family: 'Inter', sans-serif; font-size: 1rem;">
-    Don’t overthink it. Clear your mind and respond authentically. The goal is reflection, not performance.
-  </p>
+    <p>How do you even know what's real anymore?</p>
+    <p>If you've lost trust in the system, you're not wrong. That’s by design.</p>
 
-  <div id="quiz-question" style="margin-top: 40px; text-align: center;"></div>
+    <p style="margin-top: 24px;">Now let me get the legal stuff out of the way.</p>
 
-  <div id="quiz-scale" style="display: flex; flex-wrap: wrap; justify-content: center; gap: 10px; margin: 20px 0;"></div>
+    <p>
+      This site is protected under the <strong>First Amendment</strong> of the United States Constitution.<br>
+      All content herein is published for educational and informational purposes.<br>
+      It is not intended to defame, mislead, or incite.<br>
+      Every claim is supported by public records, sourced materials, or verifiable data — and transparency is built into the system to ensure I’m held to the same standards I use to assess others.
+    </p>
 
-  <!-- Inline narrative response area -->
-  <div id="narrative-display" style="max-width: 600px; margin: 0 auto; padding: 20px; display: none; background-color: var(--surface); color: var(--text); border-left: 4px solid var(--reliability); border-radius: 8px; font-size: 1rem; font-family: 'Inter', sans-serif;"></div>
+    <p style="font-weight: bold; margin-top: 16px;">
+      Truth-telling is still legal — even if it ruffles a few red hats.
+    </p>
 
-  <!-- "Next" button shown AFTER delay -->
-  <button id="next-question" style="
-    display: none;
-    margin: 20px auto 0;
-    background-color: var(--reliability);
-    color: white;
-    padding: 10px 24px;
-    border: none;
-    border-radius: 8px;
-    font-size: 1rem;
-    font-family: 'Montserrat', sans-serif;
-    font-weight: 600;
-    cursor: pointer;
-    transition: background-color 0.3s ease;
-  ">
-    Next Question →
-  </button>
+    <h2 style="font-family: 'Playfair Display', serif; color: var(--heading); margin-top: 32px;">Join the Watch</h2>
 
-  <div id="quiz-result" style="margin-top: 40px;"></div>
+    <p>
+      By continuing, you're not just entering a site — you're stepping into an experience designed to make you think.<br>
+      You're part of a broader mission to restore trust in what’s real.
+    </p>
+
+    <div style="text-align: center; margin-top: 24px;">
+      <a href="index.html" id="accept-link" class="important-link">I understand. Let me in.</a>
+    </div>
+
+    <p style="margin-top: 12px; font-size: 0.8rem; color: var(--text-muted);">
+      This moment will be remembered for 30 days.<br>
+      This website uses publicly available data, court records, and verifiable sources. Nothing here is hidden — it’s all in the open.
+    </p>
+  </div>
 </div>
+  <!-- 🔔 Mobile-First Highlight Banner -->
+  <div style="background-color: var(--highlight); padding: 16px 20px; border-radius: 10px; box-shadow: 0 2px 8px var(--shadow); margin-bottom: 32px; text-align: center;">
+    <p style="margin: 0; color: var(--truth); font-size: 1rem; font-weight: 600;">
+      🚨 New Tool Released: Try the <a href="strategic-owl-insight-quiz.html" class="important-link">Strategic Insight Quiz</a> today →
+    </p>
+  </div>
 
+  <!-- 🔍 Welcome Section -->
+  <h1>Welcome to The Strategic Owl</h1>
+  <p>This space is for thinkers — for people who want to see through the noise and understand how narratives shape reality. The tools here are free, built to measure truth, and designed to spark conversation.</p>
+
+  <!-- 🎯 Actionable Blocks -->
+  <h2>Start With a Tool</h2>
+  <p>
+    Use the <a href="TRUOWL3.html" class="important-link">T.R.U. OWL Score Viewer</a> to see how truth, reliability, and understanding are tracked in real time.  
+  </p>
+  <p>
+    Curious how grounded your beliefs are?  
+    Take the <a href="strategic-owl-insight-quiz.html" class="important-link">Strategic Insight Quiz</a> to find out how you process information under pressure.
+  </p>
+
+  <!-- 📡 Final Message -->
+  <h2>Truth is a Practice</h2>
+  <p>It’s not about knowing everything — it’s about questioning what you think you know. The Strategic Owl helps you do that with tools, not talking points. You’re not here to be told what to think. You’re here to learn how to think better.</p>
+</div>🎯 Divider -->
+    <section class="divider-section">
+      <div class="divider-bar">
+        <div class="truth"></div>
+        <div class="reliability"></div>
+        <div class="understanding"></div>
+      </div>
+      <div class="divider-labels">
+        <span>Truth</span>
+        <span>Reliability</span>
+        <span>Understanding</span>
+      </div>
+    </section>
+  </div>
 <script>
-const SHEET_ID = "19wBEj9hEkvIyQcoR5E_mBGVAxTzMnddMxk8nuQLAumA";
-const API_KEY = "AIzaSyCzuh9HBfe0r70r9U35Pe406PPZ-tz6I78";
+  const legalPopup = document.getElementById('legal-popup');
+  const lastAccepted = localStorage.getItem('legalPopupAccepted');
+  const now = new Date().getTime();
+  const thirtyDays = 1000 * 60 * 60 * 24 * 30;
 
-const QUIZ_RANGE = "TRUTest!C3:S100";
-const INSIGHT_RANGE = "Insights!A2:A12";
-
-let quizData = [];
-let insightMessages = [];
-let currentIndex = 0;
-let userScores = [];
-
-async function fetchTRUData() {
-  const url = `https://sheets.googleapis.com/v4/spreadsheets/${SHEET_ID}/values/${QUIZ_RANGE}?key=${API_KEY}`;
-  const res = await fetch(url);
-  const json = await res.json();
-  return json.values;
-}
-
-async function fetchInsightMessages() {
-  const url = `https://sheets.googleapis.com/v4/spreadsheets/${SHEET_ID}/values/${INSIGHT_RANGE}?key=${API_KEY}`;
-  const res = await fetch(url);
-  const json = await res.json();
-  return json.values.flat();
-}
-
-function loadQuestion(index) {
-  const [
-    question,
-    highNarrative,
-    moderateNarrative,
-    lowNarrative,
-    weight,
-    ...rest
-  ] = quizData[index];
-
-  const scoreRow = rest.slice(0, 11);
-  const flipLogic = rest[11]?.toLowerCase() === "false";
-
-  const container = document.getElementById("quiz-question");
-  const scale = document.getElementById("quiz-scale");
-  const narrativeBox = document.getElementById("narrative-display");
-  const nextBtn = document.getElementById("next-question");
-
-  container.innerHTML = `<h2 style="text-align: center; color: var(--understanding); font-family: 'Playfair Display', serif;">${question}</h2>`;
-  scale.innerHTML = "";
-  narrativeBox.innerHTML = "";
-  narrativeBox.style.display = "none";
-  nextBtn.style.display = "none";
-
-  const labelRow = document.createElement("div");
-labelRow.style.display = "flex";
-labelRow.style.justifyContent = "space-between";
-labelRow.style.width = "100%";
-labelRow.style.maxWidth = "500px";
-labelRow.style.margin = "0 auto 10px auto";
-labelRow.innerHTML = `
-  <span style="font-size: 0.9rem; color: var(--text-muted);">
-     <span style="color: gold; font-weight: 600;">0</span> <– Fully Disagree
-  </span>
-  <span style="font-size: 0.9rem; color: var(--text-muted);">
-    Fully Agree –> <span style="color: gold; font-weight: 600;">10</span> 
-  </span>
-`;
-scale.appendChild(labelRow);
-
-  const scaleWrapper = document.createElement("div");
-  scaleWrapper.style.display = "flex";
-  scaleWrapper.style.justifyContent = "center";
-  scaleWrapper.style.gap = "8px";
-  scaleWrapper.style.flexWrap = "wrap";
-
-  let selectedBtn = null;
-
-  for (let i = 0; i <= 10; i++) {
-    const btn = document.createElement("button");
-    btn.textContent = i;
-    btn.className = "owl-button";
-    btn.style.border = "1px solid var(--understanding)";
-    btn.style.backgroundColor = "transparent";
-    btn.style.color = "var(--understanding)";
-    btn.style.borderRadius = "8px";
-    btn.style.padding = "10px 16px";
-    btn.style.fontWeight = "bold";
-    btn.style.cursor = "pointer";
-    btn.style.transition = "all 0.2s ease";
-
-    btn.onclick = () => {
-      if (selectedBtn) selectedBtn.style.backgroundColor = "transparent";
-      btn.style.backgroundColor = "var(--understanding)";
-      btn.style.color = "var(--navy)";
-      selectedBtn = btn;
-
-      const adjustedScore = flipLogic ? i : 10 - i;
-
-      let narrative = moderateNarrative;
-      if (adjustedScore <= 3) narrative = lowNarrative;
-      else if (adjustedScore >= 8) narrative = highNarrative;
-
-      userScores[currentIndex] = {
-        score: adjustedScore,
-        weight: parseFloat(weight),
-        originalInput: i,
-        question: question
-      };
-
-      narrativeBox.innerHTML = `<p style="margin-top: 20px; font-family: 'Inter', sans-serif; font-size: 1rem; color: var(--text);">${narrative}</p>`;
-      narrativeBox.style.display = "block";
-
-      setTimeout(() => {
-        nextBtn.style.display = "block";
-        nextBtn.textContent = (currentIndex === quizData.length - 1) ? "Show Results" : "Next Question →";
-      }, 1500);
-
-      nextBtn.onclick = () => {
-        narrativeBox.style.display = "none";
-        nextBtn.style.display = "none";
-        currentIndex++;
-        if (currentIndex < quizData.length) {
-          loadQuestion(currentIndex);
-        } else {
-          showFinalResult();
-        }
-      };
-    };
-
-    scaleWrapper.appendChild(btn);
+  if (!lastAccepted || now - parseInt(lastAccepted) > thirtyDays) {
+    legalPopup.style.display = 'block';
   }
 
-  scale.appendChild(scaleWrapper);
-}
-
-function showFinalResult() {
-  let total = 0, weightTotal = 0;
-  userScores.forEach(entry => {
-    total += entry.score * entry.weight;
-    weightTotal += entry.weight;
-  });
-
-  const avg = total / weightTotal;
-  let label = "⚠️ Domestic Threat";
-  if (avg >= 1.0) label = "🕳️ Accelerationist";
-  if (avg >= 1.8) label = "🔥 Militant Mindset";
-  if (avg >= 2.5) label = "🛰️ Operational Extremist";
-  if (avg >= 3.2) label = "🧨 Extremist-Leaning";
-  if (avg >= 3.9) label = "📡 Radicalized";
-  if (avg >= 4.8) label = "🛡️ Dogmatic";
-  if (avg >= 5.7) label = "🪞 Ideological Echo";
-  if (avg >= 6.6) label = "🧭 Tilted";
-  if (avg >= 7.5) label = "🪶 Healthy Skeptic";
-  if (avg >= 8.8) label = "🦉 Grounded";
-
-  const insightIndex = Math.floor(avg);
-  const strategicInsight = insightMessages[insightIndex] || "";
-
-  const insightBox = `
-  <div style="
-    background-color: #101020;
-    border: 2px solid #C89B3C;
-    color: #F5F5F5;
-    font-family: 'Playfair Display', serif;
-    font-size: 1.1rem;
-    padding: 24px 28px;
-    border-radius: 12px;
-    margin-bottom: 32px;
-    text-align: center;
-    box-shadow: 0 4px 12px rgba(0,0,0,0.4);
-  ">
-    <div style="
-      text-transform: uppercase;
-      letter-spacing: 1px;
-      font-size: 0.85rem;
-      font-weight: 600;
-      color: #FFD700;
-      margin-bottom: 12px;
-    ">
-      Strategic Insight
-    </div>
-    <div style="font-family: 'Inter', sans-serif; font-size: 1rem; line-height: 1.6;">
-      ${strategicInsight}
-    </div>
-  </div>`;
-
-  const resultList = userScores.map(entry => {
-    return `
-      <div style="
-        background-color: var(--surface);
-        padding: 16px 20px;
-        margin-bottom: 12px;
-        border-left: 4px solid var(--reliability);
-        border-radius: 6px;
-        font-family: 'Inter', sans-serif;
-        color: var(--text);
-        box-shadow: 0 2px 6px rgba(0,0,0,0.1);
-      ">
-        <div style="font-weight: 600; margin-bottom: 6px;">${entry.question}</div>
-        <div style="font-size: 0.95rem;"><strong>Your Answer:</strong> ${entry.originalInput}</div>
-      </div>`;
-  }).join("");
-
-  document.getElementById("quiz-container").innerHTML = `
-    <h2>Your Strategic Owl Insight</h2>
-    <p style="font-size: 1.2rem;">Weighted Score: <strong>${avg.toFixed(2)}</strong></p>
-    <p style="font-size: 1.4rem; font-weight: bold; color: var(--understanding);">${label}</p>
-    ${insightBox}
-    <hr style="margin: 30px 0; border: 1px solid var(--highlight);" />
-    <div style="max-width: 700px; margin: 0 auto;">${resultList}</div>
-  `;
-}
-
-window.addEventListener("DOMContentLoaded", async () => {
-  [quizData, insightMessages] = await Promise.all([
-    fetchTRUData(),
-    fetchInsightMessages()
-  ]);
-  loadQuestion(currentIndex);
+  document.getElementById('accept-link').addEventListener('click', () => {
+  localStorage.setItem('legalPopupAccepted', Date.now().toString());
 });
-
-function toggleMenu() {
-  document.getElementById("navMenu").classList.toggle("show");
+  function toggleMenu() {
+    document.getElementById("navMenu").classList.toggle("show");
+  }
+  type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "Person",
+      "name": "Taylor Irby",
+      "url": "https://thestrategicowl.com",
+      "sameAs": [
+        "https://strategicowl.substack.com",
+        "https://www.youtube.com/@StrategicOwl",
+        "https://twitter.com/StrategicOwl"
+      ],
+      "jobTitle": "Founder",
+      "worksFor": {
+        "@type": "Organization",
+        "name": "The Strategic Owl"
+      }
+    },
+    {
+      "@type": "Organization",
+      "name": "The Strategic Owl",
+      "url": "https://thestrategicowl.com",
+      "logo": "https://thestrategicowl.com/TSO.png",
+      "description": "Tools and insights for measuring credibility, decoding misinformation, and inspiring civic awareness.",
+      "founder": {
+        "@type": "Person",
+        "name": "Taylor Irby"
+      },
+      "sameAs": [
+        "https://strategicowl.substack.com",
+        "https://www.youtube.com/@StrategicOwl"
+      ]
+    },
+    {
+      "@type": "WebSite",
+      "name": "The Strategic Owl",
+      "url": "https://thestrategicowl.com",
+      "description": "Strategic analysis, digital tools, and credibility scoring to help people uncover truth in the age of distortion.",
+      "publisher": {
+        "@type": "Organization",
+        "name": "The Strategic Owl"
+      }
+    },
+    {
+      "@type": "WebApplication",
+      "name": "TRU OWL Score Viewer",
+      "url": "https://thestrategicowl.com/the_constitution",
+      "applicationCategory": "EducationalApplication",
+      "operatingSystem": "All",
+      "browserRequirements": "Requires JavaScript",
+      "description": "A digital tool to measure truth, reliability, and understanding through structured credibility scores."
+    },
+    {
+      "@type": "CreativeWork",
+      "name": "The OwlCast Podcast",
+      "url": "https://www.youtube.com/@StrategicOwl",
+      "author": {
+        "@type": "Person",
+        "name": "Taylor Irby"
+      },
+      "inLanguage": "en",
+      "description": "A podcast that blends music, political analysis, and strategic insight to help people break through distortion."
+    }
+  ]
 }
 </script>
+
 </body>
 </html>
