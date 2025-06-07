@@ -385,6 +385,35 @@
   background: var(--highlight);
   border-radius: 4px;
 }
+    .scale-buttons {
+    display: flex;
+    justify-content: center;
+    gap: 6px;
+    flex-wrap: wrap;
+    margin: 20px 0;
+  }
+  .scale-btn {
+    background-color: var(--highlight);
+    color: var(--text);
+    border: 1px solid var(--understanding);
+    border-radius: 6px;
+    padding: 8px 12px;
+    font-family: 'Inter', sans-serif;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+  }
+  .scale-btn:hover,
+  .scale-btn.selected {
+    background-color: var(--understanding);
+    color: var(--navy);
+  }
+  #slider-value {
+    text-align: center;
+    margin-top: 10px;
+    color: var(--text-muted);
+    font-size: 1rem;
+  }
 </style>
 
 <nav class="top-nav">
@@ -484,103 +513,123 @@ async function fetchInsightMessages() {
   return json.values.flat();
 }
 
-function loadQuestion(index) {
-  const [
-    question,
-    highNarrative,
-    moderateNarrative,
-    lowNarrative,
-    weight,
-    ...rest
-  ] = quizData[index];
-
-  const scoreRow = rest.slice(0, 11);
-  const flipLogic = rest[11]?.toLowerCase() === "false";
-
-  const container = document.getElementById("quiz-question");
+function renderInput(container, flipLogic, weight, highNarr, moderateNarr, lowNarr, question) {
   const scale = document.getElementById("quiz-scale");
   const narrativeBox = document.getElementById("narrative-display");
   const nextBtn = document.getElementById("next-question");
+  let selected = false;
 
-  container.innerHTML = `<h2 style="text-align: center; color: var(--understanding); font-family: 'Playfair Display', serif;">${question}</h2>`;
   scale.innerHTML = "";
-  narrativeBox.innerHTML = "";
-  narrativeBox.style.display = "none";
-  nextBtn.style.display = "none";
 
-  const labelRow = document.createElement("div");
-  labelRow.style.display = "flex";
-  labelRow.style.justifyContent = "space-between";
-  labelRow.style.width = "100%";
-  labelRow.style.maxWidth = "500px";
-  labelRow.style.margin = "0 auto 10px auto";
-  labelRow.innerHTML = `
-    <span style="font-size: 0.9rem; color: var(--text-muted);">Fully Disagree</span>
-    <span style="font-size: 0.9rem; color: var(--text-muted);">Fully Agree</span>
-  `;
-  scale.appendChild(labelRow);
+  const isMobile = window.innerWidth <= 768;
 
-  const scaleWrapper = document.createElement("div");
-  scaleWrapper.style.display = "flex";
-  scaleWrapper.style.justifyContent = "center";
-  scaleWrapper.style.gap = "8px";
-  scaleWrapper.style.flexWrap = "nowrap";
-scaleWrapper.style.overflowX = "auto";
-scaleWrapper.style.justifyContent = "space-between";
+  if (isMobile) {
+    const sliderInput = document.createElement("input");
+    sliderInput.type = "range";
+    sliderInput.min = 0;
+    sliderInput.max = 10;
+    sliderInput.step = 1;
+    sliderInput.value = 5;
+    sliderInput.className = "owl-slider";
+    sliderInput.style.margin = "20px auto";
+    sliderInput.style.display = "block";
+    sliderInput.style.maxWidth = "500px";
+    sliderInput.style.width = "100%";
 
-  let selectedBtn = null;
+    const valueDisplay = document.createElement("div");
+    valueDisplay.id = "slider-value";
+    valueDisplay.innerText = `Selected: 5`;
 
-  const sliderInput = document.createElement("input");
-sliderInput.type = "range";
-sliderInput.min = 0;
-sliderInput.max = 10;
-sliderInput.step = 1;
-sliderInput.value = 5;
-sliderInput.className = "owl-slider"; // pulls your style from CSS
-sliderInput.style.margin = "20px auto";
-sliderInput.style.display = "block";
-sliderInput.style.maxWidth = "500px";
-sliderInput.style.width = "100%";
+    sliderInput.oninput = (e) => {
+      const i = parseInt(e.target.value);
+      valueDisplay.innerText = `Selected: ${i}`;
+      const adjusted = flipLogic ? i : 10 - i;
+      let narrative = moderateNarr;
+      if (adjusted <= 3) narrative = lowNarrative;
+      else if (adjusted >= 8) narrative = highNarr;
 
-let sliderChosen = false;
+      userScores[currentIndex] = {
+        score: adjusted,
+        weight: parseFloat(weight),
+        originalInput: i,
+        question: question
+      };
 
-sliderInput.oninput = (e) => {
-  const i = parseInt(e.target.value);
-  const adjustedScore = flipLogic ? i : 10 - i;
+      narrativeBox.innerHTML = `<p style='margin-top: 20px;'>${narrative}</p>`;
+      narrativeBox.style.display = "block";
 
-  let narrative = moderateNarrative;
-  if (adjustedScore <= 3) narrative = lowNarrative;
-  else if (adjustedScore >= 8) narrative = highNarrative;
+      if (!selected) {
+        selected = true;
+        setTimeout(() => {
+          nextBtn.style.display = "block";
+          nextBtn.textContent = (currentIndex === quizData.length - 1) ? "Show Results" : "Next Question →";
+        }, 1500);
 
-  userScores[currentIndex] = {
-    score: adjustedScore,
-    weight: parseFloat(weight),
-    originalInput: i,
-    question: question
-  };
-
-  narrativeBox.innerHTML = `<p style="margin-top: 20px;">${narrative}</p>`;
-  narrativeBox.style.display = "block";
-
-  if (!sliderChosen) {
-    sliderChosen = true;
-    setTimeout(() => {
-      nextBtn.style.display = "block";
-      nextBtn.textContent = (currentIndex === quizData.length - 1) ? "Show Results" : "Next Question →";
-    }, 1500);
-
-    nextBtn.onclick = () => {
-      narrativeBox.style.display = "none";
-      nextBtn.style.display = "none";
-      currentIndex++;
-      if (currentIndex < quizData.length) {
-        loadQuestion(currentIndex);
-      } else {
-        showFinalResult();
+        nextBtn.onclick = () => {
+          narrativeBox.style.display = "none";
+          nextBtn.style.display = "none";
+          currentIndex++;
+          if (currentIndex < quizData.length) loadQuestion(currentIndex);
+          else showFinalResult();
+        };
       }
     };
+    scale.appendChild(valueDisplay);
+  } else {
+    const buttonWrapper = document.createElement("div");
+    buttonWrapper.className = "scale-buttons";
+    for (let i = 0; i <= 10; i++) {
+      const btn = document.createElement("button");
+      btn.innerText = i;
+      btn.className = "scale-btn";
+      btn.onclick = () => {
+        document.querySelectorAll('.scale-btn').forEach(b => b.classList.remove('selected'));
+        btn.classList.add('selected');
+        const adjusted = flipLogic ? i : 10 - i;
+        let narrative = moderateNarr;
+        if (adjusted <= 3) narrative = lowNarrative;
+        else if (adjusted >= 8) narrative = highNarr;
+
+        userScores[currentIndex] = {
+          score: adjusted,
+          weight: parseFloat(weight),
+          originalInput: i,
+          question: question
+        };
+
+        narrativeBox.innerHTML = `<p style='margin-top: 20px;'>${narrative}</p>`;
+        narrativeBox.style.display = "block";
+
+        if (!selected) {
+          selected = true;
+          setTimeout(() => {
+            nextBtn.style.display = "block";
+            nextBtn.textContent = (currentIndex === quizData.length - 1) ? "Show Results" : "Next Question →";
+          }, 1500);
+
+          nextBtn.onclick = () => {
+            narrativeBox.style.display = "none";
+            nextBtn.style.display = "none";
+            currentIndex++;
+            if (currentIndex < quizData.length) loadQuestion(currentIndex);
+            else showFinalResult();
+          };
+        }
+      };
+      buttonWrapper.appendChild(btn);
+    }
+    scale.appendChild(buttonWrapper);
   }
-};
+}
+
+function loadQuestion(index) {
+  const [q, high, mid, low, w, ...rest] = quizData[index];
+  const flipLogic = rest[11]?.toLowerCase() === "false";
+  const container = document.getElementById("quiz-question");
+  container.innerHTML = `<h2 style="text-align: center; color: var(--understanding); font-family: 'Playfair Display', serif;">${q}</h2>`;
+
+  renderInput(container, flipLogic, w, high, mid, low, q);
+}
 
 scale.appendChild(sliderInput);
 }
