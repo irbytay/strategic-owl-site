@@ -420,39 +420,38 @@ function loadQuestion(index) {
     btn.className = "owl-button";
 
     btn.onclick = () => {
-      const effectiveIndex = flipLogic ? 10 - i : i;
-      const finalScore = parseFloat(scoreRow[effectiveIndex]) || 0;
+  const adjustedScore = flipLogic ? 10 - i : i;
 
-      let narrative = moderateNarrative;
-      if (effectiveIndex <= 3) narrative = lowNarrative;
-      else if (effectiveIndex >= 8) narrative = highNarrative;
+  let narrative = moderateNarrative;
+  if (adjustedScore <= 3) narrative = lowNarrative;
+  else if (adjustedScore >= 8) narrative = highNarrative;
 
-      userScores[currentIndex] = {
-        score: finalScore,
-        weight: parseFloat(weight),
-        originalInput: i,
-        question: question
-      };
+  userScores[currentIndex] = {
+    score: adjustedScore,
+    weight: parseFloat(weight),
+    originalInput: i,
+    question: question
+  };
 
-      narrativeBox.innerHTML = `<p style="margin-top: 20px; font-family: 'Inter', sans-serif; font-size: 1rem; color: var(--text);">${narrative}</p>`;
-      narrativeBox.style.display = "block";
+  narrativeBox.innerHTML = `<p style="margin-top: 20px; font-family: 'Inter', sans-serif; font-size: 1rem; color: var(--text);">${narrative}</p>`;
+  narrativeBox.style.display = "block";
 
-      nextBtn.style.display = "none";
-      setTimeout(() => {
-        nextBtn.style.display = "block";
-      }, 3000);
+  nextBtn.style.display = "none";
+  setTimeout(() => {
+    nextBtn.style.display = "block";
+  }, 3000);
 
-      nextBtn.onclick = () => {
-        narrativeBox.style.display = "none";
-        nextBtn.style.display = "none";
-        currentIndex++;
-        if (currentIndex < quizData.length) {
-          loadQuestion(currentIndex);
-        } else {
-          showFinalResult();
-        }
-      };
-    };
+  nextBtn.onclick = () => {
+    narrativeBox.style.display = "none";
+    nextBtn.style.display = "none";
+    currentIndex++;
+    if (currentIndex < quizData.length) {
+      loadQuestion(currentIndex);
+    } else {
+      showFinalResult();
+    }
+  };
+};
 
     scale.appendChild(btn);
   }
