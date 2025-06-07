@@ -350,41 +350,6 @@
   color: var(--navy);                       /* Invert text color */
   box-shadow: 0 0 12px var(--reliability);  /* Glow on hover */
 }
-    .owl-slider {
-  -webkit-appearance: none;
-  width: 100%;
-  height: 8px;
-  background: var(--highlight);
-  border-radius: 5px;
-  outline: none;
-}
-
-.owl-slider::-webkit-slider-thumb {
-  -webkit-appearance: none;
-  appearance: none;
-  width: 22px;
-  height: 22px;
-  border-radius: 50%;
-  background: var(--understanding);
-  cursor: pointer;
-  border: 2px solid var(--navy);
-}
-
-.owl-slider::-moz-range-thumb {
-  width: 22px;
-  height: 22px;
-  border-radius: 50%;
-  background: var(--understanding);
-  cursor: pointer;
-  border: 2px solid var(--navy);
-}
-    #quiz-scale::-webkit-scrollbar {
-  height: 6px;
-}
-#quiz-scale::-webkit-scrollbar-thumb {
-  background: var(--highlight);
-  border-radius: 4px;
-}
 </style>
 
 <nav class="top-nav">
@@ -424,6 +389,10 @@
 
   <p style="text-align: center; max-width: 700px; margin: 0 auto 16px; color: var(--text-muted); font-family: 'Inter', sans-serif; font-size: 1rem;">
     This interactive tool helps assess your civic positioning — not your politics. It’s completely anonymous and your answers are stored nowhere.
+  </p>
+
+  <p style="text-align: center; max-width: 700px; margin: 0 auto 16px; color: var(--text-muted); font-family: 'Inter', sans-serif; font-size: 1rem;">
+    Use the 0–10 scale on each question. <strong>0 = fully disagree</strong>, <strong>10 = fully agree</strong>. Just answer honestly. No right or wrong — only insight.
   </p>
 
   <p style="text-align: center; max-width: 700px; margin: 0 auto 30px; color: var(--text-muted); font-family: 'Inter', sans-serif; font-size: 1rem;">
@@ -524,9 +493,7 @@ function loadQuestion(index) {
   scaleWrapper.style.display = "flex";
   scaleWrapper.style.justifyContent = "center";
   scaleWrapper.style.gap = "8px";
-  scaleWrapper.style.flexWrap = "nowrap";
-scaleWrapper.style.overflowX = "auto";
-scaleWrapper.style.justifyContent = "space-between";
+  scaleWrapper.style.flexWrap = "wrap";
 
   let selectedBtn = null;
 
