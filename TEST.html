@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Strategic Owl | The Constitution</title>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&family=Playfair+Display:wght@600;700&display=swap" rel="stylesheet" />
- <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@500;600&display=swap" rel="stylesheet" />
+
   <style>
   :root {
     --background: #0D1B2A;
@@ -338,7 +338,7 @@
     </section>
   <!-- 🦉 Strategic Owl Radicalization Quiz -->
 <div id="quiz-container" class="container">
-  <h2 style="text-align: center; color: var(--understanding); font-family: 'Montserrat', sans-serif;">
+  <h2 style="text-align: center; color: var(--understanding); font-family: 'Playfair Display', serif;">
     How Strategically Grounded Are You?
   </h2>
 
@@ -346,41 +346,14 @@
     Use the scale below to answer honestly. This helps evaluate civic perception — not partisanship.
   </p>
 
-  <!-- Injected question using Montserrat to match title -->
-  <div id="quiz-question" style="
-    margin-top: 40px;
-    text-align: center;
-    font-family: 'Montserrat', sans-serif;
-    color: var(--understanding);
-    font-size: 1.4rem;
-    font-weight: 600;
-  "></div>
+  <div id="quiz-question" style="margin-top: 40px; text-align: center;"></div>
 
-  <!-- Numeric answer buttons -->
-  <div id="quiz-scale" style="
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
-    gap: 10px;
-    margin: 20px 0;
-  "></div>
+  <div id="quiz-scale" style="display: flex; flex-wrap: wrap; justify-content: center; gap: 10px; margin: 20px 0;"></div>
 
   <!-- Inline narrative response area -->
-  <div id="narrative-display" style="
-    max-width: 600px;
-    margin: 0 auto;
-    padding: 20px;
-    display: none;
-    background-color: var(--surface);
-    color: var(--text);
-    border-left: 4px solid var(--reliability);
-    border-radius: 8px;
-    font-size: 1rem;
-    font-family: 'Inter', sans-serif;
-    text-align: center;
-  "></div>
+  <div id="narrative-display" style="max-width: 600px; margin: 0 auto; padding: 20px; display: none; background-color: var(--surface); color: var(--text); border-left: 4px solid var(--reliability); border-radius: 8px; font-size: 1rem; font-family: 'Inter', sans-serif;"></div>
 
-  <!-- Deprecated fallback button -->
+  <!-- Deprecated button (no longer needed but kept for fallback use if reactivated) -->
   <button id="next-question" style="
     display: none;
     margin: 0 auto;
@@ -396,7 +369,6 @@
     Next
   </button>
 
-  <!-- Final result rendered here -->
   <div id="quiz-result" style="margin-top: 40px;"></div>
 </div>
 
@@ -410,13 +382,14 @@ let currentIndex = 0;
 let userScores = [];
 
 async function fetchQuizData() {
+  const SHEET_ID = 'YOUR_SHEET_ID';
+  const API_KEY = 'YOUR_API_KEY';
+  const RANGE = 'TRUTest!C3:G100';
   const response = await fetch(`https://sheets.googleapis.com/v4/spreadsheets/${SHEET_ID}/values/${RANGE}?key=${API_KEY}`);
   const data = await response.json();
   quizData = data.values;
   loadQuestion(currentIndex);
 }
-
-window.onload = fetchQuizData;
 
 function loadQuestion(index) {
   const [question, narrative0, narrative5, narrative10, weight] = quizData[index];
@@ -425,7 +398,7 @@ function loadQuestion(index) {
   const narrativeBox = document.getElementById("narrative-display");
   const resultBox = document.getElementById("quiz-result");
 
-  container.innerHTML = `<h2 style="text-align: center; color: var(--understanding); font-family: 'Montserrat', sans-serif;">${question}</h2>`;
+  container.innerHTML = `<h3 style="font-family: 'Playfair Display', serif; font-size: 1.3rem;">${question}</h3>`;
   scale.innerHTML = "";
   narrativeBox.innerHTML = "";
   resultBox.innerHTML = "";
