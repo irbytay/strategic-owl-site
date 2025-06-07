@@ -449,16 +449,21 @@ function loadQuestion(index) {
     nextBtn.style.display = "block";
   }, 3000);
 
-  nextBtn.onclick = () => {
-    narrativeBox.style.display = "none";
-    nextBtn.style.display = "none";
-    currentIndex++;
-    if (currentIndex < quizData.length) {
-      loadQuestion(currentIndex);
-    } else {
-      showFinalResult();
-    }
-  };
+  if (currentIndex === quizData.length - 1) {
+  nextBtn.textContent = "Show Results";
+} else {
+  nextBtn.textContent = "Next Question →";
+}
+
+nextBtn.onclick = () => {
+  narrativeBox.style.display = "none";
+  nextBtn.style.display = "none";
+  currentIndex++;
+  if (currentIndex < quizData.length) {
+    loadQuestion(currentIndex);
+  } else {
+    showFinalResult();
+  }
 };
 
     scale.appendChild(btn);
