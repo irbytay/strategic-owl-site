@@ -501,20 +501,32 @@ function showFinalResult() {
   const strategicInsight = insightMessages[insightIndex] || "";
 
   const insightBox = `
+  <div style="
+    background-color: #101020;
+    border: 2px solid #C89B3C;
+    color: #F5F5F5;
+    font-family: 'Playfair Display', serif;
+    font-size: 1.1rem;
+    padding: 24px 28px;
+    border-radius: 12px;
+    margin-bottom: 32px;
+    text-align: center;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.4);
+  ">
     <div style="
-      background-color: var(--understanding);
-      color: var(--navy);
-      font-family: 'Playfair Display', serif;
-      font-size: 1.1rem;
-      padding: 18px 24px;
-      border-radius: 10px;
-      opacity: 0.5;
-      margin-bottom: 24px;
-      text-align: center;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      font-size: 0.85rem;
+      font-weight: 600;
+      color: #FFD700;
+      margin-bottom: 12px;
     ">
-      <strong>Strategic Insight:</strong><br/>
+      Strategic Insight
+    </div>
+    <div style="font-family: 'Inter', sans-serif; font-size: 1rem; line-height: 1.6;">
       ${strategicInsight}
-    </div>`;
+    </div>
+  </div>`;
 
   const resultList = userScores.map(entry => {
     return `
