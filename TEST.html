@@ -385,6 +385,7 @@
 <script>
 const SHEET_ID = "19wBEj9hEkvIyQcoR5E_mBGVAxTzMnddMxk8nuQLAumA";
 const API_KEY = "AIzaSyCzuh9HBfe0r70r9U35Pe406PPZ-tz6I78";
+
 const QUIZ_RANGE = "TRUTest!C2:S100";
 const INSIGHT_RANGE = "Insights!A2:A12";
 
@@ -431,49 +432,43 @@ function loadQuestion(index) {
   narrativeBox.style.display = "none";
   nextBtn.style.display = "none";
 
-  // Create and label the scale
-  const labelContainer = document.createElement("div");
-  labelContainer.style.display = "flex";
-  labelContainer.style.justifyContent = "space-between";
-  labelContainer.style.marginTop = "10px";
-  labelContainer.innerHTML = `
-    <span style="font-size: 0.9rem; color: #6a5525;">Fully Disagree</span>
-    <span style="font-size: 0.9rem; color: #6a5525;">Fully Agree</span>
-  `;
-  scale.appendChild(labelContainer);
-
-  // Build scale buttons
+  let selectedBtn = null;
   const scaleWrapper = document.createElement("div");
   scaleWrapper.style.display = "flex";
   scaleWrapper.style.justifyContent = "space-between";
-  scaleWrapper.style.gap = "4px";
-  scaleWrapper.style.marginTop = "12px";
+  scaleWrapper.style.gap = "6px";
+  scaleWrapper.style.marginTop = "24px";
   scaleWrapper.style.flexWrap = "wrap";
+  scaleWrapper.style.maxWidth = "400px";
+  scaleWrapper.style.marginInline = "auto";
 
-  let selectedBtn = null;
   for (let i = 0; i <= 10; i++) {
     const btn = document.createElement("button");
     btn.textContent = i;
     btn.className = "owl-button";
     btn.style.flex = "1";
-    btn.style.minWidth = "30px";
+    btn.style.minWidth = "32px";
     btn.style.padding = "12px";
-    btn.style.border = "1px solid #cbb994";
-    btn.style.borderRadius = "8px";
-    btn.style.background = "#fffef8";
-    btn.style.color = "#4a3f35";
-    btn.style.fontWeight = "bold";
+    btn.style.border = "1px solid var(--understanding)";
+    btn.style.borderRadius = "10px";
+    btn.style.background = "#0D1B2A";
+    btn.style.color = "var(--understanding)";
+    btn.style.fontWeight = "600";
+    btn.style.fontFamily = "Inter, sans-serif";
+    btn.style.cursor = "pointer";
     btn.style.transition = "all 0.2s ease";
 
-    btn.onmouseover = () => btn.style.background = "#f3ede0";
+    btn.onmouseover = () => btn.style.background = "#1A2233";
     btn.onmouseout = () => {
-      if (btn !== selectedBtn) btn.style.background = "#fffef8";
+      if (btn !== selectedBtn) btn.style.background = "#0D1B2A";
     };
 
     btn.onclick = () => {
-      if (selectedBtn) selectedBtn.style.background = "#fffef8";
+      if (selectedBtn) selectedBtn.style.background = "#0D1B2A";
       selectedBtn = btn;
-      btn.style.background = "#e5d8b0";
+      btn.style.background = "var(--understanding)";
+      btn.style.color = "#0D1B2A";
+      btn.style.boxShadow = "0 0 6px var(--understanding)";
 
       const adjustedScore = flipLogic ? i : 10 - i;
 
@@ -512,6 +507,19 @@ function loadQuestion(index) {
   }
 
   scale.appendChild(scaleWrapper);
+
+  const labelRow = document.createElement("div");
+  labelRow.style.display = "flex";
+  labelRow.style.justifyContent = "space-between";
+  labelRow.style.marginTop = "10px";
+  labelRow.style.width = "100%";
+  labelRow.style.maxWidth = "400px";
+  labelRow.style.marginInline = "auto";
+  labelRow.innerHTML = `
+    <span style="font-size: 0.9rem; color: var(--text-muted);">Fully Disagree</span>
+    <span style="font-size: 0.9rem; color: var(--text-muted);">Fully Agree</span>
+  `;
+  scale.appendChild(labelRow);
 }
 
 function showFinalResult() {
@@ -600,10 +608,8 @@ function showFinalResult() {
 }
 
 window.addEventListener("DOMContentLoaded", async () => {
-  [quizData, insightMessages] = await Promise.all([
-    fetchTRUData(),
-    fetchInsightMessages()
-  ]);
+  quizData = await fetchTRUData();
+  insightMessages = await fetchInsightMessages();
   loadQuestion(currentIndex);
 });
 
