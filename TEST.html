@@ -375,33 +375,31 @@
 <script>
 const SHEET_ID = "19wBEj9hEkvIyQcoR5E_mBGVAxTzMnddMxk8nuQLAumA";
 const API_KEY = "AIzaSyCzuh9HBfe0r70r9U35Pe406PPZ-tz6I78";
-const RANGE = "TRUTest!A3:G100";
+const RANGE = "TRUTest!A3:R100";
 
 let quizData = [];
 let currentIndex = 0;
 let userScores = [];
 
-async function fetchQuizData() {
-  const SHEET_ID = 'YOUR_SHEET_ID';
-  const API_KEY = 'YOUR_API_KEY';
-  const RANGE = 'TRUTest!C3:G100';
-  const response = await fetch(`https://sheets.googleapis.com/v4/spreadsheets/${SHEET_ID}/values/${RANGE}?key=${API_KEY}`);
-  const data = await response.json();
-  quizData = data.values;
-  loadQuestion(currentIndex);
+async function fetchTRUData() {
+  const url = `https://sheets.googleapis.com/v4/spreadsheets/${SHEET_ID}/values/${RANGE}?key=${API_KEY}`;
+  const res = await fetch(url);
+  const json = await res.json();
+  return json.values;
 }
 
 function loadQuestion(index) {
-  const [question, narrative0, narrative5, narrative10, weight] = quizData[index];
+  const [ , , question, narrative0, narrative5, narrative10, weight ] = quizData[index];
   const container = document.getElementById("quiz-question");
   const scale = document.getElementById("quiz-scale");
   const narrativeBox = document.getElementById("narrative-display");
-  const resultBox = document.getElementById("quiz-result");
+  const nextBtn = document.getElementById("next-question");
 
   container.innerHTML = `<h3 style="font-family: 'Playfair Display', serif; font-size: 1.3rem;">${question}</h3>`;
   scale.innerHTML = "";
   narrativeBox.innerHTML = "";
-  resultBox.innerHTML = "";
+  narrativeBox.style.display = "none";
+  nextBtn.style.display = "none";
 
   for (let i = 0; i <= 10; i++) {
     const btn = document.createElement("button");
@@ -412,72 +410,52 @@ function loadQuestion(index) {
       if (i <= 3) narrative = narrative0;
       if (i >= 8) narrative = narrative10;
 
-      userScores[index] = {
-        score: i,
-        weight: parseFloat(weight) || 1.0
-      };
+      userScores[currentIndex] = { score: i, weight: parseFloat(weight) };
 
-      narrativeBox.innerHTML = `
-        <p style="margin-top: 20px; font-family: 'Inter', sans-serif; font-size: 1rem; color: var(--text);">${narrative}</p>
-        <div style="text-align: center; margin-top: 20px;">
-          <button class="owl-button" onclick="nextQuestion()">Next Question</button>
-        </div>
-      `;
+      // Show narrative inline
+      narrativeBox.innerHTML = `<p style="margin-top: 20px; font-family: 'Inter', sans-serif; font-size: 1rem; color: var(--text);">${narrative}</p>`;
+      narrativeBox.style.display = "block";
+
+      // Auto advance after short delay
+      setTimeout(() => {
+        currentIndex++;
+        if (currentIndex < quizData.length) {
+          loadQuestion(currentIndex);
+        } else {
+          showFinalResult();
+        }
+      }, 1200);
     };
     scale.appendChild(btn);
   }
 }
 
-function nextQuestion() {
-  currentIndex++;
-  if (currentIndex < quizData.length) {
-    loadQuestion(currentIndex);
-  } else {
-    showFinalResult();
-  }
-}
-
 function showFinalResult() {
-  const resultBox = document.getElementById("quiz-result");
-  const narrativeBox = document.getElementById("narrative-display");
-  const container = document.getElementById("quiz-container");
+  let total = 0, weightTotal = 0;
 
-  let totalScore = 0;
-  let totalWeight = 0;
+  userScores.forEach(entry => {
+    total += entry.score * entry.weight;
+    weightTotal += entry.weight;
+  });
 
-  for (let entry of userScores) {
-    const score = typeof entry?.score === "number" ? entry.score : 0;
-    const weight = typeof entry?.weight === "number" ? entry.weight : 1.0;
-    totalScore += score * weight;
-    totalWeight += weight;
-  }
+  const avg = total / weightTotal;
+  let label = "🟢 Grounded";
+  if (avg >= 2) label = "🟡 Skeptical";
+  if (avg >= 5) label = "🟠 Ideologically Tilted";
+  if (avg >= 7) label = "🔴 Radicalized";
+  if (avg >= 9) label = "☠️ Extremist";
 
-  const weightedAvg = totalWeight > 0 ? totalScore / totalWeight : 0;
-  const roundedScore = Math.round(weightedAvg * 10) / 10;
-
-  let label = "Grounded";
-  let message = "You demonstrate strong civic awareness and strategic thinking.";
-
-  if (roundedScore < 4) {
-    label = "Ideologically Vulnerable";
-    message = "Your responses reflect some susceptibility to extreme or unsupported narratives.";
-  } else if (roundedScore < 7) {
-    label = "Cautiously Aware";
-    message = "You seem open-minded, but may be influenced by certain skewed sources.";
-  }
-
-  resultBox.innerHTML = `
-    <div style="text-align: center; max-width: 600px; margin: 0 auto; padding: 24px; border-top: 1px solid var(--border); font-family: 'Inter', sans-serif;">
-      <h3 style="color: var(--understanding); font-family: 'Playfair Display', serif;">Final Score: ${roundedScore} / 10</h3>
-      <p style="font-size: 1.1rem; font-weight: 600; color: var(--truth); margin-bottom: 6px;">Label: ${label}</p>
-      <p style="color: var(--text-muted); font-size: 1rem;">${message}</p>
-    </div>
+  document.getElementById("quiz-container").innerHTML = `
+    <h2>Your Strategic Owl Insight</h2>
+    <p style="font-size: 1.2rem;">Weighted Score: <strong>${avg.toFixed(2)}</strong></p>
+    <p style="font-size: 1.4rem; font-weight: bold; color: var(--understanding);">${label}</p>
   `;
-
-  narrativeBox.innerHTML = "";
-  document.getElementById("quiz-scale").innerHTML = "";
-  document.getElementById("quiz-question").innerHTML = "";
 }
+
+window.addEventListener("DOMContentLoaded", async () => {
+  quizData = await fetchTRUData();
+  loadQuestion(currentIndex);
+});
 
   function toggleMenu() {
     document.getElementById("navMenu").classList.toggle("show");
