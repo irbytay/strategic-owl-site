@@ -377,7 +377,7 @@
 <script>
 const SHEET_ID = "19wBEj9hEkvIyQcoR5E_mBGVAxTzMnddMxk8nuQLAumA";
 const API_KEY = "AIzaSyCzuh9HBfe0r70r9U35Pe406PPZ-tz6I78";
-const RANGE = "TRUTest!C2:S100";  // Now skips A & B, and includes row 2 header + column S
+const RANGE = "TRUTest!C2:S100";
 
 let quizData = [];
 let currentIndex = 0;
@@ -387,31 +387,28 @@ async function fetchTRUData() {
   const url = `https://sheets.googleapis.com/v4/spreadsheets/${SHEET_ID}/values/${RANGE}?key=${API_KEY}`;
   const res = await fetch(url);
   const json = await res.json();
-  return json.values.slice(1); // Skip row 2 (headers)
+  return json.values.slice(1); // Skip header row (row 2)
 }
 
 function loadQuestion(index) {
   const [
-    question,         // C
-    highNarrative,    // D
-    moderateNarrative,// E
-    lowNarrative,     // F
-    weight,           // G
-    ...rest           // H–R (0–10 scores) + S (flip flag)
+    question,
+    highNarrative,
+    moderateNarrative,
+    lowNarrative,
+    weight,
+    ...rest
   ] = quizData[index];
 
-  const scoreRow = rest.slice(0, 11);         // H–R = 11 items
-  const flipLogic = rest[11]?.toLowerCase() === 'true'; // S column (flipLogic)
+  const scoreRow = rest.slice(0, 11); // H–R
+  const flipLogic = rest[11]?.toLowerCase() === 'true'; // S column
 
   const container = document.getElementById("quiz-question");
   const scale = document.getElementById("quiz-scale");
   const narrativeBox = document.getElementById("narrative-display");
   const nextBtn = document.getElementById("next-question");
 
-  container.innerHTML = `
-    <h2 style="text-align: center; color: var(--understanding); font-family: 'Playfair Display', serif;">
-      ${question}
-    </h2>`;
+  container.innerHTML = `<h2 style="text-align: center; color: var(--understanding); font-family: 'Playfair Display', serif;">${question}</h2>`;
   scale.innerHTML = "";
   narrativeBox.innerHTML = "";
   narrativeBox.style.display = "none";
@@ -423,21 +420,20 @@ function loadQuestion(index) {
     btn.className = "owl-button";
 
     btn.onclick = () => {
-      // Flip logic if flagged: e.g., 10 becomes 0
       const effectiveIndex = flipLogic ? 10 - i : i;
-const score = parseFloat(scoreRow[effectiveIndex]) || 0;
+      const finalScore = parseFloat(scoreRow[effectiveIndex]) || 0;
 
-      // Pick narrative
       let narrative = moderateNarrative;
-if (effectiveIndex <= 3) narrative = lowNarrative;
-else if (effectiveIndex >= 8) narrative = highNarrative;
+      if (effectiveIndex <= 3) narrative = lowNarrative;
+      else if (effectiveIndex >= 8) narrative = highNarrative;
 
       userScores[currentIndex] = {
-        score: score,
-        weight: parseFloat(weight)
+        score: finalScore,
+        weight: parseFloat(weight),
+        originalInput: i,
+        question: question
       };
 
-      // Show narrative
       narrativeBox.innerHTML = `<p style="margin-top: 20px; font-family: 'Inter', sans-serif; font-size: 1rem; color: var(--text);">${narrative}</p>`;
       narrativeBox.style.display = "block";
 
@@ -465,6 +461,13 @@ else if (effectiveIndex >= 8) narrative = highNarrative;
 function showFinalResult() {
   let total = 0, weightTotal = 0;
 
+  const resultList = userScores.map(entry => {
+    return `<li style="margin-bottom: 12px;">
+      <strong>Q:</strong> ${entry.question}<br/>
+      <strong>Your Answer:</strong> ${entry.originalInput}
+    </li>`;
+  }).join("");
+
   userScores.forEach(entry => {
     total += entry.score * entry.weight;
     weightTotal += entry.weight;
@@ -477,32 +480,19 @@ function showFinalResult() {
   if (avg >= 7) label = "🔴 Radicalized";
   if (avg >= 9) label = "☠️ Extremist";
 
-  let resultHTML = `
+  document.getElementById("quiz-container").innerHTML = `
     <h2>Your Strategic Owl Insight</h2>
     <p style="font-size: 1.2rem;">Weighted Score: <strong>${avg.toFixed(2)}</strong></p>
     <p style="font-size: 1.4rem; font-weight: bold; color: var(--understanding);">${label}</p>
-    <hr style="margin: 30px 0;">
-    <h3 style="font-family: 'Playfair Display', serif;">Your Answers:</h3>
-    <ul style="list-style: none; padding: 0;">
+    <hr style="margin: 30px 0; border: 1px solid var(--highlight);" />
+    <ul style="list-style: none; padding: 0; font-size: 1rem;">${resultList}</ul>
   `;
-
-  userScores.forEach((entry, i) => {
-    const question = quizData[i][0]; // Column C (first column in the fetched range)
-    const rawScore = entry.score;   // Already processed and weighted
-
-    resultHTML += `
-      <li style="margin-bottom: 16px;">
-        <strong style="font-family: 'Inter', sans-serif;">Q${i + 1}:</strong>
-        <span style="font-family: 'Inter', sans-serif;">${question}</span><br>
-        <span style="font-size: 0.95rem; color: var(--text-muted);">Your Score: <strong>${rawScore}</strong></span>
-      </li>
-    `;
-  });
-
-  resultHTML += `</ul>`;
-
-  document.getElementById("quiz-container").innerHTML = resultHTML;
 }
+
+window.addEventListener("DOMContentLoaded", async () => {
+  quizData = await fetchTRUData();
+  loadQuestion(currentIndex);
+});
 
 function toggleMenu() {
   document.getElementById("navMenu").classList.toggle("show");
