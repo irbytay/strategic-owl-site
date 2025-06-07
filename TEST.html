@@ -336,7 +336,7 @@
         <span>Understanding</span>
       </div>
     </section>
-  <!-- 🦉 Strategic Owl Radicalization Quiz -->
+ <!-- 🦉 Strategic Owl Radicalization Quiz -->
 <div id="quiz-container" class="container">
   <h2 style="text-align: center; color: var(--understanding); font-family: 'Playfair Display', serif;">
     How Strategically Grounded Are You?
@@ -353,20 +353,22 @@
   <!-- Inline narrative response area -->
   <div id="narrative-display" style="max-width: 600px; margin: 0 auto; padding: 20px; display: none; background-color: var(--surface); color: var(--text); border-left: 4px solid var(--reliability); border-radius: 8px; font-size: 1rem; font-family: 'Inter', sans-serif;"></div>
 
-  <!-- Deprecated button (no longer needed but kept for fallback use if reactivated) -->
+  <!-- "Next" button shown AFTER delay -->
   <button id="next-question" style="
     display: none;
-    margin: 0 auto;
-    background-color: var(--highlight);
+    margin: 20px auto 0;
+    background-color: var(--reliability);
     color: white;
-    padding: 10px 20px;
+    padding: 10px 24px;
     border: none;
     border-radius: 8px;
     font-size: 1rem;
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 600;
     cursor: pointer;
     transition: background-color 0.3s ease;
   ">
-    Next
+    Next Question →
   </button>
 
   <div id="quiz-result" style="margin-top: 40px;"></div>
@@ -395,37 +397,50 @@ function loadQuestion(index) {
   const narrativeBox = document.getElementById("narrative-display");
   const nextBtn = document.getElementById("next-question");
 
+  // Display question
   container.innerHTML = `<h2 style="text-align: center; color: var(--understanding); font-family: 'Playfair Display', serif;">${question}</h2>`;
   scale.innerHTML = "";
   narrativeBox.innerHTML = "";
   narrativeBox.style.display = "none";
   nextBtn.style.display = "none";
 
+  // Create 0–10 answer buttons
   for (let i = 0; i <= 10; i++) {
     const btn = document.createElement("button");
     btn.textContent = i;
     btn.className = "owl-button";
+
     btn.onclick = () => {
+      // Determine narrative based on score
       let narrative = narrative5;
       if (i <= 3) narrative = narrative0;
       if (i >= 8) narrative = narrative10;
 
       userScores[currentIndex] = { score: i, weight: parseFloat(weight) };
 
-      // Show narrative inline
+      // Display narrative
       narrativeBox.innerHTML = `<p style="margin-top: 20px; font-family: 'Inter', sans-serif; font-size: 1rem; color: var(--text);">${narrative}</p>`;
       narrativeBox.style.display = "block";
 
-      // Auto advance after short delay
+      // Hide next button initially, then show it after 3 sec
+      nextBtn.style.display = "none";
       setTimeout(() => {
+        nextBtn.style.display = "block";
+      }, 3000); // ← adjust time here
+
+      // Set up click to go to next question
+      nextBtn.onclick = () => {
+        narrativeBox.style.display = "none";
+        nextBtn.style.display = "none";
         currentIndex++;
         if (currentIndex < quizData.length) {
           loadQuestion(currentIndex);
         } else {
           showFinalResult();
         }
-      }, 1200);
+      };
     };
+
     scale.appendChild(btn);
   }
 }
@@ -457,10 +472,9 @@ window.addEventListener("DOMContentLoaded", async () => {
   loadQuestion(currentIndex);
 });
 
-  function toggleMenu() {
-    document.getElementById("navMenu").classList.toggle("show");
-  }
-  
+function toggleMenu() {
+  document.getElementById("navMenu").classList.toggle("show");
+}
 </script>
 </body>
 </html>
