@@ -377,7 +377,7 @@
 <script>
 const SHEET_ID = "19wBEj9hEkvIyQcoR5E_mBGVAxTzMnddMxk8nuQLAumA";
 const API_KEY = "AIzaSyCzuh9HBfe0r70r9U35Pe406PPZ-tz6I78";
-const RANGE = "TRUTest!A3:S100";
+const RANGE = "TRUTest!C2:S100";  // Now skips A & B, and includes row 2 header + column S
 
 let quizData = [];
 let currentIndex = 0;
@@ -387,24 +387,31 @@ async function fetchTRUData() {
   const url = `https://sheets.googleapis.com/v4/spreadsheets/${SHEET_ID}/values/${RANGE}?key=${API_KEY}`;
   const res = await fetch(url);
   const json = await res.json();
-  return json.values;
+  return json.values.slice(1); // Skip row 2 (headers)
 }
 
 function loadQuestion(index) {
   const [
-    , , question, highNarrative, moderateNarrative, lowNarrative, weight,
-    ...rest
+    question,         // C
+    highNarrative,    // D
+    moderateNarrative,// E
+    lowNarrative,     // F
+    weight,           // G
+    ...rest           // H–R (0–10 scores) + S (flip flag)
   ] = quizData[index];
 
-  const rawScores = rest.slice(0, 11); // H–R (0–10)
-  const flipLogic = (rest[11] || "").toLowerCase() === "false"; // Column S
+  const scoreRow = rest.slice(0, 11);         // H–R = 11 items
+  const flipLogic = rest[11]?.toLowerCase() === 'true'; // S column (flipLogic)
 
   const container = document.getElementById("quiz-question");
   const scale = document.getElementById("quiz-scale");
   const narrativeBox = document.getElementById("narrative-display");
   const nextBtn = document.getElementById("next-question");
 
-  container.innerHTML = `<h2 style="text-align: center; color: var(--understanding); font-family: 'Playfair Display', serif;">${question}</h2>`;
+  container.innerHTML = `
+    <h2 style="text-align: center; color: var(--understanding); font-family: 'Playfair Display', serif;">
+      ${question}
+    </h2>`;
   scale.innerHTML = "";
   narrativeBox.innerHTML = "";
   narrativeBox.style.display = "none";
@@ -416,18 +423,21 @@ function loadQuestion(index) {
     btn.className = "owl-button";
 
     btn.onclick = () => {
-      const mappedIndex = flipLogic ? 10 - i : i;
-      const remappedScore = parseFloat(rawScores[mappedIndex]) || 0;
+      // Flip logic if flagged: e.g., 10 becomes 0
+      const effectiveIndex = flipLogic ? 10 - i : i;
+      const score = parseFloat(scoreRow[effectiveIndex]) || 0;
 
+      // Pick narrative
       let narrative = moderateNarrative;
-      if (mappedIndex <= 3) narrative = lowNarrative;
-      else if (mappedIndex >= 8) narrative = highNarrative;
+      if (i <= 3) narrative = lowNarrative;
+      else if (i >= 8) narrative = highNarrative;
 
       userScores[currentIndex] = {
-        score: remappedScore,
+        score: score,
         weight: parseFloat(weight)
       };
 
+      // Show narrative
       narrativeBox.innerHTML = `<p style="margin-top: 20px; font-family: 'Inter', sans-serif; font-size: 1rem; color: var(--text);">${narrative}</p>`;
       narrativeBox.style.display = "block";
 
