@@ -473,17 +473,17 @@ function showFinalResult() {
   });
 
   const avg = total / weightTotal;
-  let label = "🦉 Grounded";
-if (avg >= 0.5) label = "🪶 Healthy Skeptic";
-if (avg >= 1.5) label = "🧭 Tilted";
-if (avg >= 2.5) label = "🪞 Ideological Echo";
-if (avg >= 3.5) label = "🛡️ Dogmatic";
+let label = "⚠️ Domestic Threat";
+if (avg >= 0.5) label = "🕳️ Accelerationist";
+if (avg >= 1.5) label = "🔥 Militant Mindset";
+if (avg >= 2.5) label = "🛰️ Operational Extremist";
+if (avg >= 3.5) label = "🧨 Extremist-Leaning";
 if (avg >= 4.5) label = "📡 Radicalized";
-if (avg >= 5.5) label = "🧨 Extremist-Leaning";
-if (avg >= 6.5) label = "🛰️ Operational Extremist";
-if (avg >= 7.5) label = "🔥 Militant Mindset";
-if (avg >= 8.5) label = "🕳️ Accelerationist";
-if (avg >= 9.5) label = "⚠️ Domestic Threat";
+if (avg >= 5.5) label = "🛡️ Dogmatic";
+if (avg >= 6.5) label = "🪞 Ideological Echo";
+if (avg >= 7.5) label = "🧭 Tilted";
+if (avg >= 8.5) label = "🪶 Healthy Skeptic";
+if (avg >= 9.5) label = "🦉 Grounded";
 
   document.getElementById("quiz-container").innerHTML = `
     <h2>Your Strategic Owl Insight</h2>
