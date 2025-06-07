@@ -390,11 +390,7 @@
   <p style="text-align: center; max-width: 700px; margin: 0 auto 16px; color: var(--text-muted); font-family: 'Inter', sans-serif; font-size: 1rem;">
     This interactive tool helps assess your civic positioning — not your politics. It’s completely anonymous and your answers are stored nowhere.
   </p>
-
-  <p style="text-align: center; max-width: 700px; margin: 0 auto 16px; color: var(--text-muted); font-family: 'Inter', sans-serif; font-size: 1rem;">
-    Use the 0–10 scale on each question. <strong>0 = fully disagree</strong>, <strong>10 = fully agree</strong>. Just answer honestly. No right or wrong — only insight.
-  </p>
-
+  
   <p style="text-align: center; max-width: 700px; margin: 0 auto 30px; color: var(--text-muted); font-family: 'Inter', sans-serif; font-size: 1rem;">
     Don’t overthink it. Clear your mind and respond authentically. The goal is reflection, not performance.
   </p>
@@ -478,16 +474,20 @@ function loadQuestion(index) {
   nextBtn.style.display = "none";
 
   const labelRow = document.createElement("div");
-  labelRow.style.display = "flex";
-  labelRow.style.justifyContent = "space-between";
-  labelRow.style.width = "100%";
-  labelRow.style.maxWidth = "500px";
-  labelRow.style.margin = "0 auto 10px auto";
-  labelRow.innerHTML = `
-    <span style="font-size: 0.9rem; color: var(--text-muted);">Fully Disagree</span>
-    <span style="font-size: 0.9rem; color: var(--text-muted);">Fully Agree</span>
-  `;
-  scale.appendChild(labelRow);
+labelRow.style.display = "flex";
+labelRow.style.justifyContent = "space-between";
+labelRow.style.width = "100%";
+labelRow.style.maxWidth = "500px";
+labelRow.style.margin = "0 auto 10px auto";
+labelRow.innerHTML = `
+  <span style="font-size: 0.9rem; color: var(--text-muted);">
+    👈 <span style="color: gold; font-weight: 600;">0</span> – Fully Disagree
+  </span>
+  <span style="font-size: 0.9rem; color: var(--text-muted);">
+    Fully Agree – <span style="color: gold; font-weight: 600;">10</span> 👉
+  </span>
+`;
+scale.appendChild(labelRow);
 
   const scaleWrapper = document.createElement("div");
   scaleWrapper.style.display = "flex";
