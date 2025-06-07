@@ -485,14 +485,15 @@ if (avg >= 7.5) label = "🧭 Tilted";
 if (avg >= 8.5) label = "🪶 Healthy Skeptic";
 if (avg >= 9.5) label = "🦉 Grounded";
 
-  document.getElementById("quiz-container").innerHTML = `
-    <h2>Your Strategic Owl Insight</h2>
-    <p style="font-size: 1.2rem;">Weighted Score: <strong>${avg.toFixed(2)}</strong></p>
-    <p style="font-size: 1.4rem; font-weight: bold; color: var(--understanding);">${label}</p>
-    <hr style="margin: 30px 0; border: 1px solid var(--highlight);" />
-    <ul style="list-style: none; padding: 0; font-size: 1rem;">${resultList}</ul>
-  `;
-}
+  // Render results
+document.getElementById("quiz-container").innerHTML = `
+  <h2>Your Strategic Owl Insight</h2>
+  <p style="font-size: 1.2rem;">Weighted Score: <strong>${avg.toFixed(2)}</strong></p>
+  <p style="font-size: 1.4rem; font-weight: bold; color: var(--understanding);">${label}</p>
+  <hr style="margin: 30px 0; border: 1px solid var(--highlight);" />
+  <div style="max-width: 700px; margin: 0 auto;">${resultList}</div>
+`;
+  }
 
 window.addEventListener("DOMContentLoaded", async () => {
   quizData = await fetchTRUData();
