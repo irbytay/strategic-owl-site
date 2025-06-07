@@ -424,7 +424,7 @@ function loadQuestion(index) {
 
     btn.onclick = () => {
       // Flip logic if flagged: e.g., 10 becomes 0
-      const effectiveIndex = flipLogic ? i : 10 - i;
+      const effectiveIndex = flipLogic ? 10 - i : i;
 const score = parseFloat(scoreRow[effectiveIndex]) || 0;
 
       // Pick narrative
