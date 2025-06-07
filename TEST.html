@@ -429,8 +429,8 @@ const score = parseFloat(scoreRow[effectiveIndex]) || 0;
 
       // Pick narrative
       let narrative = moderateNarrative;
-      if (i <= 3) narrative = lowNarrative;
-      else if (i >= 8) narrative = highNarrative;
+if (effectiveIndex <= 3) narrative = lowNarrative;
+else if (effectiveIndex >= 8) narrative = highNarrative;
 
       userScores[currentIndex] = {
         score: score,
