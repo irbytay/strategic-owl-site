@@ -472,6 +472,7 @@ function showFinalResult() {
     weightTotal += entry.weight;
   });
 
+  const avg = total / weightTotal;
   let label = "🦉 Grounded";
 if (avg >= 0.5) label = "🪶 Healthy Skeptic";
 if (avg >= 1.5) label = "🧭 Tilted";
