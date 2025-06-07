@@ -477,17 +477,32 @@ function showFinalResult() {
   if (avg >= 7) label = "🔴 Radicalized";
   if (avg >= 9) label = "☠️ Extremist";
 
-  document.getElementById("quiz-container").innerHTML = `
+  let resultHTML = `
     <h2>Your Strategic Owl Insight</h2>
     <p style="font-size: 1.2rem;">Weighted Score: <strong>${avg.toFixed(2)}</strong></p>
     <p style="font-size: 1.4rem; font-weight: bold; color: var(--understanding);">${label}</p>
+    <hr style="margin: 30px 0;">
+    <h3 style="font-family: 'Playfair Display', serif;">Your Answers:</h3>
+    <ul style="list-style: none; padding: 0;">
   `;
-}
 
-window.addEventListener("DOMContentLoaded", async () => {
-  quizData = await fetchTRUData();
-  loadQuestion(currentIndex);
-});
+  userScores.forEach((entry, i) => {
+    const question = quizData[i][0]; // Column C (first column in the fetched range)
+    const rawScore = entry.score;   // Already processed and weighted
+
+    resultHTML += `
+      <li style="margin-bottom: 16px;">
+        <strong style="font-family: 'Inter', sans-serif;">Q${i + 1}:</strong>
+        <span style="font-family: 'Inter', sans-serif;">${question}</span><br>
+        <span style="font-size: 0.95rem; color: var(--text-muted);">Your Score: <strong>${rawScore}</strong></span>
+      </li>
+    `;
+  });
+
+  resultHTML += `</ul>`;
+
+  document.getElementById("quiz-container").innerHTML = resultHTML;
+}
 
 function toggleMenu() {
   document.getElementById("navMenu").classList.toggle("show");
