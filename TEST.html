@@ -41,7 +41,7 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 14px 20px;
+    padding: 14px 20px;  /* 🟡 Controls vertical height of navbar */
     box-shadow: 0 2px 6px var(--shadow);
   }
 
@@ -93,7 +93,7 @@
     display: flex;
     flex-direction: column;
     align-items: center;
-    margin: 40px auto;
+    margin: 40px auto; /* 🟡 Adjust this to reduce space around the TRU bar (try 24px auto or 24px auto 12px) */
   }
 
   .divider-bar {
@@ -118,7 +118,7 @@
     justify-content: center;
     gap: 12px;
     width: 340px;
-    margin-top: 8px;
+    margin-top: 8px;/* 🟡 Adjust this to pull labels closer to bars (try 4px if needed) */
   }
 
   .divider-labels span {
@@ -183,14 +183,14 @@
 
   p {
     font-size: 0.95rem;
-    margin-bottom: 16px;
+    margin-bottom: 16px;/* 🟡 Mobile-specific paragraph margin */
   }
 }
 
   /* ✅ YOUR ORIGINAL STYLES BELOW */
   .container {
     max-width: 960px;
-    margin: 100px auto 0 auto;
+    margin: 72px auto 0 auto; /* 🟡 Adjust this top margin to tighten space below nav (try 72px or 60px) */
     padding: 24px;
   }
 
@@ -205,7 +205,7 @@
   font-size: 1.5rem;
   color: var(--understanding); /* golden highlight */
   font-weight: 600;
-  margin-top: 32px;
+  margin-top: 32px; /* 🟡 Reduce this if h2 spacing feels too large (try 12px–20px) */
   margin-bottom: 12px;
   text-align: center;
 }
@@ -214,7 +214,7 @@
   font-size: 1.05rem;
   color: var(--text-muted);
   line-height: 1.6;
-  margin-bottom: 20px;
+  margin-bottom: 20px; /* 🟡 You can tighten this to 12px or 16px for stacked content */
   text-align: center;
   max-width: 700px;
   margin-left: auto;
