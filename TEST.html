@@ -545,7 +545,7 @@ function renderInput(container, flipLogic, weight, highNarr, moderateNarr, lowNa
       valueDisplay.innerText = `Selected: ${i}`;
       const adjusted = flipLogic ? i : 10 - i;
       let narrative = moderateNarr;
-      if (adjusted <= 3) narrative = lowNarrative;
+      if (adjusted <= 3) narrative = lowNarr;
       else if (adjusted >= 8) narrative = highNarr;
 
       userScores[currentIndex] = {
@@ -574,8 +574,10 @@ function renderInput(container, flipLogic, weight, highNarr, moderateNarr, lowNa
         };
       }
     };
+
     scale.appendChild(valueDisplay);
-    }
+    scale.appendChild(sliderInput);
+
   } else {
     const buttonWrapper = document.createElement("div");
     buttonWrapper.className = "scale-buttons";
@@ -588,7 +590,7 @@ function renderInput(container, flipLogic, weight, highNarr, moderateNarr, lowNa
         btn.classList.add('selected');
         const adjusted = flipLogic ? i : 10 - i;
         let narrative = moderateNarr;
-        if (adjusted <= 3) narrative = lowNarrative;
+        if (adjusted <= 3) narrative = lowNarr;
         else if (adjusted >= 8) narrative = highNarr;
 
         userScores[currentIndex] = {
@@ -630,9 +632,6 @@ function loadQuestion(index) {
   container.innerHTML = `<h2 style="text-align: center; color: var(--understanding); font-family: 'Playfair Display', serif;">${q}</h2>`;
 
   renderInput(container, flipLogic, w, high, mid, low, q);
-}
-
-scale.appendChild(sliderInput);
 }
 
 function showFinalResult() {
