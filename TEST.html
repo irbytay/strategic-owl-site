@@ -377,9 +377,8 @@
 <script>
 const SHEET_ID = "19wBEj9hEkvIyQcoR5E_mBGVAxTzMnddMxk8nuQLAumA";
 const API_KEY = "AIzaSyCzuh9HBfe0r70r9U35Pe406PPZ-tz6I78";
-const RANGE = "TRUTest!A2:R100"; // now includes row 2 for score mapping
+const RANGE = "TRUTest!A2:S100";
 
-let scoreMapRow = [];
 let quizData = [];
 let currentIndex = 0;
 let userScores = [];
@@ -388,18 +387,17 @@ async function fetchTRUData() {
   const url = `https://sheets.googleapis.com/v4/spreadsheets/${SHEET_ID}/values/${RANGE}?key=${API_KEY}`;
   const res = await fetch(url);
   const json = await res.json();
-  [scoreMapRow, ...quizData] = json.values; // split out row 2
+  return json.values;
 }
 
 function loadQuestion(index) {
   const [
-    , , question,
-    highNarrative,    // column D
-    moderateNarrative,// column E
-    lowNarrative,     // column F
-    weight,
-    ...rawScores      // columns H through R (11 values)
+    , , question, highNarrative, moderateNarrative, lowNarrative, weight,
+    ...rest
   ] = quizData[index];
+
+  const rawScores = rest.slice(0, 11); // H–R (0–10)
+  const flipLogic = (rest[11] || "").toLowerCase() === "false"; // Column S
 
   const container = document.getElementById("quiz-question");
   const scale = document.getElementById("quiz-scale");
@@ -418,22 +416,21 @@ function loadQuestion(index) {
     btn.className = "owl-button";
 
     btn.onclick = () => {
-      const mappedScore = parseFloat(rawScores[i]) || 0;
+      const mappedIndex = flipLogic ? 10 - i : i;
+      const remappedScore = parseFloat(rawScores[mappedIndex]) || 0;
 
-      // Determine narrative based on button (not score)
       let narrative = moderateNarrative;
-      if (i <= 3) narrative = lowNarrative;
-      else if (i >= 8) narrative = highNarrative;
+      if (mappedIndex <= 3) narrative = lowNarrative;
+      else if (mappedIndex >= 8) narrative = highNarrative;
 
       userScores[currentIndex] = {
-        score: mappedScore,
+        score: remappedScore,
         weight: parseFloat(weight)
       };
 
       narrativeBox.innerHTML = `<p style="margin-top: 20px; font-family: 'Inter', sans-serif; font-size: 1rem; color: var(--text);">${narrative}</p>`;
       narrativeBox.style.display = "block";
 
-      // Show next button after delay
       nextBtn.style.display = "none";
       setTimeout(() => {
         nextBtn.style.display = "block";
@@ -456,8 +453,7 @@ function loadQuestion(index) {
 }
 
 function showFinalResult() {
-  let total = 0;
-  let weightTotal = 0;
+  let total = 0, weightTotal = 0;
 
   userScores.forEach(entry => {
     total += entry.score * entry.weight;
@@ -479,7 +475,7 @@ function showFinalResult() {
 }
 
 window.addEventListener("DOMContentLoaded", async () => {
-  await fetchTRUData();
+  quizData = await fetchTRUData();
   loadQuestion(currentIndex);
 });
 
