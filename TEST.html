@@ -391,6 +391,10 @@ const SHEET_ID = "19wBEj9hEkvIyQcoR5E_mBGVAxTzMnddMxk8nuQLAumA";
 const API_KEY = "AIzaSyCzuh9HBfe0r70r9U35Pe406PPZ-tz6I78";
 const RANGE = "TRUTest!A3:R100";
 
+let quizData = [];
+let currentIndex = 0;
+let userScores = [];
+
 async function fetchTRUData() {
   const url = `https://sheets.googleapis.com/v4/spreadsheets/${SHEET_ID}/values/${RANGE}?key=${API_KEY}`;
   const res = await fetch(url);
@@ -398,63 +402,105 @@ async function fetchTRUData() {
   return json.values;
 }
 
-function renderQuestions(data) {
-  const container = document.getElementById("question-area");
-  container.innerHTML = "";
+function loadQuestion(index) {
+  const [ , , question, narrative0, narrative5, narrative10, weight ] = quizData[index];
+  const container = document.getElementById("quiz-question");
+  const scale = document.getElementById("quiz-scale");
+  const nextBtn = document.getElementById("next-question");
 
-  data.forEach((row, index) => {
-    const [level, label, question, narrative0, narrative5, narrative10, weight, ...scores] = row;
-    const qDiv = document.createElement("div");
-    qDiv.style.marginBottom = "32px";
+  container.innerHTML = `<h3>${question}</h3>`;
+  scale.innerHTML = "";
+  nextBtn.style.display = "none";
 
-    const qText = document.createElement("p");
-    qText.textContent = question;
-    qText.style.fontSize = "1.1rem";
-    qText.style.fontWeight = "600";
-    qText.style.marginBottom = "12px";
-    qDiv.appendChild(qText);
+  for (let i = 0; i <= 10; i++) {
+    const btn = document.createElement("button");
+    btn.textContent = i;
+    btn.style.padding = "10px 14px";
+    btn.style.backgroundColor = "#3B6CED";
+    btn.style.border = "none";
+    btn.style.borderRadius = "6px";
+    btn.style.color = "#fff";
+    btn.style.cursor = "pointer";
+    btn.onclick = () => {
+      let narrative = narrative5;
+      if (i <= 3) narrative = narrative0;
+      if (i >= 8) narrative = narrative10;
 
-    const btnGroup = document.createElement("div");
-    btnGroup.style.display = "flex";
-    btnGroup.style.flexWrap = "wrap";
-    btnGroup.style.gap = "8px";
-
-    for (let i = 0; i <= 10; i++) {
-      const btn = document.createElement("button");
-      btn.textContent = i;
-      btn.style.padding = "10px 14px";
-      btn.style.backgroundColor = "#3B6CED";
-      btn.style.border = "none";
-      btn.style.borderRadius = "6px";
-      btn.style.color = "#fff";
-      btn.style.cursor = "pointer";
-      btn.onclick = () => {
-        let narrative = narrative5;
-        if (i <= 3) narrative = narrative0;
-        if (i >= 8) narrative = narrative10;
-        showNarrative(narrative);
-      };
-      btnGroup.appendChild(btn);
-    }
-
-    qDiv.appendChild(btnGroup);
-    container.appendChild(qDiv);
-  });
+      userScores[currentIndex] = { score: i, weight: parseFloat(weight) };
+      showNarrative(narrative);
+      nextBtn.style.display = "block";
+    };
+    scale.appendChild(btn);
+  }
 }
 
 function showNarrative(text) {
-  document.getElementById("narrative-text").textContent = text;
-  document.getElementById("narrative-modal").style.display = "flex";
+  const modal = document.createElement("div");
+  modal.id = "narrative-modal";
+  modal.style.position = "fixed";
+  modal.style.top = "0";
+  modal.style.left = "0";
+  modal.style.width = "100%";
+  modal.style.height = "100%";
+  modal.style.backgroundColor = "rgba(0, 0, 0, 0.85)";
+  modal.style.display = "flex";
+  modal.style.alignItems = "center";
+  modal.style.justifyContent = "center";
+  modal.style.zIndex = "1000";
+
+  const modalBox = document.createElement("div");
+  modalBox.style.background = "#1A2B4C";
+  modalBox.style.padding = "24px";
+  modalBox.style.borderRadius = "12px";
+  modalBox.style.maxWidth = "600px";
+  modalBox.style.color = "#fff";
+  modalBox.innerHTML = `
+    <p style="font-size:1.2rem;">${text}</p>
+    <button onclick="document.body.removeChild(document.getElementById('narrative-modal'))" style="margin-top: 16px; padding: 10px 20px; background: #D4AF37; border: none; border-radius: 8px; cursor: pointer;">Close</button>
+  `;
+  modal.appendChild(modalBox);
+  document.body.appendChild(modal);
 }
 
-function closeModal() {
-  document.getElementById("narrative-modal").style.display = "none";
+function showFinalResult() {
+  let total = 0, weightTotal = 0;
+
+  userScores.forEach(entry => {
+    total += entry.score * entry.weight;
+    weightTotal += entry.weight;
+  });
+
+  const avg = total / weightTotal;
+  let label = "🟢 Grounded";
+  if (avg >= 2) label = "🟡 Skeptical";
+  if (avg >= 5) label = "🟠 Ideologically Tilted";
+  if (avg >= 7) label = "🔴 Radicalized";
+  if (avg >= 9) label = "☠️ Extremist";
+
+  document.getElementById("quiz-container").innerHTML = `
+    <h2>Your Strategic Owl Insight</h2>
+    <p style="font-size: 1.2rem;">Weighted Score: <strong>${avg.toFixed(2)}</strong></p>
+    <p style="font-size: 1.4rem; font-weight: bold; color: var(--understanding);">${label}</p>
+  `;
 }
+
+document.getElementById("next-question").addEventListener("click", () => {
+  currentIndex++;
+  if (currentIndex < quizData.length) {
+    loadQuestion(currentIndex);
+  } else {
+    showFinalResult();
+  }
+});
 
 window.addEventListener("DOMContentLoaded", async () => {
-  const data = await fetchTRUData();
-  renderQuestions(data);
+  quizData = await fetchTRUData();
+  loadQuestion(currentIndex);
 });
+
+function toggleMenu() {
+  document.getElementById("navMenu").classList.toggle("show");
+}
 
   function toggleMenu() {
     document.getElementById("navMenu").classList.toggle("show");
