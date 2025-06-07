@@ -420,7 +420,7 @@ function loadQuestion(index) {
     btn.className = "owl-button";
 
     btn.onclick = () => {
-  const adjustedScore = flipLogic ? 10 - i : i;
+  const adjustedScore = flipLogic ? i : 10 - i;
 
   let narrative = moderateNarrative;
   if (adjustedScore <= 3) narrative = lowNarrative;
