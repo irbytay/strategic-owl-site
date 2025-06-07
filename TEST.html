@@ -401,7 +401,7 @@ function loadQuestion(index) {
   ] = quizData[index];
 
   const scoreRow = rest.slice(0, 11); // H–R
-  const flipLogic = rest[11]?.toLowerCase() === 'true'; // S column
+  const flipLogic = rest[11]?.toLowerCase() === 'false'; // S column
 
   const container = document.getElementById("quiz-question");
   const scale = document.getElementById("quiz-scale");
