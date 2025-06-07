@@ -364,6 +364,103 @@
   text-shadow: 0 0 8px var(--understanding); /* Subtle glow using gold tone */
   color: var(--truth);                       /* Optional: changes to green (truth color) */
 }
+    /* 📢 Shared Announcement Box Styles */
+.announcement-box {
+  background-color: var(--surface);
+  padding: 16px 24px;
+  border-radius: 12px;
+  margin: 24px auto;
+  max-width: 960px;
+  font-family: 'Inter', sans-serif;
+  font-size: 1rem;
+  color: var(--text);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+  text-align: center;
+}
+
+.announcement-box-mobile {
+  background-color: var(--surface);
+  padding: 16px;
+  border-radius: 12px;
+  margin: 24px auto;
+  font-family: 'Inter', sans-serif;
+  text-align: center;
+  max-width: 90%;
+  font-size: 1rem;
+  color: var(--text);
+}
+
+/* 🟢 Label Color */
+.announcement-label {
+  color: var(--truth);
+  font-weight: 600;
+}
+
+/* 🔗 Strategic Link Styling */
+.important-link {
+  color: var(--understanding);
+  font-weight: 700;
+  text-decoration: underline;
+  text-underline-offset: 4px;
+  position: relative;
+  transition: color 0.3s ease, text-shadow 0.3s ease;
+}
+
+.important-link::before {
+  content: '→ ';
+  display: inline-block;
+  margin-right: 6px;
+  transition: transform 0.3s ease;
+}
+
+.important-link::after {
+  content: ' ←';
+  display: inline-block;
+  margin-left: 6px;
+  transition: transform 0.3s ease;
+}
+
+.important-link:hover::before {
+  transform: translateX(4px);
+}
+
+.important-link:hover::after {
+  transform: translateX(-4px);
+}
+
+.important-link:hover {
+  text-shadow: 0 0 8px var(--understanding);
+  color: var(--truth);
+}
+
+/* 📱 Mobile Layout */
+@media (max-width: 768px) {
+  .announcement-desktop {
+    display: none;
+  }
+
+  .announcement-mobile {
+    padding: 0;
+    text-align: center;
+    line-height: 1.5;
+  }
+
+  .announcement-mobile .important-link {
+    display: inline-block;
+    margin-top: 6px;
+    margin-bottom: 6px;
+  }
+}
+
+/* 💻 Desktop Layout */
+@media (min-width: 769px) {
+  .announcement-mobile {
+    display: none;
+  }
+}
 </style>
 
 <nav class="top-nav">
@@ -433,6 +530,27 @@
       This moment will be remembered for 30 days.<br>
       This website uses publicly available data, court records, and verifiable sources. Nothing here is hidden — it’s all in the open.
     </p>
+  </div>
+</div>
+    <!-- Desktop Announcement -->
+<div class="announcement-desktop">
+  <div class="announcement-box">
+    <span class="announcement-label">New Tool Released:</span>
+    <span>Try the</span>
+    <a href="strategic-owl-insight-quiz.html" class="important-link">Strategic Insight Quiz</a>
+    <span>today</span>
+  </div>
+</div>
+
+<!-- Mobile Announcement -->
+<div class="announcement-mobile">
+  <div class="announcement-box-mobile">
+    <div>
+      <span class="announcement-label">New Tool Released:</span>
+      <span> Try the</span>
+    </div>
+    <a href="strategic-owl-insight-quiz.html" class="important-link">Strategic Insight Quiz</a>
+    <div>today</div>
   </div>
 </div>
 <h2>How do you know what’s true anymore?</h2>
