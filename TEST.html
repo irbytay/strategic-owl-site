@@ -432,12 +432,39 @@ function loadQuestion(index) {
   narrativeBox.style.display = "none";
   nextBtn.style.display = "none";
 
+  // Create scale container
+  const scaleWrapper = document.createElement("div");
+  scaleWrapper.style.display = "flex";
+  scaleWrapper.style.justifyContent = "space-between";
+  scaleWrapper.style.gap = "4px";
+  scaleWrapper.style.marginTop = "24px";
+  scaleWrapper.style.flexWrap = "wrap";
+
   for (let i = 0; i <= 10; i++) {
     const btn = document.createElement("button");
     btn.textContent = i;
     btn.className = "owl-button";
+    btn.style.flex = "1";
+    btn.style.minWidth = "30px";
+    btn.style.padding = "12px";
+    btn.style.border = "1px solid #cbb994";
+    btn.style.borderRadius = "8px";
+    btn.style.background = "#fffef8";
+    btn.style.color = "#4a3f35";
+    btn.style.fontWeight = "bold";
+    btn.style.transition = "all 0.2s ease";
 
+    btn.onmouseover = () => btn.style.background = "#f3ede0";
+    btn.onmouseout = () => {
+      if (btn !== selectedBtn) btn.style.background = "#fffef8";
+    };
+
+    let selectedBtn = null;
     btn.onclick = () => {
+      if (selectedBtn) selectedBtn.style.background = "#fffef8";
+      selectedBtn = btn;
+      btn.style.background = "#e5d8b0";
+
       const adjustedScore = flipLogic ? i : 10 - i;
 
       let narrative = moderateNarrative;
@@ -457,7 +484,7 @@ function loadQuestion(index) {
       setTimeout(() => {
         nextBtn.style.display = "block";
         nextBtn.textContent = (currentIndex === quizData.length - 1) ? "Show Results" : "Next Question →";
-      }, 1000);
+      }, 1500);
 
       nextBtn.onclick = () => {
         narrativeBox.style.display = "none";
@@ -470,6 +497,12 @@ function loadQuestion(index) {
         }
       };
     };
+
+    scaleWrapper.appendChild(btn);
+  }
+
+  scale.appendChild(scaleWrapper);
+}
 
     scale.appendChild(btn);
   }
