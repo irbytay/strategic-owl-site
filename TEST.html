@@ -385,7 +385,7 @@
 <script>
 const SHEET_ID = "19wBEj9hEkvIyQcoR5E_mBGVAxTzMnddMxk8nuQLAumA";
 const API_KEY = "AIzaSyCzuh9HBfe0r70r9U35Pe406PPZ-tz6I78";
-const RANGE = "TRUTest!C2:S100";
+const RANGE = "TRUTest!C2:T100";
 
 let quizData = [];
 let currentIndex = 0;
@@ -474,17 +474,38 @@ function showFinalResult() {
   });
 
   const avg = total / weightTotal;
+
   let label = "⚠️ Domestic Threat";
-if (avg >= 1.0) label = "🕳️ Accelerationist";
-if (avg >= 1.8) label = "🔥 Militant Mindset";
-if (avg >= 2.5) label = "🛰️ Operational Extremist";
-if (avg >= 3.2) label = "🧨 Extremist-Leaning";
-if (avg >= 3.9) label = "📡 Radicalized";
-if (avg >= 4.8) label = "🛡️ Dogmatic";
-if (avg >= 5.7) label = "🪞 Ideological Echo";
-if (avg >= 6.6) label = "🧭 Tilted";
-if (avg >= 7.5) label = "🪶 Healthy Skeptic";
-if (avg >= 8.8) label = "🦉 Grounded";
+  if (avg >= 1.0) label = "🕳️ Accelerationist";
+  if (avg >= 1.8) label = "🔥 Militant Mindset";
+  if (avg >= 2.5) label = "🛰️ Operational Extremist";
+  if (avg >= 3.2) label = "🧨 Extremist-Leaning";
+  if (avg >= 3.9) label = "📡 Radicalized";
+  if (avg >= 4.8) label = "🛡️ Dogmatic";
+  if (avg >= 5.7) label = "🪞 Ideological Echo";
+  if (avg >= 6.6) label = "🧭 Tilted";
+  if (avg >= 7.5) label = "🪶 Healthy Skeptic";
+  if (avg >= 8.8) label = "🦉 Grounded";
+
+  // 📦 Pull strategic insight from column T
+  const insightIndex = Math.floor(avg);
+  const strategicInsight = quizData[insightIndex]?.[quizData[0].length - 1] || "";
+
+  const insightBox = `
+    <div style="
+      background-color: var(--understanding);
+      color: var(--navy);
+      font-family: 'Playfair Display', serif;
+      font-size: 1.1rem;
+      padding: 18px 24px;
+      border-radius: 10px;
+      opacity: 0.5;
+      margin-bottom: 24px;
+      text-align: center;
+    ">
+      <strong>Strategic Insight:</strong><br/>
+      ${strategicInsight}
+    </div>`;
 
   const resultList = userScores.map(entry => {
     return `
@@ -507,6 +528,7 @@ if (avg >= 8.8) label = "🦉 Grounded";
     <h2>Your Strategic Owl Insight</h2>
     <p style="font-size: 1.2rem;">Weighted Score: <strong>${avg.toFixed(2)}</strong></p>
     <p style="font-size: 1.4rem; font-weight: bold; color: var(--understanding);">${label}</p>
+    ${insightBox}
     <hr style="margin: 30px 0; border: 1px solid var(--highlight);" />
     <div style="max-width: 700px; margin: 0 auto;">${resultList}</div>
   `;
