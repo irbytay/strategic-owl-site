@@ -410,14 +410,13 @@ let currentIndex = 0;
 let userScores = [];
 
 async function fetchQuizData() {
-  const SHEET_ID = 'YOUR_SHEET_ID';
-  const API_KEY = 'YOUR_API_KEY';
-  const RANGE = 'TRUTest!C3:G100';
   const response = await fetch(`https://sheets.googleapis.com/v4/spreadsheets/${SHEET_ID}/values/${RANGE}?key=${API_KEY}`);
   const data = await response.json();
   quizData = data.values;
   loadQuestion(currentIndex);
 }
+
+window.onload = fetchQuizData;
 
 function loadQuestion(index) {
   const [question, narrative0, narrative5, narrative10, weight] = quizData[index];
