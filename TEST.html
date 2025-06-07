@@ -530,62 +530,59 @@ scaleWrapper.style.justifyContent = "space-between";
 
   let selectedBtn = null;
 
-  for (let i = 0; i <= 10; i++) {
-    const btn = document.createElement("button");
-    btn.textContent = i;
-    btn.className = "owl-button";
-    btn.style.border = "1px solid var(--understanding)";
-    btn.style.backgroundColor = "transparent";
-    btn.style.color = "var(--understanding)";
-    btn.style.borderRadius = "8px";
-    btn.style.padding = "10px 16px";
-    btn.style.fontWeight = "bold";
-    btn.style.cursor = "pointer";
-    btn.style.transition = "all 0.2s ease";
+  const sliderInput = document.createElement("input");
+sliderInput.type = "range";
+sliderInput.min = 0;
+sliderInput.max = 10;
+sliderInput.step = 1;
+sliderInput.value = 5;
+sliderInput.className = "owl-slider"; // pulls your style from CSS
+sliderInput.style.margin = "20px auto";
+sliderInput.style.display = "block";
+sliderInput.style.maxWidth = "500px";
+sliderInput.style.width = "100%";
 
-    btn.onclick = () => {
-      if (selectedBtn) selectedBtn.style.backgroundColor = "transparent";
-      btn.style.backgroundColor = "var(--understanding)";
-      btn.style.color = "var(--navy)";
-      selectedBtn = btn;
+let sliderChosen = false;
 
-      const adjustedScore = flipLogic ? i : 10 - i;
+sliderInput.oninput = (e) => {
+  const i = parseInt(e.target.value);
+  const adjustedScore = flipLogic ? i : 10 - i;
 
-      let narrative = moderateNarrative;
-      if (adjustedScore <= 3) narrative = lowNarrative;
-      else if (adjustedScore >= 8) narrative = highNarrative;
+  let narrative = moderateNarrative;
+  if (adjustedScore <= 3) narrative = lowNarrative;
+  else if (adjustedScore >= 8) narrative = highNarrative;
 
-      userScores[currentIndex] = {
-        score: adjustedScore,
-        weight: parseFloat(weight),
-        originalInput: i,
-        question: question
-      };
+  userScores[currentIndex] = {
+    score: adjustedScore,
+    weight: parseFloat(weight),
+    originalInput: i,
+    question: question
+  };
 
-      narrativeBox.innerHTML = `<p style="margin-top: 20px; font-family: 'Inter', sans-serif; font-size: 1rem; color: var(--text);">${narrative}</p>`;
-      narrativeBox.style.display = "block";
+  narrativeBox.innerHTML = `<p style="margin-top: 20px;">${narrative}</p>`;
+  narrativeBox.style.display = "block";
 
-      setTimeout(() => {
-        nextBtn.style.display = "block";
-        nextBtn.textContent = (currentIndex === quizData.length - 1) ? "Show Results" : "Next Question →";
-      }, 1500);
+  if (!sliderChosen) {
+    sliderChosen = true;
+    setTimeout(() => {
+      nextBtn.style.display = "block";
+      nextBtn.textContent = (currentIndex === quizData.length - 1) ? "Show Results" : "Next Question →";
+    }, 1500);
 
-      nextBtn.onclick = () => {
-        narrativeBox.style.display = "none";
-        nextBtn.style.display = "none";
-        currentIndex++;
-        if (currentIndex < quizData.length) {
-          loadQuestion(currentIndex);
-        } else {
-          showFinalResult();
-        }
-      };
+    nextBtn.onclick = () => {
+      narrativeBox.style.display = "none";
+      nextBtn.style.display = "none";
+      currentIndex++;
+      if (currentIndex < quizData.length) {
+        loadQuestion(currentIndex);
+      } else {
+        showFinalResult();
+      }
     };
-
-    scaleWrapper.appendChild(btn);
   }
+};
 
-  scale.appendChild(scaleWrapper);
+scale.appendChild(sliderInput);
 }
 
 function showFinalResult() {
