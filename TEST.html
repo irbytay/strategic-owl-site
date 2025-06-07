@@ -385,17 +385,27 @@
 <script>
 const SHEET_ID = "19wBEj9hEkvIyQcoR5E_mBGVAxTzMnddMxk8nuQLAumA";
 const API_KEY = "AIzaSyCzuh9HBfe0r70r9U35Pe406PPZ-tz6I78";
-const RANGE = "TRUTest!C2:T100";
+
+const QUIZ_RANGE = "TRUTest!C2:T100";
+const INSIGHT_RANGE = "Insights!A2:A12";
 
 let quizData = [];
+let insightMessages = []; // ✅ This was missing in your version
 let currentIndex = 0;
 let userScores = [];
 
 async function fetchTRUData() {
-  const url = `https://sheets.googleapis.com/v4/spreadsheets/${SHEET_ID}/values/${RANGE}?key=${API_KEY}`;
+  const url = `https://sheets.googleapis.com/v4/spreadsheets/${SHEET_ID}/values/${QUIZ_RANGE}?key=${API_KEY}`;
   const res = await fetch(url);
   const json = await res.json();
   return json.values.slice(1);
+}
+
+async function fetchInsightMessages() {
+  const url = `https://sheets.googleapis.com/v4/spreadsheets/${SHEET_ID}/values/${INSIGHT_RANGE}?key=${API_KEY}`;
+  const res = await fetch(url);
+  const json = await res.json();
+  return json.values.flat();
 }
 
 function loadQuestion(index) {
@@ -487,9 +497,8 @@ function showFinalResult() {
   if (avg >= 7.5) label = "🪶 Healthy Skeptic";
   if (avg >= 8.8) label = "🦉 Grounded";
 
-  // 📦 Pull strategic insight from column T
   const insightIndex = Math.floor(avg);
-  const strategicInsight = quizData[insightIndex]?.[quizData[0].length - 1] || "";
+  const strategicInsight = insightMessages[insightIndex] || "";
 
   const insightBox = `
     <div style="
@@ -536,6 +545,7 @@ function showFinalResult() {
 
 window.addEventListener("DOMContentLoaded", async () => {
   quizData = await fetchTRUData();
+  insightMessages = await fetchInsightMessages(); // ✅ This is critical
   loadQuestion(currentIndex);
 });
 
