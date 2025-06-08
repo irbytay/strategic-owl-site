@@ -48,29 +48,7 @@
     <!-- Content will load here -->
   </div>
 
- <script>
-  function loadPageContent(path) {
-    fetch(path)
-      .then(res => res.text())
-      .then(html => {
-        document.getElementById('spa-content').innerHTML = html;
-        window.scrollTo(0, 0);
-      });
-  }
-
-  document.addEventListener('DOMContentLoaded', () => {
-    // Load home page by default
-    loadPageContent('TRUOWL2_v3.html');
-
-    // Handle nav clicks
-    document.querySelectorAll('a[data-path]').forEach(link => {
-      link.addEventListener('click', e => {
-        e.preventDefault();
-        const path = link.getAttribute('data-path');
-        loadPageContent(path);
-      });
-    });
-  });
-</script>
+ <!-- 🚀 SPA Router Script -->
+<script src="scripts/spa-router.js" defer></script>
 </body>
 </html>
