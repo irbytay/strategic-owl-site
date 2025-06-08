@@ -35,12 +35,12 @@
     </a>
     <button class="menu-toggle" onclick="toggleMenu()">☰</button>
     <div class="nav-links" id="navMenu">
-      <a href="Index.html">Home</a>
-      <a href="TRUOWL3.html">T.R.U. Owl</a>
-      <a href="strategic-owl-insight-quiz.html">Insight Quiz</a>
-      <a href="newelections3.html">Election Security</a>
-      <a href="the_constitution.html">The Constitution</a>
-      <a href="newcontact3.html">Contact</a>
+      <a href="#" data-path="Index.html">Home</a>
+<a href="#" data-path="TRUOWL3.html">T.R.U. Owl</a>
+<a href="#" data-path="strategic-owl-insight-quiz.html">Insight Quiz</a>
+<a href="#" data-path="newelections3.html">Election Security</a>
+<a href="#" data-path="the_constitution.html">The Constitution</a>
+<a href="#" data-path="newcontact3.html">Contact</a>
     </div>
   </nav>
 
@@ -48,20 +48,29 @@
     <!-- Content will load here -->
   </div>
 
-  <script>
-    function loadPageContent(path) {
-      fetch(path)
-        .then(res => res.text())
-        .then(html => {
-          document.getElementById('spa-content').innerHTML = html;
-          window.scrollTo(0, 0);
-        });
-    }
+ <script>
+  function loadPageContent(path) {
+    fetch(path)
+      .then(res => res.text())
+      .then(html => {
+        document.getElementById('spa-content').innerHTML = html;
+        window.scrollTo(0, 0);
+      });
+  }
 
-    // Load the home page by default when the SPA opens
-    document.addEventListener('DOMContentLoaded', () => {
-      loadPageContent('home.html'); // adjust the path if needed
+  document.addEventListener('DOMContentLoaded', () => {
+    // Load home page by default
+    loadPageContent('home.html');
+
+    // Handle nav clicks
+    document.querySelectorAll('a[data-path]').forEach(link => {
+      link.addEventListener('click', e => {
+        e.preventDefault();
+        const path = link.getAttribute('data-path');
+        loadPageContent(path);
+      });
     });
-  </script>
+  });
+</script>
 </body>
 </html>
