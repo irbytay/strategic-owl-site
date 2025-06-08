@@ -1,0 +1,134 @@
+
+T.R.U. OWL SCORING PROTOCOL v1.1
+(Strategic Owl Credibility Scoring System)
+Last updated: [Insert Date]
+
+---
+
+### PURPOSE
+To evaluate public figures based on their credibility across three categories:
+- Truth
+- Reliability
+- Understanding
+
+This system measures not just factual accuracy, but the intent, framing, impact, and strategic value of public behavior — especially regarding threats or contributions to democratic institutions, civic trust, and public understanding.
+
+---
+
+### SCORING STRUCTURE
+Each category is scored from +15 to –30, using the following logic tiers:
+
+#### Truth Score (–30 to +15)
+| Behavior Type                                            | Score |
+|----------------------------------------------------------|-------|
+| Advances public understanding, debunks distortion        | +15   |
+| Outstanding accuracy, primary sourcing                   | +10   |
+| Mostly accurate with minor omissions                     | +5    |
+| No clear pattern                                          | 0     |
+| Spreads misinformation without correction                | –10   |
+| Repeats known falsehoods after correction                | –20   |
+| Promotes or engineers disinformation                     | –30   |
+
+#### Reliability Score (–30 to +15)
+| Behavior Type                                            | Score |
+|----------------------------------------------------------|-------|
+| Transparent, consistently corrects, promotes accountability | +15 |
+| Transparent, consistent, corrects errors                 | +10   |
+| Generally steady, occasional missteps                    | +5    |
+| Neutral or vague pattern                                 | 0     |
+| Avoids correction, reframes mistakes                     | –10   |
+| Denies or ignores factual exposure                       | –20   |
+| Uses their platform for deception                        | –30   |
+
+#### Understanding Score (–30 to +15)
+| Behavior Type                                            | Score |
+|----------------------------------------------------------|-------|
+| Demonstrates systems thinking, improves public understanding | +15 |
+| Demonstrates systems thinking, context mastery           | +10   |
+| Explains well, but lacks depth                           | +5    |
+| Neutral / unclear pattern                                | 0     |
+| Oversimplifies or distorts ideas                         | –10   |
+| Misrepresents frameworks consistently                    | –20   |
+| Weaponizes misunderstanding for influence                | –30   |
+
+---
+
+### CIVIC GROUNDING INDEX (CGI)
+The CGI measures a figure's alignment with 10 core democratic principles.
+Each principle is assessed using:
+
+| Alignment           | Symbol | Score |
+|---------------------|--------|--------|
+| ✅ Affirmative      | ✅     | +5     |
+| ⚪️ Neutral / Unclear | ⚪️    | –1     |
+| ❌ Contradictory    | ❌     | –5     |
+
+#### Pillar Categories:
+1. Elections are fair and secure (Elections)
+2. Nonviolence is required in civic discourse (NonViolence)
+3. Free press is essential (FreePress)
+4. Offensive speech is still protected (FreeSpeech)
+5. Government serves the public good (GovTrust)
+6. Truth exists beyond media bias (MediaLiteracy)
+7. Replacement theories are false and harmful (AntiReplacement)
+8. Peaceful transfer of power is mandatory (Democracy)
+9. Institutions should be reformed, not dismantled (Institutionalism)
+10. The Constitution limits power, not enables abuse (CivicLimits)
+
+Total CGI Range: –50 to +50
+
+A neutral stance across all = –10 (soft red flag)
+A civic-aligned public figure = +30 to +50
+
+---
+
+### STRATEGIC INTEGRITY FILTER
+This override layer evaluates whether the person’s messaging or actions pose a threat to the public interest, even if factually accurate.
+
+Apply an override deduction (–10 to –30) if their behavior:
+- Undermines elections, civil liberties, free press, or rule of law
+- Encourages violence, institutional distrust, or conspiratorial thinking
+- Uses factually true statements to mislead or weaponize disinformation
+
+---
+
+### POSITION MULTIPLIER
+After scoring T, R, and U, multiply their total by a position-based tier:
+
+| Position                        | Multiplier |
+|---------------------------------|------------|
+| President / Cabinet / SCOTUS    | ×5         |
+| Governor / Federal Official     | ×4         |
+| Journalist / National Media     | ×3         |
+| Influencer / Commentator        | ×2         |
+| Local Figure / Minor Platform   | ×1         |
+
+---
+
+### OUTPUT FORMAT
+Return results as:
+- Name:
+- Role/Label:
+- Truth Score:
+- Truth Explanation:
+- Reliability Score:
+- Reliability Explanation:
+- Understanding Score:
+- Understanding Explanation:
+- Strategic Integrity Filter Applied: Yes/No
+- Position Multiplier:
+- Civic Grounding Index Total:
+- Civic Pillar Flags (10 columns): Elections, NonViolence, FreePress, FreeSpeech, GovTrust, MediaLiteracy, AntiReplacement, Democracy, Institutionalism, CivicLimits
+- One-Row Output (Tab-Delimited):
+  Name	Label	T	R	U	T Reason	R Reason	U Reason	Multiplier	CGI	Summary
+
+---
+
+### INSTRUCTION TO AI (EXAMPLE)
+When you're ready to score someone, paste this into ChatGPT along with:
+
+"Apply the T.R.U. OWL Scoring Protocol v1.1 to [NAME]. Use current information. Provide full breakdown, civic alignment flags, and one-row spreadsheet format."
+
+---
+
+This protocol now includes both credibility behavior and civic loyalty benchmarks, enabling complete strategic evaluation of public figures.
