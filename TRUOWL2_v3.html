@@ -593,319 +593,132 @@ table.tru-table td:nth-child(2) {
 }
 </style>
 
-<nav class="top-nav">
-<a href="TRUOWL3.html" class="nav-logo">
-  <img src="owl_logo_white.png" alt="Owl Logo" onerror="this.style.display='none';" />
-  <div class="nav-title">The Strategic Owl</div>
-</a>
-  <button class="menu-toggle" onclick="toggleMenu()">☰</button>
-  <div class="nav-links" id="navMenu">
-  <a href="Index.html">Home</a>
-  <a href="TRUOWL3.html">T.R.U. Owl</a>
-  <a href="strategic-owl-insight-quiz.html">Insight Quiz</a>
-  <a href="newelections3.html">Election Security</a>
-  <a href="the_constitution.html">The Constitution</a>
-  <a href="newcontact3.html">Contact</a>
-</div>
-</nav>
-  <div class="container">
-    <h1>T.R.U. Owl Viewer</h1>
-    <!-- 🎯 Divider -->
-    <section class="divider-section">
-      <div class="divider-bar">
-        <div class="truth"></div>
-        <div class="reliability"></div>
-        <div class="understanding"></div>
+
+  <div id="spa-content">
+    <div class="container">
+      <h1>T.R.U. Owl Viewer</h1>
+      <!-- 🎯 Divider -->
+      <section class="divider-section">
+        <div class="divider-bar">
+          <div class="truth"></div>
+          <div class="reliability"></div>
+          <div class="understanding"></div>
+        </div>
+        <div class="divider-labels">
+          <span>Truth</span>
+          <span>Reliability</span>
+          <span>Understanding</span>
+        </div>
+      </section>
+     <!-- 🌐 Wrapper for both dropdowns (Filter by Role and Select a Profile) -->
+    <div class="dropdowns-wrapper" 
+         style="display: flex; justify-content: center; gap: 40px; margin: 40px 0;">
+      <!-- 🧩 Each dropdown is grouped in its own container -->
+
+      <!-- 🔍 Dropdown: Filter by Role -->
+      <div class="dropdown-group" style="text-align: left;">
+        <!-- 🏷️ Label for the dropdown -->
+        <label for="role-filter" 
+               style="display: block; margin-bottom: 6px; font-weight: 600;">
+          Filter by Role:
+        </label>
+
+        <!-- 🔽 The actual dropdown <select> element -->
+        <select id="role-filter"></select>
       </div>
-      <div class="divider-labels">
-        <span>Truth</span>
-        <span>Reliability</span>
-        <span>Understanding</span>
+
+      <!-- 👤 Dropdown: Select a Profile -->
+      <div class="dropdown-group" style="text-align: left;">
+        <!-- 🏷️ Label for the dropdown -->
+        <label for="person-select" 
+               style="display: block; margin-bottom: 6px; font-weight: 600;">
+          Select a Profile:
+        </label>
+
+        <!-- 🔽 The actual dropdown <select> element -->
+        <select id="person-select"></select>
       </div>
-    </section>
-   <!-- 🌐 Wrapper for both dropdowns (Filter by Role and Select a Profile) -->
-<div class="dropdowns-wrapper" 
-     style="display: flex; justify-content: center; gap: 40px; margin: 40px 0;">
-  <!-- 🧩 Each dropdown is grouped in its own container -->
+    </div>
 
-  <!-- 🔍 Dropdown: Filter by Role -->
-  <div class="dropdown-group" style="text-align: left;">
-    <!-- 🏷️ Label for the dropdown -->
-    <label for="role-filter" 
-           style="display: block; margin-bottom: 6px; font-weight: 600;">
-      Filter by Role:
-    </label>
+    <!-- 📊 The main data table for showing scores (initially hidden) -->
+    <table id="score-table" style="display:none;">
+      <thead>
+        <tr>
+          <!-- 🟩 Score column header (includes Truth, Reliability, etc.) -->
+          <th style="text-align: center;">Score</th>
 
-    <!-- 🔽 The actual dropdown <select> element -->
-    <select id="role-filter"></select>
+          <!-- 🟨 Explanation column header -->
+          <th>Explanation</th>
+        </tr>
+      </thead>
+
+      <!-- 📥 Populated dynamically by JavaScript with score rows -->
+      <tbody id="score-body"></tbody>
+    </table>
+
+    <!-- 🔻 Container for displaying the total score and commentary -->
+    <div id="total-score-box" style="margin-top: 20px; display:none;">
+      <!-- 📶 Visual bar and summary commentary -->
+      <div class="score-bar">
+        <!-- 🎯 Vertical color bar (red/green) based on total score -->
+        <div id="indicator-bar" class="bar-indicator"></div>
+
+        <!-- 🗣️ Text summary under the table (updated via JS) -->
+        <div id="total-score-comment" class="total-score-comment-text"></div>
+      </div>
+    </div>
+      
+      <div class="role-box">
+    <h3>High Office</h3>
+    <p><span class="text-truth"><strong>Truth:</strong></span> <span class="num-font">4.0×</span></p>
+  <p><span class="text-reliability"><strong>Reliability:</strong></span> <span class="num-font">4.0×</span></p>
+  <p><span class="text-understanding"><strong>Understanding:</strong></span> <span class="num-font">5.0×</span></p>
+  <small>The highest offices hold the highest responsibility. Their words and rulings move the world.</small>
+
+  <h3>Politicians</h3>
+  <p><span class="text-truth"><strong>Truth:</strong></span> <span class="num-font">3.5×</span></p>
+  <p><span class="text-reliability"><strong>Reliability:</strong></span> <span class="num-font">3.5×</span></p>
+  <p><span class="text-understanding"><strong>Understanding:</strong></span> <span class="num-font">4.5×</span></p>
+  <small>Includes Cabinet members, federal legislators, and top officials shaping national policy.</small>
+
+  <h3>Media Organizations</h3>
+  <p><span class="text-truth"><strong>Truth:</strong></span> <span class="num-font">3.0×</span></p>
+  <p><span class="text-reliability"><strong>Reliability:</strong></span> <span class="num-font">3.0×</span></p>
+  <p><span class="text-understanding"><strong>Understanding:</strong></span> <span class="num-font">4.0×</span></p>
+  <small>Networks and publishers shape public perception and drive national narratives.</small>
+
+  <h3>Journalists</h3>
+  <p><span class="text-truth"><strong>Truth:</strong></span> <span class="num-font">2.5×</span></p>
+  <p><span class="text-reliability"><strong>Reliability:</strong></span> <span class="num-font">2.5×</span></p>
+  <p><span class="text-understanding"><strong>Understanding:</strong></span> <span class="num-font">3.5×</span></p>
+  <small>Reporters and editors are trusted to verify facts, provide context, and admit when wrong.</small>
+
+  <h3>Influencers</h3>
+  <p><span class="text-truth"><strong>Truth:</strong></span> <span class="num-font">1.3×</span></p>
+  <p><span class="text-reliability"><strong>Reliability:</strong></span> <span class="num-font">1.3×</span></p>
+  <p><span class="text-understanding"><strong>Understanding:</strong></span> <span class="num-font">2.0×</span></p>
+    <small>They shape opinions without institutional power. Credibility depends on earned trust.</small>
   </div>
-
-  <!-- 👤 Dropdown: Select a Profile -->
-  <div class="dropdown-group" style="text-align: left;">
-    <!-- 🏷️ Label for the dropdown -->
-    <label for="person-select" 
-           style="display: block; margin-bottom: 6px; font-weight: 600;">
-      Select a Profile:
-    </label>
-
-    <!-- 🔽 The actual dropdown <select> element -->
-    <select id="person-select"></select>
-  </div>
-</div>
-
-<!-- 📊 The main data table for showing scores (initially hidden) -->
-<table id="score-table" style="display:none;">
-  <thead>
-    <tr>
-      <!-- 🟩 Score column header (includes Truth, Reliability, etc.) -->
-      <th style="text-align: center;">Score</th>
-
-      <!-- 🟨 Explanation column header -->
-      <th>Explanation</th>
-    </tr>
-  </thead>
-
-  <!-- 📥 Populated dynamically by JavaScript with score rows -->
-  <tbody id="score-body"></tbody>
-</table>
-
-<!-- 🔻 Container for displaying the total score and commentary -->
-<div id="total-score-box" style="margin-top: 20px; display:none;">
-  <!-- 📶 Visual bar and summary commentary -->
-  <div class="score-bar">
-    <!-- 🎯 Vertical color bar (red/green) based on total score -->
-    <div id="indicator-bar" class="bar-indicator"></div>
-
-    <!-- 🗣️ Text summary under the table (updated via JS) -->
-    <div id="total-score-comment" class="total-score-comment-text"></div>
-  </div>
-</div>
-  
-    <div class="role-box">
-  <h3>High Office</h3>
-  <p><span class="text-truth"><strong>Truth:</strong></span> <span class="num-font">4.0×</span></p>
-<p><span class="text-reliability"><strong>Reliability:</strong></span> <span class="num-font">4.0×</span></p>
-<p><span class="text-understanding"><strong>Understanding:</strong></span> <span class="num-font">5.0×</span></p>
-<small>The highest offices hold the highest responsibility. Their words and rulings move the world.</small>
-
-<h3>Politicians</h3>
-<p><span class="text-truth"><strong>Truth:</strong></span> <span class="num-font">3.5×</span></p>
-<p><span class="text-reliability"><strong>Reliability:</strong></span> <span class="num-font">3.5×</span></p>
-<p><span class="text-understanding"><strong>Understanding:</strong></span> <span class="num-font">4.5×</span></p>
-<small>Includes Cabinet members, federal legislators, and top officials shaping national policy.</small>
-
-<h3>Media Organizations</h3>
-<p><span class="text-truth"><strong>Truth:</strong></span> <span class="num-font">3.0×</span></p>
-<p><span class="text-reliability"><strong>Reliability:</strong></span> <span class="num-font">3.0×</span></p>
-<p><span class="text-understanding"><strong>Understanding:</strong></span> <span class="num-font">4.0×</span></p>
-<small>Networks and publishers shape public perception and drive national narratives.</small>
-
-<h3>Journalists</h3>
-<p><span class="text-truth"><strong>Truth:</strong></span> <span class="num-font">2.5×</span></p>
-<p><span class="text-reliability"><strong>Reliability:</strong></span> <span class="num-font">2.5×</span></p>
-<p><span class="text-understanding"><strong>Understanding:</strong></span> <span class="num-font">3.5×</span></p>
-<small>Reporters and editors are trusted to verify facts, provide context, and admit when wrong.</small>
-
-<h3>Influencers</h3>
-<p><span class="text-truth"><strong>Truth:</strong></span> <span class="num-font">1.3×</span></p>
-<p><span class="text-reliability"><strong>Reliability:</strong></span> <span class="num-font">1.3×</span></p>
-<p><span class="text-understanding"><strong>Understanding:</strong></span> <span class="num-font">2.0×</span></p>
-  <small>They shape opinions without institutional power. Credibility depends on earned trust.</small>
-</div>
+      
     
-  
-    <!-- 🎯 Divider -->
-    <section class="divider-section">
-      <div class="divider-bar">
-        <div class="truth"></div>
-        <div class="reliability"></div>
-        <div class="understanding"></div>
-      </div>
-      <div class="divider-labels">
-        <span>Truth</span>
-        <span>Reliability</span>
-        <span>Understanding</span>
-      </div>
-    </section>
+      <!-- 🎯 Divider -->
+      <section class="divider-section">
+        <div class="divider-bar">
+          <div class="truth"></div>
+          <div class="reliability"></div>
+          <div class="understanding"></div>
+        </div>
+        <div class="divider-labels">
+          <span>Truth</span>
+          <span>Reliability</span>
+          <span>Understanding</span>
+        </div>
+      </section>
+    </div>
+  </div>
 
   <script>
-  const TRU_MULTIPLIERS = {
-    5: { truth: 4.0, reliability: 4.0, understanding: 5.0 },
-    4: { truth: 3.5, reliability: 3.5, understanding: 4.5 },
-    3: { truth: 3.0, reliability: 3.0, understanding: 4.0 },
-    2: { truth: 3.0, reliability: 3.0, understanding: 4.0 },
-    1: { truth: 1.3, reliability: 1.3, understanding: 2.0 },
-    0: { truth: 1.0, reliability: 1.0, understanding: 2.0 },
-  };
-
-  let rowMap = {}, roleMap = {};
-
-  async function fetchTRUData() {
-    const API_KEY = "AIzaSyCzuh9HBfe0r70r9U35Pe406PPZ-tz6I78";
-    const SHEET_ID = "19wBEj9hEkvIyQcoR5E_mBGVAxTzMnddMxk8nuQLAumA";
-    const RANGE = "TRU!A2:K1000";
-    const url = `https://sheets.googleapis.com/v4/spreadsheets/${SHEET_ID}/values/${RANGE}?key=${API_KEY}`;
-    try {
-      const res = await fetch(url);
-      if (!res.ok) throw new Error(`HTTP error! Status: ${res.status}`);
-      const json = await res.json();
-      return json.values || [];
-    } catch (err) {
-      console.error("Failed to fetch sheet data", err);
-      return [];
-    }
-  }
-
-  function populateDropdowns(data) {
-    rowMap = {};
-    roleMap = {};
-    data.forEach(row => {
-      const name = row[0];
-      const role = row[1] || "Uncategorized";
-      if (!roleMap[role]) roleMap[role] = [];
-      roleMap[role].push(name);
-      if (name) rowMap[name] = row;
-    });
-
-    const roleSelect = document.getElementById("role-filter");
-    roleSelect.innerHTML = '<option value="All">All</option>';
-    Object.keys(roleMap).sort().forEach(role => {
-      const opt = document.createElement("option");
-      opt.value = role;
-      opt.textContent = role;
-      roleSelect.appendChild(opt);
-    });
-
-    updatePersonDropdown("All");
-  }
-
-  function updatePersonDropdown(role) {
-    const personSelect = document.getElementById("person-select");
-    personSelect.innerHTML = '<option value="">-- Choose a name --</option>';
-    let names = (role === "All") ? Object.keys(rowMap) : roleMap[role] || [];
-    names.sort().forEach(name => {
-      const opt = document.createElement("option");
-      opt.value = name;
-      opt.textContent = name;
-      personSelect.appendChild(opt);
-    });
-    personSelect.disabled = names.length === 0;
-  }
-
-  function showScores() {
-    const select = document.getElementById("person-select");
-    const table = document.getElementById("score-table");
-    const tbody = document.getElementById("score-body");
-    const totalBox = document.getElementById("total-score-box");
-    const totalCommentEl = document.getElementById("total-score-comment");
-    const indicatorBar = document.getElementById("indicator-bar");
-
-    const selected = select.value;
-    if (!selected || !rowMap[selected]) {
-      table.style.display = "none";
-      totalBox.style.display = "none";
-      return;
-    }
-
-    const row = rowMap[selected];
-    tbody.innerHTML = "";
-
-    const truthRaw = parseFloat(row[2]) || 0;
-    const reliabilityRaw = parseFloat(row[3]) || 0;
-    const understandingRaw = parseFloat(row[4]) || 0;
-    const commentTruth = row[5] || "";
-    const commentReliability = row[6] || "";
-    const commentUnderstanding = row[7] || "";
-    const summaryBelowTable = row[8] || "";
-    const totalScoreComment = row[9] || "Summary not available";
-    const roleFlag = parseInt(row[10]) || 0;
-
-    const multiplier = TRU_MULTIPLIERS[roleFlag] || TRU_MULTIPLIERS[0];
-    const truthFinal = truthRaw * multiplier.truth;
-    const reliabilityFinal = reliabilityRaw * multiplier.reliability;
-    const understandingFinal = understandingRaw * multiplier.understanding;
-
-    const scores = [
-      { label: "Truth", value: truthFinal, comment: commentTruth, className: "text-truth" },
-      { label: "Reliability", value: reliabilityFinal, comment: commentReliability, className: "text-reliability" },
-      { label: "Understanding", value: understandingFinal, comment: commentUnderstanding, className: "text-understanding" },
-    ];
-
-    let total = 0;
-    scores.forEach(({ label, value, comment, className }) => {
-      const tr = document.createElement("tr");
-
-      const tdScore = document.createElement("td");
-     tdScore.className = "";
-tdScore.setAttribute("data-label", "Score");
-tdScore.innerHTML = `
-  <div style="display: flex; flex-direction: column; align-items: center;">
-    <span class="${className}">${label}</span>
-    <span class="num-font" style="color: var(--text); font-weight: bold; font-size: 1.035rem;">
-  ${value >= 0 ? "+" : ""}${value.toFixed(0)}
-</span>
-  </div>
-`;
-
-      const tdComment = document.createElement("td");
-tdComment.setAttribute("data-label", "Explanation");
-tdComment.setAttribute("style", `
-  font-family: 'Playfair Display', serif;
-  font-size: 1.035rem;
-  color: var(--text);
-  text-align: left;
-  line-height: 1.5;
-  padding: 8px 12px;
-`);
-tdComment.textContent = comment;
-
-      tr.appendChild(tdScore);
-      tr.appendChild(tdComment);
-      tbody.appendChild(tr);
-
-      total += value;
-    });
-
-    const totalRow = document.createElement("tr");
-
-    const tdTotalScore = document.createElement("td");
-    tdTotalScore.className = "total-score";
-    tdTotalScore.setAttribute("data-label", "Score");
-   tdTotalScore.innerHTML = `
-  <div style="display: flex; flex-direction: column; align-items: center;">
-    <strong>Total Score</strong>
-    <span class="num-font" style="color: ${total >= 0 ? 'var(--bar-green)' : 'var(--bar-red)'}; font-weight: bold;">
-      ${total >= 0 ? "+" : ""}${total.toFixed(0)}
-    </span>
-  </div>
-`;
-
-    const tdTotalComment = document.createElement("td");
-    tdTotalComment.className = "total-score";
-    tdTotalComment.setAttribute("data-label", "Explanation");
-    tdTotalComment.innerHTML = `<strong style="font-family: 'Playfair Display', serif;">${totalScoreComment}</strong>`;
-
-    totalRow.appendChild(tdTotalScore);
-    totalRow.appendChild(tdTotalComment);
-    tbody.appendChild(totalRow);
-
-    indicatorBar.className = "bar-indicator " + (total >= 0 ? "bar-green" : "bar-red");
-    totalCommentEl.innerHTML = summaryBelowTable;
-
-    table.style.display = "table";
-    totalBox.style.display = "block";
-  }
-
-  document.addEventListener("DOMContentLoaded", async () => {
-    const data = await fetchTRUData();
-    populateDropdowns(data);
-    document.getElementById("role-filter").addEventListener("change", e => updatePersonDropdown(e.target.value));
-    document.getElementById("person-select").addEventListener("change", showScores);
-  });
-
-  function toggleMenu() {
-    document.getElementById("navMenu").classList.toggle("show");
-  }
+  
 </script>
 
 </body>
