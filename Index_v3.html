@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>The Strategic Owl | Truth. Reliability. Understanding.</title>
+  <link rel="stylesheet" href="strategic-owl.css">
+
+  <!-- Open Graph Meta (Facebook, LinkedIn, Discord, etc.) -->
+  <meta property="og:title" content="The Strategic Owl | Truth. Reliability. Understanding." />
+  <meta property="og:description" content="Measure credibility and uncover truth using the TRU OWL Score — a tool for independent thinkers." />
+  <meta property="og:image" content="https://thestrategicowl.com/STOInsightQuiz.png" />
+  <meta property="og:image:type" content="image/png" />
+  <meta property="og:image:width" content="1200" />
+  <meta property="og:image:height" content="630" />
+  <meta property="og:url" content="https://thestrategicowl.com" />
+  <meta property="og:type" content="website" />
+
+  <!-- Twitter Card Meta -->
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="The Strategic Owl | Truth. Reliability. Understanding." />
+  <meta name="twitter:description" content="Measure credibility and uncover truth using the TRU OWL Score — a tool for independent thinkers." />
+  <meta name="twitter:image" content="https://thestrategicowl.com/TSO.png" />
+
+  <!-- Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&family=Playfair+Display:wght@600;700&display=swap" rel="stylesheet" />
+</head>
+
+<body>
+
+  <nav class="top-nav">
+    <a href="TRUOWL3.html" class="nav-logo">
+      <img src="owl_logo_white.png" alt="Owl Logo" onerror="this.style.display='none';" />
+      <div class="nav-title">The Strategic Owl</div>
+    </a>
+    <button class="menu-toggle" onclick="toggleMenu()">☰</button>
+    <div class="nav-links" id="navMenu">
+      <a href="#" data-path="TRUOWL_v3.html">Home</a>
+<a href="#" data-path="TRUOWL2_v3.html">T.R.U. Owl</a>
+<a href="#" data-path="strategic-owl-insight-quiz.html">Insight Quiz</a>
+<a href="#" data-path="newelections3.html">Election Security</a>
+<a href="#" data-path="the_constitution.html">The Constitution</a>
+<a href="#" data-path="newcontact3.html">Contact</a>
+    </div>
+  </nav>
+
+  <div id="spa-content" class="container">
+    <!-- Content will load here -->
+  </div>
+
+ <script>
+  function loadPageContent(path) {
+    fetch(path)
+      .then(res => res.text())
+      .then(html => {
+        document.getElementById('spa-content').innerHTML = html;
+        window.scrollTo(0, 0);
+      });
+  }
+
+  document.addEventListener('DOMContentLoaded', () => {
+    // Load home page by default
+    loadPageContent('home.html');
+
+    // Handle nav clicks
+    document.querySelectorAll('a[data-path]').forEach(link => {
+      link.addEventListener('click', e => {
+        e.preventDefault();
+        const path = link.getAttribute('data-path');
+        loadPageContent(path);
+      });
+    });
+  });
+</script>
+</body>
+</html>
