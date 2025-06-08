@@ -7,6 +7,10 @@ function loadPageContent(path) {
       document.getElementById('spa-content').innerHTML = html;
       window.scrollTo(0, 0);
 
+      if (path.includes("TRUOWL")) {
+        initTRUPage();
+      }
+
       // ✅ LOAD CORRESPONDING JS FILE (if exists)
       // 🟨 Build path to JS file: assumes matching name in scripts/ folder
       const scriptPath = "scripts/" + path.replace('.html', '.js');
@@ -230,12 +234,13 @@ tdComment.textContent = comment;
     totalBox.style.display = "block";
   }
 
-  document.addEventListener("DOMContentLoaded", async () => {
-    const data = await fetchTRUData();
+function initTRUPage() {
+  fetchTRUData().then(data => {
     populateDropdowns(data);
     document.getElementById("role-filter").addEventListener("change", e => updatePersonDropdown(e.target.value));
     document.getElementById("person-select").addEventListener("change", showScores);
   });
+}
 
   function toggleMenu() {
     document.getElementById("navMenu").classList.toggle("show");
