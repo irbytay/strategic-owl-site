@@ -12,10 +12,10 @@ function loadPageContent(path) {
 }
 
 document.addEventListener('DOMContentLoaded', () => {
-  // Load home page by default
-  loadPageContent('home.html');
+  // Load home page content by default
+  loadPageContent('TRUOWL2_v3.html');
 
-  // Handle nav link clicks
+  // SPA navigation handling
   document.querySelectorAll('a[data-path]').forEach(link => {
     link.addEventListener('click', e => {
       e.preventDefault();
@@ -24,21 +24,22 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   });
 
-  // Legal popup logic
+  // Legal popup check (every 30 days)
   const legalPopup = document.getElementById('legal-popup');
   const lastAccepted = localStorage.getItem('legalPopupAccepted');
-  const now = new Date().getTime();
+  const now = Date.now();
   const thirtyDays = 1000 * 60 * 60 * 24 * 30;
 
-  if (!lastAccepted || now - parseInt(lastAccepted) > thirtyDays) {
+  if (legalPopup && (!lastAccepted || now - parseInt(lastAccepted) > thirtyDays)) {
     legalPopup.style.display = 'block';
   }
 
+  // Legal popup acceptance
   const acceptBtn = document.getElementById('accept-link');
   if (acceptBtn) {
     acceptBtn.addEventListener('click', () => {
       localStorage.setItem('legalPopupAccepted', Date.now().toString());
-      legalPopup.style.display = 'none';
+      if (legalPopup) legalPopup.style.display = 'none';
     });
   }
 });
