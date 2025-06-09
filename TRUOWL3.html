@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Strategic Owl | TRU OWL Viewer</title>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&family=Playfair+Display:wght@600;700&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&display=swap" rel="stylesheet" />
 
   <style>
   :root {
@@ -14,32 +14,32 @@
     --truth: #28A745;
     --reliability: #3B6CED;
     --understanding: #D4AF37;
-    --text: #FFFFFF;
-    --text-muted: #7C8A9B;
-    --heading: #FFFFF0;
+    --text: #E5E7EB;
+    --text-muted: #A0AEC0;
+    --heading: #F0F4F8;
     --shadow: rgba(0, 0, 0, 0.3);
     --bar-red: #FF4C4C;
     --bar-green: #28A745;
   }
 
   body {
-  background-color: var(--background);
-  color: var(--text);
-  font-family: 'Inter', serif;
-  margin: 0;
-  padding: 0;
-}
+    background-color: var(--background);
+    color: var(--text);
+    font-family: 'Montserrat', sans-serif;
+    margin: 0;
+    padding: 0;
+  }
     .num-font {
-  font-family: 'Inter', sans-serif;
-  font-variant-numeric: tabular-nums;
-}
+      font-family: 'Montserrat', sans-serif;
+      font-variant-numeric: tabular-nums;
+    }
     span.num-font {
-  font-family: 'Inter', sans-serif !important;
-  font-variant-numeric: tabular-nums;
-  font-size: 1.035rem !important;
-  font-weight: bold;
-  color: var(--text);
-}
+      font-family: 'Montserrat', sans-serif !important;
+      font-variant-numeric: tabular-nums;
+      font-size: 1.035rem !important;
+      font-weight: bold;
+      color: var(--text);
+    }
   /* 🧭 NAVBAR & MENU */
   nav.top-nav {
     position: fixed;
@@ -56,7 +56,7 @@
   }
 
   .nav-title {
-    font-family: 'Playfair Display', serif;
+    font-family: 'Montserrat', sans-serif !important;
     font-size: 22px;
     color: var(--understanding);
   }
@@ -224,7 +224,7 @@
   }
 
   h1 {
-    font-family: 'Playfair Display', serif;
+    font-family: 'Montserrat', sans-serif !important;
     color: var(--heading);
     margin-bottom: 16px;
     text-align: center;
@@ -243,12 +243,13 @@
     border-collapse: collapse;
     background-color: var(--surface);
     margin-top: 12px;
+    font-family: 'Montserrat', sans-serif !important;
   }
     #score-table th,
 #score-table td,
 #score-body span,
 #score-body strong {
-  font-family: 'Playfair Display', serif;
+  font-family: 'Montserrat', sans-serif !important;
 }
 
   th, td {
@@ -519,15 +520,15 @@ table.tru-table td:nth-child(2) {
   font-family: 'Playfair Display', serif;
 }
     .total-score-comment-text {
-  font-family: 'Playfair Display', serif;
-  font-size: 1rem;
-  color: var(--text);
-  line-height: 1.5;
-  margin-left: 12px;
-}
-    /* Target both filter labels */
+      font-family: 'Montserrat', sans-serif !important;
+      font-size: 1rem;
+      color: var(--text);
+      line-height: 1.5;
+      margin-left: 12px;
+    }
+/* Target both filter labels */
 .dropdowns-wrapper label {
-  font-family: 'Playfair Display', serif;
+  font-family: 'Montserrat', sans-serif !important;
   font-size: 1rem;
   color: var(--text);
 }
@@ -587,9 +588,36 @@ table.tru-table td:nth-child(2) {
 }
     .dropdowns-wrapper label,
 .dropdowns-wrapper select {
-  font-family: 'Playfair Display', serif;
+  font-family: 'Montserrat', sans-serif !important;
   font-size: 1rem;
   color: var(--text);
+}
+
+/* Font family for score-comment, score-label, num-font, table, total-score-label */
+h2, h3,
+.nav-title,
+.score-comment,
+.score-label,
+.num-font,
+table,
+.total-score-label {
+  font-family: 'Montserrat', sans-serif !important;
+}
+
+/* Score value and label styles */
+.score-value {
+  color: var(--text);
+  font-size: 1.15rem;
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+  font-family: 'Montserrat', sans-serif;
+}
+
+.score-label {
+  color: var(--text-muted);
+  font-weight: 600;
+  font-size: 0.95rem;
+  font-family: 'Montserrat', sans-serif;
 }
 </style>
 
@@ -842,22 +870,15 @@ tdScore.setAttribute("data-label", "Score");
 tdScore.innerHTML = `
   <div style="display: flex; flex-direction: column; align-items: center;">
     <span class="${className}">${label}</span>
-    <span class="num-font" style="color: var(--text); font-weight: bold; font-size: 1.035rem;">
-  ${value >= 0 ? "+" : ""}${value.toFixed(0)}
-</span>
+    <span class="score-value">
+      ${value >= 0 ? "+" : ""}${value.toFixed(0)}
+    </span>
   </div>
 `;
 
       const tdComment = document.createElement("td");
 tdComment.setAttribute("data-label", "Explanation");
-tdComment.setAttribute("style", `
-  font-family: 'Playfair Display', serif;
-  font-size: 1.035rem;
-  color: var(--text);
-  text-align: left;
-  line-height: 1.5;
-  padding: 8px 12px;
-`);
+tdComment.className = "score-comment";
 tdComment.textContent = comment;
 
       tr.appendChild(tdScore);
@@ -875,7 +896,7 @@ tdComment.textContent = comment;
    tdTotalScore.innerHTML = `
   <div style="display: flex; flex-direction: column; align-items: center;">
     <strong>Total Score</strong>
-    <span class="num-font" style="color: ${total >= 0 ? 'var(--bar-green)' : 'var(--bar-red)'}; font-weight: bold;">
+    <span class="score-value" style="color: ${total >= 0 ? 'var(--bar-green)' : 'var(--bar-red)'};">
       ${total >= 0 ? "+" : ""}${total.toFixed(0)}
     </span>
   </div>
