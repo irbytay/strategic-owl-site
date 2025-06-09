@@ -441,7 +441,7 @@
 const SHEET_ID = "19wBEj9hEkvIyQcoR5E_mBGVAxTzMnddMxk8nuQLAumA";
 const API_KEY = "AIzaSyCzuh9HBfe0r70r9U35Pe406PPZ-tz6I78";
 
-const QUIZ_RANGE = "TRUTest!C3:P100";
+const QUIZ_RANGE = "InfluencerTRU!C3:AA12";
 const INSIGHT_RANGE = "Insights!A2:A12";
 
 let quizData = [];
@@ -469,9 +469,10 @@ function loadQuestion(index) {
     ...narratives
   ] = quizData[index];
 
-  const scoreRow = narratives.slice(0, 11); // Score 10 to 0
-  const weight = parseFloat(narratives[11]);
-  const flipLogic = narratives[12]?.toLowerCase() === "false";
+  const scoreRow = narratives.slice(0, 11); // D to N
+  const weight = parseFloat(narratives[11]); // O
+  const userAnswerRow = narratives.slice(12, 23); // P to Z (0 to 10 raw values if needed later)
+  const flipLogic = narratives[23]?.toLowerCase() === "false";
 
   const container = document.getElementById("quiz-question");
   const scale = document.getElementById("quiz-scale");
