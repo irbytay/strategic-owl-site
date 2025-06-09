@@ -521,8 +521,8 @@ scale.appendChild(labelRow);
       btn.style.color = "var(--navy)";
       selectedBtn = btn;
 
-      const adjustedScore = flipLogic ? i : 10 - i;
-      const narrative = scoreRow[flipLogic ? i : 10 - i];
+      const adjustedScore = flipLogic ? 10 - i : i;
+      const narrative = scoreRow[flipLogic ? 10 - i : i];
 
       userScores[currentIndex] = {
         score: adjustedScore,
