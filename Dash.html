@@ -460,10 +460,10 @@ function populateDashboardSection(title1, title2, col1, col2, data, elementId) {
 
 async function loadDashboard() {
   const data = await fetchDashboardData();
-  populateDashboardSection("Top Influencer", "Bottom Influencer", 0, 2, data, "influencer-dashboard");
-  populateDashboardSection("Top Journalist", "Bottom Journalist", 4, 6, data, "journalist-dashboard");
-  populateDashboardSection("Top Politician", "Bottom Politician", 8, 10, data, "politician-dashboard");
-  populateDashboardSection("Top Media Company", "Bottom Media Company", 12, 14, data, "media-dashboard");
+  populateDashboardSection("Most Credible Influencers", "Least Credible Influencers", 0, 2, data, "influencer-dashboard");
+  populateDashboardSection("Most Credible Journalists", "Least Journalists", 4, 6, data, "journalist-dashboard");
+  populateDashboardSection("Most Credible Politicians", "Least Politicians", 8, 10, data, "politician-dashboard");
+  populateDashboardSection("Most Credible Media Companies", "Least Media Companies", 12, 14, data, "media-dashboard");
 }
 
 window.addEventListener("DOMContentLoaded", () => {
