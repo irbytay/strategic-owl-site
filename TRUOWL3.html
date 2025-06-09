@@ -21,6 +21,7 @@
   <meta name="twitter:description" content="Measure credibility and uncover truth using the TRU OWL Score — a tool for independent thinkers." />
   <meta name="twitter:image" content="https://thestrategicowl.com/TSO.png" />
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&family=Playfair+Display:wght@600;700&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600&display=swap" rel="stylesheet">
 
   <style>
   :root {
@@ -867,9 +868,9 @@ tdScore.innerHTML = `
       const tdComment = document.createElement("td");
 tdComment.setAttribute("data-label", "Explanation");
 tdComment.setAttribute("style", `
-  font-family: 'Playfair Display', serif;
+  font-family: 'Montserrat', sans-serif;
   font-size: 1.035rem;
-  color: var(--text);
+  color: var(--text-muted);
   text-align: left;
   line-height: 1.5;
   padding: 8px 12px;
@@ -890,7 +891,7 @@ tdComment.textContent = comment;
     tdTotalScore.setAttribute("data-label", "Score");
    tdTotalScore.innerHTML = `
   <div style="display: flex; flex-direction: column; align-items: center;">
-    <strong>Total Score</strong>
+    <strong style="color: #DDE3EA; font-family: 'Montserrat', sans-serif;">Total Score</strong>
     <span class="num-font" style="color: ${total >= 0 ? 'var(--bar-green)' : 'var(--bar-red)'}; font-weight: bold;">
       ${total >= 0 ? "+" : ""}${total.toFixed(0)}
     </span>
@@ -900,14 +901,14 @@ tdComment.textContent = comment;
     const tdTotalComment = document.createElement("td");
     tdTotalComment.className = "total-score";
     tdTotalComment.setAttribute("data-label", "Explanation");
-    tdTotalComment.innerHTML = `<strong style="font-family: 'Playfair Display', serif;">${totalScoreComment}</strong>`;
+    tdTotalComment.innerHTML = `<span style="font-family: 'Montserrat', sans-serif; font-size: 1.035rem; color: var(--text-muted); line-height: 1.5;">${totalScoreComment}</span>`;
 
     totalRow.appendChild(tdTotalScore);
     totalRow.appendChild(tdTotalComment);
     tbody.appendChild(totalRow);
 
     indicatorBar.className = "bar-indicator " + (total >= 0 ? "bar-green" : "bar-red");
-    totalCommentEl.innerHTML = summaryBelowTable;
+    totalCommentEl.innerHTML = `<span style="font-family: 'Montserrat', sans-serif; font-size: 1.035rem; color: var(--text-muted); line-height: 1.5;">${summaryBelowTable}</span>`;
 
     table.style.display = "table";
     totalBox.style.display = "block";
