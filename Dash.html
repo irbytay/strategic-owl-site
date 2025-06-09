@@ -424,17 +424,27 @@ async function fetchDashboardData() {
 
 function populateDashboardSection(title1, title2, col1, col2, data, elementId) {
   const container = document.getElementById(elementId);
+
+  function renderList(label, nameCol, scoreCol) {
+    const items = data.slice(1).map(row => {
+      const name = row[nameCol] || '';
+      const rawScore = row[scoreCol];
+      const score = rawScore && !isNaN(rawScore) ? parseInt(rawScore).toLocaleString() : '';
+      return `<li>${name}${score ? ` — ${score}` : ''}</li>`;
+    }).join('');
+
+    return `<h3>${label}</h3><ul>${items}</ul>`;
+  }
+
   container.innerHTML = `
-    <h3>${title1}</h3>
-    <ul>${data.slice(1).map(row => `<li>${row[col1] || ''}</li>`).join('')}</ul>
-    <h3>${title2}</h3>
-    <ul>${data.slice(1).map(row => `<li>${row[col2] || ''}</li>`).join('')}</ul>
+    ${renderList(title1, col1, col1 + 1)}
+    ${renderList(title2, col2, col2 + 1)}
   `;
 }
 
 async function loadDashboard() {
   const data = await fetchDashboardData();
-  populateDashboardSection("Top Influencer", "Bottom Influencer", 0, 1, data, "influencer-dashboard");
+  populateDashboardSection("Top Influencer", "Bottom Influencer", 0, 2, data, "influencer-dashboard");
   populateDashboardSection("Top Journalist", "Bottom Journalist", 4, 6, data, "journalist-dashboard");
   populateDashboardSection("Top Politician", "Bottom Politician", 8, 10, data, "politician-dashboard");
   populateDashboardSection("Top Media Company", "Bottom Media Company", 12, 14, data, "media-dashboard");
@@ -443,10 +453,6 @@ async function loadDashboard() {
 window.addEventListener("DOMContentLoaded", () => {
   loadDashboard();
 });
-
-  function toggleMenu() {
-    document.getElementById("navMenu").classList.toggle("show");
-  }
 
   function toggleMenu() {
     document.getElementById("navMenu").classList.toggle("show");
