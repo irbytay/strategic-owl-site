@@ -372,16 +372,16 @@
   <button class="menu-toggle" onclick="toggleMenu()">☰</button>
   <div class="nav-links" id="navMenu">
    <a href="Index.html">Home</a>
-<a href="Dash.html">Dash's</a>
-<a href="TRUOWL3.html">T.R.U. Owl</a>
-<a href="strategic-owl-insight-quiz.html">Insight Quiz</a>
-<a href="newelections3.html">Election Security</a>
-<a href="the_constitution.html">The Amendments</a>
-<a href="newcontact3.html">Contact</a>
+  <a href="TRUOWL3.html">T.R.U. Owl</a>
+  <a href="strategic-owl-insight-quiz.html">Insight Quiz</a>
+  <a href="newelections3.html">Election Security</a>
+  <a href="the_constitution.html">The Constitution</a>
+  <a href="newcontact3.html">Contact</a>
   </div>
 </nav>
-   <div class="container">
-    <h1>How Strategically Grounded Are You?</h1>
+  <div class="container">
+    <h1>Strategic Grounding</h1>
+<!-- 🎯 Divider -->
     <section class="divider-section">
       <div class="divider-bar">
         <div class="truth"></div>
@@ -394,13 +394,19 @@
         <span>Understanding</span>
       </div>
     </section>
-    <div style="text-align: center; max-width: 700px; margin: 0 auto 20px; color: var(--text-muted); font-family: 'Inter', sans-serif; font-size: 1rem;">
-      <p><strong>Before You Begin:</strong> Unlike most political quizzes, this tool doesn’t aim to categorize your ideology or put you in a box. Instead, it measures how your beliefs align with the core principles of a free and open society — rooted in American ideals like liberty, civic responsibility, and equal justice under the law.</p>
-      <p>This is anonymous. Nothing is stored or tracked. It’s just 10 questions — designed to reflect your civic alignment, not your personality or party affiliation.</p>
-      <p>Clear your mind. Be honest. There’s no perfect answer. The goal is reflection — not performance.</p>
-    </div>
  <!-- 🦉 Strategic Owl Radicalization Quiz -->
 <div id="quiz-container" class="container">
+  <h2 style="text-align: center; color: var(--understanding); font-family: 'Playfair Display', serif;">
+    How Strategically Grounded Are You?
+  </h2>
+
+  <p style="text-align: center; max-width: 700px; margin: 0 auto 16px; color: var(--text-muted); font-family: 'Inter', sans-serif; font-size: 1rem;">
+  This interactive tool helps assess your civic positioning — not your politics. It’s completely anonymous, your answers are stored nowhere, and it only takes 10 questions to complete.
+</p>
+  
+  <p style="text-align: center; max-width: 700px; margin: 0 auto 30px; color: var(--text-muted); font-family: 'Inter', sans-serif; font-size: 1rem;">
+    Don’t overthink it. Clear your mind and respond authentically. The goal is reflection, not performance.
+  </p>
 
   <div id="quiz-question" style="margin-top: 40px; text-align: center;"></div>
 
@@ -424,7 +430,7 @@
     cursor: pointer;
     transition: background-color 0.3s ease;
   ">
-    Confirm and Continue →
+    Next Question →
   </button>
 
   <div id="quiz-result" style="margin-top: 40px;"></div>
@@ -434,7 +440,7 @@
 const SHEET_ID = "19wBEj9hEkvIyQcoR5E_mBGVAxTzMnddMxk8nuQLAumA";
 const API_KEY = "AIzaSyCzuh9HBfe0r70r9U35Pe406PPZ-tz6I78";
 
-const QUIZ_RANGE = "TRUTest!C3:AA12";
+const QUIZ_RANGE = "TRUTest!C3:S100";
 const INSIGHT_RANGE = "Insights!A2:A12";
 
 let quizData = [];
@@ -459,16 +465,15 @@ async function fetchInsightMessages() {
 function loadQuestion(index) {
   const [
     question,
-    ...narratives
+    highNarrative,
+    moderateNarrative,
+    lowNarrative,
+    weight,
+    ...rest
   ] = quizData[index];
 
-  const scoreRow = narratives.slice(0, 11); // D to N (Narratives 10 to 0)
-  const weight = parseFloat(narratives[11]); // O
-  const userAnswerRow = narratives.slice(12, 23); // P to Z (User Answers 0 to 10)
-  // Column AA (index 26) determines polarity:
-  // - "false" means 10 = 10 (normal)
-  // - "true" means 0 = 10 (flipped scale)
-  const flipLogic = narratives[26]?.toLowerCase() === "true";
+  const scoreRow = rest.slice(0, 11);
+  const flipLogic = rest[11]?.toLowerCase() === "false";
 
   const container = document.getElementById("quiz-question");
   const scale = document.getElementById("quiz-scale");
@@ -524,16 +529,17 @@ scale.appendChild(labelRow);
       btn.style.color = "var(--navy)";
       selectedBtn = btn;
 
-      const adjustedScore = flipLogic ? 10 - i : i;
-      // Narrative mapping: columns D–N map 10 to 0, AA flips the polarity.
-      const narrative = scoreRow[flipLogic ? i : 10 - i];
+      const adjustedScore = flipLogic ? i : 10 - i;
+
+      let narrative = moderateNarrative;
+      if (adjustedScore <= 3) narrative = lowNarrative;
+      else if (adjustedScore >= 8) narrative = highNarrative;
 
       userScores[currentIndex] = {
         score: adjustedScore,
-        weight: weight,
+        weight: parseFloat(weight),
         originalInput: i,
-        question: question,
-        narrative: narrative
+        question: question
       };
 
       narrativeBox.innerHTML = `<p style="margin-top: 20px; font-family: 'Inter', sans-serif; font-size: 1rem; color: var(--text);">${narrative}</p>`;
@@ -541,7 +547,7 @@ scale.appendChild(labelRow);
 
       setTimeout(() => {
         nextBtn.style.display = "block";
-        nextBtn.textContent = (currentIndex === quizData.length - 1) ? "Show Results" : "Confirm and Continue →";
+        nextBtn.textContent = (currentIndex === quizData.length - 1) ? "Show Results" : "Next Question →";
       }, 1500);
 
       nextBtn.onclick = () => {
@@ -570,18 +576,17 @@ function showFinalResult() {
   });
 
   const avg = total / weightTotal;
-let label = "⚠️ Civic Threat";
-
-if (avg >= 1.0) label = "🕳️ Ideological Captive";
-if (avg >= 1.8) label = "🔥 Echoed Extremism";
-if (avg >= 2.5) label = "🛰️ Detached Operator";
-if (avg >= 3.2) label = "🧨 Fringe-Aligned";
-if (avg >= 3.9) label = "📡 Rigid Thinker";
-if (avg >= 4.8) label = "🛡️ Questioning Dogma";
-if (avg >= 5.7) label = "🪞 Seeking Balance";
-if (avg >= 6.6) label = "🧭 Healthy Skeptic";
-if (avg >= 7.5) label = "🪶 Strategic Thinker";
-if (avg >= 8.8) label = "🦉 Civically Grounded";
+  let label = "⚠️ Domestic Threat";
+  if (avg >= 1.0) label = "🕳️ Accelerationist";
+  if (avg >= 1.8) label = "🔥 Militant Mindset";
+  if (avg >= 2.5) label = "🛰️ Operational Extremist";
+  if (avg >= 3.2) label = "🧨 Extremist-Leaning";
+  if (avg >= 3.9) label = "📡 Radicalized";
+  if (avg >= 4.8) label = "🛡️ Dogmatic";
+  if (avg >= 5.7) label = "🪞 Ideological Echo";
+  if (avg >= 6.6) label = "🧭 Tilted";
+  if (avg >= 7.5) label = "🪶 Healthy Skeptic";
+  if (avg >= 8.8) label = "🦉 Grounded";
 
   const insightIndex = Math.floor(avg);
   const strategicInsight = insightMessages[insightIndex] || "";
@@ -618,44 +623,16 @@ if (avg >= 8.8) label = "🦉 Civically Grounded";
     return `
       <div style="
         background-color: var(--surface);
-        padding: 20px 24px;
-        margin-bottom: 16px;
+        padding: 16px 20px;
+        margin-bottom: 12px;
         border-left: 4px solid var(--reliability);
-        border-radius: 8px;
+        border-radius: 6px;
         font-family: 'Inter', sans-serif;
         color: var(--text);
-        box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+        box-shadow: 0 2px 6px rgba(0,0,0,0.1);
       ">
-        <div style="
-          font-weight: 600; 
-          font-size: 1.05rem; 
-          color: var(--understanding); 
-          font-family: 'Playfair Display', serif; 
-          margin-bottom: 6px;
-        ">
-          ${entry.question}
-        </div>
-
-        <div style="font-size: 0.95rem; color: var(--text-muted);">
-          <strong>Your Answer:</strong> 
-          <span style="color: var(--truth); font-weight: 600;">${entry.originalInput}</span> 
-          <span style="font-size: 0.85rem; color: var(--text-muted); font-style: italic;">(Weight: ${entry.weight})</span>
-        </div>
-
-        <div style="
-          font-size: 0.95rem;
-          margin-top: 8px;
-          line-height: 1.5;
-          color: var(--text);
-          font-family: 'Inter', sans-serif;
-          background-color: rgba(255,255,255,0.03);
-          padding: 12px 14px;
-          border-left: 3px solid var(--understanding);
-          border-radius: 6px;
-        ">
-          <strong style="color: var(--understanding); font-weight: 600;">Why It Matters:</strong><br />
-          ${entry.narrative}
-        </div>
+        <div style="font-weight: 600; margin-bottom: 6px;">${entry.question}</div>
+        <div style="font-size: 0.95rem;"><strong>Your Answer:</strong> ${entry.originalInput}</div>
       </div>`;
   }).join("");
 
