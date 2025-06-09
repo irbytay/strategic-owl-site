@@ -430,7 +430,7 @@ function populateDashboardSection(title1, title2, col1, col2, data, elementId) {
       const name = row[nameCol] || '';
       const rawScore = row[scoreCol];
       const score = rawScore && !isNaN(rawScore) ? parseInt(rawScore).toLocaleString() : '';
-      return `<li>${name}${score ? ` ${score}` : ''}</li>`;
+      return `<li>${name}${score ? ` ${parseInt(score) < 0 ? '' : '— '}${score}` : ''}</li>`;
     }).join('');
 
     return `<h3>${label}</h3><ul>${items}</ul>`;
