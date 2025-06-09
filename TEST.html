@@ -573,17 +573,18 @@ function showFinalResult() {
   });
 
   const avg = total / weightTotal;
-  let label = "⚠️ Domestic Threat";
-  if (avg >= 1.0) label = "🕳️ Accelerationist";
-  if (avg >= 1.8) label = "🔥 Militant Mindset";
-  if (avg >= 2.5) label = "🛰️ Operational Extremist";
-  if (avg >= 3.2) label = "🧨 Extremist-Leaning";
-  if (avg >= 3.9) label = "📡 Radicalized";
-  if (avg >= 4.8) label = "🛡️ Dogmatic";
-  if (avg >= 5.7) label = "🪞 Ideological Echo";
-  if (avg >= 6.6) label = "🧭 Tilted";
-  if (avg >= 7.5) label = "🪶 Healthy Skeptic";
-  if (avg >= 8.8) label = "🦉 Grounded";
+let label = "⚠️ Civic Threat";
+
+if (avg >= 1.0) label = "🕳️ Ideological Captive";
+if (avg >= 1.8) label = "🔥 Echoed Extremism";
+if (avg >= 2.5) label = "🛰️ Detached Operator";
+if (avg >= 3.2) label = "🧨 Fringe-Aligned";
+if (avg >= 3.9) label = "📡 Rigid Thinker";
+if (avg >= 4.8) label = "🛡️ Questioning Dogma";
+if (avg >= 5.7) label = "🪞 Seeking Balance";
+if (avg >= 6.6) label = "🧭 Healthy Skeptic";
+if (avg >= 7.5) label = "🪶 Strategic Thinker";
+if (avg >= 8.8) label = "🦉 Civically Grounded";
 
   const insightIndex = Math.floor(avg);
   const strategicInsight = insightMessages[insightIndex] || "";
