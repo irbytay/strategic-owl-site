@@ -901,7 +901,7 @@ tdComment.textContent = comment;
     const tdTotalComment = document.createElement("td");
     tdTotalComment.className = "total-score";
     tdTotalComment.setAttribute("data-label", "Explanation");
-    tdTotalComment.innerHTML = `<strong style="font-family: 'Playfair Display', serif;">${totalScoreComment}</strong>`;
+    tdTotalComment.innerHTML = `<span style="font-family: 'Montserrat', sans-serif; font-size: 1.035rem; color: var(--text-muted); line-height: 1.5;">${totalScoreComment}</span>`;
 
     totalRow.appendChild(tdTotalScore);
     totalRow.appendChild(tdTotalComment);
