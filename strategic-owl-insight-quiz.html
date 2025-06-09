@@ -424,7 +424,7 @@
     cursor: pointer;
     transition: background-color 0.3s ease;
   ">
-    Log Response → Next
+    Confirm and Continue →
   </button>
 
   <div id="quiz-result" style="margin-top: 40px;"></div>
@@ -537,7 +537,7 @@ scale.appendChild(labelRow);
 
       setTimeout(() => {
         nextBtn.style.display = "block";
-        nextBtn.textContent = (currentIndex === quizData.length - 1) ? "Show Results" : "Log Response → Next";
+        nextBtn.textContent = (currentIndex === quizData.length - 1) ? "Show Results" : "Confirm and Continue →";
       }, 1500);
 
       nextBtn.onclick = () => {
