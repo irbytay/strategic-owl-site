@@ -526,7 +526,7 @@ scale.appendChild(labelRow);
 
       const adjustedScore = flipLogic ? 10 - i : i;
       // Narrative mapping: columns D–N map 10 to 0, AA flips the polarity.
-      const narrative = scoreRow[flipLogic ? 10 - i : i];
+      const narrative = scoreRow[flipLogic ? i : 10 - i];
 
       userScores[currentIndex] = {
         score: adjustedScore,
