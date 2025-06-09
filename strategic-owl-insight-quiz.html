@@ -462,10 +462,13 @@ function loadQuestion(index) {
     ...narratives
   ] = quizData[index];
 
-  const scoreRow = narratives.slice(0, 11); // D to N
+  const scoreRow = narratives.slice(0, 11); // D to N (Narratives 10 to 0)
   const weight = parseFloat(narratives[11]); // O
-  const userAnswerRow = narratives.slice(12, 23); // P to Z (0 to 10 raw values if needed later)
-  const flipLogic = narratives[23]?.toLowerCase() === "true";
+  const userAnswerRow = narratives.slice(12, 23); // P to Z (User Answers 0 to 10)
+  // Column AA (index 26) determines polarity:
+  // - "false" means 10 = 10 (normal)
+  // - "true" means 0 = 10 (flipped scale)
+  const flipLogic = narratives[26]?.toLowerCase() === "true";
 
   const container = document.getElementById("quiz-question");
   const scale = document.getElementById("quiz-scale");
@@ -522,6 +525,7 @@ scale.appendChild(labelRow);
       selectedBtn = btn;
 
       const adjustedScore = flipLogic ? 10 - i : i;
+      // Narrative mapping: columns D–N map 10 to 0, AA flips the polarity.
       const narrative = scoreRow[flipLogic ? 10 - i : i];
 
       userScores[currentIndex] = {
