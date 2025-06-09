@@ -1,9 +1,10 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Strategic Owl | T.R.U. Owl</title>
+  <title>The Strategic Owl | Truth. Reliability. Understanding.</title>
 
   <!-- Open Graph Meta (Facebook, LinkedIn, Discord, etc.) -->
   <meta property="og:title" content="The Strategic Owl | Truth. Reliability. Understanding." />
@@ -15,13 +16,7 @@
   <meta property="og:url" content="https://thestrategicowl.com" />
   <meta property="og:type" content="website" />
 
-  <!-- Twitter Card Meta -->
-  <meta name="twitter:card" content="summary_large_image" />
-  <meta name="twitter:title" content="The Strategic Owl | Truth. Reliability. Understanding." />
-  <meta name="twitter:description" content="Measure credibility and uncover truth using the TRU OWL Score — a tool for independent thinkers." />
-  <meta name="twitter:image" content="https://thestrategicowl.com/TSO.png" />
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&family=Playfair+Display:wght@600;700&display=swap" rel="stylesheet" />
-  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600&display=swap" rel="stylesheet">
 
   <style>
   :root {
@@ -40,23 +35,13 @@
   }
 
   body {
-  background-color: var(--background);
-  color: var(--text);
-  font-family: 'Inter', serif;
-  margin: 0;
-  padding: 0;
-}
-    .num-font {
-  font-family: 'Inter', sans-serif;
-  font-variant-numeric: tabular-nums;
-}
-    span.num-font {
-  font-family: 'Inter', sans-serif !important;
-  font-variant-numeric: tabular-nums;
-  font-size: 1.035rem !important;
-  font-weight: bold;
-  color: var(--text);
-}
+    background-color: var(--background);
+    color: var(--text);
+    font-family: 'Inter', sans-serif;
+    margin: 0;
+    padding: 0;
+  }
+
   /* 🧭 NAVBAR & MENU */
   nav.top-nav {
     position: fixed;
@@ -68,7 +53,7 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 14px 20px;
+    padding: 14px 20px;  /* 🟡 Controls vertical height of navbar */
     box-shadow: 0 2px 6px var(--shadow);
   }
 
@@ -120,7 +105,7 @@
     display: flex;
     flex-direction: column;
     align-items: center;
-    margin: 40px auto;
+    margin: 40px auto; /* 🟡 Adjust this to reduce space around the TRU bar (try 24px auto or 24px auto 12px) */
   }
 
   .divider-bar {
@@ -145,7 +130,7 @@
     justify-content: center;
     gap: 12px;
     width: 340px;
-    margin-top: 8px;
+    margin-top: 8px;/* 🟡 Adjust this to pull labels closer to bars (try 4px if needed) */
   }
 
   .divider-labels span {
@@ -155,88 +140,114 @@
     color: var(--text-muted);
   }
 
-  /* 👇 DROPDOWNS STACK ON MOBILE */
-@media (max-width: 600px) {
-  .dropdowns-wrapper {
-    flex-direction: column !important;
-    align-items: center;
-    gap: 20px !important;
+  @media (max-width: 768px) {
+    .menu-toggle {
+      display: block;
+    }
+
+    .nav-links {
+      display: none;
+      flex-direction: column;
+      align-items: center;/* 👈 links side-by-side on mobile */
+      justify-content: center;
+      background-color: var(--highlight);
+      position: absolute;
+      top: 58px;
+      left: 0;
+      width: 100%;
+      padding: 10px 0;
+      gap: 20px;
+      box-shadow: 0 3px 8px var(--shadow);
+    }
+    .nav-links a {
+  padding: 10px 0;
+  width: 100%;
+  text-align: center;
+  font-size: 1rem;
+}
+
+    .nav-links.show {
+      display: flex;
+      animation: fadeSlideDown 0.3s ease;
+    }
+
+    @keyframes fadeSlideDown {
+      from {
+        opacity: 0;
+        transform: translateY(-10px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+  }
+    @media (max-width: 500px) {
+  #legal-popup > div {
+    padding: 12px;
+    font-size: 0.95rem;
+  }
+      @media (max-width: 500px) {
+  .container {
+    padding: 16px;
+    margin-top: 48px; /* Tighten space for mobile */
   }
 
-  .dropdown-group {
-    width: 100%;
-    max-width: 320px;
-    text-align: center !important;
+  h1, h2 {
+    font-size: 1.25rem;
+    margin-bottom: 10px;
   }
 
-  .dropdown-group select {
-    width: 100%;
-    padding: 10px;
-    font-family: 'Playfair Display', serif;
-    font-size: 1rem;
-    background-color: var(--surface);
-    color: var(--text);
-    border: 1px solid var(--highlight);
-    border-radius: 6px;
+  p {
+    font-size: 0.9rem;
+    margin-bottom: 14px;
   }
 
-  .dropdown-group label {
-    font-family: 'Playfair Display', serif;
-    font-size: 1rem;
-    color: var(--text-muted);
-    margin-bottom: 6px;
-    display: block;
+  .divider-section {
+    margin: 24px auto 8px auto; /* Pull TRU bars closer */
+  }
+
+  .divider-bar {
+    width: 280px;
+    gap: 8px;
+  }
+
+  .divider-bar div {
+    width: 84px;
+  }
+
+  .divider-labels {
+    width: 280px;
+    gap: 8px;
+    margin-top: 6px;
+  }
+
+  .divider-labels span {
+    width: 84px;
+    font-size: 0.75rem;
+  }
+
+  .owl-button {
+    padding: 8px 14px;
+    font-size: 0.95rem;
   }
 }
 
-/* 👇 NAV MENU STACK ON MOBILE */
-@media (max-width: 768px) {
-  .menu-toggle {
-    display: block;
-  }
-
-  .nav-links {
-    display: none;
-    flex-direction: column;
-    align-items: center;
-    background-color: var(--highlight);
-    position: absolute;
-    top: 58px;
-    left: 0;
+  #accept-btn {
     width: 100%;
-    padding: 12px 0;
-    gap: 12px;
-    box-shadow: 0 3px 8px var(--shadow);
-  }
-
-  .nav-links.show {
-    display: flex;
-    animation: fadeSlideDown 0.3s ease;
-  }
-
-  .nav-links a {
-    padding: 10px 0;
-    width: 100%;
-    text-align: center;
     font-size: 1rem;
   }
 
-  @keyframes fadeSlideDown {
-    from {
-      opacity: 0;
-      transform: translateY(-10px);
-    }
-    to {
-      opacity: 1;
-      transform: translateY(0);
-    }
+  p {
+    font-size: 0.95rem;
+    margin-bottom: 16px;/* 🟡 Mobile-specific paragraph margin */
   }
 }
 
   /* ✅ YOUR ORIGINAL STYLES BELOW */
   .container {
     max-width: 960px;
-    margin: 100px auto 0 auto;
+    margin: 72px auto 0 auto; /* 🟡 Adjust this top margin to tighten space below nav (try 72px or 60px) */
     padding: 24px;
   }
 
@@ -246,6 +257,26 @@
     margin-bottom: 16px;
     text-align: center;
   }
+  h2 {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.5rem;
+  color: var(--understanding); /* golden highlight */
+  font-weight: 600;
+  margin-top: 4px; /* 🟡 Reduce this if h2 spacing feels too large (try 12px–20px) */
+  margin-bottom: 12px;
+  text-align: center;
+}
+  p {
+  font-family: 'Inter', sans-serif;
+  font-size: 1.05rem;
+  color: var(--text-muted);
+  line-height: 1.6;
+  margin-bottom: 20px; /* 🟡 You can tighten this to 12px or 16px for stacked content */
+  text-align: center;
+  max-width: 700px;
+  margin-left: auto;
+  margin-right: auto;
+}
 
   select {
     padding: 8px;
@@ -261,12 +292,6 @@
     background-color: var(--surface);
     margin-top: 12px;
   }
-    #score-table th,
-#score-table td,
-#score-body span,
-#score-body strong {
-  font-family: 'Playfair Display', serif;
-}
 
   th, td {
     padding: 12px;
@@ -304,309 +329,38 @@
   .bar-green {
     background-color: var(--bar-green);
   }
-    .role-breakdown {
-  background-color: var(--surface);
-  border-radius: 10px;
-  padding: 24px;
-  max-width: 720px;
-  margin: 0 auto 48px auto;
-  box-shadow: 0 2px 6px var(--shadow);
+    .match-nav-link {
+  color: var(--text-muted);
+  text-decoration: none;
+  font-size: 15px;
+  transition: color 0.3s ease;
 }
 
-.role-breakdown h3 {
-  font-family: 'Playfair Display', serif;
-  font-size: 1.2rem;
-  color: var(--heading);
-  margin-top: 28px;
-  margin-bottom: 8px;
-  text-align: center;
+.match-nav-link:hover {
+  color: var(--understanding);
 }
-
-.role-breakdown p {
+ /* 🦉 Strategic Owl Button Style */
+.owl-button {
+  background-color: var(--navy);            /* Deep base color */
+  color: white;                             /* Clean readable text */
+  font-weight: 600;                         /* Medium-bold */
+  padding: 10px 18px;
+  border: 1px solid var(--reliability);     /* Outline in reliability yellow */
+  border-radius: 8px;
   font-family: 'Inter', sans-serif;
   font-size: 1rem;
-  color: var(--text-muted);
-  text-align: center;
-  margin: 2px 0;
+  cursor: pointer;
+  text-decoration: none;
+  transition: 
+    background-color 0.3s ease, 
+    color 0.3s ease,
+    box-shadow 0.3s ease;
 }
 
-.role-breakdown small {
-  display: block;
-  font-size: 0.85rem;
-  color: var(--text-muted);
-  margin-bottom: 24px;
-  text-align: center;
-}
-    .role-box {
-  background-color: var(--surface);
-  padding: 24px;
-  margin: 48px auto 60px; /* Top spacing fix here */
-  border-radius: 12px;
-  max-width: 640px;
-  text-align: center;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
-}
-
-.role-box h3 {
-  font-family: 'Playfair Display', serif;
-  font-size: 1.3rem;
-  color: #7DBEFF;
-  margin-bottom: 8px;
-}
-
-.role-box p {
-  margin: 4px 0;
-  font-size: 1.05rem;
-  color: var(--text);
-}
-
-.role-box small {
-  display: block;
-  margin-top: 12px;
-  font-size: 0.9rem;
-  color: var(--text-muted);
-}
-   /* Fix so span color wins over the strong override */
-.text-truth strong {
-  color: var(--truth) !important;
-}
-.text-reliability strong {
-  color: var(--reliability) !important;
-}
-.text-understanding strong {
-  color: var(--understanding) !important;
-}
-    /* 📏 Make table columns responsive */
-table.tru-table {
-  width: 100%;
-  border-collapse: collapse;
-  table-layout: fixed;
-}
-
-table.tru-table th:nth-child(1),
-table.tru-table td:nth-child(1) {
-  width: 20%;
-  min-width: 70px;
-  white-space: nowrap;
-}
-
-table.tru-table th:nth-child(2),
-table.tru-table td:nth-child(2) {
-  width: 15%;
-  min-width: 60px;
-  text-align: center;
-}
-
-table.tru-table th:nth-child(3),
-table.tru-table td:nth-child(3) {
-  width: 65%;
-  word-wrap: break-word;
-}
-
-/* 🪶 Mobile stacking fallback (optional) */
-@media (max-width: 480px) {
-  table.tru-table,
-  table.tru-table thead,
-  table.tru-table tbody,
-  table.tru-table th,
-  table.tru-table td,
-  table.tru-table tr {
-    display: block;
-    width: 100%;
-  }
-
-  table.tru-table thead {
-    display: none;
-  }
-
-  table.tru-table td {
-    padding: 12px;
-    border-bottom: 1px solid var(--highlight);
-    position: relative;
-  }
-
-  table.tru-table td::before {
-    content: attr(data-label);
-    font-weight: bold;
-    color: var(--text-muted);
-    display: block;
-    margin-bottom: 6px;
-  }
-}@media (max-width: 600px) {
-  table.tru-table td:nth-child(1) {
-    display: flex;
-    flex-direction: column;
-    font-size: 0.9rem;
-    white-space: normal;
-    min-width: 80px;
-    line-height: 1.2;
-    padding-right: 6px;
-  }
-
-  table.tru-table td:nth-child(2) {
-    display: none; /* Hide the Score column — it’s now stacked */
-  }
-
-  table.tru-table th:nth-child(2) {
-    display: none;
-  }
-
-  table.tru-table td:nth-child(3),
-  table.tru-table th:nth-child(3) {
-    width: 100%;
-  }
-}
-    /* ✅ Updated table layout for 2 columns: Score + Explanation */
-table.tru-table th:nth-child(1),
-table.tru-table td:nth-child(1) {
-  width: 35%;
-  min-width: 100px;
-  text-align: center;
-  vertical-align: middle;
-}
-
-table.tru-table th:nth-child(2),
-table.tru-table td:nth-child(2) {
-  width: 65%;
-  text-align: left;
-  vertical-align: top;
-  word-wrap: break-word;
-}
-
-/* 📱 Responsive stacking for mobile */
-@media (max-width: 600px) {
-  table.tru-table,
-  table.tru-table thead,
-  table.tru-table tbody,
-  table.tru-table th,
-  table.tru-table td,
-  table.tru-table tr {
-    display: block;
-    width: 100%;
-  }
-
-  table.tru-table thead {
-    display: none;
-  }
-
-  table.tru-table td {
-    padding: 12px;
-    border-bottom: 1px solid var(--highlight);
-    position: relative;
-  }
-
-  table.tru-table td::before {
-    content: attr(data-label);
-    font-weight: bold;
-    color: var(--text-muted);
-    display: block;
-    margin-bottom: 6px;
-  }
-
-  /* Adjust stacked score cell layout */
-  table.tru-table td[data-label="Score"] {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    text-align: center;
-  }
-
-  /* Explanation stays full width on mobile */
-  table.tru-table td[data-label="Explanation"] {
-    text-align: left;
-  }
-}
-    #score-table th:nth-child(1) {
-  font-family: 'Playfair Display', serif;
-  font-size: 1rem;
-  font-weight: 700;
-  color: var(--heading); /* Try var(--text) for pure white instead */
-  text-align: center;
-}
-
-#score-table th:nth-child(2) {
-  font-family: 'Playfair Display', serif;
-  font-size: 1rem;
-  font-weight: 700;
-  color: var(--heading);
-  text-align: left;
-}
-    #score-table th,
-#score-table td {
-  font-family: 'Playfair Display', serif;
-}
-    .total-score-comment-text {
-  font-family: 'Playfair Display', serif;
-  font-size: 1rem;
-  color: var(--text);
-  line-height: 1.5;
-  margin-left: 12px;
-}
-    /* Target both filter labels */
-.dropdowns-wrapper label {
-  font-family: 'Playfair Display', serif;
-  font-size: 1rem;
-  color: var(--text);
-}
-    @media (max-width: 768px) {
-  .menu-toggle {
-    display: block;
-  }
-
-  .nav-links {
-    display: none;
-    flex-direction: column;
-    align-items: center;
-    background-color: var(--highlight);
-    position: absolute;
-    top: 58px;
-    left: 0;
-    width: 100%;
-    padding: 12px 0;
-    gap: 12px;
-    box-shadow: 0 3px 8px var(--shadow);
-  }
-
-  .nav-links.show {
-    display: flex;
-    animation: fadeSlideDown 0.3s ease;
-  }
-
-  .nav-links a {
-    padding: 10px 0;
-    width: 100%;
-    text-align: center;
-    font-size: 1rem;
-  }
-
-  @keyframes fadeSlideDown {
-    from {
-      opacity: 0;
-      transform: translateY(-10px);
-    }
-    to {
-      opacity: 1;
-      transform: translateY(0);
-    }
-  }
-}
-
-/* Target the dropdown selects */
-.dropdowns-wrapper select {
-  font-family: 'Playfair Display', serif;
-  font-size: 1rem;
-  padding: 6px 10px;
-  border-radius: 6px;
-  border: 1px solid var(--highlight);
-  background-color: var(--surface);
-  color: var(--text);
-  outline: none;
-}
-    .dropdowns-wrapper label,
-.dropdowns-wrapper select {
-  font-family: 'Playfair Display', serif;
-  font-size: 1rem;
-  color: var(--text);
+.owl-button:hover {
+  background-color: var(--reliability);     /* Hover color = yellow */
+  color: var(--navy);                       /* Invert text color */
+  box-shadow: 0 0 12px var(--reliability);  /* Glow on hover */
 }
 </style>
 
@@ -617,18 +371,18 @@ table.tru-table td:nth-child(2) {
 </a>
   <button class="menu-toggle" onclick="toggleMenu()">☰</button>
   <div class="nav-links" id="navMenu">
-  <a href="Index.html">Home</a>
+   <a href="Index.html">Home</a>
 <a href="Dash.html">Dash's</a>
 <a href="TRUOWL3.html">T.R.U. Owl</a>
 <a href="strategic-owl-insight-quiz.html">Insight Quiz</a>
 <a href="newelections3.html">Election Security</a>
 <a href="the_constitution.html">The Amendments</a>
 <a href="newcontact3.html">Contact</a>
-</div>
+  </div>
 </nav>
   <div class="container">
-    <h1>T.R.U. Owl Viewer</h1>
-    <!-- 🎯 Divider -->
+    <h1>Strategic Grounding</h1>
+<!-- 🎯 Divider -->
     <section class="divider-section">
       <div class="divider-bar">
         <div class="truth"></div>
@@ -641,290 +395,263 @@ table.tru-table td:nth-child(2) {
         <span>Understanding</span>
       </div>
     </section>
-   <!-- 🌐 Wrapper for both dropdowns (Filter by Role and Select a Profile) -->
-<div class="dropdowns-wrapper" 
-     style="display: flex; justify-content: center; gap: 40px; margin: 40px 0;">
-  <!-- 🧩 Each dropdown is grouped in its own container -->
+ <!-- 🦉 Strategic Owl Radicalization Quiz -->
+<div id="quiz-container" class="container">
+  <h2 style="text-align: center; color: var(--understanding); font-family: 'Playfair Display', serif;">
+    How Strategically Grounded Are You?
+  </h2>
 
-  <!-- 🔍 Dropdown: Filter by Role -->
-  <div class="dropdown-group" style="text-align: left;">
-    <!-- 🏷️ Label for the dropdown -->
-    <label for="role-filter" 
-           style="display: block; margin-bottom: 6px; font-weight: 600;">
-      Filter by Role:
-    </label>
-
-    <!-- 🔽 The actual dropdown <select> element -->
-    <select id="role-filter"></select>
-  </div>
-
-  <!-- 👤 Dropdown: Select a Profile -->
-  <div class="dropdown-group" style="text-align: left;">
-    <!-- 🏷️ Label for the dropdown -->
-    <label for="person-select" 
-           style="display: block; margin-bottom: 6px; font-weight: 600;">
-      Select a Profile:
-    </label>
-
-    <!-- 🔽 The actual dropdown <select> element -->
-    <select id="person-select"></select>
-  </div>
-</div>
-
-<!-- 📊 The main data table for showing scores (initially hidden) -->
-<table id="score-table" style="display:none;">
-  <thead>
-    <tr>
-      <!-- 🟩 Score column header (includes Truth, Reliability, etc.) -->
-      <th style="text-align: center;">Score</th>
-
-      <!-- 🟨 Explanation column header -->
-      <th>Explanation</th>
-    </tr>
-  </thead>
-
-  <!-- 📥 Populated dynamically by JavaScript with score rows -->
-  <tbody id="score-body"></tbody>
-</table>
-
-<!-- 🔻 Container for displaying the total score and commentary -->
-<div id="total-score-box" style="margin-top: 20px; display:none;">
-  <!-- 📶 Visual bar and summary commentary -->
-  <div class="score-bar">
-    <!-- 🎯 Vertical color bar (red/green) based on total score -->
-    <div id="indicator-bar" class="bar-indicator"></div>
-
-    <!-- 🗣️ Text summary under the table (updated via JS) -->
-    <div id="total-score-comment" class="total-score-comment-text"></div>
-  </div>
-</div>
+  <p style="text-align: center; max-width: 700px; margin: 0 auto 16px; color: var(--text-muted); font-family: 'Inter', sans-serif; font-size: 1rem;">
+  This interactive tool helps assess your civic positioning — not your politics. It’s completely anonymous, your answers are stored nowhere, and it only takes 10 questions to complete.
+</p>
   
-    <div class="role-box">
-  <h3>High Office</h3>
-  <p><span class="text-truth"><strong>Truth:</strong></span> <span class="num-font">4.0×</span></p>
-<p><span class="text-reliability"><strong>Reliability:</strong></span> <span class="num-font">4.0×</span></p>
-<p><span class="text-understanding"><strong>Understanding:</strong></span> <span class="num-font">5.0×</span></p>
-<small>The highest offices hold the highest responsibility. Their words and rulings move the world.</small>
+  <p style="text-align: center; max-width: 700px; margin: 0 auto 30px; color: var(--text-muted); font-family: 'Inter', sans-serif; font-size: 1rem;">
+    Don’t overthink it. Clear your mind and respond authentically. The goal is reflection, not performance.
+  </p>
 
-<h3>Politicians</h3>
-<p><span class="text-truth"><strong>Truth:</strong></span> <span class="num-font">3.5×</span></p>
-<p><span class="text-reliability"><strong>Reliability:</strong></span> <span class="num-font">3.5×</span></p>
-<p><span class="text-understanding"><strong>Understanding:</strong></span> <span class="num-font">4.5×</span></p>
-<small>Includes Cabinet members, federal legislators, and top officials shaping national policy.</small>
+  <div id="quiz-question" style="margin-top: 40px; text-align: center;"></div>
 
-<h3>Media Organizations</h3>
-<p><span class="text-truth"><strong>Truth:</strong></span> <span class="num-font">3.0×</span></p>
-<p><span class="text-reliability"><strong>Reliability:</strong></span> <span class="num-font">3.0×</span></p>
-<p><span class="text-understanding"><strong>Understanding:</strong></span> <span class="num-font">4.0×</span></p>
-<small>Networks and publishers shape public perception and drive national narratives.</small>
+  <div id="quiz-scale" style="display: flex; flex-wrap: wrap; justify-content: center; gap: 10px; margin: 20px 0;"></div>
 
-<h3>Journalists</h3>
-<p><span class="text-truth"><strong>Truth:</strong></span> <span class="num-font">2.5×</span></p>
-<p><span class="text-reliability"><strong>Reliability:</strong></span> <span class="num-font">2.5×</span></p>
-<p><span class="text-understanding"><strong>Understanding:</strong></span> <span class="num-font">3.5×</span></p>
-<small>Reporters and editors are trusted to verify facts, provide context, and admit when wrong.</small>
+  <!-- Inline narrative response area -->
+  <div id="narrative-display" style="max-width: 600px; margin: 0 auto; padding: 20px; display: none; background-color: var(--surface); color: var(--text); border-left: 4px solid var(--reliability); border-radius: 8px; font-size: 1rem; font-family: 'Inter', sans-serif;"></div>
 
-<h3>Influencers</h3>
-<p><span class="text-truth"><strong>Truth:</strong></span> <span class="num-font">1.3×</span></p>
-<p><span class="text-reliability"><strong>Reliability:</strong></span> <span class="num-font">1.3×</span></p>
-<p><span class="text-understanding"><strong>Understanding:</strong></span> <span class="num-font">2.0×</span></p>
-  <small>They shape opinions without institutional power. Credibility depends on earned trust.</small>
+  <!-- "Next" button shown AFTER delay -->
+  <button id="next-question" style="
+    display: none;
+    margin: 20px auto 0;
+    background-color: var(--reliability);
+    color: white;
+    padding: 10px 24px;
+    border: none;
+    border-radius: 8px;
+    font-size: 1rem;
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+  ">
+    Next Question →
+  </button>
+
+  <div id="quiz-result" style="margin-top: 40px;"></div>
 </div>
-    
-  
-    <!-- 🎯 Divider -->
-    <section class="divider-section">
-      <div class="divider-bar">
-        <div class="truth"></div>
-        <div class="reliability"></div>
-        <div class="understanding"></div>
-      </div>
-      <div class="divider-labels">
-        <span>Truth</span>
-        <span>Reliability</span>
-        <span>Understanding</span>
-      </div>
-    </section>
 
-  <script>
-  const TRU_MULTIPLIERS = {
-    5: { truth: 4.0, reliability: 4.0, understanding: 5.0 },
-    4: { truth: 3.5, reliability: 3.5, understanding: 4.5 },
-    3: { truth: 3.0, reliability: 3.0, understanding: 4.0 },
-    2: { truth: 3.0, reliability: 3.0, understanding: 4.0 },
-    1: { truth: 1.3, reliability: 1.3, understanding: 2.0 },
-    0: { truth: 1.0, reliability: 1.0, understanding: 2.0 },
-  };
+<script>
+const SHEET_ID = "19wBEj9hEkvIyQcoR5E_mBGVAxTzMnddMxk8nuQLAumA";
+const API_KEY = "AIzaSyCzuh9HBfe0r70r9U35Pe406PPZ-tz6I78";
 
-  let rowMap = {}, roleMap = {};
+const QUIZ_RANGE = "TRUTest!C3:P100";
+const INSIGHT_RANGE = "Insights!A2:A12";
 
-  async function fetchTRUData() {
-    const API_KEY = "AIzaSyCzuh9HBfe0r70r9U35Pe406PPZ-tz6I78";
-    const SHEET_ID = "19wBEj9hEkvIyQcoR5E_mBGVAxTzMnddMxk8nuQLAumA";
-    const RANGE = "TRU!A2:K1000";
-    const url = `https://sheets.googleapis.com/v4/spreadsheets/${SHEET_ID}/values/${RANGE}?key=${API_KEY}`;
-    try {
-      const res = await fetch(url);
-      if (!res.ok) throw new Error(`HTTP error! Status: ${res.status}`);
-      const json = await res.json();
-      return json.values || [];
-    } catch (err) {
-      console.error("Failed to fetch sheet data", err);
-      return [];
-    }
-  }
+let quizData = [];
+let insightMessages = [];
+let currentIndex = 0;
+let userScores = [];
 
-  function populateDropdowns(data) {
-    rowMap = {};
-    roleMap = {};
-    data.forEach(row => {
-      const name = row[0];
-      const role = row[1] || "Uncategorized";
-      if (!roleMap[role]) roleMap[role] = [];
-      roleMap[role].push(name);
-      if (name) rowMap[name] = row;
-    });
+async function fetchTRUData() {
+  const url = `https://sheets.googleapis.com/v4/spreadsheets/${SHEET_ID}/values/${QUIZ_RANGE}?key=${API_KEY}`;
+  const res = await fetch(url);
+  const json = await res.json();
+  return json.values;
+}
 
-    const roleSelect = document.getElementById("role-filter");
-    roleSelect.innerHTML = '<option value="All">All</option>';
-    Object.keys(roleMap).sort().forEach(role => {
-      const opt = document.createElement("option");
-      opt.value = role;
-      opt.textContent = role;
-      roleSelect.appendChild(opt);
-    });
+async function fetchInsightMessages() {
+  const url = `https://sheets.googleapis.com/v4/spreadsheets/${SHEET_ID}/values/${INSIGHT_RANGE}?key=${API_KEY}`;
+  const res = await fetch(url);
+  const json = await res.json();
+  return json.values.flat();
+}
 
-    updatePersonDropdown("All");
-  }
+function loadQuestion(index) {
+  const [
+    question,
+    ...narratives
+  ] = quizData[index];
 
-  function updatePersonDropdown(role) {
-    const personSelect = document.getElementById("person-select");
-    personSelect.innerHTML = '<option value="">-- Choose a name --</option>';
-    let names = (role === "All") ? Object.keys(rowMap) : roleMap[role] || [];
-    names.sort().forEach(name => {
-      const opt = document.createElement("option");
-      opt.value = name;
-      opt.textContent = name;
-      personSelect.appendChild(opt);
-    });
-    personSelect.disabled = names.length === 0;
-  }
+  const scoreRow = narratives.slice(0, 11); // Score 10 to 0
+  const weight = parseFloat(narratives[11]);
+  const flipLogic = narratives[12]?.toLowerCase() === "false";
 
-  function showScores() {
-    const select = document.getElementById("person-select");
-    const table = document.getElementById("score-table");
-    const tbody = document.getElementById("score-body");
-    const totalBox = document.getElementById("total-score-box");
-    const totalCommentEl = document.getElementById("total-score-comment");
-    const indicatorBar = document.getElementById("indicator-bar");
+  const container = document.getElementById("quiz-question");
+  const scale = document.getElementById("quiz-scale");
+  const narrativeBox = document.getElementById("narrative-display");
+  const nextBtn = document.getElementById("next-question");
 
-    const selected = select.value;
-    if (!selected || !rowMap[selected]) {
-      table.style.display = "none";
-      totalBox.style.display = "none";
-      return;
-    }
+  container.innerHTML = `<h2 style="text-align: center; color: var(--understanding); font-family: 'Playfair Display', serif;">${question}</h2>`;
+  scale.innerHTML = "";
+  narrativeBox.innerHTML = "";
+  narrativeBox.style.display = "none";
+  nextBtn.style.display = "none";
 
-    const row = rowMap[selected];
-    tbody.innerHTML = "";
-
-    const truthRaw = parseFloat(row[2]) || 0;
-    const reliabilityRaw = parseFloat(row[3]) || 0;
-    const understandingRaw = parseFloat(row[4]) || 0;
-    const commentTruth = row[5] || "";
-    const commentReliability = row[6] || "";
-    const commentUnderstanding = row[7] || "";
-    const summaryBelowTable = row[8] || "";
-    const totalScoreComment = row[9] || "Summary not available";
-    const roleFlag = parseInt(row[10]) || 0;
-
-    const multiplier = TRU_MULTIPLIERS[roleFlag] || TRU_MULTIPLIERS[0];
-    const truthFinal = truthRaw * multiplier.truth;
-    const reliabilityFinal = reliabilityRaw * multiplier.reliability;
-    const understandingFinal = understandingRaw * multiplier.understanding;
-
-    const scores = [
-      { label: "Truth", value: truthFinal, comment: commentTruth, className: "text-truth" },
-      { label: "Reliability", value: reliabilityFinal, comment: commentReliability, className: "text-reliability" },
-      { label: "Understanding", value: understandingFinal, comment: commentUnderstanding, className: "text-understanding" },
-    ];
-
-    let total = 0;
-    scores.forEach(({ label, value, comment, className }) => {
-      const tr = document.createElement("tr");
-
-      const tdScore = document.createElement("td");
-     tdScore.className = "";
-tdScore.setAttribute("data-label", "Score");
-tdScore.innerHTML = `
-  <div style="display: flex; flex-direction: column; align-items: center;">
-    <span class="${className}">${label}</span>
-    <span class="num-font" style="color: var(--text); font-weight: bold; font-size: 1.035rem;">
-  ${value >= 0 ? "+" : ""}${value.toFixed(0)}
-</span>
-  </div>
+  const labelRow = document.createElement("div");
+labelRow.style.display = "flex";
+labelRow.style.justifyContent = "space-between";
+labelRow.style.width = "100%";
+labelRow.style.maxWidth = "500px";
+labelRow.style.margin = "0 auto 10px auto";
+labelRow.innerHTML = `
+  <span style="font-size: 0.9rem; color: var(--text-muted);">
+     <span style="color: gold; font-weight: 600;">0</span> <– Fully Disagree
+  </span>
+  <span style="font-size: 0.9rem; color: var(--text-muted);">
+    Fully Agree –> <span style="color: gold; font-weight: 600;">10</span> 
+  </span>
 `;
+scale.appendChild(labelRow);
 
-      const tdComment = document.createElement("td");
-tdComment.setAttribute("data-label", "Explanation");
-tdComment.setAttribute("style", `
-  font-family: 'Montserrat', sans-serif;
-  font-size: 1.035rem;
-  color: var(--text-muted);
-  text-align: left;
-  line-height: 1.5;
-  padding: 8px 12px;
-`);
-tdComment.textContent = comment;
+  const scaleWrapper = document.createElement("div");
+  scaleWrapper.style.display = "flex";
+  scaleWrapper.style.justifyContent = "center";
+  scaleWrapper.style.gap = "8px";
+  scaleWrapper.style.flexWrap = "wrap";
 
-      tr.appendChild(tdScore);
-      tr.appendChild(tdComment);
-      tbody.appendChild(tr);
+  let selectedBtn = null;
 
-      total += value;
-    });
+  for (let i = 0; i <= 10; i++) {
+    const btn = document.createElement("button");
+    btn.textContent = i;
+    btn.className = "owl-button";
+    btn.style.border = "1px solid var(--understanding)";
+    btn.style.backgroundColor = "transparent";
+    btn.style.color = "var(--understanding)";
+    btn.style.borderRadius = "8px";
+    btn.style.padding = "10px 16px";
+    btn.style.fontWeight = "bold";
+    btn.style.cursor = "pointer";
+    btn.style.transition = "all 0.2s ease";
 
-    const totalRow = document.createElement("tr");
+    btn.onclick = () => {
+      if (selectedBtn) selectedBtn.style.backgroundColor = "transparent";
+      btn.style.backgroundColor = "var(--understanding)";
+      btn.style.color = "var(--navy)";
+      selectedBtn = btn;
 
-    const tdTotalScore = document.createElement("td");
-    tdTotalScore.className = "total-score";
-    tdTotalScore.setAttribute("data-label", "Score");
-   tdTotalScore.innerHTML = `
-  <div style="display: flex; flex-direction: column; align-items: center;">
-    <strong style="color: #DDE3EA; font-family: 'Montserrat', sans-serif;">Total Score</strong>
-    <span class="num-font" style="color: ${total >= 0 ? 'var(--bar-green)' : 'var(--bar-red)'}; font-weight: bold;">
-      ${total >= 0 ? "+" : ""}${total.toFixed(0)}
-    </span>
-  </div>
-`;
+      const adjustedScore = flipLogic ? i : 10 - i;
+      const narrative = scoreRow[flipLogic ? 10 - i : i];
 
-    const tdTotalComment = document.createElement("td");
-    tdTotalComment.className = "total-score";
-    tdTotalComment.setAttribute("data-label", "Explanation");
-    tdTotalComment.innerHTML = `<span style="font-family: 'Montserrat', sans-serif; font-size: 1.035rem; color: var(--text-muted); line-height: 1.5;">${totalScoreComment}</span>`;
+      userScores[currentIndex] = {
+        score: adjustedScore,
+        weight: weight,
+        originalInput: i,
+        question: question
+      };
 
-    totalRow.appendChild(tdTotalScore);
-    totalRow.appendChild(tdTotalComment);
-    tbody.appendChild(totalRow);
+      narrativeBox.innerHTML = `<p style="margin-top: 20px; font-family: 'Inter', sans-serif; font-size: 1rem; color: var(--text);">${narrative}</p>`;
+      narrativeBox.style.display = "block";
 
-    indicatorBar.className = "bar-indicator " + (total >= 0 ? "bar-green" : "bar-red");
-    totalCommentEl.innerHTML = `<span style="font-family: 'Montserrat', sans-serif; font-size: 1.035rem; color: var(--text-muted); line-height: 1.5;">${summaryBelowTable}</span>`;
+      setTimeout(() => {
+        nextBtn.style.display = "block";
+        nextBtn.textContent = (currentIndex === quizData.length - 1) ? "Show Results" : "Next Question →";
+      }, 1500);
 
-    table.style.display = "table";
-    totalBox.style.display = "block";
+      nextBtn.onclick = () => {
+        narrativeBox.style.display = "none";
+        nextBtn.style.display = "none";
+        currentIndex++;
+        if (currentIndex < quizData.length) {
+          loadQuestion(currentIndex);
+        } else {
+          showFinalResult();
+        }
+      };
+    };
+
+    scaleWrapper.appendChild(btn);
   }
 
-  document.addEventListener("DOMContentLoaded", async () => {
-    const data = await fetchTRUData();
-    populateDropdowns(data);
-    document.getElementById("role-filter").addEventListener("change", e => updatePersonDropdown(e.target.value));
-    document.getElementById("person-select").addEventListener("change", showScores);
+  scale.appendChild(scaleWrapper);
+}
+
+function showFinalResult() {
+  let total = 0, weightTotal = 0;
+  userScores.forEach(entry => {
+    total += entry.score * entry.weight;
+    weightTotal += entry.weight;
   });
 
-  function toggleMenu() {
-    document.getElementById("navMenu").classList.toggle("show");
-  }
-</script>
+  const avg = total / weightTotal;
+  let label = "⚠️ Domestic Threat";
+  if (avg >= 1.0) label = "🕳️ Accelerationist";
+  if (avg >= 1.8) label = "🔥 Militant Mindset";
+  if (avg >= 2.5) label = "🛰️ Operational Extremist";
+  if (avg >= 3.2) label = "🧨 Extremist-Leaning";
+  if (avg >= 3.9) label = "📡 Radicalized";
+  if (avg >= 4.8) label = "🛡️ Dogmatic";
+  if (avg >= 5.7) label = "🪞 Ideological Echo";
+  if (avg >= 6.6) label = "🧭 Tilted";
+  if (avg >= 7.5) label = "🪶 Healthy Skeptic";
+  if (avg >= 8.8) label = "🦉 Grounded";
 
+  const insightIndex = Math.floor(avg);
+  const strategicInsight = insightMessages[insightIndex] || "";
+
+  const insightBox = `
+  <div style="
+    background-color: #101020;
+    border: 2px solid #C89B3C;
+    color: #F5F5F5;
+    font-family: 'Playfair Display', serif;
+    font-size: 1.1rem;
+    padding: 24px 28px;
+    border-radius: 12px;
+    margin-bottom: 32px;
+    text-align: center;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.4);
+  ">
+    <div style="
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      font-size: 0.85rem;
+      font-weight: 600;
+      color: #FFD700;
+      margin-bottom: 12px;
+    ">
+      Strategic Insight
+    </div>
+    <div style="font-family: 'Inter', sans-serif; font-size: 1rem; line-height: 1.6;">
+      ${strategicInsight}
+    </div>
+  </div>`;
+
+  const resultList = userScores.map(entry => {
+    return `
+      <div style="
+        background-color: var(--surface);
+        padding: 16px 20px;
+        margin-bottom: 12px;
+        border-left: 4px solid var(--reliability);
+        border-radius: 6px;
+        font-family: 'Inter', sans-serif;
+        color: var(--text);
+        box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+      ">
+        <div style="font-weight: 600; margin-bottom: 6px;">${entry.question}</div>
+        <div style="font-size: 0.95rem;"><strong>Your Answer:</strong> ${entry.originalInput}</div>
+      </div>`;
+  }).join("");
+
+  document.getElementById("quiz-container").innerHTML = `
+    <h2>Your Strategic Owl Insight</h2>
+    <p style="font-size: 1.2rem;">Weighted Score: <strong>${avg.toFixed(2)}</strong></p>
+    <p style="font-size: 1.4rem; font-weight: bold; color: var(--understanding);">${label}</p>
+    ${insightBox}
+    <hr style="margin: 30px 0; border: 1px solid var(--highlight);" />
+    <div style="max-width: 700px; margin: 0 auto;">${resultList}</div>
+  `;
+}
+
+window.addEventListener("DOMContentLoaded", async () => {
+  [quizData, insightMessages] = await Promise.all([
+    fetchTRUData(),
+    fetchInsightMessages()
+  ]);
+  loadQuestion(currentIndex);
+});
+
+function toggleMenu() {
+  document.getElementById("navMenu").classList.toggle("show");
+}
+</script>
 </body>
 </html>
