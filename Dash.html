@@ -365,7 +365,7 @@
 /* Added CSS for score values */
 .score-value {
   font-weight: 600;
-  color: var(--understanding);
+  color: var(--heading);
   font-family: 'Playfair Display', serif;
 }
 
@@ -442,10 +442,9 @@ function populateDashboardSection(title1, title2, col1, col2, data, elementId) {
       const rawScore = row[scoreCol];
       const num = parseFloat(rawScore);
       const score = !isNaN(num) ? Math.abs(num).toLocaleString() : '';
-      const prefix = !isNaN(num) && num < 0 ? '−' : '—'; // minus sign or em dash
       const className = !isNaN(num) && num < 0 ? 'score-value negative' : 'score-value';
 
-      return `<li>${name}${score ? ` <span class="${className}">${prefix} ${score}</span>` : ''}</li>`;
+      return `<li>${name}${score ? ` <span class="${className}">${score}</span>` : ''}</li>`;
     }).join('');
 
     return `<h3>${label}</h3><ul>${items}</ul>`;
