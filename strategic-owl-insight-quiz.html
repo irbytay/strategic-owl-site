@@ -527,9 +527,9 @@ scale.appendChild(labelRow);
       btn.style.color = "var(--navy)";
       selectedBtn = btn;
 
-      const narrativeIndex = 10 - i; // D to N is 10 to 0
       const rawScore = i;
       const adjustedScore = flipLogic ? rawScore : 10 - rawScore;
+      const narrativeIndex = 10 - adjustedScore; // align narrative with final score
       const narrative = scoreRow[narrativeIndex];
 
       userScores[currentIndex] = {
