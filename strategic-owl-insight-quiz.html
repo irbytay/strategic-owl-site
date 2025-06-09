@@ -440,7 +440,7 @@
 const SHEET_ID = "19wBEj9hEkvIyQcoR5E_mBGVAxTzMnddMxk8nuQLAumA";
 const API_KEY = "AIzaSyCzuh9HBfe0r70r9U35Pe406PPZ-tz6I78";
 
-const QUIZ_RANGE = "TRUTest!C3:S100";
+const QUIZ_RANGE = "TRUTest!C3:AA12";
 const INSIGHT_RANGE = "Insights!A2:A12";
 
 let quizData = [];
@@ -465,15 +465,13 @@ async function fetchInsightMessages() {
 function loadQuestion(index) {
   const [
     question,
-    highNarrative,
-    moderateNarrative,
-    lowNarrative,
-    weight,
-    ...rest
+    ...narratives
   ] = quizData[index];
 
-  const scoreRow = rest.slice(0, 11);
-  const flipLogic = rest[11]?.toLowerCase() === "false";
+  const scoreRow = narratives.slice(0, 11); // D to N (10 to 0 scale)
+  const weight = parseFloat(narratives[11]); // O
+  const userAnswerRow = narratives.slice(12, 23); // P to Z (optional future use)
+  const flipLogic = narratives[23]?.toLowerCase() === "false"; // AA
 
   const container = document.getElementById("quiz-question");
   const scale = document.getElementById("quiz-scale");
@@ -529,17 +527,17 @@ scale.appendChild(labelRow);
       btn.style.color = "var(--navy)";
       selectedBtn = btn;
 
-      const adjustedScore = flipLogic ? i : 10 - i;
-
-      let narrative = moderateNarrative;
-      if (adjustedScore <= 3) narrative = lowNarrative;
-      else if (adjustedScore >= 8) narrative = highNarrative;
+      const narrativeIndex = 10 - i; // D to N is 10 to 0
+      const rawScore = i;
+      const adjustedScore = flipLogic ? rawScore : 10 - rawScore;
+      const narrative = scoreRow[narrativeIndex];
 
       userScores[currentIndex] = {
         score: adjustedScore,
-        weight: parseFloat(weight),
+        weight: weight,
         originalInput: i,
-        question: question
+        question: question,
+        narrative: narrative
       };
 
       narrativeBox.innerHTML = `<p style="margin-top: 20px; font-family: 'Inter', sans-serif; font-size: 1rem; color: var(--text);">${narrative}</p>`;
@@ -576,17 +574,17 @@ function showFinalResult() {
   });
 
   const avg = total / weightTotal;
-  let label = "⚠️ Domestic Threat";
-  if (avg >= 1.0) label = "🕳️ Accelerationist";
-  if (avg >= 1.8) label = "🔥 Militant Mindset";
-  if (avg >= 2.5) label = "🛰️ Operational Extremist";
-  if (avg >= 3.2) label = "🧨 Extremist-Leaning";
-  if (avg >= 3.9) label = "📡 Radicalized";
-  if (avg >= 4.8) label = "🛡️ Dogmatic";
-  if (avg >= 5.7) label = "🪞 Ideological Echo";
-  if (avg >= 6.6) label = "🧭 Tilted";
-  if (avg >= 7.5) label = "🪶 Healthy Skeptic";
-  if (avg >= 8.8) label = "🦉 Grounded";
+let label = "⚠️ Civic Threat";
+if (avg >= 1.0) label = "🕳️ Ideological Captive";
+if (avg >= 1.8) label = "🔥 Echoed Extremism";
+if (avg >= 2.5) label = "🛰️ Detached Operator";
+if (avg >= 3.2) label = "🧨 Fringe-Aligned";
+if (avg >= 3.9) label = "📡 Rigid Thinker";
+if (avg >= 4.8) label = "🛡️ Questioning Dogma";
+if (avg >= 5.7) label = "🪞 Seeking Balance";
+if (avg >= 6.6) label = "🧭 Healthy Skeptic";
+if (avg >= 7.5) label = "🪶 Strategic Thinker";
+if (avg >= 8.8) label = "🦉 Civically Grounded";
 
   const insightIndex = Math.floor(avg);
   const strategicInsight = insightMessages[insightIndex] || "";
@@ -632,7 +630,24 @@ function showFinalResult() {
         box-shadow: 0 2px 6px rgba(0,0,0,0.1);
       ">
         <div style="font-weight: 600; margin-bottom: 6px;">${entry.question}</div>
-        <div style="font-size: 0.95rem;"><strong>Your Answer:</strong> ${entry.originalInput}</div>
+        <div style="font-size: 0.95rem;"><strong>Your Answer:</strong> 
+          <span style="color: var(--truth); font-weight: 600;">${entry.originalInput}</span> 
+          <span style="font-size: 0.85rem; color: var(--text-muted); font-style: italic;">(Weight: ${entry.weight})</span>
+        </div>
+        <div style="
+          font-size: 0.95rem;
+          margin-top: 8px;
+          line-height: 1.5;
+          color: var(--text);
+          font-family: 'Inter', sans-serif;
+          background-color: rgba(255,255,255,0.03);
+          padding: 12px 14px;
+          border-left: 3px solid var(--understanding);
+          border-radius: 6px;
+        ">
+          <strong style="color: var(--understanding); font-weight: 600;">Why It Matters:</strong><br />
+          ${entry.narrative}
+        </div>
       </div>`;
   }).join("");
 
