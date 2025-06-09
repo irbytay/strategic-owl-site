@@ -870,22 +870,15 @@ tdScore.setAttribute("data-label", "Score");
 tdScore.innerHTML = `
   <div style="display: flex; flex-direction: column; align-items: center;">
     <span class="${className}">${label}</span>
-    <span class="num-font" style="color: var(--text); font-weight: bold; font-size: 1.035rem;">
-  ${value >= 0 ? "+" : ""}${value.toFixed(0)}
-</span>
+    <span class="score-value">
+      ${value >= 0 ? "+" : ""}${value.toFixed(0)}
+    </span>
   </div>
 `;
 
       const tdComment = document.createElement("td");
 tdComment.setAttribute("data-label", "Explanation");
-tdComment.setAttribute("style", `
-  font-family: 'Playfair Display', serif;
-  font-size: 1.035rem;
-  color: var(--text);
-  text-align: left;
-  line-height: 1.5;
-  padding: 8px 12px;
-`);
+tdComment.className = "score-comment";
 tdComment.textContent = comment;
 
       tr.appendChild(tdScore);
@@ -903,7 +896,7 @@ tdComment.textContent = comment;
    tdTotalScore.innerHTML = `
   <div style="display: flex; flex-direction: column; align-items: center;">
     <strong>Total Score</strong>
-    <span class="num-font" style="color: ${total >= 0 ? 'var(--bar-green)' : 'var(--bar-red)'}; font-weight: bold;">
+    <span class="score-value" style="color: ${total >= 0 ? 'var(--bar-green)' : 'var(--bar-red)'};">
       ${total >= 0 ? "+" : ""}${total.toFixed(0)}
     </span>
   </div>
