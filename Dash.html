@@ -361,6 +361,17 @@
     grid-template-columns: 1fr;
   }
 }
+
+/* Added CSS for score values */
+.score-value {
+  font-weight: 600;
+  color: var(--understanding);
+  font-family: 'Playfair Display', serif;
+}
+
+.score-value.negative {
+  color: var(--bar-red);
+}
 </style>
 
 <nav class="top-nav">
@@ -429,8 +440,12 @@ function populateDashboardSection(title1, title2, col1, col2, data, elementId) {
     const items = data.slice(1).map(row => {
       const name = row[nameCol] || '';
       const rawScore = row[scoreCol];
-      const score = rawScore && !isNaN(rawScore) ? parseInt(rawScore).toLocaleString() : '';
-      return `<li>${name}${score ? ` ${parseInt(score) < 0 ? '' : '— '}${score}` : ''}</li>`;
+      const num = parseFloat(rawScore);
+      const score = !isNaN(num) ? Math.abs(num).toLocaleString() : '';
+      const prefix = !isNaN(num) && num < 0 ? '−' : '—'; // minus sign or em dash
+      const className = !isNaN(num) && num < 0 ? 'score-value negative' : 'score-value';
+
+      return `<li>${name}${score ? ` <span class="${className}">${prefix} ${score}</span>` : ''}</li>`;
     }).join('');
 
     return `<h3>${label}</h3><ul>${items}</ul>`;
