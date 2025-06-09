@@ -417,21 +417,22 @@
 
   <!-- "Next" button shown AFTER delay -->
   <button id="next-question" style="
-    display: none;
-    margin: 20px auto 0;
-    background-color: var(--reliability);
-    color: white;
-    padding: 10px 24px;
-    border: none;
-    border-radius: 8px;
-    font-size: 1rem;
-    font-family: 'Montserrat', sans-serif;
-    font-weight: 600;
-    cursor: pointer;
-    transition: background-color 0.3s ease;
-  ">
-    Next Question →
-  </button>
+  display: none;
+  margin: 20px auto 0;
+  background-color: transparent;
+  color: var(--understanding);
+  padding: 10px 24px;
+  border: 2px solid var(--understanding);
+  border-radius: 10px;
+  font-size: 1rem;
+  font-family: 'Montserrat', sans-serif;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+" onmouseover="this.style.backgroundColor='var(--understanding)'; this.style.color='var(--navy)';"
+  onmouseout="this.style.backgroundColor='transparent'; this.style.color='var(--understanding)';">
+  Yes. Continue →
+</button>
 
   <div id="quiz-result" style="margin-top: 40px;"></div>
 </div>
@@ -542,10 +543,11 @@ scale.appendChild(labelRow);
 
       narrativeBox.innerHTML = `<p style="margin-top: 20px; font-family: 'Inter', sans-serif; font-size: 1rem; color: var(--text);">${narrative}</p>`;
       narrativeBox.style.display = "block";
+      narrativeBox.scrollIntoView({ behavior: 'smooth', block: 'center' });
 
       setTimeout(() => {
         nextBtn.style.display = "block";
-        nextBtn.textContent = (currentIndex === quizData.length - 1) ? "Show Results" : "Next Question →";
+        nextBtn.textContent = (currentIndex === quizData.length - 1) ? "Show Results" : "Yes. Continue →";
       }, 1500);
 
       nextBtn.onclick = () => {
