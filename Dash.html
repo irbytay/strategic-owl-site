@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Strategic Owl | The Constitution</title>
+  <title>Strategic Owl | TRU Dash</title>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&family=Playfair+Display:wght@600;700&display=swap" rel="stylesheet" />
   <link href="https://fonts.googleapis.com/css2?family=Roboto+Mono&display=swap" rel="stylesheet">
 
@@ -442,7 +442,7 @@ function populateDashboardSection(title1, title2, col1, col2, data, elementId) {
       const name = row[nameCol] || '';
       const rawScore = row[scoreCol];
       const num = parseFloat(rawScore);
-      const score = !isNaN(num) ? Math.abs(num).toLocaleString() : '';
+      const score = !isNaN(num) ? num.toLocaleString() : '';
       const className = !isNaN(num) && num < 0 ? 'score-value negative' : 'score-value';
 
       return `<li>${name}${score ? ` <span class="${className}">${score}</span>` : ''}</li>`;
