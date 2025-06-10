@@ -389,7 +389,7 @@
     border-bottom: 1px solid var(--highlight);
     text-align: left;
     font-size: 1rem;
-    color: var(--text);
+    color: var(--text-muted);
     font-family: 'Inter', sans-serif;
   }
 
@@ -549,13 +549,6 @@ Because yes, voter fraud exists. But it’s not what you’ve been led to believ
 
       <div class="table-wrapper" style="display:none;" id="culture-results">
         <table>
-          <thead>
-            <tr>
-  <th>Subcategory</th>
-  <th>Claim</th>
-  <th>Evidence</th>
-</tr>
-          </thead>
           <tbody id="culture-body"></tbody>
         </table>
       </div>
@@ -822,31 +815,15 @@ Because yes, voter fraud exists. But it’s not what you’ve been led to believ
       return;
     }
 
-    const groups = {};
+    window.cultureMap[selected].forEach(({ claim, extra }) => {
+      const claimRow = document.createElement("tr");
+      claimRow.innerHTML = `<td colspan="3" style="padding-left: 12px; padding-top: 16px; color: var(--bar-red); font-weight: bold;">${claim}</td>`;
+      body.appendChild(claimRow);
 
-    // Group claims under subcategories
-    window.cultureMap[selected].forEach(row => {
-      const { subcategory, claim, extra } = row;
-      if (!groups[subcategory]) groups[subcategory] = [];
-      groups[subcategory].push({ claim, extra });
+      const factRow = document.createElement("tr");
+      factRow.innerHTML = `<td colspan="3" style="padding-left: 20px; padding-bottom: 12px; color: var(--understanding);"><em>Fact:</em> ${extra}</td>`;
+      body.appendChild(factRow);
     });
-
-    // Output grouped structure
-    for (const subcategory in groups) {
-      const headerRow = document.createElement("tr");
-      headerRow.innerHTML = `<td colspan="3" style="font-weight: bold; font-size: 1.2rem; color: var(--understanding); padding-top: 20px;">${subcategory}</td>`;
-      body.appendChild(headerRow);
-
-      groups[subcategory].forEach(({ claim, extra }) => {
-        const claimRow = document.createElement("tr");
-        claimRow.innerHTML = `<td colspan="3" style="padding-left: 12px; padding-top: 6px;"><strong>${claim}</strong></td>`;
-        body.appendChild(claimRow);
-
-        const factRow = document.createElement("tr");
-        factRow.innerHTML = `<td colspan="3" style="padding-left: 20px; padding-bottom: 10px; color: var(--text-muted);">${extra}</td>`;
-        body.appendChild(factRow);
-      });
-    }
 
     wrapper.style.display = "block";
   }
