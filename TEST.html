@@ -1,3 +1,5 @@
+
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -103,7 +105,7 @@
     display: flex;
     flex-direction: column;
     align-items: center;
-    margin: 30px auto;
+    margin: 40px auto;
   }
 
   .divider-bar {
@@ -179,16 +181,16 @@
     max-width: 960px;
     margin: 60px auto 0 auto;
     padding: 24px;
-  display: flex;
-  flex-direction: column;
-  align-items: center;          /* centers all direct child elements horizontally */
-  text-align: center;           /* ensures text-based elements also align visually */
-}
+    display: flex;
+    flex-direction: column;
+    align-items: center;          /* centers all direct child elements horizontally */
+    text-align: center;           /* ensures text-based elements also align visually */
+  }
 
   h1 {
     font-family: 'Playfair Display', serif;
     color: var(--heading);
-    margin-bottom: 8px;
+    margin-bottom: 16px;
     text-align: center;
   }
   h2 {
@@ -446,96 +448,22 @@
       </div>
     </section>
     <!-- 🧠 Culture Subs UI Section -->
-    <div class="container" id="culture-subs">
+    <div id="culture-subs">
       <h1>Enter the Misconception Hub</h1>
-<p style="text-align: center; color: var(--text-muted); margin-top: 20px;">
-  Select a topic to examine popular claims and compare them to verifiable facts — one layer at a time.
-</p>
+      <p style="text-align: center; color: var(--text-muted); margin-top: 20px;">
+        Select a topic to examine popular claims and compare them to verifiable facts — one layer at a time.
+      </p>
       <div class="dropdown-container">
         <select id="culture-select" onchange="showCultureSubs()">
           <option value="">-- Select a Misconception --</option>
         </select>
       </div>
-
       <div class="table-wrapper" style="display:none;" id="culture-results">
         <table>
           <tbody id="culture-body"></tbody>
         </table>
       </div>
     </div>
-</div>
-
-<div class="table-wrapper">
-  <table id="score-table" style="display: none;">
-    <thead>
-      <tr>
-        <th>Category</th>
-        <th>Score</th>
-        <th>Explanation</th>
-      </tr>
-    </thead>
-    <tbody id="score-body"></tbody>
-  </table>
-</div>
-  </div>
-     <!-- 🎯 Divider -->
-    <section class="divider-section">
-      <div class="divider-bar">
-        <div class="truth"></div>
-        <div class="reliability"></div>
-        <div class="understanding"></div>
-      </div>
-      <div class="divider-labels">
-        <span>Truth</span>
-        <span>Reliability</span>
-        <span>Understanding</span>
-      </div>
-    </section>
-  </div>
-    <div class="container">
-    <h1>Voter Fraud?</h1>
-<p>Look past the headlines. Here’s the actual data.</p>
-   
-<p>
-You’ve heard the claims. Some say voter fraud is everywhere. Others say it barely exists. Let’s look at the actual records.
-</p>
-
-<p>
-The Heritage Foundation tracks every confirmed case of voter fraud — often to suggest it’s a bigger threat than it is. This tool lets you explore that same data, with the context it’s missing.
-</p>
-
-<p>
-Because yes, voter fraud exists. But it’s not what you’ve been led to believe.
-</p>
-   
-   <label for="state-select" style="display: block; margin-bottom: 8px; font-weight: bold;">
-  Select a State:
-</label>
-<select id="state-select" style="padding: 6px; font-size: 1rem;">
-  <option value="">-- Choose a state --</option>
-</select>
-<p id="state-summary" class="subtext"></p>
-
-      <div class="table-wrapper" style="display:none;" id="state-results">
-        <table>
-          <thead>
-            <tr>
-              <th>Year</th>
-              <th>State</th>
-              <th>Name</th>
-            </tr>
-          </thead>
-          <tbody id="state-data-body"></tbody>
-        </table>
-     </div>
-      <p>Source:</p>
-<p><a href="https://www.heritage.org/voterfraud" class=""important-link" target="_blank">Heritage Foundation Voter Fraud Database</a></p>
-  </div>
-       
-
-
-    
-
     <!-- 🎯 Divider -->
     <section class="divider-section">
       <div class="divider-bar">
@@ -549,16 +477,42 @@ Because yes, voter fraud exists. But it’s not what you’ve been led to believ
         <span>Understanding</span>
       </div>
     </section>
-<!-- Script: Score Display -->
-     <p style="text-align: center; color: var(--text-muted); margin-top: 20px;">
-  Select a name below to view their Election Security credibility breakdown.
-</p>
-   <div class="dropdown-container">
-  <select id="person-select" onchange="showScores()">
-    <option value="">-- Choose a name --</option>
-  </select>
-
-      <!-- 🎯 Divider -->
+    <!-- 🗳️ Voter Fraud Section -->
+    <div id="voter-fraud-section">
+      <h1>Voter Fraud?</h1>
+      <p>Look past the headlines. Here’s the actual data.</p>
+      <p>
+        You’ve heard the claims. Some say voter fraud is everywhere. Others say it barely exists. Let’s look at the actual records.
+      </p>
+      <p>
+        The Heritage Foundation tracks every confirmed case of voter fraud — often to suggest it’s a bigger threat than it is. This tool lets you explore that same data, with the context it’s missing.
+      </p>
+      <p>
+        Because yes, voter fraud exists. But it’s not what you’ve been led to believe.
+      </p>
+      <label for="state-select" style="display: block; margin-bottom: 8px; font-weight: bold;">
+        Select a State:
+      </label>
+      <select id="state-select" style="padding: 6px; font-size: 1rem;">
+        <option value="">-- Choose a state --</option>
+      </select>
+      <p id="state-summary" class="subtext"></p>
+      <div class="table-wrapper" style="display:none;" id="state-results">
+        <table>
+          <thead>
+            <tr>
+              <th>Year</th>
+              <th>State</th>
+              <th>Name</th>
+            </tr>
+          </thead>
+          <tbody id="state-data-body"></tbody>
+        </table>
+      </div>
+      <p>Source:</p>
+      <p><a href="https://www.heritage.org/voterfraud" class="important-link" target="_blank">Heritage Foundation Voter Fraud Database</a></p>
+    </div>
+    <!-- 🎯 Divider -->
     <section class="divider-section">
       <div class="divider-bar">
         <div class="truth"></div>
@@ -571,15 +525,35 @@ Because yes, voter fraud exists. But it’s not what you’ve been led to believ
         <span>Understanding</span>
       </div>
     </section>
-
-   
+    <!-- 🦉 TRU Score by Name Section -->
+    <div id="tru-score-section">
+      <p style="text-align: center; color: var(--text-muted); margin-top: 20px;">
+        Select a name below to view their Election Security credibility breakdown.
+      </p>
+      <div class="dropdown-container">
+        <select id="person-select" onchange="showScores()">
+          <option value="">-- Choose a name --</option>
+        </select>
+      </div>
+      <div class="table-wrapper">
+        <table id="score-table" style="display: none;">
+          <thead>
+            <tr>
+              <th>Category</th>
+              <th>Score</th>
+              <th>Explanation</th>
+            </tr>
+          </thead>
+          <tbody id="score-body"></tbody>
+        </table>
+      </div>
+    </div>
  <script>
   async function fetchTRUData() {
     const API_KEY = "AIzaSyCzuh9HBfe0r70r9U35Pe406PPZ-tz6I78";
     const SHEET_ID = "19wBEj9hEkvIyQcoR5E_mBGVAxTzMnddMxk8nuQLAumA";
     const RANGE = "ElectionTRU!A2:Y1000";
     const url = `https://sheets.googleapis.com/v4/spreadsheets/${SHEET_ID}/values/${RANGE}?key=${API_KEY}`;
-
     try {
       const res = await fetch(url);
       const json = await res.json();
