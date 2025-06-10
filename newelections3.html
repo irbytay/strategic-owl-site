@@ -2,8 +2,18 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
-  <title>Strategic Owl | TRU OWL Viewer</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>The Strategic Owl | Reality Check</title>
+
+  <!-- Open Graph Meta (Facebook, LinkedIn, Discord, etc.) -->
+  <meta property="og:title" content="The Strategic Owl | Truth. Reliability. Understanding." />
+  <meta property="og:description" content="Measure credibility and uncover truth using the TRU OWL Score — a tool for independent thinkers." />
+  <meta property="og:image" content="https://thestrategicowl.com/STOInsightQuiz.png" />
+  <meta property="og:image:type" content="image/png" />
+  <meta property="og:image:width" content="1200" />
+  <meta property="og:image:height" content="630" />
+  <meta property="og:url" content="https://thestrategicowl.com" />
+  <meta property="og:type" content="website" />
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&family=Playfair+Display:wght@600;700&display=swap" rel="stylesheet" />
 
   <style>
@@ -167,13 +177,13 @@
   /* ✅ YOUR ORIGINAL STYLES BELOW */
   .container {
     max-width: 960px;
-    margin: 100px auto 0 auto;
+    margin: 60px auto 0 auto;
     padding: 24px;
-  display: flex;
-  flex-direction: column;
-  align-items: center;          /* centers all direct child elements horizontally */
-  text-align: center;           /* ensures text-based elements also align visually */
-}
+    display: flex;
+    flex-direction: column;
+    align-items: center;          /* centers all direct child elements horizontally */
+    text-align: center;           /* ensures text-based elements also align visually */
+  }
 
   h1 {
     font-family: 'Playfair Display', serif;
@@ -366,6 +376,36 @@
   text-shadow: 0 0 8px var(--understanding); /* Subtle glow using gold tone */
   color: var(--truth);                       /* Optional: changes to green (truth color) */
 }
+  /* --- Culture Subs Table Styles --- */
+  #culture-subs table {
+    width: 100%;
+    border-collapse: collapse;
+    background-color: var(--surface);
+    margin-top: 20px;
+  }
+
+  #culture-subs th, #culture-subs td {
+    padding: 14px;
+    border-bottom: 1px solid var(--highlight);
+    text-align: left;
+    font-size: 1rem;
+    color: var(--text-muted);
+    font-family: 'Inter', sans-serif;
+  }
+
+  #culture-subs th {
+    background-color: var(--highlight);
+    color: var(--understanding);
+    font-weight: 600;
+    text-align: center;
+  }
+
+  @media (max-width: 768px) {
+    #culture-subs table th, #culture-subs table td {
+      font-size: 0.95rem;
+      padding: 10px;
+    }
+  }
 </style>
 </head>
   <body>
@@ -381,15 +421,15 @@
 <a href="Dash.html">Dash's</a>
 <a href="TRUOWL3.html">T.R.U. Owl</a>
 <a href="strategic-owl-insight-quiz.html">Insight Quiz</a>
-<a href="newelections3.html">Election Security</a>
+<a href="newelections3.html">Reality Check</a>
 <a href="the_constitution.html">The Amendments</a>
 <a href="newcontact3.html">Contact</a>
   </div>
 </nav>
   <div class="container">
-    <h1>Election Security</h1>
-    <p>
-  Before we debate, let’s measure who actually understands how voting works.
+    <h1>Reality Check</h1>
+<p>
+  This is your Misconception Hub — where we expose popular myths and break them down with verifiable facts, starting with voter fraud and expanding from there.
 </p>
     <!-- 🎯 Divider -->
     <section class="divider-section">
@@ -404,31 +444,23 @@
         <span>Understanding</span>
       </div>
     </section>
-   <p style="text-align: center; color: var(--text-muted); margin-top: 20px;">
-  Select a name below to view their Election Security credibility breakdown.
-</p>
-   <div class="dropdown-container">
-  <select id="person-select" onchange="showScores()">
-    <option value="">-- Choose a name --</option>
-  </select>
-</div>
-
-<div class="table-wrapper">
-  <table id="score-table" style="display: none;">
-    <thead>
-      <tr>
-        <th>Category</th>
-        <th>Score</th>
-        <th>Explanation</th>
-      </tr>
-    </thead>
-    <tbody id="score-body"></tbody>
-  </table>
-</div>
-  </div>
-    <div class="container">
-    <h1>Voter Fraud?</h1>
-<p>Look past the headlines. Here’s the actual data.</p>
+    <!-- 🧠 Culture Subs UI Section -->
+    <div id="culture-subs">
+      <h1>Enter the Misconception Hub</h1>
+      <p style="text-align: center; color: var(--text-muted); margin-top: 20px;">
+        Select a topic to examine popular claims and compare them to verifiable facts — one layer at a time.
+      </p>
+      <div class="dropdown-container">
+        <select id="culture-select" onchange="showCultureSubs()">
+          <option value="">-- Select a Misconception --</option>
+        </select>
+      </div>
+      <div class="table-wrapper" style="display:none;" id="culture-results">
+        <table>
+          <tbody id="culture-body"></tbody>
+        </table>
+      </div>
+    </div>
     <!-- 🎯 Divider -->
     <section class="divider-section">
       <div class="divider-bar">
@@ -442,26 +474,26 @@
         <span>Understanding</span>
       </div>
     </section>
-<p>
-You’ve heard the claims. Some say voter fraud is everywhere. Others say it barely exists. Let’s look at the actual records.
-</p>
-
-<p>
-The Heritage Foundation tracks every confirmed case of voter fraud — often to suggest it’s a bigger threat than it is. This tool lets you explore that same data, with the context it’s missing.
-</p>
-
-<p>
-Because yes, voter fraud exists. But it’s not what you’ve been led to believe.
-</p>
-   
-   <label for="state-select" style="display: block; margin-bottom: 8px; font-weight: bold;">
-  Select a State:
-</label>
-<select id="state-select" style="padding: 6px; font-size: 1rem;">
-  <option value="">-- Choose a state --</option>
-</select>
-<p id="state-summary" class="subtext"></p>
-
+    <!-- 🗳️ Voter Fraud Section -->
+    <div id="voter-fraud-section">
+      <h1>Voter Fraud?</h1>
+      <p>Look past the headlines. Here’s the actual data.</p>
+      <p>
+        You’ve heard the claims. Some say voter fraud is everywhere. Others say it barely exists. Let’s look at the actual records.
+      </p>
+      <p>
+        The Heritage Foundation tracks every confirmed case of voter fraud — often to suggest it’s a bigger threat than it is. This tool lets you explore that same data, with the context it’s missing.
+      </p>
+      <p>
+        Because yes, voter fraud exists. But it’s not what you’ve been led to believe.
+      </p>
+      <label for="state-select" style="display: block; margin-bottom: 8px; font-weight: bold;">
+        Select a State:
+      </label>
+      <select id="state-select" style="padding: 6px; font-size: 1rem;">
+        <option value="">-- Choose a state --</option>
+      </select>
+      <p id="state-summary" class="subtext"></p>
       <div class="table-wrapper" style="display:none;" id="state-results">
         <table>
           <thead>
@@ -473,12 +505,10 @@ Because yes, voter fraud exists. But it’s not what you’ve been led to believ
           </thead>
           <tbody id="state-data-body"></tbody>
         </table>
-     </div>
+      </div>
       <p>Source:</p>
-<p><a href="https://www.heritage.org/voterfraud" class=""important-link" target="_blank">Heritage Foundation Voter Fraud Database</a></p>
-  </div>
-       
-
+      <p><a href="https://www.heritage.org/voterfraud" class="important-link" target="_blank">Heritage Foundation Voter Fraud Database</a></p>
+    </div>
     <!-- 🎯 Divider -->
     <section class="divider-section">
       <div class="divider-bar">
@@ -492,149 +522,35 @@ Because yes, voter fraud exists. But it’s not what you’ve been led to believ
         <span>Understanding</span>
       </div>
     </section>
-  </div>
-
-    <section class="foundation-section">
-  <h1>Strategic Foundation – Election Security</h1>
-  <p class="section-intro">
-    This guide separates civic fact from fiction — from constitutional rights to election mechanics — so you can navigate truth with clarity.
-  </p>
-
-  <h2>Constitutional Knowledge</h2>
-  <table>
-    <tr><th>Facts</th></tr>
-    <tr><td>Voting is a constitutional right — not a privilege handed out by politicians or protected by parties.</td></tr>
-    <tr><td>The U.S. Constitution protects voting rights through multiple amendments: 1st, 12th, 14th, 15th, 17th, 19th, 23rd, 24th, and 26th.</td></tr>
-    <tr><td>The 12th Amendment does <strong>not</strong> give the Vice President power to reject certified results — that's fiction posing as formality.</td></tr>
-  </table>
-  <p class="strategic-insight">
-    <strong>Strategic Insight:</strong> When people frame voting as a privilege, they distort constitutional truth. Clarity here separates knowledge from manipulation.
-  </p>
-
-  <h2>Legal Framework</h2>
-  <table>
-    <tr><th>Facts</th></tr>
-    <tr><td>Only U.S. citizens can vote in federal elections — this isn’t opinion, it’s federal law.</td></tr>
-    <tr><td>Registration systems require proof of citizenship: birth certificate, passport, or naturalization documentation.</td></tr>
-    <tr><td>Key laws: Voting Rights Act (1965), National Voter Registration Act (1993), Help America Vote Act (2002).</td></tr>
-  </table>
-  <p class="strategic-insight">
-    <strong>Strategic Insight:</strong> Legal misrepresentation fuels suppression. Knowing real law reveals efforts to restrict democracy.
-  </p>
-
-  <h2>Federalism</h2>
-  <table>
-    <tr><th>Facts</th></tr>
-    <tr><td>Article I, Section 4 gives states control over election procedures — even federal ones.</td></tr>
-    <tr><td>There is no national voting system — each state manages its own. Attempts to override are power grabs, not integrity plays.</td></tr>
-  </table>
-  <p class="strategic-insight">
-    <strong>Strategic Insight:</strong> Federalism is strategic. Understanding who controls what exposes blame-shifting.
-  </p>
-
-  <h2>Election Mechanics</h2>
-  <table>
-    <tr><th>Facts</th></tr>
-    <tr><td>Machine counts are statistically more accurate than hand counts, confirmed by decades of audits.</td></tr>
-    <tr><td>Risk-limiting audits verify outcomes and catch errors — it's about scientific confidence, not recounts.</td></tr>
-    <tr><td>Paper backups are standard and meant to double-check machines — ignoring them is intentional misdirection.</td></tr>
-  </table>
-  <p class="strategic-insight">
-    <strong>Strategic Insight:</strong> Machine doubt thrives on ignorance. Facts restore trust.
-  </p>
-
-  <h2>Electoral Count Process</h2>
-  <table>
-    <tr><th>Facts</th></tr>
-    <tr><td>The 12th Amendment defines vote counting — not vote rejection. It’s procedure, not veto power.</td></tr>
-    <tr><td>The VP opens certified envelopes — nothing more. Pretending otherwise is destabilization.</td></tr>
-    <tr><td>Congress tallies, not debates, electoral votes. That separation prevents chaos.</td></tr>
-  </table>
-  <p class="strategic-insight">
-    <strong>Strategic Insight:</strong> Misunderstanding the VP's role enables political chaos. Knowing the rules protects power transfers.
-  </p>
-
-  <h2>Disinformation Awareness</h2>
-  <table>
-    <tr><th>Facts</th></tr>
-    <tr><td>Disinformation = intentional lies. Misinformation = accidental errors.</td></tr>
-    <tr><td>No evidence of widespread 2020 fraud — 60+ court cases proved this.</td></tr>
-    <tr><td>Trump-appointed judges and GOP officials validated results.</td></tr>
-  </table>
-  <p class="strategic-insight">
-    <strong>Strategic Insight:</strong> Repeating falsehoods amplifies damage. The problem isn’t just lies — it’s the echo chamber.
-  </p>
-
-  <h2>Public Impact</h2>
-  <table>
-    <tr><th>Facts</th></tr>
-    <tr><td>Public figures shape reality perception — even when passive.</td></tr>
-    <tr><td>"Just asking questions" often legitimizes disinformation.</td></tr>
-    <tr><td>Correcting falsehoods is a civic responsibility — not optional.</td></tr>
-  </table>
-  <p class="strategic-insight">
-    <strong>Strategic Insight:</strong> Influence without correction becomes a weapon. Silence is complicity.
-  </p>
-
-  <h2>Judicial Oversight</h2>
-  <table>
-    <tr><th>Facts</th></tr>
-    <tr><td>Over 60 post-election cases found no widespread fraud — that's legal record.</td></tr>
-    <tr><td>Many rulings were by Trump-appointed judges.</td></tr>
-    <tr><td>Cases like Bush v. Gore and Moore v. Harper define electoral limits.</td></tr>
-    <tr><td>Judicial review protects law — not political desire.</td></tr>
-  </table>
-  <p class="strategic-insight">
-    <strong>Strategic Insight:</strong> Courts are democratic guardrails. Undermining them sabotages law itself.
-  </p>
-
-  <h2>Election Worker Protections</h2>
-  <table>
-    <tr><th>Facts</th></tr>
-    <tr><td>Post-2020, election workers faced harassment and threats.</td></tr>
-    <tr><td>Georgia workers Ruby Freeman and Shaye Moss were falsely accused and targeted.</td></tr>
-    <tr><td>New laws increase penalties for threats against election staff.</td></tr>
-  </table>
-  <p class="strategic-insight">
-    <strong>Strategic Insight:</strong> Protecting workers protects democracy’s spine.
-  </p>
-
-  <h2>Psychological Manipulation (Soversion Layer)</h2>
-  <table>
-    <tr><th>Facts</th></tr>
-    <tr><td>Disinformation thrives on emotion, not logic — especially fear and repetition.</td></tr>
-    <tr><td>Lies stick because they trigger identity and grievance — not because they’re persuasive.</td></tr>
-    <tr><td>People reject truth to protect identity. That’s not ignorance — it’s tribal reflex.</td></tr>
-    <tr><td>When beliefs override truth, it’s not confusion — it’s <strong>Soversion</strong>: engineered detachment from reality.</td></tr>
-  </table>
-  <p class="strategic-insight">
-    <strong>Strategic Insight:</strong> Soversion makes ideology feel like identity. That’s the root of entrenched distortion.
-  </p>
-</section>
-
-    <!-- 🎯 Divider -->
-    <section class="divider-section">
-      <div class="divider-bar">
-        <div class="truth"></div>
-        <div class="reliability"></div>
-        <div class="understanding"></div>
+    <!-- 🦉 TRU Score by Name Section -->
+    <div id="tru-score-section">
+      <p style="text-align: center; color: var(--text-muted); margin-top: 20px;">
+        Select a name below to view their Election Security credibility breakdown.
+      </p>
+      <div class="dropdown-container">
+        <select id="person-select" onchange="showScores()">
+          <option value="">-- Choose a name --</option>
+        </select>
       </div>
-      <div class="divider-labels">
-        <span>Truth</span>
-        <span>Reliability</span>
-        <span>Understanding</span>
+      <div class="table-wrapper">
+        <table id="score-table" style="display: none;">
+          <thead>
+            <tr>
+              <th>Category</th>
+              <th>Score</th>
+              <th>Explanation</th>
+            </tr>
+          </thead>
+          <tbody id="score-body"></tbody>
+        </table>
       </div>
-    </section>
-  </div>
-
-   <!-- Script: Score Display -->
+    </div>
  <script>
   async function fetchTRUData() {
     const API_KEY = "AIzaSyCzuh9HBfe0r70r9U35Pe406PPZ-tz6I78";
     const SHEET_ID = "19wBEj9hEkvIyQcoR5E_mBGVAxTzMnddMxk8nuQLAumA";
     const RANGE = "ElectionTRU!A2:Y1000";
     const url = `https://sheets.googleapis.com/v4/spreadsheets/${SHEET_ID}/values/${RANGE}?key=${API_KEY}`;
-
     try {
       const res = await fetch(url);
       const json = await res.json();
@@ -824,6 +740,68 @@ Because yes, voter fraud exists. But it’s not what you’ve been led to believ
   function toggleMenu() {
     document.getElementById("navMenu").classList.toggle("show");
   }
+  // --- Culture Subs JS ---
+  async function fetchCultureData() {
+    const SHEET_ID = "19wBEj9hEkvIyQcoR5E_mBGVAxTzMnddMxk8nuQLAumA";
+    const RANGE = "CultureSubs!A2:D1000";
+    const url = `https://sheets.googleapis.com/v4/spreadsheets/${SHEET_ID}/values/${RANGE}?key=AIzaSyCzuh9HBfe0r70r9U35Pe406PPZ-tz6I78`;
+
+    try {
+      const res = await fetch(url);
+      const data = await res.json();
+      return data.values || [];
+    } catch (error) {
+      console.error("Failed to fetch CultureSubs data:", error);
+      return [];
+    }
+  }
+
+  async function initCulturePage() {
+    const dropdown = document.getElementById("culture-select");
+    const cultureRows = await fetchCultureData();
+    const subjectSet = new Set(cultureRows.map(row => row[0]));
+    subjectSet.forEach(subject => {
+      const opt = document.createElement("option");
+      opt.value = subject;
+      opt.textContent = subject;
+      dropdown.appendChild(opt);
+    });
+
+    window.cultureMap = {};
+    cultureRows.forEach(row => {
+      const subject = row[0];
+      if (!window.cultureMap[subject]) {
+        window.cultureMap[subject] = [];
+      }
+      window.cultureMap[subject].push({ subcategory: row[1], claim: row[2], extra: row[3] || "" });
+    });
+  }
+
+  function showCultureSubs() {
+    const selected = document.getElementById("culture-select").value;
+    const wrapper = document.getElementById("culture-results");
+    const body = document.getElementById("culture-body");
+    body.innerHTML = "";
+
+    if (!selected || !window.cultureMap[selected]) {
+      wrapper.style.display = "none";
+      return;
+    }
+
+    window.cultureMap[selected].forEach(({ claim, extra }) => {
+      const claimRow = document.createElement("tr");
+      claimRow.innerHTML = `<td colspan="3" style="padding-left: 12px; padding-top: 16px; color: #FF7F7F; font-weight: bold;"><em>Claim:</em> ${claim}</td>`;
+      body.appendChild(claimRow);
+
+      const factRow = document.createElement("tr");
+      factRow.innerHTML = `<td colspan="3" style="padding-left: 20px; padding-bottom: 12px; color: var(--understanding);"><em>Fact:</em> ${extra}</td>`;
+      body.appendChild(factRow);
+    });
+
+    wrapper.style.display = "block";
+  }
+
+  window.addEventListener("DOMContentLoaded", initCulturePage);
 </script>
 
 </body>
