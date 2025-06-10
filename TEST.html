@@ -817,7 +817,7 @@ Because yes, voter fraud exists. But it’s not what you’ve been led to believ
 
     window.cultureMap[selected].forEach(({ claim, extra }) => {
       const claimRow = document.createElement("tr");
-      claimRow.innerHTML = `<td colspan="3" style="padding-left: 12px; padding-top: 16px; color: var(--bar-red); font-weight: bold;">${claim}</td>`;
+      claimRow.innerHTML = `<td colspan="3" style="padding-left: 12px; padding-top: 16px; color: #FF7F7F; font-weight: bold;"><em>Claim:</em> ${claim}</td>`;
       body.appendChild(claimRow);
 
       const factRow = document.createElement("tr");
