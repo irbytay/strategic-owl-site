@@ -822,11 +822,31 @@ Because yes, voter fraud exists. But it’s not what you’ve been led to believ
       return;
     }
 
+    const groups = {};
+
+    // Group claims under subcategories
     window.cultureMap[selected].forEach(row => {
-      const tr = document.createElement("tr");
-      tr.innerHTML = `<td>${row.subcategory}</td><td>${row.claim}</td>`;
-      body.appendChild(tr);
+      const { subcategory, claim, extra } = row;
+      if (!groups[subcategory]) groups[subcategory] = [];
+      groups[subcategory].push({ claim, extra });
     });
+
+    // Output grouped structure
+    for (const subcategory in groups) {
+      const headerRow = document.createElement("tr");
+      headerRow.innerHTML = `<td colspan="3" style="font-weight: bold; font-size: 1.2rem; color: var(--understanding); padding-top: 20px;">${subcategory}</td>`;
+      body.appendChild(headerRow);
+
+      groups[subcategory].forEach(({ claim, extra }) => {
+        const claimRow = document.createElement("tr");
+        claimRow.innerHTML = `<td colspan="3" style="padding-left: 12px; padding-top: 6px;"><strong>${claim}</strong></td>`;
+        body.appendChild(claimRow);
+
+        const factRow = document.createElement("tr");
+        factRow.innerHTML = `<td colspan="3" style="padding-left: 20px; padding-bottom: 10px; color: var(--text-muted);">${extra}</td>`;
+        body.appendChild(factRow);
+      });
+    }
 
     wrapper.style.display = "block";
   }
