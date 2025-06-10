@@ -1,715 +1,811 @@
+
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>The Strategic Owl – Election Security Scores</title>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&family=Playfair+Display:wght@500;700&display=swap" rel="stylesheet" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>The Strategic Owl | Reality Check</title>
+
+  <!-- Open Graph Meta (Facebook, LinkedIn, Discord, etc.) -->
+  <meta property="og:title" content="The Strategic Owl | Truth. Reliability. Understanding." />
+  <meta property="og:description" content="Measure credibility and uncover truth using the TRU OWL Score — a tool for independent thinkers." />
+  <meta property="og:image" content="https://thestrategicowl.com/STOInsightQuiz.png" />
+  <meta property="og:image:type" content="image/png" />
+  <meta property="og:image:width" content="1200" />
+  <meta property="og:image:height" content="630" />
+  <meta property="og:url" content="https://thestrategicowl.com" />
+  <meta property="og:type" content="website" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&family=Playfair+Display:wght@600;700&display=swap" rel="stylesheet" />
+
   <style>
-  * {
-    box-sizing: border-box;
+  :root {
+    --background: #0D1B2A;
+    --surface: #112240;
+    --highlight: #1A2B4C;
+    --truth: #28A745;
+    --reliability: #3B6CED;
+    --understanding: #D4AF37;
+    --text: #FFFFFF;
+    --text-muted: #7C8A9B;
+    --heading: #FFFFF0;
+    --shadow: rgba(0, 0, 0, 0.3);
+    --bar-red: #FF4C4C;
+    --bar-green: #28A745;
   }
 
   body {
-    background-color: #1A1A40;
-    color: #F5F5F5;
+    background-color: var(--background);
+    color: var(--text);
     font-family: 'Inter', sans-serif;
     margin: 0;
     padding: 0;
   }
 
-  .container {
-    padding: 40px 20px;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-  }
-
-  .box {
-    background-color: #2F2E5E;
-    padding: 40px;
-    border-radius: 12px;
-    width: 100%;
-    max-width: 900px;
-    margin: 0 auto 40px auto;
-    box-shadow: 0 0 12px rgba(0, 0, 0, 0.5);
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-  }
-
-  .box h2,
-  .box h3,
-  .box p,
-  .box label,
-  .box select {
-    text-align: center;
-    width: 100%;
-  }
-
-  .box table,
-  .box ul,
-  .box .strategic-insight {
-    text-align: left;
-    width: 100%;
-  }
-
-  h1, h2, h3 {
-    font-family: 'Playfair Display', serif;
-    margin-top: 0;
-  }
-
-  h1 {
-    font-size: 2.4rem;
-    margin-bottom: 25px;
-    text-align: center;
-  }
-
-  .divider-bar {
-    display: flex;
-    justify-content: center;
-    gap: 8px;
-    margin: 10px auto 30px auto;
-  }
-
-  .divider-bar div {
-    width: 40px;
-    height: 6px;
-    border-radius: 3px;
-  }
-
-  .truth { background-color: #4CAF50; }
-  .reliability { background-color: #2196F3; }
-  .understanding { background-color: #FFC107; }
-
-  select {
-    padding: 10px;
-    margin-top: 20px;
-    background-color: #2F2E5E;
-    color: #F5F5F5;
-    border: none;
-    border-radius: 5px;
-    width: 100%;
-    max-width: 400px;
-    font-size: 1rem;
-  }
-
-  .table-wrapper {
-    width: 100%;
-    display: flex;
-    justify-content: center;
-  }
-
-  #score-table {
-    width: 100%;
-    max-width: 850px;
-    border-collapse: collapse;
-    margin-top: 20px;
-    font-size: 0.95rem;
-  }
-
-  .box table {
-    margin-bottom: 30px;
-  }
-
-  th, td {
-    border: 1px solid #3B6CED;
-    padding: 12px;
-    text-align: left;
-  }
-
-  th {
-    background-color: #2F2E5E;
-  }
-
-  td {
-    background-color: #1A1A40;
-  }
-
-  strong {
-    color: #FFEB3B;
-  }
-
-  .back-link {
-    text-align: center;
-    margin: 20px auto 60px;
-  }
-
-  .back-link a {
-    color: #F5F5F5;
-    font-weight: 600;
-    text-decoration: none;
-    border-bottom: 2px solid #3B6CED;
-    padding-bottom: 4px;
-    transition: color 0.2s ease, border-color 0.2s ease;
-  }
-
-  .back-link a:hover {
-    color: #4FDBA6;
-    border-color: #4FDBA6;
-  }
-
-  .score-legend {
-    list-style: none;
-    padding-left: 0;
-    margin: 20px 0;
-  }
-
-  .score-legend li {
-    margin-bottom: 8px;
-    line-height: 1.5;
-    display: flex;
-    align-items: baseline;
-    justify-content: flex-start;
-    text-align: left;
-  }
-
-  .score {
-    font-weight: 600;
-    display: inline-block;
-    min-width: 80px;
-    margin-right: 6px;
-  }
-
-  .score.positive-high {
-    color: #4CAF50;
-  }
-
-  .score.positive {
-    color: #8BC34A;
-  }
-
-  .score.neutral {
-    color: #FFEB3B;
-  }
-
-  .score.negative {
-    color: #FF9800;
-  }
-
-  .score.disinfo {
-    color: #F44336;
-  }
-
-  /* 🔽 ADDED NAVIGATION STYLES */
-  .top-nav {
-    background-color: #2F2E5E;
-    padding: 16px 20px;
-    border-bottom: 1px solid #2F2F5F;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.4);
-    position: sticky;
+  /* 🧭 NAVBAR & MENU */
+  nav.top-nav {
+    position: fixed;
     top: 0;
+    left: 0;
+    right: 0;
     z-index: 999;
+    background-color: var(--highlight);
     display: flex;
     justify-content: space-between;
     align-items: center;
+    padding: 14px 20px;
+    box-shadow: 0 2px 6px var(--shadow);
   }
 
-  .nav-logo {
-    display: flex;
-    align-items: center;
-    gap: 6px;
-    color: #F5F5F5;
-    font-size: 1.5rem;
+  .nav-title {
     font-family: 'Playfair Display', serif;
-    font-weight: bold;
-    text-decoration: none;
+    font-size: 22px;
+    color: var(--understanding);
   }
 
-  .nav-logo-img {
-    height: 36px;
-    width: auto;
-    margin-right: 0;
-    vertical-align: middle;
-  }
-
-  .nav-links a {
-    color: #F5F5F5;
-    margin-left: 24px;
-    font-weight: 500;
-    text-decoration: none;
-    transition: color 0.2s ease;
-  }
-
-  .nav-links a:hover {
-    color: #4FDBA6;
+  .menu-toggle {
+    display: none;
+    font-size: 24px;
+    cursor: pointer;
+    color: var(--text);
+    background: none;
+    border: none;
   }
 
   .nav-links {
     display: flex;
-    gap: 16px;
+    gap: 28px;
   }
 
-  .nav-toggle {
-    display: none;
-    font-size: 1.8rem;
-    background: none;
-    border: none;
-    color: #F5F5F5;
-    cursor: pointer;
+  .nav-links a {
+    color: var(--text-muted);
+    text-decoration: none;
+    font-size: 15px;
+    transition: color 0.3s ease;
   }
 
-  .mobile-nav {
+  .nav-links a:hover {
+    color: var(--understanding);
+  }
+    .nav-logo img {
+  height: 40px;
+  width: 40px;
+}
+    .nav-logo {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  text-decoration: none;
+  font-weight: 600;
+  color: var(--text);
+  font-size: 1.25rem;
+}
+    /* 🎨 TRU Bars */
+  .divider-section {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin: 40px auto;
+  }
+
+  .divider-bar {
+    display: flex;
+    gap: 12px;
+    width: 340px;
+  }
+
+  .divider-bar div {
+    width: 108px;
+    height: 6px;
+    border-radius: 3px;
+    box-shadow: 0 0 4px var(--shadow);
+  }
+
+  .truth { background-color: var(--truth); }
+  .reliability { background-color: var(--reliability); }
+  .understanding { background-color: var(--understanding); }
+
+  .divider-labels {
+    display: flex;
+    justify-content: center;
+    gap: 12px;
+    width: 340px;
+    margin-top: 8px;
+  }
+
+  .divider-labels span {
+    width: 108px;
+    text-align: center;
+    font-size: 0.85rem;
+    color: var(--text-muted);
+  }
+
+  @media (max-width: 768px) {
+  .menu-toggle {
+    display: block;
+  }
+
+  .nav-links {
     display: none;
     flex-direction: column;
-    background-color: #2F2E5E;
-    padding: 12px 20px;
+    align-items: center;
+    justify-content: center;
+    background-color: var(--highlight);
+    position: absolute;
+    top: 58px;
+    left: 0;
+    width: 100%;
+    padding: 10px 0;
+    gap: 20px;
+    box-shadow: 0 3px 8px var(--shadow);
+  }
+    .nav-links.show {
+      display: flex;
+      animation: fadeSlideDown 0.3s ease;
+    }
+
+    @keyframes fadeSlideDown {
+      from {
+        opacity: 0;
+        transform: translateY(-10px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
   }
 
-  .mobile-nav a {
-    color: #F5F5F5;
-    padding: 8px 0;
-    text-decoration: none;
-    font-weight: 500;
-    border-top: 1px solid #2F2F5F;
-  }
-
-  .mobile-nav a:hover {
-    color: #4FDBA6;
-  }
-
-  .mobile-nav.active {
+  /* ✅ YOUR ORIGINAL STYLES BELOW */
+  .container {
+    max-width: 960px;
+    margin: 60px auto 0 auto;
+    padding: 24px;
     display: flex;
+    flex-direction: column;
+    align-items: center;          /* centers all direct child elements horizontally */
+    text-align: center;           /* ensures text-based elements also align visually */
   }
 
-  @media (max-width: 600px) {
-    .box {
-      padding: 25px;
-    }
+  h1 {
+    font-family: 'Playfair Display', serif;
+    color: var(--heading);
+    margin-bottom: 16px;
+    text-align: center;
+  }
+  h2 {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.5rem;
+  color: var(--understanding); /* golden highlight */
+  font-weight: 600;
+  margin-top: 32px;
+  margin-bottom: 12px;
+  text-align: center;
+}
+  p {
+  font-family: 'Inter', sans-serif;
+  font-size: 1.05rem;
+  color: var(--text-muted);
+  line-height: 1.6;
+  margin-bottom: 20px;
+  text-align: center;
+  max-width: 700px;
+  margin-left: auto;
+  margin-right: auto;
+}
 
-    h1 {
-      font-size: 2rem;
-    }
+  select {
+    padding: 8px;
+    margin-bottom: 16px;
+    background-color: var(--surface);
+    color: var(--text);
+    border: 1px solid var(--highlight);
+  }
 
-    select {
-      width: 100%;
-      font-size: 1rem;
-    }
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    background-color: var(--surface);
+    margin-top: 12px;
+  }
 
-    #score-table {
-      font-size: 0.9rem;
-    }
+  th, td {
+    padding: 12px;
+    border-bottom: 1px solid var(--highlight);
+    text-align: left;
+  }
 
-    .nav-links {
-      display: none;
-    }
+  .text-truth { color: var(--truth); }
+  .text-reliability { color: var(--reliability); }
+  .text-understanding { color: var(--understanding); }
 
-    .nav-toggle {
-      display: block;
+  .total-score {
+    font-weight: bold;
+  }
+
+  .positive-score { color: var(--bar-green); }
+  .negative-score { color: var(--bar-red); }
+
+  .score-bar {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .bar-indicator {
+    width: 10px;
+    height: 24px;
+    border-radius: 2px;
+  }
+
+  .bar-red {
+    background-color: var(--bar-red);
+  }
+
+  .bar-green {
+    background-color: var(--bar-green);
+  }
+    .positive-score strong,
+.negative-score strong {
+  font-family: 'Inter', sans-serif;
+  font-weight: 600;
+  color: inherit;
+}
+    .dropdown-container {
+  display: flex;
+  justify-content: center;
+  margin: 20px 0;
+}
+    .foundation-section {
+  padding: 40px 20px;
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+.section-intro {
+  font-size: 1.1rem;
+  color: var(--text-muted);
+  text-align: center;
+  margin-bottom: 36px;
+}
+
+.foundation-section h1 {
+  font-family: 'Playfair Display', serif;
+  font-size: 2rem;
+  color: var(--understanding);
+  text-align: center;
+  margin-bottom: 16px;
+}
+
+.foundation-section h2 {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.4rem;
+  margin-top: 40px;
+  color: var(--understanding;
+  text-align: center;
+}
+
+.foundation-section table {
+  width: 100%;
+  background-color: var(--surface);
+  border-radius: 6px;
+  border-collapse: collapse;
+  margin: 20px 0;
+}
+
+.foundation-section th {
+  background-color: var(--highlight);
+  padding: 12px;
+  font-weight: 600;
+  text-align: left;
+  color: var(--text-muted)
+}
+
+.foundation-section td {
+  padding: 12px;
+  border-bottom: 1px solid var(--highlight);
+  color: var(--text);
+  line-height: 1.6;
+}
+
+.strategic-insight {
+  font-size: 1rem;
+  background-color: #1A2B4C;
+  border-left: 4px solid var(--understanding);
+  padding: 16px;
+  margin-top: 12px;
+  margin-bottom: 40px;
+  color: var(--text-muted);
+}
+    /* Style the link itself */
+.important-link {
+  color: var(--understanding);               /* Gold color from your theme */
+  font-weight: 700;                          /* Bold for visibility */
+  text-decoration: underline;                /* Underline to signal it's a link */
+  text-underline-offset: 4px;                /* Adds spacing between text and underline */
+  position: relative;                        /* Required for pseudo-elements */
+  transition: color 0.3s ease, text-shadow 0.3s ease;  /* Smooth hover transitions */
+}
+
+/* Add a right-pointing arrow BEFORE the link text */
+.important-link::before {
+  content: '→ ';                             /* Arrow pointing right */
+  display: inline-block;                     /* So we can animate it */
+  margin-right: 6px;                         /* Space between arrow and text */
+  transition: transform 0.3s ease;           /* Smooth movement on hover */
+}
+
+/* Add a left-pointing arrow AFTER the link text */
+.important-link::after {
+  content: ' ←';                             /* Arrow pointing left */
+  display: inline-block;                     /* Enables transform */
+  margin-left: 6px;                          /* Space between text and arrow */
+  transition: transform 0.3s ease;           /* Smooth hover animation */
+}
+
+/* Animate the left-side arrow to move right on hover */
+.important-link:hover::before {
+  transform: translateX(4px);                /* Moves → arrow to the right */
+}
+
+/* Animate the right-side arrow to move left on hover */
+.important-link:hover::after {
+  transform: translateX(-4px);               /* Moves ← arrow to the left */
+}
+
+/* Add glow and optional color change on hover */
+.important-link:hover {
+  text-shadow: 0 0 8px var(--understanding); /* Subtle glow using gold tone */
+  color: var(--truth);                       /* Optional: changes to green (truth color) */
+}
+  /* --- Culture Subs Table Styles --- */
+  #culture-subs table {
+    width: 100%;
+    border-collapse: collapse;
+    background-color: var(--surface);
+    margin-top: 20px;
+  }
+
+  #culture-subs th, #culture-subs td {
+    padding: 14px;
+    border-bottom: 1px solid var(--highlight);
+    text-align: left;
+    font-size: 1rem;
+    color: var(--text-muted);
+    font-family: 'Inter', sans-serif;
+  }
+
+  #culture-subs th {
+    background-color: var(--highlight);
+    color: var(--understanding);
+    font-weight: 600;
+    text-align: center;
+  }
+
+  @media (max-width: 768px) {
+    #culture-subs table th, #culture-subs table td {
+      font-size: 0.95rem;
+      padding: 10px;
     }
   }
 </style>
 </head>
-<body>
-  <nav class="top-nav">
-  <a href="TRUOWL.html" class="nav-logo">
-    <img src="owl_logo_white.png" alt="Owl Logo" class="nav-logo-img"
-         onerror="this.onerror=null;this.style.display='none';this.insertAdjacentHTML('afterend','<p style=\'color:white;font-weight:bold;\'>[ Logo not found ]</p>')" />
-    The Strategic Owl
-  </a>
-  <div class="nav-links">
-    <a href="base.html">T.R.U. Owl</a>
-    <a href="newelections.html">Election Security</a>
-    <a href="newheritagefoundation.html">Election Fraud</a>
-    <a href="newstatefraud.html">Voter Fraud by State</a>
-    <a href="newcontact.html">Contact</a>
+  <body>
+
+<nav class="top-nav">
+<a href="TRUOWL3.html" class="nav-logo">
+  <img src="owl_logo_white.png" alt="Owl Logo" onerror="this.style.display='none';" />
+  <div class="nav-title">The Strategic Owl</div>
+</a>
+  <button class="menu-toggle" onclick="toggleMenu()">☰</button>
+  <div class="nav-links" id="navMenu">
+     <a href="Index.html">Home</a>
+<a href="Dash.html">Dash's</a>
+<a href="TRUOWL3.html">T.R.U. Owl</a>
+<a href="strategic-owl-insight-quiz.html">Insight Quiz</a>
+<a href="newelections3.html">Reality Check</a>
+<a href="the_constitution.html">The Amendments</a>
+<a href="newcontact3.html">Contact</a>
+    <a href="#culture-subs">Culture Subs</a>
   </div>
-  <button class="nav-toggle" onclick="document.querySelector('.mobile-nav').classList.toggle('active')">☰</button>
 </nav>
-
-<div class="mobile-nav">
-  <a href="base.html">T.R.U. Owl</a>
-  <a href="newelections.html">Election Security</a>
-  <a href="newheritagefoundation.html">Election Fraud</a>
-  <a href="newstatefraud.html">Voter Fraud by State</a>
-  <a href="newcontact.html">Contact</a>
-</div>
-<div class="container">
-  <div class="logo-container">
-    <h1>Election Security Score Viewer</h1>
-  </div>
-
-  <div class="divider-bar">
-    <div class="truth"></div>
-    <div class="reliability"></div>
-    <div class="understanding"></div>
-  </div>
-</div>
-
-    <!-- Box: Score Viewer -->
-  <div class="box">
-        
-  <h2>How the T.R.U. OWL Score Works</h2>
-<p>Each person is assessed across 10 core categories related to election security. Scores are assigned based on public statements, platform behavior, and alignment with verified facts. Each category typically ranges from <strong>+10 to -10</strong>, based on the following rubric:</p>
-
-<ul class="score-legend tight">
-  <li><span class="score positive-high">+10 to +6</span> Demonstrates high factual accuracy and civic literacy</li>
-  <li><span class="score positive">+5 to +1</span> Shows general alignment with facts, but lacks clarity or depth</li>
-  <li><span class="score neutral">0</span> No significant engagement or neutral presence</li>
-  <li><span class="score negative">-1 to -5</span> Frequently misrepresents or oversimplifies key facts</li>
-  <li><span class="score disinfo">-6 to -10</span> Spreads disinformation or undermines democratic systems</li>
-</ul>
-
-<p><strong>Why some scores exceed the scale:</strong> While most scores fall within the standard range, some individuals demonstrate behavior that goes well beyond typical engagement. In cases of exceptionally constructive or damaging actions — especially when influence, repetition, and intent are clear — the score may extend above +10 or below -10. This reflects not just what was said, but how persistently and powerfully it was used to inform or mislead the public.</p>
-<p><strong>Total Score:</strong> A summation of all category subscores. This reflects a person's overall credibility on the topic of U.S. election security — not their ideology or political alignment.</p>
-<p><em>Note:</em> A person’s stance on the 2020 election is a strong signal within this system. In many cases, denial of verified results reflects not just misinformation, but loyalty signaling — making it a direct measure of truth vs. tribalism.</p>
-    <label for="person-select"><strong>Select a person to view their score breakdown:</strong></label>
-<select id="person-select" onchange="showScores()">
-  <option value="">-- Choose a name --</option>
-</select>
-
-<div class="table-wrapper">
-  <table id="score-table" style="display: none;">
-    <thead>
-      <tr>
-        <th>Category</th>
-        <th>Score</th>
-        <th>Explanation</th>
-      </tr>
-    </thead>
-    <tbody id="score-body"></tbody>
-  </table>
-</div>
-  </div>
-
-  <!-- Box: Base Layer of Truth -->
-  <div class="box">
-<h2>Strategic Foundation - Election Security</h2>
-
-<h3>Constitutional Knowledge</h3>
-<table>
-  <tr><th>Facts</th></tr>
-  <tr>
-    <td>
-      Voting is a constitutional right — not a privilege handed out by politicians or protected by parties. Anyone who says otherwise is either misinformed or strategically misleading.
-    </td>
-  </tr>
-  <tr>
-    <td>
-      The U.S. Constitution protects voting rights through multiple amendments: 1st (expression), 12th (electoral count), 14th (equal protection), 15th (race), 17th (Senate elections), 19th (gender), 23rd (D.C. electors), 24th (poll tax), and 26th (age).
-    </td>
-  </tr>
-  <tr>
-    <td>
-      The 12th Amendment defines how Electoral College votes are counted. It does **not** give the Vice President the authority to reject certified results — that’s a lie dressed as process.
-    </td>
-  </tr>
-</table>
-<p class="strategic-insight">
-  <strong>Strategic Insight:</strong> When people frame voting as a privilege, they distort constitutional truth. This distortion justifies exclusion — intentionally or not. Clarity on this category separates civic knowledge from manipulation.
+  <div class="container">
+    <h1>Reality Check</h1>
+<p>
+  This is your Misconception Hub — where we expose popular myths and break them down with verifiable facts, starting with voter fraud and expanding from there.
 </p>
-
-<h3>Legal Framework</h3>
-<table>
-  <tr><th>Facts</th></tr>
-  <tr>
-    <td>
-      Only U.S. citizens can vote in federal elections — this isn’t opinion, it’s federal law. Anyone claiming otherwise is either distorting the law or exploiting confusion.
-    </td>
-  </tr>
-  <tr>
-    <td>
-      Voter registration systems already require proof of citizenship: birth certificate, passport, or naturalization documentation. Claims that noncitizens are voting in mass are designed to provoke, not inform.
-    </td>
-  </tr>
-  <tr>
-    <td>
-      Three key laws govern voting access and oversight: the Voting Rights Act (1965), the National Voter Registration Act (1993), and the Help America Vote Act (2002). These laws exist to secure elections — not to rig them.
-    </td>
-  </tr>
-</table>
-<p class="strategic-insight">
-  <strong>Strategic Insight:</strong> Legal misrepresentation fuels voter suppression. Understanding the actual laws — and how they're twisted — exposes efforts to restrict rather than protect democratic access.
-</p>
-<h3>Federalism</h3>
-<table>
-  <tr><th>Facts</th></tr>
-  <tr>
-    <td>
-      Under Article I, Section 4 of the Constitution, states control how elections are run — even for federal offices. That’s not a loophole; it’s the foundation of decentralized democracy.
-    </td>
-  </tr>
-  <tr>
-    <td>
-      There is no centralized national voting system. Each state builds and manages its own process — by design. Attempts to override this are not about integrity; they’re about control.
-    </td>
-  </tr>
-</table>
-<p class="strategic-insight">
-  <strong>Strategic Insight:</strong> Federalism isn’t just structure — it’s strategy. Knowing who controls what helps reveal when someone is bypassing accountability by blaming “the feds” or “the states.”
-</p>
-<h3>Election Mechanics</h3>
-<table>
-  <tr><th>Facts</th></tr>
-  <tr>
-    <td>
-      Machine counts are statistically more accurate than hand counts — confirmed by decades of audit data. Those who push “hand counts only” are usually pushing doubt, not improvement.
-    </td>
-  </tr>
-  <tr>
-    <td>
-      Most states conduct risk-limiting audits — a scientifically proven method to verify outcomes and catch errors. It’s not just about recounts, it’s about confidence rooted in evidence.
-    </td>
-  </tr>
-  <tr>
-    <td>
-      Paper ballot backups are standard in nearly every state. They exist precisely to double-check machines. Pretending they don’t is a strategy, not a mistake.
-    </td>
-  </tr>
-</table>
-<p class="strategic-insight">
-  <strong>Strategic Insight:</strong> Doubting machines works because people don’t know the safeguards. Falsehoods spread faster than tech facts. Knowing the mechanics restores grounded trust.
-</p>
-<h3>Electoral Count Process</h3>
-<table>
-  <tr><th>Facts</th></tr>
-  <tr>
-    <td>
-      The 12th Amendment defines how Congress counts Electoral College votes — not how to dispute them. It outlines process, not power grabs.
-    </td>
-  </tr>
-  <tr>
-    <td>
-      The Vice President’s role is purely ceremonial. They open the envelopes — they don’t get to edit what’s inside. Any claim otherwise is political fiction.
-    </td>
-  </tr>
-  <tr>
-    <td>
-      Electoral votes come from the states after legal certification. Congress meets only to tally — not to veto. That’s how our system prevents chaos.
-    </td>
-  </tr>
-</table>
-<p class="strategic-insight">
-  <strong>Strategic Insight:</strong> The Vice President is ceremonial. Pretending otherwise isn't debate — it's destabilization. This process matters because it protects the handoff of power from personal agendas.
-</p>
-<h3>Disinformation Awareness</h3>
-<table>
-  <tr><th>Fact</th></tr>
-  <tr><td>Disinformation is intentional deception; misinformation is accidental.</td></tr>
-  <tr><td>There is no evidence of widespread fraud in the 2020 election — confirmed in over 60 court rulings.</td></tr>
-  <tr><td>Trump-appointed judges, DHS, and state officials (GOP and Dem) verified election legitimacy.</td></tr>
-</table>
-<p class="strategic-insight">
-  <strong>Strategic Insight:</strong> People don’t need to lie to spread disinformation — just repeat it. The danger isn’t just the source, but the echo. Identifying intent helps separate confusion from corruption.
-</p>
-<h3>Public Impact</h3>
-<table>
-  <tr><th>Facts</th></tr>
-  <tr>
-    <td>
-      Public figures shape how millions perceive reality — whether they intend to or not. Influence without responsibility is a liability to democracy.
-    </td>
-  </tr>
-  <tr>
-    <td>
-      Repeating false claims, even passively or under the guise of “just asking questions,” chips away at public trust and legitimizes chaos.
-    </td>
-  </tr>
-  <tr>
-    <td>
-      The act of correcting falsehoods — especially in front of an audience — isn’t just noble. It’s a marker of integrity and a civic responsibility.
-    </td>
-  </tr>
-</table>
-<p class="strategic-insight">
-  <strong>Strategic Insight:</strong> Influence without correction spreads distortion. Even silence has consequence. A platform without responsibility becomes a megaphone for confusion.
-</p>
-<h3>Judicial Oversight</h3>
-<table>
-  <tr><th>Facts</th></tr>
-  <tr>
-    <td>
-      More than 60 court cases in 2020 — across both state and federal courts — found zero evidence of widespread voter fraud. That’s not an opinion. That’s legal record.
-    </td>
-  </tr>
-  <tr>
-    <td>
-      Many of those rulings came from Trump-appointed judges. When even your own bench calls the bluff, the argument collapses.
-    </td>
-  </tr>
-  <tr>
-    <td>
-      Landmark rulings like <em>Bush v. Gore (2000)</em> and <em>Moore v. Harper (2023)</em> define the constitutional limits of power in elections — not Twitter threads.
-    </td>
-  </tr>
-  <tr>
-    <td>
-      Courts don’t override elections — they uphold them. Judicial review is the firewall between law and lawlessness.
-    </td>
-  </tr>
-</table>
-<p class="strategic-insight">
-  <strong>Strategic Insight:</strong> Courts are guardrails — but only if the public understands their role. Discrediting them without basis isn’t skepticism, it’s sabotage. Knowing how legal resolution works restores faith in resolution itself.
-</p>
-<h3>Election Worker Protections</h3>
-<table>
-  <tr><th>Fact</th></tr>
-  <tr><td>After the 2020 election, election workers across the country were harassed, doxxed, and threatened with violence.</td></tr>
-  <tr><td>Ruby Freeman and Shaye Moss, Georgia workers, were falsely accused and targeted by Trump allies.</td></tr>
-  <tr><td>Some states have passed laws to increase penalties for threatening election officials or disrupting ballot counting.</td></tr>
-  <tr><td>Protecting election workers is essential for the functionality and fairness of the democratic process.</td></tr>
-</table>
-<p class="strategic-insight">
-  <strong>Strategic Insight:</strong> When workers fear for their safety, democracy itself is at risk. Protecting them isn’t just policy — it’s a defense of the system’s human backbone.
-</p>
-<h3>Psychological Manipulation (Soversion Layer)</h3>
-<table>
-  <tr><th>Facts</th></tr>
-  <tr>
-    <td>
-      Disinformation doesn’t rely on logic — it thrives on emotion. Repetition and fear short-circuit critical thinking, by design.
-    </td>
-  </tr>
-  <tr>
-    <td>
-      Election lies stick not because they’re convincing, but because they activate identity, grievance, and distrust. That’s how propaganda works.
-    </td>
-  </tr>
-  <tr>
-    <td>
-      People often reject truth not out of ignorance, but out of self-protection — a product of tribal loyalty and motivated reasoning.
-    </td>
-  </tr>
-  <tr>
-    <td>
-      When false beliefs fuse with identity and override reality, that’s not confusion — that’s <strong>Soversion</strong>: a rewiring of truth through ideological capture.
-    </td>
-  </tr>
-</table>
-<p class="strategic-insight">
-  <strong>Strategic Insight:</strong> Soversion turns confusion into identity. The more people believe falsehoods reflect who they are, the harder truth becomes to hear. That’s not ignorance — that’s engineered entrenchment.
-</p>
-</div>
-
-  <!-- Script: Score Display -->
+    <!-- 🎯 Divider -->
+    <section class="divider-section">
+      <div class="divider-bar">
+        <div class="truth"></div>
+        <div class="reliability"></div>
+        <div class="understanding"></div>
+      </div>
+      <div class="divider-labels">
+        <span>Truth</span>
+        <span>Reliability</span>
+        <span>Understanding</span>
+      </div>
+    </section>
+    <!-- 🧠 Culture Subs UI Section -->
+    <div id="culture-subs">
+      <h1>Enter the Misconception Hub</h1>
+      <p style="text-align: center; color: var(--text-muted); margin-top: 20px;">
+        Select a topic to examine popular claims and compare them to verifiable facts — one layer at a time.
+      </p>
+      <div class="dropdown-container">
+        <select id="culture-select" onchange="showCultureSubs()">
+          <option value="">-- Select a Misconception --</option>
+        </select>
+      </div>
+      <div class="table-wrapper" style="display:none;" id="culture-results">
+        <table>
+          <tbody id="culture-body"></tbody>
+        </table>
+      </div>
+    </div>
+    <!-- 🎯 Divider -->
+    <section class="divider-section">
+      <div class="divider-bar">
+        <div class="truth"></div>
+        <div class="reliability"></div>
+        <div class="understanding"></div>
+      </div>
+      <div class="divider-labels">
+        <span>Truth</span>
+        <span>Reliability</span>
+        <span>Understanding</span>
+      </div>
+    </section>
+    <!-- 🗳️ Voter Fraud Section -->
+    <div id="voter-fraud-section">
+      <h1>Voter Fraud?</h1>
+      <p>Look past the headlines. Here’s the actual data.</p>
+      <p>
+        You’ve heard the claims. Some say voter fraud is everywhere. Others say it barely exists. Let’s look at the actual records.
+      </p>
+      <p>
+        The Heritage Foundation tracks every confirmed case of voter fraud — often to suggest it’s a bigger threat than it is. This tool lets you explore that same data, with the context it’s missing.
+      </p>
+      <p>
+        Because yes, voter fraud exists. But it’s not what you’ve been led to believe.
+      </p>
+      <label for="state-select" style="display: block; margin-bottom: 8px; font-weight: bold;">
+        Select a State:
+      </label>
+      <select id="state-select" style="padding: 6px; font-size: 1rem;">
+        <option value="">-- Choose a state --</option>
+      </select>
+      <p id="state-summary" class="subtext"></p>
+      <div class="table-wrapper" style="display:none;" id="state-results">
+        <table>
+          <thead>
+            <tr>
+              <th>Year</th>
+              <th>State</th>
+              <th>Name</th>
+            </tr>
+          </thead>
+          <tbody id="state-data-body"></tbody>
+        </table>
+      </div>
+      <p>Source:</p>
+      <p><a href="https://www.heritage.org/voterfraud" class="important-link" target="_blank">Heritage Foundation Voter Fraud Database</a></p>
+    </div>
+    <!-- 🎯 Divider -->
+    <section class="divider-section">
+      <div class="divider-bar">
+        <div class="truth"></div>
+        <div class="reliability"></div>
+        <div class="understanding"></div>
+      </div>
+      <div class="divider-labels">
+        <span>Truth</span>
+        <span>Reliability</span>
+        <span>Understanding</span>
+      </div>
+    </section>
+    <!-- 🦉 TRU Score by Name Section -->
+    <div id="tru-score-section">
+      <p style="text-align: center; color: var(--text-muted); margin-top: 20px;">
+        Select a name below to view their Election Security credibility breakdown.
+      </p>
+      <div class="dropdown-container">
+        <select id="person-select" onchange="showScores()">
+          <option value="">-- Choose a name --</option>
+        </select>
+      </div>
+      <div class="table-wrapper">
+        <table id="score-table" style="display: none;">
+          <thead>
+            <tr>
+              <th>Category</th>
+              <th>Score</th>
+              <th>Explanation</th>
+            </tr>
+          </thead>
+          <tbody id="score-body"></tbody>
+        </table>
+      </div>
+    </div>
  <script>
-    async function fetchTRUData() {
-      const API_KEY = "AIzaSyCzuh9HBfe0r70r9U35Pe406PPZ-tz6I78";
-      const SHEET_ID = "19wBEj9hEkvIyQcoR5E_mBGVAxTzMnddMxk8nuQLAumA";
-      const RANGE = "ElectionTRU!A2:Y1000";
-      const url = `https://sheets.googleapis.com/v4/spreadsheets/${SHEET_ID}/values/${RANGE}?key=${API_KEY}`;
+  async function fetchTRUData() {
+    const API_KEY = "AIzaSyCzuh9HBfe0r70r9U35Pe406PPZ-tz6I78";
+    const SHEET_ID = "19wBEj9hEkvIyQcoR5E_mBGVAxTzMnddMxk8nuQLAumA";
+    const RANGE = "ElectionTRU!A2:Y1000";
+    const url = `https://sheets.googleapis.com/v4/spreadsheets/${SHEET_ID}/values/${RANGE}?key=${API_KEY}`;
+    try {
+      const res = await fetch(url);
+      const json = await res.json();
+      return json.values || [];
+    } catch (err) {
+      console.error("Failed to fetch sheet data", err);
+      const select = document.getElementById("person-select");
+      if (select) {
+        select.innerHTML = '<option value="">Failed to load data. Please try again later.</option>';
+      }
+      return [];
+    }
+  }
 
+  function showScores() {
+    const select = document.getElementById("person-select");
+    const table = document.getElementById("score-table");
+    const tbody = document.getElementById("score-body");
+    const selected = select.value;
+    if (!selected || !window.rowMap || !window.rowMap[selected]) {
+      table.style.display = "none";
+      return;
+    }
+
+    const row = window.rowMap[selected];
+    tbody.innerHTML = "";
+    let total = 0;
+
+    const categories = [
+      "Constitutional Knowledge", "Legal Framework", "Federalism",
+      "Election Mechanics", "Electoral Count Process", "Disinformation Awareness",
+      "Public Impact", "Judicial Oversight", "Election Worker Protections",
+      "Psychological Manipulation"
+    ];
+
+    for (let i = 0; i < 10; i++) {
+      const label = categories[i];
+      const score = parseInt(row[3 + i]) || 0;
+      const explanation = row[14 + i] || "";
+
+      const tr = document.createElement("tr");
+      tr.innerHTML = `<td>${label}</td><td>${score >= 0 ? "+" : ""}${score}</td><td>${explanation}</td>`;
+      tbody.appendChild(tr);
+      total += score;
+    }
+
+    const flag = (row[24] || "").toLowerCase();
+    let bonus = 0, label = "", desc = "";
+
+    if (flag === "true") {
+      bonus = -10;
+      label = "2020 Election Denial Penalty";
+      desc = "Denial of the 2020 election outcome signals rejection of verified democratic processes and aligns with disinformation or blind loyalty.";
+    } else if (flag === "false") {
+      bonus = 5;
+      label = "2020 Election Affirmation Bonus";
+      desc = "Publicly affirming the legitimacy of the 2020 election supports truth, counters disinformation, and helps protect democratic confidence.";
+    } else if (flag === "gray") {
+      bonus = -5;
+      label = "Ambiguous Stance Penalty";
+      desc = "Failure to clearly affirm the 2020 election results contributes to public doubt and enables misinformation to spread unchecked.";
+    }
+
+    if (label) {
+      const bonusClass = bonus >= 0 ? "positive-score" : "negative-score";
+      const tr = document.createElement("tr");
+      tr.innerHTML = `<td><strong>${label}</strong></td><td class="${bonusClass}"><strong>${bonus >= 0 ? "+" : ""}${bonus}</strong></td><td><strong>${desc}</strong></td>`;
+      tbody.appendChild(tr);
+      total += bonus;
+    }
+
+    const summary = row[13] || "No summary provided.";
+    const totalClass = total >= 0 ? "positive-score" : "negative-score";
+    const totalRow = document.createElement("tr");
+    totalRow.innerHTML = `<td><strong>Total Score</strong></td><td class="${totalClass}"><strong>${total >= 0 ? "+" : ""}${total}</strong></td><td><strong>${summary}</strong></td>`;
+    tbody.appendChild(totalRow);
+
+    table.style.display = "table";
+  }
+
+  async function initElectionPage() {
+    window.rowMap = {};
+    const data = await fetchTRUData();
+    data.forEach(row => {
+      const key = row[0];
+      if (key) window.rowMap[key] = row;
+    });
+
+    const select = document.getElementById("person-select");
+    if (!select) return;
+
+    select.innerHTML = '<option value="">-- Choose a name --</option>';
+    Object.keys(window.rowMap).sort().forEach(name => {
+      const opt = document.createElement("option");
+      opt.value = name;
+      opt.textContent = name.replace(/([A-Z])/g, " $1").replace(/^./, s => s.toUpperCase());
+      select.appendChild(opt);
+    });
+
+    select.removeEventListener("change", showScores);
+    select.addEventListener("change", showScores);
+  }
+
+  window.addEventListener("DOMContentLoaded", initElectionPage);
+   const API_KEY = "AIzaSyB3NmN4OpDutbaX6V2KkLy1p-vDLghrF5M";
+    const SHEET_ID = "1p66gmWWjxJbrySxpR5T--fP8iEgUbW7RrXru61gagRA";
+    const RANGE = "HeritageVoterfraudRawData!B6:D1589";
+
+    async function fetchSheetData() {
+      const url = `https://sheets.googleapis.com/v4/spreadsheets/${SHEET_ID}/values/${RANGE}?key=${API_KEY}`;
       try {
         const res = await fetch(url);
-        const json = await res.json();
-        return json.values || [];
-      } catch (err) {
-        console.error("Failed to fetch sheet data", err);
-        const select = document.getElementById("person-select");
-        if (select) {
-          select.innerHTML = '<option value="">Failed to load data. Please try again later.</option>';
-        }
+        const data = await res.json();
+        return data.values || [];
+      } catch (error) {
+        console.error("Failed to fetch data:", error);
         return [];
       }
     }
 
-    function showScores() {
-      const select = document.getElementById("person-select");
-      const table = document.getElementById("score-table");
-      const tbody = document.getElementById("score-body");
-      const selected = select.value;
-      if (!selected || !window.rowMap || !window.rowMap[selected]) {
-        table.style.display = "none";
+    function populateDropdown(statesSet, stateSelect) {
+      const sortedStates = Array.from(statesSet).sort();
+      sortedStates.forEach(state => {
+        const opt = document.createElement("option");
+        opt.value = state;
+        opt.textContent = state;
+        stateSelect.appendChild(opt);
+      });
+    }
+
+    async function initStateFraudPage() {
+      const stateSelect = document.getElementById("state-select");
+      const tableBody = document.getElementById("state-data-body");
+      const resultsWrapper = document.getElementById("state-results");
+      const summaryLine = document.getElementById("state-summary");
+
+      if (!stateSelect || !tableBody || !resultsWrapper || !summaryLine) {
+        console.warn("[statefraud] Required elements not found.");
         return;
       }
 
-      const row = window.rowMap[selected];
-      tbody.innerHTML = "";
-      let total = 0;
+      const rows = await fetchSheetData();
+      const statesSet = new Set(rows.map(row => row[1]));
+      populateDropdown(statesSet, stateSelect);
 
-      const categories = [
-        "Constitutional Knowledge", "Legal Framework", "Federalism",
-        "Election Mechanics", "Electoral Count Process", "Disinformation Awareness",
-        "Public Impact", "Judicial Oversight", "Election Worker Protections",
-        "Psychological Manipulation"
-      ];
+      stateSelect.addEventListener("change", function () {
+        const selected = this.value;
+        tableBody.innerHTML = "";
+        summaryLine.textContent = "";
 
-      for (let i = 0; i < 10; i++) {
-        const label = categories[i];
-        const score = parseInt(row[3 + i]) || 0;
-        const explanation = row[14 + i] || "";
+        const filtered = rows.filter(row => row[1] === selected);
 
-        const tr = document.createElement("tr");
-        tr.innerHTML = `<td>${label}</td><td>${score >= 0 ? "+" : ""}${score}</td><td>${explanation}</td>`;
-        tbody.appendChild(tr);
-        total += score;
-      }
+        if (filtered.length === 0) {
+          tableBody.innerHTML = `<tr><td colspan="3">No records found for ${selected}</td></tr>`;
+          resultsWrapper.style.display = "flex";
+          return;
+        }
 
-      const flag = (row[24] || "").toLowerCase();
-      let bonus = 0, label = "", desc = "";
+        const sorted = filtered.sort((a, b) => parseInt(a[0]) - parseInt(b[0]));
 
-      if (flag === "true") {
-        bonus = -10;
-        label = "2020 Election Denial Penalty";
-        desc = "Denial of the 2020 election outcome signals rejection of verified democratic processes and aligns with disinformation or blind loyalty.";
-      } else if (flag === "false") {
-        bonus = 5;
-        label = "2020 Election Affirmation Bonus";
-        desc = "Publicly affirming the legitimacy of the 2020 election supports truth, counters disinformation, and helps protect democratic confidence.";
-      } else if (flag === "gray") {
-        bonus = -5;
-        label = "Ambiguous Stance Penalty";
-        desc = "Failure to clearly affirm the 2020 election results contributes to public doubt and enables misinformation to spread unchecked.";
-      }
+        const years = sorted.map(row => parseInt(row[0])).filter(year => !isNaN(year));
+        const minYear = Math.min(...years);
+        const maxYear = Math.max(...years);
+        const caseCount = sorted.length;
 
-      if (label) {
-        const tr = document.createElement("tr");
-        tr.innerHTML = `<td><strong>${label}</strong></td><td><strong>${bonus >= 0 ? "+" : ""}${bonus}</strong></td><td><strong>${desc}</strong></td>`;
-        tbody.appendChild(tr);
-        total += bonus;
-      }
+        summaryLine.textContent = `${caseCount} case${caseCount === 1 ? '' : 's'} found from ${minYear} to ${maxYear}`;
 
-      const summary = row[13] || "No summary provided.";
-      const totalRow = document.createElement("tr");
-      totalRow.innerHTML = `<td><strong>Total Score</strong></td><td><strong>${total >= 0 ? "+" : ""}${total}</strong></td><td><strong>${summary}</strong></td>`;
-      tbody.appendChild(totalRow);
+        sorted.forEach(row => {
+          const year = row[0];
+          const state = row[1];
+          const name = row[2];
+          const tr = document.createElement("tr");
+          tr.innerHTML = `<td>${year}</td><td>${state}</td><td>${name}</td>`;
+          tableBody.appendChild(tr);
+        });
 
-      table.style.display = "table";
+        resultsWrapper.style.display = "flex";
+      });
     }
+   function toggleMenu() {
+    const menu = document.getElementById("navMenu");
+    menu.classList.toggle("show");
+  }
 
-    async function initElectionPage() {
-      window.rowMap = {};
-      const data = await fetchTRUData();
-      data.forEach(row => {
-        const key = row[0];
-        if (key) window.rowMap[key] = row;
-      });
+    // ✅ Enable for standalone mode
+    window.addEventListener("DOMContentLoaded", initStateFraudPage);
+  function toggleMenu() {
+    document.getElementById("navMenu").classList.toggle("show");
+  }
+  // --- Culture Subs JS ---
+  async function fetchCultureData() {
+    const SHEET_ID = "19wBEj9hEkvIyQcoR5E_mBGVAxTzMnddMxk8nuQLAumA";
+    const RANGE = "CultureSubs!A2:D1000";
+    const url = `https://sheets.googleapis.com/v4/spreadsheets/${SHEET_ID}/values/${RANGE}?key=AIzaSyCzuh9HBfe0r70r9U35Pe406PPZ-tz6I78`;
 
-      const select = document.getElementById("person-select");
-      if (!select) return;
-
-      select.innerHTML = '<option value="">-- Choose a name --</option>';
-      Object.keys(window.rowMap).sort().forEach(name => {
-        const opt = document.createElement("option");
-        opt.value = name;
-        opt.textContent = name.replace(/([A-Z])/g, " $1").replace(/^./, s => s.toUpperCase());
-        select.appendChild(opt);
-      });
-
-      select.removeEventListener("change", showScores);
-      select.addEventListener("change", showScores);
-    }
-
-    window.addEventListener("DOMContentLoaded", initElectionPage);
-  </script>
-  <script>
-  function initNewstatefraudPage() {
-    console.log("[init] Newstatefraud page initialized");
-
-    const stateMenu = document.getElementById("stateSelect");
-
-    if (stateMenu) {
-      stateMenu.addEventListener("change", function () {
-        const state = stateMenu.value;
-        console.log("State selected:", state);
-
-        // You could now load fraud data for that state
-        // loadFraudDataForState(state);
-      });
-    } else {
-      console.warn("State select dropdown not found.");
+    try {
+      const res = await fetch(url);
+      const data = await res.json();
+      return data.values || [];
+    } catch (error) {
+      console.error("Failed to fetch CultureSubs data:", error);
+      return [];
     }
   }
+
+  async function initCulturePage() {
+    const dropdown = document.getElementById("culture-select");
+    const cultureRows = await fetchCultureData();
+    const subjectSet = new Set(cultureRows.map(row => row[0]));
+    subjectSet.forEach(subject => {
+      const opt = document.createElement("option");
+      opt.value = subject;
+      opt.textContent = subject;
+      dropdown.appendChild(opt);
+    });
+
+    window.cultureMap = {};
+    cultureRows.forEach(row => {
+      const subject = row[0];
+      if (!window.cultureMap[subject]) {
+        window.cultureMap[subject] = [];
+      }
+      window.cultureMap[subject].push({ subcategory: row[1], claim: row[2], extra: row[3] || "" });
+    });
+  }
+
+  function showCultureSubs() {
+    const selected = document.getElementById("culture-select").value;
+    const wrapper = document.getElementById("culture-results");
+    const body = document.getElementById("culture-body");
+    body.innerHTML = "";
+
+    if (!selected || !window.cultureMap[selected]) {
+      wrapper.style.display = "none";
+      return;
+    }
+
+    window.cultureMap[selected].forEach(({ claim, extra }) => {
+      const claimRow = document.createElement("tr");
+      claimRow.innerHTML = `<td colspan="3" style="padding-left: 12px; padding-top: 16px; color: #FF7F7F; font-weight: bold;"><em>Claim:</em> ${claim}</td>`;
+      body.appendChild(claimRow);
+
+      const factRow = document.createElement("tr");
+      factRow.innerHTML = `<td colspan="3" style="padding-left: 20px; padding-bottom: 12px; color: var(--understanding);"><em>Fact:</em> ${extra}</td>`;
+      body.appendChild(factRow);
+    });
+
+    wrapper.style.display = "block";
+  }
+
+  window.addEventListener("DOMContentLoaded", initCulturePage);
 </script>
+
 </body>
 </html>
