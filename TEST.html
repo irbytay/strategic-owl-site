@@ -445,13 +445,24 @@
         <span>Understanding</span>
       </div>
     </section>
-   <p style="text-align: center; color: var(--text-muted); margin-top: 20px;">
-  Select a name below to view their Election Security credibility breakdown.
-</p>
-   <div class="dropdown-container">
-  <select id="person-select" onchange="showScores()">
-    <option value="">-- Choose a name --</option>
-  </select>
+    <!-- 🧠 Culture Subs UI Section -->
+    <div class="container" id="culture-subs">
+      <h1>Culture & Subcategories</h1>
+      <p style="text-align: center; color: var(--text-muted); margin-top: 20px;">
+        Select a subject below to view related subcategories and their claims.
+      </p>
+      <div class="dropdown-container">
+        <select id="culture-select" onchange="showCultureSubs()">
+          <option value="">-- Choose a subject --</option>
+        </select>
+      </div>
+
+      <div class="table-wrapper" style="display:none;" id="culture-results">
+        <table>
+          <tbody id="culture-body"></tbody>
+        </table>
+      </div>
+    </div>
 </div>
 
 <div class="table-wrapper">
@@ -466,6 +477,20 @@
     <tbody id="score-body"></tbody>
   </table>
 </div>
+  </div>
+     <!-- 🎯 Divider -->
+    <section class="divider-section">
+      <div class="divider-bar">
+        <div class="truth"></div>
+        <div class="reliability"></div>
+        <div class="understanding"></div>
+      </div>
+      <div class="divider-labels">
+        <span>Truth</span>
+        <span>Reliability</span>
+        <span>Understanding</span>
+      </div>
+    </section>
   </div>
     <div class="container">
     <h1>Voter Fraud?</h1>
@@ -520,55 +545,30 @@ Because yes, voter fraud exists. But it’s not what you’ve been led to believ
   </div>
        
 
-    <!-- 🎯 Divider -->
-    <section class="divider-section">
-      <div class="divider-bar">
-        <div class="truth"></div>
-        <div class="reliability"></div>
-        <div class="understanding"></div>
-      </div>
-      <div class="divider-labels">
-        <span>Truth</span>
-        <span>Reliability</span>
-        <span>Understanding</span>
-      </div>
-    </section>
-  </div>
-
-    <!-- 🧠 Culture Subs UI Section -->
-    <div class="container" id="culture-subs">
-      <h1>Culture & Subcategories</h1>
-      <p style="text-align: center; color: var(--text-muted); margin-top: 20px;">
-        Select a subject below to view related subcategories and their claims.
-      </p>
-      <div class="dropdown-container">
-        <select id="culture-select" onchange="showCultureSubs()">
-          <option value="">-- Choose a subject --</option>
-        </select>
-      </div>
-
-      <div class="table-wrapper" style="display:none;" id="culture-results">
-        <table>
-          <tbody id="culture-body"></tbody>
-        </table>
-      </div>
-    </div>
-
-    <!-- 🎯 Divider -->
-    <section class="divider-section">
-      <div class="divider-bar">
-        <div class="truth"></div>
-        <div class="reliability"></div>
-        <div class="understanding"></div>
-      </div>
-      <div class="divider-labels">
-        <span>Truth</span>
-        <span>Reliability</span>
-        <span>Understanding</span>
-      </div>
-    </section>
 
     
+
+    <!-- 🎯 Divider -->
+    <section class="divider-section">
+      <div class="divider-bar">
+        <div class="truth"></div>
+        <div class="reliability"></div>
+        <div class="understanding"></div>
+      </div>
+      <div class="divider-labels">
+        <span>Truth</span>
+        <span>Reliability</span>
+        <span>Understanding</span>
+      </div>
+    </section>
+
+     <p style="text-align: center; color: var(--text-muted); margin-top: 20px;">
+  Select a name below to view their Election Security credibility breakdown.
+</p>
+   <div class="dropdown-container">
+  <select id="person-select" onchange="showScores()">
+    <option value="">-- Choose a name --</option>
+  </select>
 
    <!-- Script: Score Display -->
  <script>
