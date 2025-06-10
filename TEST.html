@@ -773,34 +773,6 @@ Because yes, voter fraud exists. But it’s not what you’ve been led to believ
   function toggleMenu() {
     document.getElementById("navMenu").classList.toggle("show");
   }
-</script>
-
-  <!-- Culture Subs Section -->
-  <div class="container" id="culture-subs">
-    <h1>Culture & Subcategories</h1>
-    <p style="text-align: center; color: var(--text-muted); margin-top: 20px;">
-      Select a subject below to view related subcategories and their claims.
-    </p>
-    <div class="dropdown-container">
-      <select id="culture-select" onchange="showCultureSubs()">
-        <option value="">-- Choose a subject --</option>
-      </select>
-    </div>
-
-    <div class="table-wrapper" style="display:none;" id="culture-results">
-      <table>
-        <thead>
-          <tr>
-            <th>Subcategory</th>
-            <th>Claim</th>
-          </tr>
-        </thead>
-        <tbody id="culture-body"></tbody>
-      </table>
-    </div>
-  </div>
-
-<script>
   // --- Culture Subs JS ---
   async function fetchCultureData() {
     const SHEET_ID = "19wBEj9hEkvIyQcoR5E_mBGVAxTzMnddMxk8nuQLAumA";
