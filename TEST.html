@@ -409,6 +409,32 @@
     }
   }
 </style>
+  <style>
+  .definition-tooltip {
+    position: relative;
+    cursor: help;
+    color: var(--understanding);
+    font-weight: 600;
+    border-bottom: 1px dotted var(--understanding);
+  }
+
+  .definition-tooltip:hover::after {
+    content: attr(data-definition);
+    position: absolute;
+    bottom: -1.8em;
+    left: 0;
+    background-color: var(--surface);
+    color: var(--text-muted);
+    border: 1px solid var(--highlight);
+    padding: 8px 10px;
+    border-radius: 4px;
+    white-space: pre-line;
+    font-size: 0.95rem;
+    max-width: 280px;
+    z-index: 100;
+    box-shadow: 0 4px 8px var(--shadow);
+  }
+  </style>
 </head>
   <body>
 
@@ -805,6 +831,45 @@
   }
 
   window.addEventListener("DOMContentLoaded", initCulturePage);
+// Webster Definitions Tooltip
+async function fetchDefinitionsFromSheet() {
+  const SHEET_ID = "YOUR_SHEET_ID";
+  const RANGE = "TRU_Definitions!A2:B1000";
+  const API_KEY = "YOUR_API_KEY";
+  const url = `https://sheets.googleapis.com/v4/spreadsheets/${SHEET_ID}/values/${RANGE}?key=${API_KEY}`;
+  try {
+    const res = await fetch(url);
+    const data = await res.json();
+    const defs = {};
+    (data.values || []).forEach(([term, definition]) => {
+      defs[term.toLowerCase()] = definition + "\n📘 Webster’s Dictionary";
+    });
+    return defs;
+  } catch (e) {
+    console.error("Failed to load definitions:", e);
+    return {};
+  }
+}
+
+function applyDefinitions(zoneId, definitions) {
+  const zone = document.getElementById(zoneId);
+  if (!zone) return;
+  let html = zone.innerHTML;
+  Object.keys(definitions).forEach(term => {
+    const regex = new RegExp(`\\b(${term})\\b`, "gi");
+    html = html.replace(regex, `<span class="definition-tooltip" data-definition="${definitions[term]}">$1</span>`);
+  });
+  zone.innerHTML = html;
+}
+
+async function enableDefinitionTooltips() {
+  const defs = await fetchDefinitionsFromSheet();
+  applyDefinitions("voter-fraud-section", defs);
+  applyDefinitions("culture-subs", defs);
+  applyDefinitions("tru-score-section", defs);
+}
+
+window.addEventListener("DOMContentLoaded", enableDefinitionTooltips);
 </script>
 
 </body>
