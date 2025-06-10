@@ -551,9 +551,10 @@ Because yes, voter fraud exists. But it’s not what you’ve been led to believ
         <table>
           <thead>
             <tr>
-              <th>Subcategory</th>
-              <th>Claim</th>
-            </tr>
+  <th>Subcategory</th>
+  <th>Claim</th>
+  <th>Evidence</th>
+</tr>
           </thead>
           <tbody id="culture-body"></tbody>
         </table>
@@ -776,7 +777,7 @@ Because yes, voter fraud exists. But it’s not what you’ve been led to believ
   // --- Culture Subs JS ---
   async function fetchCultureData() {
     const SHEET_ID = "19wBEj9hEkvIyQcoR5E_mBGVAxTzMnddMxk8nuQLAumA";
-    const RANGE = "CultureSubs!A2:C1000";
+    const RANGE = "CultureSubs!A2:D1000";
     const url = `https://sheets.googleapis.com/v4/spreadsheets/${SHEET_ID}/values/${RANGE}?key=AIzaSyCzuh9HBfe0r70r9U35Pe406PPZ-tz6I78`;
 
     try {
@@ -806,7 +807,7 @@ Because yes, voter fraud exists. But it’s not what you’ve been led to believ
       if (!window.cultureMap[subject]) {
         window.cultureMap[subject] = [];
       }
-      window.cultureMap[subject].push({ subcategory: row[1], claim: row[2] });
+      window.cultureMap[subject].push({ subcategory: row[1], claim: row[2], extra: row[3] || "" });
     });
   }
 
