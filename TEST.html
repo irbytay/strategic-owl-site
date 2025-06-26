@@ -592,6 +592,112 @@
         <p>This is the TESThome content — loaded inline without fetch.</p>
       </div>
     `,
+    reality-check: `
+      <div class="container">
+        <h1>Reality Check</h1>
+        <p>
+          This is your Misconception Hub — where we expose popular myths and break them down with verifiable facts, starting with voter fraud and expanding from there.
+        </p>
+        <section class="divider-section">
+          <div class="divider-bar">
+            <div class="truth"></div>
+            <div class="reliability"></div>
+            <div class="understanding"></div>
+          </div>
+          <div class="divider-labels">
+            <span>Truth</span>
+            <span>Reliability</span>
+            <span>Understanding</span>
+          </div>
+        </section>
+        <div id="culture-subs">
+          <h1>Misconception Hub</h1>
+          <p style="text-align: center; color: var(--text-muted); margin-top: 20px;">
+            Select a topic to examine popular claims and compare them to verifiable facts — one layer at a time.
+          </p>
+          <div class="dropdown-container">
+            <select id="culture-select" class="form-select" onchange="showCultureSubs()">
+              <option value="">-- Common Misconception --</option>
+            </select>
+          </div>
+          <div class="table-wrapper" style="display:none;" id="culture-results">
+            <table>
+              <tbody id="culture-body"></tbody>
+            </table>
+          </div>
+        </div>
+        <section class="divider-section">
+          <div class="divider-bar">
+            <div class="truth"></div>
+            <div class="reliability"></div>
+            <div class="understanding"></div>
+          </div>
+          <div class="divider-labels">
+            <span>Truth</span>
+            <span>Reliability</span>
+            <span>Understanding</span>
+          </div>
+        </section>
+        <div id="voter-fraud-section">
+          <h1>Voter Fraud?</h1>
+          <p>Look past the headlines. Here’s the actual data.</p>
+          <p>The Heritage Foundation tracks every confirmed case of voter fraud — often to suggest it’s a bigger threat than it is. This tool lets you explore that same data, with the context it’s missing.</p>
+          <label for="state-select" style="display: block; margin-bottom: 8px; font-weight: bold;">Select a State:</label>
+          <select id="state-select" style="padding: 6px; font-size: 1rem;">
+            <option value="">-- Choose a state --</option>
+          </select>
+          <p id="state-summary" class="subtext"></p>
+          <div class="table-wrapper" style="display:none;" id="state-results">
+            <table>
+              <thead>
+                <tr>
+                  <th>Year</th>
+                  <th>State</th>
+                  <th>Name</th>
+                </tr>
+              </thead>
+              <tbody id="state-data-body"></tbody>
+            </table>
+          </div>
+          <p>Source:</p>
+          <p><a href="https://www.heritage.org/voterfraud" class="important-link" target="_blank">Heritage Foundation Voter Fraud Database</a></p>
+        </div>
+        <section class="divider-section">
+          <div class="divider-bar">
+            <div class="truth"></div>
+            <div class="reliability"></div>
+            <div class="understanding"></div>
+          </div>
+          <div class="divider-labels">
+            <span>Truth</span>
+            <span>Reliability</span>
+            <span>Understanding</span>
+          </div>
+        </section>
+        <div id="tru-score-section">
+          <p style="text-align: center; color: var(--text-muted); margin-top: 20px;">
+            Select a name below to view their Election Security credibility breakdown.
+          </p>
+          <div class="dropdown-container">
+            <select id="person-select" onchange="showScores()">
+              <option value="">-- Choose a name --</option>
+            </select>
+          </div>
+          <div class="table-wrapper">
+            <table id="score-table" style="display: none;">
+              <thead>
+                <tr>
+                  <th>Category</th>
+                  <th>Score</th>
+                  <th>Explanation</th>
+                </tr>
+              </thead>
+              <tbody id="score-body"></tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    `,
     TESTthe_constitution: `
       <div>
         <div class="container">
@@ -656,6 +762,10 @@
 
     if (route === "TESTthe_constitution") {
       initConstitutionScripts();
+    }
+
+    if (route === "reality-check") {
+      initRealityCheckPage();
     }
   }
 
@@ -881,3 +991,8 @@
 
 </body>
 </html>
+  function initRealityCheckPage() {
+    initElectionPage();
+    initStateFraudPage();
+    initCulturePage();
+  }
