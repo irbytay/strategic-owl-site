@@ -450,11 +450,10 @@
       <p style="text-align: center; color: var(--text-muted); margin-top: 20px;">
         Select a topic to examine popular claims and compare them to verifiable facts — one layer at a time.
       </p>
-      <div class="dropdown-container">
-        <select id="culture-select" class="form-select" onchange="showCultureSubs()">
-  <option value="">-- Common Misconception --</option>
-</select>
-      </div>
+      <div id="subject-button-container" class="dropdown-container" style="flex-wrap: wrap; gap: 10px;"></div>
+      <select id="culture-select" class="form-select" onchange="showCultureSubs()" style="display:none;">
+        <option value="">-- Common Misconception --</option>
+      </select>
       <div class="table-wrapper" style="display:none;" id="culture-results">
         <table>
           <tbody id="culture-body"></tbody>
@@ -758,13 +757,31 @@
 
   async function initCulturePage() {
     const dropdown = document.getElementById("culture-select");
+    const buttonContainer = document.getElementById("subject-button-container");
     const cultureRows = await fetchCultureData();
     const subjectSet = new Set(cultureRows.map(row => row[0]));
+    // Clear any existing buttons
+    buttonContainer.innerHTML = "";
     subjectSet.forEach(subject => {
+      // Add to dropdown (hidden, for legacy support)
       const opt = document.createElement("option");
       opt.value = subject;
       opt.textContent = subject;
       dropdown.appendChild(opt);
+      // Create button for each subject
+      const button = document.createElement("button");
+      button.textContent = subject;
+      button.style.padding = "8px 12px";
+      button.style.backgroundColor = "var(--highlight)";
+      button.style.color = "var(--text)";
+      button.style.border = "none";
+      button.style.borderRadius = "4px";
+      button.style.cursor = "pointer";
+      button.addEventListener("click", () => {
+        document.getElementById("culture-select").value = subject;
+        showCultureSubs();
+      });
+      buttonContainer.appendChild(button);
     });
 
     window.cultureMap = {};
