@@ -25,6 +25,30 @@
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&family=Playfair+Display:wght@600;700&display=swap" rel="stylesheet" />
 
   <style>
+  .tooltip-word::after {
+    content: attr(data-definition);
+    position: absolute;
+    background-color: var(--highlight);
+    color: var(--text);
+    padding: 6px 10px;
+    border-radius: 6px;
+    font-size: 0.85rem;
+    white-space: nowrap;
+    opacity: 0;
+    transition: opacity 0.2s ease;
+    pointer-events: none;
+    transform: translateY(-6px);
+    z-index: 999;
+  }
+
+  .tooltip-word:hover::after,
+  .tooltip-word.touch-active::after {
+    opacity: 1;
+  }
+
+  .tooltip-word {
+    position: relative;
+  }
   :root {
     --background: #0D1B2A;
     --surface: #112240;
@@ -1249,3 +1273,49 @@
 </body>
 </html>
   
+  // === Word Tooltips (Definitions) ===
+  async function initWordTooltips() {
+    const SHEET_ID = "19wBEj9hEkvIyQcoR5E_mBGVAxTzMnddMxk8nuQLAumA";
+    const API_KEY = "AIzaSyCzuh9HBfe0r70r9U35Pe406PPZ-tz6I78";
+    const RANGE = "TRU_Definitions!A2:B1000";
+    const url = `https://sheets.googleapis.com/v4/spreadsheets/${SHEET_ID}/values/${RANGE}?key=${API_KEY}`;
+    try {
+      const res = await fetch(url);
+      const data = await res.json();
+      const definitions = data.values || [];
+
+      const container = document.getElementById("main-view");
+      if (!container) return;
+
+      const wordWrap = document.createElement("div");
+      wordWrap.style.margin = "24px auto";
+      wordWrap.style.maxWidth = "800px";
+      wordWrap.style.textAlign = "center";
+
+      definitions.forEach(([word, definition]) => {
+        const span = document.createElement("span");
+        span.textContent = word;
+        span.className = "tooltip-word";
+        span.setAttribute("data-definition", definition);
+        span.style.margin = "0 8px";
+        span.style.cursor = "help";
+        wordWrap.appendChild(span);
+      });
+
+      container.appendChild(wordWrap);
+    } catch (err) {
+      console.error("Error loading definitions", err);
+    }
+  }
+
+  document.addEventListener("DOMContentLoaded", () => {
+    initWordTooltips();
+  });
+
+  // Touch support for tooltips
+  document.addEventListener("click", function (e) {
+    if (e.target.classList.contains("tooltip-word")) {
+      e.target.classList.toggle("touch-active");
+      setTimeout(() => e.target.classList.remove("touch-active"), 3000);
+    }
+  });
