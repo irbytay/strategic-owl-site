@@ -1279,25 +1279,32 @@
       const data = await res.json();
       const definitions = data.values || [];
 
-      const container = document.getElementById("main-view");
-      if (!container) return;
+      // Walk all text nodes in the body and replace matches
+      const walker = document.createTreeWalker(document.body, NodeFilter.SHOW_TEXT, null, false);
+      let node;
 
-      const wordWrap = document.createElement("div");
-      wordWrap.style.margin = "24px auto";
-      wordWrap.style.maxWidth = "800px";
-      wordWrap.style.textAlign = "center";
+      while ((node = walker.nextNode())) {
+        let parent = node.parentNode;
+        if (!parent || parent.classList.contains("tooltip-word") || parent.tagName === "SCRIPT" || parent.tagName === "STYLE") continue;
 
-      definitions.forEach(([word, definition]) => {
-        const span = document.createElement("span");
-        span.textContent = word;
-        span.className = "tooltip-word";
-        span.setAttribute("data-definition", definition);
-        span.style.margin = "0 8px";
-        span.style.cursor = "help";
-        wordWrap.appendChild(span);
-      });
+        const originalText = node.nodeValue;
+        let replaced = false;
+        let newHTML = originalText;
 
-      container.appendChild(wordWrap);
+        definitions.forEach(([word, definition]) => {
+          const regex = new RegExp(`\\b(${word})\\b`, "gi");
+          if (regex.test(newHTML)) {
+            replaced = true;
+            newHTML = newHTML.replace(regex, `<span class="tooltip-word" data-definition="${definition}">$1</span>`);
+          }
+        });
+
+        if (replaced) {
+          const span = document.createElement("span");
+          span.innerHTML = newHTML;
+          parent.replaceChild(span, node);
+        }
+      }
     } catch (err) {
       console.error("Error loading definitions", err);
     }
@@ -1318,5 +1325,3 @@
 
 </body>
 </html>
-  
-  
