@@ -1271,7 +1271,7 @@
     }, 50);
   }
 // === Word Tooltips (Definitions) ===
-  async function initWordTooltips() {
+  async function initWordTooltips(scope = document.body) {
     const SHEET_ID = "19wBEj9hEkvIyQcoR5E_mBGVAxTzMnddMxk8nuQLAumA";
     const API_KEY = "AIzaSyCzuh9HBfe0r70r9U35Pe406PPZ-tz6I78";
     const RANGE = "TRU_Definitions!A2:B1000";
@@ -1282,7 +1282,7 @@
       const definitions = data.values || [];
 
       // Walk all text nodes in the body and replace matches
-      const walker = document.createTreeWalker(document.body, NodeFilter.SHOW_TEXT, null, false);
+      const walker = document.createTreeWalker(scope, NodeFilter.SHOW_TEXT, null, false);
       let node;
 
       while ((node = walker.nextNode())) {
