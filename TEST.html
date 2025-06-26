@@ -594,8 +594,50 @@
     `,
     TESTthe_constitution: `
       <div>
-        <h2>The Constitution</h2>
-        <p>This is the Constitution page content.</p>
+        <div class="container">
+          <h1>The Constitution</h1>
+          <section class="divider-section">
+            <div class="divider-bar">
+              <div class="truth"></div>
+              <div class="reliability"></div>
+              <div class="understanding"></div>
+            </div>
+            <div class="divider-labels">
+              <span>Truth</span>
+              <span>Reliability</span>
+              <span>Understanding</span>
+            </div>
+          </section>
+
+          <div style="display: flex; flex-direction: column; gap: 12px; align-items: center; margin-top: 40px;">
+            <p style="color: var(--text-muted); font-family: 'Montserrat', sans-serif; font-size: 1rem; max-width: 600px; text-align: center;">
+              Curious what Amendment protects your right? Select a right below to learn which Amendment gives you that right.
+            </p>
+            <label for="subject-quick" style="color: var(--text); font-family: 'Playfair Display', serif; font-size: 1.2rem;">
+              Select a Right
+            </label>
+            <select id="subject-quick" style="padding: 10px; background-color: var(--surface); color: var(--text); border: 1px solid var(--highlight); font-family: 'Montserrat', sans-serif; font-size: 1rem; width: 100%; max-width: 420px;">
+              <option value="">-- Select a Right --</option>
+            </select>
+            <div id="subject-quick-output" style="margin-top: 4px; font-size: 1.05rem; color: var(--understanding); font-family: 'Montserrat', sans-serif; text-align: center;"></div>
+          </div>
+
+          <div style="display: flex; flex-direction: column; gap: 12px; align-items: center; margin-top: 40px;">
+            <p style="color: var(--text-muted); font-family: 'Montserrat', sans-serif; font-size: 1rem; max-width: 600px; text-align: center;">
+              Want to know exactly what the Constitution and every amendment says? Choose a Founding Text to begin.
+            </p>
+            <label for="subject-select" style="color: var(--text); font-family: 'Playfair Display', serif; font-size: 1.2rem;">
+              Select a Founding Text
+            </label>
+            <select id="subject-select" style="padding: 10px; background-color: var(--surface); color: var(--text); border: 1px solid var(--highlight); font-family: 'Montserrat', sans-serif; font-size: 1rem;">
+              <option value="">-- Select the Founding Text --</option>
+            </select>
+          </div>
+
+          <div id="insight-output" style="max-width: 960px; margin: 40px auto 0; font-family: 'Montserrat', sans-serif; background-color: var(--surface); color: var(--text); padding: 24px; border-radius: 12px;">
+            <!-- Content is inserted here dynamically -->
+          </div>
+        </div>
       </div>
     `,
     contact: `
