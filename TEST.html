@@ -585,50 +585,35 @@
   }
 </script>
 <script>
-    const routes = {
-      TESThome: '/partials/TESThome.html',
-      'dash': '/partials/dash.html',
-      'tru-owl': '/partials/tru-owl.html',
-      'insight-quiz': '/partials/strategic-owl-insight-quiz.html',
-      'reality-check': '/partials/reality-check.html',
-      'the-constitution': '/partials/the-constitution.html',
-      'contact': '/partials/contact.html'
-    };
+  const routes = {
+    TESThome: `
+      <div>
+        <h2>Welcome to the Strategic Owl</h2>
+        <p>This is the TESThome content — loaded inline without fetch.</p>
+      </div>
+    `,
+    contact: `
+      <div>
+        <h2>Contact Us</h2>
+        <p>Reach us at info@strategicowl.com</p>
+      </div>
+    `,
+    // Add additional pages as needed...
+  };
 
-    function loadContent(route) {
-      const view = document.getElementById("main-view");
-      const path = routes[route] || routes["TESThome"];
+  function loadContent(route) {
+    const view = document.getElementById("main-view");
+    const html = routes[route] || routes["TESThome"];
+    view.innerHTML = html;
+  }
 
-      fetch(path)
-        .then(res => res.text())
-        .then(html => {
-          const temp = document.createElement('div');
-          temp.innerHTML = html;
+  function updateRoute() {
+    const hash = location.hash.replace('#', '') || 'TESThome';
+    loadContent(hash);
+  }
 
-          const scripts = temp.querySelectorAll('script');
-          const fragments = [];
-
-          scripts.forEach(script => {
-            const s = document.createElement('script');
-            if (script.src) s.src = script.src;
-            else s.textContent = script.textContent;
-            s.async = false;
-            fragments.push(s);
-            script.remove();
-          });
-
-          view.innerHTML = temp.innerHTML;
-          fragments.forEach(s => document.body.appendChild(s));
-        });
-    }
-
-    function updateRoute() {
-      const hash = location.hash.replace('#', '') || 'TESThome';
-      loadContent(hash);
-    }
-
-    window.addEventListener('hashchange', updateRoute);
-    window.addEventListener('DOMContentLoaded', updateRoute);
+  window.addEventListener('hashchange', updateRoute);
+  window.addEventListener('DOMContentLoaded', updateRoute);
 </script>
 
 </body>
