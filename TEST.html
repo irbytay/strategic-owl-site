@@ -481,7 +481,7 @@
     <a href="#dash">Dash's</a>
     <a href="#tru-owl">T.R.U. Owl</a>
     <a href="#insight-quiz">Insight Quiz</a>
-    <a href="#reality-check">Reality Check</a>
+    <a href="#realitycheck">Reality Check</a>
     <a href="#TESTthe_constitution">The Constitution</a>
     <a href="#contact">Contact</a>
   </div>
@@ -592,7 +592,7 @@
         <p>This is the TESThome content — loaded inline without fetch.</p>
       </div>
     `,
-    reality-check: `
+    realitycheck: `
       <div class="container">
         <h1>Reality Check</h1>
         <p>
@@ -764,7 +764,7 @@
       initConstitutionScripts();
     }
 
-    if (route === "reality-check") {
+    if (route === "realitycheck") {
       initRealityCheckPage();
     }
   }
@@ -987,12 +987,19 @@
     initAmendmentDropdown();
     initSubjectLookupDropdown();
   }
+  function initRealityCheckPage() {
+    setTimeout(() => {
+      const hasCulture = document.getElementById("culture-select");
+      const hasState = document.getElementById("state-select");
+      const hasTRU = document.getElementById("person-select");
+
+      if (hasCulture) initCulturePage();
+      if (hasState) initStateFraudPage();
+      if (hasTRU) initElectionPage();
+    }, 50);
+  }
 </script>
 
 </body>
 </html>
-  function initRealityCheckPage() {
-    initElectionPage();
-    initStateFraudPage();
-    initCulturePage();
-  }
+  
