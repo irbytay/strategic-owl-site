@@ -586,7 +586,7 @@
 </script>
 <script>
     const routes = {
-      home: '/partials/TESThome.html',
+      TESThome: '/partials/TESThome.html',
       'dash': '/partials/dash.html',
       'tru-owl': '/partials/tru-owl.html',
       'insight-quiz': '/partials/strategic-owl-insight-quiz.html',
@@ -597,7 +597,7 @@
 
     function loadContent(route) {
       const view = document.getElementById("main-view");
-      const path = routes[route] || routes["home"];
+      const path = routes[route] || routes["TESThome"];
 
       fetch(path)
         .then(res => res.text())
