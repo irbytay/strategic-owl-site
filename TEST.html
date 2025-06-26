@@ -592,6 +592,7 @@
         <p>This is the TESThome content — loaded inline without fetch.</p>
       </div>
     `,
+    reality-check: `<div class="container"><h1>Loading Reality Check...</h1></div>`,
     TESTthe_constitution: `
       <div>
         <div class="container">
@@ -656,6 +657,9 @@
 
     if (route === "TESTthe_constitution") {
       initConstitutionScripts();
+    }
+    if (route === "reality-check") {
+      initRealityCheckPage();
     }
   }
 
@@ -881,3 +885,9 @@
 
 </body>
 </html>
+  // Reality Check page initializer
+  function initRealityCheckPage() {
+    initElectionPage();
+    initStateFraudPage();
+    initCulturePage();
+  }
