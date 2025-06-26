@@ -653,6 +653,10 @@
     const view = document.getElementById("main-view");
     const html = routes[route] || routes["TESThome"];
     view.innerHTML = html;
+
+    if (route === "TESTthe_constitution") {
+      initConstitutionScripts();
+    }
   }
 
   function updateRoute() {
@@ -662,6 +666,217 @@
 
   window.addEventListener('hashchange', updateRoute);
   window.addEventListener('DOMContentLoaded', updateRoute);
+
+  // Constitution dropdown behavior
+  function initConstitutionScripts() {
+    const SHEET_ID = "19wBEj9hEkvIyQcoR5E_mBGVAxTzMnddMxk8nuQLAumA";
+    const API_KEY = "AIzaSyCzuh9HBfe0r70r9U35Pe406PPZ-tz6I78";
+    const RANGE = "the_constitution!A2:G1000";
+    const SUBJECT_LOOKUP_RANGE = "the_constitution!F2:G100";
+
+    const colors = {
+      gold: "#D4AF37",
+      text: "#FFFFFF",
+      bullet: "#7C8A9B",
+      heading: "#FFFFF0"
+    };
+
+    async function fetchAmendmentData() {
+      const url = `https://sheets.googleapis.com/v4/spreadsheets/${SHEET_ID}/values/${RANGE}?key=${API_KEY}`;
+      const res = await fetch(url);
+      const json = await res.json();
+      return json.values || [];
+    }
+
+    async function fetchSubjectMap() {
+      const url = `https://sheets.googleapis.com/v4/spreadsheets/${SHEET_ID}/values/${SUBJECT_LOOKUP_RANGE}?key=${API_KEY}`;
+      const res = await fetch(url);
+      const json = await res.json();
+      return json.values || [];
+    }
+
+    async function initAmendmentDropdown() {
+      const data = await fetchAmendmentData();
+      const amendmentSelect = document.getElementById("subject-select");
+      const outputDiv = document.getElementById("insight-output");
+
+      const grouped = {};
+      const prompts = {};
+
+      data.forEach(([amendment, section, text, insight, prompt]) => {
+        if (!grouped[amendment]) grouped[amendment] = [];
+        grouped[amendment].push({ section, text, insight });
+        prompts[amendment] = prompt;
+      });
+
+      Object.keys(grouped).forEach(amendment => {
+        const opt = document.createElement("option");
+        opt.value = amendment;
+        opt.textContent = amendment;
+        amendmentSelect.appendChild(opt);
+      });
+
+      amendmentSelect.addEventListener("change", () => {
+        const selected = amendmentSelect.value;
+        outputDiv.innerHTML = "";
+        if (!selected || !grouped[selected]) return;
+
+        const sections = grouped[selected];
+        const wrapper = document.createElement("div");
+
+        const h2 = document.createElement("h2");
+        h2.textContent = selected;
+        h2.style.color = colors.heading;
+        h2.style.marginBottom = "24px";
+        h2.style.textAlign = "center";
+        h2.style.fontFamily = "'Playfair Display', serif";
+        wrapper.appendChild(h2);
+
+        sections.forEach(({ section, text, insight }, index) => {
+          const h3 = document.createElement("h3");
+          h3.textContent = `${section}`;
+          h3.style.fontFamily = "'Playfair Display', serif";
+          h3.style.fontSize = "1.15rem";
+          h3.style.fontWeight = "600";
+          h3.style.color = "#E5C878";
+          h3.style.marginTop = "20px";
+          h3.style.marginBottom = "6px";
+          h3.style.textAlign = "center";
+          wrapper.appendChild(h3);
+
+          const p = document.createElement("p");
+          p.textContent = text;
+          p.style.fontFamily = "'Montserrat', sans-serif";
+          p.style.color = "var(--text-muted)";
+          p.style.fontSize = "1.05rem";
+          p.style.lineHeight = "1.6";
+          p.style.marginBottom = "10px";
+          p.style.textAlign = "center";
+          wrapper.appendChild(p);
+
+          const insightLabel = document.createElement("p");
+          insightLabel.textContent = "Strategic Insight";
+          insightLabel.style.color = colors.gold;
+          insightLabel.style.fontFamily = "'Inter', sans-serif";
+          insightLabel.style.fontSize = "1rem";
+          insightLabel.style.marginBottom = "6px";
+          insightLabel.style.marginTop = "10px";
+          insightLabel.style.textAlign = "center";
+          wrapper.appendChild(insightLabel);
+
+          const insightDiv = document.createElement("div");
+          insightDiv.textContent = insight;
+          insightDiv.style.fontFamily = "'Montserrat', sans-serif";
+          insightDiv.style.borderLeft = `4px solid var(--understanding)`;
+          insightDiv.style.padding = "10px 16px";
+          insightDiv.style.marginBottom = "24px";
+          insightDiv.style.backgroundColor = "#1A2B4C";
+          insightDiv.style.color = "var(--understanding)";
+          insightDiv.style.fontWeight = "500";
+          wrapper.appendChild(insightDiv);
+
+          if (index === sections.length - 1 && prompts[selected]) {
+            const promptDiv = document.createElement("div");
+            promptDiv.style.marginTop = "8px";
+            promptDiv.style.marginBottom = "24px";
+
+            const promptLabel = document.createElement("p");
+            promptLabel.textContent = "Copy and Paste to explore further.";
+            promptLabel.style.color = colors.gold;
+            promptLabel.style.fontFamily = "'Inter', sans-serif";
+            promptLabel.style.fontSize = "1rem";
+            promptLabel.style.marginBottom = "6px";
+            promptLabel.style.textAlign = "center";
+            promptDiv.appendChild(promptLabel);
+
+            const promptBox = document.createElement("textarea");
+            promptBox.value = prompts[selected];
+            promptBox.readOnly = true;
+            promptBox.style.width = "100%";
+            promptBox.style.padding = "12px";
+            promptBox.style.backgroundColor = "#1C2B3A";
+            promptBox.style.border = "1px solid #D4AF37";
+            promptBox.style.borderLeft = "4px solid #D4AF37";
+            promptBox.style.borderRadius = "8px";
+            promptBox.style.color = "#D4AF37";
+            promptBox.style.fontFamily = "'Courier New', monospace";
+            promptBox.style.fontSize = "0.95rem";
+            promptBox.style.lineHeight = "1.5";
+            promptBox.style.overflow = "hidden";
+            promptBox.style.resize = "none";
+            promptBox.style.boxSizing = "border-box";
+            promptBox.style.height = "auto";
+
+            setTimeout(() => {
+              promptBox.style.height = "auto";
+              promptBox.style.height = promptBox.scrollHeight + "px";
+            }, 0);
+
+            const copyButton = document.createElement("button");
+            copyButton.textContent = "Copy";
+            copyButton.style.marginTop = "8px";
+            copyButton.style.backgroundColor = "#3C465C";
+            copyButton.style.color = "#F0F0F0";
+            copyButton.style.padding = "6px 16px";
+            copyButton.style.border = "none";
+            copyButton.style.borderRadius = "8px";
+            copyButton.style.cursor = "pointer";
+            copyButton.style.fontFamily = "'Inter', sans-serif";
+            copyButton.style.fontSize = "0.95rem";
+            copyButton.style.transition = "background-color 0.3s ease, transform 0.2s ease";
+
+            copyButton.onmouseenter = () => {
+              copyButton.style.backgroundColor = "#4D5A70";
+            };
+            copyButton.onmouseleave = () => {
+              copyButton.style.backgroundColor = "#3C465C";
+            };
+            copyButton.onclick = () => {
+              promptBox.select();
+              document.execCommand("copy");
+              copyButton.textContent = "Copied!";
+              copyButton.style.transform = "scale(0.97)";
+              setTimeout(() => {
+                copyButton.textContent = "Copy";
+                copyButton.style.transform = "scale(1)";
+              }, 1500);
+            };
+
+            promptDiv.appendChild(promptBox);
+            promptDiv.appendChild(copyButton);
+            wrapper.appendChild(promptDiv);
+          }
+        });
+
+        outputDiv.appendChild(wrapper);
+      });
+    }
+
+    async function initSubjectLookupDropdown() {
+      const data = await fetchSubjectMap();
+      const dropdown = document.getElementById("subject-quick");
+      const output = document.getElementById("subject-quick-output");
+
+      const subjectToAmendment = {};
+      data.forEach(([subject, amendment]) => {
+        subjectToAmendment[subject] = amendment;
+        const opt = document.createElement("option");
+        opt.value = subject;
+        opt.textContent = subject;
+        dropdown.appendChild(opt);
+      });
+
+      dropdown.addEventListener("change", () => {
+        const selected = dropdown.value;
+        output.textContent = selected && subjectToAmendment[selected]
+          ? `→ Amendment: ${subjectToAmendment[selected]}`
+          : "";
+      });
+    }
+
+    initAmendmentDropdown();
+    initSubjectLookupDropdown();
+  }
 </script>
 
 </body>
