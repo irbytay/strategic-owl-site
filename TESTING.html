@@ -365,6 +365,17 @@
     </div>
 
     <div id="chord-output" style="margin-top: 20px; text-align: center;"></div>
+
+    <!-- 🎸 Chord Grid/Progression UI -->
+    <div style="display: flex; justify-content: center; flex-wrap: wrap; gap: 1rem; margin-top: 24px;">
+      <label style="font-size: 1rem;">Select Chord Root:
+        <select id="fret-chord-root" style="margin-left: 8px;"></select>
+      </label>
+      <label style="font-size: 1rem;">Select Progression:
+        <select id="fret-chord-mode" style="margin-left: 8px;"></select>
+      </label>
+    </div>
+    <div id="fret-chord-output" style="margin-top: 20px; text-align: center;"></div>
   </section>
 
 <script>
@@ -384,6 +395,60 @@
     document.getElementById("navMenu").classList.toggle("show");
   }
   
+</script>
+<script>
+// Chord Grid/Progression Tool JS
+const GRID_RANGE = "'Majors & Minors'!B2:W310";
+let CHORD_GRID_DATA = [];
+
+async function fetchChordGrid() {
+  const url = `https://sheets.googleapis.com/v4/spreadsheets/${CHORD_SHEET_ID}/values/${GRID_RANGE}?key=${API_KEY}`;
+  const res = await fetch(url);
+  const json = await res.json();
+  CHORD_GRID_DATA = json.values || [];
+  populateGridDropdowns();
+  updateFretChordDisplay();
+}
+
+function populateGridDropdowns() {
+  const rootDropdown = document.getElementById("fret-chord-root");
+  const modeDropdown = document.getElementById("fret-chord-mode");
+  if (!CHORD_GRID_DATA.length) return;
+  // Get column headers (row 2, columns C to L)
+  const columnHeaders = CHORD_GRID_DATA[0].slice(1, 12);
+  // Get unique row labels (column B, all rows)
+  const rowLabels = CHORD_GRID_DATA.map(r => r[0]).filter((v, i, a) => v && a.indexOf(v) === i);
+  rootDropdown.innerHTML = columnHeaders.map(h => `<option value="${h}">${h}</option>`).join('');
+  modeDropdown.innerHTML = rowLabels.map(l => `<option value="${l}">${l}</option>`).join('');
+}
+
+function updateFretChordDisplay() {
+  if (!CHORD_GRID_DATA.length) return;
+  const chord = document.getElementById("fret-chord-root").value;
+  const mode = document.getElementById("fret-chord-mode").value;
+  const output = document.getElementById("fret-chord-output");
+  const headerRow = CHORD_GRID_DATA[0];
+  const colIndex = headerRow.indexOf(chord);
+  const filteredRows = CHORD_GRID_DATA.filter(r => r[0] === mode);
+  if (!filteredRows.length || colIndex === -1) {
+    output.innerHTML = "<p style='color: var(--text-muted)'>No data found.</p>";
+    return;
+  }
+  const displayHTML = filteredRows.map(row => {
+    return `<div style="display:flex; justify-content:center; gap:6px; margin-bottom:6px;">
+      ${row.slice(1, 12).map(note => `
+        <div style="min-width: 50px; padding: 8px; background: var(--surface); color: var(--text); border: 1px solid var(--highlight); border-radius: 4px;">
+          ${note || "-"}
+        </div>`).join('')}
+    </div>`;
+  }).join('');
+  output.innerHTML = `<h3 style="color: var(--understanding); margin-bottom: 12px;">${chord} - ${mode}</h3>${displayHTML}`;
+}
+
+document.getElementById("fret-chord-root").addEventListener("change", updateFretChordDisplay);
+document.getElementById("fret-chord-mode").addEventListener("change", updateFretChordDisplay);
+
+fetchChordGrid();
 </script>
 <script>
 // Guitar tool JS
