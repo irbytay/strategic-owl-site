@@ -432,9 +432,24 @@ function updateChordDisplay() {
   const chordNotes = row && row[colIndex] ? row[colIndex].split(" ") : [];
 
   chordOutput.innerHTML = `
-    <h3 style="color: var(--understanding);">${root} ${type.charAt(0).toUpperCase() + type.slice(1)}</h3>
-    <div style="display:flex; justify-content:center; gap:12px; flex-wrap:wrap; margin-top:8px;">
-      ${chordNotes.map(n => `<span style="padding:10px 16px; background:var(--surface); border:1px solid var(--highlight); border-radius:6px; color:var(--truth); font-weight:bold;">${n}</span>`).join('')}
+    <h3 style="color: var(--understanding); margin-bottom: 12px;">${root} ${type.charAt(0).toUpperCase() + type.slice(1)} Chord</h3>
+    <div style="display: flex; justify-content: center; flex-wrap: wrap; gap: 8px; margin-top: 10px;">
+      ${chordNotes.map(note => `
+        <div style="
+          min-width: 64px;
+          padding: 10px;
+          background-color: var(--surface);
+          border: 1px solid var(--highlight);
+          color: var(--truth);
+          font-weight: 600;
+          font-size: 1.05rem;
+          text-align: center;
+          border-radius: 6px;
+          box-shadow: 0 2px 4px var(--shadow);
+        ">
+          ${note}
+        </div>
+      `).join("")}
     </div>
   `;
 }
