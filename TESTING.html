@@ -3,17 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>The Strategic Owl | Reality Check</title>
-
-  <!-- Open Graph Meta (Facebook, LinkedIn, Discord, etc.) -->
-  <meta property="og:title" content="The Strategic Owl | Truth. Reliability. Understanding." />
-  <meta property="og:description" content="Measure credibility and uncover truth using the TRU OWL Score — a tool for independent thinkers." />
-  <meta property="og:image" content="https://thestrategicowl.com/STOInsightQuiz.png" />
-  <meta property="og:image:type" content="image/png" />
-  <meta property="og:image:width" content="1200" />
-  <meta property="og:image:height" content="630" />
-  <meta property="og:url" content="https://thestrategicowl.com" />
-  <meta property="og:type" content="website" />
+  <title>Strategic Owl | The Constitution</title>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&family=Playfair+Display:wght@600;700&display=swap" rel="stylesheet" />
 
   <style>
@@ -139,24 +129,31 @@
   }
 
   @media (max-width: 768px) {
-  .menu-toggle {
-    display: block;
-  }
+    .menu-toggle {
+      display: block;
+    }
 
-  .nav-links {
-    display: none;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    background-color: var(--highlight);
-    position: absolute;
-    top: 58px;
-    left: 0;
-    width: 100%;
-    padding: 10px 0;
-    gap: 20px;
-    box-shadow: 0 3px 8px var(--shadow);
-  }
+    .nav-links {
+      display: none;
+      flex-direction: column;
+      align-items: center;/* 👈 links side-by-side on mobile */
+      justify-content: center;
+      background-color: var(--highlight);
+      position: absolute;
+      top: 58px;
+      left: 0;
+      width: 100%;
+      padding: 10px 0;
+      gap: 20px;
+      box-shadow: 0 3px 8px var(--shadow);
+    }
+    .nav-links a {
+  padding: 10px 0;
+  width: 100%;
+  text-align: center;
+  font-size: 1rem;
+}
+
     .nav-links.show {
       display: flex;
       animation: fadeSlideDown 0.3s ease;
@@ -173,16 +170,28 @@
       }
     }
   }
+    @media (max-width: 500px) {
+  #legal-popup > div {
+    padding: 12px;
+    font-size: 0.95rem;
+  }
+
+  #accept-btn {
+    width: 100%;
+    font-size: 1rem;
+  }
+
+  p {
+    font-size: 0.95rem;
+    margin-bottom: 16px;
+  }
+}
 
   /* ✅ YOUR ORIGINAL STYLES BELOW */
   .container {
     max-width: 960px;
-    margin: 60px auto 0 auto;
+    margin: 100px auto 0 auto;
     padding: 24px;
-    display: flex;
-    flex-direction: column;
-    align-items: center;          /* centers all direct child elements horizontally */
-    text-align: center;           /* ensures text-based elements also align visually */
   }
 
   h1 {
@@ -263,79 +272,17 @@
   .bar-green {
     background-color: var(--bar-green);
   }
-    .positive-score strong,
-.negative-score strong {
-  font-family: 'Inter', sans-serif;
-  font-weight: 600;
-  color: inherit;
-}
-    .dropdown-container {
-  display: flex;
-  justify-content: center;
-  margin: 20px 0;
-}
-    .foundation-section {
-  padding: 40px 20px;
-  max-width: 800px;
-  margin: 0 auto;
-}
-
-.section-intro {
-  font-size: 1.1rem;
+    .match-nav-link {
   color: var(--text-muted);
-  text-align: center;
-  margin-bottom: 36px;
+  text-decoration: none;
+  font-size: 15px;
+  transition: color 0.3s ease;
 }
 
-.foundation-section h1 {
-  font-family: 'Playfair Display', serif;
-  font-size: 2rem;
+.match-nav-link:hover {
   color: var(--understanding);
-  text-align: center;
-  margin-bottom: 16px;
 }
-
-.foundation-section h2 {
-  font-family: 'Playfair Display', serif;
-  font-size: 1.4rem;
-  margin-top: 40px;
-  color: var(--understanding;
-  text-align: center;
-}
-
-.foundation-section table {
-  width: 100%;
-  background-color: var(--surface);
-  border-radius: 6px;
-  border-collapse: collapse;
-  margin: 20px 0;
-}
-
-.foundation-section th {
-  background-color: var(--highlight);
-  padding: 12px;
-  font-weight: 600;
-  text-align: left;
-  color: var(--text-muted)
-}
-
-.foundation-section td {
-  padding: 12px;
-  border-bottom: 1px solid var(--highlight);
-  color: var(--text);
-  line-height: 1.6;
-}
-
-.strategic-insight {
-  font-size: 1rem;
-  background-color: #1A2B4C;
-  border-left: 4px solid var(--understanding);
-  padding: 16px;
-  margin-top: 12px;
-  margin-bottom: 40px;
-  color: var(--text-muted);
-}
-    /* Style the link itself */
+ /* Style the link itself */
 .important-link {
   color: var(--understanding);               /* Gold color from your theme */
   font-weight: 700;                          /* Bold for visibility */
@@ -376,39 +323,7 @@
   text-shadow: 0 0 8px var(--understanding); /* Subtle glow using gold tone */
   color: var(--truth);                       /* Optional: changes to green (truth color) */
 }
-  /* --- Culture Subs Table Styles --- */
-  #culture-subs table {
-    width: 100%;
-    border-collapse: collapse;
-    background-color: var(--surface);
-    margin-top: 20px;
-  }
-
-  #culture-subs th, #culture-subs td {
-    padding: 14px;
-    border-bottom: 1px solid var(--highlight);
-    text-align: left;
-    font-size: 1rem;
-    color: var(--text-muted);
-    font-family: 'Inter', sans-serif;
-  }
-
-  #culture-subs th {
-    background-color: var(--highlight);
-    color: var(--understanding);
-    font-weight: 600;
-    text-align: center;
-  }
-
-  @media (max-width: 768px) {
-    #culture-subs table th, #culture-subs table td {
-      font-size: 0.95rem;
-      padding: 10px;
-    }
-  }
 </style>
-</head>
-  <body>
 
 <nav class="top-nav">
 <a href="TRUOWL3.html" class="nav-logo">
@@ -417,409 +332,384 @@
 </a>
   <button class="menu-toggle" onclick="toggleMenu()">☰</button>
   <div class="nav-links" id="navMenu">
-     <a href="Index.html">Home</a>
+   <a href="Index.html">Home</a>
 <a href="Dash.html">Dash's</a>
 <a href="TRUOWL3.html">T.R.U. Owl</a>
 <a href="strategic-owl-insight-quiz.html">Insight Quiz</a>
-<a href="newelections3.html">Reality Check</a>
+<a href="realitycheck.html">Reality Check</a>
 <a href="the_constitution.html">The Constitution</a>
 <a href="newcontact3.html">Contact</a>
   </div>
 </nav>
   <div class="container">
-    <h1>Reality Check</h1>
-<p>
-  This is your Misconception Hub — where we expose popular myths and break them down with verifiable facts, starting with voter fraud and expanding from there.
-</p>
-    <!-- 🎯 Divider -->
-    <section class="divider-section">
-      <div class="divider-bar">
-        <div class="truth"></div>
-        <div class="reliability"></div>
-        <div class="understanding"></div>
-      </div>
-      <div class="divider-labels">
-        <span>Truth</span>
-        <span>Reliability</span>
-        <span>Understanding</span>
-      </div>
-    </section>
-    <!-- 🧠 Culture Subs UI Section -->
-    <div id="culture-subs">
-      <h1>Misconception Hub</h1>
-      <p style="text-align: center; color: var(--text-muted); margin-top: 20px;">
-        Select a topic to examine popular claims and compare them to verifiable facts — one layer at a time.
-      </p>
-      <div id="subject-button-container" class="dropdown-container" style="flex-wrap: wrap; gap: 10px;"></div>
-      <select id="culture-select" class="form-select" onchange="showCultureSubs()" style="display:none;">
-        <option value="">-- Common Misconception --</option>
-      </select>
-      <div class="table-wrapper" style="display:none;" id="culture-results">
-        <table>
-          <tbody id="culture-body"></tbody>
-        </table>
-      </div>
-    </div>
-    <!-- 🎯 Divider -->
-    <section class="divider-section">
-      <div class="divider-bar">
-        <div class="truth"></div>
-        <div class="reliability"></div>
-        <div class="understanding"></div>
-      </div>
-      <div class="divider-labels">
-        <span>Truth</span>
-        <span>Reliability</span>
-        <span>Understanding</span>
-      </div>
-    </section>
-    <!-- 🗳️ Voter Fraud Section -->
-    <div id="voter-fraud-section">
-      <h1>Voter Fraud?</h1>
-      <p>Look past the headlines. Here’s the actual data.</p>
-      <p>
-        You’ve heard the claims. Some say voter fraud is everywhere. Others say it barely exists. Let’s look at the actual records.
-      </p>
-      <p>
-        The Heritage Foundation tracks every confirmed case of voter fraud — often to suggest it’s a bigger threat than it is. This tool lets you explore that same data, with the context it’s missing.
-      </p>
-      <p>
-        Because yes, voter fraud exists. But it’s not what you’ve been led to believe.
-      </p>
-      <label for="state-select" style="display: block; margin-bottom: 8px; font-weight: bold;">
-        Select a State:
-      </label>
-      <select id="state-select" style="padding: 6px; font-size: 1rem;">
-        <option value="">-- Choose a state --</option>
-      </select>
-      <p id="state-summary" class="subtext"></p>
-      <div class="table-wrapper" style="display:none;" id="state-results">
-        <table>
-          <thead>
-            <tr>
-              <th>Year</th>
-              <th>State</th>
-              <th>Name</th>
-            </tr>
-          </thead>
-          <tbody id="state-data-body"></tbody>
-        </table>
-      </div>
-      <p>Source:</p>
-      <p><a href="https://www.heritage.org/voterfraud" class="important-link" target="_blank">Heritage Foundation Voter Fraud Database</a></p>
-    </div>
-    <!-- 🎯 Divider -->
-    <section class="divider-section">
-      <div class="divider-bar">
-        <div class="truth"></div>
-        <div class="reliability"></div>
-        <div class="understanding"></div>
-      </div>
-      <div class="divider-labels">
-        <span>Truth</span>
-        <span>Reliability</span>
-        <span>Understanding</span>
-      </div>
-    </section>
-    <!-- 🦉 TRU Score by Name Section -->
-    <div id="tru-score-section">
-      <p style="text-align: center; color: var(--text-muted); margin-top: 20px;">
-        Select a name below to view their Election Security credibility breakdown.
-      </p>
-      <div class="dropdown-container">
-        <select id="person-select" onchange="showScores()">
-          <option value="">-- Choose a name --</option>
+  <!-- 🎸 Guitar Tool Interface -->
+  <section id="guitar-tool" style="margin-top: 60px;">
+    <h2>🎸 Guitar Chord & Fretboard Visualizer</h2>
+    <p>Select a root and chord type to view its triad and matching notes. Future updates will add tuning and fretboard visualization.</p>
+
+    <div style="display: flex; justify-content: center; flex-wrap: wrap; gap: 1rem; margin-top: 16px;">
+      <label style="font-size: 1rem;">Root:
+        <select id="chord-root" style="margin-left: 8px;">
+          <option>A</option><option>A#</option><option>B</option><option>C</option>
+          <option>C#</option><option>D</option><option>D#</option><option>E</option>
+          <option>F</option><option>F#</option><option>G</option><option>G#</option>
         </select>
-      </div>
-      <div class="table-wrapper">
-        <table id="score-table" style="display: none;">
-          <thead>
-            <tr>
-              <th>Category</th>
-              <th>Score</th>
-              <th>Explanation</th>
-            </tr>
-          </thead>
-          <tbody id="score-body"></tbody>
-        </table>
-      </div>
+      </label>
+
+      <label style="font-size: 1rem;">Type:
+        <select id="chord-type" style="margin-left: 8px;">
+          <option value="major">Major</option>
+          <option value="minor">Minor</option>
+        </select>
+      </label>
     </div>
- <script>
-  async function fetchTRUData() {
-    const API_KEY = "AIzaSyCzuh9HBfe0r70r9U35Pe406PPZ-tz6I78";
-    const SHEET_ID = "19wBEj9hEkvIyQcoR5E_mBGVAxTzMnddMxk8nuQLAumA";
-    const RANGE = "ElectionTRU!A2:Y1000";
+
+    <div id="chord-output" style="margin-top: 20px; text-align: center;"></div>
+  </section>
+    <h1>The Constitution</h1>
+<!-- 🎯 Divider -->
+    <section class="divider-section">
+      <div class="divider-bar">
+        <div class="truth"></div>
+        <div class="reliability"></div>
+        <div class="understanding"></div>
+      </div>
+      <div class="divider-labels">
+        <span>Truth</span>
+        <span>Reliability</span>
+        <span>Understanding</span>
+      </div>
+    </section>
+   <!-- 🦉 Subject → Amendment Lookup (Strategic Owl Style) -->
+<div style="display: flex; flex-direction: column; gap: 12px; align-items: center; margin-top: 40px;">
+
+  <!-- 🔍 Simple Instruction -->
+  <p style="color: var(--text-muted); font-family: 'Montserrat', sans-serif; font-size: 1rem; max-width: 600px; text-align: center;">
+    Curious what Amendment protects your right? Select a right below to learn which Amendment gives you that right.
+  </p>
+
+  <label for="subject-quick" style="color: var(--text); font-family: 'Playfair Display', serif; font-size: 1.2rem;">
+    Select a Right
+  </label>
+
+  <select id="subject-quick"
+    style="padding: 10px; background-color: var(--surface); color: var(--text); border: 1px solid var(--highlight); font-family: 'Montserrat', sans-serif; font-size: 1rem; width: 100%; max-width: 420px;">
+    <option value="">-- Select a Right --</option>
+  </select>
+
+  <div id="subject-quick-output"
+    style="margin-top: 4px; font-size: 1.05rem; color: var(--understanding); font-family: 'Montserrat', sans-serif; text-align: center;">
+  </div>
+</div>
+ <!-- 📜 Amendment Selector -->
+<div style="display: flex; flex-direction: column; gap: 12px; align-items: center; margin-top: 40px;">
+
+  <!-- 🔍 Simple Instruction -->
+  <p style="color: var(--text-muted); font-family: 'Montserrat', sans-serif; font-size: 1rem; max-width: 600px; text-align: center;">
+    Want to know exactly what the Constitution and every amendment says? Choose a Founding Text to begin.
+  </p>
+
+  <label for="subject-select" style="color: var(--text); font-family: 'Playfair Display', serif; font-size: 1.2rem;">
+    Select a Founding Text
+  </label>
+  <select id="subject-select" style="padding: 10px; background-color: var(--surface); color: var(--text); border: 1px solid var(--highlight); font-family: 'Montserrat', sans-serif; font-size: 1rem;">
+    <option value="">-- Select the Founding Text --</option>
+  </select>
+</div>
+
+<!-- 📘 Strategic Constitution Viewer -->
+<div id="insight-output" style="max-width: 960px; margin: 40px auto 0; font-family: 'Montserrat', sans-serif; background-color: var(--surface); color: var(--text); padding: 24px; border-radius: 12px;">
+  <!-- Content is inserted here dynamically -->
+</div>
+
+<script>
+  const SHEET_ID = "19wBEj9hEkvIyQcoR5E_mBGVAxTzMnddMxk8nuQLAumA";
+  const API_KEY = "AIzaSyCzuh9HBfe0r70r9U35Pe406PPZ-tz6I78";
+  const RANGE = "the_constitution!A2:G1000";
+
+  const colors = {
+    gold: "#D4AF37",
+    text: "#FFFFFF",
+    bullet: "#7C8A9B",
+    heading: "#FFFFF0"
+  };
+
+  async function fetchAmendmentData() {
     const url = `https://sheets.googleapis.com/v4/spreadsheets/${SHEET_ID}/values/${RANGE}?key=${API_KEY}`;
-    try {
-      const res = await fetch(url);
-      const json = await res.json();
-      return json.values || [];
-    } catch (err) {
-      console.error("Failed to fetch sheet data", err);
-      const select = document.getElementById("person-select");
-      if (select) {
-        select.innerHTML = '<option value="">Failed to load data. Please try again later.</option>';
-      }
-      return [];
-    }
+    const res = await fetch(url);
+    const json = await res.json();
+    return json.values || [];
   }
 
-  function showScores() {
-    const select = document.getElementById("person-select");
-    const table = document.getElementById("score-table");
-    const tbody = document.getElementById("score-body");
-    const selected = select.value;
-    if (!selected || !window.rowMap || !window.rowMap[selected]) {
-      table.style.display = "none";
-      return;
-    }
+  async function initAmendmentDropdown() {
+    const data = await fetchAmendmentData();
+    const amendmentSelect = document.getElementById("subject-select");
+    const outputDiv = document.getElementById("insight-output");
 
-    const row = window.rowMap[selected];
-    tbody.innerHTML = "";
-    let total = 0;
+    const grouped = {};
+    const prompts = {};
 
-    const categories = [
-      "Constitutional Knowledge", "Legal Framework", "Federalism",
-      "Election Mechanics", "Electoral Count Process", "Disinformation Awareness",
-      "Public Impact", "Judicial Oversight", "Election Worker Protections",
-      "Psychological Manipulation"
-    ];
-
-    for (let i = 0; i < 10; i++) {
-      const label = categories[i];
-      const score = parseInt(row[3 + i]) || 0;
-      const explanation = row[14 + i] || "";
-
-      const tr = document.createElement("tr");
-      tr.innerHTML = `<td>${label}</td><td>${score >= 0 ? "+" : ""}${score}</td><td>${explanation}</td>`;
-      tbody.appendChild(tr);
-      total += score;
-    }
-
-    const flag = (row[24] || "").toLowerCase();
-    let bonus = 0, label = "", desc = "";
-
-    if (flag === "true") {
-      bonus = -10;
-      label = "2020 Election Denial Penalty";
-      desc = "Denial of the 2020 election outcome signals rejection of verified democratic processes and aligns with disinformation or blind loyalty.";
-    } else if (flag === "false") {
-      bonus = 5;
-      label = "2020 Election Affirmation Bonus";
-      desc = "Publicly affirming the legitimacy of the 2020 election supports truth, counters disinformation, and helps protect democratic confidence.";
-    } else if (flag === "gray") {
-      bonus = -5;
-      label = "Ambiguous Stance Penalty";
-      desc = "Failure to clearly affirm the 2020 election results contributes to public doubt and enables misinformation to spread unchecked.";
-    }
-
-    if (label) {
-      const bonusClass = bonus >= 0 ? "positive-score" : "negative-score";
-      const tr = document.createElement("tr");
-      tr.innerHTML = `<td><strong>${label}</strong></td><td class="${bonusClass}"><strong>${bonus >= 0 ? "+" : ""}${bonus}</strong></td><td><strong>${desc}</strong></td>`;
-      tbody.appendChild(tr);
-      total += bonus;
-    }
-
-    const summary = row[13] || "No summary provided.";
-    const totalClass = total >= 0 ? "positive-score" : "negative-score";
-    const totalRow = document.createElement("tr");
-    totalRow.innerHTML = `<td><strong>Total Score</strong></td><td class="${totalClass}"><strong>${total >= 0 ? "+" : ""}${total}</strong></td><td><strong>${summary}</strong></td>`;
-    tbody.appendChild(totalRow);
-
-    table.style.display = "table";
-  }
-
-  async function initElectionPage() {
-    window.rowMap = {};
-    const data = await fetchTRUData();
-    data.forEach(row => {
-      const key = row[0];
-      if (key) window.rowMap[key] = row;
+    data.forEach(([amendment, section, text, insight, prompt]) => {
+      if (!grouped[amendment]) grouped[amendment] = [];
+      grouped[amendment].push({ section, text, insight });
+      prompts[amendment] = prompt;
     });
 
-    const select = document.getElementById("person-select");
-    if (!select) return;
-
-    select.innerHTML = '<option value="">-- Choose a name --</option>';
-    Object.keys(window.rowMap).sort().forEach(name => {
+    Object.keys(grouped).forEach(amendment => {
       const opt = document.createElement("option");
-      opt.value = name;
-      opt.textContent = name.replace(/([A-Z])/g, " $1").replace(/^./, s => s.toUpperCase());
-      select.appendChild(opt);
+      opt.value = amendment;
+      opt.textContent = amendment;
+      amendmentSelect.appendChild(opt);
     });
+    
 
-    select.removeEventListener("change", showScores);
-    select.addEventListener("change", showScores);
-  }
+    amendmentSelect.addEventListener("change", () => {
+      const selected = amendmentSelect.value;
+      outputDiv.innerHTML = "";
+      if (!selected || !grouped[selected]) return;
 
-  window.addEventListener("DOMContentLoaded", initElectionPage);
-   const API_KEY = "AIzaSyB3NmN4OpDutbaX6V2KkLy1p-vDLghrF5M";
-    const SHEET_ID = "1p66gmWWjxJbrySxpR5T--fP8iEgUbW7RrXru61gagRA";
-    const RANGE = "HeritageVoterfraudRawData!B6:D1589";
+      const sections = grouped[selected];
+      const wrapper = document.createElement("div");
 
-    async function fetchSheetData() {
-      const url = `https://sheets.googleapis.com/v4/spreadsheets/${SHEET_ID}/values/${RANGE}?key=${API_KEY}`;
-      try {
-        const res = await fetch(url);
-        const data = await res.json();
-        return data.values || [];
-      } catch (error) {
-        console.error("Failed to fetch data:", error);
-        return [];
-      }
-    }
+      // Amendment Title
+      const h2 = document.createElement("h2");
+      h2.textContent = selected;
+      h2.style.color = colors.heading;
+      h2.style.marginBottom = "24px";
+      h2.style.textAlign = "center";
+      h2.style.fontFamily = "'Playfair Display', serif";
+      wrapper.appendChild(h2);
 
-    function populateDropdown(statesSet, stateSelect) {
-      const sortedStates = Array.from(statesSet).sort();
-      sortedStates.forEach(state => {
-        const opt = document.createElement("option");
-        opt.value = state;
-        opt.textContent = state;
-        stateSelect.appendChild(opt);
+      sections.forEach(({ section, text, insight }, index) => {
+        // Section header
+        const h3 = document.createElement("h3");
+        h3.textContent = `${section}`;
+        h3.style.fontFamily = "'Playfair Display', serif";
+        h3.style.fontSize = "1.15rem";
+        h3.style.fontWeight = "600";
+        h3.style.color = "#E5C878";
+        h3.style.marginTop = "20px";
+        h3.style.marginBottom = "6px";
+        h3.style.textAlign = "center";
+        wrapper.appendChild(h3);
+
+        // Paragraph
+        const p = document.createElement("p");
+        p.textContent = text;
+        p.style.fontFamily = "'Montserrat', sans-serif";
+        p.style.color = "var(--text-muted)";
+        p.style.fontSize = "1.05rem";
+        p.style.lineHeight = "1.6";
+        p.style.marginBottom = "10px";
+        p.style.textAlign = "center";
+        wrapper.appendChild(p);
+
+        // Strategic Insight Label
+const insightLabel = document.createElement("p");
+insightLabel.textContent = "Strategic Insight";
+insightLabel.style.color = colors.gold;
+insightLabel.style.fontFamily = "'Inter', sans-serif";
+insightLabel.style.fontSize = "1rem";
+insightLabel.style.marginBottom = "6px";
+insightLabel.style.marginTop = "10px";
+insightLabel.style.textAlign = "center";
+wrapper.appendChild(insightLabel);
+
+// Strategic Insight Block
+const insightDiv = document.createElement("div");
+insightDiv.textContent = insight;
+insightDiv.style.fontFamily = "'Montserrat', sans-serif";
+insightDiv.style.borderLeft = `4px solid var(--understanding)`;
+insightDiv.style.padding = "10px 16px";
+insightDiv.style.marginBottom = "24px";
+insightDiv.style.backgroundColor = "#1A2B4C";
+insightDiv.style.color = "var(--understanding)";
+insightDiv.style.fontWeight = "500";
+wrapper.appendChild(insightDiv);
+
+        // Only insert the prompt after the last section
+        if (index === sections.length - 1 && prompts[selected]) {
+ // Prompt block container
+const promptDiv = document.createElement("div");
+promptDiv.style.marginTop = "8px";
+promptDiv.style.marginBottom = "24px";
+
+// Label
+const promptLabel = document.createElement("p");
+promptLabel.textContent = "Copy and Paste to explore further.";
+promptLabel.style.color = colors.gold;
+promptLabel.style.fontFamily = "'Inter', sans-serif";
+promptLabel.style.fontSize = "1rem";
+promptLabel.style.marginBottom = "6px";
+promptLabel.style.textAlign = "center";
+promptDiv.appendChild(promptLabel);
+
+ const promptBox = document.createElement("textarea");
+promptBox.value = prompts[selected];
+promptBox.readOnly = true;
+promptBox.style.width = "100%";
+promptBox.style.padding = "12px";
+promptBox.style.backgroundColor = "#1C2B3A"; // refined dark tone
+promptBox.style.border = "1px solid #D4AF37";
+promptBox.style.borderLeft = "4px solid #D4AF37";
+promptBox.style.borderRadius = "8px";
+promptBox.style.color = "#D4AF37";
+promptBox.style.fontFamily = "'Courier New', monospace";
+promptBox.style.fontSize = "0.95rem";
+promptBox.style.lineHeight = "1.5";
+promptBox.style.overflow = "hidden";
+promptBox.style.resize = "none";
+promptBox.style.boxSizing = "border-box";
+promptBox.style.height = "auto";
+
+// 🪄 Auto-resize to fit content
+setTimeout(() => {
+  promptBox.style.height = "auto";
+  promptBox.style.height = promptBox.scrollHeight + "px";
+}, 0);
+
+  // Copy button
+const copyButton = document.createElement("button");
+copyButton.textContent = "Copy";
+copyButton.style.marginTop = "8px";
+copyButton.style.backgroundColor = "#3C465C"; // AI-style blue-gray
+copyButton.style.color = "#F0F0F0"; // Soft white
+copyButton.style.padding = "6px 16px";
+copyButton.style.border = "none";
+copyButton.style.borderRadius = "8px";
+copyButton.style.cursor = "pointer";
+copyButton.style.fontFamily = "'Inter', sans-serif";
+copyButton.style.fontSize = "0.95rem";
+copyButton.style.transition = "background-color 0.3s ease, transform 0.2s ease";
+
+// Hover effect
+copyButton.onmouseenter = () => {
+  copyButton.style.backgroundColor = "#4D5A70"; // Slightly lighter
+};
+copyButton.onmouseleave = () => {
+  copyButton.style.backgroundColor = "#3C465C";
+};
+
+// Click (copy) behavior
+copyButton.onclick = () => {
+  promptBox.select();
+  document.execCommand("copy");
+  copyButton.textContent = "Copied!";
+  copyButton.style.transform = "scale(0.97)";
+  setTimeout(() => {
+    copyButton.textContent = "Copy";
+    copyButton.style.transform = "scale(1)";
+  }, 1500);
+};
+
+  promptDiv.appendChild(promptBox);
+  promptDiv.appendChild(copyButton);
+  wrapper.appendChild(promptDiv);
+}
       });
-    }
 
-    async function initStateFraudPage() {
-      const stateSelect = document.getElementById("state-select");
-      const tableBody = document.getElementById("state-data-body");
-      const resultsWrapper = document.getElementById("state-results");
-      const summaryLine = document.getElementById("state-summary");
-
-      if (!stateSelect || !tableBody || !resultsWrapper || !summaryLine) {
-        console.warn("[statefraud] Required elements not found.");
-        return;
-      }
-
-      const rows = await fetchSheetData();
-      const statesSet = new Set(rows.map(row => row[1]));
-      populateDropdown(statesSet, stateSelect);
-
-      stateSelect.addEventListener("change", function () {
-        const selected = this.value;
-        tableBody.innerHTML = "";
-        summaryLine.textContent = "";
-
-        const filtered = rows.filter(row => row[1] === selected);
-
-        if (filtered.length === 0) {
-          tableBody.innerHTML = `<tr><td colspan="3">No records found for ${selected}</td></tr>`;
-          resultsWrapper.style.display = "flex";
-          return;
-        }
-
-        const sorted = filtered.sort((a, b) => parseInt(a[0]) - parseInt(b[0]));
-
-        const years = sorted.map(row => parseInt(row[0])).filter(year => !isNaN(year));
-        const minYear = Math.min(...years);
-        const maxYear = Math.max(...years);
-        const caseCount = sorted.length;
-
-        summaryLine.textContent = `${caseCount} case${caseCount === 1 ? '' : 's'} found from ${minYear} to ${maxYear}`;
-
-        sorted.forEach(row => {
-          const year = row[0];
-          const state = row[1];
-          const name = row[2];
-          const tr = document.createElement("tr");
-          tr.innerHTML = `<td>${year}</td><td>${state}</td><td>${name}</td>`;
-          tableBody.appendChild(tr);
-        });
-
-        resultsWrapper.style.display = "flex";
-      });
-    }
-   function toggleMenu() {
-    const menu = document.getElementById("navMenu");
-    menu.classList.toggle("show");
+      outputDiv.appendChild(wrapper);
+    });
   }
+  const SUBJECT_LOOKUP_RANGE = "the_constitution!F2:G100";
 
-    // ✅ Enable for standalone mode
-    window.addEventListener("DOMContentLoaded", initStateFraudPage);
+async function fetchSubjectMap() {
+  const url = `https://sheets.googleapis.com/v4/spreadsheets/${SHEET_ID}/values/${SUBJECT_LOOKUP_RANGE}?key=${API_KEY}`;
+  const res = await fetch(url);
+  const json = await res.json();
+  return json.values || [];
+}
+
+async function initSubjectLookupDropdown() {
+  const data = await fetchSubjectMap();
+  const dropdown = document.getElementById("subject-quick");
+  const output = document.getElementById("subject-quick-output");
+
+  const subjectToAmendment = {};
+  data.forEach(([subject, amendment]) => {
+    subjectToAmendment[subject] = amendment;
+    const opt = document.createElement("option");
+    opt.value = subject;
+    opt.textContent = subject;
+    dropdown.appendChild(opt);
+  });
+
+  dropdown.addEventListener("change", () => {
+    const selected = dropdown.value;
+    output.textContent = selected && subjectToAmendment[selected]
+      ? `→ Amendment: ${subjectToAmendment[selected]}`
+      : "";
+  });
+}
+
+  window.addEventListener("DOMContentLoaded", () => {
+  initAmendmentDropdown();
+  initSubjectLookupDropdown();
+});
+
   function toggleMenu() {
     document.getElementById("navMenu").classList.toggle("show");
   }
-  // --- Culture Subs JS ---
-  async function fetchCultureData() {
-    const SHEET_ID = "19wBEj9hEkvIyQcoR5E_mBGVAxTzMnddMxk8nuQLAumA";
-    const RANGE = "CultureSubs!A2:D1000";
-    const url = `https://sheets.googleapis.com/v4/spreadsheets/${SHEET_ID}/values/${RANGE}?key=AIzaSyCzuh9HBfe0r70r9U35Pe406PPZ-tz6I78`;
-
-    try {
-      const res = await fetch(url);
-      const data = await res.json();
-      return data.values || [];
-    } catch (error) {
-      console.error("Failed to fetch CultureSubs data:", error);
-      return [];
-    }
-  }
-
-  async function initCulturePage() {
-    const dropdown = document.getElementById("culture-select");
-    const buttonContainer = document.getElementById("subject-button-container");
-    const cultureRows = await fetchCultureData();
-    const subjectSet = new Set(cultureRows.map(row => row[0]));
-    // Clear any existing buttons
-    buttonContainer.innerHTML = "";
-    subjectSet.forEach(subject => {
-      // Add to dropdown (hidden, for legacy support)
-      const opt = document.createElement("option");
-      opt.value = subject;
-      opt.textContent = subject;
-      dropdown.appendChild(opt);
-      // Create button for each subject
-      const button = document.createElement("button");
-      button.textContent = subject;
-      button.style.padding = "8px 12px";
-      button.style.backgroundColor = "var(--highlight)";
-      button.style.color = "var(--text)";
-      button.style.border = "none";
-      button.style.borderRadius = "4px";
-      button.style.cursor = "pointer";
-      button.addEventListener("click", () => {
-        document.getElementById("culture-select").value = subject;
-        showCultureSubs();
-      });
-      buttonContainer.appendChild(button);
-    });
-
-    window.cultureMap = {};
-    cultureRows.forEach(row => {
-      const subject = row[0];
-      if (!window.cultureMap[subject]) {
-        window.cultureMap[subject] = [];
-      }
-      window.cultureMap[subject].push({ subcategory: row[1], claim: row[2], extra: row[3] || "" });
-    });
-  }
-
-  function showCultureSubs() {
-    const selected = document.getElementById("culture-select").value;
-    const wrapper = document.getElementById("culture-results");
-    const body = document.getElementById("culture-body");
-    body.innerHTML = "";
-
-    if (!selected || !window.cultureMap[selected]) {
-      wrapper.style.display = "none";
-      return;
-    }
-
-    window.cultureMap[selected].forEach(({ claim, extra }) => {
-      const claimRow = document.createElement("tr");
-      claimRow.innerHTML = `<td colspan="3" style="padding-left: 12px; padding-top: 16px; color: #FF7F7F; font-weight: bold;"><em>Claim:</em> ${claim}</td>`;
-      body.appendChild(claimRow);
-
-      const factRow = document.createElement("tr");
-      factRow.innerHTML = `<td colspan="3" style="padding-left: 20px; padding-bottom: 12px; color: var(--understanding);"><em>Fact:</em> ${extra}</td>`;
-      body.appendChild(factRow);
-    });
-
-    wrapper.style.display = "block";
-  }
-
-  window.addEventListener("DOMContentLoaded", initCulturePage);
+  
 </script>
+<script>
+// Guitar tool JS
+const CHORD_SHEET_ID = "1GVVAcfDBLlKY9i4AYxW8xvjIgwDrvy8s5yKAlDMtBUc";
+const CHORD_RANGE = "'Majors & Minors'!A1:C13";
+let CHORDS_FROM_SHEET = [];
 
+async function fetchChordData() {
+  const url = `https://sheets.googleapis.com/v4/spreadsheets/${CHORD_SHEET_ID}/values/${CHORD_RANGE}?key=${API_KEY}`;
+  const res = await fetch(url);
+  const json = await res.json();
+  CHORDS_FROM_SHEET = json.values || [];
+
+  populateChordDropdowns(CHORDS_FROM_SHEET);
+  updateChordDisplay();
+}
+
+function populateChordDropdowns(data) {
+  const rootSelect = document.getElementById("chord-root");
+  const typeSelect = document.getElementById("chord-type");
+
+  const headers = data[0].slice(1); // ["Major Chord", "Minor Chord"]
+  const roots = data.slice(1).map(r => r[0]);
+
+  rootSelect.innerHTML = "";
+  roots.forEach(r => {
+    rootSelect.add(new Option(r, r));
+  });
+
+  typeSelect.innerHTML = "";
+  headers.forEach(h => {
+    const type = h.toLowerCase().includes("minor") ? "minor" : "major";
+    typeSelect.add(new Option(h, type));
+  });
+}
+
+function updateChordDisplay() {
+  const root = document.getElementById("chord-root").value;
+  const type = document.getElementById("chord-type").value;
+  const chordOutput = document.getElementById("chord-output");
+
+  const colIndex = CHORDS_FROM_SHEET[0] ? CHORDS_FROM_SHEET[0].findIndex(h =>
+    h.toLowerCase().includes(type)
+  ) : -1;
+  const row = CHORDS_FROM_SHEET.find(r => r[0] === root);
+  const chordNotes = row && row[colIndex] ? row[colIndex].split(" ") : [];
+
+  chordOutput.innerHTML = `
+    <h3 style="color: var(--understanding);">${root} ${type.charAt(0).toUpperCase() + type.slice(1)}</h3>
+    <div style="display:flex; justify-content:center; gap:12px; flex-wrap:wrap; margin-top:8px;">
+      ${chordNotes.map(n => `<span style="padding:10px 16px; background:var(--surface); border:1px solid var(--highlight); border-radius:6px; color:var(--truth); font-weight:bold;">${n}</span>`).join('')}
+    </div>
+  `;
+}
+
+fetchChordData();
+
+document.getElementById("chord-root").addEventListener("change", updateChordDisplay);
+document.getElementById("chord-type").addEventListener("change", updateChordDisplay);
+</script>
 </body>
 </html>
