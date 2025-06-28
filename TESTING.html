@@ -444,11 +444,6 @@ function updateFretChordDisplay() {
   }).join('');
   output.innerHTML = `<h3 style="color: var(--understanding); margin-bottom: 12px;">${chord} - ${mode}</h3>${displayHTML}`;
 }
-
-document.getElementById("fret-chord-root").addEventListener("change", updateFretChordDisplay);
-document.getElementById("fret-chord-mode").addEventListener("change", updateFretChordDisplay);
-
-fetchChordGrid();
 </script>
 <script>
 // Guitar tool JS
@@ -519,10 +514,16 @@ function updateChordDisplay() {
   `;
 }
 
-fetchChordData();
+// DOMContentLoaded wrapper for all event listeners and data fetches
+document.addEventListener("DOMContentLoaded", () => {
+  fetchChordData();
+  fetchChordGrid();
 
-document.getElementById("chord-root").addEventListener("change", updateChordDisplay);
-document.getElementById("chord-type").addEventListener("change", updateChordDisplay);
+  document.getElementById("chord-root").addEventListener("change", updateChordDisplay);
+  document.getElementById("chord-type").addEventListener("change", updateChordDisplay);
+  document.getElementById("fret-chord-root").addEventListener("change", updateFretChordDisplay);
+  document.getElementById("fret-chord-mode").addEventListener("change", updateFretChordDisplay);
+});
 </script>
 </body>
 </html>
