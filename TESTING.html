@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>The Strategic Owl | Strategic Fretboard</title>
+  <title>Strategic Owl | The Constitution</title>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&family=Playfair+Display:wght@600;700&display=swap" rel="stylesheet" />
 
   <style>
@@ -190,7 +190,7 @@
   /* ✅ YOUR ORIGINAL STYLES BELOW */
   .container {
     max-width: 960px;
-    margin: 100px auto 0 auto;
+    margin: 40px auto 0 auto;
     padding: 24px;
   }
 
@@ -368,27 +368,19 @@
     }
 </style>
 
-<nav class="top-nav">
-<a href="TRUOWL3.html" class="nav-logo">
-  <img src="owl_logo_white.png" alt="Owl Logo" onerror="this.style.display='none';" />
-  <div class="nav-title">The Strategic Owl</div>
-</a>
-  <button class="menu-toggle" onclick="toggleMenu()">☰</button>
-  <div class="nav-links" id="navMenu">
-   <a href="Index.html">Home</a>
-<a href="Dash.html">Dash's</a>
-<a href="TRUOWL3.html">T.R.U. Owl</a>
-<a href="strategic-owl-insight-quiz.html">Insight Quiz</a>
-<a href="realitycheck.html">Reality Check</a>
-<a href="the_constitution.html">The Constitution</a>
-<a href="newcontact3.html">Contact</a>
+  <!-- Logout button, right-aligned, after header/nav -->
+  <div style="text-align: right; padding: 10px 20px;">
+    <button onclick="netlifyIdentity.logout()" style="padding: 8px 14px; font-size: 1rem; background-color: #FF4C4C; color: white; border: none; border-radius: 6px; cursor: pointer;">
+      Log Out
+    </button>
   </div>
-</nav>
   <div class="container">
   <!-- 🎸 Guitar Tool Interface -->
-  <section id="guitar-tool" style="margin-top: 60px;">
-    <h2>🎸 Guitar Chord & Fretboard Visualizer</h2>
-    <p>Select a root and chord type to view its triad and matching notes. Future updates will add tuning and fretboard visualization.</p>
+  <section id="guitar-tool" style="margin-top: 20px;">
+    <h2 style="font-size: 2.2rem; font-weight: 700; margin-bottom: 12px; color: var(--heading); text-transform: uppercase; letter-spacing: 0.5px;">
+      🎸 Guitar Chord & Fretboard Visualizer
+    </h2>
+    <p>Use the dropdowns below to select a root note and scale type. The fretboard and chord diagram will update instantly to show matching notes and tones across all 6 strings.</p>
 
     <!-- 🎸 Chord/Progression dropdowns -->
     <div style="display: flex; justify-content: center; gap: 18px; margin-bottom: 12px;">
@@ -433,18 +425,24 @@
 
     <!-- 🎼 Chord/Scale Display Section -->
     <div id="chord-display-area" style="margin-bottom: 20px; text-align: center; color: var(--text);">
-      <h3 style="color: var(--heading); margin-bottom: 8px;">🎼 Selected Chord Information</h3>
+      <!-- Enharmonic flats toggle -->
+      <div style="text-align: center; margin-bottom: 12px;">
+        <label style="color: var(--text-muted); font-size: 0.95rem;">
+          <input type="checkbox" id="enharmonic-toggle" style="margin-right: 6px;" />
+          Prefer Flat Notes (e.g., Db instead of C#)
+        </label>
+      </div>
+      <h3 id="chord-heading" style="color: var(--heading); margin-bottom: 8px;"></h3>
       <div id="chord-info" style="font-size: 1rem; margin-bottom: 4px;"></div>
       <div id="progression-steps" style="color: var(--text-muted); font-size: 0.95rem; margin-bottom: 4px;"></div>
       <div id="scale-notes" style="font-weight: 600; font-size: 1rem;"></div>
-      <div id="triad-notes" style="color: var(--truth); font-weight: bold; margin-top: 6px;"></div>
+      <div id="triad-notes" style="font-weight: bold; margin-top: 6px;"></div>
     </div>
     <!-- 🎶 Chord label display above the fretboard -->
     <div id="chord-label-display" style="text-align: center; font-size: 1.2rem; font-weight: 600; color: var(--understanding); margin-bottom: 12px;"></div>
     <!-- 🎸 Digital Fretboard UI -->
     <div style="margin-top: 40px;">
       <h2 style="text-align: center;">🎸 Digital Fretboard</h2>
-      <p style="text-align: center; color: var(--text-muted);">Change tuning and see how each string updates.</p>
       <!-- <div id="fretboard-controls" style="display: flex; flex-direction: column; align-items: flex-start; gap: 6px; margin-bottom: 20px;">
         <div>String 6 (Low E): <select class="tuning-select" data-string="5"></select></div>
         <div>String 5 (A): <select class="tuning-select" data-string="4"></select></div>
@@ -475,10 +473,6 @@
   };
 
 
-  function toggleMenu() {
-    document.getElementById("navMenu").classList.toggle("show");
-  }
-  
 </script>
 </script>
 <script>
@@ -777,6 +771,7 @@ function generateFretboard(tuning = defaultTuning) {
           cell.appendChild(dot);
         }
       }
+      updateChordInfoDisplay();
     });
     fretboardDiv.appendChild(select);
 
@@ -823,12 +818,25 @@ function updateChordInfoDisplay() {
   const progression = document.getElementById("custom-progression-select").value;
   // Update the chord label display block above the fretboard
   document.getElementById("chord-label-display").textContent = `${root} ${progression}`;
+  // Update the heading dynamically
+  document.getElementById("chord-heading").textContent = `🎼 ${root} ${progression}`;
   const intervals = PROGRESSION_LIBRARY[progression];
   const notes = buildScale(root, progression);
 
-  document.getElementById("chord-info").textContent = `Chord: ${root} | Progression: ${progression}`;
+  // Removed redundant line:
+  // document.getElementById("chord-info").textContent = `Chord: ${root} | Progression: ${progression}`;
+  document.getElementById("chord-info").textContent = "";
   document.getElementById("progression-steps").textContent = `Steps: ${intervals ? intervals.join(' - ') : 'N/A'}`;
-  document.getElementById("scale-notes").textContent = `Notes: ${notes.join('  ')}`;
+
+  // Enharmonic flats toggle
+  const useFlats = document.getElementById("enharmonic-toggle")?.checked;
+  const toFlat = {
+    'C#': 'Db', 'D#': 'Eb', 'F#': 'Gb', 'G#': 'Ab', 'A#': 'Bb',
+    'C♯': 'Db', 'D♯': 'Eb', 'F♯': 'Gb', 'G♯': 'Ab', 'A♯': 'Bb'
+  };
+  const displayTone = note => useFlats && toFlat[note] ? toFlat[note] : note;
+
+  document.getElementById("scale-notes").textContent = `Notes: ${notes.map(displayTone).join('  ')}`;
 
   // --- Chord tones calculation and visualization ---
   let type = "triad";
@@ -840,30 +848,46 @@ function updateChordInfoDisplay() {
     }
   }
   const chordTones = getChordTones(notes, type);
-  document.getElementById("triad-notes").textContent = `Chord Tones: ${chordTones.join("  ")}`;
+  // Use roleColors for color-coded span wrapping
+  const roleColors = [
+    { bg: "rgba(40, 167, 69, 0.4)", color: "#cde7d0" },       // Root
+    { bg: "rgba(212, 175, 55, 0.35)", color: "#fff5d0" },     // 3rd
+    { bg: "rgba(59, 108, 237, 0.35)", color: "#dbe3ff" },     // 5th
+    { bg: "rgba(255, 105, 180, 0.35)", color: "#fff0f8" }     // 7th (if exists)
+  ];
+  const coloredTonesHTML = chordTones.map((tone, index) => {
+    tone = displayTone(tone);
+    const role = roleColors[index] || roleColors[0];
+    return `<span style="color: ${role.color}; background-color: ${role.bg}; padding: 2px 6px; border-radius: 4px; margin: 0 4px;">${tone}</span>`;
+  }).join("");
+  document.getElementById("triad-notes").innerHTML = `Chord Tones: ${coloredTonesHTML}`;
 
   // --- Chord diagram using hardcoded lookup ---
   const diagramText = generateChordDiagram(chordTones, root, progression);
   document.getElementById("visual-chord-diagram").textContent = diagramText;
 
-  // Highlight chord tones on fretboard
+  // Highlight chord tones on fretboard (with enharmonic matching)
   const fretboardCells = document.querySelectorAll("#fretboard > div");
-  fretboardCells.forEach(cell => {
-    const note = cell.textContent?.trim();
-    if (!note || !ALL_NOTES.includes(note)) return;
+  const normalize = (note) => {
+    const enharmonics = {
+      'Db': 'C#', 'Eb': 'D#', 'Gb': 'F#', 'Ab': 'G#', 'Bb': 'A#',
+      'C♯': 'C#', 'D♯': 'D#', 'F♯': 'F#', 'G♯': 'G#', 'A♯': 'A#',
+      'Cb': 'B', 'Fb': 'E', 'E#': 'F', 'B#': 'C'
+    };
+    return enharmonics[note] || note.replace(/♯/g, '#').replace(/♭/g, 'b');
+  };
+  const normalizedChordTones = chordTones.map(normalize);
 
-    if (note === chordTones[0]) {
-      cell.style.backgroundColor = "rgba(40, 167, 69, 0.4)"; // Root – Green
-      cell.style.color = "#cde7d0";
-    } else if (note === chordTones[1]) {
-      cell.style.backgroundColor = "rgba(212, 175, 55, 0.35)"; // Third – Gold
-      cell.style.color = "#fff5d0";
-    } else if (note === chordTones[2]) {
-      cell.style.backgroundColor = "rgba(59, 108, 237, 0.35)"; // Fifth – Blue
-      cell.style.color = "#dbe3ff";
-    } else if (chordTones[3] && note === chordTones[3]) {
-      cell.style.backgroundColor = "rgba(255, 105, 180, 0.35)"; // Seventh – Pink
-      cell.style.color = "#fff0f8";
+  fretboardCells.forEach(cell => {
+    const note = cell.childNodes[0]?.nodeValue?.trim();
+    if (!note) return;
+    const normalizedNote = normalize(note);
+    const idx = normalizedChordTones.indexOf(normalizedNote);
+
+    if (idx !== -1) {
+      const role = roleColors[idx] || roleColors[0]; // fallback to root if out of bounds
+      cell.style.backgroundColor = role.bg;
+      cell.style.color = role.color;
     } else {
       cell.style.backgroundColor = "#1A2B4C";
       cell.style.color = "var(--text)";
@@ -893,8 +917,29 @@ document.addEventListener("DOMContentLoaded", () => {
   generateFretboard(defaultTuning);
   document.getElementById("custom-chord-select").addEventListener("change", updateChordInfoDisplay);
   document.getElementById("custom-progression-select").addEventListener("change", updateChordInfoDisplay);
+  // Add event for enharmonic toggle
+  const enharmonicToggle = document.getElementById("enharmonic-toggle");
+  if (enharmonicToggle) {
+    enharmonicToggle.addEventListener("change", updateChordInfoDisplay);
+  }
   updateChordInfoDisplay();
 });
 </script>
+  <!-- Netlify Identity Widget & logout redirect -->
+  <script src="https://identity.netlify.com/v1/netlify-identity-widget.js"></script>
+  <script>
+    netlifyIdentity.on("logout", () => {
+      window.location.href = "/"; // Redirect to home page after logout
+    });
+    netlifyIdentity.init();
+    // Reinitialize the identity widget after logout in case user returns
+    netlifyIdentity.on("init", user => {
+      if (!user) {
+        netlifyIdentity.on("login", () => {
+          document.location.href = "/fretboard.html";
+        });
+      }
+    });
+  </script>
 </body>
 </html>
