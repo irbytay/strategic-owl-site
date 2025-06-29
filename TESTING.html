@@ -527,23 +527,23 @@ function buildScale(rootNote, progressionName, reverse = false) {
   return scaleNotes;
 }
 
+// Helper: Convert sharp notes to flat equivalents for display in flatMode
+function denormalizeToFlat(note) {
+  const reverseMap = {
+    'C#': 'Db', 'D#': 'Eb', 'F#': 'Gb',
+    'G#': 'Ab', 'A#': 'Bb'
+  };
+  return reverseMap[note] || note;
+}
+
 // Chord tones calculation (triad or 7th, with reverse option)
 function getChordTones(scaleNotes, type = "triad", reverse = false) {
-  if (reverse) {
-    if (type === "major7" || type === "minor7") {
-      return [scaleNotes[0], scaleNotes[6], scaleNotes[4], scaleNotes[2]]; // Root, 7th, 5th, 3rd
-    } else {
-      return [scaleNotes[0], scaleNotes[4], scaleNotes[2]]; // Root, 5th, 3rd
-    }
-  }
-
-  if (type === "major7" || type === "minor7") {
-    if (scaleNotes.length >= 7) {
-      return [scaleNotes[0], scaleNotes[2], scaleNotes[4], scaleNotes[6]];
-    }
-  }
-
-  return [scaleNotes[0], scaleNotes[2], scaleNotes[4]]; // fallback triad
+  const indexes = reverse
+    ? [0, 6, 4, 2]
+    : [0, 2, 4, 6];
+  return indexes
+    .filter(i => i < scaleNotes.length)
+    .map(i => scaleNotes[i]);
 }
 
 // 🎸 Hardcoded chord diagram lookup
@@ -840,8 +840,8 @@ function updateChordInfoDisplay() {
     return enharmonics[note] || note.replace(/♯/g, '#').replace(/♭/g, 'b');
   };
   const labeledNotes = notes.map(n => {
-    const idx = ALL_NOTES.indexOf(normalize(n));
-    return flatMode ? FLAT_LABELS[idx] : SHARP_LABELS[idx];
+    const normalized = normalize(n);
+    return flatMode ? denormalizeToFlat(normalized) : normalized;
   });
   const displayNotes = flatMode ? labeledNotes.reverse() : labeledNotes;
   document.getElementById("scale-notes").textContent = `Notes: ${displayNotes.join('  ')}`;
@@ -865,8 +865,8 @@ function updateChordInfoDisplay() {
   ];
   // Map chordTones for display (labels only, do not reverse order)
   const labeledChordTones = chordTones.map(n => {
-    const idx = ALL_NOTES.indexOf(normalize(n));
-    return flatMode ? FLAT_LABELS[idx] : SHARP_LABELS[idx];
+    const normalized = normalize(n);
+    return flatMode ? denormalizeToFlat(normalized) : normalized;
   });
   const coloredTonesHTML = labeledChordTones.map((tone, index) => {
     const role = roleColors[index] || roleColors[0];
