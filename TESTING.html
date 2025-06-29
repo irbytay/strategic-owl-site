@@ -528,7 +528,7 @@ function buildScale(rootNote, progressionName, reverse = false) {
       : (currentIndex + step) % 12;
     scale.push(noteLabels[currentIndex]);
   }
-  return reverse ? [...scale].reverse() : scale;
+  return scale;
 }
 
 // Helper: Convert sharp notes to flat equivalents for display in flatMode
@@ -827,6 +827,7 @@ function updateChordInfoDisplay() {
   const intervals = PROGRESSION_LIBRARY[progression];
   // Scale direction: use flatMode for reverse param
   const notes = buildScale(root, progression, flatMode);
+  const displayNotesRaw = [...notes]; // capture exact scale result for display
   document.getElementById("chord-info").textContent = "";
   document.getElementById("progression-steps").textContent = `Steps: ${intervals ? intervals.join(' - ') : 'N/A'}`;
 
@@ -848,7 +849,7 @@ function updateChordInfoDisplay() {
   };
 
   // Assign labels using either SHARP_LABELS or FLAT_LABELS
-  const labeledNotes = notes.map(n => {
+  const labeledNotes = displayNotesRaw.map(n => {
     const normalized = normalize(n);
     return flatMode ? denormalizeToFlat(normalized) : normalized;
   });
