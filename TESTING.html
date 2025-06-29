@@ -368,7 +368,7 @@
 
     <!-- 🎸 Chord Grid/Progression UI -->
     <div style="display: flex; justify-content: center; flex-wrap: wrap; gap: 1rem; margin-top: 24px;">
-      <label style="font-size: 1rem;">Select Chord Root:
+      <label style="font-size: 1rem;">Select Chord:
         <select id="fret-chord-root" style="margin-left: 8px;"></select>
       </label>
       <label style="font-size: 1rem;">Select Progression:
@@ -414,9 +414,9 @@ function populateGridDropdowns() {
   const rootDropdown = document.getElementById("fret-chord-root");
   const modeDropdown = document.getElementById("fret-chord-mode");
   if (!CHORD_GRID_DATA.length) return;
-  // Get column headers (row 2, columns C to L)
-  const columnHeaders = CHORD_GRID_DATA[0].slice(1, 12);
-  // Get unique row labels (column B, all rows)
+  // Get unique chord names from column B (first column of each row after header)
+  const columnHeaders = CHORD_GRID_DATA.map(row => row[0]).filter((v, i, a) => v && i > 0 && a.indexOf(v) === i);
+  // Get unique row labels (column B, all rows) -- this may need adjustment if you want a separate set
   const rowLabels = CHORD_GRID_DATA[0].slice(1, 11).filter((v, i, a) => v && a.indexOf(v) === i);
   rootDropdown.innerHTML = columnHeaders.map(h => `<option value="${h}">${h}</option>`).join('');
   modeDropdown.innerHTML = rowLabels.map(l => `<option value="${l}">${l}</option>`).join('');
