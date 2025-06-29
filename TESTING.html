@@ -498,10 +498,15 @@ function buildScale(rootNote, progressionName) {
   return scaleNotes;
 }
 
-// Triad calculation from scale notes
-function getTriadFromScale(scaleNotes, type = "major") {
-  if (scaleNotes.length < 5) return [];
-  return [scaleNotes[0], scaleNotes[2], scaleNotes[4]];
+// Chord tones calculation (triad or 7th)
+function getChordTones(scaleNotes, type = "major") {
+  if (scaleNotes.length < 7) return [];
+
+  if (type === "major7") {
+    return [scaleNotes[0], scaleNotes[2], scaleNotes[4], scaleNotes[6]]; // 1 3 5 7
+  }
+
+  return [scaleNotes[0], scaleNotes[2], scaleNotes[4]]; // triad fallback
 }
 
 const ALL_NOTES = ['C', 'C#', 'D', 'D#', 'E', 'F', 'F#', 'G', 'G#', 'A', 'A#', 'B'];
@@ -653,25 +658,29 @@ function updateChordInfoDisplay() {
   document.getElementById("progression-steps").textContent = `Steps: ${intervals ? intervals.join(' - ') : 'N/A'}`;
   document.getElementById("scale-notes").textContent = `Notes: ${notes.join('  ')}`;
 
-  // --- Triad calculation and visualization ---
-  const triad = getTriadFromScale(notes, progression.toLowerCase().includes("minor") ? "minor" : "major");
-  document.getElementById("triad-notes").textContent = `Triad: ${triad.join("  ")}`;
+  // --- Chord tones calculation and visualization ---
+  const type = progression.toLowerCase().includes("minor") ? "minor" : "major7";
+  const chordTones = getChordTones(notes, type);
+  document.getElementById("triad-notes").textContent = `Chord Tones: ${chordTones.join("  ")}`;
 
-  // Highlight triad notes on fretboard
+  // Highlight chord tones on fretboard
   const fretboardCells = document.querySelectorAll("#fretboard > div");
   fretboardCells.forEach(cell => {
     const note = cell.textContent?.trim();
     if (!note || !ALL_NOTES.includes(note)) return;
 
-    if (note === triad[0]) {
-      cell.style.backgroundColor = "rgba(40, 167, 69, 0.4)"; // Root – Soft Green
+    if (note === chordTones[0]) {
+      cell.style.backgroundColor = "rgba(40, 167, 69, 0.4)"; // Root – Green
       cell.style.color = "#cde7d0";
-    } else if (note === triad[1]) {
-      cell.style.backgroundColor = "rgba(212, 175, 55, 0.35)"; // Third – Soft Gold
+    } else if (note === chordTones[1]) {
+      cell.style.backgroundColor = "rgba(212, 175, 55, 0.35)"; // Third – Gold
       cell.style.color = "#fff5d0";
-    } else if (note === triad[2]) {
-      cell.style.backgroundColor = "rgba(59, 108, 237, 0.35)"; // Fifth – Soft Blue
+    } else if (note === chordTones[2]) {
+      cell.style.backgroundColor = "rgba(59, 108, 237, 0.35)"; // Fifth – Blue
       cell.style.color = "#dbe3ff";
+    } else if (chordTones[3] && note === chordTones[3]) {
+      cell.style.backgroundColor = "rgba(255, 105, 180, 0.35)"; // Seventh – Pink
+      cell.style.color = "#fff0f8";
     } else {
       cell.style.backgroundColor = "#1A2B4C";
       cell.style.color = "var(--text)";
