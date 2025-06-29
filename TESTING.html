@@ -847,7 +847,7 @@ function updateChordInfoDisplay() {
     const normalized = normalize(n);
     return flatMode ? denormalizeToFlat(normalized) : normalized;
   });
-  const displayNotes = flatMode ? labeledNotes.reverse() : labeledNotes;
+  const displayNotes = labeledNotes.map((n, i) => i === 0 ? `[${n}]` : n);
   document.getElementById("scale-notes").textContent = `Notes: ${displayNotes.join('  ')}`;
 
   // --- Chord tones calculation and visualization ---
