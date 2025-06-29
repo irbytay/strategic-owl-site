@@ -553,14 +553,14 @@ function generateFretboard(tuning = defaultTuning) {
   fretboardDiv.innerHTML = "";
   // Apply visually styled grid layout to the fretboard
   fretboardDiv.style.display = "grid";
-  fretboardDiv.style.gridTemplateColumns = "68px repeat(13, 40px)";
+  fretboardDiv.style.gridTemplateColumns = "68px repeat(25, 40px)";
   fretboardDiv.style.rowGap = "6px";
   fretboardDiv.style.background = "linear-gradient(to bottom, #3B2F2F, #1E1A18)";
   fretboardDiv.style.borderRadius = "12px";
   fretboardDiv.style.boxShadow = "inset 0 0 10px rgba(0,0,0,0.4)";
   fretboardDiv.style.border = "1px solid var(--highlight)";
   fretboardDiv.style.padding = "12px";
-  const numFrets = 12;
+  const numFrets = 24;
 
   // Add fret number labels as the first row of the grid
   // First empty cell (to align with tuning dropdowns)
@@ -577,8 +577,8 @@ function generateFretboard(tuning = defaultTuning) {
     fretLabel.style.alignItems = "center";
     fretLabel.style.justifyContent = "center";
     fretLabel.style.background = "rgba(255,255,255,0.03)";
-    fretLabel.style.color = [3, 5, 7, 9, 12].includes(i) ? "var(--understanding)" : "var(--text-muted)";
-    fretLabel.style.fontWeight = [3, 5, 7, 9, 12].includes(i) ? "600" : "400";
+    fretLabel.style.color = [3, 5, 7, 9, 12, 15, 17, 19, 21, 24].includes(i) ? "var(--understanding)" : "var(--text-muted)";
+    fretLabel.style.fontWeight = [3, 5, 7, 9, 12, 15, 17, 19, 21, 24].includes(i) ? "600" : "400";
     fretLabel.style.textAlign = "center";
     fretLabel.style.borderLeft = i === 0 ? "none" : "1px solid var(--highlight)";
     fretboardDiv.appendChild(fretLabel);
@@ -634,7 +634,7 @@ function generateFretboard(tuning = defaultTuning) {
       cell.style.position = "relative";
 
       // Add fret marker
-      if ([3, 5, 7, 9, 12].includes(fret)) {
+      if ([3, 5, 7, 9, 12, 15, 17, 19, 21, 24].includes(fret)) {
         const dot = document.createElement("div");
         dot.textContent = "•";
         dot.style.position = "absolute";
