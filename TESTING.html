@@ -665,6 +665,8 @@ function generateFretboard(tuning = defaultTuning) {
       cell.style.borderLeft = "1px solid var(--highlight)";
       // Use visualGauge for string thickness: string 0 (top) is thinnest, string 5 (bottom) is thickest
       cell.style.borderBottom = `${visualGauge[string]}px solid #aaa`;
+      // Add subtle silver right border to simulate fret wire
+      cell.style.borderRight = "2px solid rgba(192,192,192,0.3)";
       cell.style.backgroundColor = "#1A2B4C";
       cell.style.color = "var(--text)";
       cell.style.position = "relative";
