@@ -417,7 +417,7 @@ function populateGridDropdowns() {
   // Get column headers (row 2, columns C to L)
   const columnHeaders = CHORD_GRID_DATA[0].slice(1, 12);
   // Get unique row labels (column B, all rows)
-  const rowLabels = CHORD_GRID_DATA.map(r => r[0]).filter((v, i, a) => v && a.indexOf(v) === i);
+  const rowLabels = CHORD_GRID_DATA[0].slice(1, 11).filter((v, i, a) => v && a.indexOf(v) === i);
   rootDropdown.innerHTML = columnHeaders.map(h => `<option value="${h}">${h}</option>`).join('');
   modeDropdown.innerHTML = rowLabels.map(l => `<option value="${l}">${l}</option>`).join('');
 }
