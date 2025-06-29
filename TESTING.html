@@ -323,6 +323,41 @@
   text-shadow: 0 0 8px var(--understanding); /* Subtle glow using gold tone */
   color: var(--truth);                       /* Optional: changes to green (truth color) */
 }
+    /* ===== Mobile-friendly enhancements for Guitar Tool & Fretboard ===== */
+    @media (max-width: 768px) {
+      #fretboard {
+        overflow-x: auto;
+        display: block !important;
+        white-space: nowrap;
+        max-width: 100vw;
+      }
+
+      #guitar-tool select {
+        width: 100%;
+        margin-bottom: 8px;
+        font-size: 1rem;
+      }
+
+      #guitar-tool > div:first-of-type {
+        flex-direction: column !important;
+        align-items: center;
+      }
+    }
+
+    @media (max-width: 500px) {
+      body, select, p, h2, h3, pre {
+        font-size: 0.95rem;
+      }
+
+      pre#visual-chord-diagram {
+        font-size: 0.9rem;
+        padding: 8px;
+      }
+
+      .container {
+        padding: 12px;
+      }
+    }
 </style>
 
 <nav class="top-nav">
