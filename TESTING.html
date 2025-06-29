@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -425,13 +426,6 @@
 
     <!-- 🎼 Chord/Scale Display Section -->
     <div id="chord-display-area" style="margin-bottom: 20px; text-align: center; color: var(--text);">
-      <!-- Enharmonic flats toggle -->
-      <div style="text-align: center; margin-bottom: 12px;">
-        <label style="color: var(--text-muted); font-size: 0.95rem;">
-          <input type="checkbox" id="enharmonic-toggle" style="margin-right: 6px;" />
-          Prefer Flat Notes (e.g., Db instead of C#)
-        </label>
-      </div>
       <h3 id="chord-heading" style="color: var(--heading); margin-bottom: 8px;"></h3>
       <div id="chord-info" style="font-size: 1rem; margin-bottom: 4px;"></div>
       <div id="progression-steps" style="color: var(--text-muted); font-size: 0.95rem; margin-bottom: 4px;"></div>
@@ -440,6 +434,13 @@
     </div>
     <!-- 🎶 Chord label display above the fretboard -->
     <div id="chord-label-display" style="text-align: center; font-size: 1.2rem; font-weight: 600; color: var(--understanding); margin-bottom: 12px;"></div>
+    <!-- Toggle for sharps/flats display -->
+    <div style="text-align: center; margin: 20px 0;">
+      <label style="font-size: 1rem; color: var(--text-muted);">
+        <input type="checkbox" id="flat-toggle" onchange="updateChordInfoDisplay()" />
+        Use Flats (Descending Logic)
+      </label>
+    </div>
     <!-- 🎸 Digital Fretboard UI -->
     <div style="margin-top: 40px;">
       <h2 style="text-align: center;">🎸 Digital Fretboard</h2>
@@ -827,16 +828,7 @@ function updateChordInfoDisplay() {
   // document.getElementById("chord-info").textContent = `Chord: ${root} | Progression: ${progression}`;
   document.getElementById("chord-info").textContent = "";
   document.getElementById("progression-steps").textContent = `Steps: ${intervals ? intervals.join(' - ') : 'N/A'}`;
-
-  // Enharmonic flats toggle
-  const useFlats = document.getElementById("enharmonic-toggle")?.checked;
-  const toFlat = {
-    'C#': 'Db', 'D#': 'Eb', 'F#': 'Gb', 'G#': 'Ab', 'A#': 'Bb',
-    'C♯': 'Db', 'D♯': 'Eb', 'F♯': 'Gb', 'G♯': 'Ab', 'A♯': 'Bb'
-  };
-  const displayTone = note => useFlats && toFlat[note] ? toFlat[note] : note;
-
-  document.getElementById("scale-notes").textContent = `Notes: ${notes.map(displayTone).join('  ')}`;
+  document.getElementById("scale-notes").textContent = `Notes: ${notes.join('  ')}`;
 
   // --- Chord tones calculation and visualization ---
   let type = "triad";
@@ -856,7 +848,6 @@ function updateChordInfoDisplay() {
     { bg: "rgba(255, 105, 180, 0.35)", color: "#fff0f8" }     // 7th (if exists)
   ];
   const coloredTonesHTML = chordTones.map((tone, index) => {
-    tone = displayTone(tone);
     const role = roleColors[index] || roleColors[0];
     return `<span style="color: ${role.color}; background-color: ${role.bg}; padding: 2px 6px; border-radius: 4px; margin: 0 4px;">${tone}</span>`;
   }).join("");
@@ -866,26 +857,53 @@ function updateChordInfoDisplay() {
   const diagramText = generateChordDiagram(chordTones, root, progression);
   document.getElementById("visual-chord-diagram").textContent = diagramText;
 
-  // Highlight chord tones on fretboard (with enharmonic matching)
-  const fretboardCells = document.querySelectorAll("#fretboard > div");
-  const normalize = (note) => {
+  // --- Enharmonic note mapping for directional display ---
+  const flatKeyMap = {
+    "C#": "Db", "D#": "Eb", "F#": "Gb",
+    "G#": "Ab", "A#": "Bb"
+  };
+  const sharpKeyMap = {
+    "Db": "C#", "Eb": "D#", "Gb": "F#",
+    "Ab": "G#", "Bb": "A#"
+  };
+  // Directional mode: true=descending (use flats), false=ascending (use sharps)
+  // Controlled by the "Use Flats" toggle
+  const isDescending = document.getElementById("flat-toggle")?.checked;
+  function applyFlatKey(note) {
+    return flatKeyMap[note] || note;
+  }
+  function applySharpKey(note) {
+    return sharpKeyMap[note] || note;
+  }
+  function getDisplayNote(note) {
+    return isDescending ? applyFlatKey(note) : applySharpKey(note);
+  }
+  // Normalize function for enharmonic matching (for highlighting)
+  function normalizeNote(note) {
+    // Convert unicode accidentals to ASCII and map to C#-style
+    note = note.replace(/♯/g, "#").replace(/♭/g, "b");
+    // Map flats to sharps for matching
     const enharmonics = {
       'Db': 'C#', 'Eb': 'D#', 'Gb': 'F#', 'Ab': 'G#', 'Bb': 'A#',
-      'C♯': 'C#', 'D♯': 'D#', 'F♯': 'F#', 'G♯': 'G#', 'A♯': 'A#',
       'Cb': 'B', 'Fb': 'E', 'E#': 'F', 'B#': 'C'
     };
-    return enharmonics[note] || note.replace(/♯/g, '#').replace(/♭/g, 'b');
-  };
-  const normalizedChordTones = chordTones.map(normalize);
-
+    return enharmonics[note] || note;
+  }
+  // Prepare normalized chord tones for highlighting
+  const normalizedChordTones = chordTones.map(normalizeNote);
+  // Highlight chord tones on fretboard using directional display and normalization
+  const fretboardCells = document.querySelectorAll("#fretboard > div");
   fretboardCells.forEach(cell => {
     const note = cell.childNodes[0]?.nodeValue?.trim();
     if (!note) return;
-    const normalizedNote = normalize(note);
+    // Display note based on directional mapping
+    const displayNote = getDisplayNote(note);
+    cell.childNodes[0].nodeValue = displayNote;
+    // Normalize for matching
+    const normalizedNote = normalizeNote(note);
     const idx = normalizedChordTones.indexOf(normalizedNote);
-
     if (idx !== -1) {
-      const role = roleColors[idx] || roleColors[0]; // fallback to root if out of bounds
+      const role = roleColors[idx] || roleColors[0];
       cell.style.backgroundColor = role.bg;
       cell.style.color = role.color;
     } else {
@@ -917,11 +935,6 @@ document.addEventListener("DOMContentLoaded", () => {
   generateFretboard(defaultTuning);
   document.getElementById("custom-chord-select").addEventListener("change", updateChordInfoDisplay);
   document.getElementById("custom-progression-select").addEventListener("change", updateChordInfoDisplay);
-  // Add event for enharmonic toggle
-  const enharmonicToggle = document.getElementById("enharmonic-toggle");
-  if (enharmonicToggle) {
-    enharmonicToggle.addEventListener("change", updateChordInfoDisplay);
-  }
   updateChordInfoDisplay();
 });
 </script>
@@ -942,4 +955,4 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   </script>
 </body>
-</html>
+</html>s
