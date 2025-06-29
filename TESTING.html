@@ -380,14 +380,14 @@
     <div style="margin-top: 40px;">
       <h2 style="text-align: center;">🎸 Digital Fretboard</h2>
       <p style="text-align: center; color: var(--text-muted);">Change tuning and see how each string updates.</p>
-      <div id="fretboard-controls" style="display: flex; flex-direction: column; align-items: flex-start; gap: 6px; margin-bottom: 20px;">
+      <!-- <div id="fretboard-controls" style="display: flex; flex-direction: column; align-items: flex-start; gap: 6px; margin-bottom: 20px;">
         <div>String 6 (Low E): <select class="tuning-select" data-string="5"></select></div>
         <div>String 5 (A): <select class="tuning-select" data-string="4"></select></div>
         <div>String 4 (D): <select class="tuning-select" data-string="3"></select></div>
         <div>String 3 (G): <select class="tuning-select" data-string="2"></select></div>
         <div>String 2 (B): <select class="tuning-select" data-string="1"></select></div>
         <div>String 1 (High E): <select class="tuning-select" data-string="0"></select></div>
-      </div>
+      </div> -->
       <div id="fretboard" style="display: flex; flex-direction: column; align-items: center; gap: 6px;"></div>
     </div>
   </section>
@@ -562,13 +562,24 @@ function generateFretboard(tuning = defaultTuning) {
     rowDiv.style.gap = "6px";
     rowDiv.style.marginBottom = "4px";
 
-    // Add string label
-    const label = document.createElement("div");
-    label.textContent = `Str ${6 - stringIndex}`;
-    label.style.minWidth = "50px";
-    label.style.fontWeight = "600";
-    label.style.color = "var(--text-muted)";
-    rowDiv.appendChild(label);
+    // Add tuning dropdown inline
+    const select = document.createElement("select");
+    select.classList.add("tuning-select-inline");
+    select.dataset.string = 5 - stringIndex;
+    ALL_NOTES.forEach(note => {
+      const opt = document.createElement("option");
+      opt.value = note;
+      opt.textContent = note;
+      if (note === openNote) opt.selected = true;
+      select.appendChild(opt);
+    });
+    select.addEventListener("change", () => {
+      const newTuning = Array.from(document.querySelectorAll(".tuning-select-inline"))
+        .reverse()
+        .map(s => s.value);
+      generateFretboard(newTuning);
+    });
+    rowDiv.appendChild(select);
 
     // Add fret notes
     for (let fret = 0; fret <= numFrets; fret++) {
@@ -590,19 +601,8 @@ function generateFretboard(tuning = defaultTuning) {
   });
 }
 
-function populateTuningDropdowns() {
-  const selects = document.querySelectorAll(".tuning-select");
-  selects.forEach((select, i) => {
-    select.innerHTML = ALL_NOTES.map(note => `<option value="${note}" ${defaultTuning[5 - i] === note ? "selected" : ""}>${note}</option>`).join('');
-    select.addEventListener("change", () => {
-      const newTuning = Array.from(document.querySelectorAll(".tuning-select")).reverse().map(s => s.value);
-      generateFretboard(newTuning);
-    });
-  });
-}
-
+// No longer need to populateTuningDropdowns or use .tuning-select, as dropdowns are inline
 document.addEventListener("DOMContentLoaded", () => {
-  populateTuningDropdowns();
   generateFretboard(defaultTuning);
 });
 </script>
