@@ -584,8 +584,9 @@ function generateFretboard(tuning = defaultTuning) {
     fretboardDiv.appendChild(fretLabel);
   }
 
-  // For each string, add a row to the grid (high E at top, low E at bottom)
-  for (let string = 0; string < tuning.length; string++) {
+  // For each string, add a row to the grid (highest string at top, lowest at bottom)
+  for (let s = tuning.length - 1; s >= 0; s--) {
+    const string = s;
     const openNote = tuning[string];
     const openIndex = ALL_NOTES.indexOf(openNote);
 
