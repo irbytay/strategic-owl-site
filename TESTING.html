@@ -584,15 +584,15 @@ function generateFretboard(tuning = defaultTuning) {
     fretboardDiv.appendChild(fretLabel);
   }
 
-  // For each string, add a row to the grid
-  for (let string = 0; string < tuning.length; string++) {
-    const openNote = tuning.slice().reverse()[string];
+  // For each string, add a row to the grid (thicker strings at bottom, thinner at top)
+  for (let string = tuning.length - 1; string >= 0; string--) {
+    const openNote = tuning[string];
     const openIndex = ALL_NOTES.indexOf(openNote);
 
     // Create dropdown as first column
     const select = document.createElement("select");
     select.classList.add("tuning-select-inline");
-    select.dataset.string = string;
+    select.dataset.string = tuning.length - 1 - string;
     select.style.width = "68px";
     select.style.height = "40px";
     select.style.background = "#333";
@@ -628,7 +628,7 @@ function generateFretboard(tuning = defaultTuning) {
       cell.style.alignItems = "center";
       cell.style.justifyContent = "center";
       cell.style.borderLeft = "1px solid var(--highlight)";
-      cell.style.borderBottom = `${4 - string}px solid #aaa`; // simulate string thickness
+      cell.style.borderBottom = `${string + 1}px solid #aaa`; // simulate string thickness
       cell.style.backgroundColor = "#1A2B4C";
       cell.style.color = "var(--text)";
       cell.style.position = "relative";
