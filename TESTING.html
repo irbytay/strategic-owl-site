@@ -855,7 +855,12 @@ function updateChordInfoDisplay() {
     { bg: "rgba(59, 108, 237, 0.35)", color: "#dbe3ff" },     // 5th
     { bg: "rgba(255, 105, 180, 0.35)", color: "#fff0f8" }     // 7th (if exists)
   ];
-  const coloredTonesHTML = chordTones.map((tone, index) => {
+  // Map chordTones for display (labels only, do not reverse order)
+  const labeledChordTones = chordTones.map(n => {
+    const idx = ALL_NOTES.indexOf(n);
+    return flatMode ? FLAT_LABELS[idx] : SHARP_LABELS[idx];
+  });
+  const coloredTonesHTML = labeledChordTones.map((tone, index) => {
     const role = roleColors[index] || roleColors[0];
     return `<span style="color: ${role.color}; background-color: ${role.bg}; padding: 2px 6px; border-radius: 4px; margin: 0 4px;">${tone}</span>`;
   }).join("");
