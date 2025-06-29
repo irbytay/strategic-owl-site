@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -378,6 +377,13 @@
   <div class="container">
   <!-- 🎸 Guitar Tool Interface -->
   <section id="guitar-tool" style="margin-top: 20px;">
+    <!-- Flats/Sharps Toggle Checkbox UI -->
+    <div style="text-align: center; margin-top: 16px;">
+      <label style="font-size: 1rem; color: var(--text-muted);">
+        <input type="checkbox" id="use-flats-toggle" onchange="updateChordInfoDisplay()" />
+        Flip Direction / Use Flats
+      </label>
+    </div>
     <h2 style="font-size: 2.2rem; font-weight: 700; margin-bottom: 12px; color: var(--heading); text-transform: uppercase; letter-spacing: 0.5px;">
       🎸 Guitar Chord & Fretboard Visualizer
     </h2>
@@ -434,13 +440,6 @@
     </div>
     <!-- 🎶 Chord label display above the fretboard -->
     <div id="chord-label-display" style="text-align: center; font-size: 1.2rem; font-weight: 600; color: var(--understanding); margin-bottom: 12px;"></div>
-    <!-- Toggle for sharps/flats display -->
-    <div style="text-align: center; margin: 20px 0;">
-      <label style="font-size: 1rem; color: var(--text-muted);">
-        <input type="checkbox" id="flat-toggle" onchange="updateChordInfoDisplay()" />
-        Use Flats (Descending Logic)
-      </label>
-    </div>
     <!-- 🎸 Digital Fretboard UI -->
     <div style="margin-top: 40px;">
       <h2 style="text-align: center;">🎸 Digital Fretboard</h2>
@@ -674,6 +673,8 @@ function generateChordDiagram(chordTones, root, progression) {
 }
 
 const ALL_NOTES = ['C', 'C#', 'D', 'D#', 'E', 'F', 'F#', 'G', 'G#', 'A', 'A#', 'B'];
+const SHARP_LABELS = ['C', 'C#', 'D', 'D#', 'E', 'F', 'F#', 'G', 'G#', 'A', 'A#', 'B'];
+const FLAT_LABELS  = ['C', 'Db', 'D', 'Eb', 'E', 'F', 'Gb', 'G', 'Ab', 'A', 'Bb', 'B'];
 const defaultTuning = ['E', 'B', 'G', 'D', 'A', 'E']; // strings 1 to 6
 
 function generateFretboard(tuning = defaultTuning) {
@@ -817,25 +818,25 @@ function generateFretboard(tuning = defaultTuning) {
 function updateChordInfoDisplay() {
   const root = document.getElementById("custom-chord-select").value;
   const progression = document.getElementById("custom-progression-select").value;
+  // Detect flats toggle
+  const flatMode = document.getElementById("use-flats-toggle")?.checked;
   // Update the chord label display block above the fretboard
   document.getElementById("chord-label-display").textContent = `${root} ${progression}`;
   // Update the heading dynamically
   document.getElementById("chord-heading").textContent = `🎼 ${root} ${progression}`;
   const intervals = PROGRESSION_LIBRARY[progression];
-  // Directional mode: true=descending (use flats), false=ascending (use sharps)
-  // Controlled by the "Use Flats" toggle
-  const isDescending = document.getElementById("flat-toggle")?.checked;
-  // Reverse intervals if descending for display
-  const displayedIntervals = isDescending && intervals ? [...intervals].reverse() : intervals;
   const notes = buildScale(root, progression);
 
-  // Removed redundant line:
-  // document.getElementById("chord-info").textContent = `Chord: ${root} | Progression: ${progression}`;
   document.getElementById("chord-info").textContent = "";
-  document.getElementById("progression-steps").textContent = `Steps: ${displayedIntervals ? displayedIntervals.join(' - ') : 'N/A'}`;
-  // Flip notes and apply flats if descending; else apply sharps
-  const flippedNotes = isDescending ? [...notes].reverse().map(applyFlatKey) : notes.map(applySharpKey);
-  document.getElementById("scale-notes").textContent = `Notes: ${flippedNotes.join('  ')}`;
+  document.getElementById("progression-steps").textContent = `Steps: ${intervals ? intervals.join(' - ') : 'N/A'}`;
+
+  // Map notes to sharp or flat labels
+  const labeledNotes = notes.map(n => {
+    const idx = ALL_NOTES.indexOf(n);
+    return flatMode ? FLAT_LABELS[idx] : SHARP_LABELS[idx];
+  });
+  const displayNotes = flatMode ? labeledNotes.reverse() : labeledNotes;
+  document.getElementById("scale-notes").textContent = `Notes: ${displayNotes.join('  ')}`;
 
   // --- Chord tones calculation and visualization ---
   let type = "triad";
@@ -864,50 +865,33 @@ function updateChordInfoDisplay() {
   const diagramText = generateChordDiagram(chordTones, root, progression);
   document.getElementById("visual-chord-diagram").textContent = diagramText;
 
-  // --- Enharmonic note mapping for directional display ---
-  const flatKeyMap = {
-    "C#": "Db", "D#": "Eb", "F#": "Gb",
-    "G#": "Ab", "A#": "Bb"
-  };
-  const sharpKeyMap = {
-    "Db": "C#", "Eb": "D#", "Gb": "F#",
-    "Ab": "G#", "Bb": "A#"
-  };
-  function applyFlatKey(note) {
-    return flatKeyMap[note] || note;
-  }
-  function applySharpKey(note) {
-    return sharpKeyMap[note] || note;
-  }
-  function getDisplayNote(note) {
-    return isDescending ? applyFlatKey(note) : applySharpKey(note);
-  }
-  // Normalize function for enharmonic matching (for highlighting)
-  function normalizeNote(note) {
-    // Convert unicode accidentals to ASCII and map to C#-style
-    note = note.replace(/♯/g, "#").replace(/♭/g, "b");
-    // Map flats to sharps for matching
+  // Highlight chord tones on fretboard (with enharmonic matching)
+  const fretboardCells = document.querySelectorAll("#fretboard > div");
+  const normalize = (note) => {
     const enharmonics = {
       'Db': 'C#', 'Eb': 'D#', 'Gb': 'F#', 'Ab': 'G#', 'Bb': 'A#',
+      'C♯': 'C#', 'D♯': 'D#', 'F♯': 'F#', 'G♯': 'G#', 'A♯': 'A#',
       'Cb': 'B', 'Fb': 'E', 'E#': 'F', 'B#': 'C'
     };
-    return enharmonics[note] || note;
-  }
-  // Prepare normalized visible notes for highlighting
-  const visibleNotes = flippedNotes.map(normalizeNote);
-  // Highlight visible notes on fretboard using normalization
-  const fretboardCells = document.querySelectorAll("#fretboard > div");
+    return enharmonics[note] || note.replace(/♯/g, '#').replace(/♭/g, 'b');
+  };
+  const normalizedChordTones = chordTones.map(normalize);
+
   fretboardCells.forEach(cell => {
-    const note = cell.childNodes[0]?.nodeValue?.trim();
+    // Use the displayed note, which may be sharp or flat
+    let note = cell.childNodes[0]?.nodeValue?.trim();
     if (!note) return;
-    // Display note based on directional mapping
-    const displayNote = getDisplayNote(note);
-    cell.childNodes[0].nodeValue = displayNote;
-    // Normalize for matching
-    const normalizedNote = normalizeNote(note);
-    const idx = visibleNotes.indexOf(normalizedNote);
+    // For display, relabel fretboard notes according to toggle
+    const noteIndex = ALL_NOTES.indexOf(normalize(note));
+    if (noteIndex !== -1) {
+      cell.textContent = flatMode ? FLAT_LABELS[noteIndex] : SHARP_LABELS[noteIndex];
+      note = flatMode ? FLAT_LABELS[noteIndex] : SHARP_LABELS[noteIndex];
+    }
+    // Now normalize for matching
+    const normalizedNote = normalize(note);
+    const idx = normalizedChordTones.indexOf(normalizedNote);
     if (idx !== -1) {
-      const role = roleColors[idx] || roleColors[0];
+      const role = roleColors[idx] || roleColors[0]; // fallback to root if out of bounds
       cell.style.backgroundColor = role.bg;
       cell.style.color = role.color;
     } else {
@@ -959,4 +943,4 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   </script>
 </body>
-</html>s
+</html>
