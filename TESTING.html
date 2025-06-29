@@ -376,6 +376,20 @@
       </label>
     </div>
     <div id="fret-chord-output" style="margin-top: 20px; text-align: center;"></div>
+    <!-- 🎸 Digital Fretboard UI -->
+    <div style="margin-top: 40px;">
+      <h2 style="text-align: center;">🎸 Digital Fretboard</h2>
+      <p style="text-align: center; color: var(--text-muted);">Change tuning and see how each string updates.</p>
+      <div id="fretboard-controls" style="display: flex; justify-content: center; gap: 10px; flex-wrap: wrap; margin-bottom: 20px;">
+        <div>String 6: <select class="tuning-select" data-string="5"></select></div>
+        <div>String 5: <select class="tuning-select" data-string="4"></select></div>
+        <div>String 4: <select class="tuning-select" data-string="3"></select></div>
+        <div>String 3: <select class="tuning-select" data-string="2"></select></div>
+        <div>String 2: <select class="tuning-select" data-string="1"></select></div>
+        <div>String 1: <select class="tuning-select" data-string="0"></select></div>
+      </div>
+      <div id="fretboard" style="display: flex; flex-direction: column; align-items: center; gap: 6px;"></div>
+    </div>
   </section>
 
 <script>
@@ -523,6 +537,54 @@ document.addEventListener("DOMContentLoaded", () => {
   document.getElementById("chord-type").addEventListener("change", updateChordDisplay);
   document.getElementById("fret-chord-root").addEventListener("change", updateFretChordDisplay);
   document.getElementById("fret-chord-mode").addEventListener("change", updateFretChordDisplay);
+});
+</script>
+</script>
+<script>
+// 🎸 Digital Fretboard Script
+const ALL_NOTES = ['C', 'C#', 'D', 'D#', 'E', 'F', 'F#', 'G', 'G#', 'A', 'A#', 'B'];
+const defaultTuning = ['E', 'B', 'G', 'D', 'A', 'E']; // strings 1 to 6
+
+function generateFretboard(tuning = defaultTuning) {
+  const fretboardDiv = document.getElementById("fretboard");
+  fretboardDiv.innerHTML = "";
+  const numFrets = 12;
+  tuning.slice().reverse().forEach((openNote, stringIndex) => {
+    const openIndex = ALL_NOTES.indexOf(openNote);
+    const rowDiv = document.createElement("div");
+    rowDiv.style.display = "flex";
+    rowDiv.style.gap = "6px";
+    for (let fret = 0; fret <= numFrets; fret++) {
+      const note = ALL_NOTES[(openIndex + fret) % 12];
+      const cell = document.createElement("div");
+      cell.textContent = note;
+      cell.style.padding = "8px";
+      cell.style.minWidth = "38px";
+      cell.style.backgroundColor = "var(--surface)";
+      cell.style.border = "1px solid var(--highlight)";
+      cell.style.color = "var(--text)";
+      cell.style.borderRadius = "4px";
+      cell.style.textAlign = "center";
+      rowDiv.appendChild(cell);
+    }
+    fretboardDiv.appendChild(rowDiv);
+  });
+}
+
+function populateTuningDropdowns() {
+  const selects = document.querySelectorAll(".tuning-select");
+  selects.forEach((select, i) => {
+    select.innerHTML = ALL_NOTES.map(note => `<option value="${note}" ${defaultTuning[5 - i] === note ? "selected" : ""}>${note}</option>`).join('');
+    select.addEventListener("change", () => {
+      const newTuning = Array.from(document.querySelectorAll(".tuning-select")).reverse().map(s => s.value);
+      generateFretboard(newTuning);
+    });
+  });
+}
+
+document.addEventListener("DOMContentLoaded", () => {
+  populateTuningDropdowns();
+  generateFretboard(defaultTuning);
 });
 </script>
 </body>
