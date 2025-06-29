@@ -621,10 +621,33 @@ function generateFretboard(tuning = defaultTuning) {
       if (note === openNote) opt.selected = true;
       select.appendChild(opt);
     });
-    select.addEventListener("change", () => {
-      const newTuning = Array.from(document.querySelectorAll(".tuning-select-inline"))
-        .map(s => s.value);
-      generateFretboard(newTuning);
+    select.addEventListener("change", (e) => {
+      const newNote = e.target.value;
+      const stringIndex = parseInt(e.target.dataset.string);
+      const rowStart = (stringIndex + 1) * (numFrets + 1); // skip header + tuning selectors
+
+      for (let fret = 0; fret < numFrets; fret++) {
+        const cellIndex = rowStart + 1 + fret;
+        const note = ALL_NOTES[(ALL_NOTES.indexOf(newNote) + fret + 1) % 12];
+        const cell = fretboardDiv.children[cellIndex];
+        cell.textContent = note;
+
+        // Remove existing dot if any
+        const existingDot = cell.querySelector("div");
+        if (existingDot) cell.removeChild(existingDot);
+
+        // Reapply fret marker if needed
+        const actualFret = fret + 1;
+        if ([3, 5, 7, 9, 12, 15, 17, 19, 22].includes(actualFret)) {
+          const dot = document.createElement("div");
+          dot.textContent = "•";
+          dot.style.position = "absolute";
+          dot.style.bottom = "4px";
+          dot.style.fontSize = "1rem";
+          dot.style.color = "var(--understanding)";
+          cell.appendChild(dot);
+        }
+      }
     });
     fretboardDiv.appendChild(select);
 
