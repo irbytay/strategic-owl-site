@@ -852,23 +852,6 @@ function updateChordInfoDisplay() {
     return flatMode ? denormalizeToFlat(normalized) : normalized;
   });
 
-  const labeledChordTones = chordTones.map(n => {
-    const normalized = normalize(n);
-    return flatMode ? denormalizeToFlat(normalized) : normalized;
-  });
-
-  const displayNotes = labeledNotes.map(note => {
-    const normalized = normalize(note);
-    const toneIndex = labeledChordTones.map(normalize).indexOf(normalized);
-    if (toneIndex !== -1 && toneIndex < roleColors.length) {
-      const role = roleColors[toneIndex];
-      return `<span style="color: ${role.color}; background-color: ${role.bg}; padding: 2px 6px; border-radius: 4px; margin: 0 3px;">${note}</span>`;
-    }
-    return `<span style="margin: 0 3px;">${note}</span>`;
-  });
-
-  document.getElementById("scale-notes").innerHTML = `Notes: ${displayNotes.join('')}`;
-
   // Chord tones: pass flatMode as reverse
   let type = "triad";
   if (notes.length >= 7) {
@@ -891,6 +874,18 @@ function updateChordInfoDisplay() {
     const normalized = normalize(n);
     return flatMode ? denormalizeToFlat(normalized) : normalized;
   });
+
+  const displayNotes = labeledNotes.map(note => {
+    const normalized = normalize(note);
+    const toneIndex = labeledChordTones.map(normalize).indexOf(normalized);
+    if (toneIndex !== -1 && toneIndex < roleColors.length) {
+      const role = roleColors[toneIndex];
+      return `<span style="color: ${role.color}; background-color: ${role.bg}; padding: 2px 6px; border-radius: 4px; margin: 0 3px;">${note}</span>`;
+    }
+    return `<span style="margin: 0 3px;">${note}</span>`;
+  });
+
+  document.getElementById("scale-notes").innerHTML = `Notes: ${displayNotes.join('')}`;
   const coloredTonesHTML = labeledChordTones.map((tone, index) => {
     const role = roleColors[index] || roleColors[0];
     return `<span style="color: ${role.color}; background-color: ${role.bg}; padding: 2px 6px; border-radius: 4px; margin: 0 4px;">${tone}</span>`;
