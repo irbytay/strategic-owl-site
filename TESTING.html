@@ -394,6 +394,7 @@
       <div id="chord-info" style="font-size: 1rem; margin-bottom: 4px;"></div>
       <div id="progression-steps" style="color: var(--text-muted); font-size: 0.95rem; margin-bottom: 4px;"></div>
       <div id="scale-notes" style="font-weight: 600; font-size: 1rem;"></div>
+      <div id="triad-notes" style="color: var(--truth); font-weight: bold; margin-top: 6px;"></div>
     </div>
     <!-- 🎸 Digital Fretboard UI -->
     <div style="margin-top: 40px;">
@@ -495,6 +496,12 @@ function buildScale(rootNote, progressionName) {
   });
 
   return scaleNotes;
+}
+
+// Triad calculation from scale notes
+function getTriadFromScale(scaleNotes, type = "major") {
+  if (scaleNotes.length < 5) return [];
+  return [scaleNotes[0], scaleNotes[2], scaleNotes[4]];
 }
 
 const ALL_NOTES = ['C', 'C#', 'D', 'D#', 'E', 'F', 'F#', 'G', 'G#', 'A', 'A#', 'B'];
@@ -645,6 +652,31 @@ function updateChordInfoDisplay() {
   document.getElementById("chord-info").textContent = `Chord: ${root} | Progression: ${progression}`;
   document.getElementById("progression-steps").textContent = `Steps: ${intervals ? intervals.join(' - ') : 'N/A'}`;
   document.getElementById("scale-notes").textContent = `Notes: ${notes.join('  ')}`;
+
+  // --- Triad calculation and visualization ---
+  const triad = getTriadFromScale(notes, progression.toLowerCase().includes("minor") ? "minor" : "major");
+  document.getElementById("triad-notes").textContent = `Triad: ${triad.join("  ")}`;
+
+  // Highlight triad notes on fretboard
+  const fretboardCells = document.querySelectorAll("#fretboard > div");
+  fretboardCells.forEach(cell => {
+    const note = cell.textContent?.trim();
+    if (!note || !ALL_NOTES.includes(note)) return;
+
+    if (note === triad[0]) {
+      cell.style.backgroundColor = "#28A745"; // Root – Green
+      cell.style.color = "#000";
+    } else if (note === triad[1]) {
+      cell.style.backgroundColor = "#D4AF37"; // Third – Gold
+      cell.style.color = "#000";
+    } else if (note === triad[2]) {
+      cell.style.backgroundColor = "#3B6CED"; // Fifth – Blue
+      cell.style.color = "#fff";
+    } else {
+      cell.style.backgroundColor = "#1A2B4C";
+      cell.style.color = "var(--text)";
+    }
+  });
 }
 
 document.addEventListener("DOMContentLoaded", () => {
