@@ -521,13 +521,14 @@ function buildScale(rootNote, progressionName, reverse = false) {
   let currentIndex = rootIndex;
   scale.push(noteLabels[currentIndex]);
   const intervals = reverse ? [...steps].reverse() : steps;
-  intervals.forEach(step => {
+  for (let i = 0; i < intervals.length; i++) {
+    const step = intervals[i];
     currentIndex = reverse
       ? (currentIndex - step + 12) % 12
       : (currentIndex + step) % 12;
     scale.push(noteLabels[currentIndex]);
-  });
-  return scale;
+  }
+  return reverse ? [...scale].reverse() : scale;
 }
 
 // Helper: Convert sharp notes to flat equivalents for display in flatMode
