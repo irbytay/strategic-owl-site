@@ -503,32 +503,33 @@ const PROGRESSION_LIBRARY = {
   "Double Harmonic":     [1, 3, 1, 2, 1, 3, 1]
 };
 
-
-function buildScale(rootNote, progressionName, reverse = false) {
-  const intervals = PROGRESSION_LIBRARY[progressionName];
-  if (!intervals) return [];
-
-  const startIndex = ALL_NOTES.indexOf(rootNote);
-  if (startIndex === -1) return [];
-
-  const scaleNotes = [];
+// --- Helper: Construct labeled scale with support for sharps/flats and reverse ---
+function constructLabeledScale(root, steps, useFlats = false, reverse = false) {
+  const logicNotes = ALL_NOTES;
+  const labels = useFlats ? FLAT_LABELS : SHARP_LABELS;
+  const startIndex = logicNotes.indexOf(root);
+  const scale = [];
   let currentIndex = startIndex;
 
-  // Updated logic: reverse the interval order if reverse is true
-  const steps = reverse ? [...intervals].reverse() : intervals;
-  // Determine flatMode from the UI, if available
-  const flatMode = document.getElementById("use-flats-toggle")?.checked;
+  const intervalSeq = reverse ? [...steps].reverse() : steps;
 
-  steps.forEach(step => {
+  scale.push(labels[startIndex]);
+
+  intervalSeq.forEach(step => {
     currentIndex = reverse
       ? (currentIndex - step + 12) % 12
       : (currentIndex + step) % 12;
-    scaleNotes.push(flatMode ? FLAT_LABELS[currentIndex] : SHARP_LABELS[currentIndex]);
+    scale.push(labels[currentIndex]);
   });
-  // Add the root note at the beginning, using the correct label
-  scaleNotes.unshift(flatMode ? FLAT_LABELS[startIndex] : SHARP_LABELS[startIndex]);
 
-  return scaleNotes;
+  return scale;
+}
+
+
+function buildScale(rootNote, progressionName, reverse = false) {
+  const steps = PROGRESSION_LIBRARY[progressionName];
+  const useFlats = document.getElementById("use-flats-toggle")?.checked;
+  return constructLabeledScale(rootNote, steps, useFlats, reverse);
 }
 
 // Helper: Convert sharp notes to flat equivalents for display in flatMode
