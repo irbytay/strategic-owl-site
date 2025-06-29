@@ -527,7 +527,10 @@ function buildScale(rootNote, progressionName, reverse = false) {
   const scaleNotes = [rootNote];
   let currentIndex = startIndex;
 
-  intervals.forEach(step => {
+  // Updated logic: reverse the interval order if reverse is true
+  const steps = reverse ? [...intervals].reverse() : intervals;
+
+  steps.forEach(step => {
     currentIndex = reverse
       ? (currentIndex - step + 12) % 12
       : (currentIndex + step) % 12;
