@@ -554,6 +554,30 @@ function generateFretboard(tuning = defaultTuning) {
   fretboardDiv.style.backgroundColor = "var(--surface)";
   fretboardDiv.style.borderRadius = "8px";
   const numFrets = 12;
+
+  // Add fret number labels
+  const fretHeader = document.createElement("div");
+  fretHeader.style.display = "flex";
+  fretHeader.style.gap = "6px";
+  fretHeader.style.marginBottom = "8px";
+  fretHeader.style.marginLeft = "54px"; // aligns with tuning dropdown width
+
+  // First empty cell (to align with tuning dropdowns)
+  const empty = document.createElement("div");
+  empty.style.minWidth = "50px";
+  fretHeader.appendChild(empty);
+
+  for (let i = 0; i <= numFrets; i++) {
+    const fretLabel = document.createElement("div");
+    fretLabel.textContent = i;
+    fretLabel.style.minWidth = "40px";
+    fretLabel.style.color = i === 3 || i === 5 || i === 9 || i === 12 ? "var(--understanding)" : "var(--text-muted)";
+    fretLabel.style.fontWeight = i === 3 || i === 5 || i === 9 || i === 12 ? "600" : "400";
+    fretLabel.style.textAlign = "center";
+    fretHeader.appendChild(fretLabel);
+  }
+  fretboardDiv.appendChild(fretHeader);
+
   tuning.slice().reverse().forEach((openNote, stringIndex) => {
     const openIndex = ALL_NOTES.indexOf(openNote);
     const rowDiv = document.createElement("div");
