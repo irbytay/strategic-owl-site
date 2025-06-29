@@ -834,21 +834,25 @@ function updateChordInfoDisplay() {
   document.getElementById("chord-info").textContent = "";
   document.getElementById("progression-steps").textContent = `Steps: ${intervals ? intervals.join(' - ') : 'N/A'}`;
 
-  // Map notes to sharp or flat labels using normalized values
-  const normalize = (note) => {
-    const enharmonics = {
-      'Db': 'C#', 'Eb': 'D#', 'Gb': 'F#', 'Ab': 'G#', 'Bb': 'A#',
-      'C♯': 'C#', 'D♯': 'D#', 'F♯': 'F#', 'G♯': 'G#', 'A♯': 'A#',
-      'Cb': 'B', 'Fb': 'E', 'E#': 'F', 'B#': 'C'
-    };
-    return enharmonics[note] || note.replace(/♯/g, '#').replace(/♭/g, 'b');
-  };
-  const labeledNotes = notes.map(n => {
-    const normalized = normalize(n);
-    return flatMode ? denormalizeToFlat(normalized) : normalized;
-  });
-  const displayNotes = flatMode ? labeledNotes.reverse() : labeledNotes;
-  document.getElementById("scale-notes").textContent = `Notes: ${displayNotes.join('  ')}`;
+  // --- Scale Notes (Notes:) display logic replaced to use interval steps and flatMode ---
+  {
+    const rootIndex = ALL_NOTES.indexOf(normalize(root));
+    const labels = flatMode ? FLAT_LABELS : SHARP_LABELS;
+    const intervals = PROGRESSION_LIBRARY[progression];
+    let steps = [...intervals];
+    if (flatMode) steps = steps.reverse();
+
+    const displayNotes = [];
+    let current = rootIndex;
+    steps.forEach(step => {
+      current = flatMode
+        ? (current - step + 12) % 12
+        : (current + step) % 12;
+      displayNotes.push(labels[current]);
+    });
+    displayNotes.unshift(labels[rootIndex]);
+    document.getElementById("scale-notes").textContent = `Notes: ${displayNotes.join('  ')}`;
+  }
 
   // --- Chord tones calculation and visualization ---
   let type = "triad";
