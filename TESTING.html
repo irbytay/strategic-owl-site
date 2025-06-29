@@ -477,19 +477,6 @@
 </script>
 <script>
 // 🎸 Digital Fretboard Script
-// 🎶 Chord Library for future scale/chord highlighting
-const CHORD_LIBRARY = {
-  'C_major': ['C', 'D', 'E', 'F', 'G', 'A', 'B'],
-  'A_minor': ['A', 'B', 'C', 'D', 'E', 'F', 'G'],
-  'G_major': ['G', 'A', 'B', 'C', 'D', 'E', 'F#'],
-  'E_minor': ['E', 'F#', 'G', 'A', 'B', 'C', 'D'],
-  'D_major': ['D', 'E', 'F#', 'G', 'A', 'B', 'C#'],
-  'B_minor': ['B', 'C#', 'D', 'E', 'F#', 'G', 'A'],
-  'F_major': ['F', 'G', 'A', 'A#', 'C', 'D', 'E'],
-  'D_minor': ['D', 'E', 'F', 'G', 'A', 'A#', 'C'],
-  'A_major': ['A', 'B', 'C#', 'D', 'E', 'F#', 'G#'],
-  'E_major': ['E', 'F#', 'G#', 'A', 'B', 'C#', 'D#']
-};
 
 // 🎼 Musical Progression Library (interval sequences in semitones)
 const PROGRESSION_LIBRARY = {
@@ -843,9 +830,17 @@ function updateChordInfoDisplay() {
   document.getElementById("chord-info").textContent = "";
   document.getElementById("progression-steps").textContent = `Steps: ${intervals ? intervals.join(' - ') : 'N/A'}`;
 
-  // Map notes to sharp or flat labels
+  // Map notes to sharp or flat labels using normalized values
+  const normalize = (note) => {
+    const enharmonics = {
+      'Db': 'C#', 'Eb': 'D#', 'Gb': 'F#', 'Ab': 'G#', 'Bb': 'A#',
+      'C♯': 'C#', 'D♯': 'D#', 'F♯': 'F#', 'G♯': 'G#', 'A♯': 'A#',
+      'Cb': 'B', 'Fb': 'E', 'E#': 'F', 'B#': 'C'
+    };
+    return enharmonics[note] || note.replace(/♯/g, '#').replace(/♭/g, 'b');
+  };
   const labeledNotes = notes.map(n => {
-    const idx = ALL_NOTES.indexOf(n);
+    const idx = ALL_NOTES.indexOf(normalize(n));
     return flatMode ? FLAT_LABELS[idx] : SHARP_LABELS[idx];
   });
   const displayNotes = flatMode ? labeledNotes.reverse() : labeledNotes;
@@ -870,7 +865,7 @@ function updateChordInfoDisplay() {
   ];
   // Map chordTones for display (labels only, do not reverse order)
   const labeledChordTones = chordTones.map(n => {
-    const idx = ALL_NOTES.indexOf(n);
+    const idx = ALL_NOTES.indexOf(normalize(n));
     return flatMode ? FLAT_LABELS[idx] : SHARP_LABELS[idx];
   });
   const coloredTonesHTML = labeledChordTones.map((tone, index) => {
@@ -885,14 +880,6 @@ function updateChordInfoDisplay() {
 
   // Highlight chord tones on fretboard (with enharmonic matching)
   const fretboardCells = document.querySelectorAll("#fretboard > div");
-  const normalize = (note) => {
-    const enharmonics = {
-      'Db': 'C#', 'Eb': 'D#', 'Gb': 'F#', 'Ab': 'G#', 'Bb': 'A#',
-      'C♯': 'C#', 'D♯': 'D#', 'F♯': 'F#', 'G♯': 'G#', 'A♯': 'A#',
-      'Cb': 'B', 'Fb': 'E', 'E#': 'F', 'B#': 'C'
-    };
-    return enharmonics[note] || note.replace(/♯/g, '#').replace(/♭/g, 'b');
-  };
   const normalizedChordTones = chordTones.map(normalize);
 
   fretboardCells.forEach(cell => {
