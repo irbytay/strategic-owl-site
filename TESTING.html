@@ -366,13 +366,6 @@
 
     <div id="chord-output" style="margin-top: 20px; text-align: center;"></div>
 
-    <!-- 📝 User Instructions for Chord/Progression Selector -->
-    <h3 style="color: var(--heading); text-align: center; margin-top: 40px;">
-      Select a Chord and Progression to See Matching Notes
-    </h3>
-    <p style="text-align: center; color: var(--text-muted); max-width: 640px; margin: 0 auto 20px;">
-      Use the dropdowns below to choose a chord (like A minor or C major) and a scale or progression mode (like Natural Minor). The corresponding notes will be highlighted across the fretboard.
-    </p>
     <!-- 🎸 Chord Grid/Progression UI -->
     <div style="display: flex; justify-content: center; flex-wrap: wrap; gap: 1rem; margin-top: 24px;">
       <label style="font-size: 1rem;">Select Chord:
@@ -402,15 +395,6 @@
         <div style="display: flex; justify-content: center; width: auto;">
           <div id="fretboard"></div>
         </div>
-      </div>
-      <!-- 🎸 Chord Highlight Selector for Fretboard -->
-      <div style="display: flex; justify-content: center; gap: 1rem; margin-top: 24px;">
-        <label style="font-size: 1rem;">Chord:
-          <select id="highlight-chord">
-            <option value="A_minor">A Minor</option>
-            <option value="C_major">C Major</option>
-          </select>
-        </label>
       </div>
     </div>
   </section>
@@ -568,19 +552,6 @@ document.addEventListener("DOMContentLoaded", () => {
 const ALL_NOTES = ['C', 'C#', 'D', 'D#', 'E', 'F', 'F#', 'G', 'G#', 'A', 'A#', 'B'];
 const defaultTuning = ['E', 'B', 'G', 'D', 'A', 'E']; // strings 1 to 6
 
-// 1. Global constant for chord library with note data for highlighting
-const CHORD_LIBRARY = {
-  'A_minor': {
-    progression: 'Natural Minor',
-    notes: ['A', 'B', 'C', 'D', 'E', 'F', 'G']
-  },
-  'C_major': {
-    progression: 'Major',
-    notes: ['C', 'D', 'E', 'F', 'G', 'A', 'B']
-  }
-  // Add more chords as needed
-};
-
 function generateFretboard(tuning = defaultTuning) {
   const fretboardDiv = document.getElementById("fretboard");
   fretboardDiv.innerHTML = "";
@@ -676,11 +647,6 @@ function generateFretboard(tuning = defaultTuning) {
           cell.appendChild(dot);
         }
       }
-      // After changing tuning, re-highlight chord if selected
-      const highlightChordSelect = document.getElementById("highlight-chord");
-      if (highlightChordSelect) {
-        highlightChordOnFretboard(highlightChordSelect.value);
-      }
     });
     fretboardDiv.appendChild(select);
 
@@ -719,44 +685,11 @@ function generateFretboard(tuning = defaultTuning) {
       fretboardDiv.appendChild(cell);
     }
   }
-  // 5. After generating the fretboard, highlight the selected chord if present
-  const highlightChordSelect = document.getElementById("highlight-chord");
-  if (highlightChordSelect) {
-    highlightChordOnFretboard(highlightChordSelect.value);
-  }
-}
-
-// 3. Highlight chord notes on the fretboard
-function highlightChordOnFretboard(chordKey) {
-  const chordData = CHORD_LIBRARY[chordKey];
-  if (!chordData) return;
-
-  const activeNotes = chordData.notes;
-  const fretboardCells = document.querySelectorAll("#fretboard div");
-
-  fretboardCells.forEach(cell => {
-    if (cell.textContent && activeNotes.includes(cell.textContent)) {
-      cell.style.backgroundColor = "#28A745";
-      cell.style.color = "#000";
-      cell.style.fontWeight = "bold";
-    } else if (cell.textContent) {
-      cell.style.backgroundColor = "#1A2B4C";
-      cell.style.color = "var(--text)";
-      cell.style.fontWeight = "normal";
-    }
-  });
 }
 
 // No longer need to populateTuningDropdowns or use .tuning-select, as dropdowns are inline
 document.addEventListener("DOMContentLoaded", () => {
   generateFretboard(defaultTuning);
-  // 4. Attach event listener for chord highlighting dropdown
-  const highlightChordSelect = document.getElementById("highlight-chord");
-  if (highlightChordSelect) {
-    highlightChordSelect.addEventListener("change", (e) => {
-      highlightChordOnFretboard(e.target.value);
-    });
-  }
 });
 </script>
 </body>
