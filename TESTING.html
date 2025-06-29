@@ -425,7 +425,7 @@
     <!-- Flats/Sharps Toggle Checkbox UI (moved below dropdowns) -->
     <div style="text-align: center; margin-top: 16px;">
       <label style="font-size: 1rem; color: var(--text-muted);">
-        <input type="checkbox" id="use-flats-toggle" onchange="updateChordInfoDisplay()" />
+        <input type="checkbox" id="use-flats-toggle" onchange="updateChordInfoDisplay(); generateFretboard(defaultTuning);" />
         Flip Direction / Use Flats
       </label>
     </div>
