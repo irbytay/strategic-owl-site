@@ -330,6 +330,7 @@
         max-width: 100vw;
         -webkit-overflow-scrolling: touch;
         scroll-behavior: smooth;
+        padding-bottom: 8px;
       }
 
       #fretboard {
@@ -889,11 +890,6 @@ document.addEventListener("DOMContentLoaded", () => {
     displayArea.appendChild(diagramDiv);
   }
   generateFretboard(defaultTuning);
-  // Scroll fretboard-wrapper to start on mobile
-  const fretWrapper = document.getElementById("fretboard-wrapper");
-  if (fretWrapper && window.innerWidth <= 768) {
-    fretWrapper.scrollLeft = 0;
-  }
   document.getElementById("custom-chord-select").addEventListener("change", updateChordInfoDisplay);
   document.getElementById("custom-progression-select").addEventListener("change", updateChordInfoDisplay);
   updateChordInfoDisplay();
