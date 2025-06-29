@@ -392,7 +392,9 @@
         Select tuning for each string below (left dropdowns).
       </div>
       <div style="display: flex; justify-content: center; width: 100%;">
-        <div id="fretboard" style="margin: 0 auto;"></div>
+        <div style="display: flex; justify-content: center; width: auto;">
+          <div id="fretboard"></div>
+        </div>
       </div>
     </div>
   </section>
@@ -556,12 +558,11 @@ function generateFretboard(tuning = defaultTuning) {
   // Apply visually styled grid layout to the fretboard
   fretboardDiv.style.display = "grid";
   fretboardDiv.style.placeSelf = "center";
-  fretboardDiv.style.gridTemplateColumns = "68px repeat(25, 40px)";
-  fretboardDiv.style.width = "100%";
-  fretboardDiv.style.maxWidth = "1128px"; // 68 + 25*40
-  fretboardDiv.style.margin = "0 auto";
   fretboardDiv.style.justifySelf = "center";
-  fretboardDiv.style.alignSelf = "center";
+  fretboardDiv.style.marginLeft = "auto";
+  fretboardDiv.style.marginRight = "auto";
+  fretboardDiv.style.maxWidth = "unset";
+  fretboardDiv.style.gridTemplateColumns = "68px repeat(25, 40px)";
   fretboardDiv.style.rowGap = "6px";
   fretboardDiv.style.background = "linear-gradient(to right, #3B2F2F, #1E1A18)";
   fretboardDiv.style.borderRadius = "8px";
