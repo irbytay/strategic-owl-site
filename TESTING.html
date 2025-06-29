@@ -517,7 +517,7 @@ const PROGRESSION_LIBRARY = {
 };
 
 
-function buildScale(rootNote, progressionName) {
+function buildScale(rootNote, progressionName, reverse = false) {
   const intervals = PROGRESSION_LIBRARY[progressionName];
   if (!intervals) return [];
 
@@ -528,7 +528,9 @@ function buildScale(rootNote, progressionName) {
   let currentIndex = startIndex;
 
   intervals.forEach(step => {
-    currentIndex = (currentIndex + step) % 12;
+    currentIndex = reverse
+      ? (currentIndex - step + 12) % 12
+      : (currentIndex + step) % 12;
     scaleNotes.push(ALL_NOTES[currentIndex]);
   });
 
@@ -833,7 +835,7 @@ function updateChordInfoDisplay() {
   // Update the heading dynamically
   document.getElementById("chord-heading").textContent = `🎼 ${root} ${progression}`;
   const intervals = PROGRESSION_LIBRARY[progression];
-  const notes = buildScale(root, progression);
+  const notes = buildScale(root, progression, flatMode);
 
   document.getElementById("chord-info").textContent = "";
   document.getElementById("progression-steps").textContent = `Steps: ${intervals ? intervals.join(' - ') : 'N/A'}`;
