@@ -828,7 +828,9 @@ function updateChordInfoDisplay() {
   // document.getElementById("chord-info").textContent = `Chord: ${root} | Progression: ${progression}`;
   document.getElementById("chord-info").textContent = "";
   document.getElementById("progression-steps").textContent = `Steps: ${intervals ? intervals.join(' - ') : 'N/A'}`;
-  document.getElementById("scale-notes").textContent = `Notes: ${notes.join('  ')}`;
+  // Flip notes and apply flats if descending; else apply sharps
+  const flippedNotes = isDescending ? [...notes].reverse().map(applyFlatKey) : notes.map(applySharpKey);
+  document.getElementById("scale-notes").textContent = `Notes: ${flippedNotes.join('  ')}`;
 
   // --- Chord tones calculation and visualization ---
   let type = "triad";
