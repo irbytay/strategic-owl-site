@@ -506,8 +506,8 @@ const PROGRESSION_LIBRARY = {
 function buildScale(rootNote, progressionName, reverse = false) {
   const steps = PROGRESSION_LIBRARY[progressionName];
   const useFlats = document.getElementById("use-flats-toggle")?.checked;
-  const noteLabels = useFlats ? FLAT_LABELS : SHARP_LABELS;
-  // Normalize root note for lookup
+  const direction = reverse ? -1 : 1;
+
   const normalize = (note) => {
     const enharmonics = {
       'Db': 'C#', 'Eb': 'D#', 'Gb': 'F#', 'Ab': 'G#', 'Bb': 'A#',
@@ -516,19 +516,22 @@ function buildScale(rootNote, progressionName, reverse = false) {
     };
     return enharmonics[note] || note.replace(/♯/g, '#').replace(/♭/g, 'b');
   };
-  const rootIndex = ALL_NOTES.indexOf(normalize(rootNote));
-  const scale = [];
-  let currentIndex = rootIndex;
-  scale.push(noteLabels[currentIndex]);
-  const intervals = reverse ? [...steps].reverse() : steps;
-  for (let i = 0; i < intervals.length; i++) {
-    const step = intervals[i];
-    currentIndex = reverse
-      ? (currentIndex - step + 12) % 12
-      : (currentIndex + step) % 12;
-    scale.push(noteLabels[currentIndex]);
+
+  const chromatic = ['C', 'C#', 'D', 'D#', 'E', 'F', 'F#', 'G', 'G#', 'A', 'A#', 'B'];
+  const flatMap = { 'C#': 'Db', 'D#': 'Eb', 'F#': 'Gb', 'G#': 'Ab', 'A#': 'Bb' };
+  const noteLabels = useFlats ? chromatic.map(n => flatMap[n] || n) : chromatic;
+
+  const rootIndex = chromatic.indexOf(normalize(rootNote));
+  const output = [noteLabels[rootIndex]];
+  let idx = rootIndex;
+  const intervalSeq = reverse ? [...steps].reverse() : steps;
+
+  for (let step of intervalSeq) {
+    idx = (idx + direction * step + 12) % 12;
+    output.push(noteLabels[idx]);
   }
-  return scale;
+
+  return output;
 }
 
 // Helper: Convert sharp notes to flat equivalents for display in flatMode
