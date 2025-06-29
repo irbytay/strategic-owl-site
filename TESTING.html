@@ -627,9 +627,14 @@ const CHORD_SHAPES = {
   ]
 };
 
+let lastKnownChordDiagram = "";
 function generateChordDiagram(chordTones, root, progression) {
   const key = `${root}_${progression}`;
-  return CHORD_SHAPES[key] ? CHORD_SHAPES[key].join("\n") : "Shape not yet defined for this chord.";
+  if (CHORD_SHAPES[key]) {
+    lastKnownChordDiagram = CHORD_SHAPES[key].join("\n");
+    return lastKnownChordDiagram;
+  }
+  return lastKnownChordDiagram || "No shape available yet.";
 }
 
 const ALL_NOTES = ['C', 'C#', 'D', 'D#', 'E', 'F', 'F#', 'G', 'G#', 'A', 'A#', 'B'];
