@@ -540,9 +540,7 @@ function denormalizeToFlat(note) {
 }
 
 function getChordTones(scaleNotes, type = "triad", reverse = false) {
-  const indexes = reverse
-    ? [0, 6, 4, 2]
-    : [0, 2, 4, 6];
+  const indexes = [0, 2, 4, 6]; // Always use standard chord intervals
   return indexes
     .filter(i => i < scaleNotes.length)
     .map(i => scaleNotes[i]);
