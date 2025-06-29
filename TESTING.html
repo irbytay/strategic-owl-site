@@ -842,7 +842,10 @@ document.addEventListener("DOMContentLoaded", () => {
     diagramDiv.style.borderRadius = "6px";
     diagramDiv.style.fontFamily = "monospace";
     diagramDiv.style.fontSize = "1.05rem";
-    diagramDiv.style.textAlign = "center";
+    diagramDiv.style.width = "max-content";
+    diagramDiv.style.marginLeft = "auto";
+    diagramDiv.style.marginRight = "auto";
+    diagramDiv.style.textAlign = "left";
     displayArea.appendChild(diagramDiv);
   }
   generateFretboard(defaultTuning);
