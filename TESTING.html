@@ -347,7 +347,35 @@
     <h2>🎸 Guitar Chord & Fretboard Visualizer</h2>
     <p>Select a root and chord type to view its triad and matching notes. Future updates will add tuning and fretboard visualization.</p>
 
+    <div style="display: flex; justify-content: center; flex-wrap: wrap; gap: 1rem; margin-top: 16px;">
+      <label style="font-size: 1rem;">Root:
+        <select id="chord-root" style="margin-left: 8px;">
+          <option>A</option><option>A#</option><option>B</option><option>C</option>
+          <option>C#</option><option>D</option><option>D#</option><option>E</option>
+          <option>F</option><option>F#</option><option>G</option><option>G#</option>
+        </select>
+      </label>
 
+      <label style="font-size: 1rem;">Type:
+        <select id="chord-type" style="margin-left: 8px;">
+          <option value="major">Major</option>
+          <option value="minor">Minor</option>
+        </select>
+      </label>
+    </div>
+
+    <div id="chord-output" style="margin-top: 20px; text-align: center;"></div>
+
+    <!-- 🎸 Chord Grid/Progression UI -->
+    <div style="display: flex; justify-content: center; flex-wrap: wrap; gap: 1rem; margin-top: 24px;">
+      <label style="font-size: 1rem;">Select Chord:
+        <select id="fret-chord-root" style="margin-left: 8px;"></select>
+      </label>
+      <label style="font-size: 1rem;">Select Progression:
+        <select id="fret-chord-mode" style="margin-left: 8px;"></select>
+      </label>
+    </div>
+    <div id="fret-chord-output" style="margin-top: 20px; text-align: center;"></div>
     <!-- 🎸 Digital Fretboard UI -->
     <div style="margin-top: 40px;">
       <h2 style="text-align: center;">🎸 Digital Fretboard</h2>
@@ -363,14 +391,6 @@
       <div style="text-align: center; margin-top: 16px; margin-bottom: 8px; color: var(--text-muted); font-size: 0.95rem;">
         Select tuning for each string below (left dropdowns).
       </div>
-      <div style="display: flex; justify-content: center; gap: 1rem; margin-top: 24px;">
-        <label style="font-size: 1rem;">Chord:
-          <select id="highlight-chord">
-            <option value="A_minor">A Minor</option>
-            <option value="C_major">C Major</option>
-          </select>
-        </label>
-      </div>
       <div style="display: flex; justify-content: center; width: 100%;">
         <div style="display: flex; justify-content: center; width: auto;">
           <div id="fretboard"></div>
@@ -379,25 +399,158 @@
     </div>
   </section>
 
+<script>
+  const SHEET_ID = "1GVVAcfDBLlKY9i4AYxW8xvjIgwDrvy8s5yKAlDMtBUc";
+  const API_KEY = "AIzaSyAgZR3h4LH_BifnE2QYR1rqbKZD9ar2TWQ";
+  const RANGE = "'Majors & Minors'!B2:W310";
+
+  const colors = {
+    gold: "#D4AF37",
+    text: "#FFFFFF",
+    bullet: "#7C8A9B",
+    heading: "#FFFFF0"
+  };
+
+
+  function toggleMenu() {
+    document.getElementById("navMenu").classList.toggle("show");
+  }
+  
+</script>
+<script>
+// Chord Grid/Progression Tool JS
+const GRID_RANGE = "'Majors & Minors'!B2:W310";
+let CHORD_GRID_DATA = [];
+
+async function fetchChordGrid() {
+  const url = `https://sheets.googleapis.com/v4/spreadsheets/${CHORD_SHEET_ID}/values/${GRID_RANGE}?key=${API_KEY}`;
+  const res = await fetch(url);
+  const json = await res.json();
+  CHORD_GRID_DATA = json.values || [];
+  populateGridDropdowns();
+  updateFretChordDisplay();
+}
+
+function populateGridDropdowns() {
+  const rootDropdown = document.getElementById("fret-chord-root");
+  const modeDropdown = document.getElementById("fret-chord-mode");
+  if (!CHORD_GRID_DATA.length) return;
+  // Get unique chord names from column B (first column of each row after header)
+  const columnHeaders = CHORD_GRID_DATA.map(row => row[0]).filter((v, i, a) => v && i > 0 && a.indexOf(v) === i);
+  // Get unique row labels (column B, all rows) -- this may need adjustment if you want a separate set
+  const rowLabels = CHORD_GRID_DATA[0].slice(1, 11).filter((v, i, a) => v && a.indexOf(v) === i);
+  rootDropdown.innerHTML = columnHeaders.map(h => `<option value="${h}">${h}</option>`).join('');
+  modeDropdown.innerHTML = rowLabels.map(l => `<option value="${l}">${l}</option>`).join('');
+}
+
+function updateFretChordDisplay() {
+  if (!CHORD_GRID_DATA.length) return;
+  const chord = document.getElementById("fret-chord-root").value;
+  const mode = document.getElementById("fret-chord-mode").value;
+  const output = document.getElementById("fret-chord-output");
+  const headerRow = CHORD_GRID_DATA[0];
+  const colIndex = headerRow.indexOf(chord);
+  const filteredRows = CHORD_GRID_DATA.filter(r => r[0] === mode);
+  if (!filteredRows.length || colIndex === -1) {
+    output.innerHTML = "<p style='color: var(--text-muted)'>No data found.</p>";
+    return;
+  }
+  const displayHTML = filteredRows.map(row => {
+    return `<div style="display:flex; justify-content:center; gap:6px; margin-bottom:6px;">
+      ${row.slice(1, 12).map(note => `
+        <div style="min-width: 50px; padding: 8px; background: var(--surface); color: var(--text); border: 1px solid var(--highlight); border-radius: 4px;">
+          ${note || "-"}
+        </div>`).join('')}
+    </div>`;
+  }).join('');
+  output.innerHTML = `<h3 style="color: var(--understanding); margin-bottom: 12px;">${chord} - ${mode}</h3>${displayHTML}`;
+}
+</script>
+<script>
+// Guitar tool JS
+const CHORD_SHEET_ID = "1GVVAcfDBLlKY9i4AYxW8xvjIgwDrvy8s5yKAlDMtBUc";
+const CHORD_RANGE = "'Majors & Minors'!A1:C13";
+let CHORDS_FROM_SHEET = [];
+
+async function fetchChordData() {
+  const url = `https://sheets.googleapis.com/v4/spreadsheets/${CHORD_SHEET_ID}/values/${CHORD_RANGE}?key=${API_KEY}`;
+  const res = await fetch(url);
+  const json = await res.json();
+  CHORDS_FROM_SHEET = json.values || [];
+
+  populateChordDropdowns(CHORDS_FROM_SHEET);
+  updateChordDisplay();
+}
+
+function populateChordDropdowns(data) {
+  const rootSelect = document.getElementById("chord-root");
+  const typeSelect = document.getElementById("chord-type");
+
+  const headers = data[0].slice(1); // ["Major Chord", "Minor Chord"]
+  const roots = data.slice(1).map(r => r[0]);
+
+  rootSelect.innerHTML = "";
+  roots.forEach(r => {
+    rootSelect.add(new Option(r, r));
+  });
+
+  typeSelect.innerHTML = "";
+  headers.forEach(h => {
+    const type = h.toLowerCase().includes("minor") ? "minor" : "major";
+    typeSelect.add(new Option(h, type));
+  });
+}
+
+function updateChordDisplay() {
+  const root = document.getElementById("chord-root").value;
+  const type = document.getElementById("chord-type").value;
+  const chordOutput = document.getElementById("chord-output");
+
+  const colIndex = CHORDS_FROM_SHEET[0] ? CHORDS_FROM_SHEET[0].findIndex(h =>
+    h.toLowerCase().includes(type)
+  ) : -1;
+  const row = CHORDS_FROM_SHEET.find(r => r[0] === root);
+  const chordNotes = row && row[colIndex] ? row[colIndex].split(" ") : [];
+
+  chordOutput.innerHTML = `
+    <h3 style="color: var(--understanding); margin-bottom: 12px;">${root} ${type.charAt(0).toUpperCase() + type.slice(1)} Chord</h3>
+    <div style="display: flex; justify-content: center; flex-wrap: wrap; gap: 8px; margin-top: 10px;">
+      ${chordNotes.map(note => `
+        <div style="
+          min-width: 64px;
+          padding: 10px;
+          background-color: var(--surface);
+          border: 1px solid var(--highlight);
+          color: var(--truth);
+          font-weight: 600;
+          font-size: 1.05rem;
+          text-align: center;
+          border-radius: 6px;
+          box-shadow: 0 2px 4px var(--shadow);
+        ">
+          ${note}
+        </div>
+      `).join("")}
+    </div>
+  `;
+}
+
+// DOMContentLoaded wrapper for all event listeners and data fetches
+document.addEventListener("DOMContentLoaded", () => {
+  fetchChordData();
+  fetchChordGrid();
+
+  document.getElementById("chord-root").addEventListener("change", updateChordDisplay);
+  document.getElementById("chord-type").addEventListener("change", updateChordDisplay);
+  document.getElementById("fret-chord-root").addEventListener("change", updateFretChordDisplay);
+  document.getElementById("fret-chord-mode").addEventListener("change", updateFretChordDisplay);
+});
 </script>
 </script>
 <script>
 // 🎸 Digital Fretboard Script
 const ALL_NOTES = ['C', 'C#', 'D', 'D#', 'E', 'F', 'F#', 'G', 'G#', 'A', 'A#', 'B'];
 const defaultTuning = ['E', 'B', 'G', 'D', 'A', 'E']; // strings 1 to 6
-
-// 1. Global constant for chord library with note data for highlighting
-const CHORD_LIBRARY = {
-  'A_minor': {
-    progression: 'Natural Minor',
-    notes: ['A', 'B', 'C', 'D', 'E', 'F', 'G']
-  },
-  'C_major': {
-    progression: 'Major',
-    notes: ['C', 'D', 'E', 'F', 'G', 'A', 'B']
-  }
-  // Add more chords as needed
-};
 
 function generateFretboard(tuning = defaultTuning) {
   const fretboardDiv = document.getElementById("fretboard");
@@ -494,11 +647,6 @@ function generateFretboard(tuning = defaultTuning) {
           cell.appendChild(dot);
         }
       }
-      // After changing tuning, re-highlight chord if selected
-      const highlightChordSelect = document.getElementById("highlight-chord");
-      if (highlightChordSelect) {
-        highlightChordOnFretboard(highlightChordSelect.value);
-      }
     });
     fretboardDiv.appendChild(select);
 
@@ -537,10 +685,12 @@ function generateFretboard(tuning = defaultTuning) {
       fretboardDiv.appendChild(cell);
     }
   }
-  // 5. After generating the fretboard, highlight the selected chord if present
-  // (removed highlightChordOnFretboard call here)
 }
-</script>
+
+// No longer need to populateTuningDropdowns or use .tuning-select, as dropdowns are inline
+document.addEventListener("DOMContentLoaded", () => {
+  generateFretboard(defaultTuning);
+});
 </script>
 </body>
 </html>
