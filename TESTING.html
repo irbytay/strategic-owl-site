@@ -501,18 +501,14 @@ function buildScale(rootNote, progressionName) {
 }
 
 // Chord tones calculation (triad or 7th)
-function getChordTones(scaleNotes, type = "major") {
-  if (scaleNotes.length < 7) return [];
-
-  if (type === "major7") {
-    return [scaleNotes[0], scaleNotes[2], scaleNotes[4], scaleNotes[6]]; // 1 3 5 7
+function getChordTones(scaleNotes, type = "triad") {
+  if (type === "major7" || type === "minor7") {
+    if (scaleNotes.length >= 7) {
+      return [scaleNotes[0], scaleNotes[2], scaleNotes[4], scaleNotes[6]];
+    }
   }
 
-  if (type === "minor7") {
-    return [scaleNotes[0], scaleNotes[2], scaleNotes[4], scaleNotes[6]]; // 1 b3 5 b7
-  }
-
-  return [scaleNotes[0], scaleNotes[2], scaleNotes[4]]; // triad fallback
+  return [scaleNotes[0], scaleNotes[2], scaleNotes[4]]; // fallback triad
 }
 
 // 🎸 Hardcoded chord diagram lookup
@@ -788,9 +784,13 @@ function updateChordInfoDisplay() {
   document.getElementById("scale-notes").textContent = `Notes: ${notes.join('  ')}`;
 
   // --- Chord tones calculation and visualization ---
-  let type = "major7";
-  if (progression.toLowerCase().includes("minor")) {
-    type = "minor7";
+  let type = "triad";
+  if (notes.length >= 7) {
+    if (progression.toLowerCase().includes("minor")) {
+      type = "minor7";
+    } else {
+      type = "major7";
+    }
   }
   const chordTones = getChordTones(notes, type);
   document.getElementById("triad-notes").textContent = `Chord Tones: ${chordTones.join("  ")}`;
