@@ -893,9 +893,9 @@ function updateChordInfoDisplay() {
     };
     return enharmonics[note] || note;
   }
-  // Prepare normalized chord tones for highlighting
-  const normalizedChordTones = chordTones.map(normalizeNote);
-  // Highlight chord tones on fretboard using directional display and normalization
+  // Prepare normalized visible notes for highlighting
+  const visibleNotes = flippedNotes.map(normalizeNote);
+  // Highlight visible notes on fretboard using normalization
   const fretboardCells = document.querySelectorAll("#fretboard > div");
   fretboardCells.forEach(cell => {
     const note = cell.childNodes[0]?.nodeValue?.trim();
@@ -905,7 +905,7 @@ function updateChordInfoDisplay() {
     cell.childNodes[0].nodeValue = displayNote;
     // Normalize for matching
     const normalizedNote = normalizeNote(note);
-    const idx = normalizedChordTones.indexOf(normalizedNote);
+    const idx = visibleNotes.indexOf(normalizedNote);
     if (idx !== -1) {
       const role = roleColors[idx] || roleColors[0];
       cell.style.backgroundColor = role.bg;
