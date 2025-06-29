@@ -678,7 +678,7 @@ function generateChordDiagram(chordTones, root, progression) {
 
 const ALL_NOTES = ['C', 'C#', 'D', 'D#', 'E', 'F', 'F#', 'G', 'G#', 'A', 'A#', 'B'];
 const SHARP_LABELS = ['C', 'C#', 'D', 'D#', 'E', 'F', 'F#', 'G', 'G#', 'A', 'A#', 'B'];
-const FLAT_LABELS  = ['C', 'B', 'Bb', 'A', 'Ab', 'G', 'Gb', 'F', 'E', 'Eb', 'D', 'Db'];
+const FLAT_LABELS  = ['C', 'Db', 'D', 'Eb', 'E', 'F', 'Gb', 'G', 'Ab', 'A', 'Bb', 'B'];
 const defaultTuning = ['E', 'B', 'G', 'D', 'A', 'E']; // strings 1 to 6
 
 function generateFretboard(tuning = defaultTuning) {
@@ -847,7 +847,7 @@ function updateChordInfoDisplay() {
     const normalized = normalize(n);
     return flatMode ? denormalizeToFlat(normalized) : normalized;
   });
-  const displayNotes = labeledNotes.map((n, i) => i === 0 ? `[${n}]` : n);
+  const displayNotes = flatMode ? labeledNotes.reverse() : labeledNotes;
   document.getElementById("scale-notes").textContent = `Notes: ${displayNotes.join('  ')}`;
 
   // --- Chord tones calculation and visualization ---
