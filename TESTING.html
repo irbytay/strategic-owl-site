@@ -595,15 +595,15 @@ function generateFretboard(tuning = defaultTuning) {
     fretboardDiv.appendChild(fretLabel);
   }
 
-  // For each string, add a row to the grid (highest string at top, lowest at bottom)
+  // For each string, add a row to the grid (high E/top row first, low E/bottom row last)
   for (let string = 0; string < tuning.length; string++) {
-    const openNote = tuning[tuning.length - 1 - string];
+    const openNote = tuning[string];
     const openIndex = ALL_NOTES.indexOf(openNote);
 
     // Create dropdown as first column
     const select = document.createElement("select");
     select.classList.add("tuning-select-inline");
-    select.dataset.string = tuning.length - 1 - string;
+    select.dataset.string = string;
     select.style.width = "68px";
     select.style.height = "40px";
     select.style.background = "#333";
@@ -677,6 +677,7 @@ function generateFretboard(tuning = defaultTuning) {
         cell.appendChild(dot);
       }
 
+      cell.style.borderBottom = `${tuning.length - string}px solid #aaa`;
       fretboardDiv.appendChild(cell);
     }
   }
