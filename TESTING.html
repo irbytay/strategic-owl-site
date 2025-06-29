@@ -822,12 +822,17 @@ function updateChordInfoDisplay() {
   // Update the heading dynamically
   document.getElementById("chord-heading").textContent = `🎼 ${root} ${progression}`;
   const intervals = PROGRESSION_LIBRARY[progression];
+  // Directional mode: true=descending (use flats), false=ascending (use sharps)
+  // Controlled by the "Use Flats" toggle
+  const isDescending = document.getElementById("flat-toggle")?.checked;
+  // Reverse intervals if descending for display
+  const displayedIntervals = isDescending && intervals ? [...intervals].reverse() : intervals;
   const notes = buildScale(root, progression);
 
   // Removed redundant line:
   // document.getElementById("chord-info").textContent = `Chord: ${root} | Progression: ${progression}`;
   document.getElementById("chord-info").textContent = "";
-  document.getElementById("progression-steps").textContent = `Steps: ${intervals ? intervals.join(' - ') : 'N/A'}`;
+  document.getElementById("progression-steps").textContent = `Steps: ${displayedIntervals ? displayedIntervals.join(' - ') : 'N/A'}`;
   // Flip notes and apply flats if descending; else apply sharps
   const flippedNotes = isDescending ? [...notes].reverse().map(applyFlatKey) : notes.map(applySharpKey);
   document.getElementById("scale-notes").textContent = `Notes: ${flippedNotes.join('  ')}`;
@@ -868,9 +873,6 @@ function updateChordInfoDisplay() {
     "Db": "C#", "Eb": "D#", "Gb": "F#",
     "Ab": "G#", "Bb": "A#"
   };
-  // Directional mode: true=descending (use flats), false=ascending (use sharps)
-  // Controlled by the "Use Flats" toggle
-  const isDescending = document.getElementById("flat-toggle")?.checked;
   function applyFlatKey(note) {
     return flatKeyMap[note] || note;
   }
