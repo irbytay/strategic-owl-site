@@ -392,6 +392,64 @@
 </script>
 <script>
 // 🎸 Digital Fretboard Script
+// 🎶 Chord Library for future scale/chord highlighting
+const CHORD_LIBRARY = {
+  'C_major': ['C', 'D', 'E', 'F', 'G', 'A', 'B'],
+  'A_minor': ['A', 'B', 'C', 'D', 'E', 'F', 'G'],
+  'G_major': ['G', 'A', 'B', 'C', 'D', 'E', 'F#'],
+  'E_minor': ['E', 'F#', 'G', 'A', 'B', 'C', 'D'],
+  'D_major': ['D', 'E', 'F#', 'G', 'A', 'B', 'C#'],
+  'B_minor': ['B', 'C#', 'D', 'E', 'F#', 'G', 'A'],
+  'F_major': ['F', 'G', 'A', 'A#', 'C', 'D', 'E'],
+  'D_minor': ['D', 'E', 'F', 'G', 'A', 'A#', 'C'],
+  'A_major': ['A', 'B', 'C#', 'D', 'E', 'F#', 'G#'],
+  'E_major': ['E', 'F#', 'G#', 'A', 'B', 'C#', 'D#']
+};
+
+// 🎼 Musical Progression Library (interval sequences in semitones)
+const PROGRESSION_LIBRARY = {
+  "Natural Major":       [2, 2, 1, 2, 2, 2, 1],
+  "Natural Minor":       [2, 1, 2, 2, 1, 2, 2],
+  "Harmonic Minor":      [2, 1, 2, 2, 1, 3, 1],
+  "Melodic Minor (Asc)": [2, 1, 2, 2, 2, 2, 1],
+  "Melodic Minor (Des)": [2, 2, 1, 2, 2, 1, 2],
+  "Major Pentatonic":    [2, 2, 3, 2, 3],
+  "Minor Pentatonic":    [3, 2, 2, 3, 2],
+  "Blues Scale":         [3, 2, 1, 1, 3, 2],
+  "Dorian Mode":         [2, 1, 2, 2, 2, 1, 2],
+  "Phrygian Mode":       [1, 2, 2, 2, 1, 2, 2],
+  "Lydian Mode":         [2, 2, 2, 1, 2, 2, 1],
+  "Mixolydian Mode":     [2, 2, 1, 2, 2, 1, 2],
+  "Aeolian Mode":        [2, 1, 2, 2, 1, 2, 2],
+  "Locrian Mode":        [1, 2, 2, 1, 2, 2, 2],
+  "Augmented":           [3, 1, 3, 1, 3, 1],
+  "Diminished":          [2, 1, 2, 1, 2, 1, 2, 1],
+  "Gypsy":               [1, 3, 1, 2, 1, 2, 2],
+  "Hungarian Minor":     [2, 1, 3, 1, 1, 3, 1],
+  "Enigmatic":           [1, 3, 2, 2, 2, 1, 1],
+  "Neapolitan Major":    [1, 2, 2, 2, 2, 2, 1],
+  "Double Harmonic":     [1, 3, 1, 2, 1, 3, 1]
+};
+
+
+function buildScale(rootNote, progressionName) {
+  const intervals = PROGRESSION_LIBRARY[progressionName];
+  if (!intervals) return [];
+
+  const startIndex = ALL_NOTES.indexOf(rootNote);
+  if (startIndex === -1) return [];
+
+  const scaleNotes = [rootNote];
+  let currentIndex = startIndex;
+
+  intervals.forEach(step => {
+    currentIndex = (currentIndex + step) % 12;
+    scaleNotes.push(ALL_NOTES[currentIndex]);
+  });
+
+  return scaleNotes;
+}
+
 const ALL_NOTES = ['C', 'C#', 'D', 'D#', 'E', 'F', 'F#', 'G', 'G#', 'A', 'A#', 'B'];
 const defaultTuning = ['E', 'B', 'G', 'D', 'A', 'E']; // strings 1 to 6
 
