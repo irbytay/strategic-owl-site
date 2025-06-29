@@ -548,25 +548,44 @@ const defaultTuning = ['E', 'B', 'G', 'D', 'A', 'E']; // strings 1 to 6
 function generateFretboard(tuning = defaultTuning) {
   const fretboardDiv = document.getElementById("fretboard");
   fretboardDiv.innerHTML = "";
+  // Add subtle border and consistent spacing to the fretboard container
+  fretboardDiv.style.border = "1px solid var(--highlight)";
+  fretboardDiv.style.padding = "12px";
+  fretboardDiv.style.backgroundColor = "var(--surface)";
+  fretboardDiv.style.borderRadius = "8px";
   const numFrets = 12;
   tuning.slice().reverse().forEach((openNote, stringIndex) => {
     const openIndex = ALL_NOTES.indexOf(openNote);
     const rowDiv = document.createElement("div");
     rowDiv.style.display = "flex";
+    rowDiv.style.alignItems = "center";
     rowDiv.style.gap = "6px";
+    rowDiv.style.marginBottom = "4px";
+
+    // Add string label
+    const label = document.createElement("div");
+    label.textContent = `Str ${6 - stringIndex}`;
+    label.style.minWidth = "50px";
+    label.style.fontWeight = "600";
+    label.style.color = "var(--text-muted)";
+    rowDiv.appendChild(label);
+
+    // Add fret notes
     for (let fret = 0; fret <= numFrets; fret++) {
       const note = ALL_NOTES[(openIndex + fret) % 12];
       const cell = document.createElement("div");
       cell.textContent = note;
       cell.style.padding = "8px";
-      cell.style.minWidth = "38px";
-      cell.style.backgroundColor = "var(--surface)";
+      cell.style.minWidth = "40px";
+      cell.style.backgroundColor = "#1A2B4C";
       cell.style.border = "1px solid var(--highlight)";
       cell.style.color = "var(--text)";
       cell.style.borderRadius = "4px";
       cell.style.textAlign = "center";
+      cell.style.boxShadow = "inset 0 0 3px var(--shadow)";
       rowDiv.appendChild(cell);
     }
+
     fretboardDiv.appendChild(rowDiv);
   });
 }
