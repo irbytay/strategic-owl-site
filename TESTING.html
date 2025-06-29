@@ -834,8 +834,20 @@ function updateChordInfoDisplay() {
   document.getElementById("chord-info").textContent = "";
   document.getElementById("progression-steps").textContent = `Steps: ${intervals ? intervals.join(' - ') : 'N/A'}`;
 
-  // Directly display already-labeled notes from buildScale, reversing if flatMode is on
-  const displayNotes = flatMode ? [...notes].reverse() : notes;
+  // Map notes to sharp or flat labels using normalized values
+  const normalize = (note) => {
+    const enharmonics = {
+      'Db': 'C#', 'Eb': 'D#', 'Gb': 'F#', 'Ab': 'G#', 'Bb': 'A#',
+      'C♯': 'C#', 'D♯': 'D#', 'F♯': 'F#', 'G♯': 'G#', 'A♯': 'A#',
+      'Cb': 'B', 'Fb': 'E', 'E#': 'F', 'B#': 'C'
+    };
+    return enharmonics[note] || note.replace(/♯/g, '#').replace(/♭/g, 'b');
+  };
+  const labeledNotes = notes.map(n => {
+    const normalized = normalize(n);
+    return flatMode ? denormalizeToFlat(normalized) : normalized;
+  });
+  const displayNotes = flatMode ? labeledNotes.reverse() : labeledNotes;
   document.getElementById("scale-notes").textContent = `Notes: ${displayNotes.join('  ')}`;
 
   // --- Chord tones calculation and visualization ---
