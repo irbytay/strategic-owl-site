@@ -347,7 +347,54 @@
     <h2>🎸 Guitar Chord & Fretboard Visualizer</h2>
     <p>Select a root and chord type to view its triad and matching notes. Future updates will add tuning and fretboard visualization.</p>
 
-    <!-- 🎸 Chord/Progression dropdowns removed -->
+    <!-- 🎸 Chord/Progression dropdowns -->
+    <div style="display: flex; justify-content: center; gap: 18px; margin-bottom: 12px;">
+      <select id="custom-chord-select">
+        <option value="C">C</option>
+        <option value="C#">C#</option>
+        <option value="D">D</option>
+        <option value="D#">D#</option>
+        <option value="E">E</option>
+        <option value="F">F</option>
+        <option value="F#">F#</option>
+        <option value="G">G</option>
+        <option value="G#">G#</option>
+        <option value="A">A</option>
+        <option value="A#">A#</option>
+        <option value="B">B</option>
+      </select>
+      <select id="custom-progression-select">
+        <option value="Natural Major">Natural Major</option>
+        <option value="Natural Minor">Natural Minor</option>
+        <option value="Harmonic Minor">Harmonic Minor</option>
+        <option value="Melodic Minor (Asc)">Melodic Minor (Asc)</option>
+        <option value="Melodic Minor (Des)">Melodic Minor (Des)</option>
+        <option value="Major Pentatonic">Major Pentatonic</option>
+        <option value="Minor Pentatonic">Minor Pentatonic</option>
+        <option value="Blues Scale">Blues Scale</option>
+        <option value="Dorian Mode">Dorian Mode</option>
+        <option value="Phrygian Mode">Phrygian Mode</option>
+        <option value="Lydian Mode">Lydian Mode</option>
+        <option value="Mixolydian Mode">Mixolydian Mode</option>
+        <option value="Aeolian Mode">Aeolian Mode</option>
+        <option value="Locrian Mode">Locrian Mode</option>
+        <option value="Augmented">Augmented</option>
+        <option value="Diminished">Diminished</option>
+        <option value="Gypsy">Gypsy</option>
+        <option value="Hungarian Minor">Hungarian Minor</option>
+        <option value="Enigmatic">Enigmatic</option>
+        <option value="Neapolitan Major">Neapolitan Major</option>
+        <option value="Double Harmonic">Double Harmonic</option>
+      </select>
+    </div>
+
+    <!-- 🎼 Chord/Scale Display Section -->
+    <div id="chord-display-area" style="margin-bottom: 20px; text-align: center; color: var(--text);">
+      <h3 style="color: var(--heading); margin-bottom: 8px;">🎼 Selected Chord Information</h3>
+      <div id="chord-info" style="font-size: 1rem; margin-bottom: 4px;"></div>
+      <div id="progression-steps" style="color: var(--text-muted); font-size: 0.95rem; margin-bottom: 4px;"></div>
+      <div id="scale-notes" style="font-weight: 600; font-size: 1rem;"></div>
+    </div>
     <!-- 🎸 Digital Fretboard UI -->
     <div style="margin-top: 40px;">
       <h2 style="text-align: center;">🎸 Digital Fretboard</h2>
@@ -589,8 +636,22 @@ function generateFretboard(tuning = defaultTuning) {
 }
 
 // No longer need to populateTuningDropdowns or use .tuning-select, as dropdowns are inline
+function updateChordInfoDisplay() {
+  const root = document.getElementById("custom-chord-select").value;
+  const progression = document.getElementById("custom-progression-select").value;
+  const intervals = PROGRESSION_LIBRARY[progression];
+  const notes = buildScale(root, progression);
+
+  document.getElementById("chord-info").textContent = `Chord: ${root} | Progression: ${progression}`;
+  document.getElementById("progression-steps").textContent = `Steps: ${intervals ? intervals.join(' - ') : 'N/A'}`;
+  document.getElementById("scale-notes").textContent = `Notes: ${notes.join('  ')}`;
+}
+
 document.addEventListener("DOMContentLoaded", () => {
   generateFretboard(defaultTuning);
+  document.getElementById("custom-chord-select").addEventListener("change", updateChordInfoDisplay);
+  document.getElementById("custom-progression-select").addEventListener("change", updateChordInfoDisplay);
+  updateChordInfoDisplay();
 });
 </script>
 </body>
