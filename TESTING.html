@@ -562,7 +562,8 @@ function generateFretboard(tuning = defaultTuning) {
   fretboardDiv.style.marginLeft = "auto";
   fretboardDiv.style.marginRight = "auto";
   fretboardDiv.style.maxWidth = "unset";
-  fretboardDiv.style.gridTemplateColumns = "68px repeat(25, 40px)";
+  // gridTemplateColumns: 68px for string label, 24 frets (1-24) = 24 columns
+  fretboardDiv.style.gridTemplateColumns = "68px repeat(24, 40px)";
   fretboardDiv.style.rowGap = "6px";
   fretboardDiv.style.background = "linear-gradient(to right, #3B2F2F, #1E1A18)";
   fretboardDiv.style.borderRadius = "8px";
@@ -578,7 +579,7 @@ function generateFretboard(tuning = defaultTuning) {
   headerEmpty.style.width = "68px";
   headerEmpty.style.height = "40px";
   fretboardDiv.appendChild(headerEmpty);
-  for (let i = 0; i <= numFrets; i++) {
+  for (let i = 1; i <= numFrets; i++) {
     const fretLabel = document.createElement("div");
     fretLabel.textContent = i;
     fretLabel.style.width = "40px";
@@ -590,7 +591,7 @@ function generateFretboard(tuning = defaultTuning) {
     fretLabel.style.color = [3, 5, 7, 9, 12, 15, 17, 19, 22].includes(i) ? "var(--understanding)" : "var(--text-muted)";
     fretLabel.style.fontWeight = [3, 5, 7, 9, 12, 15, 17, 19, 22].includes(i) ? "600" : "400";
     fretLabel.style.textAlign = "center";
-    fretLabel.style.borderLeft = i === 0 ? "none" : "1px solid var(--highlight)";
+    fretLabel.style.borderLeft = "1px solid var(--highlight)";
     fretboardDiv.appendChild(fretLabel);
   }
 
@@ -627,8 +628,8 @@ function generateFretboard(tuning = defaultTuning) {
     });
     fretboardDiv.appendChild(select);
 
-    // Add fret cells
-    for (let fret = 0; fret <= numFrets; fret++) {
+    // Add fret cells (start at 1, skip 0)
+    for (let fret = 1; fret <= numFrets; fret++) {
       const note = ALL_NOTES[(openIndex + fret) % 12];
       const cell = document.createElement("div");
       cell.textContent = note;
