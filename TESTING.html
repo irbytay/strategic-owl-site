@@ -535,8 +535,16 @@ function buildScale(rootNote, progressionName) {
   return scaleNotes;
 }
 
-// Chord tones calculation (triad or 7th)
-function getChordTones(scaleNotes, type = "triad") {
+// Chord tones calculation (triad or 7th, with reverse option)
+function getChordTones(scaleNotes, type = "triad", reverse = false) {
+  if (reverse) {
+    if (type === "major7" || type === "minor7") {
+      return [scaleNotes[0], scaleNotes[6], scaleNotes[4], scaleNotes[2]]; // Root, 7th, 5th, 3rd
+    } else {
+      return [scaleNotes[0], scaleNotes[4], scaleNotes[2]]; // Root, 5th, 3rd
+    }
+  }
+
   if (type === "major7" || type === "minor7") {
     if (scaleNotes.length >= 7) {
       return [scaleNotes[0], scaleNotes[2], scaleNotes[4], scaleNotes[6]];
@@ -847,7 +855,7 @@ function updateChordInfoDisplay() {
       type = "major7";
     }
   }
-  const chordTones = getChordTones(notes, type);
+  const chordTones = getChordTones(notes, type, flatMode);
   // Use roleColors for color-coded span wrapping
   const roleColors = [
     { bg: "rgba(40, 167, 69, 0.4)", color: "#cde7d0" },       // Root
