@@ -326,17 +326,17 @@
     /* ===== Mobile-friendly enhancements for Guitar Tool & Fretboard ===== */
     @media (max-width: 768px) {
       #fretboard-wrapper {
-        display: block;
-        overflow-x: scroll;
+        overflow-x: auto;
+        width: 100vw;
         max-width: 100vw;
         -webkit-overflow-scrolling: touch;
-        scroll-behavior: smooth;
-        padding-bottom: 8px;
       }
 
       #fretboard {
-        display: inline-block;
+        display: block;
         min-width: 960px;
+        width: fit-content;
+        margin: 0;
         white-space: nowrap;
       }
 
@@ -690,8 +690,9 @@ function generateFretboard(tuning = defaultTuning) {
   fretboardDiv.style.display = "grid";
   fretboardDiv.style.placeSelf = "center";
   fretboardDiv.style.justifySelf = "center";
-  fretboardDiv.style.marginLeft = "auto";
-  fretboardDiv.style.marginRight = "auto";
+  // Removed centering to allow left scrolling on mobile:
+  // fretboardDiv.style.marginLeft = "auto";
+  // fretboardDiv.style.marginRight = "auto";
   fretboardDiv.style.maxWidth = "unset";
   // gridTemplateColumns: 68px for string label, 24 frets (1-24) = 24 columns
   fretboardDiv.style.gridTemplateColumns = "68px repeat(24, 40px)";
