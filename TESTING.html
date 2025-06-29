@@ -516,14 +516,17 @@ function buildScale(rootNote, progressionName, reverse = false) {
 
   // Updated logic: reverse the interval order if reverse is true
   const steps = reverse ? [...intervals].reverse() : intervals;
+  // Determine flatMode from the UI, if available
+  const flatMode = document.getElementById("use-flats-toggle")?.checked;
 
   steps.forEach(step => {
     currentIndex = reverse
       ? (currentIndex - step + 12) % 12
       : (currentIndex + step) % 12;
-    scaleNotes.push(ALL_NOTES[currentIndex]);
+    scaleNotes.push(flatMode ? FLAT_LABELS[currentIndex] : SHARP_LABELS[currentIndex]);
   });
-  scaleNotes.unshift(rootNote);
+  // Add the root note at the beginning, using the correct label
+  scaleNotes.unshift(flatMode ? FLAT_LABELS[startIndex] : SHARP_LABELS[startIndex]);
 
   return scaleNotes;
 }
