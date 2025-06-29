@@ -396,6 +396,8 @@
       <div id="scale-notes" style="font-weight: 600; font-size: 1rem;"></div>
       <div id="triad-notes" style="color: var(--truth); font-weight: bold; margin-top: 6px;"></div>
     </div>
+    <!-- 🎶 Chord label display above the fretboard -->
+    <div id="chord-label-display" style="text-align: center; font-size: 1.2rem; font-weight: 600; color: var(--understanding); margin-bottom: 12px;"></div>
     <!-- 🎸 Digital Fretboard UI -->
     <div style="margin-top: 40px;">
       <h2 style="text-align: center;">🎸 Digital Fretboard</h2>
@@ -655,6 +657,8 @@ function generateFretboard(tuning = defaultTuning) {
 function updateChordInfoDisplay() {
   const root = document.getElementById("custom-chord-select").value;
   const progression = document.getElementById("custom-progression-select").value;
+  // Update the chord label display block above the fretboard
+  document.getElementById("chord-label-display").textContent = `${root} ${progression}`;
   const intervals = PROGRESSION_LIBRARY[progression];
   const notes = buildScale(root, progression);
 
