@@ -555,13 +555,13 @@ function generateFretboard(tuning = defaultTuning) {
   fretboardDiv.innerHTML = "";
   // Apply visually styled grid layout to the fretboard
   fretboardDiv.style.display = "grid";
-  fretboardDiv.style.gridTemplateColumns = "68px repeat(25, 40px)";
+  fretboardDiv.style.gridTemplateColumns = "68px repeat(24, 40px)";
   fretboardDiv.style.rowGap = "6px";
-  fretboardDiv.style.background = "linear-gradient(to bottom, #3B2F2F 0%, #1E1A18 100%)";
-  fretboardDiv.style.borderRadius = "8px";
+  fretboardDiv.style.background = "linear-gradient(to right, #3B2F2F 0%, #1E1A18 100%)";
+  fretboardDiv.style.padding = "8px 12px";
+  fretboardDiv.style.borderRadius = "12px";
   fretboardDiv.style.boxShadow = "inset 0 0 10px rgba(0,0,0,0.4)";
   fretboardDiv.style.border = "1px solid var(--highlight)";
-  fretboardDiv.style.padding = "4px";
   fretboardDiv.style.maxWidth = "100%";
   fretboardDiv.style.margin = "0 auto";
   fretboardDiv.style.justifySelf = "center";
