@@ -325,11 +325,13 @@
 }
     /* ===== Mobile-friendly enhancements for Guitar Tool & Fretboard ===== */
     @media (max-width: 768px) {
-      #fretboard {
+      #fretboard-wrapper {
         overflow-x: auto;
-        display: block !important;
-        white-space: nowrap;
         max-width: 100vw;
+      }
+
+      #fretboard {
+        width: fit-content;
       }
 
       #guitar-tool select {
@@ -448,7 +450,7 @@
       <div style="text-align: center; margin-top: 16px; margin-bottom: 8px; color: var(--text-muted); font-size: 0.95rem;">
         Select tuning for each string below (left dropdowns).
       </div>
-      <div style="display: flex; justify-content: center; width: 100%;">
+      <div id="fretboard-wrapper" style="overflow-x: auto; max-width: 100vw;">
         <div style="display: flex; justify-content: center; width: auto;">
           <div id="fretboard"></div>
         </div>
