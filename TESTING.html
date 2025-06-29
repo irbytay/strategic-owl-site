@@ -511,7 +511,7 @@ function buildScale(rootNote, progressionName, reverse = false) {
   const startIndex = ALL_NOTES.indexOf(rootNote);
   if (startIndex === -1) return [];
 
-  const scaleNotes = [rootNote];
+  const scaleNotes = [];
   let currentIndex = startIndex;
 
   // Updated logic: reverse the interval order if reverse is true
@@ -523,6 +523,7 @@ function buildScale(rootNote, progressionName, reverse = false) {
       : (currentIndex + step) % 12;
     scaleNotes.push(ALL_NOTES[currentIndex]);
   });
+  scaleNotes.unshift(rootNote);
 
   return scaleNotes;
 }
