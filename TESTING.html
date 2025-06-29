@@ -326,7 +326,8 @@
     /* ===== Mobile-friendly enhancements for Guitar Tool & Fretboard ===== */
     @media (max-width: 768px) {
       #fretboard-wrapper {
-        overflow-x: auto;
+        display: block;
+        overflow-x: scroll;
         max-width: 100vw;
         -webkit-overflow-scrolling: touch;
         scroll-behavior: smooth;
@@ -334,8 +335,9 @@
       }
 
       #fretboard {
-        width: max-content;
+        display: inline-block;
         min-width: 960px;
+        white-space: nowrap;
       }
 
       #guitar-tool select {
