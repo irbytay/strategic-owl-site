@@ -515,33 +515,125 @@ function getChordTones(scaleNotes, type = "major") {
   return [scaleNotes[0], scaleNotes[2], scaleNotes[4]]; // triad fallback
 }
 
-// 🎸 Dynamic chord diagram generator
-function generateChordDiagram(chordTones, tuning = ['E', 'A', 'D', 'G', 'B', 'E']) {
-  const ALL_NOTES = ['C', 'C#', 'D', 'D#', 'E', 'F', 'F#', 'G', 'G#', 'A', 'A#', 'B'];
-  const diagram = [];
+// 🎸 Hardcoded chord diagram lookup
+const CHORD_SHAPES = {
+  "C_Natural Major": [
+    "e|---0--- (E)",
+    "B|---1--- (C)",
+    "G|---0--- (G)",
+    "D|---2--- (E)",
+    "A|---3--- (C)",
+    "E|---X--- (Muted)"
+  ],
+  "C_Natural Minor": [
+    "e|---3--- (G)",
+    "B|---4--- (D#/Eb)",
+    "G|---5--- (C)",
+    "D|---5--- (G)",
+    "A|---3--- (C)",
+    "E|---X--- (Muted)"
+  ],
+  "D_Natural Major": [
+    "e|---2--- (F#/Gb)",
+    "B|---3--- (D)",
+    "G|---2--- (A)",
+    "D|---0--- (D)",
+    "A|---X--- (Muted)",
+    "E|---X--- (Muted)"
+  ],
+  "D_Natural Minor": [
+    "e|---1--- (F)",
+    "B|---3--- (D)",
+    "G|---2--- (A)",
+    "D|---0--- (D)",
+    "A|---X--- (Muted)",
+    "E|---X--- (Muted)"
+  ],
+  "E_Natural Major": [
+    "e|---0--- (E)",
+    "B|---0--- (B)",
+    "G|---1--- (G#/Ab)",
+    "D|---2--- (E)",
+    "A|---2--- (B)",
+    "E|---0--- (E)"
+  ],
+  "E_Natural Minor": [
+    "e|---0--- (E)",
+    "B|---0--- (B)",
+    "G|---0--- (G)",
+    "D|---2--- (E)",
+    "A|---2--- (B)",
+    "E|---0--- (E)"
+  ],
+  "F_Natural Major": [
+    "e|---1--- (F)",
+    "B|---1--- (C)",
+    "G|---2--- (A)",
+    "D|---3--- (F)",
+    "A|---3--- (C)",
+    "E|---1--- (F)"
+  ],
+  "F_Natural Minor": [
+    "e|---1--- (F)",
+    "B|---1--- (C)",
+    "G|---1--- (Ab)",
+    "D|---3--- (F)",
+    "A|---3--- (C)",
+    "E|---1--- (F)"
+  ],
+  "G_Natural Major": [
+    "e|---3--- (G)",
+    "B|---0--- (B)",
+    "G|---0--- (G)",
+    "D|---0--- (D)",
+    "A|---2--- (B)",
+    "E|---3--- (G)"
+  ],
+  "G_Natural Minor": [
+    "e|---3--- (G)",
+    "B|---3--- (D)",
+    "G|---3--- (G)",
+    "D|---0--- (D)",
+    "A|---1--- (Bb)",
+    "E|---3--- (G)"
+  ],
+  "A_Natural Major": [
+    "e|---0--- (E)",
+    "B|---2--- (C#/Db)",
+    "G|---2--- (A)",
+    "D|---2--- (E)",
+    "A|---0--- (A)",
+    "E|---X--- (Muted)"
+  ],
+  "A_Natural Minor": [
+    "e|---0--- (E)",
+    "B|---1--- (C)",
+    "G|---2--- (A)",
+    "D|---2--- (E)",
+    "A|---0--- (A)",
+    "E|---X--- (Muted)"
+  ],
+  "B_Natural Major": [
+    "e|---2--- (F#/Gb)",
+    "B|---4--- (D#/Eb)",
+    "G|---4--- (B)",
+    "D|---4--- (F#/Gb)",
+    "A|---2--- (B)",
+    "E|---X--- (Muted)"
+  ],
+  "B_Natural Minor": [
+    "e|---2--- (F#/Gb)",
+    "B|---3--- (D)",
+    "G|---4--- (B)",
+    "D|---4--- (F#/Gb)",
+    "A|---2--- (B)",
+    "E|---X--- (Muted)"
+  ]
+};
 
-  for (let i = tuning.length - 1; i >= 0; i--) {
-    const string = tuning[i];
-    const openIndex = ALL_NOTES.indexOf(string);
-    let found = false;
-    let fretNum = 'X';
-    let matchNote = "Muted";
-
-    for (let fret = 0; fret <= 5; fret++) {
-      const note = ALL_NOTES[(openIndex + fret) % 12];
-      if (chordTones.includes(note)) {
-        fretNum = fret;
-        matchNote = note;
-        found = true;
-        break;
-      }
-    }
-
-    const label = ['E', 'A', 'D', 'G', 'B', 'e'][i];
-    diagram.push(`${label}|---${fretNum}--- (${matchNote})`);
-  }
-
-  return diagram.join("\n");
+function generateChordDiagram(chordTones, root, progression) {
+  const key = `${root}_${progression}`;
+  return CHORD_SHAPES[key] ? CHORD_SHAPES[key].join("\n") : "Shape not yet defined for this chord.";
 }
 
 const ALL_NOTES = ['C', 'C#', 'D', 'D#', 'E', 'F', 'F#', 'G', 'G#', 'A', 'A#', 'B'];
@@ -703,8 +795,8 @@ function updateChordInfoDisplay() {
   const chordTones = getChordTones(notes, type);
   document.getElementById("triad-notes").textContent = `Chord Tones: ${chordTones.join("  ")}`;
 
-  // --- Dynamic chord diagram ---
-  const diagramText = generateChordDiagram(chordTones);
+  // --- Chord diagram using hardcoded lookup ---
+  const diagramText = generateChordDiagram(chordTones, root, progression);
   document.getElementById("visual-chord-diagram").textContent = diagramText;
 
   // Highlight chord tones on fretboard
