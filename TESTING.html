@@ -425,7 +425,7 @@
     <!-- Flats/Sharps Toggle Checkbox UI (moved below dropdowns) -->
     <div style="text-align: center; margin-top: 16px;">
       <label style="font-size: 1rem; color: var(--text-muted);">
-        <input type="checkbox" id="use-flats-toggle" onchange="updateChordInfoDisplay(); generateFretboard(defaultTuning);" />
+        <input type="checkbox" id="use-flats-toggle" onchange="updateChordInfoDisplay()" />
         Flip Direction / Use Flats
       </label>
     </div>
@@ -903,7 +903,7 @@ function updateChordInfoDisplay() {
 
   // Maintain fretboard logic and visuals
   const fretboardCells = document.querySelectorAll("#fretboard > div");
-  const normalizedChordTones = chordTones.map(normalize);
+  const normalizedChordTones = labeledChordTones.map(normalize);
   fretboardCells.forEach(cell => {
     let note = cell.childNodes[0]?.nodeValue?.trim();
     if (!note) return;
@@ -923,6 +923,8 @@ function updateChordInfoDisplay() {
       cell.style.color = "var(--text)";
     }
   });
+  // Regenerate the fretboard with the latest chord tones
+  generateFretboard(defaultTuning);
 }
 
 document.addEventListener("DOMContentLoaded", () => {
