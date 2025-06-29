@@ -330,12 +330,11 @@
         max-width: 100vw;
         -webkit-overflow-scrolling: touch;
         scroll-behavior: smooth;
-        scroll-snap-type: x mandatory;
       }
 
       #fretboard {
-        width: fit-content;
-        scroll-snap-align: start;
+        width: max-content;
+        min-width: 960px;
       }
 
       #guitar-tool select {
