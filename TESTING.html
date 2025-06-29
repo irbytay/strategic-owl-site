@@ -676,6 +676,33 @@ function generateChordDiagram(chordTones, root, progression) {
   return lastKnownChordDiagram || "No shape available yet.";
 }
 
+/*
+============================================
+🎵 NOTE LABELING & SCALE LOGIC EXPLAINED 🎵
+============================================
+The following arrays define the chromatic scale's 12 semitones:
+
+- ALL_NOTES: Used internally for math/index lookup (always in sharp names).
+- SHARP_LABELS: Human-readable note names using sharps (e.g., C#).
+- FLAT_LABELS: Human-readable note names using flats (e.g., Db).
+
+These arrays are index-aligned. For example:
+  - ALL_NOTES[1] = 'C#'
+  - SHARP_LABELS[1] = 'C#'
+  - FLAT_LABELS[1]  = 'Db'
+
+The user's toggle (`flatMode`) determines:
+  • Whether the scale is labeled in flats or sharps.
+  • Whether the scale is built descending (flatMode = true) or ascending.
+
+The buildScale() function uses these arrays to return a complete scale
+using either SHARP_LABELS or FLAT_LABELS based on the toggle.
+
+The `Notes:` line on the UI reads directly from buildScale() and simply
+reverses the array again if flatMode is true.
+
+✅ Do NOT overwrite or relabel notes after buildScale() — it returns what’s needed.
+*/
 const ALL_NOTES = ['C', 'C#', 'D', 'D#', 'E', 'F', 'F#', 'G', 'G#', 'A', 'A#', 'B'];
 const SHARP_LABELS = ['C', 'C#', 'D', 'D#', 'E', 'F', 'F#', 'G', 'G#', 'A', 'A#', 'B'];
 const FLAT_LABELS  = ['C', 'Db', 'D', 'Eb', 'E', 'F', 'Gb', 'G', 'Ab', 'A', 'Bb', 'B'];
@@ -834,23 +861,9 @@ function updateChordInfoDisplay() {
   document.getElementById("chord-info").textContent = "";
   document.getElementById("progression-steps").textContent = `Steps: ${intervals ? intervals.join(' - ') : 'N/A'}`;
 
-  // --- Dynamic Notes Display using interval steps and toggle ---
-  const rootIndex = ALL_NOTES.indexOf(normalize(root));
-  const noteLabels = flatMode ? FLAT_LABELS : SHARP_LABELS;
-  const stepPattern = PROGRESSION_LIBRARY[progression];
-  const steps = flatMode ? [...stepPattern].reverse() : stepPattern;
-
-  let current = rootIndex;
-  const builtNotes = [noteLabels[current]];
-
-  steps.forEach(step => {
-    current = flatMode
-      ? (current - step + 12) % 12
-      : (current + step) % 12;
-    builtNotes.push(noteLabels[current]);
-  });
-
-  document.getElementById("scale-notes").textContent = `Notes: ${builtNotes.join('  ')}`;
+  // --- Dynamic Notes Display using buildScale output and direction toggle ---
+  const displayNotes = flatMode ? [...notes].reverse() : notes;
+  document.getElementById("scale-notes").textContent = `Notes: ${displayNotes.join('  ')}`;
 
   // --- Chord tones calculation and visualization ---
   let type = "triad";
