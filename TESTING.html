@@ -596,15 +596,14 @@ function generateFretboard(tuning = defaultTuning) {
   }
 
   // For each string, add a row to the grid (highest string at top, lowest at bottom)
-  for (let s = tuning.length - 1; s >= 0; s--) {
-    const string = s;
-    const openNote = tuning[string];
+  for (let string = 0; string < tuning.length; string++) {
+    const openNote = tuning[tuning.length - 1 - string];
     const openIndex = ALL_NOTES.indexOf(openNote);
 
     // Create dropdown as first column
     const select = document.createElement("select");
     select.classList.add("tuning-select-inline");
-    select.dataset.string = string;
+    select.dataset.string = tuning.length - 1 - string;
     select.style.width = "68px";
     select.style.height = "40px";
     select.style.background = "#333";
