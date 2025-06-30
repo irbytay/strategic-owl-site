@@ -422,6 +422,12 @@
         <option value="Double Harmonic">Double Harmonic</option>
       </select>
     </div>
+    <div style="text-align: center; margin-bottom: 16px;">
+      <label style="font-size: 0.95rem;">
+        <input type="checkbox" id="flip-logic-checkbox" />
+        Flip Scale Logic (Descending) & Use Flats
+      </label>
+    </div>
 
     <!-- 🎼 Chord/Scale Display Section -->
     <div id="chord-display-area" style="margin-bottom: 20px; text-align: center; color: var(--text);">
@@ -470,6 +476,12 @@
 </script>
 <script>
 // 🎸 Digital Fretboard Script
+// --- Flat equivalents mapping ---
+const FLAT_EQUIVS = {
+  'C#': 'Db', 'D#': 'Eb', 'F#': 'Gb', 'G#': 'Ab', 'A#': 'Bb',
+  'C♯': 'Db', 'D♯': 'Eb', 'F♯': 'Gb', 'G♯': 'Ab', 'A♯': 'Bb',
+  'B': 'Cb', 'E': 'Fb'
+};
 // 🎶 Chord Library for future scale/chord highlighting
 const CHORD_LIBRARY = {
   'C_major': ['C', 'D', 'E', 'F', 'G', 'A', 'B'],
@@ -510,22 +522,27 @@ const PROGRESSION_LIBRARY = {
 };
 
 
-function buildScale(rootNote, progressionName) {
+// --- Enhanced buildScale with reverse and flats logic ---
+function buildScale(rootNote, progressionName, reverse = false, useFlats = false) {
   const intervals = PROGRESSION_LIBRARY[progressionName];
   if (!intervals) return [];
 
-  const startIndex = ALL_NOTES.indexOf(rootNote);
-  if (startIndex === -1) return [];
+  let notes = [];
+  let index = ALL_NOTES.indexOf(rootNote);
+  if (index === -1) return [];
 
-  const scaleNotes = [rootNote];
-  let currentIndex = startIndex;
+  let root = useFlats && FLAT_EQUIVS[rootNote] ? FLAT_EQUIVS[rootNote] : rootNote;
+  notes.push(root);
 
-  intervals.forEach(step => {
-    currentIndex = (currentIndex + step) % 12;
-    scaleNotes.push(ALL_NOTES[currentIndex]);
-  });
+  const steps = reverse ? [...intervals].reverse() : intervals;
+  for (let step of steps) {
+    index = (index + (reverse ? -step + 12 : step)) % 12;
+    let note = ALL_NOTES[index];
+    if (useFlats && FLAT_EQUIVS[note]) note = FLAT_EQUIVS[note];
+    notes.push(note);
+  }
 
-  return scaleNotes;
+  return notes;
 }
 
 // Chord tones calculation (triad or 7th)
@@ -690,6 +707,24 @@ function generateFretboard(tuning = defaultTuning) {
   fretboardDiv.style.backgroundSize = "100% 100%";
   const numFrets = 24;
 
+  // --- Get current scale notes to filter fretboard display ---
+  const flipCheckbox = document.getElementById("flip-logic-checkbox");
+  const reverse = flipCheckbox && flipCheckbox.checked;
+  const useFlats = reverse; // useFlats enabled when reverse logic is used
+  const root = document.getElementById("custom-chord-select").value;
+  const progression = document.getElementById("custom-progression-select").value;
+  const scaleNotes = buildScale(root, progression, reverse, useFlats);
+
+  const normalize = (note) => {
+    const enharmonics = {
+      'Db': 'C#', 'Eb': 'D#', 'Gb': 'F#', 'Ab': 'G#', 'Bb': 'A#',
+      'C♯': 'C#', 'D♯': 'D#', 'F♯': 'F#', 'G♯': 'G#', 'A♯': 'A#',
+      'Cb': 'B', 'Fb': 'E', 'E#': 'F', 'B#': 'C'
+    };
+    return enharmonics[note] || note.replace(/♯/g, '#').replace(/♭/g, 'b');
+  };
+  const normalizedScaleNotes = scaleNotes.map(normalize);
+
   // Add fret number labels as the first row of the grid
   // First empty cell (to align with tuning dropdowns)
   const headerEmpty = document.createElement("div");
@@ -774,7 +809,9 @@ function generateFretboard(tuning = defaultTuning) {
     for (let fret = 1; fret <= numFrets; fret++) {
       const note = ALL_NOTES[(openIndex + fret) % 12];
       const cell = document.createElement("div");
-      cell.textContent = note;
+      // --- Only display note if in scale, else blank ---
+      const normalizedNote = normalize(note);
+      cell.textContent = normalizedScaleNotes.includes(normalizedNote) ? note : "";
       cell.style.width = "40px";
       cell.style.height = "40px";
       cell.style.display = "flex";
@@ -809,19 +846,21 @@ function generateFretboard(tuning = defaultTuning) {
 function updateChordInfoDisplay() {
   const root = document.getElementById("custom-chord-select").value;
   const progression = document.getElementById("custom-progression-select").value;
+  const flipCheckbox = document.getElementById("flip-logic-checkbox");
+  const reverse = flipCheckbox && flipCheckbox.checked;
+  const useFlats = flipCheckbox && flipCheckbox.checked;
   // Update the chord label display block above the fretboard
   document.getElementById("chord-label-display").textContent = `${root} ${progression}`;
   // Update the heading dynamically
   document.getElementById("chord-heading").textContent = `🎼 ${root} ${progression}`;
   const intervals = PROGRESSION_LIBRARY[progression];
+  const notes = buildScale(root, progression, reverse, useFlats);
 
-  // Always generate notes from buildScale
-  const notes = buildScale(root, progression);
   document.getElementById("chord-info").textContent = "";
   document.getElementById("progression-steps").textContent = `Steps: ${intervals ? intervals.join(' - ') : 'N/A'}`;
   document.getElementById("scale-notes").textContent = `Notes: ${notes.join('  ')}`;
 
-  // Always generate chord tones from getChordTones(notes, type)
+  // --- Chord tones calculation and visualization ---
   let type = "triad";
   if (notes.length >= 7) {
     if (progression.toLowerCase().includes("minor")) {
@@ -899,6 +938,9 @@ document.addEventListener("DOMContentLoaded", () => {
   generateFretboard(defaultTuning);
   document.getElementById("custom-chord-select").addEventListener("change", updateChordInfoDisplay);
   document.getElementById("custom-progression-select").addEventListener("change", updateChordInfoDisplay);
+  if (document.getElementById("flip-logic-checkbox")) {
+    document.getElementById("flip-logic-checkbox").addEventListener("change", updateChordInfoDisplay);
+  }
   updateChordInfoDisplay();
 });
 </script>
