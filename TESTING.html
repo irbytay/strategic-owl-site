@@ -381,13 +381,13 @@
         const shapeData = shape[selectedScale];
         if (shapeData) {
           selectedChordEl.innerHTML =
-            `<pre style="font-size: 0.9rem; color: #ccc; background-color: #111; padding: 10px; border-radius: 6px;">
-e| ${shapeData.e}
-B| ${shapeData.B}
-G| ${shapeData.G}
-D| ${shapeData.D}
-A| ${shapeData.A}
-E| ${shapeData.E}
+            `<pre style="font-size: 1rem; font-family: 'Courier New', monospace; color: var(--highlight-color); background-color: #111; padding: 12px; border-radius: 8px; line-height: 1.5;">
+e|───${shapeData.e.replace(/---/g, '───')}   (${shapeData.e.match(/\((.*?)\)/)?.[1] || ''})
+B|───${shapeData.B.replace(/---/g, '───')}   (${shapeData.B.match(/\((.*?)\)/)?.[1] || ''})
+G|───${shapeData.G.replace(/---/g, '───')}   (${shapeData.G.match(/\((.*?)\)/)?.[1] || ''})
+D|───${shapeData.D.replace(/---/g, '───')}   (${shapeData.D.match(/\((.*?)\)/)?.[1] || ''})
+A|───${shapeData.A.replace(/---/g, '───')}   (${shapeData.A.match(/\((.*?)\)/)?.[1] || ''})
+E|───${shapeData.E.replace(/---/g, '───')}   (${shapeData.E.match(/\((.*?)\)/)?.[1] || ''})
 </pre>`;
         } else {
           selectedChordEl.textContent = `Selected: ${scaleSelect.options[scaleSelect.selectedIndex].text}`;
