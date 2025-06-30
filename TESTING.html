@@ -819,6 +819,13 @@ function updateChordInfoDisplay() {
   // document.getElementById("chord-info").textContent = `Chord: ${root} | Progression: ${progression}`;
   document.getElementById("chord-info").textContent = "";
   document.getElementById("progression-steps").textContent = `Steps: ${intervals ? intervals.join(' - ') : 'N/A'}`;
+  // Use roleColors for both scale notes and chord tones
+  const roleColors = [
+    { bg: "rgba(40, 167, 69, 0.4)", color: "#cde7d0" },       // Root
+    { bg: "rgba(212, 175, 55, 0.35)", color: "#fff5d0" },     // 3rd
+    { bg: "rgba(59, 108, 237, 0.35)", color: "#dbe3ff" },     // 5th
+    { bg: "rgba(255, 105, 180, 0.35)", color: "#fff0f8" }     // 7th (if exists)
+  ];
   const coloredNotesHTML = notes.map((note, index) => {
     const role = roleColors[index] || { bg: "rgba(255,255,255,0.1)", color: "#FFFFFF" };
     return `<span style="color: ${role.color}; background-color: ${role.bg}; padding: 2px 6px; border-radius: 4px; margin: 0 4px;">${note}</span>`;
@@ -835,13 +842,6 @@ function updateChordInfoDisplay() {
     }
   }
   const chordTones = getChordTones(notes, type);
-  // Use roleColors for color-coded span wrapping
-  const roleColors = [
-    { bg: "rgba(40, 167, 69, 0.4)", color: "#cde7d0" },       // Root
-    { bg: "rgba(212, 175, 55, 0.35)", color: "#fff5d0" },     // 3rd
-    { bg: "rgba(59, 108, 237, 0.35)", color: "#dbe3ff" },     // 5th
-    { bg: "rgba(255, 105, 180, 0.35)", color: "#fff0f8" }     // 7th (if exists)
-  ];
   const coloredTonesHTML = chordTones.map((tone, index) => {
     const role = roleColors[index] || roleColors[0];
     return `<span style="color: ${role.color}; background-color: ${role.bg}; padding: 2px 6px; border-radius: 4px; margin: 0 4px;">${tone}</span>`;
