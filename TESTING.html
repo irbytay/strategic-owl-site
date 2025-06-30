@@ -746,7 +746,7 @@ function generateFretboard(tuning = defaultTuning) {
         const note = ALL_NOTES[(ALL_NOTES.indexOf(newNote) + fret + 1) % 12];
         const cell = fretboardDiv.children[cellIndex];
         // Only show note if it's part of the scale
-        const shouldShow = window.currentScaleNotes?.includes(note.toUpperCase());
+        const shouldShow = window.currentScaleNotes?.includes(note);
         cell.textContent = shouldShow ? note : "";
 
         // Remove existing dot if any
@@ -776,7 +776,7 @@ function generateFretboard(tuning = defaultTuning) {
       const note = ALL_NOTES[(openIndex + fret) % 12];
       const cell = document.createElement("div");
       // Only show note if it's part of the scale
-      const shouldShow = window.currentScaleNotes?.includes(note.toUpperCase());
+      const shouldShow = window.currentScaleNotes?.includes(note);
       cell.textContent = shouldShow ? note : "";
       cell.style.width = "40px";
       cell.style.height = "40px";
@@ -819,8 +819,8 @@ function updateChordInfoDisplay() {
   const intervals = PROGRESSION_LIBRARY[progression];
   const notes = buildScale(root, progression);
 
-  // Store scale notes globally (uppercase for matching)
-  window.currentScaleNotes = notes.map(n => n.toUpperCase());
+  // Store scale notes globally (no uppercasing, match as-is)
+  window.currentScaleNotes = notes;
 
   // Removed redundant line:
   // document.getElementById("chord-info").textContent = `Chord: ${root} | Progression: ${progression}`;
