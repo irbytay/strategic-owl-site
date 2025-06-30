@@ -826,12 +826,6 @@ function updateChordInfoDisplay() {
     { bg: "rgba(59, 108, 237, 0.35)", color: "#dbe3ff" },     // 5th
     { bg: "rgba(255, 105, 180, 0.35)", color: "#fff0f8" }     // 7th (if exists)
   ];
-  const coloredNotesHTML = notes.map(note => {
-    const idx = chordTones.indexOf(note);
-    const role = roleColors[idx] || { bg: "rgba(255,255,255,0.1)", color: "#FFFFFF" };
-    return `<span style="color: ${role.color}; background-color: ${role.bg}; padding: 2px 6px; border-radius: 4px; margin: 0 4px;">${note}</span>`;
-  }).join("");
-  document.getElementById("scale-notes").innerHTML = `Notes: ${coloredNotesHTML}`;
 
   // --- Chord tones calculation and visualization ---
   let type = "triad";
@@ -843,6 +837,14 @@ function updateChordInfoDisplay() {
     }
   }
   const chordTones = getChordTones(notes, type);
+
+  const coloredNotesHTML = notes.map(note => {
+    const idx = chordTones.indexOf(note);
+    const role = roleColors[idx] || { bg: "rgba(255,255,255,0.1)", color: "#FFFFFF" };
+    return `<span style="color: ${role.color}; background-color: ${role.bg}; padding: 2px 6px; border-radius: 4px; margin: 0 4px;">${note}</span>`;
+  }).join("");
+  document.getElementById("scale-notes").innerHTML = `Notes: ${coloredNotesHTML}`;
+
   const coloredTonesHTML = chordTones.map((tone, index) => {
     const role = roleColors[index] || roleColors[0];
     return `<span style="color: ${role.color}; background-color: ${role.bg}; padding: 2px 6px; border-radius: 4px; margin: 0 4px;">${tone}</span>`;
