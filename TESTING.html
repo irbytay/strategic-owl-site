@@ -506,7 +506,7 @@ function buildScale(rootNote, progressionName) {
   const intervals = PROGRESSION_LIBRARY[progressionName];
   if (!intervals || !ALL_NOTES.includes(rootNote)) return [];
 
-  const noteMap = [...ALL_NOTES];
+  const noteMap = flip ? [...ALL_NOTES_FLAT] : [...ALL_NOTES];
   const flip = document.getElementById('flipLogicToggle')?.checked || false;
   const scale = [rootNote];
   let currentIndex = noteMap.indexOf(rootNote);
@@ -664,6 +664,7 @@ function generateChordDiagram(chordTones, root, progression) {
 }
 
 const ALL_NOTES = ['C', 'C#', 'D', 'D#', 'E', 'F', 'F#', 'G', 'G#', 'A', 'A#', 'B'];
+const ALL_NOTES_FLAT = ['C', 'Db', 'D', 'Eb', 'E', 'F', 'Gb', 'G', 'Ab', 'A', 'Bb', 'B'];
 const defaultTuning = ['E', 'B', 'G', 'D', 'A', 'E']; // strings 1 to 6
 
 function generateFretboard(tuning = defaultTuning) {
