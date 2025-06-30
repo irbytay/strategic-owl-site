@@ -242,22 +242,11 @@
         } else {
           stepDisplay.textContent = "";
         }
-        // Scale sequence display
-        const scaleSeqDisplay = document.getElementById("scale-sequence");
-        const noteSequence = scaleIntervals.map(interval =>
-          ALL_NOTES[(rootIndex + interval) % 12]
-        );
-        const descendingNoteSequence = scaleIntervals.map(interval =>
-          ALL_NOTES[(rootIndex - interval + 12) % 12]
-        );
-        const finalNoteSeq = useFlats ? descendingNoteSequence : noteSequence;
-        const label = useFlats ? "Descending" : "Ascending";
-        const scaleType = selectedScale.includes("minor") ? "Natural Minor" : "Natural Major";
-        scaleSeqDisplay.textContent = `${rootNote} ${scaleType} – ${label}:\n` + finalNoteSeq.join(" → ") + ` → ${rootNote}`;
+        // (Scale sequence display removed)
       } else {
         stepInfo.innerHTML = "";
         document.getElementById("scale-steps").textContent = "";
-        document.getElementById("scale-sequence").textContent = "";
+        // document.getElementById("scale-sequence").textContent = "";
       }
 
       for (let string = 0; string < 6; string++) {
