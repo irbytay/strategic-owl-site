@@ -116,6 +116,7 @@
       <option value="A-blues">A Blues</option>
     </select>
   </label>
+  <div id="step-info" style="margin: 8px 0; font-size: 0.9rem; color: #fff;"></div>
   <div class="fretboard-wrapper">
     <div class="fretboard" id="fretboard"></div>
   </div>
@@ -179,6 +180,13 @@
       const scaleData = CHORD_SCALES[selectedScale];
       const rootNote = scaleData?.root || null;
       const scaleIntervals = scaleData?.intervals || null;
+
+      const stepInfo = document.getElementById("step-info");
+      if (scaleData && rootNote && scaleIntervals) {
+        stepInfo.textContent = `Intervals from ${rootNote}: ${scaleIntervals.join(", ")}`;
+      } else {
+        stepInfo.textContent = "";
+      }
 
       for (let string = 0; string < 6; string++) {
         const tuning = document.querySelector(`select[data-string='${string}']`);
