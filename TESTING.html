@@ -131,6 +131,12 @@
       <option value="E-major">E Major</option>
       <option value="E-minor">E Minor</option>
       <option value="A-blues">A Blues</option>
+      <option value="A-major-scale">A Major Scale</option>
+      <option value="A-minor-scale">A Minor Scale</option>
+      <option value="C-major-scale">C Major Scale</option>
+      <option value="C-minor-scale">C Minor Scale</option>
+      <option value="E-major-scale">E Major Scale</option>
+      <option value="E-minor-scale">E Minor Scale</option>
     </select>
   </label>
   <div id="step-info" style="margin: 8px 0; font-size: 0.9rem; color: #fff;"></div>
@@ -151,7 +157,13 @@
       'C-minor':  { root: 'C', intervals: [0, 3, 7] },
       'E-major':  { root: 'E', intervals: [0, 4, 7] },
       'E-minor':  { root: 'E', intervals: [0, 3, 7] },
-      'A-blues':  { root: 'A', intervals: [0, 3, 5, 6, 7, 10] }
+      'A-blues':  { root: 'A', intervals: [0, 3, 5, 6, 7, 10] },
+      'A-major-scale': { root: 'A', intervals: [0, 2, 4, 5, 7, 9, 11] },
+      'A-minor-scale': { root: 'A', intervals: [0, 2, 3, 5, 7, 8, 10] },
+      'C-major-scale': { root: 'C', intervals: [0, 2, 4, 5, 7, 9, 11] },
+      'C-minor-scale': { root: 'C', intervals: [0, 2, 3, 5, 7, 8, 10] },
+      'E-major-scale': { root: 'E', intervals: [0, 2, 4, 5, 7, 9, 11] },
+      'E-minor-scale': { root: 'E', intervals: [0, 2, 3, 5, 7, 8, 10] }
     };
 
     const fretboardEl = document.getElementById("fretboard");
