@@ -7,71 +7,55 @@
   <link href="https://fonts.googleapis.com/css2?family=Chivo:wght@400;700&family=Space+Grotesk:wght@400;600;700&display=swap" rel="stylesheet">
   <style>
     body {
-      margin: 0;
-      font-family: 'Chivo', sans-serif;
-      background: linear-gradient(to bottom right, #0D1B2A, #112240); 
+      background-color: #0D1B2A;
       color: #ffffff;
+      font-family: 'Chivo', sans-serif;
+      margin: 0;
+      padding: 20px;
       text-align: center;
-      padding: 2rem;
     }
     header {
       font-family: 'Space Grotesk', sans-serif;
-      font-size: 2rem;
-      margin-bottom: 0.5rem;
-      color: #FFFFF0;
+      font-size: 2.5rem;
+      color: #D4AF37;
+      letter-spacing: 1.2px;
+      margin-bottom: 12px;
+      font-weight: bold;
+      text-shadow: 1px 1px 2px #000;
     }
     .tagline {
-      font-size: 1.6rem;
-      color: #ffffff;
-      font-weight: 500;
-      margin-bottom: 2rem;
+      font-size: 1.2rem;
+      color: #ccc;
+      margin-bottom: 30px;
     }
     p {
       max-width: 700px;
       margin: 1.5rem auto;
       line-height: 1.6;
-      font-size: 1.1rem;
-      color: #ffffff;
+      font-size: 1.05rem;
+      color: #eee;
     }
-    .cta {
-      margin: 2rem 0;
+    ul {
+      color: #ccc;
+      line-height: 1.6;
     }
-    .cta button {
-      background-color: #28A745; /* Truth Green */
+    a button, button {
+      font-family: 'Space Grotesk', sans-serif;
+      background-color: #28A745;
       color: #ffffff;
+      padding: 10px 16px;
+      font-size: 1rem;
       border: none;
-      padding: 1rem 2rem;
-      font-size: 1.1rem;
-      font-weight: bold;
+      border-radius: 6px;
       cursor: pointer;
-      border-radius: 8px;
+      margin: 6px;
+      box-shadow: 0 0 6px rgba(255, 215, 0, 0.3);
+      font-weight: bold;
       transition: background-color 0.3s ease, transform 0.2s ease;
-      margin: 0 0.5rem;
     }
-    .cta button:hover {
+    a button:hover, button:hover {
       background-color: #218838;
       transform: scale(1.03);
-    }
-    .image-placeholder {
-      width: 100%;
-      max-width: 600px;
-      height: 200px;
-      margin: 2rem auto;
-      background: repeating-linear-gradient(
-        90deg,
-        #444,
-        #444 10%,
-        #222 10%,
-        #222 20%
-      );
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      color: #888;
-      font-size: 1.2rem;
-      border-radius: 8px;
-      border: 1px solid #666;
-      box-shadow: 0 0 10px rgba(0,0,0,0.3);
     }
     .image-preview {
       width: 100%;
