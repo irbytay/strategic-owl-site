@@ -107,11 +107,13 @@
     Select Chord or Scale:
     <select id="chord-select">
       <option value="">-- Select --</option>
-      <option value="major">Major</option>
-      <option value="minor">Minor</option>
-      <option value="majorPentatonic">Major Pentatonic</option>
-      <option value="minorPentatonic">Minor Pentatonic</option>
-      <option value="blues">Blues Scale</option>
+      <option value="A-major">A Major</option>
+      <option value="A-minor">A Minor</option>
+      <option value="C-major">C Major</option>
+      <option value="C-minor">C Minor</option>
+      <option value="E-major">E Major</option>
+      <option value="E-minor">E Minor</option>
+      <option value="A-blues">A Blues</option>
     </select>
   </label>
   <div class="fretboard-wrapper">
@@ -125,11 +127,13 @@
     const numFrets = 24;
 
     const CHORD_SCALES = {
-      major:        [0, 2, 4, 5, 7, 9, 11],
-      minor:        [0, 2, 3, 5, 7, 8, 10],
-      majorPentatonic: [0, 2, 4, 7, 9],
-      minorPentatonic: [0, 3, 5, 7, 10],
-      blues:        [0, 3, 5, 6, 7, 10]
+      'A-major':  { root: 'A', intervals: [0, 4, 7] },
+      'A-minor':  { root: 'A', intervals: [0, 3, 7] },
+      'C-major':  { root: 'C', intervals: [0, 4, 7] },
+      'C-minor':  { root: 'C', intervals: [0, 3, 7] },
+      'E-major':  { root: 'E', intervals: [0, 4, 7] },
+      'E-minor':  { root: 'E', intervals: [0, 3, 7] },
+      'A-blues':  { root: 'A', intervals: [0, 3, 5, 6, 7, 10] }
     };
 
     const fretboardEl = document.getElementById("fretboard");
@@ -172,7 +176,9 @@
       const useFlats = document.getElementById("accidental-toggle")?.checked;
       const scaleSelect = document.getElementById("chord-select");
       const selectedScale = scaleSelect?.value;
-      const scaleIntervals = CHORD_SCALES[selectedScale] || null;
+      const scaleData = CHORD_SCALES[selectedScale];
+      const rootNote = scaleData?.root || null;
+      const scaleIntervals = scaleData?.intervals || null;
 
       for (let string = 0; string < 6; string++) {
         const tuning = document.querySelector(`select[data-string='${string}']`);
@@ -188,16 +194,17 @@
           const cell = document.createElement("div");
           cell.className = "note-cell";
           const note = getNoteAt(tuningNote, fret);
-          const rootNote = tuningNote; // Use string tuning as root for now
-          const rootIndex = (useFlats ? FLAT_NOTES : SHARP_NOTES).indexOf(rootNote);
-          const noteIndex = (useFlats ? FLAT_NOTES : SHARP_NOTES).indexOf(note);
-          const semitoneFromRoot = (noteIndex - rootIndex + 12) % 12;
+          let showNote = true;
 
-          if (!scaleIntervals || scaleIntervals.includes(semitoneFromRoot)) {
-            cell.textContent = note;
-          } else {
-            cell.textContent = "";
+          if (scaleIntervals && rootNote) {
+            const ALL_NOTES = useFlats ? FLAT_NOTES : SHARP_NOTES;
+            const rootIndex = ALL_NOTES.indexOf(rootNote);
+            const noteIndex = ALL_NOTES.indexOf(note);
+            const semitoneFromRoot = (noteIndex - rootIndex + 12) % 12;
+            showNote = scaleIntervals.includes(semitoneFromRoot);
           }
+
+          cell.textContent = showNote ? note : "";
 
           if ([3, 5, 7, 9, 12, 15, 17, 19, 21, 24].includes(fret)) {
             const dot = document.createElement("div");
@@ -219,4 +226,4 @@
     renderFretboard();
   </script>
 </body>
-</html>
+</html>  
