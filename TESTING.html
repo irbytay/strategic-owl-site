@@ -240,6 +240,35 @@
       return ALL_NOTES[(startIndex + fret) % 12];
     }
 
+    // Chord shapes dictionary (root + type as key)
+    const CHORD_SHAPES = {
+      "A Major": {
+        e: "---0--- (E)",
+        B: "---2--- (C#/Db)",
+        G: "---2--- (A)",
+        D: "---2--- (E)",
+        A: "---0--- (A)",
+        E: "---Muted"
+      },
+      "A Minor": {
+        e: "---0--- (E)",
+        B: "---1--- (C)",
+        G: "---2--- (A)",
+        D: "---2--- (E)",
+        A: "---0--- (A)",
+        E: "---Muted"
+      },
+      "C Major": {
+        e: "---0--- (E)",
+        B: "---1--- (C)",
+        G: "---0--- (G)",
+        D: "---2--- (E)",
+        A: "---3--- (C)",
+        E: "---Muted"
+      }
+      // Add more as needed
+    };
+
     function renderFretboard() {
       fretboardEl.innerHTML = "";
 
@@ -349,7 +378,19 @@
 
       // Show the selected chord/scale name below the fretboard, or display chord shape if available
       const selectedChordEl = document.getElementById("selected-chord");
-      if (rootNote && scaleType) {
+      const chordKey = `${rootNote} ${scaleType}`;
+      if (rootNote && scaleType && CHORD_SHAPES[chordKey]) {
+        const shape = CHORD_SHAPES[chordKey];
+        selectedChordEl.innerHTML =
+          `<pre style="font-size: 1rem; font-family: 'Courier New', monospace; color: var(--highlight-color); background-color: #111; padding: 12px; border-radius: 8px; line-height: 1.5;">
+e|───${shape.e.replace(/---/g, '───')}   (${shape.e.match(/\((.*?)\)/)?.[1] || ''})
+B|───${shape.B.replace(/---/g, '───')}   (${shape.B.match(/\((.*?)\)/)?.[1] || ''})
+G|───${shape.G.replace(/---/g, '───')}   (${shape.G.match(/\((.*?)\)/)?.[1] || ''})
+D|───${shape.D.replace(/---/g, '───')}   (${shape.D.match(/\((.*?)\)/)?.[1] || ''})
+A|───${shape.A.replace(/---/g, '───')}   (${shape.A.match(/\((.*?)\)/)?.[1] || ''})
+E|───${shape.E.replace(/---/g, '───')}   (${shape.E.match(/\((.*?)\)/)?.[1] || ''})
+</pre>`;
+      } else if (rootNote && scaleType) {
         selectedChordEl.textContent = `Selected: ${rootNote} ${scaleType} scale`;
       } else {
         selectedChordEl.textContent = "";
