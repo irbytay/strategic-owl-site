@@ -503,11 +503,11 @@ const PROGRESSION_LIBRARY = {
 
 
 function buildScale(rootNote, progressionName) {
+  const flip = document.getElementById('flipLogicToggle')?.checked || false;
   const intervals = PROGRESSION_LIBRARY[progressionName];
   if (!intervals || !ALL_NOTES.includes(rootNote)) return [];
 
   const noteMap = flip ? [...ALL_NOTES_FLAT] : [...ALL_NOTES];
-  const flip = document.getElementById('flipLogicToggle')?.checked || false;
   const scale = [rootNote];
   let currentIndex = noteMap.indexOf(rootNote);
 
