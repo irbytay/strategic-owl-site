@@ -219,13 +219,14 @@
           const cell = document.createElement("div");
           cell.className = "note-cell";
           const note = getNoteAt(tuningNote, fret);
-          let showNote = true;
+          
+          const ALL_NOTES = useFlats ? FLAT_NOTES : SHARP_NOTES;
+          const rootIndex = ALL_NOTES.indexOf(rootNote);
+          const noteIndex = ALL_NOTES.indexOf(note);
+          const semitoneFromRoot = (noteIndex - rootIndex + 12) % 12;
 
+          let showNote = true;
           if (scaleIntervals && rootNote) {
-            const ALL_NOTES = useFlats ? FLAT_NOTES : SHARP_NOTES;
-            const rootIndex = ALL_NOTES.indexOf(rootNote);
-            const noteIndex = ALL_NOTES.indexOf(note);
-            const semitoneFromRoot = (noteIndex - rootIndex + 12) % 12;
             showNote = scaleIntervals.includes(semitoneFromRoot);
           }
 
@@ -235,7 +236,7 @@
               6: 'TT', 7: 'P5', 8: 'm6', 9: 'M6', 10: 'm7', 11: 'M7'
             }[semitoneFromRoot];
             cell.textContent = `${note}\n${intervalName}`;
-            cell.classList.add(`interval-${intervalName}`);
+            if (intervalName) cell.classList.add(`interval-${intervalName}`);
           } else {
             cell.textContent = showNote ? note : "";
           }
