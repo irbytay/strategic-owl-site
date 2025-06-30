@@ -173,10 +173,19 @@
     <select id="scale-type-select">
       <option value="">-- Scale --</option>
       <option value="Major">Major</option>
-      <option value="Minor">Minor</option>
+      <option value="Natural Minor">Natural Minor</option>
+      <option value="Harmonic Minor">Harmonic Minor</option>
+      <option value="Melodic Minor">Melodic Minor</option>
+      <option value="Pentatonic Major">Pentatonic Major</option>
+      <option value="Pentatonic Minor">Pentatonic Minor</option>
       <option value="Blues">Blues</option>
       <option value="Dorian">Dorian</option>
+      <option value="Phrygian">Phrygian</option>
+      <option value="Lydian">Lydian</option>
       <option value="Mixolydian">Mixolydian</option>
+      <option value="Locrian">Locrian</option>
+      <option value="Whole Tone">Whole Tone</option>
+      <option value="Chromatic">Chromatic</option>
     </select>
   </label>
   <label style="margin-bottom: 12px;">
@@ -200,10 +209,19 @@
 
     const SCALE_PATTERNS = {
       "Major": [0, 2, 4, 5, 7, 9, 11],
-      "Minor": [0, 2, 3, 5, 7, 8, 10],
+      "Natural Minor": [0, 2, 3, 5, 7, 8, 10],
+      "Harmonic Minor": [0, 2, 3, 5, 7, 8, 11],
+      "Melodic Minor": [0, 2, 3, 5, 7, 9, 11],
+      "Pentatonic Major": [0, 2, 4, 7, 9],
+      "Pentatonic Minor": [0, 3, 5, 7, 10],
       "Blues": [0, 3, 5, 6, 7, 10],
       "Dorian": [0, 2, 3, 5, 7, 9, 10],
-      "Mixolydian": [0, 2, 4, 5, 7, 9, 10]
+      "Phrygian": [0, 1, 3, 5, 7, 8, 10],
+      "Lydian": [0, 2, 4, 6, 7, 9, 11],
+      "Mixolydian": [0, 2, 4, 5, 7, 9, 10],
+      "Locrian": [0, 1, 3, 5, 6, 8, 10],
+      "Whole Tone": [0, 2, 4, 6, 8, 10],
+      "Chromatic": [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11]
     };
 
     const fretboardEl = document.getElementById("fretboard");
@@ -258,6 +276,22 @@
         A: "---0--- (A)",
         E: "---Muted"
       },
+      "B Major": {
+        e: "---2--- (F#/Gb)",
+        B: "---4--- (D#/Eb)",
+        G: "---4--- (B)",
+        D: "---4--- (F#/Gb)",
+        A: "---2--- (B)",
+        E: "---Muted"
+      },
+      "B Minor": {
+        e: "---2--- (F#/Gb)",
+        B: "---3--- (D)",
+        G: "---4--- (B)",
+        D: "---4--- (F#/Gb)",
+        A: "---2--- (B)",
+        E: "---Muted"
+      },
       "C Major": {
         e: "---0--- (E)",
         B: "---1--- (C)",
@@ -265,8 +299,79 @@
         D: "---2--- (E)",
         A: "---3--- (C)",
         E: "---Muted"
+      },
+      "C Minor": {
+        e: "---3--- (G)",
+        B: "---4--- (D#/Eb)",
+        G: "---5--- (C)",
+        D: "---5--- (G)",
+        A: "---3--- (C)",
+        E: "---Muted"
+      },
+      "D Major": {
+        e: "---2--- (F#/Gb)",
+        B: "---3--- (D)",
+        G: "---2--- (A)",
+        D: "---0--- (D)",
+        A: "---Muted",
+        E: "---Muted"
+      },
+      "D Minor": {
+        e: "---1--- (F)",
+        B: "---3--- (D)",
+        G: "---2--- (A)",
+        D: "---0--- (D)",
+        A: "---Muted",
+        E: "---Muted"
+      },
+      "E Major": {
+        e: "---0--- (E)",
+        B: "---0--- (B)",
+        G: "---1--- (G#/Ab)",
+        D: "---2--- (E)",
+        A: "---2--- (B)",
+        E: "---0--- (E)"
+      },
+      "E Minor": {
+        e: "---0--- (E)",
+        B: "---0--- (B)",
+        G: "---0--- (G)",
+        D: "---2--- (E)",
+        A: "---2--- (B)",
+        E: "---0--- (E)"
+      },
+      "F Major": {
+        e: "---1--- (F)",
+        B: "---1--- (C)",
+        G: "---2--- (A)",
+        D: "---3--- (F)",
+        A: "---3--- (C)",
+        E: "---1--- (F)"
+      },
+      "F Minor": {
+        e: "---1--- (F)",
+        B: "---1--- (C)",
+        G: "---1--- (G#/Ab)",
+        D: "---3--- (F)",
+        A: "---3--- (C)",
+        E: "---1--- (F)"
+      },
+      "G Major": {
+        e: "---3--- (G)",
+        B: "---3--- (D)",
+        G: "---0--- (G)",
+        D: "---0--- (D)",
+        A: "---2--- (B)",
+        E: "---3--- (G)"
+      },
+      "G Minor": {
+        e: "---3--- (G)",
+        B: "---3--- (D)",
+        G: "---3--- (G#/Ab)",
+        D: "---5--- (G)",
+        A: "---5--- (D)",
+        E: "---3--- (G)"
       }
-      // Add more as needed
     };
 
     function renderFretboard() {
