@@ -146,6 +146,14 @@
       color: var(--highlight-color);
       font-weight: bold;
     }
+
+    /* Visually simulate thicker string lines for realism */
+    .string-row:nth-child(1) .note-cell { border-bottom: 1px solid var(--string-color); }
+    .string-row:nth-child(2) .note-cell { border-bottom: 2px solid var(--string-color); }
+    .string-row:nth-child(3) .note-cell { border-bottom: 3px solid var(--string-color); }
+    .string-row:nth-child(4) .note-cell { border-bottom: 4px solid var(--string-color); }
+    .string-row:nth-child(5) .note-cell { border-bottom: 5px solid var(--string-color); }
+    .string-row:nth-child(6) .note-cell { border-bottom: 6px solid var(--string-color); }
   </style>
 </head>
 <body>
@@ -172,8 +180,8 @@
     Select Scale:
     <select id="scale-type-select">
       <option value="">-- Scale --</option>
-      <option value="Major">Major</option>
-      <option value="Minor">Minor</option>
+      <option value="Natural Major">Natural Major</option>
+      <option value="Natural Minor">Natural Minor</option>
       <option value="Harmonic Minor">Harmonic Minor</option>
       <option value="Melodic Minor">Melodic Minor</option>
       <option value="Pentatonic Major">Pentatonic Major</option>
@@ -208,8 +216,8 @@
     const numFrets = 24;
 
     const SCALE_PATTERNS = {
-      "Major": [0, 2, 4, 5, 7, 9, 11],
-      "Minor": [0, 2, 3, 5, 7, 8, 10],
+      "Natural Major": [0, 2, 4, 5, 7, 9, 11],
+      "Natural Minor": [0, 2, 3, 5, 7, 8, 10],
       "Harmonic Minor": [0, 2, 3, 5, 7, 8, 11],
       "Melodic Minor": [0, 2, 3, 5, 7, 9, 11],
       "Pentatonic Major": [0, 2, 4, 7, 9],
