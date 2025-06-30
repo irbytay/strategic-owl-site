@@ -918,29 +918,42 @@ function updateChordInfoDisplay() {
 }
 
 document.addEventListener("DOMContentLoaded", () => {
-  // Add visual chord diagram area if not present
-  if (!document.getElementById("visual-chord-diagram")) {
-    const displayArea = document.getElementById("chord-display-area");
-    const diagramDiv = document.createElement("pre");
-    diagramDiv.id = "visual-chord-diagram";
-    diagramDiv.style.marginTop = "12px";
-    diagramDiv.style.background = "#112240";
-    diagramDiv.style.color = "#D4AF37";
-    diagramDiv.style.padding = "8px 16px";
-    diagramDiv.style.borderRadius = "6px";
-    diagramDiv.style.fontFamily = "monospace";
-    diagramDiv.style.fontSize = "1.05rem";
-    diagramDiv.style.width = "max-content";
-    diagramDiv.style.marginLeft = "auto";
-    diagramDiv.style.marginRight = "auto";
-    diagramDiv.style.textAlign = "left";
-    displayArea.appendChild(diagramDiv);
-  }
+  // Add visual chord diagram if not already present
+  const displayArea = document.getElementById("chord-display-area");
+  const diagramDiv = document.createElement("pre");
+  diagramDiv.id = "visual-chord-diagram";
+  diagramDiv.style.marginTop = "12px";
+  diagramDiv.style.background = "#112240";
+  diagramDiv.style.color = "#D4AF37";
+  diagramDiv.style.padding = "8px 16px";
+  diagramDiv.style.borderRadius = "6px";
+  diagramDiv.style.fontFamily = "monospace";
+  diagramDiv.style.fontSize = "1.05rem";
+  diagramDiv.style.width = "max-content";
+  diagramDiv.style.marginLeft = "auto";
+  diagramDiv.style.marginRight = "auto";
+  diagramDiv.style.textAlign = "left";
+  displayArea.appendChild(diagramDiv);
+
+  // Set scale notes and chord tones first
+  updateChordInfoDisplay();
+
+  // Then generate fretboard using scale notes
   generateFretboard(defaultTuning);
-  setTimeout(updateChordInfoDisplay, 50);
-  document.getElementById("custom-chord-select").addEventListener("change", updateChordInfoDisplay);
-  document.getElementById("custom-progression-select").addEventListener("change", updateChordInfoDisplay);
-  document.getElementById("flipLogicToggle").addEventListener("change", updateChordInfoDisplay);
+
+  // Set listeners
+  document.getElementById("custom-chord-select").addEventListener("change", () => {
+    updateChordInfoDisplay();
+    generateFretboard(defaultTuning);
+  });
+  document.getElementById("custom-progression-select").addEventListener("change", () => {
+    updateChordInfoDisplay();
+    generateFretboard(defaultTuning);
+  });
+  document.getElementById("flipLogicToggle").addEventListener("change", () => {
+    updateChordInfoDisplay();
+    generateFretboard(defaultTuning);
+  });
 });
 </script>
   <!-- Netlify Identity Widget & logout redirect -->
