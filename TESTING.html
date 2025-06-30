@@ -1,96 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
 <head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Strategic Fretboard | Explore & Unlock the Fretboard</title>
+  <link href="https://fonts.googleapis.com/css2?family=Chivo:wght@400;700&family=Space+Grotesk:wght@400;600;700&display=swap" rel="stylesheet">
   <style>
     body {
-      background-color: #0D1B2A;
-      color: #fff;
-      font-family: 'Courier New', monospace;
       margin: 0;
-      padding: 20px;
+      font-family: 'Chivo', sans-serif;
+      background: linear-gradient(to bottom right, #0D1B2A, #112240); 
+      color: #ffffff;
       text-align: center;
+      padding: 2rem;
     }
-
     header {
-      font-size: 2.5rem;
-      color: #D4AF37;
-      letter-spacing: 1.2px;
-      margin-bottom: 12px;
-      font-weight: bold;
-      text-shadow: 1px 1px 2px #000;
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 2rem;
+      margin-bottom: 0.5rem;
+      color: #FFFFF0;
     }
-
     .tagline {
-      font-size: 1.2rem;
-      color: #aaa;
-      margin-bottom: 30px;
+      font-size: 1.6rem;
+      color: #ffffff;
+      font-weight: 500;
+      margin-bottom: 2rem;
     }
-
-    ul {
-      color: #ccc;
+    p {
+      max-width: 700px;
+      margin: 1.5rem auto;
       line-height: 1.6;
+      font-size: 1.1rem;
+      color: #ffffff;
     }
-
-    a button, button {
-      font-family: 'Courier New', monospace;
-      background-color: #D4AF37;
-      color: #0D1B2A;
-      padding: 10px 16px;
-      font-size: 1rem;
+    .cta {
+      margin: 2rem 0;
+    }
+    .cta button {
+      background-color: #28A745; /* Truth Green */
+      color: #ffffff;
       border: none;
-      border-radius: 6px;
+      padding: 1rem 2rem;
+      font-size: 1.1rem;
+      font-weight: bold;
       cursor: pointer;
-      margin: 6px;
-      box-shadow: 0 0 6px rgba(255, 215, 0, 0.3);
-    }
-
-    .image-preview {
-      margin: 40px auto;
-      max-width: 90%;
-      border: 1px solid #D4AF37;
       border-radius: 8px;
+      transition: background-color 0.3s ease, transform 0.2s ease;
+      margin: 0 0.5rem;
     }
-
+    .cta button:hover {
+      background-color: #218838;
+      transform: scale(1.03);
+    }
+    .image-placeholder {
+      width: 100%;
+      max-width: 600px;
+      height: 200px;
+      margin: 2rem auto;
+      background: repeating-linear-gradient(
+        90deg,
+        #444,
+        #444 10%,
+        #222 10%,
+        #222 20%
+      );
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #888;
+      font-size: 1.2rem;
+      border-radius: 8px;
+      border: 1px solid #666;
+      box-shadow: 0 0 10px rgba(0,0,0,0.3);
+    }
+    .image-preview {
+      width: 100%;
+      max-width: 600px;
+      height: auto;
+      margin: 2rem auto;
+      border-radius: 8px;
+      border: 1px solid #666;
+      box-shadow: 0 0 10px rgba(0,0,0,0.3);
+      display: block;
+      animation: fadeIn 1.2s ease-in;
+    }
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
     footer {
-      margin-top: 40px;
-      font-size: 0.85rem;
-      color: #777;
-    }
-  </style>
-  <style>
-    @media (max-width: 600px) {
-      body {
-        padding: 16px;
-        font-size: 0.95rem;
-      }
-
-      header {
-        font-size: 2rem;
-      }
-
-      .tagline {
-        font-size: 1rem;
-        margin-bottom: 20px;
-      }
-
-      ul {
-        padding-left: 20px;
-        font-size: 0.95rem;
-      }
-
-      button {
-        width: 100%;
-        margin: 8px 0;
-      }
-
-      .cta {
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-      }
-
-      .image-preview {
-        max-width: 100%;
-        margin-top: 24px;
-      }
+      margin-top: 4rem;
+      font-size: 0.9rem;
+      color: #7C8A9B;
     }
   </style>
   <script src="https://identity.netlify.com/v1/netlify-identity-widget.js"></script>
@@ -130,41 +131,43 @@
   </script>
 </head>
 <body>
-  <header>Strategic Fretboard</header>
-  <div class="tagline"><strong>See it. Play it. Master it.</strong></div>
+<header>Strategic Fretboard</header>
+<div class="tagline"><strong>See it. Play it. Master it.</strong></div>
 
-  <p>Welcome to <strong>Strategic Fretboard</strong> — a modern visual system built to help you unlock the full potential of your guitar neck. Instead of memorizing thousands of patterns, Strategic Fretboard lets you <em>see</em> the logic behind chords, scales, and shapes through a fully interactive fretboard tool.</p>
+<p>Welcome to <strong>Strategic Fretboard</strong> — a modern visual system built to help you unlock the full potential of your guitar neck. Instead of memorizing thousands of patterns, Strategic Fretboard lets you <em>see</em> the logic behind chords, scales, and shapes through a fully interactive fretboard tool.</p>
 
-  <p>This platform is designed for guitarists who want to go beyond tabs and diagrams. With intuitive visuals, tunable string layouts, and scale/chord overlays — you’ll begin to recognize the building blocks of music theory, all mapped out from fret 0 to 24.</p>
+<p>This platform is designed for guitarists who want to go beyond tabs and diagrams. With intuitive visuals, tunable string layouts, and scale/chord overlays — you’ll begin to recognize the building blocks of music theory, all mapped out from fret 0 to 24.</p>
 
-  <p>Whether you're a student, teacher, or serious player looking to sharpen your understanding, this tool empowers you to:</p>
-  <ul style="max-width: 680px; margin: 1rem auto; text-align: left;">
-    <li>🔹 Explore major, minor, pentatonic, and advanced modes</li>
-    <li>🔹 Visualize root, 3rd, 5th, and 7th intervals across the neck</li>
-    <li>🔹 Customize your tuning and flip logic for reverse learning</li>
-    <li>🔹 Instantly identify CAGED shapes across any scale</li>
-    <li>🔹 Reset and rebuild patterns at the click of a button</li>
-  </ul>
+<p>Whether you're a student, teacher, or serious player looking to sharpen your understanding, this tool empowers you to:</p>
 
-  <p>Built by a guitarist for guitarists — because sometimes all it takes is seeing it differently. Try it out and bring clarity to your practice.</p>
+<ul style="max-width: 680px; margin: 1rem auto; text-align: left;">
+  <li>🔹 Explore major, minor, pentatonic, and advanced modes</li>
+  <li>🔹 Visualize root, 3rd, 5th, and 7th intervals across the neck</li>
+  <li>🔹 Customize your tuning and flip logic for reverse learning</li>
+  <li>🔹 Instantly identify CAGED shapes across any scale</li>
+  <li>🔹 Reset and rebuild patterns at the click of a button</li>
+</ul>
 
-  <div class="cta">
-    <div id="fretboard-link" style="display:none;">
-      <a href="/fretboard.html">
-        <button>Go to Fretboard</button>
-      </a>
-    </div>
-    <div id="stripe-link" style="display:none;">
-      <a href="https://buy.stripe.com/7sY8wP4gP5h9182aEhdwc00">
-        <button>Start Free Trial</button>
-      </a>
-    </div>
-    <button onclick="netlifyIdentity.open()">Login / Sign Up</button>
+<p>Built by a guitarist for guitarists — because sometimes all it takes is seeing it differently. Try it out and bring clarity to your practice.</p>
+
+<div class="cta">
+  <div id="fretboard-link" style="display:none;">
+    <a href="/fretboard.html">
+      <button>Go to Fretboard</button>
+    </a>
   </div>
+  <div id="stripe-link" style="display:none;">
+    <a href="https://buy.stripe.com/7sY8wP4gP5h9182aEhdwc00">
+      <button>Start Free Trial</button>
+    </a>
+  </div>
+  <button onclick="netlifyIdentity.open()">Login / Sign Up</button>
+</div>
 
-  <img src="fret.png" alt="Fretboard Preview" class="image-preview" />
+<img src="fret.png" alt="Fretboard Preview" class="image-preview" />
 
-  <footer>
-    &copy; 2025 Strategic Fretboard. All rights reserved.
-  </footer>
+<footer>
+  &copy; 2025 Strategic Fretboard. All rights reserved.
+</footer>
 </body>
+</html>
