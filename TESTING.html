@@ -95,21 +95,32 @@
 </head>
 <body>
   <h1>Virtual Guitar Fretboard</h1>
+  <label style="margin-bottom: 12px;">
+    <input type="checkbox" id="accidental-toggle" />
+    Use Flat Notes
+  </label>
   <div class="fretboard-wrapper">
     <div class="fretboard" id="fretboard"></div>
   </div>
 
   <script>
-    const ALL_NOTES = ['C', 'C#', 'D', 'D#', 'E', 'F', 'F#', 'G', 'G#', 'A', 'A#', 'B'];
+    const SHARP_NOTES = ['C', 'C#', 'D', 'D#', 'E', 'F', 'F#', 'G', 'G#', 'A', 'A#', 'B'];
+    const FLAT_NOTES  = ['C', 'Db', 'D', 'Eb', 'E', 'F', 'Gb', 'G', 'Ab', 'A', 'Bb', 'B'];
     const standardTuning = ['E', 'B', 'G', 'D', 'A', 'E'];
     const numFrets = 24;
 
     const fretboardEl = document.getElementById("fretboard");
 
     function createTuningSelect(stringIndex, defaultNote) {
+      const useFlats = document.getElementById("accidental-toggle")?.checked;
+      const ALL_NOTES = useFlats ? FLAT_NOTES : SHARP_NOTES;
+
       const select = document.createElement("select");
       select.className = "tuning-select";
       select.dataset.string = stringIndex;
+
+      while (select.firstChild) select.removeChild(select.firstChild);
+
       ALL_NOTES.forEach(note => {
         const opt = document.createElement("option");
         opt.value = note;
@@ -122,12 +133,16 @@
     }
 
     function getNoteAt(startNote, fret) {
+      const useFlats = document.getElementById("accidental-toggle")?.checked;
+      const ALL_NOTES = useFlats ? FLAT_NOTES : SHARP_NOTES;
+
       const startIndex = ALL_NOTES.indexOf(startNote);
       return ALL_NOTES[(startIndex + fret) % 12];
     }
 
     function renderFretboard() {
       fretboardEl.innerHTML = "";
+      const wrapper = document.createDocumentFragment();
 
       for (let string = 0; string < 6; string++) {
         const tuning = document.querySelector(`select[data-string='${string}']`);
@@ -135,7 +150,7 @@
 
         // Add tuning selector (only one per string)
         const tuningSelect = createTuningSelect(string, tuningNote);
-        fretboardEl.appendChild(tuningSelect);
+        wrapper.appendChild(tuningSelect);
 
         for (let fret = 0; fret <= numFrets; fret++) {
           const cell = document.createElement("div");
@@ -152,10 +167,13 @@
             cell.appendChild(dot);
           }
 
-          fretboardEl.appendChild(cell);
+          wrapper.appendChild(cell);
         }
       }
+      fretboardEl.appendChild(wrapper);
     }
+
+    document.getElementById("accidental-toggle").addEventListener("change", renderFretboard);
 
     renderFretboard();
   </script>
