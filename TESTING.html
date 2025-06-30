@@ -223,11 +223,12 @@
         const labeledSteps = scaleIntervals.map(interval => {
           const note = ALL_NOTES[(rootIndex + interval) % 12];
           const label = intervalNames[interval];
-          return `${label}(${note})`;
+          const className = `interval-${label}`;
+          return `<span class="${className}" style="padding: 2px 6px; margin-right: 4px; border-radius: 4px; display: inline-block;">${label} (${note})</span>`;
         });
-        stepInfo.textContent = `Notes in ${rootNote} scale: ${labeledSteps.join(", ")}`;
+        stepInfo.innerHTML = `Notes in ${rootNote} scale: ${labeledSteps.join(" ")}`;
       } else {
-        stepInfo.textContent = "";
+        stepInfo.innerHTML = "";
       }
 
       for (let string = 0; string < 6; string++) {
