@@ -937,9 +937,10 @@ document.addEventListener("DOMContentLoaded", () => {
     displayArea.appendChild(diagramDiv);
   }
   generateFretboard(defaultTuning);
-document.getElementById("custom-chord-select").addEventListener("change", updateChordInfoDisplay);
-document.getElementById("custom-progression-select").addEventListener("change", updateChordInfoDisplay);
-document.getElementById("flipLogicToggle").addEventListener("change", updateChordInfoDisplay);
+  updateChordInfoDisplay();
+  document.getElementById("custom-chord-select").addEventListener("change", updateChordInfoDisplay);
+  document.getElementById("custom-progression-select").addEventListener("change", updateChordInfoDisplay);
+  document.getElementById("flipLogicToggle").addEventListener("change", updateChordInfoDisplay);
 });
 </script>
   <!-- Netlify Identity Widget & logout redirect -->
