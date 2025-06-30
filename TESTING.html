@@ -25,7 +25,7 @@
     }
 
     h1 {
-      margin-bottom: 20px;
+      margin-bottom: 30px;
       font-size: 1.6rem;
       color: var(--highlight-color);
     }
@@ -38,9 +38,10 @@
 
     .fretboard {
       display: grid;
-      grid-template-columns: 60px repeat(24, 50px);
-      grid-auto-rows: 48px;
-      border: 1px solid var(--fret-color);
+      grid-template-columns: 60px repeat(24, 42px);
+      grid-auto-rows: 40px;
+      border: none;
+      background: transparent;
     }
 
     .string-label {
@@ -59,6 +60,9 @@
       align-items: center;
       justify-content: center;
       background: var(--note-bg);
+      color: var(--note-text);
+      font-size: 0.85rem;
+      font-weight: 600;
       position: relative;
     }
 
@@ -129,8 +133,9 @@
         const tuning = document.querySelector(`select[data-string='${string}']`);
         const tuningNote = tuning ? tuning.value : standardTuning[string];
 
-        // Add tuning selector
-        fretboardEl.appendChild(createTuningSelect(string, tuningNote));
+        // Add tuning selector (only one per string)
+        const tuningSelect = createTuningSelect(string, tuningNote);
+        fretboardEl.appendChild(tuningSelect);
 
         for (let fret = 0; fret <= numFrets; fret++) {
           const cell = document.createElement("div");
