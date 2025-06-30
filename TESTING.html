@@ -223,15 +223,15 @@
           0: 'R', 1: 'm2', 2: 'M2', 3: 'm3', 4: 'M3', 5: 'P4',
           6: 'TT', 7: 'P5', 8: 'm6', 9: 'M6', 10: 'm7', 11: 'M7'
         };
-        const intervals = scaleIntervals;
-        const finalIntervals = useFlats ? [0, ...scaleIntervals.slice(1).reverse()] : intervals;
+        // Corrected logic: reverse scale notes from the root using semitone math, keep root at beginning
+        const finalIntervals = useFlats
+          ? [0, ...scaleIntervals.slice(1).map(x => (12 - x) % 12)]
+          : scaleIntervals;
 
         const labeledSteps = finalIntervals.map(interval => {
-          const noteIndex = useFlats
-            ? (rootIndex - interval + 12) % 12
-            : (rootIndex + interval) % 12;
+          const noteIndex = (rootIndex + interval) % 12;
           const note = ALL_NOTES[noteIndex];
-          const label = intervalNames[interval];
+          const label = intervalNames[(interval + 12) % 12];
           const className = `interval-${label}`;
           return `<span class="${className}" style="padding: 2px 6px; margin-right: 4px; border-radius: 4px; display: inline-block;">${note} (${label})</span>`;
         });
