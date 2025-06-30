@@ -753,6 +753,7 @@ function generateFretboard(tuning = defaultTuning) {
         // Only show note if it's part of the scale
         const shouldShow = window.currentScaleNotes?.includes(note);
         cell.textContent = shouldShow ? note : "";
+        cell.setAttribute("data-note", note);
 
         // Remove existing dot if any
         const existingDot = cell.querySelector("div");
@@ -786,6 +787,7 @@ function generateFretboard(tuning = defaultTuning) {
       // Only show note if it's part of the scale
       const shouldShow = window.currentScaleNotes?.includes(note);
       cell.textContent = shouldShow ? note : "";
+      cell.setAttribute("data-note", note);
       cell.style.width = "40px";
       cell.style.height = "40px";
       cell.style.display = "flex";
@@ -814,6 +816,8 @@ function generateFretboard(tuning = defaultTuning) {
       fretboardDiv.appendChild(cell);
     }
   }
+  // Ensure fretboard note rendering and coloring are synchronized on page load
+  updateChordInfoDisplay();
 }
 
 // No longer need to populateTuningDropdowns or use .tuning-select, as dropdowns are inline
@@ -883,17 +887,19 @@ function updateChordInfoDisplay() {
   const normalizedChordTones = chordTones.map(normalize);
 
   fretboardCells.forEach(cell => {
-    const note = cell.textContent.trim();
-    if (!note) {
+    const note = cell.getAttribute("data-note");
+    if (!note || !window.currentScaleNotes?.includes(note)) {
+      cell.textContent = "";
       cell.style.backgroundColor = "#1A2B4C";
       cell.style.color = "var(--text)";
       return;
     }
+
+    cell.textContent = note;
     const normalizedNote = normalize(note);
     const idx = normalizedChordTones.indexOf(normalizedNote);
-
     if (idx !== -1) {
-      const role = roleColors[idx] || roleColors[0]; // fallback to root if out of bounds
+      const role = roleColors[idx] || roleColors[0];
       cell.style.backgroundColor = role.bg;
       cell.style.color = role.color;
     } else {
@@ -923,7 +929,6 @@ document.addEventListener("DOMContentLoaded", () => {
     displayArea.appendChild(diagramDiv);
   }
   generateFretboard(defaultTuning);
-updateChordInfoDisplay();
   document.getElementById("custom-chord-select").addEventListener("change", updateChordInfoDisplay);
   document.getElementById("custom-progression-select").addEventListener("change", updateChordInfoDisplay);
   document.getElementById("flipLogicToggle").addEventListener("change", updateChordInfoDisplay);
