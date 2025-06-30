@@ -211,18 +211,70 @@
       box-shadow: 0 0 6px rgba(255, 215, 0, 0.3);
       transition: background 0.3s;
     }
+    .help-icon-container {
+  position: relative;
+  display: inline-block;
+  float: right;
+  margin-top: -40px;
+  margin-right: 12px;
+  z-index: 5;
+}
+
+.help-icon {
+  background: linear-gradient(135deg, #333, #555);
+  color: var(--highlight-color);
+  padding: 6px 10px;
+  border-radius: 50%;
+  font-size: 1.1rem;
+  font-weight: bold;
+  cursor: pointer;
+  text-align: center;
+  box-shadow: 0 0 5px rgba(255, 215, 0, 0.4);
+  user-select: none;
+}
+
+.help-tooltip {
+  visibility: hidden;
+  opacity: 0;
+  width: 240px;
+  background-color: #1a1a1a;
+  color: #eee;
+  text-align: left;
+  border-radius: 6px;
+  padding: 12px;
+  position: absolute;
+  right: 0;
+  top: 40px;
+  z-index: 10;
+  transition: opacity 0.3s ease;
+  font-size: 0.75rem;
+  line-height: 1.4;
+  box-shadow: 0 0 6px rgba(255, 215, 0, 0.2);
+}
+
+.help-icon:hover + .help-tooltip,
+.help-icon:focus + .help-tooltip {
+  visibility: visible;
+  opacity: 1;
+}
   </style>
 </head>
 <body>
-  <p style="max-width: 800px; font-size: 0.95rem; margin-bottom: 24px; line-height: 1.5; color: #ccc;">
-    Welcome to the Virtual Guitar Fretboard — a fully mapped, interactive guitar neck built to help you explore scales, chords, and musical patterns visually. What you’re seeing is a 6-string fretboard laid out from frets 1 through 24. You can change each string’s tuning to match your guitar or experiment with custom tunings.
-    <br /><br />
-    Begin by selecting a root note and choosing a scale type. If there’s a matching chord, it will appear below the fretboard. You’ll also see the notes in that scale and the intervals (steps) between them. On the fretboard, we highlight key degrees of the scale — the Root, 3rd, 5th, and 7th — allowing you to spot familiar shapes within any key. These include what guitarists often refer to as the “CAGED” system: C, A, G, E, and D-shaped chord and scale forms.
-    <br /><br />
-    There’s also a reset button if you want to start over, and for the curious, a toggle to flip the scale logic into reverse — helping you visualize descending movement and flattened notes.
-    <br /><br />
-    This tool was incredibly helpful in my own learning journey, especially in seeing patterns I hadn’t fully understood before. I wanted to share it in hopes that it helps others like it helped me. Enjoy exploring, experimenting, and most importantly — keep playing.
-  </p>
+  <div class="help-icon-container">
+  <div class="help-icon" tabindex="0">🦉</div>
+  <div class="help-tooltip">
+    <strong>How to Use:</strong><br>
+    1. Select Root & Scale<br>
+    2. Toggle Descending Mode (flats)<br>
+    3. Adjust tuning (left side)<br>
+    4. Notes highlight as:<br>
+    &nbsp;&nbsp;&nbsp;• <span style="color:#2e7031;">R</span> = Root<br>
+    &nbsp;&nbsp;&nbsp;• <span style="color:#3e4c75;">M3/m3</span> = Major/Minor 3rd<br>
+    &nbsp;&nbsp;&nbsp;• <span style="color:#704c2e;">P5</span> = Perfect 5th<br>
+    &nbsp;&nbsp;&nbsp;• <span style="color:#553770;">M7/m7</span> = Major/Minor 7th<br>
+    5. Click “Reset Fretboard” to start fresh
+  </div>
+</div>
   <h1>The Strategic Fretboard</h1>
   <label style="margin: 12px 0;">
     Select Root:
