@@ -347,11 +347,54 @@
         fretboardEl.appendChild(row);
       }
 
-      // Show the selected chord/scale name below the fretboard
-      document.getElementById("selected-chord").textContent =
-        selectedScale
-          ? `Selected: ${scaleSelect.options[scaleSelect.selectedIndex].text}`
-          : "";
+      // Show the selected chord/scale name below the fretboard, or display chord shape if available
+      const selectedChordEl = document.getElementById("selected-chord");
+      if (selectedScale && CHORD_SCALES[selectedScale]) {
+        const shape = {
+          "A-major": {
+            "e": "---0--- (E)",
+            "B": "---2--- (C#/Db)",
+            "G": "---2--- (A)",
+            "D": "---2--- (E)",
+            "A": "---0--- (A)",
+            "E": "---Muted"
+          },
+          "A-minor": {
+            "e": "---0--- (E)",
+            "B": "---1--- (C)",
+            "G": "---2--- (A)",
+            "D": "---2--- (E)",
+            "A": "---0--- (A)",
+            "E": "---Muted"
+          },
+          "C-major": {
+            "e": "---0--- (E)",
+            "B": "---1--- (C)",
+            "G": "---0--- (G)",
+            "D": "---2--- (E)",
+            "A": "---3--- (C)",
+            "E": "---Muted"
+          }
+          // Add more if needed
+        };
+
+        const shapeData = shape[selectedScale];
+        if (shapeData) {
+          selectedChordEl.innerHTML =
+            `<pre style="font-size: 0.9rem; color: #ccc; background-color: #111; padding: 10px; border-radius: 6px;">
+e| ${shapeData.e}
+B| ${shapeData.B}
+G| ${shapeData.G}
+D| ${shapeData.D}
+A| ${shapeData.A}
+E| ${shapeData.E}
+</pre>`;
+        } else {
+          selectedChordEl.textContent = `Selected: ${scaleSelect.options[scaleSelect.selectedIndex].text}`;
+        }
+      } else {
+        selectedChordEl.textContent = "";
+      }
     }
 
     document.getElementById("accidental-toggle").addEventListener("change", renderFretboard);
