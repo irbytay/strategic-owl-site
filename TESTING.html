@@ -819,7 +819,11 @@ function updateChordInfoDisplay() {
   // document.getElementById("chord-info").textContent = `Chord: ${root} | Progression: ${progression}`;
   document.getElementById("chord-info").textContent = "";
   document.getElementById("progression-steps").textContent = `Steps: ${intervals ? intervals.join(' - ') : 'N/A'}`;
-  document.getElementById("scale-notes").textContent = `Notes: ${notes.join('  ')}`;
+  const coloredNotesHTML = notes.map((note, index) => {
+    const role = roleColors[index] || { bg: "rgba(255,255,255,0.1)", color: "#FFFFFF" };
+    return `<span style="color: ${role.color}; background-color: ${role.bg}; padding: 2px 6px; border-radius: 4px; margin: 0 4px;">${note}</span>`;
+  }).join("");
+  document.getElementById("scale-notes").innerHTML = `Notes: ${coloredNotesHTML}`;
 
   // --- Chord tones calculation and visualization ---
   let type = "triad";
