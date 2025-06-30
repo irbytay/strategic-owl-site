@@ -745,9 +745,10 @@ function generateFretboard(tuning = defaultTuning) {
       // Use flip logic for note map
       const flip = document.getElementById("flipLogicToggle")?.checked || false;
       const noteMap = flip ? ALL_NOTES_FLAT : ALL_NOTES;
-      for (let fret = 0; fret < numFrets; fret++) {
-        const cellIndex = rowStart + 1 + fret;
-        const note = noteMap[(noteMap.indexOf(newNote) + fret + 1) % 12];
+      const openIndex = noteMap.indexOf(newNote);
+      for (let fret = 1; fret <= numFrets; fret++) {
+        const cellIndex = rowStart + fret;
+        const note = noteMap[(openIndex + fret) % 12];
         const cell = fretboardDiv.children[cellIndex];
         // Only show note if it's part of the scale
         const shouldShow = window.currentScaleNotes?.includes(note);
@@ -759,8 +760,7 @@ function generateFretboard(tuning = defaultTuning) {
         if (existingDot) cell.removeChild(existingDot);
 
         // Reapply fret marker if needed
-        const actualFret = fret + 1;
-        if ([3, 5, 7, 9, 12, 15, 17, 19, 22].includes(actualFret)) {
+        if ([3, 5, 7, 9, 12, 15, 17, 19, 22].includes(fret)) {
           const dot = document.createElement("div");
           dot.textContent = "•";
           dot.style.position = "absolute";
@@ -777,11 +777,10 @@ function generateFretboard(tuning = defaultTuning) {
     // Add fret cells (start at 1, skip 0)
     // Define visual string thickness: string 1 (top/high E) to string 6 (bottom/low E)
     const visualGauge = [1, 2, 2.5, 3, 4, 5]; // px: thinnest to thickest
+    const openIndex = noteMap.indexOf(openNote);
     for (let fret = 1; fret <= numFrets; fret++) {
       // Use flip logic for note map
-      const flip = document.getElementById("flipLogicToggle")?.checked || false;
-      const noteMap = flip ? ALL_NOTES_FLAT : ALL_NOTES;
-      const note = noteMap[(noteMap.indexOf(openNote) + fret) % 12];
+      const note = noteMap[(openIndex + fret) % 12];
       const cell = document.createElement("div");
       // Only show note if it's part of the scale
       const shouldShow = window.currentScaleNotes?.includes(note);
@@ -894,12 +893,11 @@ function updateChordInfoDisplay() {
         'C♯': 'C#', 'D♯': 'D#', 'F♯': 'F#', 'G♯': 'G#', 'A♯': 'A#',
         'Cb': 'B', 'Fb': 'E', 'E#': 'F', 'B#': 'C'
       };
-      return enharmonics[note] || note;
+      return enharmonics[note] || note.replace(/♯/g, '#').replace(/♭/g, 'b');
     };
     const normalizedNote = normalize(note);
-    const normalizedScale = window.currentScaleNotes.map(normalize);
-
-    if (!normalizedScale.includes(normalizedNote)) {
+    const isInScale = window.currentScaleNotes.some(n => normalize(n) === normalizedNote);
+    if (!isInScale) {
       cell.textContent = "";
       cell.style.backgroundColor = "#1A2B4C";
       cell.style.color = "var(--text)";
@@ -939,9 +937,9 @@ document.addEventListener("DOMContentLoaded", () => {
     displayArea.appendChild(diagramDiv);
   }
   generateFretboard(defaultTuning);
-  document.getElementById("custom-chord-select").addEventListener("change", updateChordInfoDisplay);
-  document.getElementById("custom-progression-select").addEventListener("change", updateChordInfoDisplay);
-  document.getElementById("flipLogicToggle").addEventListener("change", updateChordInfoDisplay);
+document.getElementById("custom-chord-select").addEventListener("change", updateChordInfoDisplay);
+document.getElementById("custom-progression-select").addEventListener("change", updateChordInfoDisplay);
+document.getElementById("flipLogicToggle").addEventListener("change", updateChordInfoDisplay);
 });
 </script>
   <!-- Netlify Identity Widget & logout redirect -->
