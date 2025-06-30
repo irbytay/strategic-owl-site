@@ -888,7 +888,19 @@ function updateChordInfoDisplay() {
 
   fretboardCells.forEach(cell => {
     const note = cell.getAttribute("data-note");
-    if (!note || !window.currentScaleNotes?.includes(note)) {
+    // --- Normalization for scale notes (enharmonic support) ---
+    const normalize = (note) => {
+      const enharmonics = {
+        'Db': 'C#', 'Eb': 'D#', 'Gb': 'F#', 'Ab': 'G#', 'Bb': 'A#',
+        'C♯': 'C#', 'D♯': 'D#', 'F♯': 'F#', 'G♯': 'G#', 'A♯': 'A#',
+        'Cb': 'B', 'Fb': 'E', 'E#': 'F', 'B#': 'C'
+      };
+      return enharmonics[note] || note;
+    };
+    const normalizedNote = normalize(note);
+    const normalizedScale = window.currentScaleNotes.map(normalize);
+
+    if (!normalizedScale.includes(normalizedNote)) {
       cell.textContent = "";
       cell.style.backgroundColor = "#1A2B4C";
       cell.style.color = "var(--text)";
@@ -896,7 +908,6 @@ function updateChordInfoDisplay() {
     }
 
     cell.textContent = note;
-    const normalizedNote = normalize(note);
     const idx = normalizedChordTones.indexOf(normalizedNote);
     if (idx !== -1) {
       const role = roleColors[idx] || roleColors[0];
