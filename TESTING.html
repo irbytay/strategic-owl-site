@@ -670,25 +670,7 @@ const defaultTuning = ['E', 'B', 'G', 'D', 'A', 'E']; // strings 1 to 6
 function generateFretboard(tuning = defaultTuning) {
   const fretboardDiv = document.getElementById("fretboard");
   fretboardDiv.innerHTML = "";
-  // Apply visually styled grid layout to the fretboard
-  fretboardDiv.style.display = "grid";
-  fretboardDiv.style.placeSelf = "center";
-  fretboardDiv.style.justifySelf = "center";
-  // Removed centering to allow left scrolling on mobile:
-  // fretboardDiv.style.marginLeft = "auto";
-  // fretboardDiv.style.marginRight = "auto";
-  fretboardDiv.style.maxWidth = "unset";
-  // gridTemplateColumns: 68px for string label, 24 frets (1-24) = 24 columns
-  fretboardDiv.style.gridTemplateColumns = "68px repeat(24, 40px)";
-  fretboardDiv.style.rowGap = "6px";
-  fretboardDiv.style.background = "linear-gradient(to right, #3B2F2F, #1E1A18)";
-  fretboardDiv.style.borderRadius = "8px";
-  fretboardDiv.style.boxShadow = "inset 0 0 10px rgba(0,0,0,0.4)";
-  fretboardDiv.style.border = "1px solid var(--highlight)";
-  fretboardDiv.style.padding = "0";
-  fretboardDiv.style.backgroundSize = "100% 100%";
   const numFrets = 24;
-
   // Add fret number labels as the first row of the grid
   // First empty cell (to align with tuning dropdowns)
   const headerEmpty = document.createElement("div");
@@ -710,6 +692,23 @@ function generateFretboard(tuning = defaultTuning) {
     fretLabel.style.borderLeft = "1px solid var(--highlight)";
     fretboardDiv.appendChild(fretLabel);
   }
+  // Apply visually styled grid layout to the fretboard
+  fretboardDiv.style.display = "grid";
+  fretboardDiv.style.placeSelf = "center";
+  fretboardDiv.style.justifySelf = "center";
+  // Removed centering to allow left scrolling on mobile:
+  // fretboardDiv.style.marginLeft = "auto";
+  // fretboardDiv.style.marginRight = "auto";
+  fretboardDiv.style.maxWidth = "unset";
+  // gridTemplateColumns: 68px for string label, 24 frets (1-24) = 24 columns
+  fretboardDiv.style.gridTemplateColumns = "68px repeat(24, 40px)";
+  fretboardDiv.style.rowGap = "6px";
+  fretboardDiv.style.background = "linear-gradient(to right, #3B2F2F, #1E1A18)";
+  fretboardDiv.style.borderRadius = "8px";
+  fretboardDiv.style.boxShadow = "inset 0 0 10px rgba(0,0,0,0.4)";
+  fretboardDiv.style.border = "1px solid var(--highlight)";
+  fretboardDiv.style.padding = "0";
+  fretboardDiv.style.backgroundSize = "100% 100%";
 
   // For each string, add a row to the grid (high E/top row first, low E/bottom row last)
   for (let string = 0; string < tuning.length; string++) {
