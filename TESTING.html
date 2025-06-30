@@ -875,8 +875,12 @@ function updateChordInfoDisplay() {
   const normalizedChordTones = chordTones.map(normalize);
 
   fretboardCells.forEach(cell => {
-    const note = cell.childNodes[0]?.nodeValue?.trim();
-    if (!note) return;
+    const note = cell.textContent.trim();
+    if (!note) {
+      cell.style.backgroundColor = "#1A2B4C";
+      cell.style.color = "var(--text)";
+      return;
+    }
     const normalizedNote = normalize(note);
     const idx = normalizedChordTones.indexOf(normalizedNote);
 
