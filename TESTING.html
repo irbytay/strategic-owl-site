@@ -222,8 +222,9 @@
           0: 'R', 1: 'm2', 2: 'M2', 3: 'm3', 4: 'M3', 5: 'P4',
           6: 'TT', 7: 'P5', 8: 'm6', 9: 'M6', 10: 'm7', 11: 'M7'
         };
-        const labeledSteps = scaleIntervals.map(interval => {
-          const note = ALL_NOTES[(rootIndex + interval) % 12];
+        const intervals = useFlats ? [...scaleIntervals].reverse() : scaleIntervals;
+        const labeledSteps = intervals.map(interval => {
+          const note = ALL_NOTES[(useFlats ? (rootIndex - interval + 12) : (rootIndex + interval)) % 12];
           const label = intervalNames[interval];
           const className = `interval-${label}`;
           return `<span class="${className}" style="padding: 2px 6px; margin-right: 4px; border-radius: 4px; display: inline-block;">${note} (${label})</span>`;
@@ -258,7 +259,9 @@
           const ALL_NOTES = useFlats ? FLAT_NOTES : SHARP_NOTES;
           const rootIndex = ALL_NOTES.indexOf(rootNote);
           const noteIndex = ALL_NOTES.indexOf(note);
-          const semitoneFromRoot = (noteIndex - rootIndex + 12) % 12;
+          const semitoneFromRoot = useFlats
+            ? (rootIndex - noteIndex + 12) % 12
+            : (noteIndex - rootIndex + 12) % 12;
 
           let showNote = true;
           if (scaleIntervals && rootNote) {
@@ -296,4 +299,4 @@
     renderFretboard();
   </script>
 </body>
-</html> 
+</html>
