@@ -143,6 +143,7 @@
   </label>
   <div id="step-info" style="margin: 8px 0; font-size: 0.9rem; color: #fff;"></div>
   <div id="scale-steps" style="margin: 4px 0 12px; font-size: 0.85rem; color: #aaa;"></div>
+  <div id="scale-sequence" style="margin: 4px 0 12px; font-size: 0.85rem; color: #ddd;"></div>
   <div class="fretboard-wrapper">
     <div class="fretboard" id="fretboard"></div>
   </div>
@@ -236,9 +237,22 @@
         } else {
           stepDisplay.textContent = "";
         }
+        // Scale sequence display
+        const scaleSeqDisplay = document.getElementById("scale-sequence");
+        const noteSequence = scaleIntervals.map(interval =>
+          ALL_NOTES[(rootIndex + interval) % 12]
+        );
+        const descendingNoteSequence = scaleIntervals.map(interval =>
+          ALL_NOTES[(rootIndex - interval + 12) % 12]
+        );
+        const finalNoteSeq = useFlats ? descendingNoteSequence : noteSequence;
+        const label = useFlats ? "Descending" : "Ascending";
+        const scaleType = selectedScale.includes("minor") ? "Natural Minor" : "Natural Major";
+        scaleSeqDisplay.textContent = `${rootNote} ${scaleType} – ${label}:\n` + finalNoteSeq.join(" → ") + ` → ${rootNote}`;
       } else {
         stepInfo.innerHTML = "";
         document.getElementById("scale-steps").textContent = "";
+        document.getElementById("scale-sequence").textContent = "";
       }
 
       for (let string = 0; string < 6; string++) {
