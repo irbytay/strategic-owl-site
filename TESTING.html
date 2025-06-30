@@ -422,12 +422,6 @@
         <option value="Double Harmonic">Double Harmonic</option>
       </select>
     </div>
-    <div style="text-align: center; margin-bottom: 16px;">
-      <label style="font-size: 0.95rem; color: var(--text-muted);">
-        <input type="checkbox" id="flipLogicToggle" style="margin-right: 6px;" />
-        Flip Logic (Use Flats & Descending)
-      </label>
-    </div>
 
     <!-- 🎼 Chord/Scale Display Section -->
     <div id="chord-display-area" style="margin-bottom: 20px; text-align: center; color: var(--text);">
@@ -475,6 +469,20 @@
 </script>
 </script>
 <script>
+// 🎸 Digital Fretboard Script
+// 🎶 Chord Library for future scale/chord highlighting
+const CHORD_LIBRARY = {
+  'C_major': ['C', 'D', 'E', 'F', 'G', 'A', 'B'],
+  'A_minor': ['A', 'B', 'C', 'D', 'E', 'F', 'G'],
+  'G_major': ['G', 'A', 'B', 'C', 'D', 'E', 'F#'],
+  'E_minor': ['E', 'F#', 'G', 'A', 'B', 'C', 'D'],
+  'D_major': ['D', 'E', 'F#', 'G', 'A', 'B', 'C#'],
+  'B_minor': ['B', 'C#', 'D', 'E', 'F#', 'G', 'A'],
+  'F_major': ['F', 'G', 'A', 'A#', 'C', 'D', 'E'],
+  'D_minor': ['D', 'E', 'F', 'G', 'A', 'A#', 'C'],
+  'A_major': ['A', 'B', 'C#', 'D', 'E', 'F#', 'G#'],
+  'E_major': ['E', 'F#', 'G#', 'A', 'B', 'C#', 'D#']
+};
 
 // 🎼 Musical Progression Library (interval sequences in semitones)
 const PROGRESSION_LIBRARY = {
@@ -503,27 +511,21 @@ const PROGRESSION_LIBRARY = {
 
 
 function buildScale(rootNote, progressionName) {
-  const flip = document.getElementById('flipLogicToggle')?.checked || false;
   const intervals = PROGRESSION_LIBRARY[progressionName];
-  if (!intervals || !ALL_NOTES.includes(rootNote)) return [];
+  if (!intervals) return [];
 
-  const noteMap = flip ? [...ALL_NOTES_FLAT] : [...ALL_NOTES];
-  const scale = [rootNote];
-  let currentIndex = noteMap.indexOf(rootNote);
+  const startIndex = ALL_NOTES.indexOf(rootNote);
+  if (startIndex === -1) return [];
 
-  if (flip) {
-    for (let step of intervals) {
-      currentIndex = (currentIndex - step + 12) % 12;
-      scale.push(noteMap[currentIndex]);
-    }
-  } else {
-    for (let step of intervals) {
-      currentIndex = (currentIndex + step) % 12;
-      scale.push(noteMap[currentIndex]);
-    }
-  }
+  const scaleNotes = [rootNote];
+  let currentIndex = startIndex;
 
-  return scale;
+  intervals.forEach(step => {
+    currentIndex = (currentIndex + step) % 12;
+    scaleNotes.push(ALL_NOTES[currentIndex]);
+  });
+
+  return scaleNotes;
 }
 
 // Chord tones calculation (triad or 7th)
@@ -664,13 +666,30 @@ function generateChordDiagram(chordTones, root, progression) {
 }
 
 const ALL_NOTES = ['C', 'C#', 'D', 'D#', 'E', 'F', 'F#', 'G', 'G#', 'A', 'A#', 'B'];
-const ALL_NOTES_FLAT = ['C', 'Db', 'D', 'Eb', 'E', 'F', 'Gb', 'G', 'Ab', 'A', 'Bb', 'B'];
 const defaultTuning = ['E', 'B', 'G', 'D', 'A', 'E']; // strings 1 to 6
 
 function generateFretboard(tuning = defaultTuning) {
   const fretboardDiv = document.getElementById("fretboard");
   fretboardDiv.innerHTML = "";
+  // Apply visually styled grid layout to the fretboard
+  fretboardDiv.style.display = "grid";
+  fretboardDiv.style.placeSelf = "center";
+  fretboardDiv.style.justifySelf = "center";
+  // Removed centering to allow left scrolling on mobile:
+  // fretboardDiv.style.marginLeft = "auto";
+  // fretboardDiv.style.marginRight = "auto";
+  fretboardDiv.style.maxWidth = "unset";
+  // gridTemplateColumns: 68px for string label, 24 frets (1-24) = 24 columns
+  fretboardDiv.style.gridTemplateColumns = "68px repeat(24, 40px)";
+  fretboardDiv.style.rowGap = "6px";
+  fretboardDiv.style.background = "linear-gradient(to right, #3B2F2F, #1E1A18)";
+  fretboardDiv.style.borderRadius = "8px";
+  fretboardDiv.style.boxShadow = "inset 0 0 10px rgba(0,0,0,0.4)";
+  fretboardDiv.style.border = "1px solid var(--highlight)";
+  fretboardDiv.style.padding = "0";
+  fretboardDiv.style.backgroundSize = "100% 100%";
   const numFrets = 24;
+
   // Add fret number labels as the first row of the grid
   // First empty cell (to align with tuning dropdowns)
   const headerEmpty = document.createElement("div");
@@ -692,31 +711,11 @@ function generateFretboard(tuning = defaultTuning) {
     fretLabel.style.borderLeft = "1px solid var(--highlight)";
     fretboardDiv.appendChild(fretLabel);
   }
-  // Apply visually styled grid layout to the fretboard
-  fretboardDiv.style.display = "grid";
-  fretboardDiv.style.placeSelf = "center";
-  fretboardDiv.style.justifySelf = "center";
-  // Removed centering to allow left scrolling on mobile:
-  // fretboardDiv.style.marginLeft = "auto";
-  // fretboardDiv.style.marginRight = "auto";
-  fretboardDiv.style.maxWidth = "unset";
-  // gridTemplateColumns: 68px for string label, 24 frets (1-24) = 24 columns
-  fretboardDiv.style.gridTemplateColumns = "68px repeat(24, 40px)";
-  fretboardDiv.style.rowGap = "6px";
-  fretboardDiv.style.background = "linear-gradient(to right, #3B2F2F, #1E1A18)";
-  fretboardDiv.style.borderRadius = "8px";
-  fretboardDiv.style.boxShadow = "inset 0 0 10px rgba(0,0,0,0.4)";
-  fretboardDiv.style.border = "1px solid var(--highlight)";
-  fretboardDiv.style.padding = "0";
-  fretboardDiv.style.backgroundSize = "100% 100%";
 
   // For each string, add a row to the grid (high E/top row first, low E/bottom row last)
   for (let string = 0; string < tuning.length; string++) {
     const openNote = tuning[string];
-    // Use flip logic for note map
-    const flip = document.getElementById("flipLogicToggle")?.checked || false;
-    const noteMap = flip ? ALL_NOTES_FLAT : ALL_NOTES;
-    const openIndex = noteMap.indexOf(openNote);
+    const openIndex = ALL_NOTES.indexOf(openNote);
 
     // Create dropdown as first column
     const select = document.createElement("select");
@@ -742,25 +741,20 @@ function generateFretboard(tuning = defaultTuning) {
       const newNote = e.target.value;
       const stringIndex = parseInt(e.target.dataset.string);
       const rowStart = (stringIndex + 1) * (numFrets + 1); // skip header + tuning selectors
-      // Use flip logic for note map
-      const flip = document.getElementById("flipLogicToggle")?.checked || false;
-      const noteMap = flip ? ALL_NOTES_FLAT : ALL_NOTES;
-      const openIndex = noteMap.indexOf(newNote);
-      for (let fret = 1; fret <= numFrets; fret++) {
-        const cellIndex = rowStart + fret;
-        const note = noteMap[(openIndex + fret) % 12];
+
+      for (let fret = 0; fret < numFrets; fret++) {
+        const cellIndex = rowStart + 1 + fret;
+        const note = ALL_NOTES[(ALL_NOTES.indexOf(newNote) + fret + 1) % 12];
         const cell = fretboardDiv.children[cellIndex];
-        // Only show note if it's part of the scale
-        const shouldShow = window.currentScaleNotes?.includes(note);
-        cell.textContent = shouldShow ? note : "";
-        cell.setAttribute("data-note", note);
+        cell.textContent = note;
 
         // Remove existing dot if any
         const existingDot = cell.querySelector("div");
         if (existingDot) cell.removeChild(existingDot);
 
         // Reapply fret marker if needed
-        if ([3, 5, 7, 9, 12, 15, 17, 19, 22].includes(fret)) {
+        const actualFret = fret + 1;
+        if ([3, 5, 7, 9, 12, 15, 17, 19, 22].includes(actualFret)) {
           const dot = document.createElement("div");
           dot.textContent = "•";
           dot.style.position = "absolute";
@@ -777,15 +771,10 @@ function generateFretboard(tuning = defaultTuning) {
     // Add fret cells (start at 1, skip 0)
     // Define visual string thickness: string 1 (top/high E) to string 6 (bottom/low E)
     const visualGauge = [1, 2, 2.5, 3, 4, 5]; // px: thinnest to thickest
-    const openIndex = noteMap.indexOf(openNote);
     for (let fret = 1; fret <= numFrets; fret++) {
-      // Use flip logic for note map
-      const note = noteMap[(openIndex + fret) % 12];
+      const note = ALL_NOTES[(openIndex + fret) % 12];
       const cell = document.createElement("div");
-      // Only show note if it's part of the scale
-      const shouldShow = window.currentScaleNotes?.includes(note);
-      cell.textContent = shouldShow ? note : "";
-      cell.setAttribute("data-note", note);
+      cell.textContent = note;
       cell.style.width = "40px";
       cell.style.height = "40px";
       cell.style.display = "flex";
@@ -814,8 +803,6 @@ function generateFretboard(tuning = defaultTuning) {
       fretboardDiv.appendChild(cell);
     }
   }
-  // Ensure fretboard note rendering and coloring are synchronized on page load
-  // updateChordInfoDisplay(); // Removed as per instructions
 }
 
 // No longer need to populateTuningDropdowns or use .tuning-select, as dropdowns are inline
@@ -827,24 +814,14 @@ function updateChordInfoDisplay() {
   // Update the heading dynamically
   document.getElementById("chord-heading").textContent = `🎼 ${root} ${progression}`;
   const intervals = PROGRESSION_LIBRARY[progression];
+
+  // Always generate notes from buildScale
   const notes = buildScale(root, progression);
-
-  // Store scale notes globally (no uppercasing, match as-is)
-  window.currentScaleNotes = notes;
-
-  // Removed redundant line:
-  // document.getElementById("chord-info").textContent = `Chord: ${root} | Progression: ${progression}`;
   document.getElementById("chord-info").textContent = "";
   document.getElementById("progression-steps").textContent = `Steps: ${intervals ? intervals.join(' - ') : 'N/A'}`;
-  // Use roleColors for both scale notes and chord tones
-  const roleColors = [
-    { bg: "rgba(40, 167, 69, 0.4)", color: "#cde7d0" },       // Root
-    { bg: "rgba(212, 175, 55, 0.35)", color: "#fff5d0" },     // 3rd
-    { bg: "rgba(59, 108, 237, 0.35)", color: "#dbe3ff" },     // 5th
-    { bg: "rgba(255, 105, 180, 0.35)", color: "#fff0f8" }     // 7th (if exists)
-  ];
+  document.getElementById("scale-notes").textContent = `Notes: ${notes.join('  ')}`;
 
-  // --- Chord tones calculation and visualization ---
+  // Always generate chord tones from getChordTones(notes, type)
   let type = "triad";
   if (notes.length >= 7) {
     if (progression.toLowerCase().includes("minor")) {
@@ -854,14 +831,13 @@ function updateChordInfoDisplay() {
     }
   }
   const chordTones = getChordTones(notes, type);
-
-  const coloredNotesHTML = notes.map(note => {
-    const idx = chordTones.indexOf(note);
-    const role = roleColors[idx] || { bg: "rgba(255,255,255,0.1)", color: "#FFFFFF" };
-    return `<span style="color: ${role.color}; background-color: ${role.bg}; padding: 2px 6px; border-radius: 4px; margin: 0 4px;">${note}</span>`;
-  }).join("");
-  document.getElementById("scale-notes").innerHTML = `Notes: ${coloredNotesHTML}`;
-
+  // Use roleColors for color-coded span wrapping
+  const roleColors = [
+    { bg: "rgba(40, 167, 69, 0.4)", color: "#cde7d0" },       // Root
+    { bg: "rgba(212, 175, 55, 0.35)", color: "#fff5d0" },     // 3rd
+    { bg: "rgba(59, 108, 237, 0.35)", color: "#dbe3ff" },     // 5th
+    { bg: "rgba(255, 105, 180, 0.35)", color: "#fff0f8" }     // 7th (if exists)
+  ];
   const coloredTonesHTML = chordTones.map((tone, index) => {
     const role = roleColors[index] || roleColors[0];
     return `<span style="color: ${role.color}; background-color: ${role.bg}; padding: 2px 6px; border-radius: 4px; margin: 0 4px;">${tone}</span>`;
@@ -885,29 +861,13 @@ function updateChordInfoDisplay() {
   const normalizedChordTones = chordTones.map(normalize);
 
   fretboardCells.forEach(cell => {
-    const note = cell.getAttribute("data-note");
-    // --- Normalization for scale notes (enharmonic support) ---
-    const normalize = (note) => {
-      const enharmonics = {
-        'Db': 'C#', 'Eb': 'D#', 'Gb': 'F#', 'Ab': 'G#', 'Bb': 'A#',
-        'C♯': 'C#', 'D♯': 'D#', 'F♯': 'F#', 'G♯': 'G#', 'A♯': 'A#',
-        'Cb': 'B', 'Fb': 'E', 'E#': 'F', 'B#': 'C'
-      };
-      return enharmonics[note] || note.replace(/♯/g, '#').replace(/♭/g, 'b');
-    };
+    const note = cell.childNodes[0]?.nodeValue?.trim();
+    if (!note) return;
     const normalizedNote = normalize(note);
-    const isInScale = window.currentScaleNotes.some(n => normalize(n) === normalizedNote);
-    if (!isInScale) {
-      cell.textContent = "";
-      cell.style.backgroundColor = "#1A2B4C";
-      cell.style.color = "var(--text)";
-      return;
-    }
-
-    cell.textContent = note;
     const idx = normalizedChordTones.indexOf(normalizedNote);
+
     if (idx !== -1) {
-      const role = roleColors[idx] || roleColors[0];
+      const role = roleColors[idx] || roleColors[0]; // fallback to root if out of bounds
       cell.style.backgroundColor = role.bg;
       cell.style.color = role.color;
     } else {
@@ -918,42 +878,28 @@ function updateChordInfoDisplay() {
 }
 
 document.addEventListener("DOMContentLoaded", () => {
-  // Add visual chord diagram if not already present
-  const displayArea = document.getElementById("chord-display-area");
-  const diagramDiv = document.createElement("pre");
-  diagramDiv.id = "visual-chord-diagram";
-  diagramDiv.style.marginTop = "12px";
-  diagramDiv.style.background = "#112240";
-  diagramDiv.style.color = "#D4AF37";
-  diagramDiv.style.padding = "8px 16px";
-  diagramDiv.style.borderRadius = "6px";
-  diagramDiv.style.fontFamily = "monospace";
-  diagramDiv.style.fontSize = "1.05rem";
-  diagramDiv.style.width = "max-content";
-  diagramDiv.style.marginLeft = "auto";
-  diagramDiv.style.marginRight = "auto";
-  diagramDiv.style.textAlign = "left";
-  displayArea.appendChild(diagramDiv);
-
-  // Set scale notes and chord tones first
-  updateChordInfoDisplay();
-
-  // Then generate fretboard using scale notes
+  // Add visual chord diagram area if not present
+  if (!document.getElementById("visual-chord-diagram")) {
+    const displayArea = document.getElementById("chord-display-area");
+    const diagramDiv = document.createElement("pre");
+    diagramDiv.id = "visual-chord-diagram";
+    diagramDiv.style.marginTop = "12px";
+    diagramDiv.style.background = "#112240";
+    diagramDiv.style.color = "#D4AF37";
+    diagramDiv.style.padding = "8px 16px";
+    diagramDiv.style.borderRadius = "6px";
+    diagramDiv.style.fontFamily = "monospace";
+    diagramDiv.style.fontSize = "1.05rem";
+    diagramDiv.style.width = "max-content";
+    diagramDiv.style.marginLeft = "auto";
+    diagramDiv.style.marginRight = "auto";
+    diagramDiv.style.textAlign = "left";
+    displayArea.appendChild(diagramDiv);
+  }
   generateFretboard(defaultTuning);
-
-  // Set listeners
-  document.getElementById("custom-chord-select").addEventListener("change", () => {
-    updateChordInfoDisplay();
-    generateFretboard(defaultTuning);
-  });
-  document.getElementById("custom-progression-select").addEventListener("change", () => {
-    updateChordInfoDisplay();
-    generateFretboard(defaultTuning);
-  });
-  document.getElementById("flipLogicToggle").addEventListener("change", () => {
-    updateChordInfoDisplay();
-    generateFretboard(defaultTuning);
-  });
+  document.getElementById("custom-chord-select").addEventListener("change", updateChordInfoDisplay);
+  document.getElementById("custom-progression-select").addEventListener("change", updateChordInfoDisplay);
+  updateChordInfoDisplay();
 });
 </script>
   <!-- Netlify Identity Widget & logout redirect -->
