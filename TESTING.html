@@ -225,7 +225,9 @@
         };
         const intervals = scaleIntervals;
         const labeledSteps = intervals.map(interval => {
-          const note = ALL_NOTES[(rootIndex + interval) % 12];
+          const note = useFlats
+            ? ALL_NOTES[(rootIndex - interval + 12) % 12]
+            : ALL_NOTES[(rootIndex + interval) % 12];
           const label = intervalNames[interval];
           const className = `interval-${label}`;
           return `<span class="${className}" style="padding: 2px 6px; margin-right: 4px; border-radius: 4px; display: inline-block;">${note} (${label})</span>`;
