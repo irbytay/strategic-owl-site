@@ -1,656 +1,250 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en"> 
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>The Strategic Fretboard</title>
+  <title>Thank You | Strategic Fretboard</title>
+  <link href="https://fonts.googleapis.com/css2?family=Chivo:wght@400;700&family=Space+Grotesk:wght@400;600;700&display=swap" rel="stylesheet">
   <style>
-    :root {
-      --fret-color: #ccc;
-      --string-color: #aaa;
-      --note-bg: #112240;
-      --note-text: #fff;
-      --highlight-color: #D4AF37;
-    }
-
     body {
       margin: 0;
-      font-family: sans-serif;
-      background-color: #0D1B2A;
-      color: var(--note-text);
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      padding: 20px;
-    }
-
-    h1 {
-      margin-bottom: 30px;
-      font-size: 2rem;
-      color: var(--highlight-color);
-      font-family: 'Courier New', monospace;
-      letter-spacing: 1.2px;
-      text-shadow: 1px 1px 2px #000;
-    }
-
-    .fretboard-scroll-container {
-      overflow-x: auto;
-      width: 100%;
-    }
-
-    .fretboard-wrapper {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      margin-left: auto;
-      margin-right: auto;
-      width: fit-content;
-    }
-
-    .fretboard {
-      display: flex;
-      flex-direction: column;
-      gap: 2px;
-      background: transparent;
-    }
-
-    .string-row {
-      display: grid;
-      grid-template-columns: 60px repeat(24, 42px);
-    }
-
-    .string-label {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-weight: bold;
-      background: #1A2B4C;
-      color: var(--highlight-color);
-    }
-
-    .note-cell {
-      border-left: 1px solid var(--fret-color);
-      border-bottom: 2px solid var(--string-color);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      background: var(--note-bg);
-      color: var(--note-text);
-      font-size: 1rem;
-      font-weight: bold;
-      position: relative;
-      white-space: pre-line;
-      font-family: 'Courier New', Courier, monospace;
-      letter-spacing: 0.5px;
-      text-shadow: 1px 1px 2px #000;
-    }
-
-    .interval-R {
-      background-color: #2e7031; /* dim green */
-    }
-
-    .interval-M3, .interval-m3 {
-      background-color: #3e4c75; /* dim blue */
-    }
-
-    .interval-P5 {
-      background-color: #704c2e; /* dim brown/orange */
-    }
-
-    .interval-M7, .interval-m7 {
-      background-color: #553770; /* dim violet */
-    }
-
-    .fret-marker {
-      position: absolute;
-      bottom: 3px;
-      left: 50%;
-      transform: translateX(-50%);
-      font-size: 0.75rem;
-      color: var(--highlight-color);
-    }
-
-    select.tuning-select {
-      width: 60px;
-      background: #1A2B4C;
-      color: white;
-      border: none;
-      padding: 5px;
-      font-weight: bold;
-    }
-
-    @media (max-width: 768px) {
-      .note-cell {
-        width: 36px;
-        height: 36px;
-        font-size: 0.7rem;
-      }
-      .fret-numbers {
-        margin-top: -6px;
-        margin-bottom: 2px;
-        padding-left: 4px;
-        padding-right: 4px;
-        overflow-x: auto;
-      }
-      .fretboard-scroll-container {
-        padding-bottom: 8px;
-      }
-      .fretboard-wrapper {
-        margin-top: 0;
-      }
-    }
-
-    .fret-numbers {
-      display: grid;
-      grid-template-columns: 60px repeat(24, 42px);
-      margin-bottom: 0;
-      margin-top: 0;
-      padding: 0 0 4px 0;
-      color: var(--highlight-color);
-      font-size: 0.75rem;
-      font-weight: bold;
+      font-family: 'Chivo', sans-serif;
+      background: linear-gradient(to bottom right, #0D1B2A, #112240); 
+      color: #ffffff;
       text-align: center;
-      font-family: 'Courier New', monospace;
-      letter-spacing: 0.5px;
-      overflow-x: auto;
+      padding: 2rem;
     }
-
-    .fret-numbers span {
-      padding: 2px 0;
-      border-bottom: 1px solid var(--highlight-color);
-      opacity: 0.7;
-      color: #888;
+    header {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 2rem;
+      margin-bottom: 0.5rem;
+      color: #FFFFF0;
     }
-
-    .fret-numbers span:first-child {
-      background: transparent;
+    .tagline {
+      font-size: 1.6rem;
+      color: #ffffff;
+      font-weight: 500;
+      margin-bottom: 2rem;
+    }
+    p {
+      max-width: 700px;
+      margin: 1.5rem auto;
+      line-height: 1.6;
+      font-size: 1.1rem;
+      color: #ffffff;
+    }
+    .cta {
+      margin: 2rem 0;
+    }
+    .cta button {
+      background-color: #28A745; /* Truth Green */
+      color: #ffffff;
       border: none;
-    }
-
-    .fret-numbers .dot-fret {
-      color: var(--highlight-color);
-      font-weight: bold;
-    }
-
-    /* Visually simulate thicker string lines for realism */
-    .string-row:nth-child(1) .note-cell { border-bottom: 1px solid var(--string-color); }
-    .string-row:nth-child(2) .note-cell { border-bottom: 2px solid var(--string-color); }
-    .string-row:nth-child(3) .note-cell { border-bottom: 3px solid var(--string-color); }
-    .string-row:nth-child(4) .note-cell { border-bottom: 4px solid var(--string-color); }
-    .string-row:nth-child(5) .note-cell { border-bottom: 5px solid var(--string-color); }
-    .string-row:nth-child(6) .note-cell { border-bottom: 6px solid var(--string-color); }
-
-    /* Reset button alignment */
-    .reset-container {
-      width: 100%;
-      display: flex;
-      justify-content: center;
-      margin-top: 24px;
-      margin-bottom: 28px;
-      z-index: 1;
-    }
-
-    @media (max-width: 768px) {
-      .reset-container {
-        justify-content: center;
-        padding-right: 0;
-        margin-top: 24px;
-        margin-bottom: 28px;
-      }
-    }
-
-    #reset-fretboard {
-      position: relative;
-      padding: 6px 12px;
-      background: linear-gradient(135deg, #222, #555);
-      color: var(--highlight-color);
-      border: none;
-      border-radius: 6px;
+      padding: 1rem 2rem;
+      font-size: 1.1rem;
       font-weight: bold;
       cursor: pointer;
-      box-shadow: 0 0 6px rgba(255, 215, 0, 0.3);
-      transition: background 0.3s;
+      border-radius: 8px;
+      transition: background-color 0.3s ease, transform 0.2s ease;
+      margin: 0 0.5rem;
     }
-    .help-icon-container {
-  position: relative;
-  display: flex;
-  justify-content: center;
-  margin: 12px auto;
-  z-index: 5;
-}
-
-.help-icon {
-  background: linear-gradient(135deg, #333, #555);
-  color: var(--highlight-color);
-  padding: 6px 10px;
-  border-radius: 50%;
-  font-size: 1.1rem;
-  font-weight: bold;
-  cursor: pointer;
-  text-align: center;
-  box-shadow: 0 0 5px rgba(255, 215, 0, 0.4);
-  user-select: none;
-}
-
-.help-tooltip {
-  visibility: hidden;
-  opacity: 0;
-  width: 240px;
-  background-color: #1a1a1a;
-  color: #eee;
-  text-align: left;
-  border-radius: 6px;
-  padding: 12px;
-  position: absolute;
-  top: 40px;
-  left: 50%;
-  transform: translateX(-50%);
-  z-index: 10;
-  transition: opacity 0.3s ease;
-  font-size: 0.75rem;
-  line-height: 1.4;
-  box-shadow: 0 0 6px rgba(255, 215, 0, 0.2);
-  white-space: normal;
-  max-width: 90vw;
-}
-
-.help-icon:hover + .help-tooltip,
-.help-icon:focus + .help-tooltip {
-  visibility: visible;
-  opacity: 1;
-}
+    .cta button:hover {
+      background-color: #218838;
+      transform: scale(1.03);
+    }
+    .image-placeholder {
+      width: 100%;
+      max-width: 600px;
+      height: 200px;
+      margin: 2rem auto;
+      background: repeating-linear-gradient(
+        90deg,
+        #444,
+        #444 10%,
+        #222 10%,
+        #222 20%
+      );
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #888;
+      font-size: 1.2rem;
+      border-radius: 8px;
+      border: 1px solid #666;
+      box-shadow: 0 0 10px rgba(0,0,0,0.3);
+    }
+    .image-preview {
+      width: 100%;
+      max-width: 600px;
+      height: auto;
+      margin: 2rem auto;
+      border-radius: 8px;
+      border: 1px solid #666;
+      box-shadow: 0 0 10px rgba(0,0,0,0.3);
+      display: block;
+      animation: fadeIn 1.2s ease-in;
+    }
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    footer {
+      margin-top: 4rem;
+      font-size: 0.9rem;
+      color: #7C8A9B;
+    }
   </style>
+  <script src="https://identity.netlify.com/v1/netlify-identity-widget.js"></script>
+  <script>
+    // Mock subscribers.json data for simulation (if needed)
+    // const mockSubscribers = {
+    //   "irbytay@icloud.com": {
+    //     "status": "active",
+    //     "type": "trial"
+    //   }
+    // };
+
+    // Show a loading message while validating
+    document.addEventListener("DOMContentLoaded", () => {
+      const fretLink = document.getElementById("fretboard-link");
+      const stripeLink = document.getElementById("stripe-link");
+
+      fretLink.style.display = "none";
+      stripeLink.style.display = "none";
+
+      netlifyIdentity.on("init", user => {
+        if (!user) {
+          window.location.href = "/";
+          return;
+        }
+
+        const email = user.email;
+        console.log("Logged in as:", user.email);
+
+        // Fetch subscriber data from Supabase (encode email for URL safety)
+        fetch(`https://gopyzkcmvkbusdnwjlbb.supabase.co/rest/v1/subscribers?email=eq.${encodeURIComponent(email)}`, {
+          headers: {
+            apikey: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImdvcHl6a2NtdmtidXNkbndqbGJiIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTExODc5MTAsImV4cCI6MjA2Njc2MzkxMH0.g_c2FGIGDgXi_zCA7_ZaIteVm2S_ZkUkB-CHkdBWxc8",
+            Authorization: "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImdvcHl6a2NtdmtidXNkbndqbGJiIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTExODc5MTAsImV4cCI6MjA2Njc2MzkxMH0.g_c2FGIGDgXi_zCA7_ZaIteVm2S_ZkUkB-CHkdBWxc8"
+          }
+        })
+          .then(res => {
+            if (!res.ok) throw new Error("Supabase query failed");
+            return res.json();
+          })
+          .then(data => {
+            console.log("Supabase subscriber query result:", data);
+            const subscriber = data[0];
+            console.log("🔍 Checking subscriber object for:", email);
+            if (!subscriber) {
+              console.warn("⚠️ No subscriber data found for this email.");
+              document.getElementById("error-message").textContent = "⚠️ No active subscription found for " + email;
+              document.getElementById("error-message").style.display = "block";
+              stripeLink.style.display = "block";
+            } else if (subscriber.status === "active") {
+              console.log("✅ Subscription is active for:", email);
+              if (subscriber.type === "trial") {
+                console.log("🟡 User is on free trial.");
+              } else if (subscriber.type === "paid") {
+                console.log("🟢 User is a full subscriber.");
+              }
+              fretLink.style.display = "block";
+            } else {
+              document.getElementById("error-message").textContent = "⚠️ Subscription is not active for " + email;
+              document.getElementById("error-message").style.display = "block";
+              stripeLink.style.display = "block";
+            }
+          })
+          .catch(err => {
+            console.error("Error checking subscription:", err);
+            document.getElementById("error-message").textContent = "⚠️ Unable to validate your subscription. Please try again.";
+            document.getElementById("error-message").style.display = "block";
+            stripeLink.style.display = "block";
+          });
+      });
+
+      netlifyIdentity.init();
+      netlifyIdentity.on("logout", () => {
+        window.location.href = "/index.html";
+      });
+    });
+  </script>
 </head>
 <body>
-   <h1>The Strategic Fretboard</h1>
-  
-  <label style="margin: 12px 0;">
-    Select Root:
-    <select id="root-select">
-      <option value="">-- Root --</option>
-      <option value="A">A</option>
-      <option value="Bb">Bb</option>
-      <option value="B">B</option>
-      <option value="C">C</option>
-      <option value="C#">C#</option>
-      <option value="D">D</option>
-      <option value="Eb">Eb</option>
-      <option value="E">E</option>
-      <option value="F">F</option>
-      <option value="F#">F#</option>
-      <option value="G">G</option>
-      <option value="Ab">Ab</option>
-    </select>
-  </label>
-  <label style="margin: 12px 0;">
-    Select Scale:
-    <select id="scale-type-select">
-      <option value="">-- Scale --</option>
-      <option value="Major">Major</option>
-      <option value="Minor">Minor</option>
-      <option value="Harmonic Minor">Harmonic Minor</option>
-      <option value="Melodic Minor">Melodic Minor</option>
-      <option value="Pentatonic Major">Pentatonic Major</option>
-      <option value="Pentatonic Minor">Pentatonic Minor</option>
-      <option value="Blues">Blues</option>
-      <option value="Dorian">Dorian</option>
-      <option value="Phrygian">Phrygian</option>
-      <option value="Lydian">Lydian</option>
-      <option value="Mixolydian">Mixolydian</option>
-      <option value="Locrian">Locrian</option>
-      <option value="Whole Tone">Whole Tone</option>
-      <option value="Chromatic">Chromatic</option>
-    </select>
-  </label>
-  <label style="margin-bottom: 12px;">
-    <input type="checkbox" id="accidental-toggle" />
-    Descending Mode (Flats & Reverse Scale)
-  </label>
-  <div class="help-icon-container">
-  <div class="help-icon" tabindex="0">🦉</div>
-  <div class="help-tooltip">
-    <strong>How to Use:</strong><br>
-    1. Select Root & Scale<br>
-    2. Toggle Descending Mode (flats)<br>
-    3. Adjust tuning (left side)<br>
-    4. Notes highlight as:<br>
-    &nbsp;&nbsp;&nbsp;• <span style="color:#2e7031;">R</span> = Root<br>
-    &nbsp;&nbsp;&nbsp;• <span style="color:#3e4c75;">M3/m3</span> = Major/Minor 3rd<br>
-    &nbsp;&nbsp;&nbsp;• <span style="color:#704c2e;">P5</span> = Perfect 5th<br>
-    &nbsp;&nbsp;&nbsp;• <span style="color:#553770;">M7/m7</span> = Major/Minor 7th<br>
-    5. Click “Reset Fretboard” to start fresh
-  </div>
-</div>
-  <div id="step-info" style="margin: 12px 0 6px; font-size: 0.9rem; color: #fff;"></div>
-  <div id="scale-steps" style="margin: 0 0 10px; font-size: 0.85rem; color: #aaa;"></div>
-  <div id="scale-sequence" style="margin: 4px 0 12px; font-size: 0.85rem; color: #ddd;"></div>
-  <div class="reset-container" style="margin-top: 8px;">
-    <button id="reset-fretboard">⟳ Reset Fretboard</button>
-  </div>
-  <div class="fretboard-scroll-container">
-    <div class="fretboard-wrapper">
-      <div class="fret-numbers"></div>
-      <div class="fretboard" id="fretboard"></div>
-    </div>
-  </div>
-  <div id="selected-chord" style="margin-top: 20px; font-size: 1.1rem; color: var(--highlight-color); font-weight: bold;"></div>
+  <header>Thank You</header>
+  <div class="tagline"><strong>🎉 Thank you for subscribing!</strong></div>
+  <p>
+    Thank you for supporting the Strategic Fretboard. This is a true grassroots project — run entirely by me, a single individual working to build something valuable for guitarists everywhere. 
+    To activate your access, please send me a quick email with your name, the email you used at checkout, and a screenshot or copy of your receipt or confirmation. I’ll manually get you set up as soon as I can.
+    <br /><br />
+    📧 Email: <strong>strategicfretboard@gmail.com</strong>
+    <br /><br />
+    I deeply appreciate your patience and support as I grow this project.
+  </p>
+  <div id="error-message" style="display:none; color:#ff4d4d; font-weight:bold; margin-bottom:1rem;"></div>
 
+  <footer>
+    &copy; 2025 Strategic Fretboard. All rights reserved.
+  </footer>
   <script>
-    const SHARP_NOTES = ['C', 'C#', 'D', 'D#', 'E', 'F', 'F#', 'G', 'G#', 'A', 'A#', 'B'];
-    const FLAT_NOTES  = ['C', 'Db', 'D', 'Eb', 'E', 'F', 'Gb', 'G', 'Ab', 'A', 'Bb', 'B'];
-    const standardTuning = ['E', 'B', 'G', 'D', 'A', 'E'];
-    const numFrets = 24;
-
-    const SCALE_PATTERNS = {
-      "Major": [0, 2, 4, 5, 7, 9, 11],
-      "Minor": [0, 2, 3, 5, 7, 8, 10],
-      "Harmonic Minor": [0, 2, 3, 5, 7, 8, 11],
-      "Melodic Minor": [0, 2, 3, 5, 7, 9, 11],
-      "Pentatonic Major": [0, 2, 4, 7, 9],
-      "Pentatonic Minor": [0, 3, 5, 7, 10],
-      "Blues": [0, 3, 5, 6, 7, 10],
-      "Dorian": [0, 2, 3, 5, 7, 9, 10],
-      "Phrygian": [0, 1, 3, 5, 7, 8, 10],
-      "Lydian": [0, 2, 4, 6, 7, 9, 11],
-      "Mixolydian": [0, 2, 4, 5, 7, 9, 10],
-      "Locrian": [0, 1, 3, 5, 6, 8, 10],
-      "Whole Tone": [0, 2, 4, 6, 8, 10],
-      "Chromatic": [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11]
-    };
-
-    const fretboardEl = document.getElementById("fretboard");
-
-    function createTuningSelect(stringIndex, defaultNote) {
-      const useFlats = document.getElementById("accidental-toggle")?.checked;
-      const ALL_NOTES = useFlats ? FLAT_NOTES : SHARP_NOTES;
-
-      const select = document.createElement("select");
-      select.className = "tuning-select";
-      select.dataset.string = stringIndex;
-
-      while (select.firstChild) select.removeChild(select.firstChild);
-
-      ALL_NOTES.forEach(note => {
-        const opt = document.createElement("option");
-        opt.value = note;
-        opt.textContent = note;
-        if (note === defaultNote) opt.selected = true;
-        select.appendChild(opt);
-      });
-      select.addEventListener("change", () => {
-        standardTuning[stringIndex] = select.value;
-        renderFretboard();
-      });
-      return select;
-    }
-
-    function getNoteAt(startNote, fret) {
-      const useFlats = document.getElementById("accidental-toggle")?.checked;
-      const ALL_NOTES = useFlats ? FLAT_NOTES : SHARP_NOTES;
-
-      const startIndex = ALL_NOTES.indexOf(startNote);
-      return ALL_NOTES[(startIndex + fret) % 12];
-    }
-
-    // Chord shapes dictionary (root + type as key)
-    const CHORD_SHAPES = {
-      "A Major": {
-        e: "---0--- (E)",
-        B: "---2--- (C#/Db)",
-        G: "---2--- (A)",
-        D: "---2--- (E)",
-        A: "---0--- (A)",
-        E: "---Muted"
-      },
-      "A Minor": {
-        e: "---0--- (E)",
-        B: "---1--- (C)",
-        G: "---2--- (A)",
-        D: "---2--- (E)",
-        A: "---0--- (A)",
-        E: "---Muted"
-      },
-      "B Major": {
-        e: "---2--- (F#/Gb)",
-        B: "---4--- (D#/Eb)",
-        G: "---4--- (B)",
-        D: "---4--- (F#/Gb)",
-        A: "---2--- (B)",
-        E: "---Muted"
-      },
-      "B Minor": {
-        e: "---2--- (F#/Gb)",
-        B: "---3--- (D)",
-        G: "---4--- (B)",
-        D: "---4--- (F#/Gb)",
-        A: "---2--- (B)",
-        E: "---Muted"
-      },
-      "C Major": {
-        e: "---0--- (E)",
-        B: "---1--- (C)",
-        G: "---0--- (G)",
-        D: "---2--- (E)",
-        A: "---3--- (C)",
-        E: "---Muted"
-      },
-      "C Minor": {
-        e: "---3--- (G)",
-        B: "---4--- (D#/Eb)",
-        G: "---5--- (C)",
-        D: "---5--- (G)",
-        A: "---3--- (C)",
-        E: "---Muted"
-      },
-      "D Major": {
-        e: "---2--- (F#/Gb)",
-        B: "---3--- (D)",
-        G: "---2--- (A)",
-        D: "---0--- (D)",
-        A: "---Muted",
-        E: "---Muted"
-      },
-      "D Minor": {
-        e: "---1--- (F)",
-        B: "---3--- (D)",
-        G: "---2--- (A)",
-        D: "---0--- (D)",
-        A: "---Muted",
-        E: "---Muted"
-      },
-      "E Major": {
-        e: "---0--- (E)",
-        B: "---0--- (B)",
-        G: "---1--- (G#/Ab)",
-        D: "---2--- (E)",
-        A: "---2--- (B)",
-        E: "---0--- (E)"
-      },
-      "E Minor": {
-        e: "---0--- (E)",
-        B: "---0--- (B)",
-        G: "---0--- (G)",
-        D: "---2--- (E)",
-        A: "---2--- (B)",
-        E: "---0--- (E)"
-      },
-      "F Major": {
-        e: "---1--- (F)",
-        B: "---1--- (C)",
-        G: "---2--- (A)",
-        D: "---3--- (F)",
-        A: "---3--- (C)",
-        E: "---1--- (F)"
-      },
-      "F Minor": {
-        e: "---1--- (F)",
-        B: "---1--- (C)",
-        G: "---1--- (G#/Ab)",
-        D: "---3--- (F)",
-        A: "---3--- (C)",
-        E: "---1--- (F)"
-      },
-      "G Major": {
-        e: "---3--- (G)",
-        B: "---3--- (D)",
-        G: "---0--- (G)",
-        D: "---0--- (D)",
-        A: "---2--- (B)",
-        E: "---3--- (G)"
-      },
-      "G Minor": {
-        e: "---3--- (G)",
-        B: "---3--- (D)",
-        G: "---3--- (G#/Ab)",
-        D: "---5--- (G)",
-        A: "---5--- (D)",
-        E: "---3--- (G)"
-      }
-    };
-
-    function renderFretboard() {
-      fretboardEl.innerHTML = "";
-
-      const fretNumContainer = document.querySelector(".fret-numbers");
-      fretNumContainer.innerHTML = "";
-      fretNumContainer.appendChild(document.createElement("span")); // spacer for tuning column
-      for (let fret = 1; fret <= numFrets; fret++) {
-        const label = document.createElement("span");
-        label.textContent = fret;
-        if ([3, 5, 7, 9, 12, 15, 17, 19, 21, 24].includes(fret)) {
-          label.classList.add("dot-fret");
+    document.addEventListener("DOMContentLoaded", () => {
+      netlifyIdentity.on("init", user => {
+        if (!user) {
+          window.location.href = "/";
+          return;
         }
-        fretNumContainer.appendChild(label);
-      }
 
-      const useFlats = document.getElementById("accidental-toggle")?.checked;
-      const rootNote = document.getElementById("root-select")?.value;
-      const scaleType = document.getElementById("scale-type-select")?.value;
-      const scaleIntervals = SCALE_PATTERNS[scaleType] || null;
-
-      const stepInfo = document.getElementById("step-info");
-      const stepDisplay = document.getElementById("scale-steps");
-      if (scaleIntervals && rootNote) {
-        const ALL_NOTES = useFlats ? FLAT_NOTES : SHARP_NOTES;
-        const rootIndex = ALL_NOTES.indexOf(rootNote);
-        const intervalNames = {
-          0: 'R', 1: 'm2', 2: 'M2', 3: 'm3', 4: 'M3', 5: 'P4',
-          6: 'TT', 7: 'P5', 8: 'm6', 9: 'M6', 10: 'm7', 11: 'M7'
+        const email = user.email;
+        const baseUrl = "https://gopyzkcmvkbusdnwjlbb.supabase.co/rest/v1/subscribers";
+        const headers = {
+          "Content-Type": "application/json",
+          apikey: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImdvcHl6a2NtdmtidXNkbndqbGJiIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTExODc5MTAsImV4cCI6MjA2Njc2MzkxMH0.g_c2FGIGDgXi_zCA7_ZaIteVm2S_ZkUkB-CHkdBWxc8",
+          Authorization: "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImdvcHl6a2NtdmtidXNkbndqbGJiIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTExODc5MTAsImV4cCI6MjA2Njc2MzkxMH0.g_c2FGIGDgXi_zCA7_ZaIteVm2S_ZkUkB-CHkdBWxc8"
         };
-        const finalIntervals = scaleIntervals;
 
-        const labeledSteps = finalIntervals.map((interval, idx) => {
-          const useDescending = useFlats && interval !== 0;
-          const noteIndex = useDescending
-            ? (rootIndex - interval + 12) % 12
-            : (rootIndex + interval) % 12;
-          const note = ALL_NOTES[noteIndex];
-          const label = intervalNames[interval];
-          const className = `interval-${label}`;
-          return `<span class="${className}" style="padding: 2px 6px; margin-right: 4px; border-radius: 4px; display: inline-block;">${note} (${label})</span>`;
-        });
-        stepInfo.innerHTML = `Notes in ${rootNote} ${scaleType} scale: ${labeledSteps.join(" ")}`;
-        if (scaleIntervals.length > 1) {
-          const steps = scaleIntervals.slice(1).map((val, idx) => val - scaleIntervals[idx]);
-          stepDisplay.textContent = `Steps: ${steps.join(" ")}`;
-        } else {
-          stepDisplay.textContent = "";
-        }
-        // (Scale sequence display removed)
-      } else {
-        stepInfo.innerHTML = "";
-        document.getElementById("scale-steps").textContent = "";
-        // document.getElementById("scale-sequence").textContent = "";
-      }
+        fetch(`${baseUrl}?email=eq.${encodeURIComponent(email)}`, { headers })
+          .then(res => res.json())
+          .then(data => {
+            if (data.length && data[0].status === "active") {
+              console.log("✅ Existing subscriber active:", email);
+              document.querySelector("p").textContent = "✅ Thank you! Please give us a moment while we redirect you to your content...";
+              setTimeout(() => {
+                window.location.href = "/home.html";
+              }, 5000);
+            } else {
+              // Not found or not active — insert or update via upsert
+              fetch(`${baseUrl}?on_conflict=email`, {
+                method: "POST",
+                headers,
+                body: JSON.stringify({ email, status: "active", type: "trial" })
+              })
+              .then(res => {
+                if (res.ok) {
+                  console.log("📝 Subscriber upserted");
+                  document.querySelector("p").textContent = "✅ Thank you! Please give us a moment while we redirect you to your content...";
+                  setTimeout(() => {
+                    window.location.href = "/home.html";
+                  }, 3000);
+                } else {
+                  console.warn("❌ Upsert failed — redirecting anyway.");
+                  setTimeout(() => {
+                    window.location.href = "/home.html";
+                  }, 3000);
+                }
+              })
+              .catch(err => {
+                console.error("Subscription error:", err);
+                window.location.href = "/home.html";
+              });
+            }
+          })
+          .catch(err => {
+            console.error("Validation error:", err);
+            window.location.href = "/home.html";
+          });
+      });
 
-      for (let string = 0; string < 6; string++) {
-        const tuning = document.querySelector(`select[data-string='${string}']`);
-        const tuningNote = tuning ? tuning.value : standardTuning[string];
-
-        const row = document.createElement("div");
-        row.className = "string-row";
-
-        const tuningSelect = createTuningSelect(string, tuningNote);
-        row.appendChild(tuningSelect);
-
-        for (let fret = 1; fret <= numFrets; fret++) {
-          const cell = document.createElement("div");
-          cell.className = "note-cell";
-          const note = getNoteAt(tuningNote, fret);
-          
-          const ALL_NOTES = useFlats ? FLAT_NOTES : SHARP_NOTES;
-          const rootIndex = ALL_NOTES.indexOf(rootNote);
-          const noteIndex = ALL_NOTES.indexOf(note);
-          const semitoneFromRoot = useFlats
-            ? (rootIndex - noteIndex + 12) % 12
-            : (noteIndex - rootIndex + 12) % 12;
-
-          let showNote = true;
-          if (scaleIntervals && rootNote) {
-            showNote = scaleIntervals.includes(semitoneFromRoot);
-          }
-
-          if (showNote && scaleIntervals && rootNote) {
-            const intervalNames = {
-              0: 'R', 1: 'm2', 2: 'M2', 3: 'm3', 4: 'M3', 5: 'P4',
-              6: 'TT', 7: 'P5', 8: 'm6', 9: 'M6', 10: 'm7', 11: 'M7'
-            };
-            const intervalName = intervalNames[semitoneFromRoot];
-            cell.textContent = `${note}\n${intervalName}`;
-            if (intervalName) cell.classList.add(`interval-${intervalName}`);
-          } else {
-            cell.textContent = showNote ? note : "";
-          }
-
-          if ([3, 5, 7, 9, 12, 15, 17, 19, 21, 24].includes(fret)) {
-            const dot = document.createElement("div");
-            dot.className = "fret-marker";
-            dot.textContent = "•";
-            cell.appendChild(dot);
-          }
-
-          row.appendChild(cell);
-        }
-
-        fretboardEl.appendChild(row);
-      }
-
-      // Show the selected chord/scale name below the fretboard, or display chord shape if available
-      const selectedChordEl = document.getElementById("selected-chord");
-      const chordKey = `${rootNote} ${scaleType}`;
-      if (rootNote && scaleType && CHORD_SHAPES[chordKey]) {
-        const shape = CHORD_SHAPES[chordKey];
-        const formatLine = (string, value) => {
-          return `${string}|${value}`;
-        };
-        selectedChordEl.innerHTML =
-          `<pre style="font-size: 1rem; font-family: 'Courier New', monospace; color: var(--highlight-color); background-color: #111; padding: 12px; border-radius: 8px; line-height: 1.5;">
-${formatLine("e", shape.e)}
-${formatLine("B", shape.B)}
-${formatLine("G", shape.G)}
-${formatLine("D", shape.D)}
-${formatLine("A", shape.A)}
-${formatLine("E", shape.E)}
-</pre>`;
-      } else if (rootNote && scaleType) {
-        selectedChordEl.textContent = `Selected: ${rootNote} ${scaleType} scale`;
-      } else {
-        selectedChordEl.textContent = "";
-      }
-    }
-
-    document.getElementById("accidental-toggle").addEventListener("change", renderFretboard);
-    document.getElementById("root-select").addEventListener("change", renderFretboard);
-    document.getElementById("scale-type-select").addEventListener("change", renderFretboard);
-
-    renderFretboard();
-
-    // Add reset button functionality
-    document.getElementById("reset-fretboard").addEventListener("click", () => {
-      document.getElementById("root-select").selectedIndex = 0;
-      document.getElementById("scale-type-select").selectedIndex = 0;
-      document.getElementById("accidental-toggle").checked = false;
-      renderFretboard();
+      netlifyIdentity.init();
     });
   </script>
 </body>
