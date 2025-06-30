@@ -131,11 +131,17 @@
       padding: 2px 0;
       border-bottom: 1px solid var(--highlight-color);
       opacity: 0.7;
+      color: #888;
     }
 
     .fret-numbers span:first-child {
       background: transparent;
       border: none;
+    }
+
+    .fret-numbers .dot-fret {
+      color: var(--highlight-color);
+      font-weight: bold;
     }
   </style>
 </head>
@@ -237,6 +243,9 @@
       for (let fret = 1; fret <= numFrets; fret++) {
         const label = document.createElement("span");
         label.textContent = fret;
+        if ([3, 5, 7, 9, 12, 15, 17, 19, 21, 24].includes(fret)) {
+          label.classList.add("dot-fret");
+        }
         fretNumContainer.appendChild(label);
       }
 
