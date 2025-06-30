@@ -150,23 +150,33 @@
 </head>
 <body>
   <h1>Virtual Guitar Fretboard</h1>
-  <label for="chord-select" style="margin: 12px 0;">
-    Select Chord or Scale:
-    <select id="chord-select">
-      <option value="">-- Select --</option>
-      <option value="A-major">A Major</option>
-      <option value="A-minor">A Minor</option>
-      <option value="C-major">C Major</option>
-      <option value="C-minor">C Minor</option>
-      <option value="E-major">E Major</option>
-      <option value="E-minor">E Minor</option>
-      <option value="A-blues">A Blues</option>
-      <option value="A-major-scale">A Major Scale</option>
-      <option value="A-minor-scale">A Minor Scale</option>
-      <option value="C-major-scale">C Major Scale</option>
-      <option value="C-minor-scale">C Minor Scale</option>
-      <option value="E-major-scale">E Major Scale</option>
-      <option value="E-minor-scale">E Minor Scale</option>
+  <label style="margin: 12px 0;">
+    Select Root:
+    <select id="root-select">
+      <option value="">-- Root --</option>
+      <option value="A">A</option>
+      <option value="Bb">Bb</option>
+      <option value="B">B</option>
+      <option value="C">C</option>
+      <option value="C#">C#</option>
+      <option value="D">D</option>
+      <option value="Eb">Eb</option>
+      <option value="E">E</option>
+      <option value="F">F</option>
+      <option value="F#">F#</option>
+      <option value="G">G</option>
+      <option value="Ab">Ab</option>
+    </select>
+  </label>
+  <label style="margin: 12px 0;">
+    Select Scale:
+    <select id="scale-type-select">
+      <option value="">-- Scale --</option>
+      <option value="Major">Major</option>
+      <option value="Minor">Minor</option>
+      <option value="Blues">Blues</option>
+      <option value="Dorian">Dorian</option>
+      <option value="Mixolydian">Mixolydian</option>
     </select>
   </label>
   <label style="margin-bottom: 12px;">
@@ -188,20 +198,12 @@
     const standardTuning = ['E', 'B', 'G', 'D', 'A', 'E'];
     const numFrets = 24;
 
-    const CHORD_SCALES = {
-      'A-major':  { root: 'A', intervals: [0, 4, 7] },
-      'A-minor':  { root: 'A', intervals: [0, 3, 7] },
-      'C-major':  { root: 'C', intervals: [0, 4, 7] },
-      'C-minor':  { root: 'C', intervals: [0, 3, 7] },
-      'E-major':  { root: 'E', intervals: [0, 4, 7] },
-      'E-minor':  { root: 'E', intervals: [0, 3, 7] },
-      'A-blues':  { root: 'A', intervals: [0, 3, 5, 6, 7, 10] },
-      'A-major-scale': { root: 'A', intervals: [0, 2, 4, 5, 7, 9, 11] },
-      'A-minor-scale': { root: 'A', intervals: [0, 2, 3, 5, 7, 8, 10] },
-      'C-major-scale': { root: 'C', intervals: [0, 2, 4, 5, 7, 9, 11] },
-      'C-minor-scale': { root: 'C', intervals: [0, 2, 3, 5, 7, 8, 10] },
-      'E-major-scale': { root: 'E', intervals: [0, 2, 4, 5, 7, 9, 11] },
-      'E-minor-scale': { root: 'E', intervals: [0, 2, 3, 5, 7, 8, 10] }
+    const SCALE_PATTERNS = {
+      "Major": [0, 2, 4, 5, 7, 9, 11],
+      "Minor": [0, 2, 3, 5, 7, 8, 10],
+      "Blues": [0, 3, 5, 6, 7, 10],
+      "Dorian": [0, 2, 3, 5, 7, 9, 10],
+      "Mixolydian": [0, 2, 4, 5, 7, 9, 10]
     };
 
     const fretboardEl = document.getElementById("fretboard");
@@ -254,15 +256,13 @@
       }
 
       const useFlats = document.getElementById("accidental-toggle")?.checked;
-      const scaleSelect = document.getElementById("chord-select");
-      const selectedScale = scaleSelect?.value;
-      const scaleData = CHORD_SCALES[selectedScale];
-      const rootNote = scaleData?.root || null;
-      const scaleIntervals = scaleData?.intervals || null;
+      const rootNote = document.getElementById("root-select")?.value;
+      const scaleType = document.getElementById("scale-type-select")?.value;
+      const scaleIntervals = SCALE_PATTERNS[scaleType] || null;
 
       const stepInfo = document.getElementById("step-info");
       const stepDisplay = document.getElementById("scale-steps");
-      if (scaleData && rootNote && scaleIntervals) {
+      if (scaleIntervals && rootNote) {
         const ALL_NOTES = useFlats ? FLAT_NOTES : SHARP_NOTES;
         const rootIndex = ALL_NOTES.indexOf(rootNote);
         const intervalNames = {
@@ -281,7 +281,7 @@
           const className = `interval-${label}`;
           return `<span class="${className}" style="padding: 2px 6px; margin-right: 4px; border-radius: 4px; display: inline-block;">${note} (${label})</span>`;
         });
-        stepInfo.innerHTML = `Notes in ${rootNote} scale: ${labeledSteps.join(" ")}`;
+        stepInfo.innerHTML = `Notes in ${rootNote} ${scaleType} scale: ${labeledSteps.join(" ")}`;
         if (scaleIntervals.length > 1) {
           const steps = scaleIntervals.slice(1).map((val, idx) => val - scaleIntervals[idx]);
           stepDisplay.textContent = `Steps: ${steps.join(" ")}`;
@@ -349,87 +349,16 @@
 
       // Show the selected chord/scale name below the fretboard, or display chord shape if available
       const selectedChordEl = document.getElementById("selected-chord");
-      if (selectedScale && CHORD_SCALES[selectedScale]) {
-        const shape = {
-          "A-major": {
-            "e": "---0--- (E)",
-            "B": "---2--- (C#/Db)",
-            "G": "---2--- (A)",
-            "D": "---2--- (E)",
-            "A": "---0--- (A)",
-            "E": "---Muted"
-          },
-          "A-minor": {
-            "e": "---0--- (E)",
-            "B": "---1--- (C)",
-            "G": "---2--- (A)",
-            "D": "---2--- (E)",
-            "A": "---0--- (A)",
-            "E": "---Muted"
-          },
-          "C-major": {
-            "e": "---0--- (E)",
-            "B": "---1--- (C)",
-            "G": "---0--- (G)",
-            "D": "---2--- (E)",
-            "A": "---3--- (C)",
-            "E": "---Muted"
-          },
-          "C-minor": {
-            "e": "---3--- (G)",
-            "B": "---4--- (D#/Eb)",
-            "G": "---5--- (C)",
-            "D": "---5--- (G)",
-            "A": "---3--- (C)",
-            "E": "---Muted"
-          },
-          "E-major": {
-            "e": "---0--- (E)",
-            "B": "---0--- (B)",
-            "G": "---1--- (G#/Ab)",
-            "D": "---2--- (E)",
-            "A": "---2--- (B)",
-            "E": "---0--- (E)"
-          },
-          "E-minor": {
-            "e": "---0--- (E)",
-            "B": "---0--- (B)",
-            "G": "---0--- (G)",
-            "D": "---2--- (E)",
-            "A": "---2--- (B)",
-            "E": "---0--- (E)"
-          },
-          "A-blues": {
-            "e": "---0--- (E)",
-            "B": "---3--- (D)",
-            "G": "---2--- (A)",
-            "D": "---0--- (D)",
-            "A": "---0--- (A)",
-            "E": "---Muted"
-          }
-        };
-
-        const shapeData = shape[selectedScale];
-        if (shapeData) {
-          selectedChordEl.innerHTML =
-            `<pre style="font-size: 0.9rem; color: #ccc; background-color: #111; padding: 10px; border-radius: 6px;">
-e| ${shapeData.e}
-B| ${shapeData.B}
-G| ${shapeData.G}
-D| ${shapeData.D}
-A| ${shapeData.A}
-E| ${shapeData.E}
-</pre>`;
-        } else {
-          selectedChordEl.textContent = `Selected: ${scaleSelect.options[scaleSelect.selectedIndex].text}`;
-        }
+      if (rootNote && scaleType) {
+        selectedChordEl.textContent = `Selected: ${rootNote} ${scaleType} scale`;
       } else {
         selectedChordEl.textContent = "";
       }
     }
 
     document.getElementById("accidental-toggle").addEventListener("change", renderFretboard);
-    document.getElementById("chord-select").addEventListener("change", renderFretboard);
+    document.getElementById("root-select").addEventListener("change", renderFretboard);
+    document.getElementById("scale-type-select").addEventListener("change", renderFretboard);
 
     renderFretboard();
   </script>
