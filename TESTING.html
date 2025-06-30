@@ -381,14 +381,19 @@
       const chordKey = `${rootNote} ${scaleType}`;
       if (rootNote && scaleType && CHORD_SHAPES[chordKey]) {
         const shape = CHORD_SHAPES[chordKey];
+        const formatLine = (string, value) => {
+          const label = value.match(/\((.*?)\)/)?.[1] || "";
+          const fret = value.includes("Muted") ? "Muted" : value.replace(/[^0-9X]/g, '');
+          return `${string}|───${value.replace(/---/g, '───').replace("Muted", "X")}   (${label || fret})`;
+        };
         selectedChordEl.innerHTML =
           `<pre style="font-size: 1rem; font-family: 'Courier New', monospace; color: var(--highlight-color); background-color: #111; padding: 12px; border-radius: 8px; line-height: 1.5;">
-e|───${shape.e.replace(/---/g, '───')}   (${shape.e.match(/\((.*?)\)/)?.[1] || ''})
-B|───${shape.B.replace(/---/g, '───')}   (${shape.B.match(/\((.*?)\)/)?.[1] || ''})
-G|───${shape.G.replace(/---/g, '───')}   (${shape.G.match(/\((.*?)\)/)?.[1] || ''})
-D|───${shape.D.replace(/---/g, '───')}   (${shape.D.match(/\((.*?)\)/)?.[1] || ''})
-A|───${shape.A.replace(/---/g, '───')}   (${shape.A.match(/\((.*?)\)/)?.[1] || ''})
-E|───${shape.E.replace(/---/g, '───')}   (${shape.E.match(/\((.*?)\)/)?.[1] || ''})
+${formatLine("e", shape.e)}
+${formatLine("B", shape.B)}
+${formatLine("G", shape.G)}
+${formatLine("D", shape.D)}
+${formatLine("A", shape.A)}
+${formatLine("E", shape.E)}
 </pre>`;
       } else if (rootNote && scaleType) {
         selectedChordEl.textContent = `Selected: ${rootNote} ${scaleType} scale`;
