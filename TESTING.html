@@ -224,7 +224,7 @@
           const note = ALL_NOTES[(rootIndex + interval) % 12];
           const label = intervalNames[interval];
           const className = `interval-${label}`;
-          return `<span class="${className}" style="padding: 2px 6px; margin-right: 4px; border-radius: 4px; display: inline-block;">${label} (${note})</span>`;
+          return `<span class="${className}" style="padding: 2px 6px; margin-right: 4px; border-radius: 4px; display: inline-block;">${note} (${label})</span>`;
         });
         stepInfo.innerHTML = `Notes in ${rootNote} scale: ${labeledSteps.join(" ")}`;
       } else {
