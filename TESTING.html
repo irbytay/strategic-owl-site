@@ -216,8 +216,16 @@
       if (scaleData && rootNote && scaleIntervals) {
         const ALL_NOTES = useFlats ? FLAT_NOTES : SHARP_NOTES;
         const rootIndex = ALL_NOTES.indexOf(rootNote);
-        const noteSteps = scaleIntervals.map(interval => ALL_NOTES[(rootIndex + interval) % 12]);
-        stepInfo.textContent = `Notes in ${rootNote} scale: ${noteSteps.join(", ")}`;
+        const intervalNames = {
+          0: 'R', 1: 'm2', 2: 'M2', 3: 'm3', 4: 'M3', 5: 'P4',
+          6: 'TT', 7: 'P5', 8: 'm6', 9: 'M6', 10: 'm7', 11: 'M7'
+        };
+        const labeledSteps = scaleIntervals.map(interval => {
+          const note = ALL_NOTES[(rootIndex + interval) % 12];
+          const label = intervalNames[interval];
+          return `${label}(${note})`;
+        });
+        stepInfo.textContent = `Notes in ${rootNote} scale: ${labeledSteps.join(", ")}`;
       } else {
         stepInfo.textContent = "";
       }
