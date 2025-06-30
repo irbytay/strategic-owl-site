@@ -212,7 +212,10 @@
 
       const stepInfo = document.getElementById("step-info");
       if (scaleData && rootNote && scaleIntervals) {
-        stepInfo.textContent = `Intervals from ${rootNote}: ${scaleIntervals.join(", ")}`;
+        const ALL_NOTES = useFlats ? FLAT_NOTES : SHARP_NOTES;
+        const rootIndex = ALL_NOTES.indexOf(rootNote);
+        const noteSteps = scaleIntervals.map(interval => ALL_NOTES[(rootIndex + interval) % 12]);
+        stepInfo.textContent = `Notes in ${rootNote} scale: ${noteSteps.join(", ")}`;
       } else {
         stepInfo.textContent = "";
       }
