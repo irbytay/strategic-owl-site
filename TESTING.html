@@ -260,7 +260,6 @@
   </style>
 </head>
 <body>
-   <h1>The Strategic Fretboard</h1>
   <div class="help-icon-container">
   <div class="help-icon" tabindex="0">🦉</div>
   <div class="help-tooltip">
@@ -276,6 +275,7 @@
     5. Click “Reset Fretboard” to start fresh
   </div>
 </div>
+  <h1>The Strategic Fretboard</h1>
   <label style="margin: 12px 0;">
     Select Root:
     <select id="root-select">
@@ -384,8 +384,8 @@
     function getNoteAt(startNote, fret) {
       const useFlats = document.getElementById("accidental-toggle")?.checked;
       const ALL_NOTES = useFlats ? FLAT_NOTES : SHARP_NOTES;
-
       const startIndex = ALL_NOTES.indexOf(startNote);
+      // Fret 0 is the open string (startNote itself)
       return ALL_NOTES[(startIndex + fret) % 12];
     }
 
@@ -570,23 +570,21 @@
         const tuningSelect = createTuningSelect(string, tuningNote);
         row.appendChild(tuningSelect);
 
-        for (let fret = 1; fret <= numFrets; fret++) {
+        // Display fret 0 (open string)
+        {
           const cell = document.createElement("div");
           cell.className = "note-cell";
-          const note = getNoteAt(tuningNote, fret);
-          
+          const note = getNoteAt(tuningNote, 0);
           const ALL_NOTES = useFlats ? FLAT_NOTES : SHARP_NOTES;
           const rootIndex = ALL_NOTES.indexOf(rootNote);
           const noteIndex = ALL_NOTES.indexOf(note);
           const semitoneFromRoot = useFlats
             ? (rootIndex - noteIndex + 12) % 12
             : (noteIndex - rootIndex + 12) % 12;
-
           let showNote = true;
           if (scaleIntervals && rootNote) {
             showNote = scaleIntervals.includes(semitoneFromRoot);
           }
-
           if (showNote && scaleIntervals && rootNote) {
             const intervalNames = {
               0: 'R', 1: 'm2', 2: 'M2', 3: 'm3', 4: 'M3', 5: 'P4',
@@ -598,17 +596,43 @@
           } else {
             cell.textContent = showNote ? note : "";
           }
-
+          // No fret marker for open string
+          row.appendChild(cell);
+        }
+        // Frets 1 to numFrets
+        for (let fret = 1; fret <= numFrets; fret++) {
+          const cell = document.createElement("div");
+          cell.className = "note-cell";
+          const note = getNoteAt(tuningNote, fret);
+          const ALL_NOTES = useFlats ? FLAT_NOTES : SHARP_NOTES;
+          const rootIndex = ALL_NOTES.indexOf(rootNote);
+          const noteIndex = ALL_NOTES.indexOf(note);
+          const semitoneFromRoot = useFlats
+            ? (rootIndex - noteIndex + 12) % 12
+            : (noteIndex - rootIndex + 12) % 12;
+          let showNote = true;
+          if (scaleIntervals && rootNote) {
+            showNote = scaleIntervals.includes(semitoneFromRoot);
+          }
+          if (showNote && scaleIntervals && rootNote) {
+            const intervalNames = {
+              0: 'R', 1: 'm2', 2: 'M2', 3: 'm3', 4: 'M3', 5: 'P4',
+              6: 'TT', 7: 'P5', 8: 'm6', 9: 'M6', 10: 'm7', 11: 'M7'
+            };
+            const intervalName = intervalNames[semitoneFromRoot];
+            cell.textContent = `${note}\n${intervalName}`;
+            if (intervalName) cell.classList.add(`interval-${intervalName}`);
+          } else {
+            cell.textContent = showNote ? note : "";
+          }
           if ([3, 5, 7, 9, 12, 15, 17, 19, 21, 24].includes(fret)) {
             const dot = document.createElement("div");
             dot.className = "fret-marker";
             dot.textContent = "•";
             cell.appendChild(dot);
           }
-
           row.appendChild(cell);
         }
-
         fretboardEl.appendChild(row);
       }
 
