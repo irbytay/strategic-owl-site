@@ -714,7 +714,10 @@ function generateFretboard(tuning = defaultTuning) {
   // For each string, add a row to the grid (high E/top row first, low E/bottom row last)
   for (let string = 0; string < tuning.length; string++) {
     const openNote = tuning[string];
-    const openIndex = ALL_NOTES.indexOf(openNote);
+    // Use flip logic for note map
+    const flip = document.getElementById("flipLogicToggle")?.checked || false;
+    const noteMap = flip ? ALL_NOTES_FLAT : ALL_NOTES;
+    const openIndex = noteMap.indexOf(openNote);
 
     // Create dropdown as first column
     const select = document.createElement("select");
@@ -740,10 +743,12 @@ function generateFretboard(tuning = defaultTuning) {
       const newNote = e.target.value;
       const stringIndex = parseInt(e.target.dataset.string);
       const rowStart = (stringIndex + 1) * (numFrets + 1); // skip header + tuning selectors
-
+      // Use flip logic for note map
+      const flip = document.getElementById("flipLogicToggle")?.checked || false;
+      const noteMap = flip ? ALL_NOTES_FLAT : ALL_NOTES;
       for (let fret = 0; fret < numFrets; fret++) {
         const cellIndex = rowStart + 1 + fret;
-        const note = ALL_NOTES[(ALL_NOTES.indexOf(newNote) + fret + 1) % 12];
+        const note = noteMap[(noteMap.indexOf(newNote) + fret + 1) % 12];
         const cell = fretboardDiv.children[cellIndex];
         // Only show note if it's part of the scale
         const shouldShow = window.currentScaleNotes?.includes(note);
@@ -773,7 +778,10 @@ function generateFretboard(tuning = defaultTuning) {
     // Define visual string thickness: string 1 (top/high E) to string 6 (bottom/low E)
     const visualGauge = [1, 2, 2.5, 3, 4, 5]; // px: thinnest to thickest
     for (let fret = 1; fret <= numFrets; fret++) {
-      const note = ALL_NOTES[(openIndex + fret) % 12];
+      // Use flip logic for note map
+      const flip = document.getElementById("flipLogicToggle")?.checked || false;
+      const noteMap = flip ? ALL_NOTES_FLAT : ALL_NOTES;
+      const note = noteMap[(noteMap.indexOf(openNote) + fret) % 12];
       const cell = document.createElement("div");
       // Only show note if it's part of the scale
       const shouldShow = window.currentScaleNotes?.includes(note);
