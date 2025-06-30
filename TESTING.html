@@ -422,6 +422,12 @@
         <option value="Double Harmonic">Double Harmonic</option>
       </select>
     </div>
+    <div style="text-align: center; margin-bottom: 16px;">
+      <label style="font-size: 0.95rem; color: var(--text-muted);">
+        <input type="checkbox" id="flipLogicToggle" style="margin-right: 6px;" />
+        Flip Logic (Use Flats & Descending)
+      </label>
+    </div>
 
     <!-- 🎼 Chord/Scale Display Section -->
     <div id="chord-display-area" style="margin-bottom: 20px; text-align: center; color: var(--text);">
@@ -500,13 +506,21 @@ function buildScale(rootNote, progressionName) {
   const intervals = PROGRESSION_LIBRARY[progressionName];
   if (!intervals || !ALL_NOTES.includes(rootNote)) return [];
 
-  const noteMap = [...ALL_NOTES]; // chromatic scale
+  const noteMap = [...ALL_NOTES];
+  const flip = document.getElementById('flipLogicToggle')?.checked || false;
   const scale = [rootNote];
   let currentIndex = noteMap.indexOf(rootNote);
 
-  for (let step of intervals) {
-    currentIndex = (currentIndex + step) % 12;
-    scale.push(noteMap[currentIndex]);
+  if (flip) {
+    for (let step of intervals) {
+      currentIndex = (currentIndex - step + 12) % 12;
+      scale.push(noteMap[currentIndex]);
+    }
+  } else {
+    for (let step of intervals) {
+      currentIndex = (currentIndex + step) % 12;
+      scale.push(noteMap[currentIndex]);
+    }
   }
 
   return scale;
@@ -884,6 +898,7 @@ document.addEventListener("DOMContentLoaded", () => {
   generateFretboard(defaultTuning);
   document.getElementById("custom-chord-select").addEventListener("change", updateChordInfoDisplay);
   document.getElementById("custom-progression-select").addEventListener("change", updateChordInfoDisplay);
+  document.getElementById("flipLogicToggle").addEventListener("change", updateChordInfoDisplay);
   updateChordInfoDisplay();
 });
 </script>
