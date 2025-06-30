@@ -623,23 +623,33 @@
       // Add visual fret dots below the fretboard
       const dotRow = document.createElement("div");
       dotRow.className = "string-row";
-      dotRow.style.height = "16px"; // shorter height for dot row
-      dotRow.appendChild(document.createElement("div")); // empty cell for spacer
+      dotRow.style.height = "18px"; // Slightly taller for visual clarity
+      dotRow.appendChild(document.createElement("div")); // spacer
 
       for (let fret = 1; fret <= numFrets; fret++) {
         const dotCell = document.createElement("div");
         dotCell.style.position = "relative";
 
+        const dotStyle = `
+          width: 7px;
+          height: 7px;
+          background: var(--highlight-color);
+          border-radius: 50%;
+          position: absolute;
+          top: 5px;
+          box-shadow: 0 0 6px rgba(212, 175, 55, 0.5);
+        `;
+
         // Single dots at typical frets
         if ([3, 5, 7, 9, 15, 17, 19, 21].includes(fret)) {
-          dotCell.innerHTML = `<div style="width: 8px; height: 8px; background: var(--highlight-color); border-radius: 50%; position: absolute; top: 4px; left: 50%; transform: translateX(-50%); box-shadow: 0 0 4px var(--highlight-color);"></div>`;
+          dotCell.innerHTML = `<div style="${dotStyle} left: 50%; transform: translateX(-50%);"></div>`;
         }
 
         // Double dot at fret 12 and 24
         if ([12, 24].includes(fret)) {
           dotCell.innerHTML = `
-            <div style="width: 6px; height: 6px; background: var(--highlight-color); border-radius: 50%; position: absolute; top: 2px; left: 35%; transform: translateX(-50%); box-shadow: 0 0 4px var(--highlight-color);"></div>
-            <div style="width: 6px; height: 6px; background: var(--highlight-color); border-radius: 50%; position: absolute; top: 2px; left: 65%; transform: translateX(-50%); box-shadow: 0 0 4px var(--highlight-color);"></div>
+            <div style="${dotStyle} left: 43%; transform: translateX(-50%);"></div>
+            <div style="${dotStyle} left: 57%; transform: translateX(-50%);"></div>
           `;
         }
 
