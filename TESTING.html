@@ -260,6 +260,37 @@
   opacity: 1;
 }
   </style>
+  <script src="https://identity.netlify.com/v1/netlify-identity-widget.js"></script>
+  <script>
+    netlifyIdentity.on("init", user => {
+      if (user && user.email) {
+        const email = user.email;
+        fetch("/data/subscribers.json")
+          .then(res => {
+            if (!res.ok) throw new Error("subscribers.json not found");
+            return res.json();
+          })
+          .then(data => {
+            const subscriber = data[email];
+            if (subscriber && subscriber.status === "active") {
+              document.getElementById("fretboard-link").style.display = "block";
+            } else {
+              document.getElementById("stripe-link").style.display = "block";
+            }
+          })
+          .catch(err => {
+            console.error("Error checking subscription:", err);
+            document.getElementById("stripe-link").style.display = "block";
+          });
+      }
+    });
+
+    netlifyIdentity.on("login", () => {
+      window.location.href = "/home.html";
+    });
+
+    netlifyIdentity.init();
+  </script>
 </head>
 <body>
   <div style="text-align: right; padding: 10px 20px; width: 100%;">
@@ -267,7 +298,56 @@
       Log Out
     </button>
   </div>
-   <h1>The Strategic Fretboard</h1>
+
+  <header style="font-family: 'Space Grotesk', sans-serif; font-size: 2rem; margin-bottom: 0.5rem; color: #FFFFF0;">
+    Strategic Fretboard
+  </header>
+
+  <div class="tagline" style="font-size: 1.6rem; color: #ffffff; font-weight: 500; margin-bottom: 2rem;">
+    <strong>Master the fretboard. Unlock your potential.</strong>
+  </div>
+
+  <p style="max-width: 700px; margin: 1.5rem auto; line-height: 1.6; font-size: 1.1rem; color: #ffffff;">
+    Strategic Fretboard is your modern gateway to understanding chords, scales, and fretboard logic through powerful visual tools. Designed for students, teachers, and serious players.
+  </p>
+  <p style="max-width: 700px; margin: 1.5rem auto; line-height: 1.6; font-size: 1.1rem; color: #ffffff;">
+    Gain access to the full learning suite including interactive fretboard maps, custom scale builders, and more.
+  </p>
+
+  <div class="cta" style="margin: 2rem 0;">
+    <div id="fretboard-link" style="display:none;">
+      <a href="/fretboard.html">
+        <button style="background: linear-gradient(145deg, #FFD700, #B8860B); color: #0D1B2A; border: 2px solid #A67C00; padding: 1rem 2.4rem; font-size: 1.1rem; font-weight: 800; font-family: 'Space Grotesk', sans-serif; border-radius: 12px; cursor: pointer; margin-bottom: 14px; box-shadow: 0 6px 14px rgba(212, 175, 55, 0.35); transition: all 0.25s ease; letter-spacing: 0.8px; text-transform: uppercase; text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.4);">
+          Go to Fretboard
+        </button>
+      </a>
+    </div>
+    <div id="stripe-link" style="display:none;">
+      <a href="https://buy.stripe.com/7sY8wP4gP5h9182aEhdwc00">
+        <button style="background: linear-gradient(145deg, #FFD700, #B8860B); color: #0D1B2A; border: 2px solid #A67C00; padding: 1rem 2.4rem; font-size: 1.1rem; font-weight: 800; font-family: 'Space Grotesk', sans-serif; border-radius: 12px; cursor: pointer; margin-bottom: 14px; box-shadow: 0 6px 14px rgba(212, 175, 55, 0.35); transition: all 0.25s ease; letter-spacing: 0.8px; text-transform: uppercase; text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.4);">
+          Unlock Full Access – $29.99
+        </button>
+      </a>
+      <p style="font-size: 0.85rem; color: #aaa;">
+        One-time purchase grants full access to Strategic Fretboard's learning suite — including interactive fretboard maps, chord overlays, and scale builders.
+      </p>
+      <p style="font-size: 0.85rem; color: #aaa;">
+        All purchases are final. Access will be granted manually after email confirmation. For support or access issues, contact us at team@strategicfretboard.com.
+      </p>
+      <p style="font-size: 0.8rem; color: #888;">
+        By purchasing, you agree to the Strategic Fretboard access terms.
+      </p>
+    </div>
+    <button onclick="netlifyIdentity.open()" style="background: linear-gradient(145deg, #FFD700, #B8860B); color: #0D1B2A; border: 2px solid #A67C00; padding: 1rem 2.4rem; font-size: 1.1rem; font-weight: 800; font-family: 'Space Grotesk', sans-serif; border-radius: 12px; cursor: pointer; margin-bottom: 14px; box-shadow: 0 6px 14px rgba(212, 175, 55, 0.35); transition: all 0.25s ease; letter-spacing: 0.8px; text-transform: uppercase; text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.4);">
+      Login / Sign Up
+    </button>
+  </div>
+
+  <img src="fret.png" alt="Fretboard Preview" class="image-preview" style="width: 100%; max-width: 600px; height: auto; margin: 2rem auto; border-radius: 8px; border: 1px solid #666; box-shadow: 0 0 10px rgba(0,0,0,0.3); display: block;" />
+  <hr style="margin-top: 4rem; border: 0; height: 1px; background: #444;" />
+  <h2 style="font-family: 'Space Grotesk', sans-serif; font-size: 1.6rem; color: #FFD700; margin-top: 2rem;">Preview the Fretboard</h2>
+  <p style="font-size: 1rem; color: #ccc;">Try out this simplified version — full access unlocks scale modes, interval mapping, tuning control, and more.</p>
+
   <div style="text-align: center; max-width: 800px; margin-bottom: 20px;">
     <p style="color: #ccc; font-size: 1rem;">
       You're viewing a simplified preview of the full Strategic Fretboard tool.
