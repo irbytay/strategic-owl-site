@@ -30,10 +30,14 @@
       color: var(--highlight-color);
     }
 
-    .fretboard-wrapper {
+    .fretboard-scroll-container {
       overflow-x: auto;
       width: 100%;
-      max-width: 100vw;
+    }
+
+    .fretboard-wrapper {
+      min-width: fit-content;
+      margin: 0 auto;
     }
 
     .fretboard {
@@ -117,6 +121,10 @@
       .fret-numbers {
         margin-top: -10px;
         margin-bottom: 0;
+        overflow-x: auto;
+      }
+      .fretboard-scroll-container {
+        padding-bottom: 8px;
       }
       .fretboard-wrapper {
         margin-top: 0;
@@ -240,9 +248,11 @@
   <div class="reset-container">
     <button id="reset-fretboard">⟳ Reset Fretboard</button>
   </div>
-  <div class="fretboard-wrapper">
-    <div class="fret-numbers"></div>
-    <div class="fretboard" id="fretboard"></div>
+  <div class="fretboard-scroll-container">
+    <div class="fretboard-wrapper">
+      <div class="fret-numbers"></div>
+      <div class="fretboard" id="fretboard"></div>
+    </div>
   </div>
   <div id="selected-chord" style="margin-top: 20px; font-size: 1.1rem; color: var(--highlight-color); font-weight: bold;"></div>
 
