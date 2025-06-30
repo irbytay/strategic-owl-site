@@ -68,6 +68,23 @@
       font-size: 0.85rem;
       font-weight: 600;
       position: relative;
+      white-space: pre-line;
+    }
+
+    .interval-R {
+      background-color: #2e7031; /* dim green */
+    }
+
+    .interval-M3, .interval-m3 {
+      background-color: #3e4c75; /* dim blue */
+    }
+
+    .interval-P5 {
+      background-color: #704c2e; /* dim brown/orange */
+    }
+
+    .interval-M7, .interval-m7 {
+      background-color: #553770; /* dim violet */
     }
 
     .fret-marker {
@@ -212,7 +229,16 @@
             showNote = scaleIntervals.includes(semitoneFromRoot);
           }
 
-          cell.textContent = showNote ? note : "";
+          if (showNote && scaleIntervals && rootNote) {
+            const intervalName = {
+              0: 'R', 1: 'm2', 2: 'M2', 3: 'm3', 4: 'M3', 5: 'P4',
+              6: 'TT', 7: 'P5', 8: 'm6', 9: 'M6', 10: 'm7', 11: 'M7'
+            }[semitoneFromRoot];
+            cell.textContent = `${note}\n${intervalName}`;
+            cell.classList.add(`interval-${intervalName}`);
+          } else {
+            cell.textContent = showNote ? note : "";
+          }
 
           if ([3, 5, 7, 9, 12, 15, 17, 19, 21, 24].includes(fret)) {
             const dot = document.createElement("div");
@@ -234,4 +260,4 @@
     renderFretboard();
   </script>
 </body>
-</html>  
+</html> 
