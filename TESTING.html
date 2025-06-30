@@ -132,7 +132,10 @@
         if (note === defaultNote) opt.selected = true;
         select.appendChild(opt);
       });
-      select.addEventListener("change", renderFretboard);
+      select.addEventListener("change", () => {
+        standardTuning[stringIndex] = select.value;
+        renderFretboard();
+      });
       return select;
     }
 
@@ -157,13 +160,13 @@
         const tuningSelect = createTuningSelect(string, tuningNote);
         row.appendChild(tuningSelect);
 
-        for (let fret = 0; fret <= numFrets; fret++) {
+        for (let fret = 1; fret <= numFrets; fret++) {
           const cell = document.createElement("div");
           cell.className = "note-cell";
           const note = getNoteAt(tuningNote, fret);
           cell.textContent = note;
 
-          if (string === 2 && [3, 5, 7, 9, 12, 15, 17, 19, 21, 24].includes(fret)) {
+          if ([3, 5, 7, 9, 12, 15, 17, 19, 21, 24].includes(fret)) {
             const dot = document.createElement("div");
             dot.className = "fret-marker";
             dot.textContent = "•";
