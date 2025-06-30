@@ -37,11 +37,15 @@
     }
 
     .fretboard {
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+      background: transparent;
+    }
+
+    .string-row {
       display: grid;
       grid-template-columns: 60px repeat(24, 42px);
-      grid-auto-rows: 40px;
-      border: none;
-      background: transparent;
     }
 
     .string-label {
@@ -142,24 +146,23 @@
 
     function renderFretboard() {
       fretboardEl.innerHTML = "";
-      const wrapper = document.createDocumentFragment();
 
       for (let string = 0; string < 6; string++) {
         const tuning = document.querySelector(`select[data-string='${string}']`);
         const tuningNote = tuning ? tuning.value : standardTuning[string];
 
-        // Add tuning selector (only one per string)
+        const row = document.createElement("div");
+        row.className = "string-row";
+
         const tuningSelect = createTuningSelect(string, tuningNote);
-        wrapper.appendChild(tuningSelect);
+        row.appendChild(tuningSelect);
 
         for (let fret = 0; fret <= numFrets; fret++) {
           const cell = document.createElement("div");
           cell.className = "note-cell";
-
           const note = getNoteAt(tuningNote, fret);
           cell.textContent = note;
 
-          // Add fret marker
           if (string === 2 && [3, 5, 7, 9, 12, 15, 17, 19, 21, 24].includes(fret)) {
             const dot = document.createElement("div");
             dot.className = "fret-marker";
@@ -167,10 +170,11 @@
             cell.appendChild(dot);
           }
 
-          wrapper.appendChild(cell);
+          row.appendChild(cell);
         }
+
+        fretboardEl.appendChild(row);
       }
-      fretboardEl.appendChild(wrapper);
     }
 
     document.getElementById("accidental-toggle").addEventListener("change", renderFretboard);
