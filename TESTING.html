@@ -142,6 +142,7 @@
     </select>
   </label>
   <div id="step-info" style="margin: 8px 0; font-size: 0.9rem; color: #fff;"></div>
+  <div id="scale-steps" style="margin: 4px 0 12px; font-size: 0.85rem; color: #aaa;"></div>
   <div class="fretboard-wrapper">
     <div class="fretboard" id="fretboard"></div>
   </div>
@@ -213,6 +214,7 @@
       const scaleIntervals = scaleData?.intervals || null;
 
       const stepInfo = document.getElementById("step-info");
+      const stepDisplay = document.getElementById("scale-steps");
       if (scaleData && rootNote && scaleIntervals) {
         const ALL_NOTES = useFlats ? FLAT_NOTES : SHARP_NOTES;
         const rootIndex = ALL_NOTES.indexOf(rootNote);
@@ -227,8 +229,15 @@
           return `<span class="${className}" style="padding: 2px 6px; margin-right: 4px; border-radius: 4px; display: inline-block;">${note} (${label})</span>`;
         });
         stepInfo.innerHTML = `Notes in ${rootNote} scale: ${labeledSteps.join(" ")}`;
+        if (scaleIntervals.length > 1) {
+          const steps = scaleIntervals.slice(1).map((val, idx) => val - scaleIntervals[idx]);
+          stepDisplay.textContent = `Steps: ${steps.join(" ")}`;
+        } else {
+          stepDisplay.textContent = "";
+        }
       } else {
         stepInfo.innerHTML = "";
+        document.getElementById("scale-steps").textContent = "";
       }
 
       for (let string = 0; string < 6; string++) {
