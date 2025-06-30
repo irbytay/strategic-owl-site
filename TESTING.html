@@ -382,10 +382,7 @@
       if (rootNote && scaleType && CHORD_SHAPES[chordKey]) {
         const shape = CHORD_SHAPES[chordKey];
         const formatLine = (string, value) => {
-          const display = value.includes("Muted") ? "X" : value.replace(/.*?(X|\d).*?/, "$1");
-          const noteMatch = value.match(/\((.*?)\)/);
-          const note = noteMatch ? noteMatch[1] : "";
-          return `${string}|────${display}────   (${note})`;
+          return `${string}|${value}`;
         };
         selectedChordEl.innerHTML =
           `<pre style="font-size: 1rem; font-family: 'Courier New', monospace; color: var(--highlight-color); background-color: #111; padding: 12px; border-radius: 8px; line-height: 1.5;">
