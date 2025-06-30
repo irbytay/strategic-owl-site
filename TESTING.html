@@ -99,6 +99,66 @@
       font-size: 0.9rem;
       color: #7C8A9B;
     }
+
+    /* Added fretboard shared styles */
+    .fretboard-scroll-container {
+      overflow-x: auto;
+      margin-top: 2rem;
+      -webkit-overflow-scrolling: touch;
+      scrollbar-width: thin;
+      scrollbar-color: #555 transparent;
+    }
+    .fretboard-scroll-container::-webkit-scrollbar {
+      height: 10px;
+    }
+    .fretboard-scroll-container::-webkit-scrollbar-track {
+      background: transparent;
+    }
+    .fretboard-scroll-container::-webkit-scrollbar-thumb {
+      background-color: #555;
+      border-radius: 10px;
+      border: 2px solid transparent;
+      background-clip: content-box;
+    }
+    .fretboard-wrapper {
+      width: fit-content;
+      margin: auto;
+      user-select: none;
+    }
+    .fretboard {
+      display: grid;
+      grid-template-columns: 60px repeat(24, 42px);
+      background: #112240;
+      border: 1px solid #444;
+      border-radius: 8px;
+      box-shadow: inset 0 0 10px #0008;
+    }
+    .string-row {
+      display: grid;
+      grid-template-columns: 60px repeat(24, 42px);
+      margin-bottom: 2px;
+    }
+    .note-cell {
+      background: #112240;
+      color: #fff;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-left: 1px solid #555;
+      border-bottom: 1px solid #333;
+      font-family: monospace;
+      font-size: 0.85rem;
+      padding: 4px 0;
+    }
+    .fret-numbers {
+      display: grid;
+      grid-template-columns: 60px repeat(12, 42px);
+      font-size: 0.75rem;
+      font-family: monospace;
+      color: #FFD700;
+      text-align: center;
+      padding-bottom: 6px;
+    }
   </style>
   <script src="https://identity.netlify.com/v1/netlify-identity-widget.js"></script>
   <script>
@@ -172,7 +232,7 @@
 
   <div class="fretboard-scroll-container" style="overflow-x: auto; margin-top: 2rem;">
     <div class="fretboard-wrapper" style="width: fit-content; margin: auto;">
-      <div class="fret-numbers" style="display: grid; grid-template-columns: 60px repeat(12, 42px); font-size: 0.75rem; font-family: monospace; color: #FFD700; text-align: center; padding-bottom: 6px;">
+      <div class="fret-numbers">
         <span></span>
         <span>1</span><span>2</span><span>3</span><span>4</span><span>5</span><span>6</span><span>7</span><span>8</span><span>9</span><span>10</span><span>11</span><span>12</span>
       </div>
@@ -194,9 +254,7 @@
       basicFretboard.innerHTML = "";
       BASIC_STRINGS.forEach(note => {
         const row = document.createElement("div");
-        row.style.display = "grid";
-        row.style.gridTemplateColumns = "60px repeat(12, 42px)";
-        row.style.marginBottom = "2px";
+        row.className = "string-row";
 
         const label = document.createElement("div");
         label.textContent = note;
@@ -209,17 +267,8 @@
 
         for (let f = 1; f <= 12; f++) {
           const cell = document.createElement("div");
+          cell.className = "note-cell";
           cell.textContent = getBasicNoteAt(note, f);
-          cell.style.background = "#112240";
-          cell.style.color = "#fff";
-          cell.style.display = "flex";
-          cell.style.alignItems = "center";
-          cell.style.justifyContent = "center";
-          cell.style.borderLeft = "1px solid #555";
-          cell.style.borderBottom = "1px solid #333";
-          cell.style.fontFamily = "monospace";
-          cell.style.fontSize = "0.85rem";
-          cell.style.padding = "4px 0";
           row.appendChild(cell);
         }
 
