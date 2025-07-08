@@ -523,7 +523,9 @@ promptDiv.appendChild(promptLabel);
 
  const promptBox = document.createElement("textarea");
  const rawPrompt = prompts[selected];
- const formattedPrompt = rawPrompt.replaceAll('\\n\\n', '\n\n');
+ const formattedPrompt = rawPrompt
+   .replace(/\\n\\n/g, '\n\n')   // handles literal \n\n
+   .replace(/\\\\n\\\\n/g, '\n\n'); // handles double-escaped \\n\\n
  promptBox.value = formattedPrompt;
  promptBox.readOnly = true;
  promptBox.style.width = "100%";
