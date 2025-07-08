@@ -5,6 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Strategic Owl | The Constitution</title>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&family=Playfair+Display:wght@600;700&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Dancing+Script&display=swap" rel="stylesheet">
 
   <style>
   :root {
@@ -562,8 +563,14 @@
           promptBox.style.borderLeft = "4px solid #D4AF37";
           promptBox.style.borderRadius = "8px";
           promptBox.style.color = "#D4AF37";
-          promptBox.style.fontFamily = "'Courier New', monospace";
-          promptBox.style.fontSize = "0.95rem";
+          // Use Dancing Script font for Declaration text, otherwise fallback
+          if (selected === 'Declaration of Independence') {
+            promptBox.style.fontFamily = "'Dancing Script', cursive";
+            promptBox.style.fontSize = "1.25rem";
+          } else {
+            promptBox.style.fontFamily = "'Courier New', monospace";
+            promptBox.style.fontSize = "0.95rem";
+          }
           promptBox.style.lineHeight = "1.5";
           promptBox.style.overflow = "hidden";
           promptBox.style.resize = "none";
