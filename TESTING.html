@@ -565,17 +565,16 @@
           promptBox.style.color = "#D4AF37";
           // Use Dancing Script font for Declaration text, otherwise fallback
           if (selected === 'Declaration of Independence') {
-            promptBox.style.fontFamily = "'Dancing Script', cursive";
-            promptBox.style.fontSize = "1.25rem";
+            promptBox.setAttribute("style", "font-family: 'Dancing Script', cursive; font-size: 20px; line-height: 1.5; font-weight: 400; color: #1a1a1a; width: 100%; padding: 12px; background-color: #1C2B3A; border: 1px solid #D4AF37; border-left: 4px solid #D4AF37; border-radius: 8px; resize: none; overflow: hidden; box-sizing: border-box; height: auto;");
           } else {
             promptBox.style.fontFamily = "'Courier New', monospace";
             promptBox.style.fontSize = "0.95rem";
+            promptBox.style.lineHeight = "1.5";
+            promptBox.style.overflow = "hidden";
+            promptBox.style.resize = "none";
+            promptBox.style.boxSizing = "border-box";
+            promptBox.style.height = "auto";
           }
-          promptBox.style.lineHeight = "1.5";
-          promptBox.style.overflow = "hidden";
-          promptBox.style.resize = "none";
-          promptBox.style.boxSizing = "border-box";
-          promptBox.style.height = "auto";
 
           // 🪄 Auto-resize to fit content
           setTimeout(() => {
