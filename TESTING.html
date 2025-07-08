@@ -477,9 +477,8 @@
       // Insert after outputDiv
       outputDiv.insertAdjacentElement("afterend", insightDiv);
     }
-    // Only add prompt textarea if not present (remove full text textarea logic)
+    // Only add prompt textarea if not present
     let promptBox = document.getElementById("prompt-box");
-    // Prompt box style (formerly for full text box, now for prompt box)
     const promptBoxStyle = `
         background: #112240;
         font-family: 'Montserrat', sans-serif;
@@ -498,7 +497,6 @@
       promptBox.id = "prompt-box";
       promptBox.readOnly = true;
       promptBox.setAttribute("style", promptBoxStyle);
-      // Insert after insightDiv (so it's below the insight and below the full text in outputDiv)
       insightDiv.insertAdjacentElement("afterend", promptBox);
     }
 
@@ -567,12 +565,11 @@
         h2.style.textAlign = "center";
         h2.style.fontFamily = "'Playfair Display', serif";
         outputDiv.appendChild(h2);
-        // Branded full text textarea
-        const fullTextBox = document.createElement("textarea");
-        fullTextBox.id = "fulltext-box";
-        fullTextBox.readOnly = true;
-        fullTextBox.value = fullText;
-        fullTextBox.setAttribute("style",
+        // Branded full text display (remove unused static textarea, use <pre> for display)
+        const fullTextDisplay = document.createElement("pre");
+        fullTextDisplay.id = "fulltext-box";
+        fullTextDisplay.textContent = fullText;
+        fullTextDisplay.setAttribute("style",
           "background: #fdf6e3;" +
           "font-family: 'Dancing Script', cursive;" +
           "font-size: 20px;" +
@@ -585,14 +582,10 @@
           "box-shadow: 0 0 10px #C4A000, inset 0 0 5px rgba(0,0,0,0.2);" +
           "width: 100%;" +
           "margin-top: 1rem;" +
-          "resize: none;"
+          "white-space: pre-wrap;" +
+          "overflow-x: auto;"
         );
-        outputDiv.appendChild(fullTextBox);
-        // Auto-resize full text textarea
-        setTimeout(() => {
-          fullTextBox.style.height = "auto";
-          fullTextBox.style.height = fullTextBox.scrollHeight + "px";
-        }, 0);
+        outputDiv.appendChild(fullTextDisplay);
       }
       // Show Strategic Insight below full text
       insightDiv.innerHTML = "";
