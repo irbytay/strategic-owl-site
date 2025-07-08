@@ -404,6 +404,14 @@
   const API_KEY = "AIzaSyCzuh9HBfe0r70r9U35Pe406PPZ-tz6I78";
   const RANGE = "the_constitution!A2:G1000";
 
+  // Hard-coded Declaration text with paragraph breaks
+  const DECLARATION_TEXT =
+    `IN CONGRESS, July 4, 1776.\n\n` +
+    `The unanimous Declaration of the thirteen united States of America,\n\n` +
+    `When in the Course of human events, it becomes necessary for one people to dissolve the political bands which have connected them with another, and to assume among the powers of the earth, the separate and equal station to which the Laws of Nature and of Nature's God entitle them, a decent respect to the opinions of mankind requires that they should declare the causes which impel them to the separation.\n\n` +
+    `... (continue with the rest of the Declaration text, using \n\n between paragraphs) ...\n\n` +
+    `... we mutually pledge to each other our Lives, our Fortunes and our sacred Honor.`;
+
   const colors = {
     gold: "#D4AF37",
     text: "#FFFFFF",
@@ -451,9 +459,10 @@
     amendmentSelect.addEventListener("change", () => {
       const selected = amendmentSelect.value;
       outputDiv.innerHTML = "";
-      if (!selected || !grouped[selected]) return;
+      // If not selected or not present in grouped, return (unless it's Declaration of Independence)
+      if (!selected || (!grouped[selected] && selected !== 'Declaration of Independence')) return;
 
-      const sections = grouped[selected];
+      const sections = grouped[selected] || [{ section: '', text: '', insight: '' }];
       const wrapper = document.createElement("div");
 
       // Amendment Title
@@ -490,111 +499,113 @@
         wrapper.appendChild(p);
 
         // Strategic Insight Label
-const insightLabel = document.createElement("p");
-insightLabel.textContent = "Strategic Insight";
-insightLabel.style.color = colors.gold;
-insightLabel.style.fontFamily = "'Inter', sans-serif";
-insightLabel.style.fontSize = "1rem";
-insightLabel.style.marginBottom = "6px";
-insightLabel.style.marginTop = "10px";
-insightLabel.style.textAlign = "center";
-wrapper.appendChild(insightLabel);
+        const insightLabel = document.createElement("p");
+        insightLabel.textContent = "Strategic Insight";
+        insightLabel.style.color = colors.gold;
+        insightLabel.style.fontFamily = "'Inter', sans-serif";
+        insightLabel.style.fontSize = "1rem";
+        insightLabel.style.marginBottom = "6px";
+        insightLabel.style.marginTop = "10px";
+        insightLabel.style.textAlign = "center";
+        wrapper.appendChild(insightLabel);
 
-// Strategic Insight Block
-const insightDiv = document.createElement("div");
-insightDiv.textContent = insight;
-insightDiv.style.fontFamily = "'Montserrat', sans-serif";
-insightDiv.style.borderLeft = `4px solid var(--understanding)`;
-insightDiv.style.padding = "10px 16px";
-insightDiv.style.marginBottom = "24px";
-insightDiv.style.backgroundColor = "#1A2B4C";
-insightDiv.style.color = "var(--understanding)";
-insightDiv.style.fontWeight = "500";
-wrapper.appendChild(insightDiv);
+        // Strategic Insight Block
+        const insightDiv = document.createElement("div");
+        insightDiv.textContent = insight;
+        insightDiv.style.fontFamily = "'Montserrat', sans-serif";
+        insightDiv.style.borderLeft = `4px solid var(--understanding)`;
+        insightDiv.style.padding = "10px 16px";
+        insightDiv.style.marginBottom = "24px";
+        insightDiv.style.backgroundColor = "#1A2B4C";
+        insightDiv.style.color = "var(--understanding)";
+        insightDiv.style.fontWeight = "500";
+        wrapper.appendChild(insightDiv);
 
         // Only insert the prompt after the last section
-        if (index === sections.length - 1 && prompts[selected]) {
- // Prompt block container
-const promptDiv = document.createElement("div");
-promptDiv.style.marginTop = "8px";
-promptDiv.style.marginBottom = "24px";
+        if (index === sections.length - 1 && (prompts[selected] || selected === 'Declaration of Independence')) {
+          // Prompt block container
+          const promptDiv = document.createElement("div");
+          promptDiv.style.marginTop = "8px";
+          promptDiv.style.marginBottom = "24px";
 
-// Label
-const promptLabel = document.createElement("p");
-promptLabel.textContent = "Copy and Paste to explore further.";
-promptLabel.style.color = colors.gold;
-promptLabel.style.fontFamily = "'Inter', sans-serif";
-promptLabel.style.fontSize = "1rem";
-promptLabel.style.marginBottom = "6px";
-promptLabel.style.textAlign = "center";
-promptDiv.appendChild(promptLabel);
+          // Label
+          const promptLabel = document.createElement("p");
+          promptLabel.textContent = "Copy and Paste to explore further.";
+          promptLabel.style.color = colors.gold;
+          promptLabel.style.fontFamily = "'Inter', sans-serif";
+          promptLabel.style.fontSize = "1rem";
+          promptLabel.style.marginBottom = "6px";
+          promptLabel.style.textAlign = "center";
+          promptDiv.appendChild(promptLabel);
 
- const promptBox = document.createElement("textarea");
- const rawPrompt = prompts[selected];
- const formattedPrompt = rawPrompt
-   .replace(/\\n\\n/g, '\n\n')   // handles literal \n\n
-   .replace(/\\\\n\\\\n/g, '\n\n'); // handles double-escaped \\n\\n
- promptBox.value = formattedPrompt;
- promptBox.readOnly = true;
- promptBox.style.width = "100%";
- promptBox.style.padding = "12px";
- promptBox.style.backgroundColor = "#1C2B3A"; // refined dark tone
- promptBox.style.border = "1px solid #D4AF37";
- promptBox.style.borderLeft = "4px solid #D4AF37";
- promptBox.style.borderRadius = "8px";
- promptBox.style.color = "#D4AF37";
- promptBox.style.fontFamily = "'Courier New', monospace";
- promptBox.style.fontSize = "0.95rem";
- promptBox.style.lineHeight = "1.5";
- promptBox.style.overflow = "hidden";
- promptBox.style.resize = "none";
- promptBox.style.boxSizing = "border-box";
- promptBox.style.height = "auto";
+          const promptBox = document.createElement("textarea");
+          const rawPrompt = (selected === 'Declaration of Independence')
+            ? DECLARATION_TEXT
+            : prompts[selected];
+          const formattedPrompt = rawPrompt
+            .replace(/\\n\\n/g, '\n\n')   // handles literal \n\n
+            .replace(/\\\\n\\\\n/g, '\n\n'); // handles double-escaped \\n\\n
+          promptBox.value = formattedPrompt;
+          promptBox.readOnly = true;
+          promptBox.style.width = "100%";
+          promptBox.style.padding = "12px";
+          promptBox.style.backgroundColor = "#1C2B3A"; // refined dark tone
+          promptBox.style.border = "1px solid #D4AF37";
+          promptBox.style.borderLeft = "4px solid #D4AF37";
+          promptBox.style.borderRadius = "8px";
+          promptBox.style.color = "#D4AF37";
+          promptBox.style.fontFamily = "'Courier New', monospace";
+          promptBox.style.fontSize = "0.95rem";
+          promptBox.style.lineHeight = "1.5";
+          promptBox.style.overflow = "hidden";
+          promptBox.style.resize = "none";
+          promptBox.style.boxSizing = "border-box";
+          promptBox.style.height = "auto";
 
-// 🪄 Auto-resize to fit content
-setTimeout(() => {
-  promptBox.style.height = "auto";
-  promptBox.style.height = promptBox.scrollHeight + "px";
-}, 0);
+          // 🪄 Auto-resize to fit content
+          setTimeout(() => {
+            promptBox.style.height = "auto";
+            promptBox.style.height = promptBox.scrollHeight + "px";
+          }, 0);
 
-  // Copy button
-const copyButton = document.createElement("button");
-copyButton.textContent = "Copy";
-copyButton.style.marginTop = "8px";
-copyButton.style.backgroundColor = "#3C465C"; // AI-style blue-gray
-copyButton.style.color = "#F0F0F0"; // Soft white
-copyButton.style.padding = "6px 16px";
-copyButton.style.border = "none";
-copyButton.style.borderRadius = "8px";
-copyButton.style.cursor = "pointer";
-copyButton.style.fontFamily = "'Inter', sans-serif";
-copyButton.style.fontSize = "0.95rem";
-copyButton.style.transition = "background-color 0.3s ease, transform 0.2s ease";
+          // Copy button
+          const copyButton = document.createElement("button");
+          copyButton.textContent = "Copy";
+          copyButton.style.marginTop = "8px";
+          copyButton.style.backgroundColor = "#3C465C"; // AI-style blue-gray
+          copyButton.style.color = "#F0F0F0"; // Soft white
+          copyButton.style.padding = "6px 16px";
+          copyButton.style.border = "none";
+          copyButton.style.borderRadius = "8px";
+          copyButton.style.cursor = "pointer";
+          copyButton.style.fontFamily = "'Inter', sans-serif";
+          copyButton.style.fontSize = "0.95rem";
+          copyButton.style.transition = "background-color 0.3s ease, transform 0.2s ease";
 
-// Hover effect
-copyButton.onmouseenter = () => {
-  copyButton.style.backgroundColor = "#4D5A70"; // Slightly lighter
-};
-copyButton.onmouseleave = () => {
-  copyButton.style.backgroundColor = "#3C465C";
-};
+          // Hover effect
+          copyButton.onmouseenter = () => {
+            copyButton.style.backgroundColor = "#4D5A70";
+          };
+          copyButton.onmouseleave = () => {
+            copyButton.style.backgroundColor = "#3C465C";
+          };
 
-// Click (copy) behavior
-copyButton.onclick = () => {
-  promptBox.select();
-  document.execCommand("copy");
-  copyButton.textContent = "Copied!";
-  copyButton.style.transform = "scale(0.97)";
-  setTimeout(() => {
-    copyButton.textContent = "Copy";
-    copyButton.style.transform = "scale(1)";
-  }, 1500);
-};
+          // Click (copy) behavior
+          copyButton.onclick = () => {
+            promptBox.select();
+            document.execCommand("copy");
+            copyButton.textContent = "Copied!";
+            copyButton.style.transform = "scale(0.97)";
+            setTimeout(() => {
+              copyButton.textContent = "Copy";
+              copyButton.style.transform = "scale(1)";
+            }, 1500);
+          };
 
-  promptDiv.appendChild(promptBox);
-  promptDiv.appendChild(copyButton);
-  wrapper.appendChild(promptDiv);
-}
+          promptDiv.appendChild(promptBox);
+          promptDiv.appendChild(copyButton);
+          wrapper.appendChild(promptDiv);
+        }
       });
 
       outputDiv.appendChild(wrapper);
