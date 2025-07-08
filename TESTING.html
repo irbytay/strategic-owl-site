@@ -532,6 +532,9 @@
       outputDiv.innerHTML = "";
       insightDiv.innerHTML = "";
       promptBox.value = "";
+      // Remove any previously added full text textarea if present
+      let prevFullTextBox = document.getElementById("fulltext-box");
+      if (prevFullTextBox) prevFullTextBox.remove();
       if (!selected) return;
       let fullText = "";
       let insight = "";
@@ -555,7 +558,7 @@
           prompt = row[4] || "";
         }
       }
-      // Show the full text in outputDiv, with nice formatting (breaks to <br><br>)
+      // Show the full text in a <textarea> styled as per branding
       if (fullText) {
         const h2 = document.createElement("h2");
         h2.textContent = selected;
@@ -564,11 +567,32 @@
         h2.style.textAlign = "center";
         h2.style.fontFamily = "'Playfair Display', serif";
         outputDiv.appendChild(h2);
-        const p = document.createElement("div");
-        // Split on double line breaks for paragraphs
-        const paras = fullText.split(/\n\s*\n/);
-        p.innerHTML = paras.map(s => `<p style="font-family:'Montserrat',sans-serif;font-size:1.08rem;line-height:1.6;color:var(--text-muted);margin-bottom:14px;text-align:center;">${s.replace(/\n/g,"<br>")}</p>`).join("");
-        outputDiv.appendChild(p);
+        // Branded full text textarea
+        const fullTextBox = document.createElement("textarea");
+        fullTextBox.id = "fulltext-box";
+        fullTextBox.readOnly = true;
+        fullTextBox.value = fullText;
+        fullTextBox.setAttribute("style",
+          "background: #fdf6e3;" +
+          "font-family: 'Dancing Script', cursive;" +
+          "font-size: 20px;" +
+          "line-height: 1.5;" +
+          "font-weight: 400;" +
+          "color: #000000;" +
+          "padding: 1.5rem;" +
+          "border-radius: 8px;" +
+          "border: 2px solid #C4A000;" +
+          "box-shadow: 0 0 10px #C4A000, inset 0 0 5px rgba(0,0,0,0.2);" +
+          "width: 100%;" +
+          "margin-top: 1rem;" +
+          "resize: none;"
+        );
+        outputDiv.appendChild(fullTextBox);
+        // Auto-resize full text textarea
+        setTimeout(() => {
+          fullTextBox.style.height = "auto";
+          fullTextBox.style.height = fullTextBox.scrollHeight + "px";
+        }, 0);
       }
       // Show Strategic Insight below full text
       insightDiv.innerHTML = "";
