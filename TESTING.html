@@ -477,12 +477,11 @@
       // Insert after outputDiv
       outputDiv.insertAdjacentElement("afterend", insightDiv);
     }
+    // Add full text textarea and prompt textarea if not present
+    let fullTextBox = document.getElementById("full-text-box");
     let promptBox = document.getElementById("prompt-box");
-    if (!promptBox) {
-      promptBox = document.createElement("textarea");
-      promptBox.id = "prompt-box";
-      promptBox.readOnly = true;
-      promptBox.setAttribute("style", `
+    // Prompt box style (originally for promptBox)
+    const promptBoxStyle = `
         background: #fdf6e3;
         font-family: 'Dancing Script', cursive;
         font-size: 20px;
@@ -495,9 +494,38 @@
         box-shadow: 0 0 10px #C4A000, inset 0 0 5px rgba(0, 0, 0, 0.2);
         width: 100%;
         margin-top: 1rem;
-      `);
-      // Insert after insightDiv
-      insightDiv.insertAdjacentElement("afterend", promptBox);
+      `;
+    // Full text box style (originally for full text box, now to be used for prompt box)
+    const fullTextBoxStyle = `
+        background: #112240;
+        font-family: 'Montserrat', sans-serif;
+        font-size: 1.08rem;
+        line-height: 1.6;
+        color: var(--text-muted);
+        padding: 1.5rem;
+        border-radius: 10px;
+        border: 2px solid var(--highlight);
+        box-shadow: 0 0 10px var(--highlight), inset 0 0 5px rgba(0,0,0,0.12);
+        width: 100%;
+        margin-top: 1rem;
+      `;
+    if (!fullTextBox) {
+      fullTextBox = document.createElement("textarea");
+      fullTextBox.id = "full-text-box";
+      fullTextBox.readOnly = true;
+      // SWAP: Use promptBoxStyle for full text box
+      fullTextBox.setAttribute("style", promptBoxStyle);
+      // Insert after outputDiv (where full text is shown)
+      outputDiv.insertAdjacentElement("afterend", fullTextBox);
+    }
+    if (!promptBox) {
+      promptBox = document.createElement("textarea");
+      promptBox.id = "prompt-box";
+      promptBox.readOnly = true;
+      // SWAP: Use fullTextBoxStyle for prompt box
+      promptBox.setAttribute("style", fullTextBoxStyle);
+      // Insert after fullTextBox
+      fullTextBox.insertAdjacentElement("afterend", promptBox);
     }
 
     // Fetch all document parts and their strategic insight/prompt from Google Sheets
@@ -529,6 +557,7 @@
       const selected = amendmentSelect.value;
       outputDiv.innerHTML = "";
       insightDiv.innerHTML = "";
+      fullTextBox.value = "";
       promptBox.value = "";
       if (!selected) return;
       let fullText = "";
@@ -567,6 +596,8 @@
         const paras = fullText.split(/\n\s*\n/);
         p.innerHTML = paras.map(s => `<p style="font-family:'Montserrat',sans-serif;font-size:1.08rem;line-height:1.6;color:var(--text-muted);margin-bottom:14px;text-align:center;">${s.replace(/\n/g,"<br>")}</p>`).join("");
         outputDiv.appendChild(p);
+        // Also put full text in the fullTextBox
+        fullTextBox.value = fullText;
       }
       // Show Strategic Insight below full text
       insightDiv.innerHTML = "";
@@ -600,8 +631,10 @@
         // For Declaration, show the full text as prompt
         promptBox.value = DECLARATION_TEXT;
       }
-      // Auto-resize promptBox
+      // Auto-resize both textareas
       setTimeout(() => {
+        fullTextBox.style.height = "auto";
+        fullTextBox.style.height = fullTextBox.scrollHeight + "px";
         promptBox.style.height = "auto";
         promptBox.style.height = promptBox.scrollHeight + "px";
       }, 0);
