@@ -8,6 +8,7 @@
   <link href="https://fonts.googleapis.com/css2?family=Dancing+Script&display=swap" rel="stylesheet">
 
   <style>
+  /* 🔹 CSS variables (theme colors) */
   :root {
     --background: #0D1B2A;
     --surface: #112240;
@@ -23,6 +24,7 @@
     --bar-green: #28A745;
   }
 
+  /* 🔹 Body base styles */
   body {
     background-color: var(--background);
     color: var(--text);
@@ -32,6 +34,7 @@
   }
 
   /* 🧭 NAVBAR & MENU */
+  /* 🔹 Navbar styles */
   nav.top-nav {
     position: fixed;
     top: 0;
@@ -46,12 +49,14 @@
     box-shadow: 0 2px 6px var(--shadow);
   }
 
+  /* 🔹 Navbar title */
   .nav-title {
     font-family: 'Playfair Display', serif;
     font-size: 22px;
     color: var(--understanding);
   }
 
+  /* 🔹 Navbar menu toggle button */
   .menu-toggle {
     display: none;
     font-size: 24px;
@@ -61,11 +66,13 @@
     border: none;
   }
 
+  /* 🔹 Navbar links container */
   .nav-links {
     display: flex;
     gap: 28px;
   }
 
+  /* 🔹 Navbar link styles */
   .nav-links a {
     color: var(--text-muted);
     text-decoration: none;
@@ -73,13 +80,16 @@
     transition: color 0.3s ease;
   }
 
+  /* 🔹 Navbar link hover effect */
   .nav-links a:hover {
     color: var(--understanding);
   }
+    /* 🔹 Navbar logo image */
     .nav-logo img {
   height: 40px;
   width: 40px;
 }
+    /* 🔹 Navbar logo container */
     .nav-logo {
   display: flex;
   align-items: center;
@@ -89,7 +99,7 @@
   color: var(--text);
   font-size: 1.25rem;
 }
-    /* 🎨 TRU Bars */
+    /* 🔹 TRU Bars section */
   .divider-section {
     display: flex;
     flex-direction: column;
@@ -97,12 +107,14 @@
     margin: 40px auto;
   }
 
+  /* 🔹 TRU Bars bar container */
   .divider-bar {
     display: flex;
     gap: 12px;
     width: 340px;
   }
 
+  /* 🔹 Individual TRU bar */
   .divider-bar div {
     width: 108px;
     height: 6px;
@@ -110,10 +122,12 @@
     box-shadow: 0 0 4px var(--shadow);
   }
 
+  /* 🔹 TRU bar colors */
   .truth { background-color: var(--truth); }
   .reliability { background-color: var(--reliability); }
   .understanding { background-color: var(--understanding); }
 
+  /* 🔹 TRU Bars labels container */
   .divider-labels {
     display: flex;
     justify-content: center;
@@ -122,6 +136,7 @@
     margin-top: 8px;
   }
 
+  /* 🔹 TRU Bars label text */
   .divider-labels span {
     width: 108px;
     text-align: center;
@@ -129,11 +144,14 @@
     color: var(--text-muted);
   }
 
+  /* 🔹 Responsive styles for navbar (mobile) */
   @media (max-width: 768px) {
+    /* 🔹 Show menu toggle on mobile */
     .menu-toggle {
       display: block;
     }
 
+    /* 🔹 Mobile navbar links container */
     .nav-links {
       display: none;
       flex-direction: column;
@@ -148,6 +166,7 @@
       gap: 20px;
       box-shadow: 0 3px 8px var(--shadow);
     }
+    /* 🔹 Mobile navbar link styles */
     .nav-links a {
   padding: 10px 0;
   width: 100%;
@@ -155,11 +174,13 @@
   font-size: 1rem;
 }
 
+    /* 🔹 Show mobile navbar links */
     .nav-links.show {
       display: flex;
       animation: fadeSlideDown 0.3s ease;
     }
 
+    /* 🔹 Animation for mobile navbar links */
     @keyframes fadeSlideDown {
       from {
         opacity: 0;
@@ -171,6 +192,7 @@
       }
     }
   }
+    /* 🔹 Responsive styles for legal popup and text (mobile) */
     @media (max-width: 500px) {
   #legal-popup > div {
     padding: 12px;
@@ -188,19 +210,70 @@
   }
 }
 
-  /* ✅ YOUR ORIGINAL STYLES BELOW */
+  /* 🔹 Founding text style box (amendment quick output) */
+  /* ⚠️ This style is applied to the right-side display that is injected via JS when a right is selected.
+     The text itself (e.g., "→ Amendment: 1 (I)") comes from the hardcoded map in JavaScript (rightToAmendmentMap),
+     not from the Google Sheet.
+  */
+  .founding-text-box {
+    background: #fff8e1;
+    border-radius: 8px;
+    box-shadow: 0 0 10px #C4A000, inset 0 0 5px rgba(0,0,0,0.2);
+    border: 2px solid #C4A000;
+    font-family: 'Dancing Script', cursive;
+    font-size: 1.2rem;
+    font-weight: 600;
+    color: #000;
+    padding: 1.5rem;
+    margin: 1.5rem auto;
+    max-width: 720px;
+    text-align: center;
+    white-space: pre-line;
+  }
+  /* 🔹 Main container */
   .container {
     max-width: 960px;
     margin: 100px auto 0 auto;
     padding: 24px;
   }
 
+  /* ⚠️ This class is applied to content dynamically inserted from the Google Sheet (e.g., full amendment text,
+     strategic insights, and prompts). The data comes from the range "the_constitution!A2:G1000" for insights
+     and founding text, and "the_constitution!F2:G100" for subject lookup.
+  */
+  /* 🔹 Content box (dynamic width) */
+  .content-box {
+    background: #fdf6e3;
+    font-family: 'Dancing Script', cursive;
+    font-size: 20px;
+    line-height: 1.5;
+    font-weight: 400;
+    color: #000000;
+    padding: 1.5rem;
+    border-radius: 8px;
+    border: 2px solid #C4A000;
+    box-shadow: 0 0 10px #C4A000, inset 0 0 5px rgba(0,0,0,0.2);
+    margin: 1rem auto;
+    white-space: pre-wrap;
+    overflow-x: auto;
+  }
+  /* 🔹 Wide content box */
+  .wide-box {
+    max-width: 1200px;
+  }
+  /* 🔹 Narrow content box */
+  .narrow-box {
+    max-width: 720px;
+  }
+
+  /* 🔹 Heading 1 styles */
   h1 {
     font-family: 'Playfair Display', serif;
     color: var(--heading);
     margin-bottom: 16px;
     text-align: center;
   }
+  /* 🔹 Heading 2 styles */
   h2 {
   font-family: 'Playfair Display', serif;
   font-size: 1.5rem;
@@ -210,6 +283,7 @@
   margin-bottom: 12px;
   text-align: center;
 }
+  /* 🔹 Paragraph styles */
   p {
   font-family: 'Inter', sans-serif;
   font-size: 1.05rem;
@@ -222,14 +296,45 @@
   margin-right: auto;
 }
 
+  /* 🔹 Dropdown select styles */
   select {
-    padding: 8px;
-    margin-bottom: 16px;
-    background-color: var(--surface);
-    color: var(--text);
-    border: 1px solid var(--highlight);
+    padding: 12px 14px;
+    background-color: rgba(255, 255, 255, 0.05);
+    color: var(--understanding);
+    font-family: 'Copperplate', serif;
+    font-size: 15px;
+    font-weight: 500;
+    border: 1px solid rgba(212, 175, 55, 0.4);
+    border-radius: 12px;
+    width: 100%;
+    max-width: 420px;
+    box-shadow: 0 4px 12px rgba(212, 175, 55, 0.2);
+    appearance: none;
+    background-image: url("data:image/svg+xml;utf8,<svg fill='%23D4AF37' height='18' viewBox='0 0 24 24' width='18' xmlns='http://www.w3.org/2000/svg'><path d='M7 10l5 5 5-5z'/></svg>");
+    background-repeat: no-repeat;
+    background-position: right 10px center;
+    background-size: 16px;
+    transition: box-shadow 0.3s ease, border-color 0.3s ease;
   }
 
+  /* 🔹 Label styles */
+  label {
+    color: var(--understanding);
+    font-family: 'Copperplate', serif;
+    font-size: 16px;
+    font-weight: 500;
+    text-align: center;
+  }
+
+  /* 🔹 Dropdown hover/focus styles */
+  select:hover,
+  select:focus {
+    border-color: var(--understanding);
+    box-shadow: 0 0 10px var(--understanding);
+    outline: none;
+  }
+
+  /* 🔹 Table styles */
   table {
     width: 100%;
     border-collapse: collapse;
@@ -237,42 +342,51 @@
     margin-top: 12px;
   }
 
+  /* 🔹 Table header and cell styles */
   th, td {
     padding: 12px;
     border-bottom: 1px solid var(--highlight);
     text-align: left;
   }
 
+  /* 🔹 TRU colored text */
   .text-truth { color: var(--truth); }
   .text-reliability { color: var(--reliability); }
   .text-understanding { color: var(--understanding); }
 
+  /* 🔹 Total score text */
   .total-score {
     font-weight: bold;
   }
 
+  /* 🔹 Score coloring */
   .positive-score { color: var(--bar-green); }
   .negative-score { color: var(--bar-red); }
 
+  /* 🔹 Score bar container */
   .score-bar {
     display: flex;
     align-items: center;
     gap: 10px;
   }
 
+  /* 🔹 Score bar indicator */
   .bar-indicator {
     width: 10px;
     height: 24px;
     border-radius: 2px;
   }
 
+  /* 🔹 Red bar (negative) */
   .bar-red {
     background-color: var(--bar-red);
   }
 
+  /* 🔹 Green bar (positive) */
   .bar-green {
     background-color: var(--bar-green);
   }
+    /* 🔹 Match navigation link */
     .match-nav-link {
   color: var(--text-muted);
   text-decoration: none;
@@ -280,10 +394,12 @@
   transition: color 0.3s ease;
 }
 
+/* 🔹 Match navigation link hover */
 .match-nav-link:hover {
   color: var(--understanding);
 }
- /* Style the link itself */
+
+/* 🔹 Important link (styled, with arrows and hover effect) */
 .important-link {
   color: var(--understanding);               /* Gold color from your theme */
   font-weight: 700;                          /* Bold for visibility */
@@ -293,7 +409,7 @@
   transition: color 0.3s ease, text-shadow 0.3s ease;  /* Smooth hover transitions */
 }
 
-/* Add a right-pointing arrow BEFORE the link text */
+/* 🔹 Important link: right-pointing arrow before */
 .important-link::before {
   content: '→ ';                             /* Arrow pointing right */
   display: inline-block;                     /* So we can animate it */
@@ -301,7 +417,7 @@
   transition: transform 0.3s ease;           /* Smooth movement on hover */
 }
 
-/* Add a left-pointing arrow AFTER the link text */
+/* 🔹 Important link: left-pointing arrow after */
 .important-link::after {
   content: ' ←';                             /* Arrow pointing left */
   display: inline-block;                     /* Enables transform */
@@ -309,17 +425,17 @@
   transition: transform 0.3s ease;           /* Smooth hover animation */
 }
 
-/* Animate the left-side arrow to move right on hover */
+/* 🔹 Important link: animate left arrow on hover */
 .important-link:hover::before {
   transform: translateX(4px);                /* Moves → arrow to the right */
 }
 
-/* Animate the right-side arrow to move left on hover */
+/* 🔹 Important link: animate right arrow on hover */
 .important-link:hover::after {
   transform: translateX(-4px);               /* Moves ← arrow to the left */
 }
 
-/* Add glow and optional color change on hover */
+/* 🔹 Important link: hover glow and color change */
 .important-link:hover {
   text-shadow: 0 0 8px var(--understanding); /* Subtle glow using gold tone */
   color: var(--truth);                       /* Optional: changes to green (truth color) */
@@ -358,20 +474,19 @@
         <span>Understanding</span>
       </div>
     </section>
+    <!-- 🦉 Strategic Intro Box -->
+    <div class="strategic-intro-box" style="background: linear-gradient(to bottom right, #1A2B4C, #0D1B2A); border: 1px solid #D4AF37; border-radius: 12px; padding: 20px; box-shadow: 0 0 12px rgba(212, 175, 55, 0.3); max-width: 800px; margin: 0 auto 2rem auto;">
+      <p style="font-family: 'Roboto', sans-serif; font-size: 14px; color: rgba(255, 255, 255, 0.7); line-height: 1.6; text-align: center; margin: 0;">
+        You can explore the Constitution two ways: select a right granted (like free speech or equal protection), or directly select any part of the original text. Once selected, you’ll see the full text, have the option to capture it, read a plain-language breakdown, and even copy an AI research prompt for deeper exploration.
+      </p>
+    </div>
    <!-- 🦉 Subject → Amendment Lookup (Strategic Owl Style) -->
 <div style="display: flex; flex-direction: column; gap: 12px; align-items: center; margin-top: 40px;">
 
-  <!-- 🔍 Simple Instruction -->
-  <p style="color: var(--text-muted); font-family: 'Montserrat', sans-serif; font-size: 1rem; max-width: 600px; text-align: center;">
-    Curious what Amendment protects your right? Select a right below to learn which Amendment gives you that right.
-  </p>
 
-  <label for="subject-quick" style="color: var(--text); font-family: 'Playfair Display', serif; font-size: 1.2rem;">
-    Select a Right
-  </label>
 
   <select id="subject-quick"
-    style="padding: 10px; background-color: var(--surface); color: var(--text); border: 1px solid var(--highlight); font-family: 'Montserrat', sans-serif; font-size: 1rem; width: 100%; max-width: 420px;">
+    style="padding: 12px 14px; background-color: rgba(255,255,255,0.05); color: var(--understanding); font-family: 'Copperplate', serif; font-size: 15px; font-weight: 500; border: 1px solid rgba(212,175,55,0.4); border-radius: 12px; width: 100%; max-width: 420px; box-shadow: 0 4px 12px rgba(212, 175, 55, 0.2); appearance: none; background-image: url('data:image/svg+xml;utf8,<svg fill=\'%23D4AF37\' height=\'18\' viewBox=\'0 0 24 24\' width=\'18\' xmlns=\'http://www.w3.org/2000/svg\'><path d=\'M7 10l5 5 5-5z\'/></svg>'); background-repeat: no-repeat; background-position: right 10px center; background-size: 16px; transition: box-shadow 0.3s ease, border-color 0.3s ease; text-align: center; text-align-last: center;">
     <option value="">-- Select a Right --</option>
   </select>
 
@@ -379,24 +494,13 @@
     style="margin-top: 4px; font-size: 1.05rem; color: var(--understanding); font-family: 'Montserrat', sans-serif; text-align: center;">
   </div>
 </div>
- <!-- 📜 Amendment Selector -->
-<div style="display: flex; flex-direction: column; gap: 12px; align-items: center; margin-top: 40px;">
+  <div style="display: flex; justify-content: center;">
+    <select id="subject-select" data-user-selected="false" style="padding: 12px 14px; background-color: rgba(255,255,255,0.05); color: var(--understanding); font-family: 'Copperplate', serif; font-size: 15px; font-weight: 500; border: 1px solid rgba(212,175,55,0.4); border-radius: 12px; width: 100%; max-width: 420px; box-shadow: 0 4px 12px rgba(212, 175, 55, 0.2); appearance: none; background-image: url('data:image/svg+xml;utf8,<svg fill=\'%23D4AF37\' height=\'18\' viewBox=\'0 0 24 24\' width=\'18\' xmlns=\'http://www.w3.org/2000/svg\'><path d=\'M7 10l5 5 5-5z\'/></svg>'); background-repeat: no-repeat; background-position: right 10px center; background-size: 16px; transition: box-shadow 0.3s ease, border-color 0.3s ease; text-align: center; text-align-last: center;">
+      <option value="">-- Select the Founding Text --</option>
+    </select>
+  </div>
 
-  <!-- 🔍 Simple Instruction -->
-  <p style="color: var(--text-muted); font-family: 'Montserrat', sans-serif; font-size: 1rem; max-width: 600px; text-align: center;">
-    Want to know exactly what the Constitution and every amendment says? Choose a Founding Text to begin.
-  </p>
-
-  <label for="subject-select" style="color: var(--text); font-family: 'Playfair Display', serif; font-size: 1.2rem;">
-    Select a Founding Text
-  </label>
-  <select id="subject-select" style="padding: 10px; background-color: var(--surface); color: var(--text); border: 1px solid var(--highlight); font-family: 'Montserrat', sans-serif; font-size: 1rem;">
-    <option value="">-- Select the Founding Text --</option>
-  </select>
-</div>
-
-<!-- 📘 Strategic Constitution Viewer -->
-<div id="insight-output" style="max-width: 960px; margin: 40px auto 0; font-family: 'Montserrat', sans-serif; background-color: var(--surface); color: var(--text); padding: 24px; border-radius: 12px;">
+<div id="insight-output" style="max-width: 960px; margin: 40px auto 0; font-family: 'Montserrat', sans-serif; color: var(--text);">
   <!-- Content is inserted here dynamically -->
 </div>
 
@@ -405,44 +509,6 @@
   const API_KEY = "AIzaSyCzuh9HBfe0r70r9U35Pe406PPZ-tz6I78";
   const RANGE = "the_constitution!A2:G1000";
 
-  // Hard-coded Declaration text with paragraph breaks
-  const DECLARATION_TEXT =
-    `IN CONGRESS, July 4, 1776.\n\n` +
-    `The unanimous Declaration of the thirteen united States of America,\n\n` +
-    `When in the Course of human events, it becomes necessary for one people to dissolve the political bands which have connected them with another, and to assume among the powers of the earth, the separate and equal station to which the Laws of Nature and of Nature's God entitle them, a decent respect to the opinions of mankind requires that they should declare the causes which impel them to the separation.\n\n` +
-    `We hold these truths to be self-evident, that all men are created equal, that they are endowed by their Creator with certain unalienable Rights, that among these are Life, Liberty and the pursuit of Happiness.—That to secure these rights, Governments are instituted among Men, deriving their just powers from the consent of the governed,—That whenever any Form of Government becomes destructive of these ends, it is the Right of the People to alter or to abolish it, and to institute new Government, laying its foundation on such principles and organizing its powers in such form, as to them shall seem most likely to effect their Safety and Happiness.\n\n` +
-    `Prudence, indeed, will dictate that Governments long established should not be changed for light and transient causes; and accordingly all experience hath shewn, that mankind are more disposed to suffer, while evils are sufferable, than to right themselves by abolishing the forms to which they are accustomed. But when a long train of abuses and usurpations, pursuing invariably the same Object evinces a design to reduce them under absolute Despotism, it is their right, it is their duty, to throw off such Government, and to provide new Guards for their future security.—Such has been the patient sufferance of these Colonies; and such is now the necessity which constrains them to alter their former Systems of Government. The history of the present King of Great Britain is a history of repeated injuries and usurpations, all having in direct object the establishment of an absolute Tyranny over these States. To prove this, let Facts be submitted to a candid world.\n\n` +
-    `He has refused his Assent to Laws, the most wholesome and necessary for the public good.\n\n` +
-    `He has forbidden his Governors to pass Laws of immediate and pressing importance, unless suspended in their operation till his Assent should be obtained; and when so suspended, he has utterly neglected to attend to them.\n\n` +
-    `He has refused to pass other Laws for the accommodation of large districts of people, unless those people would relinquish the right of Representation in the Legislature, a right inestimable to them and formidable to tyrants only.\n\n` +
-    `He has called together legislative bodies at places unusual, uncomfortable, and distant from the depository of their public Records, for the sole purpose of fatiguing them into compliance with his measures.\n\n` +
-    `He has dissolved Representative Houses repeatedly, for opposing with manly firmness his invasions on the rights of the people.\n\n` +
-    `He has refused for a long time, after such dissolutions, to cause others to be elected; whereby the Legislative powers, incapable of Annihilation, have returned to the People at large for their exercise; the State remaining in the mean time exposed to all the dangers of invasion from without, and convulsions within.\n\n` +
-    `He has endeavoured to prevent the population of these States; for that purpose obstructing the Laws for Naturalization of Foreigners; refusing to pass others to encourage their migrations hither, and raising the conditions of new Appropriations of Lands.\n\n` +
-    `He has obstructed the Administration of Justice, by refusing his Assent to Laws for establishing Judiciary powers.\n\n` +
-    `He has made Judges dependent on his Will alone, for the tenure of their offices, and the amount and payment of their salaries.\n\n` +
-    `He has erected a multitude of New Offices, and sent hither swarms of Officers to harass our people, and eat out their substance.\n\n` +
-    `He has kept among us, in times of peace, Standing Armies without the Consent of our legislatures.\n\n` +
-    `He has affected to render the Military independent of and superior to the Civil power.\n\n` +
-    `He has combined with others to subject us to a jurisdiction foreign to our constitution, and unacknowledged by our laws; giving his Assent to their Acts of pretended Legislation:\n\n` +
-    `For Quartering large bodies of armed troops among us:\n\n` +
-    `For protecting them, by a mock Trial, from punishment for any Murders which they should commit on the Inhabitants of these States:\n\n` +
-    `For cutting off our Trade with all parts of the world:\n\n` +
-    `For imposing Taxes on us without our Consent:\n\n` +
-    `For depriving us in many cases, of the benefits of Trial by Jury:\n\n` +
-    `For transporting us beyond Seas to be tried for pretended offences:\n\n` +
-    `For abolishing the free System of English Laws in a neighbouring Province, establishing therein an Arbitrary government, and enlarging its Boundaries so as to render it at once an example and fit instrument for introducing the same absolute rule into these Colonies:\n\n` +
-    `For taking away our Charters, abolishing our most valuable Laws, and altering fundamentally the Forms of our Governments:\n\n` +
-    `For suspending our own Legislatures, and declaring themselves invested with power to legislate for us in all cases whatsoever.\n\n` +
-    `He has abdicated Government here, by declaring us out of his Protection and waging War against us.\n\n` +
-    `He has plundered our seas, ravaged our Coasts, burnt our towns, and destroyed the lives of our people.\n\n` +
-    `He is at this time transporting large Armies of foreign Mercenaries to compleat the works of death, desolation and tyranny, already begun with circumstances of Cruelty & perfidy scarcely paralleled in the most barbarous ages, and totally unworthy the Head of a civilized nation.\n\n` +
-    `He has constrained our fellow Citizens taken Captive on the high Seas to bear Arms against their Country, to become the executioners of their friends and Brethren, or to fall themselves by their Hands.\n\n` +
-    `He has excited domestic insurrections amongst us, and has endeavoured to bring on the inhabitants of our frontiers, the merciless Indian Savages, whose known rule of warfare, is an undistinguished destruction of all ages, sexes and conditions.\n\n` +
-    `In every stage of these Oppressions We have Petitioned for Redress in the most humble terms: Our repeated Petitions have been answered only by repeated injury. A Prince, whose character is thus marked by every act which may define a Tyrant, is unfit to be the ruler of a free people.\n\n` +
-    `Nor have We been wanting in attentions to our British brethren. We have warned them from time to time of attempts by their legislature to extend an unwarrantable jurisdiction over us. We have reminded them of the circumstances of our emigration and settlement here. We have appealed to their native justice and magnanimity, and we have conjured them by the ties of our common kindred to disavow these usurpations, which, would inevitably interrupt our connections and correspondence. They too have been deaf to the voice of justice and of consanguinity. We must, therefore, acquiesce in the necessity, which denounces our Separation, and hold them, as we hold the rest of mankind, Enemies in War, in Peace Friends.\n\n` +
-    `We, therefore, the Representatives of the united States of America, in General Congress, Assembled, appealing to the Supreme Judge of the world for the rectitude of our intentions, do, in the Name, and by Authority of the good People of these Colonies, solemnly publish and declare, That these United Colonies are, and of Right ought to be Free and Independent States; that they are Absolved from all Allegiance to the British Crown, and that all political connection between them and the State of Great Britain, is and ought to be totally dissolved; and that as Free and Independent States, they have full Power to levy War, conclude Peace, contract Alliances, establish Commerce, and to do all other Acts and Things which Independent States may of right do.\n\n` +
-    `And for the support of this Declaration, with a firm reliance on the protection of divine Providence, we mutually pledge to each other our Lives, our Fortunes and our sacred Honor.`;
 
   const colors = {
     gold: "#D4AF37",
@@ -458,211 +524,287 @@
     return json.values || [];
   }
 
+  // Patch: Completely refactor initAmendmentDropdown to:
+  // 1. Listen for dropdown selection of a documentpart.
+  // 2. Load the corresponding hardcoded full text for that part.
+  // 3. Retrieve matching Strategic Insight and Prompt from the Google Sheet.
+  // 4. Insert the Strategic Insight below the full text container as a paragraph.
+  // 5. Insert the Prompt inside a <textarea> styled as described.
+  // 6. Add a new <div> and <textarea> below the full text display.
   async function initAmendmentDropdown() {
-    const data = [
-      [
-        "Declaration of Independence",
-        "Main Text",
-        "", // The full text is not repeated here; handled via DECLARATION_TEXT.
-        "",
-        "IN CONGRESS, July 4, 1776.\n\nThe unanimous Declaration of the thirteen united States of America,\n\nWhen in the Course of human events, it becomes necessary for one people..."
-      ]
-    ];
     const amendmentSelect = document.getElementById("subject-select");
     const outputDiv = document.getElementById("insight-output");
+    // Add the new containers for strategic insight and prompt below the outputDiv
+    let insightDiv = document.getElementById("strategic-insight");
+    if (!insightDiv) {
+      insightDiv = document.createElement("div");
+      insightDiv.id = "strategic-insight";
+      insightDiv.style.marginTop = "2rem";
+      // Insert after outputDiv
+      outputDiv.insertAdjacentElement("afterend", insightDiv);
+    }
+    // Only add prompt textarea if not present (no capture button)
+    let promptBox = document.getElementById("capture-box");
+    // Style for promptBox to match full text and insight box widths (width: 100%; margin: 0 auto;)
+    const promptBoxStyle = `
+      background-color: #112240;
+      border: 2px solid #D4AF37;
+      border-radius: 8px;
+      padding: 12px 16px;
+      font-family: 'Courier', monospace;
+      font-size: 14px;
+      color: #D4AF37;
+      width: 95%;
+      margin: 0 auto;
+      box-shadow: 0 0 10px #3B6CED;
+      white-space: pre-wrap;
+      overflow: hidden;
+      resize: none;
+      display: none;
+    `;
+    let instructions = document.getElementById("prompt-instructions");
+    if (!promptBox) {
+      promptBox = document.createElement("textarea");
+      promptBox.readOnly = true;
+      promptBox.setAttribute("style", promptBoxStyle);
+      promptBox.id = "capture-box";
+      // Insert the instructional div just above promptBox
+      instructions = document.createElement("div");
+      instructions.id = "prompt-instructions";
+      instructions.textContent = "Capture the prompt. Paste it. See what you find.";
+      instructions.style.color = "#D4AF37";
+      instructions.style.fontFamily = "Copperplate, serif";
+      instructions.style.fontSize = "15px";
+      instructions.style.marginTop = "24px";
+      instructions.style.marginBottom = "8px";
+      instructions.style.textAlign = "center";
+      instructions.style.display = "none"; // Initially hidden
+      // Insert instructions and promptBox after insightDiv
+      const container = insightDiv.parentElement;
+      container.appendChild(instructions);
+      container.appendChild(promptBox);
+    } else {
+      instructions = document.getElementById("prompt-instructions");
+    }
 
-    const grouped = {};
-    const prompts = {};
-
-    data.forEach(([amendment, section, text, insight, prompt]) => {
-      if (!grouped[amendment]) grouped[amendment] = [];
-      grouped[amendment].push({ section, text, insight });
-      prompts[amendment] = prompt;
+    // Fetch all document parts and their strategic insight/prompt from Google Sheets
+    const sheetData = await fetchAmendmentData();
+    // Columns: [A:documentpart, B:section, C:fulltext, D:insight, E:prompt, ...]
+    // Build options for dropdown (unique documentpart)
+    const seen = {};
+    sheetData.forEach(row => {
+      const docpart = row[0];
+      if (docpart && !seen[docpart]) {
+        const opt = document.createElement("option");
+        opt.value = docpart;
+        opt.textContent = docpart;
+        amendmentSelect.appendChild(opt);
+        seen[docpart] = true;
+      }
     });
+    // Add Declaration of Independence as a special case if not present
+    if (!seen["Declaration of Independence"]) {
+      const decOpt = document.createElement("option");
+      decOpt.value = "Declaration of Independence";
+      decOpt.textContent = "Declaration of Independence";
+      amendmentSelect.appendChild(decOpt);
+    }
 
-    Object.keys(grouped).forEach(amendment => {
-      const opt = document.createElement("option");
-      opt.value = amendment;
-      opt.textContent = amendment;
-      amendmentSelect.appendChild(opt);
-    });
-    
-
+    // Listen for changes on dropdown (subject-select)
     amendmentSelect.addEventListener("change", () => {
       const selected = amendmentSelect.value;
       outputDiv.innerHTML = "";
-      // If not selected or not present in grouped, return (unless it's Declaration of Independence)
-      if (!selected || (!grouped[selected] && selected !== 'Declaration of Independence')) return;
-
-      const sections = grouped[selected] || [{ section: '', text: '', insight: '' }];
-      const wrapper = document.createElement("div");
-
-      // Amendment Title
-      const h2 = document.createElement("h2");
-      h2.textContent = selected;
-      h2.style.color = colors.heading;
-      h2.style.marginBottom = "24px";
-      h2.style.textAlign = "center";
-      h2.style.fontFamily = "'Playfair Display', serif";
-      wrapper.appendChild(h2);
-
-      sections.forEach(({ section, text, insight }, index) => {
-        // Section header
-        const h3 = document.createElement("h3");
-        h3.textContent = `${section}`;
-        h3.style.fontFamily = "'Playfair Display', serif";
-        h3.style.fontSize = "1.15rem";
-        h3.style.fontWeight = "600";
-        h3.style.color = "#E5C878";
-        h3.style.marginTop = "20px";
-        h3.style.marginBottom = "6px";
-        h3.style.textAlign = "center";
-        wrapper.appendChild(h3);
-
-        // Paragraph
-        const p = document.createElement("p");
-        p.textContent = text;
-        p.style.fontFamily = "'Montserrat', sans-serif";
-        p.style.color = "var(--text-muted)";
-        p.style.fontSize = "1.05rem";
-        p.style.lineHeight = "1.6";
-        p.style.marginBottom = "10px";
-        p.style.textAlign = "center";
-        wrapper.appendChild(p);
-
-        // Only insert the prompt after the last section
-        if (index === sections.length - 1 && (prompts[selected] || selected === 'Declaration of Independence')) {
-          // Prompt block container
-          const promptDiv = document.createElement("div");
-          promptDiv.style.marginTop = "8px";
-          promptDiv.style.marginBottom = "24px";
-
-          // Label
-          const promptLabel = document.createElement("p");
-          promptLabel.textContent = "Copy and Paste to explore further.";
-          promptLabel.style.color = colors.gold;
-          promptLabel.style.fontFamily = "'Inter', sans-serif";
-          promptLabel.style.fontSize = "1rem";
-          promptLabel.style.marginBottom = "6px";
-          promptLabel.style.textAlign = "center";
-          promptDiv.appendChild(promptLabel);
-
-          const promptBox = document.createElement("textarea");
-          const rawPrompt = (selected === 'Declaration of Independence')
-            ? DECLARATION_TEXT
-            : prompts[selected];
-          const formattedPrompt = rawPrompt
-            .replace(/\\n\\n/g, '\n\n')   // handles literal \n\n
-            .replace(/\\\\n\\\\n/g, '\n\n'); // handles double-escaped \\n\\n
-          promptBox.value = formattedPrompt;
-          promptBox.readOnly = true;
-          promptBox.style.width = "100%";
-          promptBox.style.padding = "12px";
-          promptBox.style.backgroundColor = "#1C2B3A"; // refined dark tone
-          promptBox.style.border = "1px solid #D4AF37";
-          promptBox.style.borderLeft = "4px solid #D4AF37";
-          promptBox.style.borderRadius = "8px";
-          promptBox.style.color = "#D4AF37";
-          // Use Dancing Script font for Declaration text, otherwise fallback
-          if (selected === 'Declaration of Independence') {
-            promptBox.setAttribute("style", `
-              background: #fdf6e3;
-              font-family: 'Dancing Script', cursive;
-              font-size: 20px;
-              line-height: 1.5;
-              font-weight: 400;
-              color: #000000;
-              padding: 1.5rem;
-              border-radius: 8px;
-              border: 2px solid #C4A000;
-              box-shadow: 0 0 10px #C4A000, inset 0 0 5px rgba(0, 0, 0, 0.2);
-              width: 100%;
-              resize: none;
-              overflow: hidden;
-              box-sizing: border-box;
-              height: auto;
-            `);
-          } else {
-            promptBox.style.fontFamily = "'Courier New', monospace";
-            promptBox.style.fontSize = "0.95rem";
-            promptBox.style.lineHeight = "1.5";
-            promptBox.style.overflow = "hidden";
-            promptBox.style.resize = "none";
-            promptBox.style.boxSizing = "border-box";
-            promptBox.style.height = "auto";
+      insightDiv.innerHTML = "";
+      promptBox.value = "";
+      // Remove any previously added full text textarea if present
+      let prevFullTextBox = document.getElementById("fulltext-box");
+      if (prevFullTextBox) prevFullTextBox.remove();
+      // Hide prompt box and instructions by default
+      promptBox.style.display = "none";
+      if (instructions) instructions.style.display = "none";
+      // Remove any previously inserted prompt capture button
+      let prevPromptCaptureBtn = document.getElementById("prompt-capture-btn");
+      if (prevPromptCaptureBtn) prevPromptCaptureBtn.remove();
+      // Remove any previously inserted founding text capture button
+      let prevFoundingCaptureBtn = document.getElementById("founding-text-capture-btn");
+      if (prevFoundingCaptureBtn) prevFoundingCaptureBtn.remove();
+      if (!selected) return;
+      let fullText = "";
+      let insight = "";
+      let prompt = "";
+      // Gather all rows where column A matches the selected founding text (selected)
+      const matches = sheetData.filter(row => row[0] === selected);
+      if (matches.length > 0) {
+        // For Preamble and all others: Join all matching full texts, include section label (Column B) above full text, bold the section label
+        fullText = matches
+          .map(row => `<strong>${row[1]}</strong>\n${row[2]}`)
+          .filter(Boolean)
+          .join('\n\n');
+        // Use only the first matching non-empty insight (Column D)
+        insight = matches.find(row => row[3] && row[3].trim())?.[3] || "";
+        // Use only the first matching non-empty prompt (Column E)
+        prompt = matches.find(row => row[4] && row[4].trim())?.[4] || "";
+      }
+      // Show the full text in a <pre> styled as per branding
+      if (fullText) {
+        // Replace all literal \n\n (not actual newlines) with real newlines for display
+        const displayText = fullText.replace(/\\n\\n/g, "\n\n");
+        // Insert the h2/title inside the pre box at the top
+        const fullTextDisplay = document.createElement("pre");
+        fullTextDisplay.id = "founding-text-content";
+        // Use innerHTML for displayText, now preserving HTML tags (no escaping)
+        fullTextDisplay.innerHTML =
+          `<div style="text-align: center; font-family: 'Dancing Script', cursive; font-size: 24px; font-weight: 600; margin-bottom: 1rem;">${selected}</div>` +
+          displayText;
+        fullTextDisplay.className = "content-box wide-box";
+        outputDiv.appendChild(fullTextDisplay);
+        // (Founding text capture button removed)
+      }
+      // Show Strategic Insight below full text
+      insightDiv.innerHTML = "";
+      if (insight && insight.trim()) {
+        const insightText = document.createElement("p");
+        // Replace all literal \n\n (not actual newlines) with real newlines for display
+        insightText.textContent = insight.replace(/\\n\\n/g, "\n\n");
+        insightText.className = "content-box narrow-box";
+        insightText.style.fontFamily = '"Roboto", sans-serif';
+        insightText.style.borderLeft = `4px solid var(--understanding)`;
+        insightText.style.backgroundColor = "#1A2B4C";
+        insightText.style.color = "var(--understanding)";
+        insightText.style.fontWeight = "500";
+        insightDiv.appendChild(insightText);
+      }
+      // Show Prompt in promptBox (textarea)
+      promptBox.value = "";
+      promptBox.className = "content-box";
+      if (prompt && prompt.trim()) {
+        // Replace all literal \n\n (not actual newlines) with real newlines for display
+        promptBox.value = prompt.replace(/\\n\\n/g, "\n\n");
+      }
+      setTimeout(() => {
+        promptBox.style.height = "auto";
+        promptBox.style.height = promptBox.scrollHeight + "px";
+      }, 0);
+      // Show prompt box and instructions only if there is a prompt
+      if (promptBox.value.trim()) {
+        promptBox.style.display = "block";
+        if (instructions) instructions.style.display = "block";
+        // Add capture button for prompt
+        const promptCaptureBtn = document.createElement("button");
+        promptCaptureBtn.id = "prompt-capture-btn";
+        promptCaptureBtn.textContent = "Capture";
+        // Style the button to match prompt visually and structurally
+        promptCaptureBtn.style.backgroundColor = "#C4A000";
+        promptCaptureBtn.style.border = "1px solid #C4A000";
+        promptCaptureBtn.style.color = "#0D1B2A";
+        promptCaptureBtn.style.fontFamily = "Copperplate, serif";
+        promptCaptureBtn.style.fontWeight = "bold";
+        promptCaptureBtn.style.fontSize = "16px";
+        promptCaptureBtn.style.borderRadius = "12px";
+        promptCaptureBtn.style.padding = "10px 28px";
+        promptCaptureBtn.style.boxShadow = "0 6px 20px #3B6CED66";
+        promptCaptureBtn.style.cursor = "pointer";
+        promptCaptureBtn.style.letterSpacing = "1.2px";
+        // Ensure width and centering match promptBox
+        promptCaptureBtn.style.margin = "12px auto 8px auto";
+        promptCaptureBtn.style.display = "block";
+        promptCaptureBtn.style.textAlign = "center";
+        // Insert the button immediately after the promptBox
+        promptBox.insertAdjacentElement("afterend", promptCaptureBtn);
+        promptCaptureBtn.addEventListener("click", () => {
+          const text = promptBox.value || promptBox.textContent;
+          if (text.trim()) {
+            navigator.clipboard.writeText(text.trim()).then(() => {
+              promptCaptureBtn.textContent = "Captured";
+              setTimeout(() => {
+                promptCaptureBtn.textContent = "Capture";
+              }, 5000);
+            });
           }
-
-          // 🪄 Auto-resize to fit content
-          setTimeout(() => {
-            promptBox.style.height = "auto";
-            promptBox.style.height = promptBox.scrollHeight + "px";
-          }, 0);
-
-          // Copy button
-          const copyButton = document.createElement("button");
-          copyButton.textContent = "Copy";
-          copyButton.style.marginTop = "8px";
-          copyButton.style.backgroundColor = "#3C465C"; // AI-style blue-gray
-          copyButton.style.color = "#F0F0F0"; // Soft white
-          copyButton.style.padding = "6px 16px";
-          copyButton.style.border = "none";
-          copyButton.style.borderRadius = "8px";
-          copyButton.style.cursor = "pointer";
-          copyButton.style.fontFamily = "'Inter', sans-serif";
-          copyButton.style.fontSize = "0.95rem";
-          copyButton.style.transition = "background-color 0.3s ease, transform 0.2s ease";
-
-          // Hover effect
-          copyButton.onmouseenter = () => {
-            copyButton.style.backgroundColor = "#4D5A70";
-          };
-          copyButton.onmouseleave = () => {
-            copyButton.style.backgroundColor = "#3C465C";
-          };
-
-          // Click (copy) behavior
-          copyButton.onclick = () => {
-            promptBox.select();
-            document.execCommand("copy");
-            copyButton.textContent = "Copied!";
-            copyButton.style.transform = "scale(0.97)";
-            setTimeout(() => {
-              copyButton.textContent = "Copy";
-              copyButton.style.transform = "scale(1)";
-            }, 1500);
-          };
-
-          promptDiv.appendChild(promptBox);
-          promptDiv.appendChild(copyButton);
-          wrapper.appendChild(promptDiv);
-        }
-
-        // Strategic Insight Label and Block (moved below promptDiv)
-        const insightLabel = document.createElement("p");
-        insightLabel.textContent = "Strategic Insight";
-        insightLabel.style.color = colors.gold;
-        insightLabel.style.fontFamily = "'Inter', sans-serif";
-        insightLabel.style.fontSize = "1rem";
-        insightLabel.style.marginBottom = "6px";
-        insightLabel.style.marginTop = "10px";
-        insightLabel.style.textAlign = "center";
-        wrapper.appendChild(insightLabel);
-
-        const insightDiv = document.createElement("div");
-        insightDiv.textContent = insight;
-        insightDiv.style.fontFamily = "'Montserrat', sans-serif";
-        insightDiv.style.borderLeft = `4px solid var(--understanding)`;
-        insightDiv.style.padding = "10px 16px";
-        insightDiv.style.marginBottom = "24px";
-        insightDiv.style.backgroundColor = "#1A2B4C";
-        insightDiv.style.color = "var(--understanding)";
-        insightDiv.style.fontWeight = "500";
-        wrapper.appendChild(insightDiv);
-      });
-
-      outputDiv.appendChild(wrapper);
+        });
+      }
     });
   }
+  // --- Hardcoded map: right -> founding text value (amendment) ---
+  // --- Hardcoded map: amendment -> rights array ---
+  const amendmentToRightsMap = {
+    "1st Amendment": ["Speak Freely", "Free Press", "Choose Faith", "Gather Peacefully", "Challenge Power"],
+    "2nd Amendment": ["Own Arms"],
+    "3rd Amendment": ["No Forced Lodging"],
+    "4th Amendment": ["Privacy at Home", "Warrants Only"],
+    "5th Amendment": ["Fair Process (Federal)", "Stay Silent", "One Trial Only", "Pay for What You Take", "Grand Jury First"],
+    "6th Amendment": ["Fast Trial", "Public Trial", "Unbiased Jury", "Know the Charge", "Face Accusers", "Call Witnesses", "Right to Lawyer"],
+    "7th Amendment": ["Jury for Civil"],
+    "8th Amendment": ["No Excessive Bail", "No Cruel Punishment"],
+    "9th Amendment": ["More Rights Exist"],
+    "10th Amendment": ["States Hold Power"],
+    "11th Amendment": ["Can’t Sue States Easily"],
+    "12th Amendment": ["Clear Elections"],
+    "13th Amendment": ["Slavery Ends"],
+    "14th Amendment": ["Born = Citizen", "Fair Process (States)", "States Must Be Fair", "Rights Apply Nationwide"],
+    "15th Amendment": ["Vote Regardless of Race"],
+    "16th Amendment": ["Income Tax Legal"],
+    "17th Amendment": ["Senators by Vote"],
+    "18th Amendment": ["No Alcohol"],
+    "19th Amendment": ["Women Can Vote"],
+    "20th Amendment": ["Inauguration Reset"],
+    "21st Amendment": ["Alcohol Repealed"],
+    "22nd Amendment": ["2-Term Max"],
+    "23rd Amendment": ["D.C. Votes Too"],
+    "24th Amendment": ["No Poll Taxes"],
+    "25th Amendment": ["Succession Plan"],
+    "26th Amendment": ["Vote at 18"],
+    "27th Amendment": ["No Instant Raises"]
+  };
+  const rightToAmendmentMap = {
+    "Speak Freely": { shorthand: "1 (I)", full: "1st Amendment" },
+    "Free Press": { shorthand: "1 (I)", full: "1st Amendment" },
+    "Choose Faith": { shorthand: "1 (I)", full: "1st Amendment" },
+    "Gather Peacefully": { shorthand: "1 (I)", full: "1st Amendment" },
+    "Challenge Power": { shorthand: "1 (I)", full: "1st Amendment" },
+    "Own Arms": { shorthand: "2 (II)", full: "2nd Amendment" },
+    "No Forced Lodging": { shorthand: "3 (III)", full: "3rd Amendment" },
+    "Privacy at Home": { shorthand: "4 (IV)", full: "4th Amendment" },
+    "Warrants Only": { shorthand: "4 (IV)", full: "4th Amendment" },
+    "Fair Process (Federal)": { shorthand: "5 (V)", full: "5th Amendment" },
+    "Stay Silent": { shorthand: "5 (V)", full: "5th Amendment" },
+    "One Trial Only": { shorthand: "5 (V)", full: "5th Amendment" },
+    "Pay for What You Take": { shorthand: "5 (V)", full: "5th Amendment" },
+    "Grand Jury First": { shorthand: "5 (V)", full: "5th Amendment" },
+    "Fast Trial": { shorthand: "6 (VI)", full: "6th Amendment" },
+    "Public Trial": { shorthand: "6 (VI)", full: "6th Amendment" },
+    "Unbiased Jury": { shorthand: "6 (VI)", full: "6th Amendment" },
+    "Know the Charge": { shorthand: "6 (VI)", full: "6th Amendment" },
+    "Face Accusers": { shorthand: "6 (VI)", full: "6th Amendment" },
+    "Call Witnesses": { shorthand: "6 (VI)", full: "6th Amendment" },
+    "Right to Lawyer": { shorthand: "6 (VI)", full: "6th Amendment" },
+    "Jury for Civil": { shorthand: "7 (VII)", full: "7th Amendment" },
+    "No Excessive Bail": { shorthand: "8 (VIII)", full: "8th Amendment" },
+    "No Cruel Punishment": { shorthand: "8 (VIII)", full: "8th Amendment" },
+    "More Rights Exist": { shorthand: "9 (IX)", full: "9th Amendment" },
+    "States Hold Power": { shorthand: "10 (X)", full: "10th Amendment" },
+    "Can’t Sue States Easily": { shorthand: "11 (XI)", full: "11th Amendment" },
+    "Clear Elections": { shorthand: "12 (XII)", full: "12th Amendment" },
+    "Slavery Ends": { shorthand: "13 (XIII)", full: "13th Amendment" },
+    "Born = Citizen": { shorthand: "14 (XIV)", full: "14th Amendment" },
+    "Fair Process (States)": { shorthand: "14 (XIV)", full: "14th Amendment" },
+    "States Must Be Fair": { shorthand: "14 (XIV)", full: "14th Amendment" },
+    "Rights Apply Nationwide": { shorthand: "14 (XIV)", full: "14th Amendment" },
+    "Vote Regardless of Race": { shorthand: "15 (XV)", full: "15th Amendment" },
+    "Income Tax Legal": { shorthand: "16 (XVI)", full: "16th Amendment" },
+    "Senators by Vote": { shorthand: "17 (XVII)", full: "17th Amendment" },
+    "No Alcohol": { shorthand: "18 (XVIII)", full: "18th Amendment" },
+    "Women Can Vote": { shorthand: "19 (XIX)", full: "19th Amendment" },
+    "Inauguration Reset": { shorthand: "20 (XX)", full: "20th Amendment" },
+    "Alcohol Repealed": { shorthand: "21 (XXI)", full: "21st Amendment" },
+    "2-Term Max": { shorthand: "22 (XXII)", full: "22nd Amendment" },
+    "D.C. Votes Too": { shorthand: "23 (XXIII)", full: "23rd Amendment" },
+    "No Poll Taxes": { shorthand: "24 (XXIV)", full: "24th Amendment" },
+    "Succession Plan": { shorthand: "25 (XXV)", full: "25th Amendment" },
+    "Vote at 18": { shorthand: "26 (XXVI)", full: "26th Amendment" },
+    "No Instant Raises": { shorthand: "27 (XXVII)", full: "27th Amendment" }
+  };
+
   const SUBJECT_LOOKUP_RANGE = "the_constitution!F2:G100";
 
 async function fetchSubjectMap() {
@@ -672,37 +814,74 @@ async function fetchSubjectMap() {
   return json.values || [];
 }
 
-async function initSubjectLookupDropdown() {
-  const data = await fetchSubjectMap();
-  const dropdown = document.getElementById("subject-quick");
-  const output = document.getElementById("subject-quick-output");
+// --- Founding Text/Amendment dropdown logic unchanged above ---
 
-  const subjectToAmendment = {};
-  data.forEach(([subject, amendment]) => {
-    subjectToAmendment[subject] = amendment;
+// --- Rights dropdown logic with auto-select for founding text ---
+function initRightsDropdown() {
+  const rightsDropdown = document.getElementById("subject-quick");
+  const output = document.getElementById("subject-quick-output");
+  // Don't re-initialize if already has options
+  if (rightsDropdown.options.length > 1) return;
+  // Use the hardcoded map keys for rights
+  Object.keys(rightToAmendmentMap).forEach(right => {
     const opt = document.createElement("option");
-    opt.value = subject;
-    opt.textContent = subject;
-    dropdown.appendChild(opt);
+    opt.value = right;
+    opt.textContent = right;
+    rightsDropdown.appendChild(opt);
   });
 
-  dropdown.addEventListener("change", () => {
-    const selected = dropdown.value;
-    output.textContent = selected && subjectToAmendment[selected]
-      ? `→ Amendment: ${subjectToAmendment[selected]}`
+  rightsDropdown.addEventListener("change", () => {
+    const selectedRight = rightsDropdown.value;
+    const amendmentObj = rightToAmendmentMap[selectedRight];
+    // 👉 This is the Rights font — shown when a user selects a right from the first dropdown
+    output.innerHTML = amendmentObj
+      ? `<div class="founding-text-box" style="font-family: 'Dancing Script', cursive; font-size: 1.2rem; font-weight: 600; color: #000;">→ Amendment: ${amendmentObj.shorthand}</div>`
       : "";
+
+    // Always update the founding text dropdown to match the right's amendment
+    const matchingAmendment = amendmentObj?.full;
+    const foundingTextDropdown = document.getElementById("subject-select");
+    if (matchingAmendment) {
+      for (let i = 0; i < foundingTextDropdown.options.length; i++) {
+        if (foundingTextDropdown.options[i].textContent.trim() === matchingAmendment) {
+          foundingTextDropdown.selectedIndex = i;
+          foundingTextDropdown.dispatchEvent(new Event("change"));
+          break;
+        }
+      }
+    }
   });
 }
 
   window.addEventListener("DOMContentLoaded", () => {
-  initAmendmentDropdown();
-  initSubjectLookupDropdown();
-});
+    initAmendmentDropdown();
+    initRightsDropdown();
+    // No longer auto-select rights dropdown when founding text is changed.
+    // Remove logic that updates rights dropdown based on founding text selection.
+  });
+
+  // Remove event listener that sets dataset.userSelected on founding text dropdown
 
   function toggleMenu() {
     document.getElementById("navMenu").classList.toggle("show");
   }
-  
+  // Remove any insightSection flex logic if present (none here, but placeholder for future)
+</script>
 </script>
 </body>
 </html>
+</style>
+</style>
+<style>
+/* 🔹 Strategic intro box */
+.strategic-intro-box {
+  border: 2px solid #C4A000;
+  background-color: rgba(255, 255, 255, 0.85);
+  border-radius: 12px;
+  padding: 1.25rem;
+  margin: 0 auto 2rem auto;
+  max-width: 800px;
+  text-align: center;
+  font-family: 'Times New Roman', serif;
+  box-shadow: 0 0 10px rgba(196, 160, 0, 0.2);
+}
