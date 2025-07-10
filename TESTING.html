@@ -348,12 +348,43 @@
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
 }
 
-  /* Scoring Logic Hover Reveal */
+
+  /* Modal-style popup for Scoring Logic */
   #role-box-wrapper {
     display: none;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 1001;
+    background-color: var(--background);
+    border: 2px solid var(--understanding);
+    border-radius: 12px;
+    padding: 24px;
+    max-width: 700px;
+    width: 90%;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.6);
+    overflow-y: auto;
+    max-height: 90vh;
   }
-  #scoring-trigger:hover + #role-box-wrapper {
-    display: block;
+
+  #modal-overlay {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    height: 100vh;
+    width: 100vw;
+    background-color: rgba(0, 0, 0, 0.7);
+    z-index: 1000;
+  }
+
+  #modal-close-btn {
+    font-size: 1.2rem;
+    color: var(--text-muted);
+    cursor: pointer;
+    text-align: right;
+    margin-bottom: 10px;
   }
 
 .role-box h3 {
@@ -726,7 +757,9 @@ table.tru-table td:nth-child(2) {
     <div id="scoring-trigger" style="text-align: center; margin-top: 40px; cursor: pointer; color: var(--understanding); font-family: 'Playfair Display', serif; font-size: 1.2rem;">
       Scoring Logic
     </div>
+    <div id="modal-overlay" onclick="hidePopup()"></div>
     <div id="role-box-wrapper">
+      <div id="modal-close-btn" onclick="hidePopup()">✖ Close</div>
       <div class="role-box">
         <h3>High Office</h3>
         <p><span class="text-truth"><strong>Truth:</strong></span> <span class="num-font">4.0×</span></p>
@@ -952,6 +985,19 @@ table.tru-table td:nth-child(2) {
   function toggleMenu() {
     document.getElementById("navMenu").classList.toggle("show");
   }
+
+  // Modal popup logic for Scoring Logic
+  function showPopup() {
+    document.getElementById('role-box-wrapper').style.display = 'block';
+    document.getElementById('modal-overlay').style.display = 'block';
+  }
+
+  function hidePopup() {
+    document.getElementById('role-box-wrapper').style.display = 'none';
+    document.getElementById('modal-overlay').style.display = 'none';
+  }
+
+  document.getElementById('scoring-trigger').addEventListener('click', showPopup);
 </script>
 
 </body>
