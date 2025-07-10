@@ -900,7 +900,7 @@ table.tru-table td:nth-child(2) {
     if (existingHeader) existingHeader.remove();
     const scoreHeader = document.createElement("h2");
     scoreHeader.id = "total-score-heading";
-    scoreHeader.textContent = `${selected} T.R.U. Owl Credibility Score: ${total >= 0 ? "+" : ""}${total.toFixed(0)}`;
+    scoreHeader.textContent = `${selected} T.R.U. Owl Credibility Score:`;
     scoreHeader.style.cssText = `
       font-family: 'Playfair Display', serif;
       font-size: 1.5rem;
