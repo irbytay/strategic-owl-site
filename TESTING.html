@@ -3,12 +3,28 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Strategic Owl | The Constitution</title>
+  <title>The Strategic Owl | Truth. Reliability. Understanding.</title>
+
+  <!-- Open Graph Meta (Facebook, LinkedIn, Discord, etc.) -->
+  <meta property="og:title" content="The Strategic Owl | Truth. Reliability. Understanding." />
+  <meta property="og:description" content="Measure credibility and uncover truth using the TRU OWL Score — a tool for independent thinkers." />
+  <meta property="og:image" content="https://thestrategicowl.com/STOInsightQuiz.png" />
+  <meta property="og:image:type" content="image/png" />
+  <meta property="og:image:width" content="1200" />
+  <meta property="og:image:height" content="630" />
+  <meta property="og:url" content="https://thestrategicowl.com" />
+  <meta property="og:type" content="website" />
+
+  <!-- Twitter Card Meta -->
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="The Strategic Owl | Truth. Reliability. Understanding." />
+  <meta name="twitter:description" content="Measure credibility and uncover truth using the TRU OWL Score — a tool for independent thinkers." />
+  <meta name="twitter:image" content="https://thestrategicowl.com/TSO.png" />
+
+  <!-- Fonts -->
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&family=Playfair+Display:wght@600;700&display=swap" rel="stylesheet" />
-  <link href="https://fonts.googleapis.com/css2?family=Dancing+Script&display=swap" rel="stylesheet">
 
   <style>
-  /* 🔹 CSS variables (theme colors) */
   :root {
     --background: #0D1B2A;
     --surface: #112240;
@@ -24,7 +40,6 @@
     --bar-green: #28A745;
   }
 
-  /* 🔹 Body base styles */
   body {
     background-color: var(--background);
     color: var(--text);
@@ -34,7 +49,6 @@
   }
 
   /* 🧭 NAVBAR & MENU */
-  /* 🔹 Navbar styles */
   nav.top-nav {
     position: fixed;
     top: 0;
@@ -49,14 +63,12 @@
     box-shadow: 0 2px 6px var(--shadow);
   }
 
-  /* 🔹 Navbar title */
   .nav-title {
     font-family: 'Playfair Display', serif;
     font-size: 22px;
     color: var(--understanding);
   }
 
-  /* 🔹 Navbar menu toggle button */
   .menu-toggle {
     display: none;
     font-size: 24px;
@@ -66,13 +78,11 @@
     border: none;
   }
 
-  /* 🔹 Navbar links container */
   .nav-links {
     display: flex;
     gap: 28px;
   }
 
-  /* 🔹 Navbar link styles */
   .nav-links a {
     color: var(--text-muted);
     text-decoration: none;
@@ -80,16 +90,13 @@
     transition: color 0.3s ease;
   }
 
-  /* 🔹 Navbar link hover effect */
   .nav-links a:hover {
     color: var(--understanding);
   }
-    /* 🔹 Navbar logo image */
     .nav-logo img {
   height: 40px;
   width: 40px;
 }
-    /* 🔹 Navbar logo container */
     .nav-logo {
   display: flex;
   align-items: center;
@@ -99,7 +106,7 @@
   color: var(--text);
   font-size: 1.25rem;
 }
-    /* 🔹 TRU Bars section */
+    /* 🎨 TRU Bars */
   .divider-section {
     display: flex;
     flex-direction: column;
@@ -107,14 +114,12 @@
     margin: 40px auto;
   }
 
-  /* 🔹 TRU Bars bar container */
   .divider-bar {
     display: flex;
     gap: 12px;
     width: 340px;
   }
 
-  /* 🔹 Individual TRU bar */
   .divider-bar div {
     width: 108px;
     height: 6px;
@@ -122,12 +127,10 @@
     box-shadow: 0 0 4px var(--shadow);
   }
 
-  /* 🔹 TRU bar colors */
   .truth { background-color: var(--truth); }
   .reliability { background-color: var(--reliability); }
   .understanding { background-color: var(--understanding); }
 
-  /* 🔹 TRU Bars labels container */
   .divider-labels {
     display: flex;
     justify-content: center;
@@ -136,7 +139,6 @@
     margin-top: 8px;
   }
 
-  /* 🔹 TRU Bars label text */
   .divider-labels span {
     width: 108px;
     text-align: center;
@@ -144,136 +146,101 @@
     color: var(--text-muted);
   }
 
-  /* 🔹 Responsive styles for navbar (mobile) */
   @media (max-width: 768px) {
-    /* 🔹 Show menu toggle on mobile */
-    .menu-toggle {
-      display: block;
-    }
-
-    /* 🔹 Mobile navbar links container */
-    .nav-links {
-      display: none;
-      flex-direction: column;
-      align-items: center;/* 👈 links side-by-side on mobile */
-      justify-content: center;
-      background-color: var(--highlight);
-      position: absolute;
-      top: 58px;
-      left: 0;
-      width: 100%;
-      padding: 10px 0;
-      gap: 20px;
-      box-shadow: 0 3px 8px var(--shadow);
-    }
-    /* 🔹 Mobile navbar link styles */
-    .nav-links a {
-  padding: 10px 0;
-  width: 100%;
-  text-align: center;
-  font-size: 1rem;
-}
-
-    /* 🔹 Show mobile navbar links */
-    .nav-links.show {
-      display: flex;
-      animation: fadeSlideDown 0.3s ease;
-    }
-
-    /* 🔹 Animation for mobile navbar links */
-    @keyframes fadeSlideDown {
-      from {
-        opacity: 0;
-        transform: translateY(-10px);
-      }
-      to {
-        opacity: 1;
-        transform: translateY(0);
-      }
-    }
-  }
-    /* 🔹 Responsive styles for legal popup and text (mobile) */
-    @media (max-width: 500px) {
-  #legal-popup > div {
-    padding: 12px;
-    font-size: 0.95rem;
+  .menu-toggle {
+    display: block;
   }
 
-  #accept-btn {
+  .nav-links {
+    display: none;
+    flex-direction: column; /* ✅ stack vertically */
+    align-items: center;
+    background-color: var(--highlight);
+    position: absolute;
+    top: 58px;
+    left: 0;
     width: 100%;
+    padding: 12px 0;
+    gap: 12px;
+    box-shadow: 0 3px 8px var(--shadow);
+  }
+
+  .nav-links.show {
+    display: flex;
+    animation: fadeSlideDown 0.3s ease;
+  }
+
+  .nav-links a {
+    padding: 10px 0;
+    width: 100%;
+    text-align: center;
     font-size: 1rem;
   }
 
-  p {
+  @keyframes fadeSlideDown {
+    from {
+      opacity: 0;
+      transform: translateY(-10px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+}
+    #legal-popup {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(13, 27, 42, 0.95);
+  z-index: 9999;
+  overflow-y: auto;
+  padding: 40px 20px;
+  box-sizing: border-box;
+  display: none;
+}
+
+#legal-popup > div {
+  max-width: 680px;
+  width: 100%;
+  margin: 0 auto;
+  background-color: var(--surface);
+  padding: 30px;
+  border-radius: 8px;
+  box-shadow: 0 0 20px var(--shadow);
+  font-family: 'Montserrat', sans-serif;
+  color: var(--text);
+  line-height: 1.6;
+}
+
+@media (max-width: 500px) {
+  #legal-popup > div {
+    padding: 16px 12px;
     font-size: 0.95rem;
-    margin-bottom: 16px;
+  }
+
+  .important-link {
+    display: block;
+    text-align: center;
+    margin-top: 16px;
   }
 }
 
-  /* 🔹 Founding text style box (amendment quick output) */
-  /* ⚠️ This style is applied to the right-side display that is injected via JS when a right is selected.
-     The text itself (e.g., "→ Amendment: 1 (I)") comes from the hardcoded map in JavaScript (rightToAmendmentMap),
-     not from the Google Sheet.
-  */
-  .founding-text-box {
-    background: #fff8e1;
-    border-radius: 8px;
-    box-shadow: 0 0 10px #C4A000, inset 0 0 5px rgba(0,0,0,0.2);
-    border: 2px solid #C4A000;
-    font-family: 'Dancing Script', cursive;
-    font-size: 1.2rem;
-    font-weight: 600;
-    color: #000;
-    padding: 1.5rem;
-    margin: 1.5rem auto;
-    max-width: 720px;
-    text-align: center;
-    white-space: pre-line;
-  }
-  /* 🔹 Main container */
+  /* ✅ YOUR ORIGINAL STYLES BELOW */
   .container {
     max-width: 960px;
     margin: 100px auto 0 auto;
     padding: 24px;
   }
 
-  /* ⚠️ This class is applied to content dynamically inserted from the Google Sheet (e.g., full amendment text,
-     strategic insights, and prompts). The data comes from the range "the_constitution!A2:G1000" for insights
-     and founding text, and "the_constitution!F2:G100" for subject lookup.
-  */
-  /* 🔹 Content box (dynamic width) */
-  .content-box {
-    background: #fdf6e3;
-    font-family: 'Dancing Script', cursive;
-    font-size: 20px;
-    line-height: 1.5;
-    font-weight: 400;
-    color: #000000;
-    padding: 1.5rem;
-    border-radius: 8px;
-    border: 2px solid #C4A000;
-    box-shadow: 0 0 10px #C4A000, inset 0 0 5px rgba(0,0,0,0.2);
-    margin: 1rem auto;
-    white-space: pre-wrap;
-    overflow-x: auto;
-  }
-  /* 🔹 Wide content box */
-  .wide-box {
-    max-width: 1200px;
-  }
-  /* 🔹 Narrow content box */
-  .narrow-box {
-    max-width: 720px;
-  }
-
-  /* 🔹 Heading 1 styles */
   h1 {
     font-family: 'Playfair Display', serif;
     color: var(--heading);
     margin-bottom: 16px;
     text-align: center;
   }
-  /* 🔹 Heading 2 styles */
   h2 {
   font-family: 'Playfair Display', serif;
   font-size: 1.5rem;
@@ -283,7 +250,6 @@
   margin-bottom: 12px;
   text-align: center;
 }
-  /* 🔹 Paragraph styles */
   p {
   font-family: 'Inter', sans-serif;
   font-size: 1.05rem;
@@ -296,45 +262,14 @@
   margin-right: auto;
 }
 
-  /* 🔹 Dropdown select styles */
   select {
-    padding: 12px 14px;
-    background-color: rgba(255, 255, 255, 0.05);
-    color: var(--understanding);
-    font-family: 'Copperplate', serif;
-    font-size: 15px;
-    font-weight: 500;
-    border: 1px solid rgba(212, 175, 55, 0.4);
-    border-radius: 12px;
-    width: 100%;
-    max-width: 420px;
-    box-shadow: 0 4px 12px rgba(212, 175, 55, 0.2);
-    appearance: none;
-    background-image: url("data:image/svg+xml;utf8,<svg fill='%23D4AF37' height='18' viewBox='0 0 24 24' width='18' xmlns='http://www.w3.org/2000/svg'><path d='M7 10l5 5 5-5z'/></svg>");
-    background-repeat: no-repeat;
-    background-position: right 10px center;
-    background-size: 16px;
-    transition: box-shadow 0.3s ease, border-color 0.3s ease;
+    padding: 8px;
+    margin-bottom: 16px;
+    background-color: var(--surface);
+    color: var(--text);
+    border: 1px solid var(--highlight);
   }
 
-  /* 🔹 Label styles */
-  label {
-    color: var(--understanding);
-    font-family: 'Copperplate', serif;
-    font-size: 16px;
-    font-weight: 500;
-    text-align: center;
-  }
-
-  /* 🔹 Dropdown hover/focus styles */
-  select:hover,
-  select:focus {
-    border-color: var(--understanding);
-    box-shadow: 0 0 10px var(--understanding);
-    outline: none;
-  }
-
-  /* 🔹 Table styles */
   table {
     width: 100%;
     border-collapse: collapse;
@@ -342,51 +277,42 @@
     margin-top: 12px;
   }
 
-  /* 🔹 Table header and cell styles */
   th, td {
     padding: 12px;
     border-bottom: 1px solid var(--highlight);
     text-align: left;
   }
 
-  /* 🔹 TRU colored text */
   .text-truth { color: var(--truth); }
   .text-reliability { color: var(--reliability); }
   .text-understanding { color: var(--understanding); }
 
-  /* 🔹 Total score text */
   .total-score {
     font-weight: bold;
   }
 
-  /* 🔹 Score coloring */
   .positive-score { color: var(--bar-green); }
   .negative-score { color: var(--bar-red); }
 
-  /* 🔹 Score bar container */
   .score-bar {
     display: flex;
     align-items: center;
     gap: 10px;
   }
 
-  /* 🔹 Score bar indicator */
   .bar-indicator {
     width: 10px;
     height: 24px;
     border-radius: 2px;
   }
 
-  /* 🔹 Red bar (negative) */
   .bar-red {
     background-color: var(--bar-red);
   }
 
-  /* 🔹 Green bar (positive) */
   .bar-green {
     background-color: var(--bar-green);
   }
-    /* 🔹 Match navigation link */
     .match-nav-link {
   color: var(--text-muted);
   text-decoration: none;
@@ -394,12 +320,10 @@
   transition: color 0.3s ease;
 }
 
-/* 🔹 Match navigation link hover */
 .match-nav-link:hover {
   color: var(--understanding);
 }
-
-/* 🔹 Important link (styled, with arrows and hover effect) */
+ /* Style the link itself */
 .important-link {
   color: var(--understanding);               /* Gold color from your theme */
   font-weight: 700;                          /* Bold for visibility */
@@ -409,7 +333,7 @@
   transition: color 0.3s ease, text-shadow 0.3s ease;  /* Smooth hover transitions */
 }
 
-/* 🔹 Important link: right-pointing arrow before */
+/* Add a right-pointing arrow BEFORE the link text */
 .important-link::before {
   content: '→ ';                             /* Arrow pointing right */
   display: inline-block;                     /* So we can animate it */
@@ -417,7 +341,7 @@
   transition: transform 0.3s ease;           /* Smooth movement on hover */
 }
 
-/* 🔹 Important link: left-pointing arrow after */
+/* Add a left-pointing arrow AFTER the link text */
 .important-link::after {
   content: ' ←';                             /* Arrow pointing left */
   display: inline-block;                     /* Enables transform */
@@ -425,21 +349,134 @@
   transition: transform 0.3s ease;           /* Smooth hover animation */
 }
 
-/* 🔹 Important link: animate left arrow on hover */
+/* Animate the left-side arrow to move right on hover */
 .important-link:hover::before {
   transform: translateX(4px);                /* Moves → arrow to the right */
 }
 
-/* 🔹 Important link: animate right arrow on hover */
+/* Animate the right-side arrow to move left on hover */
 .important-link:hover::after {
   transform: translateX(-4px);               /* Moves ← arrow to the left */
 }
 
-/* 🔹 Important link: hover glow and color change */
+/* Add glow and optional color change on hover */
 .important-link:hover {
   text-shadow: 0 0 8px var(--understanding); /* Subtle glow using gold tone */
   color: var(--truth);                       /* Optional: changes to green (truth color) */
 }
+    /* 📢 Shared Announcement Box Styles */
+.announcement-box {
+  background-color: var(--surface);
+  padding: 24px;
+  border-radius: 12px;
+  margin: 24px auto;
+  max-width: 960px;
+  font-family: 'Inter', sans-serif;
+  color: var(--text);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  font-size: 1.1rem;
+  line-height: 1.7;
+  letter-spacing: 0.1px;
+  gap: 10px;
+}
+
+.announcement-box-mobile {
+  background-color: var(--surface);
+  padding: 20px 16px;
+  border-radius: 12px;
+  margin: 24px auto;
+  font-family: 'Inter', sans-serif;
+  color: var(--text);
+  max-width: 90%;
+  font-size: 1.05rem;
+  line-height: 1.7;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+}
+
+/* 🟢 Label Color */
+.announcement-label {
+  color: var(--truth);
+  font-weight: 600;
+  font-size: 1.1rem;
+}
+
+/* 🔗 Strategic Link Styling */
+.important-link {
+  color: var(--understanding);
+  font-weight: 700;
+  text-decoration: underline;
+  text-underline-offset: 4px;
+  position: relative;
+  transition: color 0.3s ease, text-shadow 0.3s ease;
+}
+
+.important-link::before {
+  content: '→ ';
+  display: inline-block;
+  margin-right: 6px;
+  transition: transform 0.3s ease;
+}
+
+.important-link::after {
+  content: ' ←';
+  display: inline-block;
+  margin-left: 6px;
+  transition: transform 0.3s ease;
+}
+
+.important-link:hover::before {
+  transform: translateX(4px);
+}
+
+.important-link:hover::after {
+  transform: translateX(-4px);
+}
+
+.important-link:hover {
+  text-shadow: 0 0 8px var(--understanding);
+  color: var(--truth);
+}
+
+/* 📱 Mobile Layout */
+@media (max-width: 768px) {
+  .announcement-desktop {
+    display: none;
+  }
+
+  .announcement-mobile {
+    padding: 0;
+    text-align: center;
+  }
+
+  .announcement-box-mobile .important-link {
+    display: inline-block;
+    margin: 6px 0;
+  }
+}
+
+/* 💻 Desktop Layout */
+@media (min-width: 769px) {
+  .announcement-mobile {
+    display: none;
+  }
+}
+  /* 📜 Footer */
+  footer {
+    text-align: center;
+    padding: 24px 12px;
+    font-size: 12px;
+    color: #D4AF37;
+    text-shadow: 0 0 6px rgba(0, 0, 0, 0.6);
+    font-family: 'Inter', sans-serif;
+  }
 </style>
 
 <nav class="top-nav">
@@ -458,9 +495,10 @@
 <a href="newcontact3.html">Contact</a>
 <a href="https://strategicfretboard.com" target="_blank" rel="noopener noreferrer">Strategic Fretboard</a>
   </div>
+  </div>
 </nav>
   <div class="container">
-    <h1>The Constitution</h1>
+    <h1>The Strategic Owl</h1>
 <!-- 🎯 Divider -->
     <section class="divider-section">
       <div class="divider-bar">
@@ -474,414 +512,273 @@
         <span>Understanding</span>
       </div>
     </section>
-    <!-- 🦉 Strategic Intro Box -->
-    <div class="strategic-intro-box" style="background: linear-gradient(to bottom right, #1A2B4C, #0D1B2A); border: 1px solid #D4AF37; border-radius: 12px; padding: 20px; box-shadow: 0 0 12px rgba(212, 175, 55, 0.3); max-width: 800px; margin: 0 auto 2rem auto;">
-      <p style="font-family: 'Roboto', sans-serif; font-size: 14px; color: rgba(255, 255, 255, 0.7); line-height: 1.6; text-align: center; margin: 0;">
-        You can explore the Constitution two ways: select a right granted (like free speech or equal protection), or directly select any part of the original text. Once selected, you’ll see the full text, have the option to capture it, read a plain-language breakdown, and even copy an AI research prompt for deeper exploration.
-      </p>
+    <!-- Legal Popup -->
+<div id="legal-popup">
+  <div>
+    <h1 style="font-family: 'Playfair Display', serif; color: var(--heading); margin-bottom: 20px;">Well hello there.</h1>
+
+    <p>How do you even know what's real anymore?</p>
+    <p>If you've lost trust in the system, you're not wrong. That’s by design.</p>
+
+    <p style="margin-top: 24px;">Now let me get the legal stuff out of the way.</p>
+
+    <p>
+      This site is protected under the <strong>First Amendment</strong> of the United States Constitution.<br>
+      All content herein is published for educational and informational purposes.<br>
+      It is not intended to defame, mislead, or incite.<br>
+      Every claim is supported by public records, sourced materials, or verifiable data — and transparency is built into the system to ensure I’m held to the same standards I use to assess others.
+    </p>
+
+    <p style="font-weight: bold; margin-top: 16px;">
+      Truth-telling is still legal — even if it ruffles a few red hats.
+    </p>
+
+    <h2 style="font-family: 'Playfair Display', serif; color: var(--heading); margin-top: 32px;">Join the Watch</h2>
+
+    <p>
+      By continuing, you're not just entering a site — you're stepping into an experience designed to make you think.<br>
+      You're part of a broader mission to restore trust in what’s real.
+    </p>
+
+    <div style="text-align: center; margin-top: 24px;">
+      <a href="index.html" id="accept-link" class="important-link">I understand. Let me in.</a>
     </div>
-   <!-- 🦉 Subject → Amendment Lookup (Strategic Owl Style) -->
-<div style="display: flex; flex-direction: column; gap: 12px; align-items: center; margin-top: 40px;">
 
-
-
-  <select id="subject-quick"
-    style="padding: 12px 14px; background-color: rgba(255,255,255,0.05); color: var(--understanding); font-family: 'Copperplate', serif; font-size: 15px; font-weight: 500; border: 1px solid rgba(212,175,55,0.4); border-radius: 12px; width: 100%; max-width: 420px; box-shadow: 0 4px 12px rgba(212, 175, 55, 0.2); appearance: none; background-image: url('data:image/svg+xml;utf8,<svg fill=\'%23D4AF37\' height=\'18\' viewBox=\'0 0 24 24\' width=\'18\' xmlns=\'http://www.w3.org/2000/svg\'><path d=\'M7 10l5 5 5-5z\'/></svg>'); background-repeat: no-repeat; background-position: right 10px center; background-size: 16px; transition: box-shadow 0.3s ease, border-color 0.3s ease; text-align: center; text-align-last: center;">
-    <option value="">-- Select a Right --</option>
-  </select>
-
-  <div id="subject-quick-output"
-    style="margin-top: 4px; font-size: 1.05rem; color: var(--understanding); font-family: 'Montserrat', sans-serif; text-align: center;">
+    <p style="margin-top: 12px; font-size: 0.8rem; color: var(--text-muted);">
+      This moment will be remembered for 30 days.<br>
+      This website uses publicly available data, court records, and verifiable sources. Nothing here is hidden — it’s all in the open.
+    </p>
   </div>
 </div>
-  <div style="display: flex; justify-content: center;">
-    <select id="subject-select" data-user-selected="false" style="padding: 12px 14px; background-color: rgba(255,255,255,0.05); color: var(--understanding); font-family: 'Copperplate', serif; font-size: 15px; font-weight: 500; border: 1px solid rgba(212,175,55,0.4); border-radius: 12px; width: 100%; max-width: 420px; box-shadow: 0 4px 12px rgba(212, 175, 55, 0.2); appearance: none; background-image: url('data:image/svg+xml;utf8,<svg fill=\'%23D4AF37\' height=\'18\' viewBox=\'0 0 24 24\' width=\'18\' xmlns=\'http://www.w3.org/2000/svg\'><path d=\'M7 10l5 5 5-5z\'/></svg>'); background-repeat: no-repeat; background-position: right 10px center; background-size: 16px; transition: box-shadow 0.3s ease, border-color 0.3s ease; text-align: center; text-align-last: center;">
-      <option value="">-- Select the Founding Text --</option>
-    </select>
+   <!-- 📱 App Promo Section -->
+  <div class="announcement-box" style="border: 2px solid var(--understanding); box-shadow: 0 0 10px var(--understanding); margin-top: 48px;">
+    <span class="announcement-label">New Release:</span>
+    <p>The Strategic Owl is now available as an iPhone app.</p>
+    <p style="max-width: 720px;">
+      It's everything you see here — in your pocket. From credibility tools to the Constitution, it’s all optimized for clarity, designed for truth. Built for thinkers.
+    </p>
+    <a href="https://apps.apple.com/app/the-strategic-owl/id6748349497" class="important-link" style="font-size: 1.15rem;">Download on the App Store</a>
+    <p style="font-size: 0.9rem; color: var(--text-muted); margin-top: 8px;">For those without an iPhone, visit <a href="https://thestrategicowl.com" class="important-link">TheStrategicOwl.com</a></p>
   </div>
-
-<div id="insight-output" style="max-width: 960px; margin: 40px auto 0; font-family: 'Montserrat', sans-serif; color: var(--text);">
-  <!-- Content is inserted here dynamically -->
+   <!-- Desktop Announcement -->
+<div class="announcement-desktop">
+  <div class="announcement-box">
+    <span class="announcement-label">New Tools Released:</span>
+    <span>Try the</span>
+    <a href="strategic-owl-insight-quiz.html" class="important-link">Strategic Insight Quiz</a>
+    <span>used by left, right, and neither — plus explore the</span>
+    <a href="the_constitution.html" class="important-link">The Constitution</a>
+    <span>as it was meant to be understood.</span>
+  </div>
 </div>
 
+<!-- Mobile Announcement -->
+<div class="announcement-mobile">
+  <div class="announcement-box-mobile">
+    <div>
+      <span class="announcement-label">New Tool Released:</span>
+      <span> Try the</span>
+    </div>
+    <a href="strategic-owl-insight-quiz.html" class="important-link">Strategic Insight Quiz</a>
+    <div>used by left, right, and neither — plus explore the</div>
+    <a href="the_constitution.html" class="important-link">The Constitution</a>
+    <div>as it was meant to be understood.</div>
+  </div>
+</div>
+<h2>How do you know what’s true anymore?</h2>
+    <p>
+  If you’ve felt overwhelmed, misled, or just unsure who to trust — you’re not alone.  
+  I’ve felt it too. That’s why I’ve spent the time building something that helps make sense of it all — not with opinions, but with structure.
+</p>
+<p> Here is the tool I built
+  <a href="TRUOWL3.html" class="important-link">T.R.U. Owl</a>   
+  a system that scores public figures based on  
+  <span class="text-truth">truth</span>,  
+  <span class="text-reliability">reliability</span>, and  
+  <span class="text-understanding">understanding</span>.  
+  It’s here so you don’t have to guess who’s credible anymore. You can see it for yourself.
+</p>
+   
+   
+<h2>So how do you know whats true?</h2>
+<p>I’ve asked that same question too.
+  Not as a journalist or politician, just as someone trying to make sense of a world full of contradictions. That’s why I built this system. 
+  I use tools most people call “AI,” but really, they’re language models — and I use them literally: to improve how I write, break down complex topics, and build on things I’ve already created. 
+  Sometimes I’ll refine a sentence or generate clean text I can plug into tools that help me visualize and explain what I’m trying to show. 
+  It helps me think more clearly — and when you think clearly, truth starts to show itself.
+</p>
+
+<h2>Objective truth vs subjective truth</h2>
+<p>
+  Some things are objectively true — true whether we like them or not.  
+  The Earth is round. That’s not an opinion. It’s a measurable fact.  
+  And yet, there are people with real platforms who call it a hoax — not because of evidence, but because NASA is part of the government.  
+  That’s what we call a subjective truth: a belief someone feels in their gut, even when all the facts say otherwise.  
+  One man even built a rocket to prove the Earth was flat. He launched himself into the sky… and died proving NASA right.  
+  That’s why objective truth matters — it keeps us grounded in reality, no matter how loud the spin gets.
+</p>
+
+<h2>Citizenship Is a Fact — Voter Fraud Is a Fear</h2>
+<p>When you’re born, you get a birth certificate — proof of citizenship. That’s another objective truth. And with that comes the constitutional right to vote, protected by the 14th, 15th, 19th, and 26th Amendments.
+</p>
+
+<p>What isn’t an objective truth is the belief that millions of undocumented immigrants are voting in our elections. That’s a narrative — not a fact. The idea of widespread voter fraud gets repeated so often that it feels real to some people. But it’s not backed by evidence. It’s a subjective fear that’s been turned into political fuel — and that’s exactly why we need systems grounded in verifiable truth.
+</p>
+
+<h2>Truth Deserves Better Tools</h2>
+<p>
+  The <a href="TRUOWL3.html" class="important-link">T.R.U. Owl</a> system was built to help make patterns easier to see — 
+  to separate objective truth from subjective spin. That includes helping people contextualize issues like voter fraud.
+  It’s true that voter fraud exists, but the scale is often misrepresented.
+  That’s why I created a separate tool to show the actual data.
+  You can explore it for yourself — just  
+  <a href="realitycheck.html" class="important-link">select a state and see how many cases exist</a> 
+  based on Heritage Foundation records. 
+  The data speaks for itself: voter fraud is real, but it’s rare. 
+  Context cuts through the noise — and that’s what this platform is all about.
+</p>
+     <!-- 🎯 Divider -->
+    <section class="divider-section">
+      <div class="divider-bar">
+        <div class="truth"></div>
+        <div class="reliability"></div>
+        <div class="understanding"></div>
+      </div>
+      <div class="divider-labels">
+        <span>Truth</span>
+        <span>Reliability</span>
+        <span>Understanding</span>
+      </div>
+    </section>
+  </div>
+  <h2>Why This Exists</h2>
+<p>
+  We’ve been trained to care more about who said something than whether it’s true. 
+  We’ve been stuck in a loop—team vs. team, headline vs. headline—while the truth gets lost somewhere in between. 
+  That’s not sustainable. So I built a system that cuts through it.
+</p>
+
+<h2>The T.R.U. OWL Score</h2>
+<p>
+  Truth. Reliability. Understanding. These three pillars make up the framework. 
+  It’s not about politics—it’s about performance. Did they get the facts right? 
+  Did they correct themselves when wrong? Do they actually understand the topic, 
+  or are they just performing for clicks and applause?
+</p>
+
+<h2>It’s Not Just a Score</h2>
+<p>
+  This system is designed to grow over time—with every subject scored and every correction made. 
+  It tracks credibility the way it works in real life: you earn it, you lose it, and if you lie, you don’t get to just hit reset.
+</p>
+
+<h2>The End Goal</h2>
+<p>
+  If more people start asking “Who’s telling the truth?” instead of “Whose side are you on?”—everything changes. 
+  Politicians, media, journalists, and influencers—they’ll have to compete on honesty, not just volume. 
+  This is how we take back the conversation.
+</p>
+  <!-- 🎯 Divider -->
+    <section class="divider-section">
+      <div class="divider-bar">
+        <div class="truth"></div>
+        <div class="reliability"></div>
+        <div class="understanding"></div>
+      </div>
+      <div class="divider-labels">
+        <span>Truth</span>
+        <span>Reliability</span>
+        <span>Understanding</span>
+      </div>
+    </section>
+  </div>
+  <!-- 📜 Footer -->
+  <footer style="text-align: center; padding: 24px 12px; font-size: 12px; color: #D4AF37; text-shadow: 0 0 6px rgba(0,0,0,0.6);">
+    © 2025 The Strategic Owl. All rights reserved. This platform is protected under U.S. copyright and constitutional law. Unauthorized use, duplication, or distortion of content is prohibited. Created by Taylor Irby — designed for clarity, built for truth.
+  </footer>
 <script>
-  const SHEET_ID = "19wBEj9hEkvIyQcoR5E_mBGVAxTzMnddMxk8nuQLAumA";
-  const API_KEY = "AIzaSyCzuh9HBfe0r70r9U35Pe406PPZ-tz6I78";
-  const RANGE = "the_constitution!A2:G1000";
+  const legalPopup = document.getElementById('legal-popup');
+  const lastAccepted = localStorage.getItem('legalPopupAccepted');
+  const now = new Date().getTime();
+  const thirtyDays = 1000 * 60 * 60 * 24 * 30;
 
-
-  const colors = {
-    gold: "#D4AF37",
-    text: "#FFFFFF",
-    bullet: "#7C8A9B",
-    heading: "#FFFFF0"
-  };
-
-  async function fetchAmendmentData() {
-    const url = `https://sheets.googleapis.com/v4/spreadsheets/${SHEET_ID}/values/${RANGE}?key=${API_KEY}`;
-    const res = await fetch(url);
-    const json = await res.json();
-    return json.values || [];
+  if (!lastAccepted || now - parseInt(lastAccepted) > thirtyDays) {
+    legalPopup.style.display = 'block';
   }
 
-  // Patch: Completely refactor initAmendmentDropdown to:
-  // 1. Listen for dropdown selection of a documentpart.
-  // 2. Load the corresponding hardcoded full text for that part.
-  // 3. Retrieve matching Strategic Insight and Prompt from the Google Sheet.
-  // 4. Insert the Strategic Insight below the full text container as a paragraph.
-  // 5. Insert the Prompt inside a <textarea> styled as described.
-  // 6. Add a new <div> and <textarea> below the full text display.
-  async function initAmendmentDropdown() {
-    const amendmentSelect = document.getElementById("subject-select");
-    const outputDiv = document.getElementById("insight-output");
-    // Add the new containers for strategic insight and prompt below the outputDiv
-    let insightDiv = document.getElementById("strategic-insight");
-    if (!insightDiv) {
-      insightDiv = document.createElement("div");
-      insightDiv.id = "strategic-insight";
-      insightDiv.style.marginTop = "2rem";
-      // Insert after outputDiv
-      outputDiv.insertAdjacentElement("afterend", insightDiv);
-    }
-    // Only add prompt textarea if not present (no capture button)
-    let promptBox = document.getElementById("capture-box");
-    // Style for promptBox to match full text and insight box widths (width: 100%; margin: 0 auto;)
-    const promptBoxStyle = `
-      background-color: #112240;
-      border: 2px solid #D4AF37;
-      border-radius: 8px;
-      padding: 12px 16px;
-      font-family: 'Courier', monospace;
-      font-size: 14px;
-      color: #D4AF37;
-      width: 95%;
-      margin: 0 auto;
-      box-shadow: 0 0 10px #3B6CED;
-      white-space: pre-wrap;
-      overflow: hidden;
-      resize: none;
-      display: none;
-    `;
-    let instructions = document.getElementById("prompt-instructions");
-    if (!promptBox) {
-      promptBox = document.createElement("textarea");
-      promptBox.readOnly = true;
-      promptBox.setAttribute("style", promptBoxStyle);
-      promptBox.id = "capture-box";
-      // Insert the instructional div just above promptBox
-      instructions = document.createElement("div");
-      instructions.id = "prompt-instructions";
-      instructions.textContent = "Capture the prompt. Paste it. See what you find.";
-      instructions.style.color = "#D4AF37";
-      instructions.style.fontFamily = "Copperplate, serif";
-      instructions.style.fontSize = "15px";
-      instructions.style.marginTop = "24px";
-      instructions.style.marginBottom = "8px";
-      instructions.style.textAlign = "center";
-      instructions.style.display = "none"; // Initially hidden
-      // Insert instructions and promptBox after insightDiv
-      const container = insightDiv.parentElement;
-      container.appendChild(instructions);
-      container.appendChild(promptBox);
-    } else {
-      instructions = document.getElementById("prompt-instructions");
-    }
-
-    // Fetch all document parts and their strategic insight/prompt from Google Sheets
-    const sheetData = await fetchAmendmentData();
-    // Columns: [A:documentpart, B:section, C:fulltext, D:insight, E:prompt, ...]
-    // Build options for dropdown (unique documentpart)
-    const seen = {};
-    sheetData.forEach(row => {
-      const docpart = row[0];
-      if (docpart && !seen[docpart]) {
-        const opt = document.createElement("option");
-        opt.value = docpart;
-        opt.textContent = docpart;
-        amendmentSelect.appendChild(opt);
-        seen[docpart] = true;
-      }
-    });
-    // Add Declaration of Independence as a special case if not present
-    if (!seen["Declaration of Independence"]) {
-      const decOpt = document.createElement("option");
-      decOpt.value = "Declaration of Independence";
-      decOpt.textContent = "Declaration of Independence";
-      amendmentSelect.appendChild(decOpt);
-    }
-
-    // Listen for changes on dropdown (subject-select)
-    amendmentSelect.addEventListener("change", () => {
-      const selected = amendmentSelect.value;
-      outputDiv.innerHTML = "";
-      insightDiv.innerHTML = "";
-      promptBox.value = "";
-      // Remove any previously added full text textarea if present
-      let prevFullTextBox = document.getElementById("fulltext-box");
-      if (prevFullTextBox) prevFullTextBox.remove();
-      // Hide prompt box and instructions by default
-      promptBox.style.display = "none";
-      if (instructions) instructions.style.display = "none";
-      // Remove any previously inserted prompt capture button
-      let prevPromptCaptureBtn = document.getElementById("prompt-capture-btn");
-      if (prevPromptCaptureBtn) prevPromptCaptureBtn.remove();
-      // Remove any previously inserted founding text capture button
-      let prevFoundingCaptureBtn = document.getElementById("founding-text-capture-btn");
-      if (prevFoundingCaptureBtn) prevFoundingCaptureBtn.remove();
-      if (!selected) return;
-      let fullText = "";
-      let insight = "";
-      let prompt = "";
-      // Gather all rows where column A matches the selected founding text (selected)
-      const matches = sheetData.filter(row => row[0] === selected);
-      if (matches.length > 0) {
-        // For Preamble and all others: Join all matching full texts, include section label (Column B) above full text, bold the section label
-        fullText = matches
-          .map(row => `<strong>${row[1]}</strong>\n${row[2]}`)
-          .filter(Boolean)
-          .join('\n\n');
-        // Use only the first matching non-empty insight (Column D)
-        insight = matches.find(row => row[3] && row[3].trim())?.[3] || "";
-        // Use only the first matching non-empty prompt (Column E)
-        prompt = matches.find(row => row[4] && row[4].trim())?.[4] || "";
-      }
-      // Show the full text in a <pre> styled as per branding
-      if (fullText) {
-        // Replace all literal \n\n (not actual newlines) with real newlines for display
-        const displayText = fullText.replace(/\\n\\n/g, "\n\n");
-        // Insert the h2/title inside the pre box at the top
-        const fullTextDisplay = document.createElement("pre");
-        fullTextDisplay.id = "founding-text-content";
-        // Use innerHTML for displayText, now preserving HTML tags (no escaping)
-        fullTextDisplay.innerHTML =
-          `<div style="text-align: center; font-family: 'Dancing Script', cursive; font-size: 24px; font-weight: 600; margin-bottom: 1rem;">${selected}</div>` +
-          displayText;
-        fullTextDisplay.className = "content-box wide-box";
-        outputDiv.appendChild(fullTextDisplay);
-        // (Founding text capture button removed)
-      }
-      // Show Strategic Insight below full text
-      insightDiv.innerHTML = "";
-      if (insight && insight.trim()) {
-        const insightText = document.createElement("p");
-        // Replace all literal \n\n (not actual newlines) with real newlines for display
-        insightText.textContent = insight.replace(/\\n\\n/g, "\n\n");
-        insightText.className = "content-box narrow-box";
-        insightText.style.fontFamily = '"Roboto", sans-serif';
-        insightText.style.borderLeft = `4px solid var(--understanding)`;
-        insightText.style.backgroundColor = "#1A2B4C";
-        insightText.style.color = "var(--understanding)";
-        insightText.style.fontWeight = "500";
-        insightDiv.appendChild(insightText);
-      }
-      // Show Prompt in promptBox (textarea)
-      promptBox.value = "";
-      promptBox.className = "content-box";
-      if (prompt && prompt.trim()) {
-        // Replace all literal \n\n (not actual newlines) with real newlines for display
-        promptBox.value = prompt.replace(/\\n\\n/g, "\n\n");
-      }
-      setTimeout(() => {
-        promptBox.style.height = "auto";
-        promptBox.style.height = promptBox.scrollHeight + "px";
-      }, 0);
-      // Show prompt box and instructions only if there is a prompt
-      if (promptBox.value.trim()) {
-        promptBox.style.display = "block";
-        if (instructions) instructions.style.display = "block";
-        // Add capture button for prompt
-        const promptCaptureBtn = document.createElement("button");
-        promptCaptureBtn.id = "prompt-capture-btn";
-        promptCaptureBtn.textContent = "Capture";
-        // Style the button to match prompt visually and structurally
-        promptCaptureBtn.style.backgroundColor = "#C4A000";
-        promptCaptureBtn.style.border = "1px solid #C4A000";
-        promptCaptureBtn.style.color = "#0D1B2A";
-        promptCaptureBtn.style.fontFamily = "Copperplate, serif";
-        promptCaptureBtn.style.fontWeight = "bold";
-        promptCaptureBtn.style.fontSize = "16px";
-        promptCaptureBtn.style.borderRadius = "12px";
-        promptCaptureBtn.style.padding = "10px 28px";
-        promptCaptureBtn.style.boxShadow = "0 6px 20px #3B6CED66";
-        promptCaptureBtn.style.cursor = "pointer";
-        promptCaptureBtn.style.letterSpacing = "1.2px";
-        // Ensure width and centering match promptBox
-        promptCaptureBtn.style.margin = "12px auto 8px auto";
-        promptCaptureBtn.style.display = "block";
-        promptCaptureBtn.style.textAlign = "center";
-        // Insert the button immediately after the promptBox
-        promptBox.insertAdjacentElement("afterend", promptCaptureBtn);
-        promptCaptureBtn.addEventListener("click", () => {
-          const text = promptBox.value || promptBox.textContent;
-          if (text.trim()) {
-            navigator.clipboard.writeText(text.trim()).then(() => {
-              promptCaptureBtn.textContent = "Captured";
-              setTimeout(() => {
-                promptCaptureBtn.textContent = "Capture";
-              }, 5000);
-            });
-          }
-        });
-      }
-    });
-  }
-  // --- Hardcoded map: right -> founding text value (amendment) ---
-  // --- Hardcoded map: amendment -> rights array ---
-  const amendmentToRightsMap = {
-    "1st Amendment": ["Speak Freely", "Free Press", "Choose Faith", "Gather Peacefully", "Challenge Power"],
-    "2nd Amendment": ["Own Arms"],
-    "3rd Amendment": ["No Forced Lodging"],
-    "4th Amendment": ["Privacy at Home", "Warrants Only"],
-    "5th Amendment": ["Fair Process (Federal)", "Stay Silent", "One Trial Only", "Pay for What You Take", "Grand Jury First"],
-    "6th Amendment": ["Fast Trial", "Public Trial", "Unbiased Jury", "Know the Charge", "Face Accusers", "Call Witnesses", "Right to Lawyer"],
-    "7th Amendment": ["Jury for Civil"],
-    "8th Amendment": ["No Excessive Bail", "No Cruel Punishment"],
-    "9th Amendment": ["More Rights Exist"],
-    "10th Amendment": ["States Hold Power"],
-    "11th Amendment": ["Can’t Sue States Easily"],
-    "12th Amendment": ["Clear Elections"],
-    "13th Amendment": ["Slavery Ends"],
-    "14th Amendment": ["Born = Citizen", "Fair Process (States)", "States Must Be Fair", "Rights Apply Nationwide"],
-    "15th Amendment": ["Vote Regardless of Race"],
-    "16th Amendment": ["Income Tax Legal"],
-    "17th Amendment": ["Senators by Vote"],
-    "18th Amendment": ["No Alcohol"],
-    "19th Amendment": ["Women Can Vote"],
-    "20th Amendment": ["Inauguration Reset"],
-    "21st Amendment": ["Alcohol Repealed"],
-    "22nd Amendment": ["2-Term Max"],
-    "23rd Amendment": ["D.C. Votes Too"],
-    "24th Amendment": ["No Poll Taxes"],
-    "25th Amendment": ["Succession Plan"],
-    "26th Amendment": ["Vote at 18"],
-    "27th Amendment": ["No Instant Raises"]
-  };
-  const rightToAmendmentMap = {
-    "Speak Freely": { shorthand: "1 (I)", full: "1st Amendment" },
-    "Free Press": { shorthand: "1 (I)", full: "1st Amendment" },
-    "Choose Faith": { shorthand: "1 (I)", full: "1st Amendment" },
-    "Gather Peacefully": { shorthand: "1 (I)", full: "1st Amendment" },
-    "Challenge Power": { shorthand: "1 (I)", full: "1st Amendment" },
-    "Own Arms": { shorthand: "2 (II)", full: "2nd Amendment" },
-    "No Forced Lodging": { shorthand: "3 (III)", full: "3rd Amendment" },
-    "Privacy at Home": { shorthand: "4 (IV)", full: "4th Amendment" },
-    "Warrants Only": { shorthand: "4 (IV)", full: "4th Amendment" },
-    "Fair Process (Federal)": { shorthand: "5 (V)", full: "5th Amendment" },
-    "Stay Silent": { shorthand: "5 (V)", full: "5th Amendment" },
-    "One Trial Only": { shorthand: "5 (V)", full: "5th Amendment" },
-    "Pay for What You Take": { shorthand: "5 (V)", full: "5th Amendment" },
-    "Grand Jury First": { shorthand: "5 (V)", full: "5th Amendment" },
-    "Fast Trial": { shorthand: "6 (VI)", full: "6th Amendment" },
-    "Public Trial": { shorthand: "6 (VI)", full: "6th Amendment" },
-    "Unbiased Jury": { shorthand: "6 (VI)", full: "6th Amendment" },
-    "Know the Charge": { shorthand: "6 (VI)", full: "6th Amendment" },
-    "Face Accusers": { shorthand: "6 (VI)", full: "6th Amendment" },
-    "Call Witnesses": { shorthand: "6 (VI)", full: "6th Amendment" },
-    "Right to Lawyer": { shorthand: "6 (VI)", full: "6th Amendment" },
-    "Jury for Civil": { shorthand: "7 (VII)", full: "7th Amendment" },
-    "No Excessive Bail": { shorthand: "8 (VIII)", full: "8th Amendment" },
-    "No Cruel Punishment": { shorthand: "8 (VIII)", full: "8th Amendment" },
-    "More Rights Exist": { shorthand: "9 (IX)", full: "9th Amendment" },
-    "States Hold Power": { shorthand: "10 (X)", full: "10th Amendment" },
-    "Can’t Sue States Easily": { shorthand: "11 (XI)", full: "11th Amendment" },
-    "Clear Elections": { shorthand: "12 (XII)", full: "12th Amendment" },
-    "Slavery Ends": { shorthand: "13 (XIII)", full: "13th Amendment" },
-    "Born = Citizen": { shorthand: "14 (XIV)", full: "14th Amendment" },
-    "Fair Process (States)": { shorthand: "14 (XIV)", full: "14th Amendment" },
-    "States Must Be Fair": { shorthand: "14 (XIV)", full: "14th Amendment" },
-    "Rights Apply Nationwide": { shorthand: "14 (XIV)", full: "14th Amendment" },
-    "Vote Regardless of Race": { shorthand: "15 (XV)", full: "15th Amendment" },
-    "Income Tax Legal": { shorthand: "16 (XVI)", full: "16th Amendment" },
-    "Senators by Vote": { shorthand: "17 (XVII)", full: "17th Amendment" },
-    "No Alcohol": { shorthand: "18 (XVIII)", full: "18th Amendment" },
-    "Women Can Vote": { shorthand: "19 (XIX)", full: "19th Amendment" },
-    "Inauguration Reset": { shorthand: "20 (XX)", full: "20th Amendment" },
-    "Alcohol Repealed": { shorthand: "21 (XXI)", full: "21st Amendment" },
-    "2-Term Max": { shorthand: "22 (XXII)", full: "22nd Amendment" },
-    "D.C. Votes Too": { shorthand: "23 (XXIII)", full: "23rd Amendment" },
-    "No Poll Taxes": { shorthand: "24 (XXIV)", full: "24th Amendment" },
-    "Succession Plan": { shorthand: "25 (XXV)", full: "25th Amendment" },
-    "Vote at 18": { shorthand: "26 (XXVI)", full: "26th Amendment" },
-    "No Instant Raises": { shorthand: "27 (XXVII)", full: "27th Amendment" }
-  };
-
-  const SUBJECT_LOOKUP_RANGE = "the_constitution!F2:G100";
-
-async function fetchSubjectMap() {
-  const url = `https://sheets.googleapis.com/v4/spreadsheets/${SHEET_ID}/values/${SUBJECT_LOOKUP_RANGE}?key=${API_KEY}`;
-  const res = await fetch(url);
-  const json = await res.json();
-  return json.values || [];
-}
-
-// --- Founding Text/Amendment dropdown logic unchanged above ---
-
-// --- Rights dropdown logic with auto-select for founding text ---
-function initRightsDropdown() {
-  const rightsDropdown = document.getElementById("subject-quick");
-  const output = document.getElementById("subject-quick-output");
-  // Don't re-initialize if already has options
-  if (rightsDropdown.options.length > 1) return;
-  // Use the hardcoded map keys for rights
-  Object.keys(rightToAmendmentMap).forEach(right => {
-    const opt = document.createElement("option");
-    opt.value = right;
-    opt.textContent = right;
-    rightsDropdown.appendChild(opt);
-  });
-
-  rightsDropdown.addEventListener("change", () => {
-    const selectedRight = rightsDropdown.value;
-    const amendmentObj = rightToAmendmentMap[selectedRight];
-    // 👉 This is the Rights font — shown when a user selects a right from the first dropdown
-    output.innerHTML = amendmentObj
-      ? `<div class="founding-text-box" style="font-family: 'Dancing Script', cursive; font-size: 1.2rem; font-weight: 600; color: #000;">→ Amendment: ${amendmentObj.shorthand}</div>`
-      : "";
-
-    // Always update the founding text dropdown to match the right's amendment
-    const matchingAmendment = amendmentObj?.full;
-    const foundingTextDropdown = document.getElementById("subject-select");
-    if (matchingAmendment) {
-      for (let i = 0; i < foundingTextDropdown.options.length; i++) {
-        if (foundingTextDropdown.options[i].textContent.trim() === matchingAmendment) {
-          foundingTextDropdown.selectedIndex = i;
-          foundingTextDropdown.dispatchEvent(new Event("change"));
-          break;
-        }
-      }
-    }
-  });
-}
-
-  window.addEventListener("DOMContentLoaded", () => {
-    initAmendmentDropdown();
-    initRightsDropdown();
-    // No longer auto-select rights dropdown when founding text is changed.
-    // Remove logic that updates rights dropdown based on founding text selection.
-  });
-
-  // Remove event listener that sets dataset.userSelected on founding text dropdown
-
+  document.getElementById('accept-link').addEventListener('click', () => {
+  localStorage.setItem('legalPopupAccepted', Date.now().toString());
+});
   function toggleMenu() {
     document.getElementById("navMenu").classList.toggle("show");
   }
-  // Remove any insightSection flex logic if present (none here, but placeholder for future)
+  type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "Person",
+      "name": "Taylor Irby",
+      "url": "https://thestrategicowl.com",
+      "sameAs": [
+        "https://strategicowl.substack.com",
+        "https://www.youtube.com/@StrategicOwl",
+        "https://twitter.com/StrategicOwl"
+      ],
+      "jobTitle": "Founder",
+      "worksFor": {
+        "@type": "Organization",
+        "name": "The Strategic Owl"
+      }
+    },
+    {
+      "@type": "Organization",
+      "name": "The Strategic Owl",
+      "url": "https://thestrategicowl.com",
+      "logo": "https://thestrategicowl.com/TSO.png",
+      "description": "Tools and insights for measuring credibility, decoding misinformation, and inspiring civic awareness.",
+      "founder": {
+        "@type": "Person",
+        "name": "Taylor Irby"
+      },
+      "sameAs": [
+        "https://strategicowl.substack.com",
+        "https://www.youtube.com/@StrategicOwl"
+      ]
+    },
+    {
+      "@type": "WebSite",
+      "name": "The Strategic Owl",
+      "url": "https://thestrategicowl.com",
+      "description": "Strategic analysis, digital tools, and credibility scoring to help people uncover truth in the age of distortion.",
+      "publisher": {
+        "@type": "Organization",
+        "name": "The Strategic Owl"
+      }
+    },
+    {
+      "@type": "WebApplication",
+      "name": "TRU OWL Score Viewer",
+      "url": "https://thestrategicowl.com/the_constitution",
+      "applicationCategory": "EducationalApplication",
+      "operatingSystem": "All",
+      "browserRequirements": "Requires JavaScript",
+      "description": "A digital tool to measure truth, reliability, and understanding through structured credibility scores."
+    },
+    {
+      "@type": "CreativeWork",
+      "name": "The OwlCast Podcast",
+      "url": "https://www.youtube.com/@StrategicOwl",
+      "author": {
+        "@type": "Person",
+        "name": "Taylor Irby"
+      },
+      "inLanguage": "en",
+      "description": "A podcast that blends music, political analysis, and strategic insight to help people break through distortion."
+    }
+  ]
+}
 </script>
-</script>
+
 </body>
 </html>
-</style>
-</style>
-<style>
-/* 🔹 Strategic intro box */
-.strategic-intro-box {
-  border: 2px solid #C4A000;
-  background-color: rgba(255, 255, 255, 0.85);
-  border-radius: 12px;
-  padding: 1.25rem;
-  margin: 0 auto 2rem auto;
-  max-width: 800px;
-  text-align: center;
-  font-family: 'Times New Roman', serif;
-  box-shadow: 0 0 10px rgba(196, 160, 0, 0.2);
-}
