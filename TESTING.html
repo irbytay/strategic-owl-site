@@ -339,13 +339,14 @@
   text-align: center;
 }
     .role-box {
-  background-color: var(--surface);
+  background-color: var(--background);
+  border: 2px solid var(--understanding);
   padding: 24px;
-  margin: 48px auto 60px; /* Top spacing fix here */
+  margin: 0 auto;
   border-radius: 12px;
   max-width: 640px;
   text-align: center;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+  box-shadow: 0 8px 24px rgba(212, 175, 55, 0.3);
 }
 
 
@@ -357,13 +358,11 @@
     left: 50%;
     transform: translate(-50%, -50%);
     z-index: 1001;
-    background-color: var(--background);
-    border: 2px solid var(--understanding);
+    background-color: transparent;
     border-radius: 12px;
     padding: 24px;
     max-width: 700px;
     width: 90%;
-    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.6);
     overflow-y: auto;
     max-height: 90vh;
   }
