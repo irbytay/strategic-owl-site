@@ -90,7 +90,7 @@
 
   .nav-links {
     display: flex;
-    gap: 28px;
+    gap: 32px;
   }
 
   .nav-links a {
@@ -172,7 +172,7 @@
     left: 0;
     width: 100%;
     padding: 10px 0;
-    gap: 20px;
+    gap: 16px;
     box-shadow: 0 3px 8px var(--shadow);
   }
     .nav-links.show {
@@ -796,6 +796,22 @@
     const menu = document.getElementById("navMenu");
     menu.classList.toggle("show");
   }
+
+  // Close mobile menu when clicking outside of it
+  function closeMenuOnOutsideClick(event) {
+    const navMenu = document.getElementById("navMenu");
+    const menuToggle = document.querySelector(".menu-toggle");
+
+    if (
+      navMenu.classList.contains("show") &&
+      !navMenu.contains(event.target) &&
+      !menuToggle.contains(event.target)
+    ) {
+      navMenu.classList.remove("show");
+    }
+  }
+
+  document.addEventListener("click", closeMenuOnOutsideClick);
 
     // ✅ Enable for standalone mode
     window.addEventListener("DOMContentLoaded", initStateFraudPage);
