@@ -862,10 +862,27 @@ function initRightsDropdown() {
 
   // Remove event listener that sets dataset.userSelected on founding text dropdown
 
+</script>
+
   function toggleMenu() {
     document.getElementById("navMenu").classList.toggle("show");
   }
-  // Remove any insightSection flex logic if present (none here, but placeholder for future)
+
+  // Close mobile menu when clicking outside of it
+  function closeMenuOnOutsideClick(event) {
+    const navMenu = document.getElementById("navMenu");
+    const menuToggle = document.querySelector(".menu-toggle");
+
+    if (
+      navMenu.classList.contains("show") &&
+      !navMenu.contains(event.target) &&
+      !menuToggle.contains(event.target)
+    ) {
+      navMenu.classList.remove("show");
+    }
+  }
+
+  document.addEventListener("click", closeMenuOnOutsideClick);
 </script>
 </script>
 </body>
