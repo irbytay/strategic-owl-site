@@ -22,6 +22,7 @@
   <meta name="twitter:image" content="https://thestrategicowl.com/TSO.png" />
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&family=Playfair+Display:wght@600;700&display=swap" rel="stylesheet" />
   <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Roboto+Slab:wght@400;500;700&display=swap" rel="stylesheet">
 
   <style>
   :root {
@@ -338,14 +339,52 @@
   text-align: center;
 }
     .role-box {
-  background-color: var(--surface);
+  background-color: var(--background);
+  border: 2px solid var(--understanding);
   padding: 24px;
-  margin: 48px auto 60px; /* Top spacing fix here */
+  margin: 0 auto;
   border-radius: 12px;
   max-width: 640px;
   text-align: center;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+  box-shadow: 0 8px 24px rgba(212, 175, 55, 0.3);
 }
+
+
+  /* Modal-style popup for Scoring Logic */
+  #role-box-wrapper {
+    display: none;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 1001;
+    background-color: transparent;
+    border-radius: 12px;
+    padding: 24px;
+    max-width: 700px;
+    width: 90%;
+    overflow-y: auto;
+    max-height: 90vh;
+  }
+
+  #modal-overlay {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    height: 100vh;
+    width: 100vw;
+    background-color: rgba(0, 0, 0, 0.7);
+    z-index: 1000;
+  }
+
+  #modal-close-btn {
+    font-size: 1.2rem;
+    color: var(--text-muted);
+    cursor: pointer;
+    text-align: right;
+    margin-bottom: 10px;
+  }
 
 .role-box h3 {
   font-family: 'Playfair Display', serif;
@@ -516,20 +555,9 @@ table.tru-table td:nth-child(2) {
     text-align: left;
   }
 }
-    #score-table th:nth-child(1) {
-  font-family: 'Playfair Display', serif;
-  font-size: 1rem;
-  font-weight: 700;
-  color: var(--heading); /* Try var(--text) for pure white instead */
-  text-align: center;
-}
-
+    #score-table th:nth-child(1),
 #score-table th:nth-child(2) {
-  font-family: 'Playfair Display', serif;
-  font-size: 1rem;
-  font-weight: 700;
-  color: var(--heading);
-  text-align: left;
+  color: #D4AF37;
 }
     #score-table th,
 #score-table td {
@@ -592,15 +620,37 @@ table.tru-table td:nth-child(2) {
 }
 
 /* Target the dropdown selects */
+/* Enhanced dropdown styling with subtle down arrow */
 .dropdowns-wrapper select {
-  font-family: 'Playfair Display', serif;
-  font-size: 1rem;
-  padding: 6px 10px;
-  border-radius: 6px;
-  border: 1px solid var(--highlight);
+  font-family: 'Roboto Slab', serif;
+  font-size: 16px;
+  font-weight: 500;
+  padding: 12px 16px;
+  border-radius: 8px;
   background-color: var(--surface);
-  color: var(--text);
+  border: 1px solid #D4AF37;
+  color: #D4AF37;
+  box-shadow: 0 0 4px rgba(212, 175, 55, 0.2);
   outline: none;
+  appearance: none;
+  background-image: url("data:image/svg+xml;utf8,<svg fill='%23D4AF37' height='18' viewBox='0 0 24 24' width='18' xmlns='http://www.w3.org/2000/svg'><path d='M7 10l5 5 5-5z'/></svg>");
+  background-repeat: no-repeat;
+  background-position: right 14px center;
+  background-size: 16px;
+  padding-right: 36px; /* make room for icon */
+  width: 260px;
+}
+
+.dropdowns-wrapper select:focus {
+  border-color: #D4AF37;
+  box-shadow: 0 0 0 2px rgba(212, 175, 55, 0.3);
+  background-color: #252525;
+}
+
+.dropdowns-wrapper select option {
+  background-color: #1e1e1e;
+  color: #D4AF37;
+  font-family: 'Roboto Slab', serif;
 }
     .dropdowns-wrapper label,
 .dropdowns-wrapper select {
@@ -608,6 +658,18 @@ table.tru-table td:nth-child(2) {
   font-size: 1rem;
   color: var(--text);
 }
+    /* Strategic Owl Output Container Branding */
+#output-container {
+      background-color: var(--surface);
+      border: 1px solid #D4AF37;
+      border-radius: 12px;
+      padding: 20px;
+      margin-top: 30px;
+      box-shadow: 0 0 6px rgba(212, 175, 55, 0.2);
+      color: var(--text);
+      font-family: 'Roboto Slab', serif;
+      font-size: 16px;
+    }
 </style>
 
 <nav class="top-nav">
@@ -628,7 +690,7 @@ table.tru-table td:nth-child(2) {
 </div>
 </nav>
   <div class="container">
-    <h1>T.R.U. Owl Viewer</h1>
+    <h1 style="color: var(--understanding); font-size: 2.6rem; font-weight: 700;">T.R.U. Owl Viewer</h1>
     <!-- 🎯 Divider -->
     <section class="divider-section">
       <div class="divider-bar">
@@ -642,96 +704,101 @@ table.tru-table td:nth-child(2) {
         <span>Understanding</span>
       </div>
     </section>
+   <!-- Scoring Logic Modal Trigger and Popup Elements -->
+   <div id="scoring-trigger" style="text-align: center; margin-top: 40px; cursor: pointer; color: var(--understanding); font-family: 'Playfair Display', serif; font-size: 1.2rem; text-decoration: underline;">
+     Scoring Logic
+   </div>
+   <p style="text-align: center; color: var(--text-muted); font-family: 'Playfair Display', serif; font-size: 1rem; margin-top: 12px; margin-bottom: 0;">
+     <span style="color: var(--truth);">Tell the truth.</span><br />
+     <span style="color: var(--reliability);">Correct when you're wrong.</span><br />
+     <span style="color: var(--understanding);">Understand what you're talking about.</span><br />
+     <span style="color: #FF8C42;">Raise your credibility.</span>
+   </p>
+   <div id="modal-overlay" onclick="hidePopup()"></div>
+   <div id="role-box-wrapper">
+     <div id="modal-close-btn" onclick="hidePopup()">✖ Close</div>
+     <div class="role-box">
+       <h3>High Office</h3>
+       <p><span class="text-truth"><strong>Truth:</strong></span> <span class="num-font">4.0×</span></p>
+       <p><span class="text-reliability"><strong>Reliability:</strong></span> <span class="num-font">4.0×</span></p>
+       <p><span class="text-understanding"><strong>Understanding:</strong></span> <span class="num-font">5.0×</span></p>
+       <small>The highest offices hold the highest responsibility. Their words and rulings move the world.</small>
+
+       <h3>Politicians</h3>
+       <p><span class="text-truth"><strong>Truth:</strong></span> <span class="num-font">3.5×</span></p>
+       <p><span class="text-reliability"><strong>Reliability:</strong></span> <span class="num-font">3.5×</span></p>
+       <p><span class="text-understanding"><strong>Understanding:</strong></span> <span class="num-font">4.5×</span></p>
+       <small>Includes Cabinet members, federal legislators, and top officials shaping national policy.</small>
+
+       <h3>Media Organizations</h3>
+       <p><span class="text-truth"><strong>Truth:</strong></span> <span class="num-font">3.0×</span></p>
+       <p><span class="text-reliability"><strong>Reliability:</strong></span> <span class="num-font">3.0×</span></p>
+       <p><span class="text-understanding"><strong>Understanding:</strong></span> <span class="num-font">4.0×</span></p>
+       <small>Networks and publishers shape public perception and drive national narratives.</small>
+
+       <h3>Journalists</h3>
+       <p><span class="text-truth"><strong>Truth:</strong></span> <span class="num-font">2.5×</span></p>
+       <p><span class="text-reliability"><strong>Reliability:</strong></span> <span class="num-font">2.5×</span></p>
+       <p><span class="text-understanding"><strong>Understanding:</strong></span> <span class="num-font">3.5×</span></p>
+       <small>Reporters and editors are trusted to verify facts, provide context, and admit when wrong.</small>
+
+       <h3>Influencers</h3>
+       <p><span class="text-truth"><strong>Truth:</strong></span> <span class="num-font">1.3×</span></p>
+       <p><span class="text-reliability"><strong>Reliability:</strong></span> <span class="num-font">1.3×</span></p>
+       <p><span class="text-understanding"><strong>Understanding:</strong></span> <span class="num-font">2.0×</span></p>
+       <small>They shape opinions without institutional power. Credibility depends on earned trust.</small>
+     </div>
+   </div>
+
    <!-- 🌐 Wrapper for both dropdowns (Filter by Role and Select a Profile) -->
 <div class="dropdowns-wrapper" 
-     style="display: flex; justify-content: center; gap: 40px; margin: 40px 0;">
+     style="display: flex; flex-direction: column; align-items: center; gap: 20px; margin: 40px auto;">
   <!-- 🧩 Each dropdown is grouped in its own container -->
 
   <!-- 🔍 Dropdown: Filter by Role -->
   <div class="dropdown-group" style="text-align: left;">
-    <!-- 🏷️ Label for the dropdown -->
-    <label for="role-filter" 
-           style="display: block; margin-bottom: 6px; font-weight: 600;">
-      Filter by Role:
-    </label>
-
-    <!-- 🔽 The actual dropdown <select> element -->
-    <select id="role-filter"></select>
+    <!-- 🔽 The actual dropdown <select> element with subtle arrow -->
+    <select id="role-filter" style="background-image: url('data:image/svg+xml;utf8,<svg fill=\'%23D4AF37\' height=\'18\' viewBox=\'0 0 24 24\' width=\'18\' xmlns=\'http://www.w3.org/2000/svg\'><path d=\'M7 10l5 5 5-5z\'/></svg>'); background-repeat: no-repeat; background-position: right 14px center; background-size: 16px; padding-right: 36px;">
+      <option value="">Select Role</option>
+    </select>
   </div>
 
   <!-- 👤 Dropdown: Select a Profile -->
   <div class="dropdown-group" style="text-align: left;">
-    <!-- 🏷️ Label for the dropdown -->
-    <label for="person-select" 
-           style="display: block; margin-bottom: 6px; font-weight: 600;">
-      Select a Profile:
-    </label>
-
-    <!-- 🔽 The actual dropdown <select> element -->
-    <select id="person-select"></select>
+    <!-- 🔽 The actual dropdown <select> element with subtle arrow -->
+    <select id="person-select" style="background-image: url('data:image/svg+xml;utf8,<svg fill=\'%23D4AF37\' height=\'18\' viewBox=\'0 0 24 24\' width=\'18\' xmlns=\'http://www.w3.org/2000/svg\'><path d=\'M7 10l5 5 5-5z\'/></svg>'); background-repeat: no-repeat; background-position: right 14px center; background-size: 16px; padding-right: 36px;">
+      <option value="">Select Name</option>
+    </select>
   </div>
 </div>
 
-<!-- 📊 The main data table for showing scores (initially hidden) -->
-<table id="score-table" style="display:none;">
-  <thead>
-    <tr>
-      <!-- 🟩 Score column header (includes Truth, Reliability, etc.) -->
-      <th style="text-align: center;">Score</th>
+<!-- 📊 Output container for scores and commentary (initially hidden) -->
+<div id="output-container" style="display:none;">
+  <table id="score-table">
+    <thead>
+      <tr>
+        <!-- 🟩 Score column header (includes Truth, Reliability, etc.) -->
+        <th style="text-align: center;">Score</th>
+        <!-- 🟨 Explanation column header -->
+        <th>Explanation</th>
+      </tr>
+    </thead>
+    <!-- 📥 Populated dynamically by JavaScript with score rows -->
+    <tbody id="score-body"></tbody>
+  </table>
 
-      <!-- 🟨 Explanation column header -->
-      <th>Explanation</th>
-    </tr>
-  </thead>
-
-  <!-- 📥 Populated dynamically by JavaScript with score rows -->
-  <tbody id="score-body"></tbody>
-</table>
-
-<!-- 🔻 Container for displaying the total score and commentary -->
-<div id="total-score-box" style="margin-top: 20px; display:none;">
-  <!-- 📶 Visual bar and summary commentary -->
-  <div class="score-bar">
-    <!-- 🎯 Vertical color bar (red/green) based on total score -->
-    <div id="indicator-bar" class="bar-indicator"></div>
-
-    <!-- 🗣️ Text summary under the table (updated via JS) -->
-    <div id="total-score-comment" class="total-score-comment-text"></div>
+  <!-- 🔻 Container for displaying the total score and commentary -->
+  <div id="total-score-box" style="margin-top: 20px;">
+    <!-- 📶 Visual bar and summary commentary -->
+    <div class="score-bar">
+      <!-- 🎯 Vertical color bar (red/green) based on total score -->
+      <div id="indicator-bar" class="bar-indicator"></div>
+      <!-- 🗣️ Text summary under the table (updated via JS) -->
+      <div id="total-score-comment" class="total-score-comment-text"></div>
+    </div>
   </div>
 </div>
   
-    <div class="role-box">
-  <h3>High Office</h3>
-  <p><span class="text-truth"><strong>Truth:</strong></span> <span class="num-font">4.0×</span></p>
-<p><span class="text-reliability"><strong>Reliability:</strong></span> <span class="num-font">4.0×</span></p>
-<p><span class="text-understanding"><strong>Understanding:</strong></span> <span class="num-font">5.0×</span></p>
-<small>The highest offices hold the highest responsibility. Their words and rulings move the world.</small>
-
-<h3>Politicians</h3>
-<p><span class="text-truth"><strong>Truth:</strong></span> <span class="num-font">3.5×</span></p>
-<p><span class="text-reliability"><strong>Reliability:</strong></span> <span class="num-font">3.5×</span></p>
-<p><span class="text-understanding"><strong>Understanding:</strong></span> <span class="num-font">4.5×</span></p>
-<small>Includes Cabinet members, federal legislators, and top officials shaping national policy.</small>
-
-<h3>Media Organizations</h3>
-<p><span class="text-truth"><strong>Truth:</strong></span> <span class="num-font">3.0×</span></p>
-<p><span class="text-reliability"><strong>Reliability:</strong></span> <span class="num-font">3.0×</span></p>
-<p><span class="text-understanding"><strong>Understanding:</strong></span> <span class="num-font">4.0×</span></p>
-<small>Networks and publishers shape public perception and drive national narratives.</small>
-
-<h3>Journalists</h3>
-<p><span class="text-truth"><strong>Truth:</strong></span> <span class="num-font">2.5×</span></p>
-<p><span class="text-reliability"><strong>Reliability:</strong></span> <span class="num-font">2.5×</span></p>
-<p><span class="text-understanding"><strong>Understanding:</strong></span> <span class="num-font">3.5×</span></p>
-<small>Reporters and editors are trusted to verify facts, provide context, and admit when wrong.</small>
-
-<h3>Influencers</h3>
-<p><span class="text-truth"><strong>Truth:</strong></span> <span class="num-font">1.3×</span></p>
-<p><span class="text-reliability"><strong>Reliability:</strong></span> <span class="num-font">1.3×</span></p>
-<p><span class="text-understanding"><strong>Understanding:</strong></span> <span class="num-font">2.0×</span></p>
-  <small>They shape opinions without institutional power. Credibility depends on earned trust.</small>
-</div>
-    
   
     <!-- 🎯 Divider -->
     <section class="divider-section">
@@ -787,7 +854,7 @@ table.tru-table td:nth-child(2) {
     });
 
     const roleSelect = document.getElementById("role-filter");
-    roleSelect.innerHTML = '<option value="All">All</option>';
+    roleSelect.innerHTML = '<option value="">Select Role</option>';
     Object.keys(roleMap).sort().forEach(role => {
       const opt = document.createElement("option");
       opt.value = role;
@@ -800,7 +867,7 @@ table.tru-table td:nth-child(2) {
 
   function updatePersonDropdown(role) {
     const personSelect = document.getElementById("person-select");
-    personSelect.innerHTML = '<option value="">-- Choose a name --</option>';
+    personSelect.innerHTML = '<option value="">Select Name:</option>';
     let names = (role === "All") ? Object.keys(rowMap) : roleMap[role] || [];
     names.sort().forEach(name => {
       const opt = document.createElement("option");
@@ -813,6 +880,7 @@ table.tru-table td:nth-child(2) {
 
   function showScores() {
     const select = document.getElementById("person-select");
+    const outputContainer = document.getElementById("output-container");
     const table = document.getElementById("score-table");
     const tbody = document.getElementById("score-body");
     const totalBox = document.getElementById("total-score-box");
@@ -821,12 +889,26 @@ table.tru-table td:nth-child(2) {
 
     const selected = select.value;
     if (!selected || !rowMap[selected]) {
-      table.style.display = "none";
-      totalBox.style.display = "none";
+      outputContainer.style.display = "none";
       return;
     }
 
     const row = rowMap[selected];
+
+    // Insert prominent heading above the score table
+    const existingHeader = document.getElementById("total-score-heading");
+    if (existingHeader) existingHeader.remove();
+    const scoreHeader = document.createElement("h2");
+    scoreHeader.id = "total-score-heading";
+    // The score logic must come after total is calculated
+    scoreHeader.style.cssText = `
+      font-family: 'Playfair Display', serif;
+      font-size: 1.5rem;
+      text-align: center;
+      color: var(--understanding);
+      margin-bottom: 16px;
+    `;
+
     tbody.innerHTML = "";
 
     const truthRaw = parseFloat(row[2]) || 0;
@@ -855,28 +937,28 @@ table.tru-table td:nth-child(2) {
       const tr = document.createElement("tr");
 
       const tdScore = document.createElement("td");
-     tdScore.className = "";
-tdScore.setAttribute("data-label", "Score");
-tdScore.innerHTML = `
-  <div style="display: flex; flex-direction: column; align-items: center;">
-    <span class="${className}">${label}</span>
-    <span class="num-font" style="color: var(--text); font-weight: bold; font-size: 1.035rem;">
-  ${value >= 0 ? "+" : ""}${value.toFixed(0)}
-</span>
-  </div>
-`;
+      tdScore.className = "";
+      tdScore.setAttribute("data-label", "Score");
+      tdScore.innerHTML = `
+        <div style="display: flex; flex-direction: column; align-items: center;">
+          <span class="${className}">${label}</span>
+          <span class="num-font" style="color: var(--text); font-weight: bold; font-size: 1.035rem;">
+        ${value >= 0 ? "+" : ""}${value.toFixed(0).replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
+      </span>
+        </div>
+      `;
 
       const tdComment = document.createElement("td");
-tdComment.setAttribute("data-label", "Explanation");
-tdComment.setAttribute("style", `
-  font-family: 'Montserrat', sans-serif;
-  font-size: 1.035rem;
-  color: var(--text-muted);
-  text-align: left;
-  line-height: 1.5;
-  padding: 8px 12px;
-`);
-tdComment.textContent = comment;
+      tdComment.setAttribute("data-label", "Explanation");
+      tdComment.setAttribute("style", `
+        font-family: 'Montserrat', sans-serif;
+        font-size: 1.035rem;
+        color: var(--text-muted);
+        text-align: left;
+        line-height: 1.5;
+        padding: 8px 12px;
+      `);
+      tdComment.textContent = comment;
 
       tr.appendChild(tdScore);
       tr.appendChild(tdComment);
@@ -884,20 +966,34 @@ tdComment.textContent = comment;
 
       total += value;
     });
+    // Set the header after total is calculated
+    // scoreHeader.textContent = `${selected} T.R.U. Owl Credibility Score: ${total >= 0 ? "+" : ""}${total.toFixed(0)}`;
+    scoreHeader.innerHTML = `
+      <div style="font-family: 'Playfair Display', serif; text-align: center;">
+        <span style="font-size: 1.6rem; color: var(--heading); font-weight: bold;">${selected}</span>
+        <br />
+        <span style="font-size: 1.3rem; color: var(--understanding);">T.R.U. Owl Credibility Score: 
+          <strong style="color: ${total >= 0 ? 'var(--bar-green)' : 'var(--bar-red)'}; font-family: 'Playfair Display', serif;">
+            ${total >= 0 ? "+" : ""}${total.toFixed(0).replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
+          </strong>
+        </span>
+      </div>
+    `;
+    outputContainer.insertBefore(scoreHeader, table);
 
     const totalRow = document.createElement("tr");
 
     const tdTotalScore = document.createElement("td");
     tdTotalScore.className = "total-score";
     tdTotalScore.setAttribute("data-label", "Score");
-   tdTotalScore.innerHTML = `
-  <div style="display: flex; flex-direction: column; align-items: center;">
-    <strong style="color: #DDE3EA; font-family: 'Montserrat', sans-serif;">Total Score</strong>
-    <span class="num-font" style="color: ${total >= 0 ? 'var(--bar-green)' : 'var(--bar-red)'}; font-weight: bold;">
-      ${total >= 0 ? "+" : ""}${total.toFixed(0)}
-    </span>
-  </div>
-`;
+    tdTotalScore.innerHTML = `
+      <div style="display: flex; flex-direction: column; align-items: center;">
+        <strong style="color: #DDE3EA; font-family: 'Montserrat', sans-serif;">Total Score</strong>
+        <span class="num-font" style="color: ${total >= 0 ? 'var(--bar-green)' : 'var(--bar-red)'}; font-weight: bold;">
+          ${total >= 0 ? "+" : ""}${total.toFixed(0).replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
+        </span>
+      </div>
+    `;
 
     const tdTotalComment = document.createElement("td");
     tdTotalComment.className = "total-score";
@@ -911,8 +1007,7 @@ tdComment.textContent = comment;
     indicatorBar.className = "bar-indicator " + (total >= 0 ? "bar-green" : "bar-red");
     totalCommentEl.innerHTML = `<span style="font-family: 'Montserrat', sans-serif; font-size: 1.035rem; color: var(--text-muted); line-height: 1.5;">${summaryBelowTable}</span>`;
 
-    table.style.display = "table";
-    totalBox.style.display = "block";
+    outputContainer.style.display = "block";
   }
 
   document.addEventListener("DOMContentLoaded", async () => {
@@ -925,6 +1020,19 @@ tdComment.textContent = comment;
   function toggleMenu() {
     document.getElementById("navMenu").classList.toggle("show");
   }
+
+  // Modal popup logic for Scoring Logic
+  function showPopup() {
+    document.getElementById('role-box-wrapper').style.display = 'block';
+    document.getElementById('modal-overlay').style.display = 'block';
+  }
+
+  function hidePopup() {
+    document.getElementById('role-box-wrapper').style.display = 'none';
+    document.getElementById('modal-overlay').style.display = 'none';
+  }
+
+  document.getElementById('scoring-trigger').addEventListener('click', showPopup);
 </script>
 
 </body>
