@@ -348,12 +348,19 @@
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
 }
 
+  /* Scoring Logic Hover Reveal */
+  #role-box-wrapper {
+    display: none;
+  }
+  #scoring-trigger:hover + #role-box-wrapper {
+    display: block;
+  }
+
 .role-box h3 {
   font-family: 'Playfair Display', serif;
   font-size: 1.3rem;
   color: #7DBEFF;
   margin-bottom: 8px;
-  cursor: pointer;
 }
 
 .role-box p {
@@ -367,15 +374,6 @@
   margin-top: 12px;
   font-size: 0.9rem;
   color: var(--text-muted);
-}
-
-/* Hide role details by default, show on hover of corresponding h3 */
-.role-details {
-  display: none;
-  transition: opacity 0.3s ease;
-}
-.role-box h3:hover + .role-details {
-  display: block;
 }
    /* Fix so span color wins over the strong override */
 .text-truth strong {
@@ -725,47 +723,42 @@ table.tru-table td:nth-child(2) {
   </div>
 </div>
   
-    <div class="role-box">
-  <h3>High Office</h3>
-  <div class="role-details">
-    <p><span class="text-truth"><strong>Truth:</strong></span> <span class="num-font">4.0×</span></p>
-    <p><span class="text-reliability"><strong>Reliability:</strong></span> <span class="num-font">4.0×</span></p>
-    <p><span class="text-understanding"><strong>Understanding:</strong></span> <span class="num-font">5.0×</span></p>
-    <small>The highest offices hold the highest responsibility. Their words and rulings move the world.</small>
-  </div>
+    <div id="scoring-trigger" style="text-align: center; margin-top: 40px; cursor: pointer; color: var(--understanding); font-family: 'Playfair Display', serif; font-size: 1.2rem;">
+      Scoring Logic
+    </div>
+    <div id="role-box-wrapper">
+      <div class="role-box">
+        <h3>High Office</h3>
+        <p><span class="text-truth"><strong>Truth:</strong></span> <span class="num-font">4.0×</span></p>
+        <p><span class="text-reliability"><strong>Reliability:</strong></span> <span class="num-font">4.0×</span></p>
+        <p><span class="text-understanding"><strong>Understanding:</strong></span> <span class="num-font">5.0×</span></p>
+        <small>The highest offices hold the highest responsibility. Their words and rulings move the world.</small>
 
-  <h3>Politicians</h3>
-  <div class="role-details">
-    <p><span class="text-truth"><strong>Truth:</strong></span> <span class="num-font">3.5×</span></p>
-    <p><span class="text-reliability"><strong>Reliability:</strong></span> <span class="num-font">3.5×</span></p>
-    <p><span class="text-understanding"><strong>Understanding:</strong></span> <span class="num-font">4.5×</span></p>
-    <small>Includes Cabinet members, federal legislators, and top officials shaping national policy.</small>
-  </div>
+        <h3>Politicians</h3>
+        <p><span class="text-truth"><strong>Truth:</strong></span> <span class="num-font">3.5×</span></p>
+        <p><span class="text-reliability"><strong>Reliability:</strong></span> <span class="num-font">3.5×</span></p>
+        <p><span class="text-understanding"><strong>Understanding:</strong></span> <span class="num-font">4.5×</span></p>
+        <small>Includes Cabinet members, federal legislators, and top officials shaping national policy.</small>
 
-  <h3>Media Organizations</h3>
-  <div class="role-details">
-    <p><span class="text-truth"><strong>Truth:</strong></span> <span class="num-font">3.0×</span></p>
-    <p><span class="text-reliability"><strong>Reliability:</strong></span> <span class="num-font">3.0×</span></p>
-    <p><span class="text-understanding"><strong>Understanding:</strong></span> <span class="num-font">4.0×</span></p>
-    <small>Networks and publishers shape public perception and drive national narratives.</small>
-  </div>
+        <h3>Media Organizations</h3>
+        <p><span class="text-truth"><strong>Truth:</strong></span> <span class="num-font">3.0×</span></p>
+        <p><span class="text-reliability"><strong>Reliability:</strong></span> <span class="num-font">3.0×</span></p>
+        <p><span class="text-understanding"><strong>Understanding:</strong></span> <span class="num-font">4.0×</span></p>
+        <small>Networks and publishers shape public perception and drive national narratives.</small>
 
-  <h3>Journalists</h3>
-  <div class="role-details">
-    <p><span class="text-truth"><strong>Truth:</strong></span> <span class="num-font">2.5×</span></p>
-    <p><span class="text-reliability"><strong>Reliability:</strong></span> <span class="num-font">2.5×</span></p>
-    <p><span class="text-understanding"><strong>Understanding:</strong></span> <span class="num-font">3.5×</span></p>
-    <small>Reporters and editors are trusted to verify facts, provide context, and admit when wrong.</small>
-  </div>
+        <h3>Journalists</h3>
+        <p><span class="text-truth"><strong>Truth:</strong></span> <span class="num-font">2.5×</span></p>
+        <p><span class="text-reliability"><strong>Reliability:</strong></span> <span class="num-font">2.5×</span></p>
+        <p><span class="text-understanding"><strong>Understanding:</strong></span> <span class="num-font">3.5×</span></p>
+        <small>Reporters and editors are trusted to verify facts, provide context, and admit when wrong.</small>
 
-  <h3>Influencers</h3>
-  <div class="role-details">
-    <p><span class="text-truth"><strong>Truth:</strong></span> <span class="num-font">1.3×</span></p>
-    <p><span class="text-reliability"><strong>Reliability:</strong></span> <span class="num-font">1.3×</span></p>
-    <p><span class="text-understanding"><strong>Understanding:</strong></span> <span class="num-font">2.0×</span></p>
-    <small>They shape opinions without institutional power. Credibility depends on earned trust.</small>
-  </div>
-</div>
+        <h3>Influencers</h3>
+        <p><span class="text-truth"><strong>Truth:</strong></span> <span class="num-font">1.3×</span></p>
+        <p><span class="text-reliability"><strong>Reliability:</strong></span> <span class="num-font">1.3×</span></p>
+        <p><span class="text-understanding"><strong>Understanding:</strong></span> <span class="num-font">2.0×</span></p>
+        <small>They shape opinions without institutional power. Credibility depends on earned trust.</small>
+      </div>
+    </div>
     
   
     <!-- 🎯 Divider -->
