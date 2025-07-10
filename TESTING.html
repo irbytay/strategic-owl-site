@@ -240,13 +240,22 @@
 
   /* Custom Dropdown Styling for Culture and State Selects */
   .custom-dropdown {
-    width: 300px;
+    max-width: 300px;
+    width: 90%;
     margin: 0 auto 20px auto;
-    padding: 10px 20px;
+    padding: 10px 16px;
     background-color: var(--understanding);
     border-radius: 12px;
     box-shadow: 0 6px 10px rgba(59, 108, 237, 0.4);
     position: relative;
+  }
+
+  @media (max-width: 500px) {
+    .custom-dropdown {
+      width: 98%;
+      max-width: 98vw;
+      padding: 10px 8px;
+    }
   }
 
   .custom-dropdown select {
