@@ -468,9 +468,8 @@
     </div>
     <!-- 🧠 Culture Subs UI Section -->
     <div id="culture-subs">
-      <div id="subject-button-container" class="dropdown-container" style="flex-wrap: wrap; gap: 10px;"></div>
-      <select id="culture-select" class="form-select" onchange="showCultureSubs()" style="display:none;">
-        <option value="">-- Common Misconception --</option>
+      <select id="culture-select" class="form-select" onchange="showCultureSubs()" style="padding: 10px; background-color: var(--background); color: var(--understanding); border: 1px solid var(--understanding); border-radius: 6px; margin-bottom: 20px;">
+        <option value="">-- Select a Topic --</option>
       </select>
       <div class="table-wrapper" style="display:none;" id="culture-results">
         <table>
@@ -777,31 +776,16 @@
 
   async function initCulturePage() {
     const dropdown = document.getElementById("culture-select");
-    const buttonContainer = document.getElementById("subject-button-container");
     const cultureRows = await fetchCultureData();
     const subjectSet = new Set(cultureRows.map(row => row[0]));
-    // Clear any existing buttons
-    buttonContainer.innerHTML = "";
+
+    // Clear and repopulate dropdown only
+    dropdown.innerHTML = '<option value="">-- Select a Topic --</option>';
     subjectSet.forEach(subject => {
-      // Add to dropdown (hidden, for legacy support)
       const opt = document.createElement("option");
       opt.value = subject;
       opt.textContent = subject;
       dropdown.appendChild(opt);
-      // Create button for each subject
-      const button = document.createElement("button");
-      button.textContent = subject;
-      button.style.padding = "8px 12px";
-      button.style.backgroundColor = "var(--highlight)";
-      button.style.color = "var(--text)";
-      button.style.border = "none";
-      button.style.borderRadius = "4px";
-      button.style.cursor = "pointer";
-      button.addEventListener("click", () => {
-        document.getElementById("culture-select").value = subject;
-        showCultureSubs();
-      });
-      buttonContainer.appendChild(button);
     });
 
     window.cultureMap = {};
