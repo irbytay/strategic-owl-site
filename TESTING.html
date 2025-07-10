@@ -943,7 +943,7 @@ table.tru-table td:nth-child(2) {
         <div style="display: flex; flex-direction: column; align-items: center;">
           <span class="${className}">${label}</span>
           <span class="num-font" style="color: var(--text); font-weight: bold; font-size: 1.035rem;">
-        ${value >= 0 ? "+" : ""}${value.toFixed(0)}
+        ${value >= 0 ? "+" : ""}${value.toFixed(0).replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
       </span>
         </div>
       `;
@@ -974,7 +974,7 @@ table.tru-table td:nth-child(2) {
         <br />
         <span style="font-size: 1.3rem; color: var(--understanding);">T.R.U. Owl Credibility Score: 
           <strong style="color: ${total >= 0 ? 'var(--bar-green)' : 'var(--bar-red)'}; font-family: 'Playfair Display', serif;">
-            ${total >= 0 ? "+" : ""}${total.toFixed(0)}
+            ${total >= 0 ? "+" : ""}${total.toFixed(0).replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
           </strong>
         </span>
       </div>
@@ -990,7 +990,7 @@ table.tru-table td:nth-child(2) {
       <div style="display: flex; flex-direction: column; align-items: center;">
         <strong style="color: #DDE3EA; font-family: 'Montserrat', sans-serif;">Total Score</strong>
         <span class="num-font" style="color: ${total >= 0 ? 'var(--bar-green)' : 'var(--bar-red)'}; font-weight: bold;">
-          ${total >= 0 ? "+" : ""}${total.toFixed(0)}
+          ${total >= 0 ? "+" : ""}${total.toFixed(0).replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
         </span>
       </div>
     `;
