@@ -900,7 +900,7 @@ table.tru-table td:nth-child(2) {
     if (existingHeader) existingHeader.remove();
     const scoreHeader = document.createElement("h2");
     scoreHeader.id = "total-score-heading";
-    // The score logic must come after total is calculated
+    scoreHeader.textContent = `${selected} T.R.U. Owl Credibility Score: ${total >= 0 ? "+" : ""}${total.toFixed(0)}`;
     scoreHeader.style.cssText = `
       font-family: 'Playfair Display', serif;
       font-size: 1.5rem;
@@ -908,6 +908,7 @@ table.tru-table td:nth-child(2) {
       color: var(--understanding);
       margin-bottom: 16px;
     `;
+    outputContainer.insertBefore(scoreHeader, table);
 
     tbody.innerHTML = "";
 
@@ -966,9 +967,6 @@ table.tru-table td:nth-child(2) {
 
       total += value;
     });
-    // Set the header after total is calculated
-    scoreHeader.textContent = `${selected} T.R.U. Owl Credibility Score: ${total >= 0 ? "+" : ""}${total.toFixed(0)}`;
-    outputContainer.insertBefore(scoreHeader, table);
 
     const totalRow = document.createElement("tr");
 
