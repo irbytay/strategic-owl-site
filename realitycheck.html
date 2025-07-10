@@ -17,6 +17,24 @@
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&family=Playfair+Display:wght@600;700&display=swap" rel="stylesheet" />
 
   <style>
+  .misconception-intro-container {
+    max-width: 700px;
+    margin: 0 auto 36px auto;
+    padding: 24px 20px;
+    border: 1px solid var(--understanding);
+    background: linear-gradient(to bottom right, #1A2B4C, #0D1B2A);
+    border-radius: 12px;
+    box-shadow: 0 0 12px rgba(212, 175, 55, 0.2);
+  }
+
+  .misconception-intro-container p {
+    font-size: 1.05rem;
+    font-family: 'Inter', sans-serif;
+    color: var(--text-muted);
+    text-align: center;
+    line-height: 1.6;
+    margin: 0;
+  }
   :root {
     --background: #0D1B2A;
     --surface: #112240;
@@ -187,7 +205,7 @@
 
   h1 {
     font-family: 'Playfair Display', serif;
-    color: var(--heading);
+    color: var(--understanding);
     margin-bottom: 16px;
     text-align: center;
   }
@@ -218,6 +236,59 @@
     background-color: var(--surface);
     color: var(--text);
     border: 1px solid var(--highlight);
+  }
+
+  /* Custom Dropdown Styling for Culture, State, and Person Selects (Gold-accented, Dart style) */
+  .custom-dropdown {
+    max-width: 260px;
+    width: 100%;
+    margin: 0 auto 20px auto;
+    padding: 0;
+    background-color: #2F3A3F;
+    border: 1.5px solid var(--understanding);
+    border-radius: 16px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.4);
+    position: relative;
+    height: 48px;
+    display: flex;
+    align-items: center;
+  }
+
+  @media (max-width: 500px) {
+    .custom-dropdown {
+      width: 98%;
+      max-width: 98vw;
+    }
+  }
+
+  .custom-dropdown select {
+    width: 100%;
+    background-color: transparent;
+    border: none;
+    font-family: 'Copperplate', serif;
+    font-size: 15px;
+    font-weight: bold;
+    color: var(--understanding);
+    padding: 0 32px 0 16px;
+    appearance: none;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    cursor: pointer;
+    text-align: center;
+    text-align-last: center;
+    height: 100%;
+    line-height: 1;
+  }
+
+  .custom-dropdown::after {
+    content: '▼';
+    font-size: 10px;
+    position: absolute;
+    right: 12px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: var(--understanding);
+    pointer-events: none;
   }
 
   table {
@@ -429,9 +500,6 @@
 </nav>
   <div class="container">
     <h1>Reality Check</h1>
-<p>
-  This is your Misconception Hub — where we expose popular myths and break them down with verifiable facts.
-</p>
     <!-- 🎯 Divider -->
     <section class="divider-section">
       <div class="divider-bar">
@@ -445,16 +513,19 @@
         <span>Understanding</span>
       </div>
     </section>
+
+    <h1>Misconception Hub</h1>
+    <div class="misconception-intro-container">
+      <p>This is your Misconception Hub — where we expose popular myths and break them down with verifiable facts.</p>
+      <p>Select a topic to examine popular claims and compare them to verifiable facts — one layer at a time.</p>
+    </div>
     <!-- 🧠 Culture Subs UI Section -->
     <div id="culture-subs">
-      <h1>Misconception Hub</h1>
-      <p style="text-align: center; color: var(--text-muted); margin-top: 20px;">
-        Select a topic to examine popular claims and compare them to verifiable facts — one layer at a time.
-      </p>
-      <div id="subject-button-container" class="dropdown-container" style="flex-wrap: wrap; gap: 10px;"></div>
-      <select id="culture-select" class="form-select" onchange="showCultureSubs()" style="display:none;">
-        <option value="">-- Common Misconception --</option>
-      </select>
+      <div class="custom-dropdown">
+        <select id="culture-select" onchange="showCultureSubs()">
+          <option value="">Misconception</option>
+        </select>
+      </div>
       <div class="table-wrapper" style="display:none;" id="culture-results">
         <table>
           <tbody id="culture-body"></tbody>
@@ -477,22 +548,23 @@
     <!-- 🗳️ Voter Fraud Section -->
     <div id="voter-fraud-section">
       <h1>Voter Fraud?</h1>
-      <p>Look past the headlines. Here’s the actual data.</p>
-      <p>
-        You’ve heard the claims. Some say voter fraud is everywhere. Others say it barely exists. Let’s look at the actual records.
-      </p>
-      <p>
-        The Heritage Foundation tracks every confirmed case of voter fraud — often to suggest it’s a bigger threat than it is. This tool lets you explore that same data, with the context it’s missing.
-      </p>
-      <p>
-        Because yes, voter fraud exists. But it’s not what you’ve been led to believe.
-      </p>
-      <label for="state-select" style="display: block; margin-bottom: 8px; font-weight: bold;">
-        Select a State:
-      </label>
-      <select id="state-select" style="padding: 6px; font-size: 1rem;">
-        <option value="">-- Choose a state --</option>
-      </select>
+      <div class="misconception-intro-container">
+        <p>Look past the headlines. Here’s the actual data.</p>
+        <p>
+          You’ve heard the claims. Some say voter fraud is everywhere. Others say it barely exists. Let’s look at the actual records.
+        </p>
+        <p>
+          The Heritage Foundation tracks every confirmed case of voter fraud — often to suggest it’s a bigger threat than it is. This tool lets you explore that same data, with the context it’s missing.
+        </p>
+        <p>
+          Because yes, voter fraud exists. But it’s not what you’ve been led to believe.
+        </p>
+      </div>
+      <div class="custom-dropdown">
+        <select id="state-select">
+          <option value="">Choose a state</option>
+        </select>
+      </div>
       <p id="state-summary" class="subtext"></p>
       <div class="table-wrapper" style="display:none;" id="state-results">
         <table>
@@ -524,12 +596,12 @@
     </section>
     <!-- 🦉 TRU Score by Name Section -->
     <div id="tru-score-section">
-      <p style="text-align: center; color: var(--text-muted); margin-top: 20px;">
-        Select a name below to view their Election Security credibility breakdown.
-      </p>
-      <div class="dropdown-container">
+      <div class="misconception-intro-container">
+        <p>Select a name below to view their Election Security credibility breakdown.</p>
+      </div>
+      <div class="custom-dropdown">
         <select id="person-select" onchange="showScores()">
-          <option value="">-- Choose a name --</option>
+          <option value="">Choose a name</option>
         </select>
       </div>
       <div class="table-wrapper">
@@ -642,7 +714,7 @@
     const select = document.getElementById("person-select");
     if (!select) return;
 
-    select.innerHTML = '<option value="">-- Choose a name --</option>';
+    select.innerHTML = '<option value="">Choose a name</option>';
     Object.keys(window.rowMap).sort().forEach(name => {
       const opt = document.createElement("option");
       opt.value = name;
@@ -758,31 +830,16 @@
 
   async function initCulturePage() {
     const dropdown = document.getElementById("culture-select");
-    const buttonContainer = document.getElementById("subject-button-container");
     const cultureRows = await fetchCultureData();
     const subjectSet = new Set(cultureRows.map(row => row[0]));
-    // Clear any existing buttons
-    buttonContainer.innerHTML = "";
+
+    // Clear and repopulate dropdown only
+    dropdown.innerHTML = '<option value="">Misconception</option>';
     subjectSet.forEach(subject => {
-      // Add to dropdown (hidden, for legacy support)
       const opt = document.createElement("option");
       opt.value = subject;
       opt.textContent = subject;
       dropdown.appendChild(opt);
-      // Create button for each subject
-      const button = document.createElement("button");
-      button.textContent = subject;
-      button.style.padding = "8px 12px";
-      button.style.backgroundColor = "var(--highlight)";
-      button.style.color = "var(--text)";
-      button.style.border = "none";
-      button.style.borderRadius = "4px";
-      button.style.cursor = "pointer";
-      button.addEventListener("click", () => {
-        document.getElementById("culture-select").value = subject;
-        showCultureSubs();
-      });
-      buttonContainer.appendChild(button);
     });
 
     window.cultureMap = {};
