@@ -483,10 +483,26 @@ window.addEventListener("DOMContentLoaded", () => {
   loadDashboard();
 });
 
+</script>
+<script>
   function toggleMenu() {
     document.getElementById("navMenu").classList.toggle("show");
   }
-  
+
+  function closeMenuOnOutsideClick(event) {
+    const navMenu = document.getElementById("navMenu");
+    const menuToggle = document.querySelector(".menu-toggle");
+
+    if (
+      navMenu.classList.contains("show") &&
+      !navMenu.contains(event.target) &&
+      !menuToggle.contains(event.target)
+    ) {
+      navMenu.classList.remove("show");
+    }
+  }
+
+  document.addEventListener("click", closeMenuOnOutsideClick);
 </script>
 </body>
 </html>
