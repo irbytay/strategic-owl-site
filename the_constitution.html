@@ -860,6 +860,18 @@ function initRightsDropdown() {
     // Remove logic that updates rights dropdown based on founding text selection.
   });
 
+  // Close mobile menu when clicking outside of it
+  document.addEventListener("click", function(event) {
+    const navMenu = document.getElementById("navMenu");
+    const menuToggle = document.querySelector(".menu-toggle");
+    const isClickInsideMenu = navMenu.contains(event.target);
+    const isClickOnToggle = menuToggle.contains(event.target);
+
+    if (!isClickInsideMenu && !isClickOnToggle && navMenu.classList.contains("show")) {
+      navMenu.classList.remove("show");
+    }
+  });
+
   // Remove event listener that sets dataset.userSelected on founding text dropdown
 
   function toggleMenu() {
