@@ -205,7 +205,7 @@
 
   h1 {
     font-family: 'Playfair Display', serif;
-    color: var(--understanding);
+    color: var(--heading);
     margin-bottom: 16px;
     text-align: center;
   }
@@ -596,9 +596,9 @@
     </section>
     <!-- 🦉 TRU Score by Name Section -->
     <div id="tru-score-section">
-      <p style="text-align: center; color: var(--text-muted); margin-top: 20px;">
-        Select a name below to view their Election Security credibility breakdown.
-      </p>
+      <div class="misconception-intro-container">
+        <p>Select a name below to view their Election Security credibility breakdown.</p>
+      </div>
       <div class="custom-dropdown">
         <select id="person-select" onchange="showScores()">
           <option value="">Choose a name</option>
