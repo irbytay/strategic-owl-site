@@ -801,7 +801,7 @@ table.tru-table td:nth-child(2) {
     });
 
     const roleSelect = document.getElementById("role-filter");
-    roleSelect.innerHTML = '<option value="All">All</option>';
+    roleSelect.innerHTML = '<option value="">Select Role</option>';
     Object.keys(roleMap).sort().forEach(role => {
       const opt = document.createElement("option");
       opt.value = role;
@@ -814,7 +814,7 @@ table.tru-table td:nth-child(2) {
 
   function updatePersonDropdown(role) {
     const personSelect = document.getElementById("person-select");
-    personSelect.innerHTML = '<option value="">-- Choose a name --</option>';
+    personSelect.innerHTML = '<option value="">Select Name:</option>';
     let names = (role === "All") ? Object.keys(rowMap) : roleMap[role] || [];
     names.sort().forEach(name => {
       const opt = document.createElement("option");
