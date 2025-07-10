@@ -1,10 +1,9 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>The Strategic Owl | Truth. Reliability. Understanding.</title>
+  <title>The Strategic Owl | Reality Check</title>
 
   <!-- Open Graph Meta (Facebook, LinkedIn, Discord, etc.) -->
   <meta property="og:title" content="The Strategic Owl | Truth. Reliability. Understanding." />
@@ -15,10 +14,27 @@
   <meta property="og:image:height" content="630" />
   <meta property="og:url" content="https://thestrategicowl.com" />
   <meta property="og:type" content="website" />
-
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&family=Playfair+Display:wght@600;700&display=swap" rel="stylesheet" />
 
   <style>
+  .misconception-intro-container {
+    max-width: 700px;
+    margin: 0 auto 36px auto;
+    padding: 24px 20px;
+    border: 1px solid var(--understanding);
+    background: linear-gradient(to bottom right, #1A2B4C, #0D1B2A);
+    border-radius: 12px;
+    box-shadow: 0 0 12px rgba(212, 175, 55, 0.2);
+  }
+
+  .misconception-intro-container p {
+    font-size: 1.05rem;
+    font-family: 'Inter', sans-serif;
+    color: var(--text-muted);
+    text-align: center;
+    line-height: 1.6;
+    margin: 0;
+  }
   :root {
     --background: #0D1B2A;
     --surface: #112240;
@@ -53,7 +69,7 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 14px 20px;  /* 🟡 Controls vertical height of navbar */
+    padding: 14px 20px;
     box-shadow: 0 2px 6px var(--shadow);
   }
 
@@ -105,7 +121,7 @@
     display: flex;
     flex-direction: column;
     align-items: center;
-    margin: 40px auto; /* 🟡 Adjust this to reduce space around the TRU bar (try 24px auto or 24px auto 12px) */
+    margin: 40px auto;
   }
 
   .divider-bar {
@@ -130,7 +146,7 @@
     justify-content: center;
     gap: 12px;
     width: 340px;
-    margin-top: 8px;/* 🟡 Adjust this to pull labels closer to bars (try 4px if needed) */
+    margin-top: 8px;
   }
 
   .divider-labels span {
@@ -141,31 +157,24 @@
   }
 
   @media (max-width: 768px) {
-    .menu-toggle {
-      display: block;
-    }
+  .menu-toggle {
+    display: block;
+  }
 
-    .nav-links {
-      display: none;
-      flex-direction: column;
-      align-items: center;/* 👈 links side-by-side on mobile */
-      justify-content: center;
-      background-color: var(--highlight);
-      position: absolute;
-      top: 58px;
-      left: 0;
-      width: 100%;
-      padding: 10px 0;
-      gap: 20px;
-      box-shadow: 0 3px 8px var(--shadow);
-    }
-    .nav-links a {
-  padding: 10px 0;
-  width: 100%;
-  text-align: center;
-  font-size: 1rem;
-}
-
+  .nav-links {
+    display: none;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    background-color: var(--highlight);
+    position: absolute;
+    top: 58px;
+    left: 0;
+    width: 100%;
+    padding: 10px 0;
+    gap: 20px;
+    box-shadow: 0 3px 8px var(--shadow);
+  }
     .nav-links.show {
       display: flex;
       animation: fadeSlideDown 0.3s ease;
@@ -182,73 +191,16 @@
       }
     }
   }
-    @media (max-width: 500px) {
-  #legal-popup > div {
-    padding: 12px;
-    font-size: 0.95rem;
-  }
-      @media (max-width: 500px) {
-  .container {
-    padding: 16px;
-    margin-top: 48px; /* Tighten space for mobile */
-  }
-
-  h1, h2 {
-    font-size: 1.25rem;
-    margin-bottom: 10px;
-  }
-
-  p {
-    font-size: 0.9rem;
-    margin-bottom: 14px;
-  }
-
-  .divider-section {
-    margin: 24px auto 8px auto; /* Pull TRU bars closer */
-  }
-
-  .divider-bar {
-    width: 280px;
-    gap: 8px;
-  }
-
-  .divider-bar div {
-    width: 84px;
-  }
-
-  .divider-labels {
-    width: 280px;
-    gap: 8px;
-    margin-top: 6px;
-  }
-
-  .divider-labels span {
-    width: 84px;
-    font-size: 0.75rem;
-  }
-
-  .owl-button {
-    padding: 8px 14px;
-    font-size: 0.95rem;
-  }
-}
-
-  #accept-btn {
-    width: 100%;
-    font-size: 1rem;
-  }
-
-  p {
-    font-size: 0.95rem;
-    margin-bottom: 16px;/* 🟡 Mobile-specific paragraph margin */
-  }
-}
 
   /* ✅ YOUR ORIGINAL STYLES BELOW */
   .container {
     max-width: 960px;
-    margin: 72px auto 0 auto; /* 🟡 Adjust this top margin to tighten space below nav (try 72px or 60px) */
+    margin: 60px auto 0 auto;
     padding: 24px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;          /* centers all direct child elements horizontally */
+    text-align: center;           /* ensures text-based elements also align visually */
   }
 
   h1 {
@@ -262,7 +214,7 @@
   font-size: 1.5rem;
   color: var(--understanding); /* golden highlight */
   font-weight: 600;
-  margin-top: 4px; /* 🟡 Reduce this if h2 spacing feels too large (try 12px–20px) */
+  margin-top: 32px;
   margin-bottom: 12px;
   text-align: center;
 }
@@ -271,7 +223,7 @@
   font-size: 1.05rem;
   color: var(--text-muted);
   line-height: 1.6;
-  margin-bottom: 20px; /* 🟡 You can tighten this to 12px or 16px for stacked content */
+  margin-bottom: 20px;
   text-align: center;
   max-width: 700px;
   margin-left: auto;
@@ -329,40 +281,152 @@
   .bar-green {
     background-color: var(--bar-green);
   }
-    .match-nav-link {
-  color: var(--text-muted);
-  text-decoration: none;
-  font-size: 15px;
-  transition: color 0.3s ease;
-}
-
-.match-nav-link:hover {
-  color: var(--understanding);
-}
- /* 🦉 Strategic Owl Button Style */
-.owl-button {
-  background-color: var(--navy);            /* Deep base color */
-  color: white;                             /* Clean readable text */
-  font-weight: 600;                         /* Medium-bold */
-  padding: 10px 18px;
-  border: 1px solid var(--reliability);     /* Outline in reliability yellow */
-  border-radius: 8px;
+    .positive-score strong,
+.negative-score strong {
   font-family: 'Inter', sans-serif;
-  font-size: 1rem;
-  cursor: pointer;
-  text-decoration: none;
-  transition: 
-    background-color 0.3s ease, 
-    color 0.3s ease,
-    box-shadow 0.3s ease;
+  font-weight: 600;
+  color: inherit;
+}
+    .dropdown-container {
+  display: flex;
+  justify-content: center;
+  margin: 20px 0;
+}
+    .foundation-section {
+  padding: 40px 20px;
+  max-width: 800px;
+  margin: 0 auto;
 }
 
-.owl-button:hover {
-  background-color: var(--reliability);     /* Hover color = yellow */
-  color: var(--navy);                       /* Invert text color */
-  box-shadow: 0 0 12px var(--reliability);  /* Glow on hover */
+.section-intro {
+  font-size: 1.1rem;
+  color: var(--text-muted);
+  text-align: center;
+  margin-bottom: 36px;
 }
+
+.foundation-section h1 {
+  font-family: 'Playfair Display', serif;
+  font-size: 2rem;
+  color: var(--understanding);
+  text-align: center;
+  margin-bottom: 16px;
+}
+
+.foundation-section h2 {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.4rem;
+  margin-top: 40px;
+  color: var(--understanding;
+  text-align: center;
+}
+
+.foundation-section table {
+  width: 100%;
+  background-color: var(--surface);
+  border-radius: 6px;
+  border-collapse: collapse;
+  margin: 20px 0;
+}
+
+.foundation-section th {
+  background-color: var(--highlight);
+  padding: 12px;
+  font-weight: 600;
+  text-align: left;
+  color: var(--text-muted)
+}
+
+.foundation-section td {
+  padding: 12px;
+  border-bottom: 1px solid var(--highlight);
+  color: var(--text);
+  line-height: 1.6;
+}
+
+.strategic-insight {
+  font-size: 1rem;
+  background-color: #1A2B4C;
+  border-left: 4px solid var(--understanding);
+  padding: 16px;
+  margin-top: 12px;
+  margin-bottom: 40px;
+  color: var(--text-muted);
+}
+    /* Style the link itself */
+.important-link {
+  color: var(--understanding);               /* Gold color from your theme */
+  font-weight: 700;                          /* Bold for visibility */
+  text-decoration: underline;                /* Underline to signal it's a link */
+  text-underline-offset: 4px;                /* Adds spacing between text and underline */
+  position: relative;                        /* Required for pseudo-elements */
+  transition: color 0.3s ease, text-shadow 0.3s ease;  /* Smooth hover transitions */
+}
+
+/* Add a right-pointing arrow BEFORE the link text */
+.important-link::before {
+  content: '→ ';                             /* Arrow pointing right */
+  display: inline-block;                     /* So we can animate it */
+  margin-right: 6px;                         /* Space between arrow and text */
+  transition: transform 0.3s ease;           /* Smooth movement on hover */
+}
+
+/* Add a left-pointing arrow AFTER the link text */
+.important-link::after {
+  content: ' ←';                             /* Arrow pointing left */
+  display: inline-block;                     /* Enables transform */
+  margin-left: 6px;                          /* Space between text and arrow */
+  transition: transform 0.3s ease;           /* Smooth hover animation */
+}
+
+/* Animate the left-side arrow to move right on hover */
+.important-link:hover::before {
+  transform: translateX(4px);                /* Moves → arrow to the right */
+}
+
+/* Animate the right-side arrow to move left on hover */
+.important-link:hover::after {
+  transform: translateX(-4px);               /* Moves ← arrow to the left */
+}
+
+/* Add glow and optional color change on hover */
+.important-link:hover {
+  text-shadow: 0 0 8px var(--understanding); /* Subtle glow using gold tone */
+  color: var(--truth);                       /* Optional: changes to green (truth color) */
+}
+  /* --- Culture Subs Table Styles --- */
+  #culture-subs table {
+    width: 100%;
+    border-collapse: collapse;
+    background-color: var(--surface);
+    margin-top: 20px;
+  }
+
+  #culture-subs th, #culture-subs td {
+    padding: 14px;
+    border-bottom: 1px solid var(--highlight);
+    text-align: left;
+    font-size: 1rem;
+    color: var(--text-muted);
+    font-family: 'Inter', sans-serif;
+  }
+
+  #culture-subs th {
+    background-color: var(--highlight);
+    color: var(--understanding);
+    font-weight: 600;
+    text-align: center;
+  }
+
+  @media (max-width: 768px) {
+    #culture-subs table th, #culture-subs table td {
+      font-size: 0.95rem;
+      padding: 10px;
+    }
+  }
 </style>
+</head>
+  <body>
 
 <nav class="top-nav">
 <a href="TRUOWL3.html" class="nav-logo">
@@ -371,21 +435,24 @@
 </a>
   <button class="menu-toggle" onclick="toggleMenu()">☰</button>
   <div class="nav-links" id="navMenu">
-   <a href="Index.html">Home</a>
-  <a href="Dash.html">Dash's</a>
-  <a href="TRUOWL3.html">T.R.U. Owl</a>
-  <a href="strategic-owl-insight-quiz.html">Insight Quiz</a>
-  <a href="realitycheck.html">Reality Check</a>
-  <a href="the_constitution.html">The Constitution</a>
-  <a href="newcontact3.html">Contact</a>
-  <a href="https://strategicfretboard.com" target="_blank" rel="noopener noreferrer">Strategic Fretboard</a>
+     <a href="Index.html">Home</a>
+<a href="Dash.html">Dash's</a>
+<a href="TRUOWL3.html">T.R.U. Owl</a>
+<a href="strategic-owl-insight-quiz.html">Insight Quiz</a>
+<a href="realitycheck.html">Reality Check</a>
+<a href="the_constitution.html">The Constitution</a>
+<a href="newcontact3.html">Contact</a>
+<a href="https://strategicfretboard.com" target="_blank" rel="noopener noreferrer">Strategic Fretboard</a>
   </div>
 </nav>
   <div class="container">
-    <h1 style="text-align: center; color: var(--understanding); font-family: 'Playfair Display', serif;">
-    Insight Quiz
-  </h1>
-<!-- 🎯 Divider -->
+    <h1>Reality Check</h1>
+    <div class="misconception-intro-container">
+      <p>
+        This is your Misconception Hub — where we expose popular myths and break them down with verifiable facts.
+      </p>
+    </div>
+    <!-- 🎯 Divider -->
     <section class="divider-section">
       <div class="divider-bar">
         <div class="truth"></div>
@@ -398,319 +465,382 @@
         <span>Understanding</span>
       </div>
     </section>
- <!-- 🦉 Strategic Owl Radicalization Quiz -->
-<div id="quiz-container" class="container">
-
-  <div style="
-    background: linear-gradient(to bottom right, #1A2B4C, #0D1B2A);
-    border: 1px solid var(--understanding);
-    border-radius: 12px;
-    box-shadow: 0 0 10px rgba(212, 175, 55, 0.2);
-    padding: 24px;
-    margin-bottom: 32px;
-    max-width: 720px;
-    margin-left: auto;
-    margin-right: auto;
-    color: #CCCCCC;
-    font-family: 'Roboto', sans-serif;
-    line-height: 1.6;
-    font-size: 1rem;
-    text-align: center;
-  ">
-    <p style="margin-bottom: 12px;">
-      This tool measures civic alignment — not political views. It’s anonymous, quick, and reveals how your beliefs align with American values like liberty, civic duty, and equal justice.
-    </p>
-    <p style="margin-bottom: 0;">
-      Answer honestly. This isn’t a test — it’s a mirror.
-    </p>
-  </div>
-
-  <div id="quiz-question" style="margin-top: 40px; text-align: center;"></div>
-
-  <div id="quiz-scale" style="display: flex; flex-wrap: wrap; justify-content: center; gap: 10px; margin: 20px 0;"></div>
-
-  <!-- Inline narrative response area -->
-  <div id="narrative-display" style="max-width: 600px; margin: 0 auto; padding: 20px; display: none; background-color: var(--surface); color: var(--text); border-left: 4px solid var(--reliability); border-radius: 8px; font-size: 1rem; font-family: 'Inter', sans-serif;"></div>
-
-  <!-- "Next" button shown AFTER delay -->
-  <button id="next-question" style="
-  display: none;
-  margin: 20px auto 0;
-  background-color: transparent;
-  color: var(--understanding);
-  padding: 10px 24px;
-  border: 2px solid var(--understanding);
-  border-radius: 10px;
-  font-size: 1rem;
-  font-family: 'Montserrat', sans-serif;
-  font-weight: 600;
-  cursor: pointer;
-  transition: all 0.3s ease;
-" onmouseover="this.style.backgroundColor='var(--understanding)'; this.style.color='var(--navy)';"
-  onmouseout="this.style.backgroundColor='transparent'; this.style.color='var(--understanding)';">
-  Yes. Continue →
-</button>
-
-  <div id="quiz-result" style="margin-top: 40px;"></div>
-</div>
-
-<script>
-const SHEET_ID = "19wBEj9hEkvIyQcoR5E_mBGVAxTzMnddMxk8nuQLAumA";
-const API_KEY = "AIzaSyCzuh9HBfe0r70r9U35Pe406PPZ-tz6I78";
-
-const QUIZ_RANGE = "TRUTest!C3:AA12";
-const INSIGHT_RANGE = "Insights!A2:A12";
-
-let quizData = [];
-let insightMessages = [];
-let currentIndex = 0;
-let userScores = [];
-
-async function fetchTRUData() {
-  const url = `https://sheets.googleapis.com/v4/spreadsheets/${SHEET_ID}/values/${QUIZ_RANGE}?key=${API_KEY}`;
-  const res = await fetch(url);
-  const json = await res.json();
-  return json.values;
-}
-
-async function fetchInsightMessages() {
-  const url = `https://sheets.googleapis.com/v4/spreadsheets/${SHEET_ID}/values/${INSIGHT_RANGE}?key=${API_KEY}`;
-  const res = await fetch(url);
-  const json = await res.json();
-  return json.values.flat();
-}
-
-function loadQuestion(index) {
-  const [
-    question,
-    ...narratives
-  ] = quizData[index];
-
-  const scoreRow = narratives.slice(0, 11); // D to N (10 to 0 scale)
-  const weight = parseFloat(narratives[11]); // O
-  const userAnswerRow = narratives.slice(12, 23); // P to Z (optional future use)
-  const flipLogic = narratives[23]?.toLowerCase() === "false"; // AA
-
-  const container = document.getElementById("quiz-question");
-  const scale = document.getElementById("quiz-scale");
-  const narrativeBox = document.getElementById("narrative-display");
-  const nextBtn = document.getElementById("next-question");
-
-  container.innerHTML = `<h2 style="text-align: center; color: var(--understanding); font-family: 'Playfair Display', serif;">${question}</h2>`;
-  scale.innerHTML = "";
-  narrativeBox.innerHTML = "";
-  narrativeBox.style.display = "none";
-  nextBtn.style.display = "none";
-
-  const labelRow = document.createElement("div");
-labelRow.style.display = "flex";
-labelRow.style.justifyContent = "space-between";
-labelRow.style.width = "100%";
-labelRow.style.maxWidth = "500px";
-labelRow.style.margin = "0 auto 10px auto";
-labelRow.innerHTML = `
-  <span style="font-size: 0.9rem; color: var(--text-muted);">
-     <span style="color: gold; font-weight: 600;">0</span> <– Fully Disagree
-  </span>
-  <span style="font-size: 0.9rem; color: var(--text-muted);">
-    Fully Agree –> <span style="color: gold; font-weight: 600;">10</span> 
-  </span>
-`;
-scale.appendChild(labelRow);
-
-  const scaleWrapper = document.createElement("div");
-  scaleWrapper.style.display = "flex";
-  scaleWrapper.style.justifyContent = "center";
-  scaleWrapper.style.gap = "8px";
-  scaleWrapper.style.flexWrap = "wrap";
-
-  let selectedBtn = null;
-
-  for (let i = 0; i <= 10; i++) {
-    const btn = document.createElement("button");
-    btn.textContent = i;
-    btn.className = "owl-button";
-    btn.style.border = "1px solid var(--understanding)";
-    btn.style.backgroundColor = "transparent";
-    btn.style.color = "var(--understanding)";
-    btn.style.borderRadius = "8px";
-    btn.style.padding = "10px 16px";
-    btn.style.fontWeight = "bold";
-    btn.style.cursor = "pointer";
-    btn.style.transition = "all 0.2s ease";
-
-    btn.onclick = () => {
-      if (selectedBtn) selectedBtn.style.backgroundColor = "transparent";
-      btn.style.backgroundColor = "var(--understanding)";
-      btn.style.color = "var(--navy)";
-      selectedBtn = btn;
-
-      const rawScore = i;
-      const adjustedScore = flipLogic ? rawScore : 10 - rawScore;
-      const narrativeIndex = 10 - adjustedScore; // align narrative with final score
-      const narrative = scoreRow[narrativeIndex];
-
-      userScores[currentIndex] = {
-        score: adjustedScore,
-        weight: weight,
-        originalInput: i,
-        question: question,
-        narrative: narrative
-      };
-
-      narrativeBox.innerHTML = `<p style="margin-top: 20px; font-family: 'Inter', sans-serif; font-size: 1rem; color: var(--text);">${narrative}</p>`;
-      narrativeBox.style.display = "block";
-      narrativeBox.scrollIntoView({ behavior: 'smooth', block: 'center' });
-
-      setTimeout(() => {
-        nextBtn.style.display = "block";
-        nextBtn.textContent = (currentIndex === quizData.length - 1) ? "Yes. Show Results" : "Yes. Continue →";
-      }, 1500);
-
-      nextBtn.onclick = () => {
-        narrativeBox.style.display = "none";
-        nextBtn.style.display = "none";
-        currentIndex++;
-        if (currentIndex < quizData.length) {
-          loadQuestion(currentIndex);
-        } else {
-          showFinalResult();
-        }
-      };
-    };
-
-    scaleWrapper.appendChild(btn);
+    <!-- 🧠 Culture Subs UI Section -->
+    <div id="culture-subs">
+      <h1>Misconception Hub</h1>
+      <p style="text-align: center; color: var(--text-muted); margin-top: 20px;">
+        Select a topic to examine popular claims and compare them to verifiable facts — one layer at a time.
+      </p>
+      <div id="subject-button-container" class="dropdown-container" style="flex-wrap: wrap; gap: 10px;"></div>
+      <select id="culture-select" class="form-select" onchange="showCultureSubs()" style="display:none;">
+        <option value="">-- Common Misconception --</option>
+      </select>
+      <div class="table-wrapper" style="display:none;" id="culture-results">
+        <table>
+          <tbody id="culture-body"></tbody>
+        </table>
+      </div>
+    </div>
+    <!-- 🎯 Divider -->
+    <section class="divider-section">
+      <div class="divider-bar">
+        <div class="truth"></div>
+        <div class="reliability"></div>
+        <div class="understanding"></div>
+      </div>
+      <div class="divider-labels">
+        <span>Truth</span>
+        <span>Reliability</span>
+        <span>Understanding</span>
+      </div>
+    </section>
+    <!-- 🗳️ Voter Fraud Section -->
+    <div id="voter-fraud-section">
+      <h1>Voter Fraud?</h1>
+      <p>Look past the headlines. Here’s the actual data.</p>
+      <p>
+        You’ve heard the claims. Some say voter fraud is everywhere. Others say it barely exists. Let’s look at the actual records.
+      </p>
+      <p>
+        The Heritage Foundation tracks every confirmed case of voter fraud — often to suggest it’s a bigger threat than it is. This tool lets you explore that same data, with the context it’s missing.
+      </p>
+      <p>
+        Because yes, voter fraud exists. But it’s not what you’ve been led to believe.
+      </p>
+      <label for="state-select" style="display: block; margin-bottom: 8px; font-weight: bold;">
+        Select a State:
+      </label>
+      <select id="state-select" style="padding: 6px; font-size: 1rem;">
+        <option value="">-- Choose a state --</option>
+      </select>
+      <p id="state-summary" class="subtext"></p>
+      <div class="table-wrapper" style="display:none;" id="state-results">
+        <table>
+          <thead>
+            <tr>
+              <th>Year</th>
+              <th>State</th>
+              <th>Name</th>
+            </tr>
+          </thead>
+          <tbody id="state-data-body"></tbody>
+        </table>
+      </div>
+      <p>Source:</p>
+      <p><a href="https://www.heritage.org/voterfraud" class="important-link" target="_blank">Heritage Foundation Voter Fraud Database</a></p>
+    </div>
+    <!-- 🎯 Divider -->
+    <section class="divider-section">
+      <div class="divider-bar">
+        <div class="truth"></div>
+        <div class="reliability"></div>
+        <div class="understanding"></div>
+      </div>
+      <div class="divider-labels">
+        <span>Truth</span>
+        <span>Reliability</span>
+        <span>Understanding</span>
+      </div>
+    </section>
+    <!-- 🦉 TRU Score by Name Section -->
+    <div id="tru-score-section">
+      <p style="text-align: center; color: var(--text-muted); margin-top: 20px;">
+        Select a name below to view their Election Security credibility breakdown.
+      </p>
+      <div class="dropdown-container">
+        <select id="person-select" onchange="showScores()">
+          <option value="">-- Choose a name --</option>
+        </select>
+      </div>
+      <div class="table-wrapper">
+        <table id="score-table" style="display: none;">
+          <thead>
+            <tr>
+              <th>Category</th>
+              <th>Score</th>
+              <th>Explanation</th>
+            </tr>
+          </thead>
+          <tbody id="score-body"></tbody>
+        </table>
+      </div>
+    </div>
+ <script>
+  async function fetchTRUData() {
+    const API_KEY = "AIzaSyCzuh9HBfe0r70r9U35Pe406PPZ-tz6I78";
+    const SHEET_ID = "19wBEj9hEkvIyQcoR5E_mBGVAxTzMnddMxk8nuQLAumA";
+    const RANGE = "ElectionTRU!A2:Y1000";
+    const url = `https://sheets.googleapis.com/v4/spreadsheets/${SHEET_ID}/values/${RANGE}?key=${API_KEY}`;
+    try {
+      const res = await fetch(url);
+      const json = await res.json();
+      return json.values || [];
+    } catch (err) {
+      console.error("Failed to fetch sheet data", err);
+      const select = document.getElementById("person-select");
+      if (select) {
+        select.innerHTML = '<option value="">Failed to load data. Please try again later.</option>';
+      }
+      return [];
+    }
   }
 
-  scale.appendChild(scaleWrapper);
-}
+  function showScores() {
+    const select = document.getElementById("person-select");
+    const table = document.getElementById("score-table");
+    const tbody = document.getElementById("score-body");
+    const selected = select.value;
+    if (!selected || !window.rowMap || !window.rowMap[selected]) {
+      table.style.display = "none";
+      return;
+    }
 
-function showFinalResult() {
-  let total = 0;
-  const maxPossible = userScores.reduce((sum, entry) => sum + (10 * entry.weight), 0);
-  userScores.forEach(entry => {
-    total += entry.score * entry.weight;
-  });
+    const row = window.rowMap[selected];
+    tbody.innerHTML = "";
+    let total = 0;
 
-  const rawScore = total;
-  const percentage = (rawScore / maxPossible) * 100;
+    const categories = [
+      "Constitutional Knowledge", "Legal Framework", "Federalism",
+      "Election Mechanics", "Electoral Count Process", "Disinformation Awareness",
+      "Public Impact", "Judicial Oversight", "Election Worker Protections",
+      "Psychological Manipulation"
+    ];
 
-  let label = "⚠️ Civic Threat";
-  if (percentage >= 10.0) label = "🕳️ Ideological Captive";
-  if (percentage >= 18.0) label = "🔥 Echoed Extremism";
-  if (percentage >= 25.0) label = "🛰️ Detached Operator";
-  if (percentage >= 32.0) label = "🧨 Fringe-Aligned";
-  if (percentage >= 39.0) label = "📡 Rigid Thinker";
-  if (percentage >= 48.0) label = "🛡️ Questioning Dogma";
-  if (percentage >= 57.0) label = "🪞 Seeking Balance";
-  if (percentage >= 66.0) label = "🧭 Healthy Skeptic";
-  if (percentage >= 75.0) label = "🪶 Strategic Thinker";
-  if (percentage >= 88.0) label = "🦉 Civically Grounded";
+    for (let i = 0; i < 10; i++) {
+      const label = categories[i];
+      const score = parseInt(row[3 + i]) || 0;
+      const explanation = row[14 + i] || "";
 
-  const insightIndex = Math.floor(rawScore / maxPossible * 10); // adjust if needed
-  const strategicInsight = insightMessages[insightIndex] || "";
+      const tr = document.createElement("tr");
+      tr.innerHTML = `<td>${label}</td><td>${score >= 0 ? "+" : ""}${score}</td><td>${explanation}</td>`;
+      tbody.appendChild(tr);
+      total += score;
+    }
 
-  const insightBox = `
-  <div style="
-    background-color: #101020;
-    border: 2px solid #C89B3C;
-    color: #F5F5F5;
-    font-family: 'Playfair Display', serif;
-    font-size: 1.1rem;
-    padding: 24px 28px;
-    border-radius: 12px;
-    margin-bottom: 32px;
-    text-align: center;
-    box-shadow: 0 4px 12px rgba(0,0,0,0.4);
-  ">
-    <div style="
-      text-transform: uppercase;
-      letter-spacing: 1px;
-      font-size: 0.85rem;
-      font-weight: 600;
-      color: #FFD700;
-      margin-bottom: 12px;
-    ">
-      Strategic Insight
-    </div>
-    <div style="font-family: 'Inter', sans-serif; font-size: 1rem; line-height: 1.6;">
-      ${strategicInsight}
-    </div>
-  </div>`;
+    const flag = (row[24] || "").toLowerCase();
+    let bonus = 0, label = "", desc = "";
 
-  const resultList = userScores.map(entry => {
-    return `
-      <div style="
-        background-color: var(--surface);
-        padding: 16px 20px;
-        margin-bottom: 12px;
-        border-left: 4px solid var(--reliability);
-        border-radius: 6px;
-        font-family: 'Inter', sans-serif;
-        color: var(--text);
-        box-shadow: 0 2px 6px rgba(0,0,0,0.1);
-      ">
-        <div style="font-weight: 600; margin-bottom: 6px;">${entry.question}</div>
-        <div style="font-size: 0.95rem;"><strong>Your Answer:</strong> 
-          <span style="color: var(--truth); font-weight: 600;">${entry.originalInput}</span> 
-          <span style="font-size: 0.85rem; color: var(--text-muted); font-style: italic;">(Weight: ${entry.weight})</span>
-        </div>
-        <div style="
-          font-size: 0.95rem;
-          margin-top: 8px;
-          line-height: 1.5;
-          color: var(--text);
-          font-family: 'Inter', sans-serif;
-          background-color: rgba(255,255,255,0.03);
-          padding: 12px 14px;
-          border-left: 3px solid var(--understanding);
-          border-radius: 6px;
-        ">
-          <strong style="color: var(--understanding); font-weight: 600;">What You Agreed To:</strong><br />
-          ${entry.narrative}
-        </div>
-      </div>`;
-  }).join("");
+    if (flag === "true") {
+      bonus = -10;
+      label = "2020 Election Denial Penalty";
+      desc = "Denial of the 2020 election outcome signals rejection of verified democratic processes and aligns with disinformation or blind loyalty.";
+    } else if (flag === "false") {
+      bonus = 5;
+      label = "2020 Election Affirmation Bonus";
+      desc = "Publicly affirming the legitimacy of the 2020 election supports truth, counters disinformation, and helps protect democratic confidence.";
+    } else if (flag === "gray") {
+      bonus = -5;
+      label = "Ambiguous Stance Penalty";
+      desc = "Failure to clearly affirm the 2020 election results contributes to public doubt and enables misinformation to spread unchecked.";
+    }
 
-  document.getElementById("quiz-container").innerHTML = `
-    <h2>Your Strategic Owl Insight</h2>
-    <p style="font-size: 1.2rem;">Score: <strong>${rawScore.toFixed(2)} / ${maxPossible}</strong></p>
-    <p style="font-size: 1.2rem;">Percentage: <strong>${percentage.toFixed(1)}%</strong></p>
-    <p style="font-size: 1.4rem; font-weight: bold; color: var(--understanding);">${label}</p>
-    ${insightBox}
-    <hr style="margin: 30px 0; border: 1px solid var(--highlight);" />
-    <div style="max-width: 700px; margin: 0 auto;">${resultList}</div>
-    <div style="text-align: center; margin-top: 32px;">
-      <button onclick="location.reload()" style="
-        background-color: var(--understanding);
-        color: var(--navy);
-        padding: 12px 28px;
-        border: none;
-        border-radius: 10px;
-        font-size: 1rem;
-        font-family: 'Playfair Display', serif;
-        font-weight: 600;
-        cursor: pointer;
-        transition: background-color 0.3s ease, box-shadow 0.3s ease;
-      " onmouseover="this.style.boxShadow='0 0 10px var(--understanding)';"
-        onmouseout="this.style.boxShadow='none';">
-        Take Quiz Again
-      </button>
-    </div>
-  `;
-}
+    if (label) {
+      const bonusClass = bonus >= 0 ? "positive-score" : "negative-score";
+      const tr = document.createElement("tr");
+      tr.innerHTML = `<td><strong>${label}</strong></td><td class="${bonusClass}"><strong>${bonus >= 0 ? "+" : ""}${bonus}</strong></td><td><strong>${desc}</strong></td>`;
+      tbody.appendChild(tr);
+      total += bonus;
+    }
 
-window.addEventListener("DOMContentLoaded", async () => {
-  [quizData, insightMessages] = await Promise.all([
-    fetchTRUData(),
-    fetchInsightMessages()
-  ]);
-  loadQuestion(currentIndex);
-});
+    const summary = row[13] || "No summary provided.";
+    const totalClass = total >= 0 ? "positive-score" : "negative-score";
+    const totalRow = document.createElement("tr");
+    totalRow.innerHTML = `<td><strong>Total Score</strong></td><td class="${totalClass}"><strong>${total >= 0 ? "+" : ""}${total}</strong></td><td><strong>${summary}</strong></td>`;
+    tbody.appendChild(totalRow);
 
-function toggleMenu() {
-  document.getElementById("navMenu").classList.toggle("show");
-}
+    table.style.display = "table";
+  }
+
+  async function initElectionPage() {
+    window.rowMap = {};
+    const data = await fetchTRUData();
+    data.forEach(row => {
+      const key = row[0];
+      if (key) window.rowMap[key] = row;
+    });
+
+    const select = document.getElementById("person-select");
+    if (!select) return;
+
+    select.innerHTML = '<option value="">-- Choose a name --</option>';
+    Object.keys(window.rowMap).sort().forEach(name => {
+      const opt = document.createElement("option");
+      opt.value = name;
+      opt.textContent = name.replace(/([A-Z])/g, " $1").replace(/^./, s => s.toUpperCase());
+      select.appendChild(opt);
+    });
+
+    select.removeEventListener("change", showScores);
+    select.addEventListener("change", showScores);
+  }
+
+  window.addEventListener("DOMContentLoaded", initElectionPage);
+   const API_KEY = "AIzaSyB3NmN4OpDutbaX6V2KkLy1p-vDLghrF5M";
+    const SHEET_ID = "1p66gmWWjxJbrySxpR5T--fP8iEgUbW7RrXru61gagRA";
+    const RANGE = "HeritageVoterfraudRawData!B6:D1589";
+
+    async function fetchSheetData() {
+      const url = `https://sheets.googleapis.com/v4/spreadsheets/${SHEET_ID}/values/${RANGE}?key=${API_KEY}`;
+      try {
+        const res = await fetch(url);
+        const data = await res.json();
+        return data.values || [];
+      } catch (error) {
+        console.error("Failed to fetch data:", error);
+        return [];
+      }
+    }
+
+    function populateDropdown(statesSet, stateSelect) {
+      const sortedStates = Array.from(statesSet).sort();
+      sortedStates.forEach(state => {
+        const opt = document.createElement("option");
+        opt.value = state;
+        opt.textContent = state;
+        stateSelect.appendChild(opt);
+      });
+    }
+
+    async function initStateFraudPage() {
+      const stateSelect = document.getElementById("state-select");
+      const tableBody = document.getElementById("state-data-body");
+      const resultsWrapper = document.getElementById("state-results");
+      const summaryLine = document.getElementById("state-summary");
+
+      if (!stateSelect || !tableBody || !resultsWrapper || !summaryLine) {
+        console.warn("[statefraud] Required elements not found.");
+        return;
+      }
+
+      const rows = await fetchSheetData();
+      const statesSet = new Set(rows.map(row => row[1]));
+      populateDropdown(statesSet, stateSelect);
+
+      stateSelect.addEventListener("change", function () {
+        const selected = this.value;
+        tableBody.innerHTML = "";
+        summaryLine.textContent = "";
+
+        const filtered = rows.filter(row => row[1] === selected);
+
+        if (filtered.length === 0) {
+          tableBody.innerHTML = `<tr><td colspan="3">No records found for ${selected}</td></tr>`;
+          resultsWrapper.style.display = "flex";
+          return;
+        }
+
+        const sorted = filtered.sort((a, b) => parseInt(a[0]) - parseInt(b[0]));
+
+        const years = sorted.map(row => parseInt(row[0])).filter(year => !isNaN(year));
+        const minYear = Math.min(...years);
+        const maxYear = Math.max(...years);
+        const caseCount = sorted.length;
+
+        summaryLine.textContent = `${caseCount} case${caseCount === 1 ? '' : 's'} found from ${minYear} to ${maxYear}`;
+
+        sorted.forEach(row => {
+          const year = row[0];
+          const state = row[1];
+          const name = row[2];
+          const tr = document.createElement("tr");
+          tr.innerHTML = `<td>${year}</td><td>${state}</td><td>${name}</td>`;
+          tableBody.appendChild(tr);
+        });
+
+        resultsWrapper.style.display = "flex";
+      });
+    }
+   function toggleMenu() {
+    const menu = document.getElementById("navMenu");
+    menu.classList.toggle("show");
+  }
+
+    // ✅ Enable for standalone mode
+    window.addEventListener("DOMContentLoaded", initStateFraudPage);
+  function toggleMenu() {
+    document.getElementById("navMenu").classList.toggle("show");
+  }
+  // --- Culture Subs JS ---
+  async function fetchCultureData() {
+    const SHEET_ID = "19wBEj9hEkvIyQcoR5E_mBGVAxTzMnddMxk8nuQLAumA";
+    const RANGE = "CultureSubs!A2:D1000";
+    const url = `https://sheets.googleapis.com/v4/spreadsheets/${SHEET_ID}/values/${RANGE}?key=AIzaSyCzuh9HBfe0r70r9U35Pe406PPZ-tz6I78`;
+
+    try {
+      const res = await fetch(url);
+      const data = await res.json();
+      return data.values || [];
+    } catch (error) {
+      console.error("Failed to fetch CultureSubs data:", error);
+      return [];
+    }
+  }
+
+  async function initCulturePage() {
+    const dropdown = document.getElementById("culture-select");
+    const buttonContainer = document.getElementById("subject-button-container");
+    const cultureRows = await fetchCultureData();
+    const subjectSet = new Set(cultureRows.map(row => row[0]));
+    // Clear any existing buttons
+    buttonContainer.innerHTML = "";
+    subjectSet.forEach(subject => {
+      // Add to dropdown (hidden, for legacy support)
+      const opt = document.createElement("option");
+      opt.value = subject;
+      opt.textContent = subject;
+      dropdown.appendChild(opt);
+      // Create button for each subject
+      const button = document.createElement("button");
+      button.textContent = subject;
+      button.style.padding = "8px 12px";
+      button.style.backgroundColor = "var(--highlight)";
+      button.style.color = "var(--text)";
+      button.style.border = "none";
+      button.style.borderRadius = "4px";
+      button.style.cursor = "pointer";
+      button.addEventListener("click", () => {
+        document.getElementById("culture-select").value = subject;
+        showCultureSubs();
+      });
+      buttonContainer.appendChild(button);
+    });
+
+    window.cultureMap = {};
+    cultureRows.forEach(row => {
+      const subject = row[0];
+      if (!window.cultureMap[subject]) {
+        window.cultureMap[subject] = [];
+      }
+      window.cultureMap[subject].push({ subcategory: row[1], claim: row[2], extra: row[3] || "" });
+    });
+  }
+
+  function showCultureSubs() {
+    const selected = document.getElementById("culture-select").value;
+    const wrapper = document.getElementById("culture-results");
+    const body = document.getElementById("culture-body");
+    body.innerHTML = "";
+
+    if (!selected || !window.cultureMap[selected]) {
+      wrapper.style.display = "none";
+      return;
+    }
+
+    window.cultureMap[selected].forEach(({ claim, extra }) => {
+      const claimRow = document.createElement("tr");
+      claimRow.innerHTML = `<td colspan="3" style="padding-left: 12px; padding-top: 16px; color: #FF7F7F; font-weight: bold;"><em>Claim:</em> ${claim}</td>`;
+      body.appendChild(claimRow);
+
+      const factRow = document.createElement("tr");
+      factRow.innerHTML = `<td colspan="3" style="padding-left: 20px; padding-bottom: 12px; color: var(--understanding);"><em>Fact:</em> ${extra}</td>`;
+      body.appendChild(factRow);
+    });
+
+    wrapper.style.display = "block";
+  }
+
+  window.addEventListener("DOMContentLoaded", initCulturePage);
 </script>
+
 </body>
 </html>
