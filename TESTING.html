@@ -664,6 +664,23 @@ function showFinalResult() {
     ${insightBox}
     <hr style="margin: 30px 0; border: 1px solid var(--highlight);" />
     <div style="max-width: 700px; margin: 0 auto;">${resultList}</div>
+    <div style="text-align: center; margin-top: 32px;">
+      <button onclick="location.reload()" style="
+        background-color: var(--understanding);
+        color: var(--navy);
+        padding: 12px 28px;
+        border: none;
+        border-radius: 10px;
+        font-size: 1rem;
+        font-family: 'Playfair Display', serif;
+        font-weight: 600;
+        cursor: pointer;
+        transition: background-color 0.3s ease, box-shadow 0.3s ease;
+      " onmouseover="this.style.boxShadow='0 0 10px var(--understanding)';"
+        onmouseout="this.style.boxShadow='none';">
+        Take Quiz Again
+      </button>
+    </div>
   `;
 }
 
