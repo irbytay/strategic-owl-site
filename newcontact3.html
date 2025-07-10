@@ -196,7 +196,7 @@
 
   h1 {
     font-family: 'Playfair Display', serif;
-    color: var(--heading);
+    color: var(--understanding);
     margin-bottom: 16px;
     text-align: center;
   }
@@ -375,11 +375,21 @@
     const menu = document.getElementById("navMenu");
     menu.classList.toggle("show");
   }
-</script>
-  <script>
-  function toggleMenu() {
-    document.getElementById("navMenu").classList.toggle("show");
+
+  function closeMenuOnOutsideClick(event) {
+    const navMenu = document.getElementById("navMenu");
+    const menuToggle = document.querySelector(".menu-toggle");
+
+    if (
+      navMenu.classList.contains("show") &&
+      !navMenu.contains(event.target) &&
+      !menuToggle.contains(event.target)
+    ) {
+      navMenu.classList.remove("show");
+    }
   }
+
+  document.addEventListener("click", closeMenuOnOutsideClick);
 </script>
 
 </body>
