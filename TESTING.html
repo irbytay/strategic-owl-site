@@ -238,6 +238,42 @@
     border: 1px solid var(--highlight);
   }
 
+  /* Custom Dropdown Styling for Culture and State Selects */
+  .custom-dropdown {
+    width: 300px;
+    margin: 0 auto 20px auto;
+    padding: 10px 20px;
+    background-color: var(--understanding);
+    border-radius: 12px;
+    box-shadow: 0 6px 10px rgba(59, 108, 237, 0.4);
+    position: relative;
+  }
+
+  .custom-dropdown select {
+    width: 100%;
+    background-color: transparent;
+    border: none;
+    font-family: 'Copperplate', serif;
+    font-size: 16px;
+    font-weight: bold;
+    color: var(--background);
+    padding: 8px 0;
+    appearance: none;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    cursor: pointer;
+  }
+
+  .custom-dropdown::after {
+    content: '▼';
+    position: absolute;
+    right: 20px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: var(--background);
+    pointer-events: none;
+  }
+
   table {
     width: 100%;
     border-collapse: collapse;
@@ -468,9 +504,11 @@
     </div>
     <!-- 🧠 Culture Subs UI Section -->
     <div id="culture-subs">
-      <select id="culture-select" class="form-select" onchange="showCultureSubs()" style="padding: 10px; background-color: var(--background); color: var(--understanding); border: 1px solid var(--understanding); border-radius: 6px; margin-bottom: 20px;">
-        <option value="">-- Select a Topic --</option>
-      </select>
+      <div class="custom-dropdown">
+        <select id="culture-select" onchange="showCultureSubs()">
+          <option value="">-- Select a Topic --</option>
+        </select>
+      </div>
       <div class="table-wrapper" style="display:none;" id="culture-results">
         <table>
           <tbody id="culture-body"></tbody>
@@ -508,9 +546,11 @@
       <label for="state-select" style="display: block; margin-bottom: 8px; font-weight: bold;">
         Select a State:
       </label>
-      <select id="state-select" style="padding: 10px; background-color: var(--background); color: var(--understanding); border: 1px solid var(--understanding); border-radius: 6px; margin-bottom: 20px;">
-        <option value="">-- Choose a state --</option>
-      </select>
+      <div class="custom-dropdown">
+        <select id="state-select">
+          <option value="">-- Choose a state --</option>
+        </select>
+      </div>
       <p id="state-summary" class="subtext"></p>
       <div class="table-wrapper" style="display:none;" id="state-results">
         <table>
