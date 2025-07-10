@@ -707,7 +707,7 @@
     const select = document.getElementById("person-select");
     if (!select) return;
 
-    select.innerHTML = '<option value="">-- Choose a name --</option>';
+    select.innerHTML = '<option value="">Choose a name</option>';
     Object.keys(window.rowMap).sort().forEach(name => {
       const opt = document.createElement("option");
       opt.value = name;
@@ -827,7 +827,7 @@
     const subjectSet = new Set(cultureRows.map(row => row[0]));
 
     // Clear and repopulate dropdown only
-    dropdown.innerHTML = '<option value="">-- Select a Topic --</option>';
+    dropdown.innerHTML = '<option value="">Misconception</option>';
     subjectSet.forEach(subject => {
       const opt = document.createElement("option");
       opt.value = subject;
