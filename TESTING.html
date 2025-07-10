@@ -22,6 +22,7 @@
   <meta name="twitter:image" content="https://thestrategicowl.com/TSO.png" />
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&family=Playfair+Display:wght@600;700&display=swap" rel="stylesheet" />
   <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Roboto+Slab:wght@400;500;700&display=swap" rel="stylesheet">
 
   <style>
   :root {
@@ -593,21 +594,29 @@ table.tru-table td:nth-child(2) {
 
 /* Target the dropdown selects */
 .dropdowns-wrapper select {
-  font-family: 'Playfair Display', serif;
-  font-size: 1rem;
-  padding: 10px 14px;
+  font-family: 'Roboto Slab', serif;
+  font-size: 16px;
+  font-weight: 500;
+  padding: 12px 16px;
   border-radius: 8px;
-  border: 1px solid var(--understanding);
   background-color: var(--surface);
-  color: var(--text);
+  border: 1px solid #D4AF37;
+  color: #D4AF37;
+  box-shadow: 0 0 4px rgba(212, 175, 55, 0.2);
   outline: none;
-  box-shadow: 0 2px 6px var(--shadow);
-  transition: border-color 0.3s ease, box-shadow 0.3s ease;
+  appearance: none;
 }
 
 .dropdowns-wrapper select:focus {
-  border-color: var(--understanding);
-  box-shadow: 0 0 0 3px rgba(212, 175, 55, 0.3);
+  border-color: #D4AF37;
+  box-shadow: 0 0 0 2px rgba(212, 175, 55, 0.3);
+  background-color: #252525;
+}
+
+.dropdowns-wrapper select option {
+  background-color: #1e1e1e;
+  color: #D4AF37;
+  font-family: 'Roboto Slab', serif;
 }
     .dropdowns-wrapper label,
 .dropdowns-wrapper select {
