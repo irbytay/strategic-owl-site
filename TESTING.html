@@ -240,15 +240,18 @@
 
   /* Custom Dropdown Styling for Culture, State, and Person Selects (Gold-accented, Dart style) */
   .custom-dropdown {
-    max-width: 280px;
+    max-width: 260px;
     width: 100%;
     margin: 0 auto 20px auto;
     padding: 0;
     background-color: #2F3A3F;
     border: 1.5px solid var(--understanding);
-    border-radius: 14px;
+    border-radius: 16px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.4);
     position: relative;
+    height: 48px;
+    display: flex;
+    align-items: center;
   }
 
   @media (max-width: 500px) {
@@ -263,21 +266,23 @@
     background-color: transparent;
     border: none;
     font-family: 'Copperplate', serif;
-    font-size: 14px;
+    font-size: 15px;
     font-weight: bold;
     color: var(--understanding);
-    padding: 10px 12px;
+    padding: 0 32px 0 16px;
     appearance: none;
     -webkit-appearance: none;
     -moz-appearance: none;
     cursor: pointer;
     text-align: center;
     text-align-last: center;
+    height: 100%;
+    line-height: 1;
   }
 
   .custom-dropdown::after {
     content: '▼';
-    font-size: 12px;
+    font-size: 10px;
     position: absolute;
     right: 12px;
     top: 50%;
