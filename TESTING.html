@@ -699,31 +699,30 @@ table.tru-table td:nth-child(2) {
   </div>
 </div>
 
-<!-- 📊 The main data table for showing scores (initially hidden) -->
-<table id="score-table" style="display:none;">
-  <thead>
-    <tr>
-      <!-- 🟩 Score column header (includes Truth, Reliability, etc.) -->
-      <th style="text-align: center;">Score</th>
+<!-- 📊 Output container for scores and commentary (initially hidden) -->
+<div id="output-container" style="display:none;">
+  <table id="score-table">
+    <thead>
+      <tr>
+        <!-- 🟩 Score column header (includes Truth, Reliability, etc.) -->
+        <th style="text-align: center;">Score</th>
+        <!-- 🟨 Explanation column header -->
+        <th>Explanation</th>
+      </tr>
+    </thead>
+    <!-- 📥 Populated dynamically by JavaScript with score rows -->
+    <tbody id="score-body"></tbody>
+  </table>
 
-      <!-- 🟨 Explanation column header -->
-      <th>Explanation</th>
-    </tr>
-  </thead>
-
-  <!-- 📥 Populated dynamically by JavaScript with score rows -->
-  <tbody id="score-body"></tbody>
-</table>
-
-<!-- 🔻 Container for displaying the total score and commentary -->
-<div id="total-score-box" style="margin-top: 20px; display:none;">
-  <!-- 📶 Visual bar and summary commentary -->
-  <div class="score-bar">
-    <!-- 🎯 Vertical color bar (red/green) based on total score -->
-    <div id="indicator-bar" class="bar-indicator"></div>
-
-    <!-- 🗣️ Text summary under the table (updated via JS) -->
-    <div id="total-score-comment" class="total-score-comment-text"></div>
+  <!-- 🔻 Container for displaying the total score and commentary -->
+  <div id="total-score-box" style="margin-top: 20px;">
+    <!-- 📶 Visual bar and summary commentary -->
+    <div class="score-bar">
+      <!-- 🎯 Vertical color bar (red/green) based on total score -->
+      <div id="indicator-bar" class="bar-indicator"></div>
+      <!-- 🗣️ Text summary under the table (updated via JS) -->
+      <div id="total-score-comment" class="total-score-comment-text"></div>
+    </div>
   </div>
 </div>
   
@@ -840,6 +839,7 @@ table.tru-table td:nth-child(2) {
 
   function showScores() {
     const select = document.getElementById("person-select");
+    const outputContainer = document.getElementById("output-container");
     const table = document.getElementById("score-table");
     const tbody = document.getElementById("score-body");
     const totalBox = document.getElementById("total-score-box");
@@ -848,8 +848,7 @@ table.tru-table td:nth-child(2) {
 
     const selected = select.value;
     if (!selected || !rowMap[selected]) {
-      table.style.display = "none";
-      totalBox.style.display = "none";
+      outputContainer.style.display = "none";
       return;
     }
 
@@ -882,28 +881,28 @@ table.tru-table td:nth-child(2) {
       const tr = document.createElement("tr");
 
       const tdScore = document.createElement("td");
-     tdScore.className = "";
-tdScore.setAttribute("data-label", "Score");
-tdScore.innerHTML = `
-  <div style="display: flex; flex-direction: column; align-items: center;">
-    <span class="${className}">${label}</span>
-    <span class="num-font" style="color: var(--text); font-weight: bold; font-size: 1.035rem;">
-  ${value >= 0 ? "+" : ""}${value.toFixed(0)}
-</span>
-  </div>
-`;
+      tdScore.className = "";
+      tdScore.setAttribute("data-label", "Score");
+      tdScore.innerHTML = `
+        <div style="display: flex; flex-direction: column; align-items: center;">
+          <span class="${className}">${label}</span>
+          <span class="num-font" style="color: var(--text); font-weight: bold; font-size: 1.035rem;">
+        ${value >= 0 ? "+" : ""}${value.toFixed(0)}
+      </span>
+        </div>
+      `;
 
       const tdComment = document.createElement("td");
-tdComment.setAttribute("data-label", "Explanation");
-tdComment.setAttribute("style", `
-  font-family: 'Montserrat', sans-serif;
-  font-size: 1.035rem;
-  color: var(--text-muted);
-  text-align: left;
-  line-height: 1.5;
-  padding: 8px 12px;
-`);
-tdComment.textContent = comment;
+      tdComment.setAttribute("data-label", "Explanation");
+      tdComment.setAttribute("style", `
+        font-family: 'Montserrat', sans-serif;
+        font-size: 1.035rem;
+        color: var(--text-muted);
+        text-align: left;
+        line-height: 1.5;
+        padding: 8px 12px;
+      `);
+      tdComment.textContent = comment;
 
       tr.appendChild(tdScore);
       tr.appendChild(tdComment);
@@ -917,14 +916,14 @@ tdComment.textContent = comment;
     const tdTotalScore = document.createElement("td");
     tdTotalScore.className = "total-score";
     tdTotalScore.setAttribute("data-label", "Score");
-   tdTotalScore.innerHTML = `
-  <div style="display: flex; flex-direction: column; align-items: center;">
-    <strong style="color: #DDE3EA; font-family: 'Montserrat', sans-serif;">Total Score</strong>
-    <span class="num-font" style="color: ${total >= 0 ? 'var(--bar-green)' : 'var(--bar-red)'}; font-weight: bold;">
-      ${total >= 0 ? "+" : ""}${total.toFixed(0)}
-    </span>
-  </div>
-`;
+    tdTotalScore.innerHTML = `
+      <div style="display: flex; flex-direction: column; align-items: center;">
+        <strong style="color: #DDE3EA; font-family: 'Montserrat', sans-serif;">Total Score</strong>
+        <span class="num-font" style="color: ${total >= 0 ? 'var(--bar-green)' : 'var(--bar-red)'}; font-weight: bold;">
+          ${total >= 0 ? "+" : ""}${total.toFixed(0)}
+        </span>
+      </div>
+    `;
 
     const tdTotalComment = document.createElement("td");
     tdTotalComment.className = "total-score";
@@ -938,8 +937,7 @@ tdComment.textContent = comment;
     indicatorBar.className = "bar-indicator " + (total >= 0 ? "bar-green" : "bar-red");
     totalCommentEl.innerHTML = `<span style="font-family: 'Montserrat', sans-serif; font-size: 1.035rem; color: var(--text-muted); line-height: 1.5;">${summaryBelowTable}</span>`;
 
-    table.style.display = "table";
-    totalBox.style.display = "block";
+    outputContainer.style.display = "block";
   }
 
   document.addEventListener("DOMContentLoaded", async () => {
