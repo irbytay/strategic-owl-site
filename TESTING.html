@@ -25,33 +25,6 @@
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&family=Playfair+Display:wght@600;700&display=swap" rel="stylesheet" />
 
   <style>
-  .scroll-tools {
-    display: flex;
-    overflow-x: auto;
-    scroll-snap-type: x mandatory;
-    gap: 20px;
-    padding: 16px;
-    margin-top: 16px;
-    max-width: 960px;
-  }
-
-  .tool-card {
-    flex: 0 0 auto;
-    min-width: 280px;
-    background-color: var(--surface);
-    border: 2px solid var(--understanding);
-    border-radius: 12px;
-    padding: 16px;
-    text-align: center;
-    color: var(--text);
-    scroll-snap-align: start;
-    box-shadow: 0 0 10px var(--shadow);
-    transition: transform 0.3s ease;
-  }
-
-  .tool-card:hover {
-    transform: translateY(-4px);
-  }
   :root {
     --background: #0D1B2A;
     --surface: #112240;
@@ -522,29 +495,8 @@
 <a href="newcontact3.html">Contact</a>
 <a href="https://strategicfretboard.com" target="_blank" rel="noopener noreferrer">Strategic Fretboard</a>
   </div>
-</nav>
-
-<!-- 🔄 Scrollable Tools Bar -->
-<div class="announcement-box" style="margin-top: 72px;">
-  <span class="announcement-label">New Tools Released:</span>
-  <div class="scroll-tools">
-    <div class="tool-card">
-      <h3 style="color: var(--understanding);">Insight Quiz</h3>
-      <p>Used by left, right, and neither. See where you stand.</p>
-      <a href="strategic-owl-insight-quiz.html" class="important-link">Try It</a>
-    </div>
-    <div class="tool-card">
-      <h3 style="color: var(--understanding);">The Constitution</h3>
-      <p>Explore it as it was meant to be understood — no fluff.</p>
-      <a href="the_constitution.html" class="important-link">Explore</a>
-    </div>
-    <div class="tool-card">
-      <h3 style="color: var(--understanding);"> iOS App</h3>
-      <p>The Strategic Owl — in your pocket. Built for thinkers.</p>
-      <a href="https://apps.apple.com/app/the-strategic-owl/id6748349497" class="important-link">Download</a>
-    </div>
   </div>
-</div>
+</nav>
   <div class="container">
     <h1>The Strategic Owl</h1>
 <!-- 🎯 Divider -->
@@ -596,6 +548,40 @@
       This moment will be remembered for 30 days.<br>
       This website uses publicly available data, court records, and verifiable sources. Nothing here is hidden — it’s all in the open.
     </p>
+  </div>
+</div>
+   <!-- 📱 App Promo Section -->
+  <div class="announcement-box" style="border: 2px solid var(--understanding); box-shadow: 0 0 10px var(--understanding); margin-top: 48px;">
+    <span class="announcement-label">New Release:</span>
+    <p>The Strategic Owl is now available as an iPhone app.</p>
+    <p style="max-width: 720px;">
+      It's everything you see here — in your pocket. From credibility tools to the Constitution, it’s all optimized for clarity, designed for truth. Built for thinkers.
+    </p>
+    <a href="https://apps.apple.com/app/the-strategic-owl/id6748349497" class="important-link" style="font-size: 1.15rem;">Download on the  App Store</a>
+  </div>
+   <!-- Desktop Announcement -->
+<div class="announcement-desktop">
+  <div class="announcement-box">
+    <span class="announcement-label">New Tools Released:</span>
+    <span>Try the</span>
+    <a href="strategic-owl-insight-quiz.html" class="important-link">Strategic Insight Quiz</a>
+    <span>used by left, right, and neither — plus explore the</span>
+    <a href="the_constitution.html" class="important-link">The Constitution</a>
+    <span>as it was meant to be understood.</span>
+  </div>
+</div>
+
+<!-- Mobile Announcement -->
+<div class="announcement-mobile">
+  <div class="announcement-box-mobile">
+    <div>
+      <span class="announcement-label">New Tool Released:</span>
+      <span> Try the</span>
+    </div>
+    <a href="strategic-owl-insight-quiz.html" class="important-link">Strategic Insight Quiz</a>
+    <div>used by left, right, and neither — plus explore the</div>
+    <a href="the_constitution.html" class="important-link">The Constitution</a>
+    <div>as it was meant to be understood.</div>
   </div>
 </div>
 <h2>How do you know what’s true anymore?</h2>
