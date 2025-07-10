@@ -894,22 +894,6 @@ table.tru-table td:nth-child(2) {
     }
 
     const row = rowMap[selected];
-
-    // Insert prominent heading above the score table
-    const existingHeader = document.getElementById("total-score-heading");
-    if (existingHeader) existingHeader.remove();
-    const scoreHeader = document.createElement("h2");
-    scoreHeader.id = "total-score-heading";
-    scoreHeader.textContent = `${selected} T.R.U. Owl Credibility Score: ${total >= 0 ? "+" : ""}${total.toFixed(0)}`;
-    scoreHeader.style.cssText = `
-      font-family: 'Playfair Display', serif;
-      font-size: 1.5rem;
-      text-align: center;
-      color: var(--understanding);
-      margin-bottom: 16px;
-    `;
-    outputContainer.insertBefore(scoreHeader, table);
-
     tbody.innerHTML = "";
 
     const truthRaw = parseFloat(row[2]) || 0;
