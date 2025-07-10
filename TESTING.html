@@ -238,15 +238,16 @@
     border: 1px solid var(--highlight);
   }
 
-  /* Custom Dropdown Styling for Culture and State Selects */
+  /* Custom Dropdown Styling for Culture, State, and Person Selects (Gold-accented, Dart style) */
   .custom-dropdown {
-    max-width: 300px;
+    max-width: 340px;
     width: 90%;
-    margin: 0 auto 20px auto;
-    padding: 10px 16px;
-    background-color: var(--understanding);
-    border-radius: 12px;
-    box-shadow: 0 6px 10px rgba(59, 108, 237, 0.4);
+    margin: 0 auto 24px auto;
+    padding: 0;
+    background-color: #2F3A3F;
+    border: 1.5px solid var(--understanding);
+    border-radius: 16px;
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.4);
     position: relative;
   }
 
@@ -254,7 +255,6 @@
     .custom-dropdown {
       width: 98%;
       max-width: 98vw;
-      padding: 10px 8px;
     }
   }
 
@@ -265,8 +265,8 @@
     font-family: 'Copperplate', serif;
     font-size: 16px;
     font-weight: bold;
-    color: var(--background);
-    padding: 8px 0;
+    color: var(--understanding);
+    padding: 14px 16px;
     appearance: none;
     -webkit-appearance: none;
     -moz-appearance: none;
@@ -276,10 +276,10 @@
   .custom-dropdown::after {
     content: '▼';
     position: absolute;
-    right: 20px;
+    right: 16px;
     top: 50%;
     transform: translateY(-50%);
-    color: var(--background);
+    color: var(--understanding);
     pointer-events: none;
   }
 
@@ -594,7 +594,7 @@
       <p style="text-align: center; color: var(--text-muted); margin-top: 20px;">
         Select a name below to view their Election Security credibility breakdown.
       </p>
-      <div class="dropdown-container">
+      <div class="custom-dropdown">
         <select id="person-select" onchange="showScores()">
           <option value="">-- Choose a name --</option>
         </select>
