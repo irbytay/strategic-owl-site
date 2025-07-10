@@ -593,6 +593,7 @@ table.tru-table td:nth-child(2) {
 }
 
 /* Target the dropdown selects */
+/* Enhanced dropdown styling with subtle down arrow */
 .dropdowns-wrapper select {
   font-family: 'Roboto Slab', serif;
   font-size: 16px;
@@ -605,6 +606,11 @@ table.tru-table td:nth-child(2) {
   box-shadow: 0 0 4px rgba(212, 175, 55, 0.2);
   outline: none;
   appearance: none;
+  background-image: url("data:image/svg+xml;utf8,<svg fill='%23D4AF37' height='18' viewBox='0 0 24 24' width='18' xmlns='http://www.w3.org/2000/svg'><path d='M7 10l5 5 5-5z'/></svg>");
+  background-repeat: no-repeat;
+  background-position: right 14px center;
+  background-size: 16px;
+  padding-right: 36px; /* make room for icon */
 }
 
 .dropdowns-wrapper select:focus {
@@ -665,16 +671,16 @@ table.tru-table td:nth-child(2) {
 
   <!-- 🔍 Dropdown: Filter by Role -->
   <div class="dropdown-group" style="text-align: left;">
-    <!-- 🔽 The actual dropdown <select> element -->
-    <select id="role-filter">
+    <!-- 🔽 The actual dropdown <select> element with subtle arrow -->
+    <select id="role-filter" style="background-image: url('data:image/svg+xml;utf8,<svg fill=\'%23D4AF37\' height=\'18\' viewBox=\'0 0 24 24\' width=\'18\' xmlns=\'http://www.w3.org/2000/svg\'><path d=\'M7 10l5 5 5-5z\'/></svg>'); background-repeat: no-repeat; background-position: right 14px center; background-size: 16px; padding-right: 36px;">
       <option value="">Select Role</option>
     </select>
   </div>
 
   <!-- 👤 Dropdown: Select a Profile -->
   <div class="dropdown-group" style="text-align: left;">
-    <!-- 🔽 The actual dropdown <select> element -->
-    <select id="person-select">
+    <!-- 🔽 The actual dropdown <select> element with subtle arrow -->
+    <select id="person-select" style="background-image: url('data:image/svg+xml;utf8,<svg fill=\'%23D4AF37\' height=\'18\' viewBox=\'0 0 24 24\' width=\'18\' xmlns=\'http://www.w3.org/2000/svg\'><path d=\'M7 10l5 5 5-5z\'/></svg>'); background-repeat: no-repeat; background-position: right 14px center; background-size: 16px; padding-right: 36px;">
       <option value="">Select Name</option>
     </select>
   </div>
