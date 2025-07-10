@@ -595,12 +595,19 @@ table.tru-table td:nth-child(2) {
 .dropdowns-wrapper select {
   font-family: 'Playfair Display', serif;
   font-size: 1rem;
-  padding: 6px 10px;
-  border-radius: 6px;
-  border: 1px solid var(--highlight);
+  padding: 10px 14px;
+  border-radius: 8px;
+  border: 1px solid var(--understanding);
   background-color: var(--surface);
   color: var(--text);
   outline: none;
+  box-shadow: 0 2px 6px var(--shadow);
+  transition: border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.dropdowns-wrapper select:focus {
+  border-color: var(--understanding);
+  box-shadow: 0 0 0 3px rgba(212, 175, 55, 0.3);
 }
     .dropdowns-wrapper label,
 .dropdowns-wrapper select {
