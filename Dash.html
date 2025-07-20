@@ -448,7 +448,7 @@ async function fetchDashboardData() {
   return json.values || [];
 }
 
-function populateDashboardSection(title1, title2, col1, col2, data, elementId) {
+function populateDashboardSection(categoryLabel, title1, title2, col1, col2, data, elementId) {
   const container = document.getElementById(elementId);
 
   function renderList(label, nameCol, scoreCol) {
@@ -462,10 +462,11 @@ function populateDashboardSection(title1, title2, col1, col2, data, elementId) {
       return `<li>${name}${score ? ` <span class="${className}">${score}</span>` : ''}</li>`;
     }).join('');
 
-    return `<h3>${label}</h3><ul>${items}</ul>`;
+    return `<h4>${label}</h4><ul>${items}</ul>`;
   }
 
   container.innerHTML = `
+    <h3>${categoryLabel}</h3>
     ${renderList(title1, col1, col1 + 1)}
     ${renderList(title2, col2, col2 + 1)}
   `;
@@ -473,10 +474,10 @@ function populateDashboardSection(title1, title2, col1, col2, data, elementId) {
 
 async function loadDashboard() {
   const data = await fetchDashboardData();
-  populateDashboardSection("Influencers", "Influencers", 0, 2, data, "influencer-dashboard");
-  populateDashboardSection("Journalists", "Journalists", 4, 6, data, "journalist-dashboard");
-  populateDashboardSection("Politicians", "Politicians", 8, 10, data, "politician-dashboard");
-  populateDashboardSection("Media Companies", "Media Companies", 12, 14, data, "media-dashboard");
+  populateDashboardSection("Influencers", data[0][0], data[0][2], 0, 2, data, "influencer-dashboard");
+  populateDashboardSection("Journalists", data[0][4], data[0][6], 4, 6, data, "journalist-dashboard");
+  populateDashboardSection("Politicians", data[0][8], data[0][10], 8, 10, data, "politician-dashboard");
+  populateDashboardSection("Media Companies", data[0][12], data[0][14], 12, 14, data, "media-dashboard");
 }
 
 window.addEventListener("DOMContentLoaded", () => {
