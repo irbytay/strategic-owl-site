@@ -408,9 +408,7 @@
       </div>
     </section>
 <div class="dashboard-grid">
-  <div><h2>Influencers</h2>
   <div class="dashboard-box" id="influencer-dashboard"></div>
-  </div>
   <div class="dashboard-box" id="journalist-dashboard"></div>
   <div class="dashboard-box" id="politician-dashboard"></div>
   <div class="dashboard-box" id="media-dashboard"></div>
@@ -453,6 +451,13 @@ async function fetchDashboardData() {
 function populateDashboardSection(title1, title2, col1, col2, data, elementId) {
   const container = document.getElementById(elementId);
 
+  const sectionLabels = {
+    "influencer-dashboard": "Influencers",
+    "journalist-dashboard": "Journalists",
+    "politician-dashboard": "Politicians",
+    "media-dashboard": "Media Companies"
+  };
+
   function renderList(label, nameCol, scoreCol) {
     const items = data.slice(1).map(row => {
       const name = row[nameCol] || '';
@@ -467,7 +472,10 @@ function populateDashboardSection(title1, title2, col1, col2, data, elementId) {
     return `<h3>${label}</h3><ul>${items}</ul>`;
   }
 
+  const label = sectionLabels[elementId] || "";
+
   container.innerHTML = `
+    <h2>${label}</h2>
     ${renderList(title1, col1, col1 + 1)}
     ${renderList(title2, col2, col2 + 1)}
   `;
