@@ -777,42 +777,36 @@
   function renderSheetItems(rows) {
     const container = document.getElementById("sheet-items");
     if (!container) return;
-
-    container.innerHTML = ""; // clear existing
+    container.innerHTML = "";
 
     rows.forEach(row => {
       const val = (row[0] || "").trim();
       if (!val) return;
 
-      const item = document.createElement("div");
-      item.className = "sheet-item";
+      const p = document.createElement("p");   // <-- use <p> so it inherits your p styles
 
-      // If it looks like a URL, render as link; otherwise render as text
-      const maybeLink = toURL(val);
-      if (maybeLink) {
+      const url = toURL(val);
+      if (url) {
         const a = document.createElement("a");
-        a.href = maybeLink;
+        a.href = url;
         a.target = "_blank";
         a.rel = "noopener";
-        a.textContent = val; // show the raw value; change to hostname if preferred
-        item.appendChild(a);
+        a.className = "important-link";        // optional: branded gold link
+        a.textContent = val;                   // or new URL(url).hostname for shorter text
+        p.appendChild(a);
       } else {
-        item.textContent = val;
+        p.textContent = val;
       }
 
-      container.appendChild(item);
+      container.appendChild(p);
     });
   }
 
   function toURL(s) {
     try {
-      // Add protocol if user entered bare domain
       const hasProtocol = /^https?:\/\//i.test(s);
-      const u = new URL(hasProtocol ? s : `https://${s}`);
-      return u.href;
-    } catch {
-      return null;
-    }
+      return new URL(hasProtocol ? s : `https://${s}`).href;
+    } catch { return null; }
   }
 
   document.addEventListener("DOMContentLoaded", async () => {
