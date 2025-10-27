@@ -479,6 +479,40 @@
     text-shadow: 0 0 6px rgba(0, 0, 0, 0.6);
     font-family: 'Inter', sans-serif;
   }
+    /* ── Voter Dashboard: Sheet Items (brand-aligned) ───────────────────────── */
+.sheet-items{
+  width: 100%;
+  max-width: 560px;
+  margin: 12px auto;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.sheet-item{
+  background-color: var(--surface);
+  border: 1px solid var(--highlight);
+  border-radius: 8px;
+  box-shadow: 0 2px 6px var(--shadow);
+  padding: 12px 14px;
+  text-align: center;
+  font-family: 'Inter', sans-serif;
+  color: var(--text);
+  font-size: 0.98rem;
+}
+
+.sheet-item a{
+  color: var(--understanding);          /* gold */
+  font-weight: 700;
+  text-decoration: underline;
+  text-underline-offset: 4px;
+  transition: color 0.2s ease, text-shadow 0.2s ease;
+}
+
+.sheet-item a:hover{
+  color: var(--truth);                  /* green */
+  text-shadow: 0 0 8px var(--understanding);
+}
 </style>
 
 <nav class="top-nav">
@@ -552,6 +586,8 @@
     </p>
   </div>
 </div>
+    <!-- Values from Google Sheet will render here -->
+<div id="sheet-items" class="sheet-items"></div>
    <!-- 📱 App Promo Section -->
   <div class="misconception-intro-container" style="background: linear-gradient(to bottom right, #1A2B4C, #0D1B2A); border: 1px solid #D4AF37; box-shadow: 0 0 12px rgba(212, 175, 55, 0.3); border-radius: 12px; padding: 24px; margin-top: 40px; text-align: center;">
     <span class="announcement-label" style="text-align: center; display: block;">Mission Update:</span>
@@ -719,6 +755,71 @@
 }
 </script>
 <script>
+   // --- CONFIG ---
+  const API_KEY  = "AIzaSyCzuh9HBfe0r70r9U35Pe406PPZ-tz6I78";
+  const SHEET_ID = "19wBEj9hEkvIyQcoR5E_mBGVAxTzMnddMxk8nuQLAumA";
+  // Tab: "Homepage", Range: C3:C6 (single column)
+  const RAW_RANGE = "'Homepage'!C3:C6";
+  const RANGE = encodeURIComponent(RAW_RANGE);
+
+  async function fetchSheetItems() {
+    const url = `https://sheets.googleapis.com/v4/spreadsheets/${SHEET_ID}/values/${RANGE}?key=${API_KEY}`;
+    try {
+      const res = await fetch(url);
+      if (!res.ok) throw new Error(`HTTP ${res.status}`);
+      const json = await res.json();
+      return json.values || [];
+    } catch (err) {
+      console.error("Failed to fetch sheet data", err);
+      return [];
+    }
+  }
+
+  function renderSheetItems(rows) {
+    const container = document.getElementById("sheet-items");
+    if (!container) return;
+
+    container.innerHTML = ""; // clear existing
+
+    rows.forEach(row => {
+      const val = (row[0] || "").trim();
+      if (!val) return;
+
+      const item = document.createElement("div");
+      item.className = "sheet-item";
+
+      // If it looks like a URL, render as link; otherwise render as text
+      const maybeLink = toURL(val);
+      if (maybeLink) {
+        const a = document.createElement("a");
+        a.href = maybeLink;
+        a.target = "_blank";
+        a.rel = "noopener";
+        a.textContent = val; // show the raw value; change to hostname if preferred
+        item.appendChild(a);
+      } else {
+        item.textContent = val;
+      }
+
+      container.appendChild(item);
+    });
+  }
+
+  function toURL(s) {
+    try {
+      // Add protocol if user entered bare domain
+      const hasProtocol = /^https?:\/\//i.test(s);
+      const u = new URL(hasProtocol ? s : `https://${s}`);
+      return u.href;
+    } catch {
+      return null;
+    }
+  }
+
+  document.addEventListener("DOMContentLoaded", async () => {
+    const rows = await fetchSheetItems();
+    renderSheetItems(rows);
+  });
   // Auto-close mobile menu when clicking/tapping outside
   document.addEventListener('click', function (event) {
     const menu = document.getElementById('mobileMenu');
