@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>The Strategic Owl | Reality Check</title>
+  <title>The Strategic Owl | Truth. Reliability. Understanding.</title>
 
   <!-- Open Graph Meta (Facebook, LinkedIn, Discord, etc.) -->
   <meta property="og:title" content="The Strategic Owl | Truth. Reliability. Understanding." />
@@ -14,27 +14,17 @@
   <meta property="og:image:height" content="630" />
   <meta property="og:url" content="https://thestrategicowl.com" />
   <meta property="og:type" content="website" />
+
+  <!-- Twitter Card Meta -->
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="The Strategic Owl | Truth. Reliability. Understanding." />
+  <meta name="twitter:description" content="Measure credibility and uncover truth using the TRU OWL Score — a tool for independent thinkers." />
+  <meta name="twitter:image" content="https://thestrategicowl.com/TSO.png" />
+
+  <!-- Fonts -->
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&family=Playfair+Display:wght@600;700&display=swap" rel="stylesheet" />
 
   <style>
-  .misconception-intro-container {
-    max-width: 700px;
-    margin: 0 auto 36px auto;
-    padding: 24px 20px;
-    border: 1px solid var(--understanding);
-    background: linear-gradient(to bottom right, #1A2B4C, #0D1B2A);
-    border-radius: 12px;
-    box-shadow: 0 0 12px rgba(212, 175, 55, 0.2);
-  }
-
-  .misconception-intro-container p {
-    font-size: 1.05rem;
-    font-family: 'Inter', sans-serif;
-    color: var(--text-muted);
-    text-align: center;
-    line-height: 1.6;
-    margin: 0;
-  }
   :root {
     --background: #0D1B2A;
     --surface: #112240;
@@ -163,49 +153,93 @@
 
   .nav-links {
     display: none;
-    flex-direction: column;
+    flex-direction: column; /* ✅ stack vertically */
     align-items: center;
-    justify-content: center;
     background-color: var(--highlight);
     position: absolute;
     top: 58px;
     left: 0;
     width: 100%;
-    padding: 10px 0;
-    gap: 20px;
+    padding: 12px 0;
+    gap: 12px;
     box-shadow: 0 3px 8px var(--shadow);
   }
-    .nav-links.show {
-      display: flex;
-      animation: fadeSlideDown 0.3s ease;
-    }
 
-    @keyframes fadeSlideDown {
-      from {
-        opacity: 0;
-        transform: translateY(-10px);
-      }
-      to {
-        opacity: 1;
-        transform: translateY(0);
-      }
+  .nav-links.show {
+    display: flex;
+    animation: fadeSlideDown 0.3s ease;
+  }
+
+  .nav-links a {
+    padding: 10px 0;
+    width: 100%;
+    text-align: center;
+    font-size: 1rem;
+  }
+
+  @keyframes fadeSlideDown {
+    from {
+      opacity: 0;
+      transform: translateY(-10px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
     }
   }
+}
+    #legal-popup {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(13, 27, 42, 0.95);
+  z-index: 9999;
+  overflow-y: auto;
+  padding: 40px 20px;
+  box-sizing: border-box;
+  display: none;
+}
+
+#legal-popup > div {
+  max-width: 680px;
+  width: 100%;
+  margin: 0 auto;
+  background-color: var(--surface);
+  padding: 30px;
+  border-radius: 8px;
+  box-shadow: 0 0 20px var(--shadow);
+  font-family: 'Montserrat', sans-serif;
+  color: var(--text);
+  line-height: 1.6;
+}
+
+@media (max-width: 500px) {
+  #legal-popup > div {
+    padding: 16px 12px;
+    font-size: 0.95rem;
+  }
+
+  .important-link {
+    display: block;
+    text-align: center;
+    margin-top: 16px;
+  }
+}
 
   /* ✅ YOUR ORIGINAL STYLES BELOW */
   .container {
     max-width: 960px;
-    margin: 60px auto 0 auto;
+    margin: 100px auto 0 auto;
     padding: 24px;
-    display: flex;
-    flex-direction: column;
-    align-items: center;          /* centers all direct child elements horizontally */
-    text-align: center;           /* ensures text-based elements also align visually */
   }
 
   h1 {
     font-family: 'Playfair Display', serif;
     color: var(--understanding);
+    font-size: 2.6rem;
+    font-weight: 700;
     margin-bottom: 16px;
     text-align: center;
   }
@@ -236,59 +270,6 @@
     background-color: var(--surface);
     color: var(--text);
     border: 1px solid var(--highlight);
-  }
-
-  /* Custom Dropdown Styling for Culture, State, and Person Selects (Gold-accented, Dart style) */
-  .custom-dropdown {
-    max-width: 260px;
-    width: 100%;
-    margin: 0 auto 20px auto;
-    padding: 0;
-    background-color: #2F3A3F;
-    border: 1.5px solid var(--understanding);
-    border-radius: 16px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.4);
-    position: relative;
-    height: 48px;
-    display: flex;
-    align-items: center;
-  }
-
-  @media (max-width: 500px) {
-    .custom-dropdown {
-      width: 98%;
-      max-width: 98vw;
-    }
-  }
-
-  .custom-dropdown select {
-    width: 100%;
-    background-color: transparent;
-    border: none;
-    font-family: 'Copperplate', serif;
-    font-size: 15px;
-    font-weight: bold;
-    color: var(--understanding);
-    padding: 0 32px 0 16px;
-    appearance: none;
-    -webkit-appearance: none;
-    -moz-appearance: none;
-    cursor: pointer;
-    text-align: center;
-    text-align-last: center;
-    height: 100%;
-    line-height: 1;
-  }
-
-  .custom-dropdown::after {
-    content: '▼';
-    font-size: 10px;
-    position: absolute;
-    right: 12px;
-    top: 50%;
-    transform: translateY(-50%);
-    color: var(--understanding);
-    pointer-events: none;
   }
 
   table {
@@ -334,79 +315,17 @@
   .bar-green {
     background-color: var(--bar-green);
   }
-    .positive-score strong,
-.negative-score strong {
-  font-family: 'Inter', sans-serif;
-  font-weight: 600;
-  color: inherit;
-}
-    .dropdown-container {
-  display: flex;
-  justify-content: center;
-  margin: 20px 0;
-}
-    .foundation-section {
-  padding: 40px 20px;
-  max-width: 800px;
-  margin: 0 auto;
-}
-
-.section-intro {
-  font-size: 1.1rem;
+    .match-nav-link {
   color: var(--text-muted);
-  text-align: center;
-  margin-bottom: 36px;
+  text-decoration: none;
+  font-size: 15px;
+  transition: color 0.3s ease;
 }
 
-.foundation-section h1 {
-  font-family: 'Playfair Display', serif;
-  font-size: 2rem;
+.match-nav-link:hover {
   color: var(--understanding);
-  text-align: center;
-  margin-bottom: 16px;
 }
-
-.foundation-section h2 {
-  font-family: 'Playfair Display', serif;
-  font-size: 1.4rem;
-  margin-top: 40px;
-  color: var(--understanding;
-  text-align: center;
-}
-
-.foundation-section table {
-  width: 100%;
-  background-color: var(--surface);
-  border-radius: 6px;
-  border-collapse: collapse;
-  margin: 20px 0;
-}
-
-.foundation-section th {
-  background-color: var(--highlight);
-  padding: 12px;
-  font-weight: 600;
-  text-align: left;
-  color: var(--text-muted)
-}
-
-.foundation-section td {
-  padding: 12px;
-  border-bottom: 1px solid var(--highlight);
-  color: var(--text);
-  line-height: 1.6;
-}
-
-.strategic-insight {
-  font-size: 1rem;
-  background-color: #1A2B4C;
-  border-left: 4px solid var(--understanding);
-  padding: 16px;
-  margin-top: 12px;
-  margin-bottom: 40px;
-  color: var(--text-muted);
-}
-    /* Style the link itself */
+ /* Style the link itself */
 .important-link {
   color: var(--understanding);               /* Gold color from your theme */
   font-weight: 700;                          /* Bold for visibility */
@@ -447,60 +366,141 @@
   text-shadow: 0 0 8px var(--understanding); /* Subtle glow using gold tone */
   color: var(--truth);                       /* Optional: changes to green (truth color) */
 }
-  /* --- Culture Subs Table Styles --- */
-  #culture-subs table {
-    width: 100%;
-    border-collapse: collapse;
-    background-color: var(--surface);
-    margin-top: 20px;
+    /* 📢 Shared Announcement Box Styles */
+.announcement-box {
+  background-color: var(--surface);
+  padding: 24px;
+  border-radius: 12px;
+  margin: 24px auto;
+  max-width: 960px;
+  font-family: 'Inter', sans-serif;
+  color: var(--text);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  font-size: 1.1rem;
+  line-height: 1.7;
+  letter-spacing: 0.1px;
+  gap: 10px;
+}
+
+.announcement-box-mobile {
+  background-color: var(--surface);
+  padding: 20px 16px;
+  border-radius: 12px;
+  margin: 24px auto;
+  font-family: 'Inter', sans-serif;
+  color: var(--text);
+  max-width: 90%;
+  font-size: 1.05rem;
+  line-height: 1.7;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+}
+
+/* 🟢 Label Color */
+.announcement-label {
+  color: var(--truth);
+  font-weight: 600;
+  font-size: 1.1rem;
+}
+
+/* 🔗 Strategic Link Styling */
+.important-link {
+  color: var(--understanding);
+  font-weight: 700;
+  text-decoration: underline;
+  text-underline-offset: 4px;
+  position: relative;
+  transition: color 0.3s ease, text-shadow 0.3s ease;
+}
+
+.important-link::before {
+  content: '→ ';
+  display: inline-block;
+  margin-right: 6px;
+  transition: transform 0.3s ease;
+}
+
+.important-link::after {
+  content: ' ←';
+  display: inline-block;
+  margin-left: 6px;
+  transition: transform 0.3s ease;
+}
+
+.important-link:hover::before {
+  transform: translateX(4px);
+}
+
+.important-link:hover::after {
+  transform: translateX(-4px);
+}
+
+.important-link:hover {
+  text-shadow: 0 0 8px var(--understanding);
+  color: var(--truth);
+}
+
+/* 📱 Mobile Layout */
+@media (max-width: 768px) {
+  .announcement-desktop {
+    display: none;
   }
 
-  #culture-subs th, #culture-subs td {
-    padding: 14px;
-    border-bottom: 1px solid var(--highlight);
-    text-align: left;
-    font-size: 1rem;
-    color: var(--text-muted);
-    font-family: 'Inter', sans-serif;
-  }
-
-  #culture-subs th {
-    background-color: var(--highlight);
-    color: var(--understanding);
-    font-weight: 600;
+  .announcement-mobile {
+    padding: 0;
     text-align: center;
   }
 
-  @media (max-width: 768px) {
-    #culture-subs table th, #culture-subs table td {
-      font-size: 0.95rem;
-      padding: 10px;
-    }
+  .announcement-box-mobile .important-link {
+    display: inline-block;
+    margin: 6px 0;
+  }
+}
+
+/* 💻 Desktop Layout */
+@media (min-width: 769px) {
+  .announcement-mobile {
+    display: none;
+  }
+}
+  /* 📜 Footer */
+  footer {
+    text-align: center;
+    padding: 24px 12px;
+    font-size: 12px;
+    color: #D4AF37;
+    text-shadow: 0 0 6px rgba(0, 0, 0, 0.6);
+    font-family: 'Inter', sans-serif;
   }
 </style>
-</head>
-  <body>
 
 <nav class="top-nav">
-<a href="TRUOWL3.html" class="nav-logo">
-  <img src="owl_logo_white.png" alt="Owl Logo" onerror="this.style.display='none';" />
-  <div class="nav-title">The Strategic Owl</div>
-</a>
-  <button class="menu-toggle" onclick="toggleMenu()">☰</button>
-  <div class="nav-links" id="navMenu">
-     <a href="Index.html">Home</a>
-<a href="Dash.html">Dash's</a>
-<a href="TRUOWL3.html">T.R.U. Owl</a>
-<a href="strategic-owl-insight-quiz.html">Insight Quiz</a>
-<a href="realitycheck.html">Reality Check</a>
-<a href="the_constitution.html">The Constitution</a>
-<a href="newcontact3.html">Contact</a>
-<a href="https://strategicfretboard.com" target="_blank" rel="noopener noreferrer">Strategic Fretboard</a>
+  <a href="TRUOWL3.html" class="nav-logo">
+    <img src="owl_logo_white.png" alt="Owl Logo" onerror="this.style.display='none';" />
+    <div class="nav-title">The Strategic Owl</div>
+  </a>
+  <button class="menu-toggle" id="menuToggle" onclick="toggleMenu()">☰</button>
+  <div class="nav-links" id="mobileMenu">
+    <a href="Index.html">Home</a>
+    <a href="Dash.html">Dash's</a>
+    <a href="TRUOWL3.html">T.R.U. Owl</a>
+    <a href="strategic-owl-insight-quiz.html">Insight Quiz</a>
+    <a href="realitycheck.html">Reality Check</a>
+    <a href="the_constitution.html">The Constitution</a>
+    <a href="newcontact3.html">Contact</a>
+    <a href="https://strategicfretboard.com" target="_blank" rel="noopener noreferrer">Strategic Fretboard</a>
   </div>
 </nav>
   <div class="container">
-    <h1>Reality Check</h1>
-    <!-- 🎯 Divider -->
+    <h1>The Strategic Owl</h1>
+<!-- 🎯 Divider -->
     <section class="divider-section">
       <div class="divider-bar">
         <div class="truth"></div>
@@ -513,26 +513,9 @@
         <span>Understanding</span>
       </div>
     </section>
+    <!-- Legal Popup -->
 
-    <h1>Misconception Hub</h1>
-    <div class="misconception-intro-container">
-      <p>This is your Misconception Hub — where we expose popular myths and break them down with verifiable facts.</p>
-      <p>Select a topic to examine popular claims and compare them to verifiable facts — one layer at a time.</p>
-    </div>
-    <!-- 🧠 Culture Subs UI Section -->
-    <div id="culture-subs">
-      <div class="custom-dropdown">
-        <select id="culture-select" onchange="showCultureSubs()">
-          <option value="">Misconception</option>
-        </select>
-      </div>
-      <div class="table-wrapper" style="display:none;" id="culture-results">
-        <table>
-          <tbody id="culture-body"></tbody>
-        </table>
-      </div>
-    </div>
-    <!-- 🎯 Divider -->
+     <!-- 🎯 Divider -->
     <section class="divider-section">
       <div class="divider-bar">
         <div class="truth"></div>
@@ -545,338 +528,96 @@
         <span>Understanding</span>
       </div>
     </section>
-    <!-- 🗳️ Voter Fraud Section -->
-    <div id="voter-fraud-section">
-      <h1>Voter Fraud?</h1>
-      <div class="misconception-intro-container">
-        <p>Look past the headlines. Here’s the actual data.</p>
-        <p>
-          You’ve heard the claims. Some say voter fraud is everywhere. Others say it barely exists. Let’s look at the actual records.
-        </p>
-        <p>
-          The Heritage Foundation tracks every confirmed case of voter fraud — often to suggest it’s a bigger threat than it is. This tool lets you explore that same data, with the context it’s missing.
-        </p>
-        <p>
-          Because yes, voter fraud exists. But it’s not what you’ve been led to believe.
-        </p>
-      </div>
-      <div class="custom-dropdown">
-        <select id="state-select">
-          <option value="">Choose a state</option>
-        </select>
-      </div>
-      <p id="state-summary" class="subtext"></p>
-      <div class="table-wrapper" style="display:none;" id="state-results">
-        <table>
-          <thead>
-            <tr>
-              <th>Year</th>
-              <th>State</th>
-              <th>Name</th>
-            </tr>
-          </thead>
-          <tbody id="state-data-body"></tbody>
-        </table>
-      </div>
-      <p>Source:</p>
-      <p><a href="https://www.heritage.org/voterfraud" class="important-link" target="_blank">Heritage Foundation Voter Fraud Database</a></p>
-    </div>
-    <!-- 🎯 Divider -->
-    <section class="divider-section">
-      <div class="divider-bar">
-        <div class="truth"></div>
-        <div class="reliability"></div>
-        <div class="understanding"></div>
-      </div>
-      <div class="divider-labels">
-        <span>Truth</span>
-        <span>Reliability</span>
-        <span>Understanding</span>
-      </div>
-    </section>
-    <!-- 🦉 TRU Score by Name Section -->
-    <div id="tru-score-section">
-      <div class="misconception-intro-container">
-        <p>Select a name below to view their Election Security credibility breakdown.</p>
-      </div>
-      <div class="custom-dropdown">
-        <select id="person-select" onchange="showScores()">
-          <option value="">Choose a name</option>
-        </select>
-      </div>
-      <div class="table-wrapper">
-        <table id="score-table" style="display: none;">
-          <thead>
-            <tr>
-              <th>Category</th>
-              <th>Score</th>
-              <th>Explanation</th>
-            </tr>
-          </thead>
-          <tbody id="score-body"></tbody>
-        </table>
-      </div>
-    </div>
- <script>
-  async function fetchTRUData() {
-    const API_KEY = "AIzaSyCzuh9HBfe0r70r9U35Pe406PPZ-tz6I78";
-    const SHEET_ID = "19wBEj9hEkvIyQcoR5E_mBGVAxTzMnddMxk8nuQLAumA";
-    const RANGE = "ElectionTRU!A2:Y1000";
+  </div>
+  </div>
+  <!-- 📜 Footer -->
+  <footer style="text-align: center; padding: 24px 12px; font-size: 12px; color: #D4AF37; text-shadow: 0 0 6px rgba(0,0,0,0.6);">
+    © 2025 The Strategic Owl. All rights reserved. This platform is protected under U.S. copyright and constitutional law. Unauthorized use, duplication, or distortion of content is prohibited. Created by Taylor Irby — designed for clarity, built for truth.
+  </footer>
+<!-- Minimal HTML hooks -->
+<select id="state-select">
+  <option value="">Select a state…</option>
+</select>
+
+<div id="state-output" style="display:none; margin-top:8px;">
+  <input id="state-url" readonly style="width:100%; padding:8px;" />
+  <div style="margin-top:8px;">
+    <a id="state-open" href="#" target="_blank" rel="noopener">Open link</a>
+  </div>
+</div>
+
+<script>
+  // --- CONFIG ---
+  const API_KEY  = "AIzaSyCzuh9HBfe0r70r9U35Pe406PPZ-tz6I78";
+  const SHEET_ID = "19wBEj9hEkvIyQcoR5E_mBGVAxTzMnddMxk8nuQLAumA";
+  // Tab: "State Elections", Range: A2:B51  (A = URL, B = State)
+  const RAW_RANGE = "'State Elections'!A2:B51";
+  const RANGE = encodeURIComponent(RAW_RANGE);
+
+  // State -> URL map
+  let stateLinkMap = {};
+
+  async function fetchStateLinks() {
     const url = `https://sheets.googleapis.com/v4/spreadsheets/${SHEET_ID}/values/${RANGE}?key=${API_KEY}`;
     try {
       const res = await fetch(url);
+      if (!res.ok) throw new Error(`HTTP ${res.status}`);
       const json = await res.json();
-      return json.values || [];
-    } catch (err) {
-      console.error("Failed to fetch sheet data", err);
-      const select = document.getElementById("person-select");
-      if (select) {
-        select.innerHTML = '<option value="">Failed to load data. Please try again later.</option>';
+      const rows = json.values || [];
+      // Build map: Column B (state) -> Column A (url)
+      stateLinkMap = {};
+      for (const row of rows) {
+        const url = (row[0] || "").trim();
+        const state = (row[1] || "").trim();
+        if (state && url) stateLinkMap[state] = url; // last-one-wins for dupes
       }
-      return [];
+      populateStateDropdown();
+    } catch (e) {
+      console.error("Failed to fetch State Elections data:", e);
     }
   }
 
-  function showScores() {
-    const select = document.getElementById("person-select");
-    const table = document.getElementById("score-table");
-    const tbody = document.getElementById("score-body");
-    const selected = select.value;
-    if (!selected || !window.rowMap || !window.rowMap[selected]) {
-      table.style.display = "none";
+  function populateStateDropdown() {
+    const sel = document.getElementById("state-select");
+    // Clear but keep placeholder
+    sel.innerHTML = '<option value="">Select a state…</option>';
+    const states = Object.keys(stateLinkMap).sort((a, b) => a.localeCompare(b));
+    for (const state of states) {
+      const opt = document.createElement("option");
+      opt.value = state;
+      opt.textContent = state;
+      sel.appendChild(opt);
+    }
+    sel.disabled = states.length === 0;
+  }
+
+  function handleStateChange(e) {
+    const state = e.target.value;
+    const link = stateLinkMap[state];
+    const outWrap = document.getElementById("state-output");
+    const urlInput = document.getElementById("state-url");
+    const openA = document.getElementById("state-open");
+
+    if (!state || !link) {
+      outWrap.style.display = "none";
+      urlInput.value = "";
+      openA.href = "#";
       return;
     }
 
-    const row = window.rowMap[selected];
-    tbody.innerHTML = "";
-    let total = 0;
+    // Show + update
+    urlInput.value = link;
+    openA.href = link;
+    outWrap.style.display = "block";
 
-    const categories = [
-      "Constitutional Knowledge", "Legal Framework", "Federalism",
-      "Election Mechanics", "Electoral Count Process", "Disinformation Awareness",
-      "Public Impact", "Judicial Oversight", "Election Worker Protections",
-      "Psychological Manipulation"
-    ];
-
-    for (let i = 0; i < 10; i++) {
-      const label = categories[i];
-      const score = parseInt(row[3 + i]) || 0;
-      const explanation = row[14 + i] || "";
-
-      const tr = document.createElement("tr");
-      tr.innerHTML = `<td>${label}</td><td>${score >= 0 ? "+" : ""}${score}</td><td>${explanation}</td>`;
-      tbody.appendChild(tr);
-      total += score;
-    }
-
-    const flag = (row[24] || "").toLowerCase();
-    let bonus = 0, label = "", desc = "";
-
-    if (flag === "true") {
-      bonus = -10;
-      label = "2020 Election Denial Penalty";
-      desc = "Denial of the 2020 election outcome signals rejection of verified democratic processes and aligns with disinformation or blind loyalty.";
-    } else if (flag === "false") {
-      bonus = 5;
-      label = "2020 Election Affirmation Bonus";
-      desc = "Publicly affirming the legitimacy of the 2020 election supports truth, counters disinformation, and helps protect democratic confidence.";
-    } else if (flag === "gray") {
-      bonus = -5;
-      label = "Ambiguous Stance Penalty";
-      desc = "Failure to clearly affirm the 2020 election results contributes to public doubt and enables misinformation to spread unchecked.";
-    }
-
-    if (label) {
-      const bonusClass = bonus >= 0 ? "positive-score" : "negative-score";
-      const tr = document.createElement("tr");
-      tr.innerHTML = `<td><strong>${label}</strong></td><td class="${bonusClass}"><strong>${bonus >= 0 ? "+" : ""}${bonus}</strong></td><td><strong>${desc}</strong></td>`;
-      tbody.appendChild(tr);
-      total += bonus;
-    }
-
-    const summary = row[13] || "No summary provided.";
-    const totalClass = total >= 0 ? "positive-score" : "negative-score";
-    const totalRow = document.createElement("tr");
-    totalRow.innerHTML = `<td><strong>Total Score</strong></td><td class="${totalClass}"><strong>${total >= 0 ? "+" : ""}${total}</strong></td><td><strong>${summary}</strong></td>`;
-    tbody.appendChild(totalRow);
-
-    table.style.display = "table";
+    // OPTIONAL: auto-open in a new tab on selection (comment out if undesired)
+    // window.open(link, "_blank", "noopener");
   }
 
-  async function initElectionPage() {
-    window.rowMap = {};
-    const data = await fetchTRUData();
-    data.forEach(row => {
-      const key = row[0];
-      if (key) window.rowMap[key] = row;
-    });
-
-    const select = document.getElementById("person-select");
-    if (!select) return;
-
-    select.innerHTML = '<option value="">Choose a name</option>';
-    Object.keys(window.rowMap).sort().forEach(name => {
-      const opt = document.createElement("option");
-      opt.value = name;
-      opt.textContent = name.replace(/([A-Z])/g, " $1").replace(/^./, s => s.toUpperCase());
-      select.appendChild(opt);
-    });
-
-    select.removeEventListener("change", showScores);
-    select.addEventListener("change", showScores);
-  }
-
-  window.addEventListener("DOMContentLoaded", initElectionPage);
-   const API_KEY = "AIzaSyB3NmN4OpDutbaX6V2KkLy1p-vDLghrF5M";
-    const SHEET_ID = "1p66gmWWjxJbrySxpR5T--fP8iEgUbW7RrXru61gagRA";
-    const RANGE = "HeritageVoterfraudRawData!B6:D1589";
-
-    async function fetchSheetData() {
-      const url = `https://sheets.googleapis.com/v4/spreadsheets/${SHEET_ID}/values/${RANGE}?key=${API_KEY}`;
-      try {
-        const res = await fetch(url);
-        const data = await res.json();
-        return data.values || [];
-      } catch (error) {
-        console.error("Failed to fetch data:", error);
-        return [];
-      }
-    }
-
-    function populateDropdown(statesSet, stateSelect) {
-      const sortedStates = Array.from(statesSet).sort();
-      sortedStates.forEach(state => {
-        const opt = document.createElement("option");
-        opt.value = state;
-        opt.textContent = state;
-        stateSelect.appendChild(opt);
-      });
-    }
-
-    async function initStateFraudPage() {
-      const stateSelect = document.getElementById("state-select");
-      const tableBody = document.getElementById("state-data-body");
-      const resultsWrapper = document.getElementById("state-results");
-      const summaryLine = document.getElementById("state-summary");
-
-      if (!stateSelect || !tableBody || !resultsWrapper || !summaryLine) {
-        console.warn("[statefraud] Required elements not found.");
-        return;
-      }
-
-      const rows = await fetchSheetData();
-      const statesSet = new Set(rows.map(row => row[1]));
-      populateDropdown(statesSet, stateSelect);
-
-      stateSelect.addEventListener("change", function () {
-        const selected = this.value;
-        tableBody.innerHTML = "";
-        summaryLine.textContent = "";
-
-        const filtered = rows.filter(row => row[1] === selected);
-
-        if (filtered.length === 0) {
-          tableBody.innerHTML = `<tr><td colspan="3">No records found for ${selected}</td></tr>`;
-          resultsWrapper.style.display = "flex";
-          return;
-        }
-
-        const sorted = filtered.sort((a, b) => parseInt(a[0]) - parseInt(b[0]));
-
-        const years = sorted.map(row => parseInt(row[0])).filter(year => !isNaN(year));
-        const minYear = Math.min(...years);
-        const maxYear = Math.max(...years);
-        const caseCount = sorted.length;
-
-        summaryLine.textContent = `${caseCount} case${caseCount === 1 ? '' : 's'} found from ${minYear} to ${maxYear}`;
-
-        sorted.forEach(row => {
-          const year = row[0];
-          const state = row[1];
-          const name = row[2];
-          const tr = document.createElement("tr");
-          tr.innerHTML = `<td>${year}</td><td>${state}</td><td>${name}</td>`;
-          tableBody.appendChild(tr);
-        });
-
-        resultsWrapper.style.display = "flex";
-      });
-    }
-   function toggleMenu() {
-    const menu = document.getElementById("navMenu");
-    menu.classList.toggle("show");
-  }
-
-    // ✅ Enable for standalone mode
-    window.addEventListener("DOMContentLoaded", initStateFraudPage);
-  function toggleMenu() {
-    document.getElementById("navMenu").classList.toggle("show");
-  }
-  // --- Culture Subs JS ---
-  async function fetchCultureData() {
-    const SHEET_ID = "19wBEj9hEkvIyQcoR5E_mBGVAxTzMnddMxk8nuQLAumA";
-    const RANGE = "CultureSubs!A2:D1000";
-    const url = `https://sheets.googleapis.com/v4/spreadsheets/${SHEET_ID}/values/${RANGE}?key=AIzaSyCzuh9HBfe0r70r9U35Pe406PPZ-tz6I78`;
-
-    try {
-      const res = await fetch(url);
-      const data = await res.json();
-      return data.values || [];
-    } catch (error) {
-      console.error("Failed to fetch CultureSubs data:", error);
-      return [];
-    }
-  }
-
-  async function initCulturePage() {
-    const dropdown = document.getElementById("culture-select");
-    const cultureRows = await fetchCultureData();
-    const subjectSet = new Set(cultureRows.map(row => row[0]));
-
-    // Clear and repopulate dropdown only
-    dropdown.innerHTML = '<option value="">Misconception</option>';
-    subjectSet.forEach(subject => {
-      const opt = document.createElement("option");
-      opt.value = subject;
-      opt.textContent = subject;
-      dropdown.appendChild(opt);
-    });
-
-    window.cultureMap = {};
-    cultureRows.forEach(row => {
-      const subject = row[0];
-      if (!window.cultureMap[subject]) {
-        window.cultureMap[subject] = [];
-      }
-      window.cultureMap[subject].push({ subcategory: row[1], claim: row[2], extra: row[3] || "" });
-    });
-  }
-
-  function showCultureSubs() {
-    const selected = document.getElementById("culture-select").value;
-    const wrapper = document.getElementById("culture-results");
-    const body = document.getElementById("culture-body");
-    body.innerHTML = "";
-
-    if (!selected || !window.cultureMap[selected]) {
-      wrapper.style.display = "none";
-      return;
-    }
-
-    window.cultureMap[selected].forEach(({ claim, extra }) => {
-      const claimRow = document.createElement("tr");
-      claimRow.innerHTML = `<td colspan="3" style="padding-left: 12px; padding-top: 16px; color: #FF7F7F; font-weight: bold;"><em>Claim:</em> ${claim}</td>`;
-      body.appendChild(claimRow);
-
-      const factRow = document.createElement("tr");
-      factRow.innerHTML = `<td colspan="3" style="padding-left: 20px; padding-bottom: 12px; color: var(--understanding);"><em>Fact:</em> ${extra}</td>`;
-      body.appendChild(factRow);
-    });
-
-    wrapper.style.display = "block";
-  }
-
-  window.addEventListener("DOMContentLoaded", initCulturePage);
+  document.addEventListener("DOMContentLoaded", () => {
+    fetchStateLinks();
+    document.getElementById("state-select").addEventListener("change", handleStateChange);
+  });
 </script>
 
 </body>
