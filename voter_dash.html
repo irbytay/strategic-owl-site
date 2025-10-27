@@ -480,15 +480,18 @@
     font-family: 'Inter', sans-serif;
   }
     /* ── Voter Dashboard: State Picker (brand-aligned) ─────────────────────── */
+/* ── Voter Dashboard: State Picker (brand-aligned) ─────────────────────── */
 /* Center the selected value across browsers */
 #state-select {
-  display: block;
+  display: block;             /* ensures margin centering works */
   width: 100%;
   max-width: 360px;
   margin: 12px auto;
-  text-align-last: center;
+  text-align: center;         /* Safari/iOS */
+  text-align-last: center;    /* Chrome/Edge/Firefox */
+  -webkit-appearance: none;   /* let text-align apply on Safari */
 }
-#state-select option { text-align: center; }
+#state-select option { text-align: center; }  /* helps Safari/iOS */
 
 /* Output wrapper (hidden by default; JS sets to block) */
 .state-output {
@@ -498,7 +501,7 @@
   max-width: 560px;
   margin-left: auto;
   margin-right: auto;
-  text-align: center;        /* center inline content */
+  text-align: center;
 }
 
 /* Read-only URL field */
@@ -512,11 +515,28 @@
   box-shadow: 0 2px 6px var(--shadow);
   font-family: 'Inter', sans-serif;
   font-size: 0.98rem;
-  text-align: center;        /* center the URL text */
+  text-align: center;
 }
 #state-url::selection {
   background: var(--understanding);
   color: #0D1B2A;            /* deep navy for contrast */
+}
+
+/* Election date line (from Column C) */
+.state-date {
+  margin-top: 10px;
+  font-family: 'Inter', sans-serif;
+  font-size: 0.98rem;
+  color: var(--text-muted);
+  text-align: center;
+}
+.state-date .date-label {
+  font-weight: 600;
+  margin-right: 6px;
+}
+.state-date .date-value {
+  color: var(--understanding);
+  font-weight: 700;
 }
 
 /* Action row */
@@ -530,8 +550,8 @@
 #state-open {
   display: inline-block;
   padding: 10px 16px;
-  background-color: var(--understanding);  /* gold */
-  color: #0D1B2A;                          /* deep navy */
+  background-color: var(--understanding);
+  color: #0D1B2A;
   font-weight: 700;
   text-decoration: none;
   border-radius: 8px;
@@ -582,11 +602,12 @@
       </div>
     </section>
     <select id="state-select">
-  <option value="">Your state:</option>
+  <option value="">Your State:</option>
 </select>
 
 <div id="state-output" class="state-output">
   <input id="state-url" readonly />
+  <div id="state-date" class="state-date"></div>
   <div class="state-actions">
     <a id="state-open" href="#" target="_blank" rel="noopener">Open link</a>
   </div>
@@ -615,12 +636,12 @@
   // --- CONFIG ---
   const API_KEY  = "AIzaSyCzuh9HBfe0r70r9U35Pe406PPZ-tz6I78";
   const SHEET_ID = "19wBEj9hEkvIyQcoR5E_mBGVAxTzMnddMxk8nuQLAumA";
-  // Tab: "State Elections", Range: A2:B51  (A = URL, B = State)
+  // Tab: "State Elections", Range: A2:C51  (A = URL, B = State, C = Upcoming Election Date)
   const RAW_RANGE = "'State Elections'!A2:C51";
   const RANGE = encodeURIComponent(RAW_RANGE);
 
-  // State -> URL map
-  let stateLinkMap = {};
+  // State -> { url, date } map
+  let stateMetaMap = {};
 
   async function fetchStateLinks() {
     const url = `https://sheets.googleapis.com/v4/spreadsheets/${SHEET_ID}/values/${RANGE}?key=${API_KEY}`;
@@ -629,13 +650,16 @@
       if (!res.ok) throw new Error(`HTTP ${res.status}`);
       const json = await res.json();
       const rows = json.values || [];
-      // Build map: Column B (state) -> Column A (url)
-      stateLinkMap = {};
+
+      // Build map: Column B (state) -> { url: Column A, date: Column C }
+      stateMetaMap = {};
       for (const row of rows) {
         const url = (row[0] || "").trim();
         const state = (row[1] || "").trim();
-        if (state && url) stateLinkMap[state] = url; // last-one-wins for dupes
+        const dateRaw = (row[2] || "").trim();
+        if (state && url) stateMetaMap[state] = { url, date: dateRaw }; // last-one-wins
       }
+
       populateStateDropdown();
     } catch (e) {
       console.error("Failed to fetch State Elections data:", e);
@@ -646,7 +670,7 @@
     const sel = document.getElementById("state-select");
     // Clear but keep placeholder
     sel.innerHTML = '<option value="">Your State:</option>';
-    const states = Object.keys(stateLinkMap).sort((a, b) => a.localeCompare(b));
+    const states = Object.keys(stateMetaMap).sort((a, b) => a.localeCompare(b));
     for (const state of states) {
       const opt = document.createElement("option");
       opt.value = state;
@@ -658,25 +682,50 @@
 
   function handleStateChange(e) {
     const state = e.target.value;
-    const link = stateLinkMap[state];
+    const meta = stateMetaMap[state];
+    const link = meta && meta.url;
+    const dateStr = meta && meta.date;
+
     const outWrap = document.getElementById("state-output");
     const urlInput = document.getElementById("state-url");
     const openA = document.getElementById("state-open");
+    const dateEl = document.getElementById("state-date");
 
     if (!state || !link) {
       outWrap.style.display = "none";
       urlInput.value = "";
       openA.href = "#";
+      if (dateEl) { dateEl.innerHTML = ""; }
       return;
     }
 
     // Show + update
     urlInput.value = link;
     openA.href = link;
+
+    // Render date if available
+    if (dateEl) {
+      if (dateStr) {
+        dateEl.innerHTML = `<span class="date-label">Upcoming election:</span> <strong class="date-value">${formatDate(dateStr)}</strong>`;
+      } else {
+        dateEl.innerHTML = "";
+      }
+    }
+
     outWrap.style.display = "block";
 
-    // OPTIONAL: auto-open in a new tab on selection (comment out if undesired)
+    // OPTIONAL: auto-open in a new tab on selection
     // window.open(link, "_blank", "noopener");
+  }
+
+  function formatDate(input) {
+    const d = new Date(input);
+    if (!isNaN(d.getTime())) {
+      return d.toLocaleDateString('en-US', {
+        weekday: 'short', month: 'short', day: 'numeric', year: 'numeric'
+      });
+    }
+    return input; // fallback if sheet already has human-readable text
   }
 
   document.addEventListener("DOMContentLoaded", () => {
