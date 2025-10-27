@@ -482,11 +482,13 @@
     /* ── Voter Dashboard: State Picker (brand-aligned) ─────────────────────── */
 /* Center the selected value across browsers */
 #state-select {
+  display: block;
   width: 100%;
   max-width: 360px;
-  text-align-last: center;   /* Chrome/Edge/Firefox */
+  margin: 12px auto;
+  text-align-last: center;
 }
-#state-select option { text-align: center; }  /* helps Safari/iOS */
+#state-select option { text-align: center; }
 
 /* Output wrapper (hidden by default; JS sets to block) */
 .state-output {
@@ -614,7 +616,7 @@
   const API_KEY  = "AIzaSyCzuh9HBfe0r70r9U35Pe406PPZ-tz6I78";
   const SHEET_ID = "19wBEj9hEkvIyQcoR5E_mBGVAxTzMnddMxk8nuQLAumA";
   // Tab: "State Elections", Range: A2:B51  (A = URL, B = State)
-  const RAW_RANGE = "'State Elections'!A2:B51";
+  const RAW_RANGE = "'State Elections'!A2:C51";
   const RANGE = encodeURIComponent(RAW_RANGE);
 
   // State -> URL map
@@ -643,7 +645,7 @@
   function populateStateDropdown() {
     const sel = document.getElementById("state-select");
     // Clear but keep placeholder
-    sel.innerHTML = '<option value="">Select a state…</option>';
+    sel.innerHTML = '<option value="">Your State:</option>';
     const states = Object.keys(stateLinkMap).sort((a, b) => a.localeCompare(b));
     for (const state of states) {
       const opt = document.createElement("option");
