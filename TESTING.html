@@ -479,6 +479,29 @@
     text-shadow: 0 0 6px rgba(0, 0, 0, 0.6);
     font-family: 'Inter', sans-serif;
   }
+    /* Enhance dropdown styling */
+#state-select {
+  display: block;                       /* ensures we can center it */
+  margin: 12px auto;                     /* auto left/right centers */
+  padding: 10px 16px;
+  font-family: 'Inter', sans-serif;
+  font-size: 1rem;
+  background-color: var(--surface);
+  color: var(--text);
+  border: 1px solid var(--highlight);
+  border-radius: 6px;                    /* rounded corners for consistency */
+  text-align: center;                    /* centers the text inside */
+  cursor: pointer;
+  box-shadow: 0 2px 6px var(--shadow);
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+#state-select:hover, 
+#state-select:focus {
+  border-color: var(--understanding);    /* gold border on focus */
+  box-shadow: 0 0 6px var(--understanding);
+  outline: none;
+}
 </style>
 
 <nav class="top-nav">
