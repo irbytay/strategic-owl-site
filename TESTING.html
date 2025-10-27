@@ -513,6 +513,15 @@
   color: var(--truth);                  /* green */
   text-shadow: 0 0 8px var(--understanding);
 }
+    #sheet-items p {           /* make sure nothing fights your global <p> styles */
+  background: none;
+  border: 0;
+  box-shadow: none;
+  padding: 0;
+  max-width: 700px;        /* matches your global <p> */
+  margin-left: auto;
+  margin-right: auto;
+}
 </style>
 
 <nav class="top-nav">
