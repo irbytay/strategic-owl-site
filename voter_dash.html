@@ -489,7 +489,6 @@
   margin: 12px auto;
   text-align: center;         /* Safari/iOS */
   text-align-last: center;    /* Chrome/Edge/Firefox */
-  -webkit-appearance: none;   /* let text-align apply on Safari */
 }
 #state-select option { text-align: center; }  /* helps Safari/iOS */
 
@@ -602,7 +601,7 @@
       </div>
     </section>
     <select id="state-select">
-  <option value="">Your State:</option>
+  <option value="">Select Your State:</option>
 </select>
 
 <div id="state-output" class="state-output">
@@ -669,7 +668,7 @@
   function populateStateDropdown() {
     const sel = document.getElementById("state-select");
     // Clear but keep placeholder
-    sel.innerHTML = '<option value="">Your State:</option>';
+    sel.innerHTML = '<option value="">Select Your State:</option>';
     const states = Object.keys(stateMetaMap).sort((a, b) => a.localeCompare(b));
     for (const state of states) {
       const opt = document.createElement("option");
