@@ -479,29 +479,6 @@
     text-shadow: 0 0 6px rgba(0, 0, 0, 0.6);
     font-family: 'Inter', sans-serif;
   }
-    /* Enhance dropdown styling */
-#state-select {
-  display: block;                       /* ensures we can center it */
-  margin: 12px auto;                     /* auto left/right centers */
-  padding: 10px 16px;
-  font-family: 'Inter', sans-serif;
-  font-size: 1rem;
-  background-color: var(--surface);
-  color: var(--text);
-  border: 1px solid var(--highlight);
-  border-radius: 6px;                    /* rounded corners for consistency */
-  text-align: center;                    /* centers the text inside */
-  cursor: pointer;
-  box-shadow: 0 2px 6px var(--shadow);
-  transition: border-color 0.2s ease, box-shadow 0.2s ease;
-}
-
-#state-select:hover, 
-#state-select:focus {
-  border-color: var(--understanding);    /* gold border on focus */
-  box-shadow: 0 0 6px var(--understanding);
-  outline: none;
-}
 </style>
 
 <nav class="top-nav">
@@ -514,6 +491,7 @@
     <a href="Index.html">Home</a>
     <a href="Dash.html">Dash's</a>
     <a href="TRUOWL3.html">T.R.U. Owl</a>
+    <a href="voter_dash.html">Voter Dash</a>
     <a href="strategic-owl-insight-quiz.html">Insight Quiz</a>
     <a href="realitycheck.html">Reality Check</a>
     <a href="the_constitution.html">The Constitution</a>
@@ -522,7 +500,7 @@
   </div>
 </nav>
   <div class="container">
-    <h1>Voter Dashboard</h1>
+    <h1>The Strategic Owl</h1>
 <!-- 🎯 Divider -->
     <section class="divider-section">
       <div class="divider-bar">
@@ -537,15 +515,104 @@
       </div>
     </section>
     <!-- Legal Popup -->
-<select id="state-select">
-  <option value="">Select a state…</option>
-</select>
+<div id="legal-popup">
+  <div>
+    <h1 style="font-family: 'Playfair Display', serif; color: var(--heading); margin-bottom: 20px;">Well hello there.</h1>
 
-<div id="state-output" style="display:none; margin-top:8px;">
-  <input id="state-url" readonly style="width:100%; padding:8px;" />
-  <div style="margin-top:8px;">
-    <a id="state-open" href="#" target="_blank" rel="noopener">Open link</a>
+    <p>How do you even know what's real anymore?</p>
+    <p>If you've lost trust in the system, you're not wrong. That’s by design.</p>
+
+    <p style="margin-top: 24px;">Now let me get the legal stuff out of the way.</p>
+
+    <p>
+      This site is protected under the <strong>First Amendment</strong> of the United States Constitution.<br>
+      All content herein is published for educational and informational purposes.<br>
+      It is not intended to defame, mislead, or incite.<br>
+      Every claim is supported by public records, sourced materials, or verifiable data — and transparency is built into the system to ensure I’m held to the same standards I use to assess others.
+    </p>
+
+    <p style="font-weight: bold; margin-top: 16px;">
+      Truth-telling is still legal — even if it ruffles a few red hats.
+    </p>
+
+    <h2 style="font-family: 'Playfair Display', serif; color: var(--heading); margin-top: 32px;">Join the Watch</h2>
+
+    <p>
+      By continuing, you're not just entering a site — you're stepping into an experience designed to make you think.<br>
+      You're part of a broader mission to restore trust in what’s real.
+    </p>
+
+    <div style="text-align: center; margin-top: 24px;">
+      <a href="index.html" id="accept-link" class="important-link">I understand. Let me in.</a>
+    </div>
+
+    <p style="margin-top: 12px; font-size: 0.8rem; color: var(--text-muted);">
+      This moment will be remembered for 30 days.<br>
+      This website uses publicly available data, court records, and verifiable sources. Nothing here is hidden — it’s all in the open.
+    </p>
   </div>
+</div>
+   <!-- 📱 App Promo Section -->
+  <div class="misconception-intro-container" style="background: linear-gradient(to bottom right, #1A2B4C, #0D1B2A); border: 1px solid #D4AF37; box-shadow: 0 0 12px rgba(212, 175, 55, 0.3); border-radius: 12px; padding: 24px; margin-top: 40px; text-align: center;">
+    <span class="announcement-label" style="text-align: center; display: block;">Mission Update:</span>
+    <p style="text-align: center; max-width: 720px;">The Strategic Owl iPhone app brings everything you see here—credibility tools, the Constitution, and more—into your pocket, optimized for clarity and built for truth.</p>
+    <a href="https://apps.apple.com/app/the-strategic-owl/id6748349497" class="important-link" style="font-size: 1.15rem; text-align: center; display: inline-block;">Now on  App Store</a>
+    <p style="text-align: center; margin-top: 24px;">Explore the platform:</p>
+    <a href="TRUOWL3.html" class="important-link" style="text-align: center; display: inline-block;">The T.R.U. Owl</a>
+    <div style="margin-top: 6px; text-align: center;">
+      <span class="text-truth">Truth</span> · 
+      <span class="text-reliability">Reliability</span> · 
+      <span class="text-understanding">Understanding</span>
+    </div>
+    <div style="margin-top: 12px; display: flex; flex-direction: column; gap: 12px;">
+      <a href="strategic-owl-insight-quiz.html" class="important-link" style="text-align: center; display: inline-block;">Take the Insight Quiz</a>
+      <a href="the_constitution.html" class="important-link" style="text-align: center; display: inline-block;">Read the Constitution</a>
+    </div>
+  </div>
+<div class="announcement-box">
+  <h2>How do you know what’s true anymore?</h2>
+  <p>
+    If you’ve felt overwhelmed, misled, or just unsure who to trust — you’re not alone.  
+    I’ve felt it too. That’s why I’ve spent the time building something that helps make sense of it all — not with opinions, but with structure.
+  </p>
+  <h2>So how do you know whats true?</h2>
+  <p>I’ve asked that same question too.
+    Not as a journalist or politician, just as someone trying to make sense of a world full of contradictions. That’s why I built this system. 
+    I use tools most people call “AI,” but really, they’re language models — and I use them literally: to improve how I write, break down complex topics, and build on things I’ve already created. 
+    Sometimes I’ll refine a sentence or generate clean text I can plug into tools that help me visualize and explain what I’m trying to show. 
+    It helps me think more clearly — and when you think clearly, truth starts to show itself.
+  </p>
+  <h2>Objective truth vs subjective truth</h2>
+  <p>
+    Some things are objectively true — true whether we like them or not.  
+    The Earth is round. That’s not an opinion. It’s a measurable fact.  
+    And yet, there are people with real platforms who call it a hoax — not because of evidence, but because NASA is part of the government.  
+    That’s what we call a subjective truth: a belief someone feels in their gut, even when all the facts say otherwise.  
+    One man even built a rocket to prove the Earth was flat. He launched himself into the sky… and died proving NASA right.  
+    That’s why objective truth matters — it keeps us grounded in reality, no matter how loud the spin gets.
+  </p>
+  <h2>Citizenship Is a Fact — Voter Fraud Is a Fear</h2>
+  <p>When you’re born, you get a birth certificate — proof of citizenship. That’s another objective truth. And with that comes the constitutional right to vote, protected by the 14th, 15th, 19th, and 26th Amendments.
+  </p>
+  <p>What isn’t an objective truth is the belief that millions of undocumented immigrants are voting in our elections. That’s a narrative — not a fact. The idea of widespread voter fraud gets repeated so often that it feels real to some people. But it’s not backed by evidence. It’s a subjective fear that’s been turned into political fuel — and that’s exactly why we need systems grounded in verifiable truth.
+  </p>
+  <h2>Truth Deserves Better Tools</h2>
+  <p><a href="TRUOWL3.html" class="important-link">T.R.U. Owl</a> is a system built to help make patterns easier to see — 
+    to separate objective truth from subjective spin. That includes helping people contextualize issues like voter fraud.
+    It’s true that voter fraud exists, but the scale is often misrepresented.
+    That’s why I created a separate tool to show the actual data.
+    You can explore it for yourself — just  
+    <a href="realitycheck.html" class="important-link">select a state and see how many cases exist</a> 
+    based on Heritage Foundation records. 
+    The data speaks for itself: voter fraud is real, but it’s rare. 
+    Context cuts through the noise — and that’s what this platform is all about. It tracks credibility the way it works in real life: you earn it, you lose it, and if you lie, you don’t get to just hit reset.
+  </p>
+  <h2>The End Goal</h2>
+  <p>
+    If more people start asking “Who’s telling the truth?” instead of “Whose side are you on?”—everything changes. 
+    Politicians, media, journalists, and influencers—they’ll have to compete on honesty, not just volume. 
+    This is how we take back the conversation.
+  </p>
 </div>
      <!-- 🎯 Divider -->
     <section class="divider-section">
@@ -566,78 +633,106 @@
   <footer style="text-align: center; padding: 24px 12px; font-size: 12px; color: #D4AF37; text-shadow: 0 0 6px rgba(0,0,0,0.6);">
     © 2025 The Strategic Owl. All rights reserved. This platform is protected under U.S. copyright and constitutional law. Unauthorized use, duplication, or distortion of content is prohibited. Created by Taylor Irby — designed for clarity, built for truth.
   </footer>
-
 <script>
-  // --- CONFIG ---
-  const API_KEY  = "AIzaSyCzuh9HBfe0r70r9U35Pe406PPZ-tz6I78";
-  const SHEET_ID = "19wBEj9hEkvIyQcoR5E_mBGVAxTzMnddMxk8nuQLAumA";
-  // Tab: "State Elections", Range: A2:B51  (A = URL, B = State)
-  const RAW_RANGE = "'State Elections'!A2:B51";
-  const RANGE = encodeURIComponent(RAW_RANGE);
+  const legalPopup = document.getElementById('legal-popup');
+  const lastAccepted = localStorage.getItem('legalPopupAccepted');
+  const now = new Date().getTime();
+  const thirtyDays = 1000 * 60 * 60 * 24 * 30;
 
-  // State -> URL map
-  let stateLinkMap = {};
+  if (!lastAccepted || now - parseInt(lastAccepted) > thirtyDays) {
+    legalPopup.style.display = 'block';
+  }
 
-  async function fetchStateLinks() {
-    const url = `https://sheets.googleapis.com/v4/spreadsheets/${SHEET_ID}/values/${RANGE}?key=${API_KEY}`;
-    try {
-      const res = await fetch(url);
-      if (!res.ok) throw new Error(`HTTP ${res.status}`);
-      const json = await res.json();
-      const rows = json.values || [];
-      // Build map: Column B (state) -> Column A (url)
-      stateLinkMap = {};
-      for (const row of rows) {
-        const url = (row[0] || "").trim();
-        const state = (row[1] || "").trim();
-        if (state && url) stateLinkMap[state] = url; // last-one-wins for dupes
+  document.getElementById('accept-link').addEventListener('click', () => {
+  localStorage.setItem('legalPopupAccepted', Date.now().toString());
+});
+  function toggleMenu() {
+    document.getElementById("mobileMenu").classList.toggle("show");
+    // Also toggle open class for outside click detection
+    document.getElementById("mobileMenu").classList.toggle("open");
+  }
+  type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "Person",
+      "name": "Taylor Irby",
+      "url": "https://thestrategicowl.com",
+      "sameAs": [
+        "https://strategicowl.substack.com",
+        "https://www.youtube.com/@StrategicOwl",
+        "https://twitter.com/StrategicOwl"
+      ],
+      "jobTitle": "Founder",
+      "worksFor": {
+        "@type": "Organization",
+        "name": "The Strategic Owl"
       }
-      populateStateDropdown();
-    } catch (e) {
-      console.error("Failed to fetch State Elections data:", e);
+    },
+    {
+      "@type": "Organization",
+      "name": "The Strategic Owl",
+      "url": "https://thestrategicowl.com",
+      "logo": "https://thestrategicowl.com/TSO.png",
+      "description": "Tools and insights for measuring credibility, decoding misinformation, and inspiring civic awareness.",
+      "founder": {
+        "@type": "Person",
+        "name": "Taylor Irby"
+      },
+      "sameAs": [
+        "https://strategicowl.substack.com",
+        "https://www.youtube.com/@StrategicOwl"
+      ]
+    },
+    {
+      "@type": "WebSite",
+      "name": "The Strategic Owl",
+      "url": "https://thestrategicowl.com",
+      "description": "Strategic analysis, digital tools, and credibility scoring to help people uncover truth in the age of distortion.",
+      "publisher": {
+        "@type": "Organization",
+        "name": "The Strategic Owl"
+      }
+    },
+    {
+      "@type": "WebApplication",
+      "name": "TRU OWL Score Viewer",
+      "url": "https://thestrategicowl.com/the_constitution",
+      "applicationCategory": "EducationalApplication",
+      "operatingSystem": "All",
+      "browserRequirements": "Requires JavaScript",
+      "description": "A digital tool to measure truth, reliability, and understanding through structured credibility scores."
+    },
+    {
+      "@type": "CreativeWork",
+      "name": "The OwlCast Podcast",
+      "url": "https://www.youtube.com/@StrategicOwl",
+      "author": {
+        "@type": "Person",
+        "name": "Taylor Irby"
+      },
+      "inLanguage": "en",
+      "description": "A podcast that blends music, political analysis, and strategic insight to help people break through distortion."
     }
-  }
+  ]
+}
+</script>
+<script>
+  // Auto-close mobile menu when clicking/tapping outside
+  document.addEventListener('click', function (event) {
+    const menu = document.getElementById('mobileMenu');
+    const toggle = document.getElementById('menuToggle');
 
-  function populateStateDropdown() {
-    const sel = document.getElementById("state-select");
-    // Clear but keep placeholder
-    sel.innerHTML = '<option value="">Select a state…</option>';
-    const states = Object.keys(stateLinkMap).sort((a, b) => a.localeCompare(b));
-    for (const state of states) {
-      const opt = document.createElement("option");
-      opt.value = state;
-      opt.textContent = state;
-      sel.appendChild(opt);
+    if (!menu || !toggle) return;
+
+    const isClickInsideMenu = menu.contains(event.target);
+    const isClickOnToggle = toggle.contains(event.target);
+
+    if (!isClickInsideMenu && !isClickOnToggle && menu.classList.contains('open')) {
+      menu.classList.remove('open');
+      menu.classList.remove('show');
     }
-    sel.disabled = states.length === 0;
-  }
-
-  function handleStateChange(e) {
-    const state = e.target.value;
-    const link = stateLinkMap[state];
-    const outWrap = document.getElementById("state-output");
-    const urlInput = document.getElementById("state-url");
-    const openA = document.getElementById("state-open");
-
-    if (!state || !link) {
-      outWrap.style.display = "none";
-      urlInput.value = "";
-      openA.href = "#";
-      return;
-    }
-
-    // Show + update
-    urlInput.value = link;
-    openA.href = link;
-    outWrap.style.display = "block";
-
-    // OPTIONAL: auto-open in a new tab on selection (comment out if undesired)
-    // window.open(link, "_blank", "noopener");
-  }
-
-  document.addEventListener("DOMContentLoaded", () => {
-    fetchStateLinks();
-    document.getElementById("state-select").addEventListener("change", handleStateChange);
   });
 </script>
 
