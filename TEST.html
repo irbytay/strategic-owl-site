@@ -925,6 +925,37 @@
     if (zipBtn) zipBtn.addEventListener("click", handleZipLookup);
     if (zipInput) zipInput.addEventListener("keydown", (e) => { if (e.key === "Enter") handleZipLookup(); });
   });
+  // --- ZIP → House lookup helpers ---
+function buildZipForHouse(raw) {
+  let z = String(raw || "").trim();
+  // keep digits and optional dash
+  z = z.replace(/[^\d-]/g, "");
+  // if 9 straight digits, convert to ZIP+4 with dash
+  if (/^\d{9}$/.test(z)) z = z.slice(0,5) + "-" + z.slice(5);
+  // must be 5-digit or 5+4
+  if (!/^\d{5}(-\d{4})?$/.test(z)) return null;
+  return z;
+}
+
+function openHouseLookupFromZip() {
+  const input = document.getElementById("zip-input");
+  const raw = input ? input.value : "";
+  const z = buildZipForHouse(raw);
+  if (!z) {
+    alert("Please enter a valid 5-digit ZIP or ZIP+4 (e.g., 02115 or 02115-1234).");
+    return;
+  }
+  const url = "https://ziplook.house.gov/htbin/findrep_house?ZIP=" + encodeURIComponent(z);
+  window.open(url, "_blank", "noopener,noreferrer");
+}
+  document.addEventListener("DOMContentLoaded", () => {
+  // ...your existing init code...
+
+  const zipValidateBtn = document.getElementById("zip-validate");
+  if (zipValidateBtn) {
+    zipValidateBtn.addEventListener("click", openHouseLookupFromZip);
+  }
+});
 </script>
 
 </body>
