@@ -863,7 +863,7 @@
         <div style="font-weight:700;margin-bottom:6px;">ZIP ${escapeHtml(zip)} → ${escapeHtml(full)} • District ${escapeHtml(num)} <span style="opacity:.7">${primary}</span></div>
         ${renderList("U.S. House Race", house,   (c)=> liCandidate(c))}
         ${renderList("U.S. Senate Race",  senate,  (c)=> liCandidate(c))}
-        ${renderList("Governors Race)",     governor,(c)=> liCandidate(c))}
+        ${renderList("Governor's Race)",     governor,(c)=> liCandidate(c))}
         ${meta.url ? `<div style="margin-top:8px;"><a href="${meta.url}" target="_blank" rel="noopener">Open ${escapeHtml(full)} election page</a></div>` : ""}
       </div>
     `;
@@ -965,7 +965,7 @@
         </div>
         ${renderList("U.S. House Race" + (districtNums.length > 1 ? "s" : ""), house, (c)=> liCandidate(c))}
         ${renderList("U.S. Senate Race",  senate,  (c)=> liCandidate(c))}
-        ${renderList("Governors Race",     governor,(c)=> liCandidate(c))}
+        ${renderList("Governor's Race",     governor,(c)=> liCandidate(c))}
         ${meta.url ? `<div style="margin-top:8px;"><a href="${meta.url}" target="_blank" rel="noopener">Open ${escapeHtml(full)} election page</a></div>` : ""}
       </div>
     `;
