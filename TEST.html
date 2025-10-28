@@ -606,6 +606,10 @@
   <option value="">Select Your State:</option>
 </select>
 
+<select id="state-select">
+  <option value="">Select Your State:</option>
+</select>
+
 <div id="state-output" class="state-output">
   <input id="state-url" readonly />
   <div id="state-date" class="state-date"></div>
@@ -624,8 +628,6 @@
 
 <div id="zip-output" style="display:none; margin-top:14px;"></div>
 
-<!-- Results -->
-<div id="zip-output" style="display:none;"></div>
      <!-- 🎯 Divider -->
     <section class="divider-section">
       <div class="divider-bar">
@@ -841,7 +843,7 @@
     });
 
     out.style.display = "";
-    out.innerHTML = uniq.map(h => renderDistrictCard(zip, h.stateAbbr, h.districtNum)).join("");
+    out.innerHTML = renderCombinedCard(zip, uniq);
   }
 
   function renderDistrictCard(zip, abbr, num) {
@@ -911,6 +913,64 @@
 
   function escapeHtml(s) {
     return String(s).replace(/[&<>"']/g, m => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]));
+  }
+
+  // ---------- NEW HELPERS FOR CONSOLIDATED CARD ----------
+  function sortByFirstName(a, b) {
+    return String(a.name || "").localeCompare(String(b.name || ""), undefined, { sensitivity: "base" });
+  }
+
+  function candidateIsInAnyDistrict(candidateDistrict, hits) {
+    if (!candidateDistrict) return false;
+    const cd = String(candidateDistrict).trim().toUpperCase();
+    for (const h of hits) {
+      const ab = String(h.stateAbbr || "").toUpperCase();
+      const dn = String(h.districtNum || "").trim();
+      if (!ab || !dn) continue;
+      const target = `${ab}-${dn}`;
+      if (cd === target || cd.endsWith(`-${dn}`)) return true;
+      if (dn === "1" && cd === `${ab}-ATLARGE`) return true; // handle AtLarge mapped to "1"
+    }
+    return false;
+  }
+
+  function renderCombinedCard(zip, hits) {
+    // assume all hits are same state; take first for state lookup
+    const first = hits[0] || {};
+    const abbr = (first.stateAbbr || "").toUpperCase();
+    const full = STATE_ABBR_TO_NAME[abbr] || abbr;
+
+    const roster = stateRosterMap[full] || [];
+    const meta   = stateMetaMap[full] || {};
+    const primary = meta.date ? ` (Primary: ${formatDate(meta.date)})` : "";
+
+    // district string like "3, 4, 6"
+    const districtNums = [...new Set(hits.map(h => String(h.districtNum).trim()))].filter(Boolean);
+    const districtsStr = districtNums.join(", ");
+
+    // collect candidates
+    const house = roster
+      .filter(r => /U\.?S\.?\s*House/i.test(r.position) && candidateIsInAnyDistrict(r.district, hits))
+      .sort(sortByFirstName);
+    const senate = roster
+      .filter(r => /U\.?S\.?\s*Senate/i.test(r.position))
+      .sort(sortByFirstName);
+    const governor = roster
+      .filter(r => /Governor/i.test(r.position))
+      .sort(sortByFirstName);
+
+    return `
+      <div style="border:1px solid #D4AF37;border-radius:12px;padding:16px;margin:12px 0;background:#0B1C3D10;">
+        <div style="font-weight:700;margin-bottom:6px;">
+          ZIP ${escapeHtml(zip)} → ${escapeHtml(full)} • District${districtNums.length > 1 ? "s" : ""} ${escapeHtml(districtsStr)}
+          <span style="opacity:.7">${primary}</span>
+        </div>
+        ${renderList("Your U.S. House District" + (districtNums.length > 1 ? "s" : ""), house, (c)=> liCandidate(c))}
+        ${renderList("U.S. Senate (statewide)",  senate,  (c)=> liCandidate(c))}
+        ${renderList("Governor (statewide)",     governor,(c)=> liCandidate(c))}
+        ${meta.url ? `<div style="margin-top:8px;"><a href="${meta.url}" target="_blank" rel="noopener">Open ${escapeHtml(full)} election page</a></div>` : ""}
+      </div>
+    `;
   }
 
   // --- INIT (kept your calls; added our fetch + listeners) ---
