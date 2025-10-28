@@ -25,30 +25,6 @@
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&family=Playfair+Display:wght@600;700&display=swap" rel="stylesheet" />
 
   <style>
-  .tooltip-word::after {
-    content: attr(data-definition);
-    position: absolute;
-    background-color: var(--highlight);
-    color: var(--text);
-    padding: 6px 10px;
-    border-radius: 6px;
-    font-size: 0.85rem;
-    white-space: nowrap;
-    opacity: 0;
-    transition: opacity 0.2s ease;
-    pointer-events: none;
-    transform: translateY(-6px);
-    z-index: 999;
-  }
-
-  .tooltip-word:hover::after,
-  .tooltip-word.touch-active::after {
-    opacity: 1;
-  }
-
-  .tooltip-word {
-    position: relative;
-  }
   :root {
     --background: #0D1B2A;
     --surface: #112240;
@@ -261,7 +237,9 @@
 
   h1 {
     font-family: 'Playfair Display', serif;
-    color: var(--heading);
+    color: var(--understanding);
+    font-size: 2.6rem;
+    font-weight: 700;
     margin-bottom: 16px;
     text-align: center;
   }
@@ -492,26 +470,125 @@
     display: none;
   }
 }
+  /* 📜 Footer */
+  footer {
+    text-align: center;
+    padding: 24px 12px;
+    font-size: 12px;
+    color: #D4AF37;
+    text-shadow: 0 0 6px rgba(0, 0, 0, 0.6);
+    font-family: 'Inter', sans-serif;
+  }
+    /* ── Voter Dashboard: State Picker (brand-aligned) ─────────────────────── */
+/* ── Voter Dashboard: State Picker (brand-aligned) ─────────────────────── */
+/* Center the selected value across browsers */
+#state-select {
+  display: block;             /* ensures margin centering works */
+  width: 100%;
+  max-width: 360px;
+  margin: 12px auto;
+  text-align: center;         /* Safari/iOS */
+  text-align-last: center;    /* Chrome/Edge/Firefox */
+  appearance: auto;           /* restore native look */
+  -webkit-appearance: menulist;
+}
+#state-select option { text-align: center; }  /* helps Safari/iOS */
+
+/* Output wrapper (hidden by default; JS sets to block) */
+.state-output {
+  display: none;
+  margin-top: 12px;
+  width: 100%;
+  max-width: 560px;
+  margin-left: auto;
+  margin-right: auto;
+  text-align: center;
+}
+
+/* Read-only URL field */
+#state-url {
+  width: 100%;
+  padding: 12px 14px;
+  background-color: var(--surface);
+  color: var(--text);
+  border: 1px solid var(--highlight);
+  border-radius: 8px;
+  box-shadow: 0 2px 6px var(--shadow);
+  font-family: 'Inter', sans-serif;
+  font-size: 0.98rem;
+  text-align: center;
+}
+#state-url::selection {
+  background: var(--understanding);
+  color: #0D1B2A;            /* deep navy for contrast */
+}
+
+/* Election date line (from Column C) */
+.state-date {
+  margin-top: 10px;
+  font-family: 'Inter', sans-serif;
+  font-size: 0.98rem;
+  color: var(--text-muted);
+  text-align: center;
+}
+.state-date .date-label {
+  font-weight: 600;
+  margin-right: 6px;
+}
+.state-date .date-value {
+  color: var(--understanding);
+  font-weight: 700;
+}
+
+/* Action row */
+.state-actions {
+  margin-top: 10px;
+  display: flex;
+  justify-content: center;
+}
+
+/* Branded “Open link” button */
+#state-open {
+  display: inline-block;
+  padding: 10px 16px;
+  background-color: var(--understanding);
+  color: #0D1B2A;
+  font-weight: 700;
+  text-decoration: none;
+  border-radius: 8px;
+  box-shadow: 0 2px 6px var(--shadow);
+  transition: transform 0.05s ease, box-shadow 0.2s ease, background-color 0.2s ease;
+}
+#state-open:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 4px 10px var(--shadow);
+}
+#state-open:active {
+  transform: translateY(0);
+  box-shadow: 0 2px 6px var(--shadow);
+}
 </style>
 
 <nav class="top-nav">
-<a href="TRUOWL3.html" class="nav-logo">
-  <img src="owl_logo_white.png" alt="Owl Logo" onerror="this.style.display='none';" />
-  <div class="nav-title">The Strategic Owl</div>
-</a>
-  <button class="menu-toggle" onclick="toggleMenu()">☰</button>
-  <div class="nav-links" id="navMenu">
-    <a href="#TESThome">Home</a>
-    <a href="#dash">Dash's</a>
-    <a href="#tru-owl">T.R.U. Owl</a>
-    <a href="#insight-quiz">Insight Quiz</a>
-    <a href="#realitycheck">Reality Check</a>
-    <a href="#TESTthe_constitution">The Constitution</a>
-    <a href="#contact">Contact</a>
+  <a href="TRUOWL3.html" class="nav-logo">
+    <img src="owl_logo_white.png" alt="Owl Logo" onerror="this.style.display='none';" />
+    <div class="nav-title">The Strategic Owl</div>
+  </a>
+  <button class="menu-toggle" id="menuToggle" onclick="toggleMenu()">☰</button>
+  <div class="nav-links" id="mobileMenu">
+    <a href="Index.html">Home</a>
+    <a href="Dash.html">Dash's</a>
+    <a href="TRUOWL3.html">T.R.U. Owl</a>
+    <a href="voter_dash.html">Voter Dash</a>
+    <a href="strategic-owl-insight-quiz.html">Insight Quiz</a>
+    <a href="realitycheck.html">Reality Check</a>
+    <a href="the_constitution.html">The Constitution</a>
+    <a href="newcontact3.html">Contact</a>
+    <a href="https://strategicfretboard.com" target="_blank" rel="noopener noreferrer">Strategic Fretboard</a>
   </div>
 </nav>
   <div class="container">
-    <h1>The Strategic Owl</h1>
+    <h1>Voter Dashboard</h1>
 <!-- 🎯 Divider -->
     <section class="divider-section">
       <div class="divider-bar">
@@ -525,803 +602,136 @@
         <span>Understanding</span>
       </div>
     </section>
-    <div id="main-view">
-      <!-- Dynamic partial content will be injected here -->
-    </div>
-    <!-- Legal Popup -->
-<div id="legal-popup">
-  <div>
-    <h1 style="font-family: 'Playfair Display', serif; color: var(--heading); margin-bottom: 20px;">Well hello there.</h1>
+    <select id="state-select">
+  <option value="">Select Your State:</option>
+</select>
 
-    <p>How do you even know what's real anymore?</p>
-    <p>If you've lost trust in the system, you're not wrong. That’s by design.</p>
-
-    <p style="margin-top: 24px;">Now let me get the legal stuff out of the way.</p>
-
-    <p>
-      This site is protected under the <strong>First Amendment</strong> of the United States Constitution.<br>
-      All content herein is published for educational and informational purposes.<br>
-      It is not intended to defame, mislead, or incite.<br>
-      Every claim is supported by public records, sourced materials, or verifiable data — and transparency is built into the system to ensure I’m held to the same standards I use to assess others.
-    </p>
-
-    <p style="font-weight: bold; margin-top: 16px;">
-      Truth-telling is still legal — even if it ruffles a few red hats.
-    </p>
-
-    <h2 style="font-family: 'Playfair Display', serif; color: var(--heading); margin-top: 32px;">Join the Watch</h2>
-
-    <p>
-      By continuing, you're not just entering a site — you're stepping into an experience designed to make you think.<br>
-      You're part of a broader mission to restore trust in what’s real.
-    </p>
-
-    <div style="text-align: center; margin-top: 24px;">
-      <a href="index.html" id="accept-link" class="important-link">I understand. Let me in.</a>
-    </div>
-
-    <p style="margin-top: 12px; font-size: 0.8rem; color: var(--text-muted);">
-      This moment will be remembered for 30 days.<br>
-      This website uses publicly available data, court records, and verifiable sources. Nothing here is hidden — it’s all in the open.
-    </p>
+<div id="state-output" class="state-output">
+  <input id="state-url" readonly />
+  <div id="state-date" class="state-date"></div>
+  <div class="state-actions">
+    <a id="state-open" href="#" target="_blank" rel="noopener">Open link</a>
   </div>
 </div>
-   <!-- Desktop Announcement -->
-<div class="announcement-desktop">
-  <div class="announcement-box">
-    <span class="announcement-label">New Tools Released:</span>
-    <span>Try the</span>
-    <a href="strategic-owl-insight-quiz.html" class="important-link">Strategic Insight Quiz</a>
-    <span>used by left, right, and neither — plus explore the</span>
-    <a href="#TESTthe_constitution" class="important-link">The Constitution</a>
-    <span>as it was meant to be understood.</span>
+     <!-- 🎯 Divider -->
+    <section class="divider-section">
+      <div class="divider-bar">
+        <div class="truth"></div>
+        <div class="reliability"></div>
+        <div class="understanding"></div>
+      </div>
+      <div class="divider-labels">
+        <span>Truth</span>
+        <span>Reliability</span>
+        <span>Understanding</span>
+      </div>
+    </section>
   </div>
-</div>
+  </div>
+  <!-- 📜 Footer -->
+  <footer style="text-align: center; padding: 24px 12px; font-size: 12px; color: #D4AF37; text-shadow: 0 0 6px rgba(0,0,0,0.6);">
+    © 2025 The Strategic Owl. All rights reserved. This platform is protected under U.S. copyright and constitutional law. Unauthorized use, duplication, or distortion of content is prohibited. Created by Taylor Irby — designed for clarity, built for truth.
+  </footer>
 
-<!-- Mobile Announcement -->
-<div class="announcement-mobile">
-  <div class="announcement-box-mobile">
-    <div>
-      <span class="announcement-label">New Tool Released:</span>
-      <span> Try the</span>
-    </div>
-    <a href="strategic-owl-insight-quiz.html" class="important-link">Strategic Insight Quiz</a>
-    <div>used by left, right, and neither — plus explore the</div>
-    <a href="#TESTthe_constitution" class="important-link">The Constitution</a>
-    <div>as it was meant to be understood.</div>
-  </div>
-</div>
 <script>
-  const legalPopup = document.getElementById('legal-popup');
-  const lastAccepted = localStorage.getItem('legalPopupAccepted');
-  const now = new Date().getTime();
-  const thirtyDays = 1000 * 60 * 60 * 24 * 30;
+  // --- CONFIG ---
+  const API_KEY  = "AIzaSyCzuh9HBfe0r70r9U35Pe406PPZ-tz6I78";
+  const SHEET_ID = "19wBEj9hEkvIyQcoR5E_mBGVAxTzMnddMxk8nuQLAumA";
+  // Tab: "State Elections", Range: A2:C51  (A = URL, B = State, C = Upcoming Election Date)
+  const RAW_RANGE = "'State Elections'!A2:C51";
+  const RANGE = encodeURIComponent(RAW_RANGE);
 
-  if (!lastAccepted || now - parseInt(lastAccepted) > thirtyDays) {
-    legalPopup.style.display = 'block';
-  }
+  // State -> { url, date } map
+  let stateMetaMap = {};
 
-  document.getElementById('accept-link').addEventListener('click', () => {
-    localStorage.setItem('legalPopupAccepted', Date.now().toString());
-  });
-  function toggleMenu() {
-    document.getElementById("navMenu").classList.toggle("show");
-  }
-</script>
-<script>
-  const routes = {
-    TESThome: `
-      <div>
-        <h2>Welcome to the Strategic Owl</h2>
-        <p>Federalism Credibility Woke — loaded inline without fetch.</p>
-      </div>
-    `,
-    realitycheck: `
-      <div class="container">
-        <h1>Reality Check</h1>
-        <p>
-          This is your Misconception Hub — where we expose popular myths and break them down with verifiable facts, starting with voter fraud and expanding from there.
-        </p>
-        <section class="divider-section">
-          <div class="divider-bar">
-            <div class="truth"></div>
-            <div class="reliability"></div>
-            <div class="understanding"></div>
-          </div>
-          <div class="divider-labels">
-            <span>Truth</span>
-            <span>Reliability</span>
-            <span>Understanding</span>
-          </div>
-        </section>
-        <div id="culture-subs">
-          <h1>Misconception Hub</h1>
-          <p style="text-align: center; color: var(--text-muted); margin-top: 20px;">
-            Select a topic to examine popular claims and compare them to verifiable facts — one layer at a time.
-          </p>
-          <div class="dropdown-container">
-            <select id="culture-select" class="form-select" onchange="showCultureSubs()">
-              <option value="">-- Common Misconception --</option>
-            </select>
-          </div>
-          <div class="table-wrapper" style="display:none;" id="culture-results">
-            <table>
-              <tbody id="culture-body"></tbody>
-            </table>
-          </div>
-        </div>
-        <section class="divider-section">
-          <div class="divider-bar">
-            <div class="truth"></div>
-            <div class="reliability"></div>
-            <div class="understanding"></div>
-          </div>
-          <div class="divider-labels">
-            <span>Truth</span>
-            <span>Reliability</span>
-            <span>Understanding</span>
-          </div>
-        </section>
-        <div id="voter-fraud-section">
-          <h1>Voter Fraud?</h1>
-          <p>Look past the headlines. Here’s the actual data.</p>
-          <p>The Heritage Foundation tracks every confirmed case of voter fraud — often to suggest it’s a bigger threat than it is. This tool lets you explore that same data, with the context it’s missing.</p>
-          <label for="state-select" style="display: block; margin-bottom: 8px; font-weight: bold;">Select a State:</label>
-          <select id="state-select" style="padding: 6px; font-size: 1rem;">
-            <option value="">-- Choose a state --</option>
-          </select>
-          <p id="state-summary" class="subtext"></p>
-          <div class="table-wrapper" style="display:none;" id="state-results">
-            <table>
-              <thead>
-                <tr>
-                  <th>Year</th>
-                  <th>State</th>
-                  <th>Name</th>
-                </tr>
-              </thead>
-              <tbody id="state-data-body"></tbody>
-            </table>
-          </div>
-          <p>Source:</p>
-          <p><a href="https://www.heritage.org/voterfraud" class="important-link" target="_blank">Heritage Foundation Voter Fraud Database</a></p>
-        </div>
-        <section class="divider-section">
-          <div class="divider-bar">
-            <div class="truth"></div>
-            <div class="reliability"></div>
-            <div class="understanding"></div>
-          </div>
-          <div class="divider-labels">
-            <span>Truth</span>
-            <span>Reliability</span>
-            <span>Understanding</span>
-          </div>
-        </section>
-        <div id="tru-score-section">
-          <p style="text-align: center; color: var(--text-muted); margin-top: 20px;">
-            Select a name below to view their Election Security credibility breakdown.
-          </p>
-          <div class="dropdown-container">
-            <select id="person-select" onchange="showScores()">
-              <option value="">-- Choose a name --</option>
-            </select>
-          </div>
-          <div class="table-wrapper">
-            <table id="score-table" style="display: none;">
-              <thead>
-                <tr>
-                  <th>Category</th>
-                  <th>Score</th>
-                  <th>Explanation</th>
-                </tr>
-              </thead>
-              <tbody id="score-body"></tbody>
-            </table>
-          </div>
-        </div>
-      </div>
-    `,
-    TESTthe_constitution: `
-      <div>
-        <div class="container">
-          <h1>The Constitution</h1>
-          <section class="divider-section">
-            <div class="divider-bar">
-              <div class="truth"></div>
-              <div class="reliability"></div>
-              <div class="understanding"></div>
-            </div>
-            <div class="divider-labels">
-              <span>Truth</span>
-              <span>Reliability</span>
-              <span>Understanding</span>
-            </div>
-          </section>
-
-          <div style="display: flex; flex-direction: column; gap: 12px; align-items: center; margin-top: 40px;">
-            <p style="color: var(--text-muted); font-family: 'Montserrat', sans-serif; font-size: 1rem; max-width: 600px; text-align: center;">
-              Curious what Amendment protects your right? Select a right below to learn which Amendment gives you that right.
-            </p>
-            <label for="subject-quick" style="color: var(--text); font-family: 'Playfair Display', serif; font-size: 1.2rem;">
-              Select a Right
-            </label>
-            <select id="subject-quick" style="padding: 10px; background-color: var(--surface); color: var(--text); border: 1px solid var(--highlight); font-family: 'Montserrat', sans-serif; font-size: 1rem; width: 100%; max-width: 420px;">
-              <option value="">-- Select a Right --</option>
-            </select>
-            <div id="subject-quick-output" style="margin-top: 4px; font-size: 1.05rem; color: var(--understanding); font-family: 'Montserrat', sans-serif; text-align: center;"></div>
-          </div>
-
-          <div style="display: flex; flex-direction: column; gap: 12px; align-items: center; margin-top: 40px;">
-            <p style="color: var(--text-muted); font-family: 'Montserrat', sans-serif; font-size: 1rem; max-width: 600px; text-align: center;">
-              Want to know exactly what the Constitution and every amendment says? Choose a Founding Text to begin.
-            </p>
-            <label for="subject-select" style="color: var(--text); font-family: 'Playfair Display', serif; font-size: 1.2rem;">
-              Select a Founding Text
-            </label>
-            <select id="subject-select" style="padding: 10px; background-color: var(--surface); color: var(--text); border: 1px solid var(--highlight); font-family: 'Montserrat', sans-serif; font-size: 1rem;">
-              <option value="">-- Select the Founding Text --</option>
-            </select>
-          </div>
-
-          <div id="insight-output" style="max-width: 960px; margin: 40px auto 0; font-family: 'Montserrat', sans-serif; background-color: var(--surface); color: var(--text); padding: 24px; border-radius: 12px;">
-            <!-- Content is inserted here dynamically -->
-          </div>
-        </div>
-      </div>
-    `,
-    contact: `
-      <div>
-        <h2>Contact Us</h2>
-        <p>Reach us at info@strategicowl.com</p>
-      </div>
-    `,
-    // Add additional pages as needed...
-  };
-
-  function loadContent(route) {
-    const view = document.getElementById("main-view");
-    const html = routes[route] || routes["TESThome"];
-    view.innerHTML = html;
-
-    if (route === "TESTthe_constitution") {
-      initConstitutionScripts();
-    }
-
-    if (route === "realitycheck") {
-      initRealityCheckPage();
-    }
-
-    initWordTooltips(); // Re-apply tooltips after content is inserted
-  }
-
-  function updateRoute() {
-    const hash = location.hash.replace('#', '') || 'TESThome';
-    loadContent(hash);
-  }
-
-  window.addEventListener('hashchange', updateRoute);
-  window.addEventListener('DOMContentLoaded', updateRoute);
-
-  // Constitution dropdown behavior
-  function initConstitutionScripts() {
-    const SHEET_ID = "19wBEj9hEkvIyQcoR5E_mBGVAxTzMnddMxk8nuQLAumA";
-    const API_KEY = "AIzaSyCzuh9HBfe0r70r9U35Pe406PPZ-tz6I78";
-    const RANGE = "the_constitution!A2:G1000";
-    const SUBJECT_LOOKUP_RANGE = "the_constitution!F2:G100";
-
-    const colors = {
-      gold: "#D4AF37",
-      text: "#FFFFFF",
-      bullet: "#7C8A9B",
-      heading: "#FFFFF0"
-    };
-
-    async function fetchAmendmentData() {
-      const url = `https://sheets.googleapis.com/v4/spreadsheets/${SHEET_ID}/values/${RANGE}?key=${API_KEY}`;
-      const res = await fetch(url);
-      const json = await res.json();
-      return json.values || [];
-    }
-
-    async function fetchSubjectMap() {
-      const url = `https://sheets.googleapis.com/v4/spreadsheets/${SHEET_ID}/values/${SUBJECT_LOOKUP_RANGE}?key=${API_KEY}`;
-      const res = await fetch(url);
-      const json = await res.json();
-      return json.values || [];
-    }
-
-    async function initAmendmentDropdown() {
-      const data = await fetchAmendmentData();
-      const amendmentSelect = document.getElementById("subject-select");
-      const outputDiv = document.getElementById("insight-output");
-
-      const grouped = {};
-      const prompts = {};
-
-      data.forEach(([amendment, section, text, insight, prompt]) => {
-        if (!grouped[amendment]) grouped[amendment] = [];
-        grouped[amendment].push({ section, text, insight });
-        prompts[amendment] = prompt;
-      });
-
-      Object.keys(grouped).forEach(amendment => {
-        const opt = document.createElement("option");
-        opt.value = amendment;
-        opt.textContent = amendment;
-        amendmentSelect.appendChild(opt);
-      });
-
-      amendmentSelect.addEventListener("change", () => {
-        const selected = amendmentSelect.value;
-        outputDiv.innerHTML = "";
-        if (!selected || !grouped[selected]) return;
-
-        const sections = grouped[selected];
-        const wrapper = document.createElement("div");
-
-        const h2 = document.createElement("h2");
-        h2.textContent = selected;
-        h2.style.color = colors.heading;
-        h2.style.marginBottom = "24px";
-        h2.style.textAlign = "center";
-        h2.style.fontFamily = "'Playfair Display', serif";
-        wrapper.appendChild(h2);
-
-        sections.forEach(({ section, text, insight }, index) => {
-          const h3 = document.createElement("h3");
-          h3.textContent = `${section}`;
-          h3.style.fontFamily = "'Playfair Display', serif";
-          h3.style.fontSize = "1.15rem";
-          h3.style.fontWeight = "600";
-          h3.style.color = "#E5C878";
-          h3.style.marginTop = "20px";
-          h3.style.marginBottom = "6px";
-          h3.style.textAlign = "center";
-          wrapper.appendChild(h3);
-
-          const p = document.createElement("p");
-          p.textContent = text;
-          p.style.fontFamily = "'Montserrat', sans-serif";
-          p.style.color = "var(--text-muted)";
-          p.style.fontSize = "1.05rem";
-          p.style.lineHeight = "1.6";
-          p.style.marginBottom = "10px";
-          p.style.textAlign = "center";
-          wrapper.appendChild(p);
-
-          const insightLabel = document.createElement("p");
-          insightLabel.textContent = "Strategic Insight";
-          insightLabel.style.color = colors.gold;
-          insightLabel.style.fontFamily = "'Inter', sans-serif";
-          insightLabel.style.fontSize = "1rem";
-          insightLabel.style.marginBottom = "6px";
-          insightLabel.style.marginTop = "10px";
-          insightLabel.style.textAlign = "center";
-          wrapper.appendChild(insightLabel);
-
-          const insightDiv = document.createElement("div");
-          insightDiv.textContent = insight;
-          insightDiv.style.fontFamily = "'Montserrat', sans-serif";
-          insightDiv.style.borderLeft = `4px solid var(--understanding)`;
-          insightDiv.style.padding = "10px 16px";
-          insightDiv.style.marginBottom = "24px";
-          insightDiv.style.backgroundColor = "#1A2B4C";
-          insightDiv.style.color = "var(--understanding)";
-          insightDiv.style.fontWeight = "500";
-          wrapper.appendChild(insightDiv);
-
-          if (index === sections.length - 1 && prompts[selected]) {
-            const promptDiv = document.createElement("div");
-            promptDiv.style.marginTop = "8px";
-            promptDiv.style.marginBottom = "24px";
-
-            const promptLabel = document.createElement("p");
-            promptLabel.textContent = "Copy and Paste to explore further.";
-            promptLabel.style.color = colors.gold;
-            promptLabel.style.fontFamily = "'Inter', sans-serif";
-            promptLabel.style.fontSize = "1rem";
-            promptLabel.style.marginBottom = "6px";
-            promptLabel.style.textAlign = "center";
-            promptDiv.appendChild(promptLabel);
-
-            const promptBox = document.createElement("textarea");
-            promptBox.value = prompts[selected];
-            promptBox.readOnly = true;
-            promptBox.style.width = "100%";
-            promptBox.style.padding = "12px";
-            promptBox.style.backgroundColor = "#1C2B3A";
-            promptBox.style.border = "1px solid #D4AF37";
-            promptBox.style.borderLeft = "4px solid #D4AF37";
-            promptBox.style.borderRadius = "8px";
-            promptBox.style.color = "#D4AF37";
-            promptBox.style.fontFamily = "'Courier New', monospace";
-            promptBox.style.fontSize = "0.95rem";
-            promptBox.style.lineHeight = "1.5";
-            promptBox.style.overflow = "hidden";
-            promptBox.style.resize = "none";
-            promptBox.style.boxSizing = "border-box";
-            promptBox.style.height = "auto";
-
-            setTimeout(() => {
-              promptBox.style.height = "auto";
-              promptBox.style.height = promptBox.scrollHeight + "px";
-            }, 0);
-
-            const copyButton = document.createElement("button");
-            copyButton.textContent = "Copy";
-            copyButton.style.marginTop = "8px";
-            copyButton.style.backgroundColor = "#3C465C";
-            copyButton.style.color = "#F0F0F0";
-            copyButton.style.padding = "6px 16px";
-            copyButton.style.border = "none";
-            copyButton.style.borderRadius = "8px";
-            copyButton.style.cursor = "pointer";
-            copyButton.style.fontFamily = "'Inter', sans-serif";
-            copyButton.style.fontSize = "0.95rem";
-            copyButton.style.transition = "background-color 0.3s ease, transform 0.2s ease";
-
-            copyButton.onmouseenter = () => {
-              copyButton.style.backgroundColor = "#4D5A70";
-            };
-            copyButton.onmouseleave = () => {
-              copyButton.style.backgroundColor = "#3C465C";
-            };
-            copyButton.onclick = () => {
-              promptBox.select();
-              document.execCommand("copy");
-              copyButton.textContent = "Copied!";
-              copyButton.style.transform = "scale(0.97)";
-              setTimeout(() => {
-                copyButton.textContent = "Copy";
-                copyButton.style.transform = "scale(1)";
-              }, 1500);
-            };
-
-            promptDiv.appendChild(promptBox);
-            promptDiv.appendChild(copyButton);
-            wrapper.appendChild(promptDiv);
-          }
-        });
-
-        outputDiv.appendChild(wrapper);
-      });
-    }
-
-    async function initSubjectLookupDropdown() {
-      const data = await fetchSubjectMap();
-      const dropdown = document.getElementById("subject-quick");
-      const output = document.getElementById("subject-quick-output");
-
-      const subjectToAmendment = {};
-      data.forEach(([subject, amendment]) => {
-        subjectToAmendment[subject] = amendment;
-        const opt = document.createElement("option");
-        opt.value = subject;
-        opt.textContent = subject;
-        dropdown.appendChild(opt);
-      });
-
-      dropdown.addEventListener("change", () => {
-        const selected = dropdown.value;
-        output.textContent = selected && subjectToAmendment[selected]
-          ? `→ Amendment: ${subjectToAmendment[selected]}`
-          : "";
-      });
-    }
-
-    initAmendmentDropdown();
-    initSubjectLookupDropdown();
-  }
-  // --- TRU Election Security Functions ---
-  async function fetchTRUData() {
-    const API_KEY = "AIzaSyCzuh9HBfe0r70r9U35Pe406PPZ-tz6I78";
-    const SHEET_ID = "19wBEj9hEkvIyQcoR5E_mBGVAxTzMnddMxk8nuQLAumA";
-    const RANGE = "ElectionTRU!A2:Y1000";
+  async function fetchStateLinks() {
     const url = `https://sheets.googleapis.com/v4/spreadsheets/${SHEET_ID}/values/${RANGE}?key=${API_KEY}`;
     try {
       const res = await fetch(url);
+      if (!res.ok) throw new Error(`HTTP ${res.status}`);
       const json = await res.json();
-      return json.values || [];
-    } catch (err) {
-      console.error("Failed to fetch sheet data", err);
-      const select = document.getElementById("person-select");
-      if (select) {
-        select.innerHTML = '<option value="">Failed to load data. Please try again later.</option>';
+      const rows = json.values || [];
+
+      // Build map: Column B (state) -> { url: Column A, date: Column C }
+      stateMetaMap = {};
+      for (const row of rows) {
+        const url = (row[0] || "").trim();
+        const state = (row[1] || "").trim();
+        const dateRaw = (row[2] || "").trim();
+        if (state && url) stateMetaMap[state] = { url, date: dateRaw }; // last-one-wins
       }
-      return [];
+
+      populateStateDropdown();
+    } catch (e) {
+      console.error("Failed to fetch State Elections data:", e);
     }
   }
 
-  function showScores() {
-    const select = document.getElementById("person-select");
-    const table = document.getElementById("score-table");
-    const tbody = document.getElementById("score-body");
-    const selected = select.value;
-    if (!selected || !window.rowMap || !window.rowMap[selected]) {
-      table.style.display = "none";
-      return;
-    }
-
-    const row = window.rowMap[selected];
-    tbody.innerHTML = "";
-    let total = 0;
-
-    const categories = [
-      "Constitutional Knowledge", "Legal Framework", "Federalism",
-      "Election Mechanics", "Electoral Count Process", "Disinformation Awareness",
-      "Public Impact", "Judicial Oversight", "Election Worker Protections",
-      "Psychological Manipulation"
-    ];
-
-    for (let i = 0; i < 10; i++) {
-      const label = categories[i];
-      const score = parseInt(row[3 + i]) || 0;
-      const explanation = row[14 + i] || "";
-
-      const tr = document.createElement("tr");
-      tr.innerHTML = `<td>${label}</td><td>${score >= 0 ? "+" : ""}${score}</td><td>${explanation}</td>`;
-      tbody.appendChild(tr);
-      total += score;
-    }
-
-    const flag = (row[24] || "").toLowerCase();
-    let bonus = 0, label = "", desc = "";
-
-    if (flag === "true") {
-      bonus = -10;
-      label = "2020 Election Denial Penalty";
-      desc = "Denial of the 2020 election outcome signals rejection of verified democratic processes and aligns with disinformation or blind loyalty.";
-    } else if (flag === "false") {
-      bonus = 5;
-      label = "2020 Election Affirmation Bonus";
-      desc = "Publicly affirming the legitimacy of the 2020 election supports truth, counters disinformation, and helps protect democratic confidence.";
-    } else if (flag === "gray") {
-      bonus = -5;
-      label = "Ambiguous Stance Penalty";
-      desc = "Failure to clearly affirm the 2020 election results contributes to public doubt and enables misinformation to spread unchecked.";
-    }
-
-    if (label) {
-      const bonusClass = bonus >= 0 ? "positive-score" : "negative-score";
-      const tr = document.createElement("tr");
-      tr.innerHTML = `<td><strong>${label}</strong></td><td class="${bonusClass}"><strong>${bonus >= 0 ? "+" : ""}${bonus}</strong></td><td><strong>${desc}</strong></td>`;
-      tbody.appendChild(tr);
-      total += bonus;
-    }
-
-    const summary = row[13] || "No summary provided.";
-    const totalClass = total >= 0 ? "positive-score" : "negative-score";
-    const totalRow = document.createElement("tr");
-    totalRow.innerHTML = `<td><strong>Total Score</strong></td><td class="${totalClass}"><strong>${total >= 0 ? "+" : ""}${total}</strong></td><td><strong>${summary}</strong></td>`;
-    tbody.appendChild(totalRow);
-
-    table.style.display = "table";
-  }
-
-  async function initElectionPage() {
-    window.rowMap = {};
-    const data = await fetchTRUData();
-    data.forEach(row => {
-      const key = row[0];
-      if (key) window.rowMap[key] = row;
-    });
-
-    const select = document.getElementById("person-select");
-    if (!select) return;
-
-    select.innerHTML = '<option value="">-- Choose a name --</option>';
-    Object.keys(window.rowMap).sort().forEach(name => {
-      const opt = document.createElement("option");
-      opt.value = name;
-      opt.textContent = name.replace(/([A-Z])/g, " $1").replace(/^./, s => s.toUpperCase());
-      select.appendChild(opt);
-    });
-
-    select.removeEventListener("change", showScores);
-    select.addEventListener("change", showScores);
-  }
-
-  // --- State Fraud Functions ---
-  async function fetchSheetData() {
-    const API_KEY = "AIzaSyB3NmN4OpDutbaX6V2KkLy1p-vDLghrF5M";
-    const SHEET_ID = "1p66gmWWjxJbrySxpR5T--fP8iEgUbW7RrXru61gagRA";
-    const RANGE = "HeritageVoterfraudRawData!B6:D1589";
-    const url = `https://sheets.googleapis.com/v4/spreadsheets/${SHEET_ID}/values/${RANGE}?key=${API_KEY}`;
-    try {
-      const res = await fetch(url);
-      const data = await res.json();
-      return data.values || [];
-    } catch (error) {
-      console.error("Failed to fetch data:", error);
-      return [];
-    }
-  }
-
-  function populateDropdown(statesSet, stateSelect) {
-    const sortedStates = Array.from(statesSet).sort();
-    sortedStates.forEach(state => {
+  function populateStateDropdown() {
+    const sel = document.getElementById("state-select");
+    // Clear but keep placeholder
+    sel.innerHTML = '<option value="">Select Your State:</option>';
+    const states = Object.keys(stateMetaMap).sort((a, b) => a.localeCompare(b));
+    for (const state of states) {
       const opt = document.createElement("option");
       opt.value = state;
       opt.textContent = state;
-      stateSelect.appendChild(opt);
-    });
+      sel.appendChild(opt);
+    }
+    sel.disabled = states.length === 0;
   }
 
-  async function initStateFraudPage() {
-    const stateSelect = document.getElementById("state-select");
-    const tableBody = document.getElementById("state-data-body");
-    const resultsWrapper = document.getElementById("state-results");
-    const summaryLine = document.getElementById("state-summary");
+  function handleStateChange(e) {
+    const state = e.target.value;
+    const meta = stateMetaMap[state];
+    const link = meta && meta.url;
+    const dateStr = meta && meta.date;
 
-    if (!stateSelect || !tableBody || !resultsWrapper || !summaryLine) {
-      console.warn("[statefraud] Required elements not found.");
+    const outWrap = document.getElementById("state-output");
+    const urlInput = document.getElementById("state-url");
+    const openA = document.getElementById("state-open");
+    const dateEl = document.getElementById("state-date");
+
+    if (!state || !link) {
+      outWrap.style.display = "none";
+      urlInput.value = "";
+      openA.href = "#";
+      if (dateEl) { dateEl.innerHTML = ""; }
       return;
     }
 
-    const rows = await fetchSheetData();
-    const statesSet = new Set(rows.map(row => row[1]));
-    populateDropdown(statesSet, stateSelect);
+    // Show + update
+    urlInput.value = link;
+    openA.href = link;
 
-    stateSelect.addEventListener("change", function () {
-      const selected = this.value;
-      tableBody.innerHTML = "";
-      summaryLine.textContent = "";
-
-      const filtered = rows.filter(row => row[1] === selected);
-
-      if (filtered.length === 0) {
-        tableBody.innerHTML = `<tr><td colspan="3">No records found for ${selected}</td></tr>`;
-        resultsWrapper.style.display = "flex";
-        return;
+    // Render date if available
+    if (dateEl) {
+      if (dateStr) {
+        dateEl.innerHTML = `<span class="date-label">Primary Election:</span> <strong class="date-value">${formatDate(dateStr)}</strong>`;
+      } else {
+        dateEl.innerHTML = "";
       }
+    }
 
-      const sorted = filtered.sort((a, b) => parseInt(a[0]) - parseInt(b[0]));
+    outWrap.style.display = "block";
 
-      const years = sorted.map(row => parseInt(row[0])).filter(year => !isNaN(year));
-      const minYear = Math.min(...years);
-      const maxYear = Math.max(...years);
-      const caseCount = sorted.length;
+    // OPTIONAL: auto-open in a new tab on selection
+    // window.open(link, "_blank", "noopener");
+  }
 
-      summaryLine.textContent = `${caseCount} case${caseCount === 1 ? '' : 's'} found from ${minYear} to ${maxYear}`;
-
-      sorted.forEach(row => {
-        const year = row[0];
-        const state = row[1];
-        const name = row[2];
-        const tr = document.createElement("tr");
-        tr.innerHTML = `<td>${year}</td><td>${state}</td><td>${name}</td>`;
-        tableBody.appendChild(tr);
+  function formatDate(input) {
+    const d = new Date(input);
+    if (!isNaN(d.getTime())) {
+      return d.toLocaleDateString('en-US', {
+        weekday: 'short', month: 'short', day: 'numeric', year: 'numeric'
       });
-
-      resultsWrapper.style.display = "flex";
-    });
-  }
-
-  // --- Culture Subs Functions ---
-  async function fetchCultureData() {
-    const SHEET_ID = "19wBEj9hEkvIyQcoR5E_mBGVAxTzMnddMxk8nuQLAumA";
-    const RANGE = "CultureSubs!A2:D1000";
-    const url = `https://sheets.googleapis.com/v4/spreadsheets/${SHEET_ID}/values/${RANGE}?key=AIzaSyCzuh9HBfe0r70r9U35Pe406PPZ-tz6I78`;
-
-    try {
-      const res = await fetch(url);
-      const data = await res.json();
-      return data.values || [];
-    } catch (error) {
-      console.error("Failed to fetch CultureSubs data:", error);
-      return [];
     }
-  }
-
-  async function initCulturePage() {
-    const dropdown = document.getElementById("culture-select");
-    const cultureRows = await fetchCultureData();
-    const subjectSet = new Set(cultureRows.map(row => row[0]));
-    subjectSet.forEach(subject => {
-      const opt = document.createElement("option");
-      opt.value = subject;
-      opt.textContent = subject;
-      dropdown.appendChild(opt);
-    });
-
-    window.cultureMap = {};
-    cultureRows.forEach(row => {
-      const subject = row[0];
-      if (!window.cultureMap[subject]) {
-        window.cultureMap[subject] = [];
-      }
-      window.cultureMap[subject].push({ subcategory: row[1], claim: row[2], extra: row[3] || "" });
-    });
-  }
-
-  function showCultureSubs() {
-    const selected = document.getElementById("culture-select").value;
-    const wrapper = document.getElementById("culture-results");
-    const body = document.getElementById("culture-body");
-    body.innerHTML = "";
-
-    if (!selected || !window.cultureMap[selected]) {
-      wrapper.style.display = "none";
-      return;
-    }
-
-    window.cultureMap[selected].forEach(({ claim, extra }) => {
-      const claimRow = document.createElement("tr");
-      claimRow.innerHTML = `<td colspan="3" style="padding-left: 12px; padding-top: 16px; color: #FF7F7F; font-weight: bold;"><em>Claim:</em> ${claim}</td>`;
-      body.appendChild(claimRow);
-
-      const factRow = document.createElement("tr");
-      factRow.innerHTML = `<td colspan="3" style="padding-left: 20px; padding-bottom: 12px; color: var(--understanding);"><em>Fact:</em> ${extra}</td>`;
-      body.appendChild(factRow);
-    });
-
-    wrapper.style.display = "block";
-  }
-
-  function initRealityCheckPage() {
-    setTimeout(() => {
-      const hasCulture = document.getElementById("culture-select");
-      const hasState = document.getElementById("state-select");
-      const hasTRU = document.getElementById("person-select");
-
-      if (hasCulture) initCulturePage();
-      if (hasState) initStateFraudPage();
-      if (hasTRU) initElectionPage();
-    }, 50);
-  }
-// === Word Tooltips (Definitions) ===
-  async function initWordTooltips(scope = document.body) {
-    const SHEET_ID = "19wBEj9hEkvIyQcoR5E_mBGVAxTzMnddMxk8nuQLAumA";
-    const API_KEY = "AIzaSyCzuh9HBfe0r70r9U35Pe406PPZ-tz6I78";
-    const RANGE = "TRU_Definitions!A2:B1000";
-    const url = `https://sheets.googleapis.com/v4/spreadsheets/${SHEET_ID}/values/${RANGE}?key=${API_KEY}`;
-    try {
-      const res = await fetch(url);
-      const data = await res.json();
-      const definitions = data.values || [];
-
-      // Walk all text nodes in the body and replace matches
-      const walker = document.createTreeWalker(scope, NodeFilter.SHOW_TEXT, null, false);
-      let node;
-
-      while ((node = walker.nextNode())) {
-        let parent = node.parentNode;
-        if (!parent || parent.classList.contains("tooltip-word") || parent.tagName === "SCRIPT" || parent.tagName === "STYLE") continue;
-
-        const originalText = node.nodeValue;
-        let replaced = false;
-        let newHTML = originalText;
-
-        definitions.forEach(([word, definition]) => {
-          const regex = new RegExp(`\\b(${word})\\b`, "gi");
-          if (regex.test(newHTML)) {
-            replaced = true;
-            newHTML = newHTML.replace(regex, `<span class="tooltip-word" data-definition="${definition}">$1</span>`);
-          }
-        });
-
-        if (replaced) {
-          const span = document.createElement("span");
-          span.innerHTML = newHTML;
-          parent.replaceChild(span, node);
-        }
-      }
-    } catch (err) {
-      console.error("Error loading definitions", err);
-    }
+    return input; // fallback if sheet already has human-readable text
   }
 
   document.addEventListener("DOMContentLoaded", () => {
-    initWordTooltips();
-  });
-
-  // Touch support for tooltips
-  document.addEventListener("click", function (e) {
-    if (e.target.classList.contains("tooltip-word")) {
-      e.target.classList.toggle("touch-active");
-      setTimeout(() => e.target.classList.remove("touch-active"), 3000);
-    }
+    fetchStateLinks();
+    document.getElementById("state-select").addEventListener("change", handleStateChange);
   });
 </script>
 
