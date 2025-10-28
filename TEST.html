@@ -914,18 +914,30 @@
   }
 
   // --- INIT (kept your calls; added our fetch + listeners) ---
-  document.addEventListener("DOMContentLoaded", () => {
-    // Yours:
-    fetchStateLinks();
-    document.getElementById("state-select").addEventListener("change", handleStateChange);
+document.addEventListener("DOMContentLoaded", () => {
+  // Yours:
+  fetchStateLinks();
+  const stateSel = document.getElementById("state-select");
+  if (stateSel) stateSel.addEventListener("change", handleStateChange);
 
-    // New:
-    fetchZipAndRoster();
-    const zipBtn = document.getElementById("zip-go");
-    const zipInput = document.getElementById("zip-input");
-    if (zipBtn) zipBtn.addEventListener("click", handleZipLookup);
-    if (zipInput) zipInput.addEventListener("keydown", (e) => { if (e.key === "Enter") handleZipLookup(); });
-  });
+  // New:
+  fetchZipAndRoster();
+
+  const zipBtn = document.getElementById("zip-go");
+  const zipInput = document.getElementById("zip-input");
+  const zipValidateBtn = document.getElementById("zip-validate"); // <-- new
+
+  if (zipBtn) zipBtn.addEventListener("click", handleZipLookup);
+  if (zipInput) {
+    zipInput.addEventListener("keydown", (e) => {
+      if (e.key === "Enter") handleZipLookup();
+    });
+  }
+  if (zipValidateBtn) {
+    // openHouseLookupFromZip() must be defined (see previous snippet)
+    zipValidateBtn.addEventListener("click", openHouseLookupFromZip);
+  }
+});
   // --- ZIP → House lookup helpers ---
 function buildZipForHouse(raw) {
   let z = String(raw || "").trim();
@@ -949,14 +961,6 @@ function openHouseLookupFromZip() {
   const url = "https://ziplook.house.gov/htbin/findrep_house?ZIP=" + encodeURIComponent(z);
   window.open(url, "_blank", "noopener,noreferrer");
 }
-  document.addEventListener("DOMContentLoaded", () => {
-  // ...your existing init code...
-
-  const zipValidateBtn = document.getElementById("zip-validate");
-  if (zipValidateBtn) {
-    zipValidateBtn.addEventListener("click", openHouseLookupFromZip);
-  }
-});
 </script>
 
 </body>
