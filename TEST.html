@@ -963,9 +963,9 @@
           ZIP ${escapeHtml(zip)} → ${escapeHtml(full)} • District${districtNums.length > 1 ? "s" : ""} ${escapeHtml(districtsStr)}
           <span style="opacity:.7">${primary}</span>
         </div>
-        ${renderList("Your U.S. House District" + (districtNums.length > 1 ? "s" : ""), house, (c)=> liCandidate(c))}
-        ${renderList("U.S. Senate (statewide)",  senate,  (c)=> liCandidate(c))}
-        ${renderList("Governor (statewide)",     governor,(c)=> liCandidate(c))}
+        ${renderList("U.S. House Race" + (districtNums.length > 1 ? "s" : ""), house, (c)=> liCandidate(c))}
+        ${renderList("U.S. Senate Race",  senate,  (c)=> liCandidate(c))}
+        ${renderList("Governors Race",     governor,(c)=> liCandidate(c))}
         ${meta.url ? `<div style="margin-top:8px;"><a href="${meta.url}" target="_blank" rel="noopener">Open ${escapeHtml(full)} election page</a></div>` : ""}
       </div>
     `;
