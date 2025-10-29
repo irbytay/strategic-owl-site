@@ -650,8 +650,8 @@
   // --- CONFIG (yours, unchanged) ---
   const API_KEY  = "AIzaSyCzuh9HBfe0r70r9U35Pe406PPZ-tz6I78";
   const SHEET_ID = "19wBEj9hEkvIyQcoR5E_mBGVAxTzMnddMxk8nuQLAumA";
-  // Tab: "State Elections", Range: A2:C51  (A = URL, B = State, C = Upcoming Election Date)
-  const RAW_RANGE = "'State Elections'!A2:C51";
+  // Tab: "State Elections", Range: A2:D51  (A = URL, B = State, C = Upcoming Election Date, D = Registration Deadline)
+  const RAW_RANGE = "'State Elections'!A2:D51";
   const RANGE = encodeURIComponent(RAW_RANGE);
 
   // State -> { url, date } map
@@ -665,13 +665,14 @@
       const json = await res.json();
       const rows = json.values || [];
 
-      // Build map: Column B (state) -> { url: Column A, date: Column C }
+      // Build map: Column B (state) -> { url: Column A, date: Column C, regDeadline: Column D }
       stateMetaMap = {};
       for (const row of rows) {
         const url = (row[0] || "").trim();
         const state = (row[1] || "").trim();
         const dateRaw = (row[2] || "").trim();
-        if (state && url) stateMetaMap[state] = { url, date: dateRaw }; // last-one-wins
+        const regRaw  = (row[3] || "").trim(); // Registration deadline (col D)
+        if (state && url) stateMetaMap[state] = { url, date: dateRaw, regDeadline: regRaw }; // last-one-wins
       }
 
       populateStateDropdown();
@@ -699,17 +700,20 @@
     const meta = stateMetaMap[state];
     const link = meta && meta.url;
     const dateStr = meta && meta.date;
+    const regStr  = meta && meta.regDeadline;
 
     const outWrap = document.getElementById("state-output");
     const urlInput = document.getElementById("state-url");
     const openA = document.getElementById("state-open");
     const dateEl = document.getElementById("state-date");
+    const regEl  = document.getElementById("state-deadline");
 
     if (!state || !link) {
       outWrap.style.display = "none";
       urlInput.value = "";
       openA.href = "#";
       if (dateEl) { dateEl.innerHTML = ""; }
+      if (regEl) { regEl.innerHTML = ""; }
       return;
     }
 
@@ -724,6 +728,13 @@
       } else {
         dateEl.innerHTML = "";
       }
+    }
+
+    // Render registration deadline if available
+    if (regEl) {
+      regEl.innerHTML = regStr
+        ? `<span class="date-label">Registration Deadline:</span> <strong class="date-value">${formatDate(regStr)}</strong>`
+        : "";
     }
 
     outWrap.style.display = "block";
@@ -863,7 +874,7 @@
         <div style="font-weight:700;margin-bottom:6px;">ZIP ${escapeHtml(zip)} → ${escapeHtml(full)} • District ${escapeHtml(num)} <span style="opacity:.7">${primary}</span></div>
         ${renderList("U.S. House Race", house,   (c)=> liCandidate(c))}
         ${renderList("U.S. Senate Race",  senate,  (c)=> liCandidate(c))}
-        ${renderList("Governor's Race)",     governor,(c)=> liCandidate(c))}
+        ${renderList("Governor's Race",     governor,(c)=> liCandidate(c))}
         ${meta.url ? `<div style="margin-top:8px;"><a href="${meta.url}" target="_blank" rel="noopener">Open ${escapeHtml(full)} election page</a></div>` : ""}
       </div>
     `;
@@ -940,7 +951,9 @@
 
     const roster = stateRosterMap[full] || [];
     const meta   = stateMetaMap[full] || {};
-    const primary = meta.date ? ` (Primary: ${formatDate(meta.date)})` : "";
+    const primaryText  = meta.date ? `Primary: ${formatDate(meta.date)}` : "";
+    const deadlineText = meta.regDeadline ? `Registration: ${formatDate(meta.regDeadline)}` : "";
+    const statusLine   = [primaryText, deadlineText].filter(Boolean).join(" • ");
 
     // district string like "3, 4, 6"
     const districtNums = [...new Set(hits.map(h => String(h.districtNum).trim()))].filter(Boolean);
@@ -961,8 +974,8 @@
       <div style="border:1px solid #D4AF37;border-radius:12px;padding:16px;margin:12px 0;background:#0B1C3D10;">
         <div style="font-weight:700;margin-bottom:6px;">
           ZIP ${escapeHtml(zip)} → ${escapeHtml(full)} • District${districtNums.length > 1 ? "s" : ""} ${escapeHtml(districtsStr)}
-          <span style="opacity:.7">${primary}</span>
         </div>
+        ${statusLine ? `<div style="opacity:.7; margin-bottom:6px;">${statusLine}</div>` : ""}
         ${renderList("U.S. House Race", house, (c)=> liCandidate(c))}
         ${renderList("U.S. Senate Race",  senate,  (c)=> liCandidate(c))}
         ${renderList("Governor's Race",     governor,(c)=> liCandidate(c))}
