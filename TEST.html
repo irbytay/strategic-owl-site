@@ -567,6 +567,13 @@
   transform: translateY(0);
   box-shadow: 0 2px 6px var(--shadow);
 }
+    .state-deadline .date-value {
+    background: #8B0000;
+    color: #fff;
+    padding: 2px 6px;
+    border-radius: 6px;
+    font-weight: 700;
+  }
 </style>
 
 <nav class="top-nav">
@@ -610,6 +617,7 @@
 <div id="state-output" class="state-output">
   <input id="state-url" readonly />
   <div id="state-date" class="state-date"></div>
+  <div id="state-deadline" class="state-deadline"></div>
   <div class="state-actions">
     <a id="state-open" href="#" target="_blank" rel="noopener">Open link</a>
   </div>
