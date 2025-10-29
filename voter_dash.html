@@ -610,6 +610,7 @@
 <div id="state-output" class="state-output">
   <input id="state-url" readonly />
   <div id="state-date" class="state-date"></div>
+  <div id="state-deadline" class="state-deadline"></div> <!-- NEW -->
   <div class="state-actions">
     <a id="state-open" href="#" target="_blank" rel="noopener">Open link</a>
   </div>
@@ -638,11 +639,11 @@
   // --- CONFIG ---
   const API_KEY  = "AIzaSyCzuh9HBfe0r70r9U35Pe406PPZ-tz6I78";
   const SHEET_ID = "19wBEj9hEkvIyQcoR5E_mBGVAxTzMnddMxk8nuQLAumA";
-  // Tab: "State Elections", Range: A2:C51  (A = URL, B = State, C = Upcoming Election Date)
-  const RAW_RANGE = "'State Elections'!A2:C51";
+  // Tab: "State Elections", Range: A=URL, B=State, C=Primary Date, D=Registration Deadline
+  const RAW_RANGE = "'State Elections'!A2:D51";              // <-- extended to D
   const RANGE = encodeURIComponent(RAW_RANGE);
 
-  // State -> { url, date } map
+  // State -> { url, date, regDeadline }
   let stateMetaMap = {};
 
   async function fetchStateLinks() {
@@ -653,13 +654,16 @@
       const json = await res.json();
       const rows = json.values || [];
 
-      // Build map: Column B (state) -> { url: Column A, date: Column C }
+      // Build map: Column B (state) -> { url: A, date: C, regDeadline: D }
       stateMetaMap = {};
       for (const row of rows) {
-        const url = (row[0] || "").trim();
+        const url  = (row[0] || "").trim();
         const state = (row[1] || "").trim();
-        const dateRaw = (row[2] || "").trim();
-        if (state && url) stateMetaMap[state] = { url, date: dateRaw }; // last-one-wins
+        const dateRaw = (row[2] || "").trim();       // Primary date
+        const regRaw  = (row[3] || "").trim();       // Registration deadline
+        if (state && url) {
+          stateMetaMap[state] = { url, date: dateRaw, regDeadline: regRaw }; // last-one-wins
+        }
       }
 
       populateStateDropdown();
@@ -687,17 +691,20 @@
     const meta = stateMetaMap[state];
     const link = meta && meta.url;
     const dateStr = meta && meta.date;
+    const regStr  = meta && meta.regDeadline;
 
-    const outWrap = document.getElementById("state-output");
+    const outWrap  = document.getElementById("state-output");
     const urlInput = document.getElementById("state-url");
-    const openA = document.getElementById("state-open");
-    const dateEl = document.getElementById("state-date");
+    const openA    = document.getElementById("state-open");
+    const dateEl   = document.getElementById("state-date");
+    const regEl    = document.getElementById("state-deadline"); // NEW
 
     if (!state || !link) {
       outWrap.style.display = "none";
       urlInput.value = "";
       openA.href = "#";
-      if (dateEl) { dateEl.innerHTML = ""; }
+      if (dateEl) dateEl.innerHTML = "";
+      if (regEl)  regEl.innerHTML  = "";
       return;
     }
 
@@ -705,13 +712,18 @@
     urlInput.value = link;
     openA.href = link;
 
-    // Render date if available
+    // Render primary date
     if (dateEl) {
-      if (dateStr) {
-        dateEl.innerHTML = `<span class="date-label">Primary Election:</span> <strong class="date-value">${formatDate(dateStr)}</strong>`;
-      } else {
-        dateEl.innerHTML = "";
-      }
+      dateEl.innerHTML = dateStr
+        ? `<span class="date-label">Primary Election:</span> <strong class="date-value">${formatDate(dateStr)}</strong>`
+        : "";
+    }
+
+    // Render registration deadline
+    if (regEl) {
+      regEl.innerHTML = regStr
+        ? `<span class="date-label">Registration Deadline:</span> <strong class="date-value">${formatDate(regStr)}</strong>`
+        : "";
     }
 
     outWrap.style.display = "block";
