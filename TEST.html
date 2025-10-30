@@ -574,6 +574,41 @@
     border-radius: 6px;
     font-weight: 700;
   }
+    /* 🎨 Results card font & color overrides */
+#zip-output div {
+  font-family: 'Playfair Display', serif;   /* Change overall font */
+  color: var(--text);                       /* Base color (white) */
+  line-height: 1.5;
+}
+
+/* Top header line (ZIP → State → District) */
+#zip-output div > div:first-child {
+  font-weight: 700;
+  font-size: 1.1rem;
+  color: var(--understanding);  /* Gold */
+  margin-bottom: 6px;
+}
+
+/* Status line (Primary / Registration) */
+#zip-output .status-line {
+  color: var(--text-muted);     /* Muted gray */
+  font-size: 0.9rem;
+  margin-bottom: 8px;
+}
+
+/* Section titles like “U.S. House Race” */
+#zip-output .section-title {
+  font-weight: 600;
+  color: var(--truth);          /* Green highlight */
+  margin-top: 8px;
+}
+
+/* Candidate list items */
+#zip-output li {
+  margin: 4px 0;
+  font-size: 0.95rem;
+  color: #ffffff;               /* White text */
+}
 </style>
 
 <nav class="top-nav">
