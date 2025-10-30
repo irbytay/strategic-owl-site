@@ -609,6 +609,29 @@
   font-size: 0.95rem;
   color: #ffffff;               /* White text */
 }
+    /* 🔗 Style the "Open state election page" link */
+#zip-output a {
+  display: inline-block;
+  margin-top: 6px;
+  padding: 8px 14px;
+  background-color: var(--understanding); /* Gold background */
+  color: #0D1B2A;                         /* Deep navy text */
+  font-weight: 700;
+  text-decoration: none;
+  border-radius: 8px;
+  box-shadow: 0 2px 6px var(--shadow);
+  transition: transform 0.05s ease, box-shadow 0.2s ease, background-color 0.2s ease;
+}
+
+#zip-output a:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 4px 10px var(--shadow);
+}
+
+#zip-output a:active {
+  transform: translateY(0);
+  box-shadow: 0 2px 6px var(--shadow);
+}
 </style>
 
 <nav class="top-nav">
