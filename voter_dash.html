@@ -568,11 +568,86 @@
   box-shadow: 0 2px 6px var(--shadow);
 }
     .state-deadline .date-value {
-    color: #fff;
     background: #8B0000;
+    color: #fff;
     padding: 2px 6px;
     border-radius: 6px;
     font-weight: 700;
+  }
+    /* 🎨 Results card font & color overrides */
+#zip-output div {
+  font-family: 'Playfair Display', serif;   /* Change overall font */
+  color: var(--text);                       /* Base color (white) */
+  line-height: 1.5;
+}
+
+/* Top header line (ZIP → State → District) */
+#zip-output div > div:first-child {
+  font-weight: 700;
+  font-size: 1.1rem;
+  color: var(--understanding);  /* Gold */
+  margin-bottom: 6px;
+}
+
+/* Status line (Primary / Registration) */
+#zip-output .status-line {
+  color: var(--text-muted);     /* Muted gray */
+  font-size: 0.9rem;
+  margin-bottom: 8px;
+}
+
+/* Section titles like “U.S. House Race” */
+#zip-output .section-title {
+  font-weight: 600;
+  color: var(--truth);          /* Green highlight */
+  margin-top: 8px;
+}
+
+/* Candidate list items */
+#zip-output li {
+  margin: 4px 0;
+  font-size: 0.95rem;
+  color: #ffffff;               /* White text */
+}
+    /* 🔗 Style the "Open state election page" link */
+#zip-output a {
+  display: inline-block;
+  margin-top: 6px;
+  padding: 8px 14px;
+  background-color: var(--understanding); /* Gold background */
+  color: #0D1B2A;                         /* Deep navy text */
+  font-weight: 700;
+  text-decoration: none;
+  border-radius: 8px;
+  box-shadow: 0 2px 6px var(--shadow);
+  transition: transform 0.05s ease, box-shadow 0.2s ease, background-color 0.2s ease;
+}
+
+#zip-output a:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 4px 10px var(--shadow);
+}
+
+#zip-output a:active {
+  transform: translateY(0);
+  box-shadow: 0 2px 6px var(--shadow);
+}
+    /* Primary date text (gold) */
+.primary-date {
+  color: var(--understanding);   /* your gold */
+  font-weight: 700;
+}
+
+/* Registration "Deadline" badge (same style as TRUMP tag) */
+.deadline-badge {
+  margin-left: 6px;
+  padding: 2px 6px;
+  border-radius: 8px;
+  background: #8B0000;  /* dark red */
+  color: #fff;
+  font-size: 12px;
+  font-weight: 700;
+}
 </style>
 
 <nav class="top-nav">
@@ -616,11 +691,23 @@
 <div id="state-output" class="state-output">
   <input id="state-url" readonly />
   <div id="state-date" class="state-date"></div>
-  <div id="state-deadline" class="state-deadline"></div> <!-- NEW -->
+  <div id="state-deadline" class="state-deadline"></div>
   <div class="state-actions">
     <a id="state-open" href="#" target="_blank" rel="noopener">Register to Vote</a>
   </div>
 </div>
+    <p>Enter your ZIP to see candidates in your districts or verify your rep on House.gov.</p>
+ <div class="zip-lookup" style="margin-top:20px; text-align:center;">
+  <label for="zip-input" style="display:block; font-weight:600; margin-bottom:6px;">Check My Ballot</label>
+  <div style="display:flex; gap:8px; max-width:420px; margin:0 auto; justify-content:center;">
+    <input id="zip-input" type="text" inputmode="numeric" pattern="[0-9]*" placeholder="Enter ZIP (e.g., 85301)" style="flex:1; padding:10px; border:1px solid #D4AF37; border-radius:10px;">
+    <button id="zip-go" style="padding:10px 14px; border:1px solid #D4AF37; border-radius:10px; background:#0B1C3D; color:#fff;">Trump Check</button>
+    <button id="zip-validate" style="padding:10px 14px; border:1px solid #D4AF37; border-radius:10px; background:#0B1C3D; color:#fff;">Verify My Rep</button>
+  </div>
+</div>
+
+<div id="zip-output" style="display:none; margin-top:14px;"></div>
+
      <!-- 🎯 Divider -->
     <section class="divider-section">
       <div class="divider-bar">
@@ -642,14 +729,14 @@
   </footer>
 
 <script>
-  // --- CONFIG ---
+  // --- CONFIG (yours, unchanged) ---
   const API_KEY  = "AIzaSyCzuh9HBfe0r70r9U35Pe406PPZ-tz6I78";
   const SHEET_ID = "19wBEj9hEkvIyQcoR5E_mBGVAxTzMnddMxk8nuQLAumA";
-  // Tab: "State Elections", Range: A=URL, B=State, C=Primary Date, D=Registration Deadline
-  const RAW_RANGE = "'State Elections'!A2:D51";              // <-- extended to D
+  // Tab: "State Elections", Range: A2:D51  (A = URL, B = State, C = Upcoming Election Date, D = Registration Deadline)
+  const RAW_RANGE = "'State Elections'!A2:D51";
   const RANGE = encodeURIComponent(RAW_RANGE);
 
-  // State -> { url, date, regDeadline }
+  // State -> { url, date } map
   let stateMetaMap = {};
 
   async function fetchStateLinks() {
@@ -660,16 +747,14 @@
       const json = await res.json();
       const rows = json.values || [];
 
-      // Build map: Column B (state) -> { url: A, date: C, regDeadline: D }
+      // Build map: Column B (state) -> { url: Column A, date: Column C, regDeadline: Column D }
       stateMetaMap = {};
       for (const row of rows) {
-        const url  = (row[0] || "").trim();
+        const url = (row[0] || "").trim();
         const state = (row[1] || "").trim();
-        const dateRaw = (row[2] || "").trim();       // Primary date
-        const regRaw  = (row[3] || "").trim();       // Registration deadline
-        if (state && url) {
-          stateMetaMap[state] = { url, date: dateRaw, regDeadline: regRaw }; // last-one-wins
-        }
+        const dateRaw = (row[2] || "").trim();
+        const regRaw  = (row[3] || "").trim(); // Registration deadline (col D)
+        if (state && url) stateMetaMap[state] = { url, date: dateRaw, regDeadline: regRaw }; // last-one-wins
       }
 
       populateStateDropdown();
@@ -699,18 +784,18 @@
     const dateStr = meta && meta.date;
     const regStr  = meta && meta.regDeadline;
 
-    const outWrap  = document.getElementById("state-output");
+    const outWrap = document.getElementById("state-output");
     const urlInput = document.getElementById("state-url");
-    const openA    = document.getElementById("state-open");
-    const dateEl   = document.getElementById("state-date");
-    const regEl    = document.getElementById("state-deadline"); // NEW
+    const openA = document.getElementById("state-open");
+    const dateEl = document.getElementById("state-date");
+    const regEl  = document.getElementById("state-deadline");
 
     if (!state || !link) {
       outWrap.style.display = "none";
       urlInput.value = "";
       openA.href = "#";
-      if (dateEl) dateEl.innerHTML = "";
-      if (regEl)  regEl.innerHTML  = "";
+      if (dateEl) { dateEl.innerHTML = ""; }
+      if (regEl) { regEl.innerHTML = ""; }
       return;
     }
 
@@ -718,14 +803,16 @@
     urlInput.value = link;
     openA.href = link;
 
-    // Render primary date
+    // Render date if available
     if (dateEl) {
-      dateEl.innerHTML = dateStr
-        ? `<span class="date-label">Primary Election:</span> <strong class="date-value">${formatDate(dateStr)}</strong>`
-        : "";
+      if (dateStr) {
+        dateEl.innerHTML = `<span class="date-label">Primary Election:</span> <strong class="date-value">${formatDate(dateStr)}</strong>`;
+      } else {
+        dateEl.innerHTML = "";
+      }
     }
 
-    // Render registration deadline
+    // Render registration deadline if available
     if (regEl) {
       regEl.innerHTML = regStr
         ? `<span class="date-label">Registration Deadline:</span> <strong class="date-value">${formatDate(regStr)}</strong>`
@@ -748,10 +835,291 @@
     return input; // fallback if sheet already has human-readable text
   }
 
-  document.addEventListener("DOMContentLoaded", () => {
-    fetchStateLinks();
-    document.getElementById("state-select").addEventListener("change", handleStateChange);
-  });
+  // ============================================================
+  // ========== NEW: ZIP → DISTRICT + CANDIDATES ================
+  // ============================================================
+
+  // Ranges from your screenshots:
+  //  - State Elections roster: AH (State full), AI (Position), AJ (Name), AK (District like "AZ-2" or "AK-AtLarge")
+  //  - District2Zipcode map:   A (ZIP), C (State abbr), F (District number)
+  const RANGE_ROSTER   = encodeURIComponent("'State Elections'!AH1:AL1000");
+  const RANGE_ZIPMAP   = encodeURIComponent("'District2Zipcode'!A1:F46654");
+
+  // State -> [{ position, name, district }]
+  let stateRosterMap = {};
+  // ZIP -> [{ stateAbbr, districtNum }]
+  let zipToSD = {};
+
+  // Two-letter → full state name (to align C=abbr with AH=full)
+  const STATE_ABBR_TO_NAME = {
+    AL:"Alabama", AK:"Alaska", AZ:"Arizona", AR:"Arkansas", CA:"California", CO:"Colorado",
+    CT:"Connecticut", DE:"Delaware", FL:"Florida", GA:"Georgia", HI:"Hawaii", ID:"Idaho",
+    IL:"Illinois", IN:"Indiana", IA:"Iowa", KS:"Kansas", KY:"Kentucky", LA:"Louisiana",
+    ME:"Maine", MD:"Maryland", MA:"Massachusetts", MI:"Michigan", MN:"Minnesota",
+    MS:"Mississippi", MO:"Missouri", MT:"Montana", NE:"Nebraska", NV:"Nevada",
+    NH:"New Hampshire", NJ:"New Jersey", NM:"New Mexico", NY:"New York",
+    NC:"North Carolina", ND:"North Dakota", OH:"Ohio", OK:"Oklahoma", OR:"Oregon",
+    PA:"Pennsylvania", RI:"Rhode Island", SC:"South Carolina", SD:"South Dakota",
+    TN:"Tennessee", TX:"Texas", UT:"Utah", VT:"Vermont", VA:"Virginia",
+    WA:"Washington", WV:"West Virginia", WI:"Wisconsin", WY:"Wyoming", DC:"District of Columbia",
+  };
+
+  // Fetch roster + zip map (kept separate so your original fetch stays intact)
+  async function fetchZipAndRoster() {
+    const url = `https://sheets.googleapis.com/v4/spreadsheets/${SHEET_ID}/values:batchGet` +
+                `?ranges=${RANGE_ROSTER}&ranges=${RANGE_ZIPMAP}&key=${API_KEY}`;
+    try {
+      const res = await fetch(url);
+      if (!res.ok) throw new Error(`HTTP ${res.status}`);
+      const json = await res.json();
+      const v = json.valueRanges || [];
+
+      // 1) Roster (AH:AL)
+      const rosterRows = (v[0] && v[0].values) || [];
+      stateRosterMap = {};
+      for (let i = 0; i < rosterRows.length; i++) {
+        const r = rosterRows[i];
+        const stFull   = (r[0] || "").trim(); // AH = full state name
+        const position = (r[1] || "").trim(); // AI
+        const name     = (r[2] || "").trim(); // AJ
+        const district = (r[3] || "").trim(); // AK (e.g., "AZ-2", "AK-AtLarge")
+        const aligned  = (r[4] || "").trim(); // AL = Trump Aligned (Yes/No)
+        if (!stFull || /^state$/i.test(stFull)) continue; // skip header
+        (stateRosterMap[stFull] ||= []).push({ position, name, district, aligned });
+      }
+
+      // 2) ZIP map (A:F) using C (abbr) + F (district number)
+      const zipRows = (v[1] && v[1].values) || [];
+      zipToSD = {};
+      for (let i = 0; i < zipRows.length; i++) {
+        const r = zipRows[i];
+        const zip        = (r[0] || "").trim(); // A
+        const stateAbbr  = (r[2] || "").trim(); // C = state abbr (AZ)
+        const districtNo = (r[5] || "").trim(); // F = number (1..)
+        if (!zip || /^zip$/i.test(zip)) continue; // skip header
+        if (stateAbbr && districtNo) {
+          (zipToSD[zip] ||= []).push({ stateAbbr, districtNum: districtNo });
+        }
+      }
+    } catch (err) {
+      console.error("Failed to fetch roster/zip data:", err);
+    }
+  }
+
+  // Simple, brand-friendly results
+  function handleZipLookup() {
+    const input = document.getElementById("zip-input");
+    const out   = document.getElementById("zip-output");
+    if (!input || !out) return;
+
+    const zip = String(input.value || "").replace(/\D/g, "");
+    if (!zip) { out.style.display = "none"; out.innerHTML = ""; return; }
+
+    const hits = zipToSD[zip] || [];
+    if (hits.length === 0) {
+      out.style.display = "";
+      out.innerHTML = `<div style="border:1px solid #D4AF37;border-radius:12px;padding:14px;">
+        <strong>No match</strong> for ZIP ${escapeHtml(zip)}. Some ZIP codes span multiple districts—try a 9-digit ZIP if you have it.
+      </div>`;
+      return;
+    }
+
+    // dedupe (stateAbbr|districtNum)
+    const seen = new Set();
+    const uniq = hits.filter(h => {
+      const k = `${h.stateAbbr}|${h.districtNum}`;
+      if (seen.has(k)) return false;
+      seen.add(k);
+      return true;
+    });
+
+    out.style.display = "";
+    out.innerHTML = renderCombinedCard(zip, uniq);
+  }
+
+  function renderDistrictCard(zip, abbr, num) {
+    const full = STATE_ABBR_TO_NAME[abbr.toUpperCase()] || abbr;
+    const roster = stateRosterMap[full] || [];
+    const meta   = stateMetaMap[full] || {};
+    const primary = meta.date ? ` (Primary: ${formatDate(meta.date)})` : "";
+
+    // House for this district
+    const house = roster.filter(r =>
+      /U\.?S\.?\s*House/i.test(r.position) && districtMatches(r.district, abbr, num)
+    );
+    // Statewide
+    const senate   = roster.filter(r => /U\.?S\.?\s*Senate/i.test(r.position));
+    const governor = roster.filter(r => /Governor/i.test(r.position));
+
+    return `
+      <div style="border:1px solid #D4AF37;border-radius:12px;padding:16px;margin:12px 0;background:#0B1C3D10;">
+        <div style="font-weight:700;margin-bottom:6px;">ZIP ${escapeHtml(zip)} → ${escapeHtml(full)} • District ${escapeHtml(num)} <span style="opacity:.7">${primary}</span></div>
+        ${renderList("U.S. House Race", house,   (c)=> liCandidate(c))}
+        ${renderList("U.S. Senate Race",  senate,  (c)=> liCandidate(c))}
+        ${renderList("Governor's Race",     governor,(c)=> liCandidate(c))}
+        ${meta.url ? `<div style="margin-top:8px;"><a href="${meta.url}" target="_blank" rel="noopener">Register to Vote in ${escapeHtml(full)}</a></div>` : ""}
+      </div>
+    `;
+  }
+
+  function districtMatches(cell, abbr, num) {
+    if (!cell) return false;
+    const v = String(cell).trim().toUpperCase();
+    const target = `${abbr.toUpperCase()}-${String(num).trim()}`; // e.g., AZ-2
+    if (v === target) return true;
+    if (v.endsWith(`-${String(num).trim()}`)) return true;       // handles stray prefixes
+    // Handle AtLarge case when sheet uses AK-AtLarge but ZIP says "1"
+    if (String(num).trim() === "1" && v === `${abbr.toUpperCase()}-ATLARGE`) return true;
+    return false;
+  }
+
+  function renderList(title, rows, fmt) {
+    if (!rows || rows.length === 0) {
+      return `<div style="margin:8px 0;"><div style="font-weight:600;">${title}</div><div style="opacity:.75;">No race.</div></div>`;
+    }
+    return `<div style="margin:8px 0;">
+      <div style="font-weight:600;">${title}</div>
+      <ul style="margin:6px 0 0 18px;padding:0;">${rows.map(fmt).join("")}</ul>
+    </div>`;
+  }
+
+  function li(name, position, extra) {
+    const x = extra ? ` — <span style="opacity:.8;">${escapeHtml(extra)}</span>` : "";
+    return `<li>${escapeHtml(name)} <span style="opacity:.8;">(${escapeHtml(position)})</span>${x}</li>`;
+  }
+
+  function isTrumpAligned(v) {
+    if (v == null) return false;
+    const s = String(v).trim().toLowerCase();
+    return s === "yes" || s === "y" || s === "true" || s === "1";
+  }
+
+  function liCandidate(c) {
+    const extra = c.district ? ` — <span style="opacity:.8;">${escapeHtml(c.district)}</span>` : "";
+    const badge = isTrumpAligned(c.aligned)
+      ? ` <span title="Trump-aligned" style="margin-left:6px; padding:2px 6px; border-radius:8px; background:#8B0000; color:#fff; font-size:12px; font-weight:700;">TRUMP</span>`
+      : "";
+    return `<li>${escapeHtml(c.name)} <span style="opacity:.8;">(${escapeHtml(c.position)})</span>${extra}${badge}</li>`;
+  }
+
+  function escapeHtml(s) {
+    return String(s).replace(/[&<>"']/g, m => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]));
+  }
+
+  // ---------- NEW HELPERS FOR CONSOLIDATED CARD ----------
+  function sortByFirstName(a, b) {
+    return String(a.name || "").localeCompare(String(b.name || ""), undefined, { sensitivity: "base" });
+  }
+
+  function candidateIsInAnyDistrict(candidateDistrict, hits) {
+    if (!candidateDistrict) return false;
+    const cd = String(candidateDistrict).trim().toUpperCase();
+    for (const h of hits) {
+      const ab = String(h.stateAbbr || "").toUpperCase();
+      const dn = String(h.districtNum || "").trim();
+      if (!ab || !dn) continue;
+      const target = `${ab}-${dn}`;
+      if (cd === target || cd.endsWith(`-${dn}`)) return true;
+      if (dn === "1" && cd === `${ab}-ATLARGE`) return true; // handle AtLarge mapped to "1"
+    }
+    return false;
+  }
+
+  function renderCombinedCard(zip, hits) {
+    // assume all hits are same state; take first for state lookup
+    const first = hits[0] || {};
+    const abbr = (first.stateAbbr || "").toUpperCase();
+    const full = STATE_ABBR_TO_NAME[abbr] || abbr;
+
+    const roster = stateRosterMap[full] || [];
+    const meta   = stateMetaMap[full] || {};
+    const primaryText = meta.date
+  ? `Primary: <span class="primary-date">${formatDate(meta.date)}</span>`
+  : "";
+
+const deadlineText = meta.regDeadline
+  ? `Registration Deadline: <span class="deadline-badge">${formatDate(meta.regDeadline)}</span>`
+  : "";
+  
+const statusLine = [primaryText, deadlineText].filter(Boolean).join(" • ");
+
+    // district string like "3, 4, 6"
+    const districtNums = [...new Set(hits.map(h => String(h.districtNum).trim()))].filter(Boolean);
+    const districtsStr = districtNums.join(", ");
+
+    // collect candidates
+    const house = roster
+      .filter(r => /U\.?S\.?\s*House/i.test(r.position) && candidateIsInAnyDistrict(r.district, hits))
+      .sort(sortByFirstName);
+    const senate = roster
+      .filter(r => /U\.?S\.?\s*Senate/i.test(r.position))
+      .sort(sortByFirstName);
+    const governor = roster
+      .filter(r => /Governor/i.test(r.position))
+      .sort(sortByFirstName);
+
+    return `
+      <div style="border:1px solid #D4AF37;border-radius:12px;padding:16px;margin:12px 0;background:#0B1C3D10;">
+        <div style="font-weight:700;margin-bottom:6px;">
+          ZIP ${escapeHtml(zip)} → ${escapeHtml(full)} • District${districtNums.length > 1 ? "s" : ""} ${escapeHtml(districtsStr)}
+        </div>
+        ${statusLine ? `<div style="opacity:.7; margin-bottom:6px;">${statusLine}</div>` : ""}
+        ${renderList("U.S. House Race", house, (c)=> liCandidate(c))}
+        ${renderList("U.S. Senate Race",  senate,  (c)=> liCandidate(c))}
+        ${renderList("Governor's Race",     governor,(c)=> liCandidate(c))}
+        ${meta.url ? `<div style="margin-top:8px;"><a href="${meta.url}" target="_blank" rel="noopener">Register to Vote in ${escapeHtml(full)}</a></div>` : ""}
+      </div>
+    `;
+  }
+
+  // --- INIT (kept your calls; added our fetch + listeners) ---
+document.addEventListener("DOMContentLoaded", () => {
+  // Yours:
+  fetchStateLinks();
+  const stateSel = document.getElementById("state-select");
+  if (stateSel) stateSel.addEventListener("change", handleStateChange);
+
+  // New:
+  fetchZipAndRoster();
+
+  const zipBtn = document.getElementById("zip-go");
+  const zipInput = document.getElementById("zip-input");
+  const zipValidateBtn = document.getElementById("zip-validate"); // <-- new
+
+  if (zipBtn) zipBtn.addEventListener("click", handleZipLookup);
+  if (zipInput) {
+    zipInput.addEventListener("keydown", (e) => {
+      if (e.key === "Enter") handleZipLookup();
+    });
+  }
+  if (zipValidateBtn) {
+    // openHouseLookupFromZip() must be defined (see previous snippet)
+    zipValidateBtn.addEventListener("click", openHouseLookupFromZip);
+  }
+});
+  // --- ZIP → House lookup helpers ---
+function buildZipForHouse(raw) {
+  let z = String(raw || "").trim();
+  // keep digits and optional dash
+  z = z.replace(/[^\d-]/g, "");
+  // if 9 straight digits, convert to ZIP+4 with dash
+  if (/^\d{9}$/.test(z)) z = z.slice(0,5) + "-" + z.slice(5);
+  // must be 5-digit or 5+4
+  if (!/^\d{5}(-\d{4})?$/.test(z)) return null;
+  return z;
+}
+
+function openHouseLookupFromZip() {
+  const input = document.getElementById("zip-input");
+  const raw = input ? input.value : "";
+  const z = buildZipForHouse(raw);
+  if (!z) {
+    alert("Please enter a valid 5-digit ZIP or ZIP+4 (e.g., 02115 or 02115-1234).");
+    return;
+  }
+  const url = "https://ziplook.house.gov/htbin/findrep_house?ZIP=" + encodeURIComponent(z);
+  window.open(url, "_blank", "noopener,noreferrer");
+}
 </script>
 
 </body>
