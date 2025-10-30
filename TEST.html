@@ -647,7 +647,6 @@
   color: #fff;
   font-size: 12px;
   font-weight: 700;
-  text-transform: uppercase;
 }
 </style>
 
@@ -1039,7 +1038,7 @@
   : "";
 
 const deadlineText = meta.regDeadline
-  ? `Registration <span class="deadline-badge">Deadline</span>`
+  ? `Registration Deadline: <span class="deadline-badge">${formatDate(meta.regDeadline)}</span>`
   : "";
   
 const statusLine = [primaryText, deadlineText].filter(Boolean).join(" • ");
