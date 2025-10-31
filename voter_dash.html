@@ -865,6 +865,14 @@
     WA:"Washington", WV:"West Virginia", WI:"Wisconsin", WY:"Wyoming", DC:"District of Columbia",
   };
 
+  // --- ZIP normalizer: strip non-digits, keep first 5, and left-pad with zeros ---
+  function normalizeZipKey(z) {
+    let s = String(z == null ? "" : z);
+    s = s.replace(/\D/g, "");        // digits only
+    if (s.length >= 5) s = s.slice(0, 5);
+    return s.padStart(5, "0");       // e.g., "7040" -> "07040"
+  }
+
   // Fetch roster + zip map (kept separate so your original fetch stays intact)
   async function fetchZipAndRoster() {
     const url = `https://sheets.googleapis.com/v4/spreadsheets/${SHEET_ID}/values:batchGet` +
@@ -894,12 +902,13 @@
       zipToSD = {};
       for (let i = 0; i < zipRows.length; i++) {
         const r = zipRows[i];
-        const zip        = (r[0] || "").trim(); // A
-        const stateAbbr  = (r[2] || "").trim(); // C = state abbr (AZ)
-        const districtNo = (r[5] || "").trim(); // F = number (1..)
-        if (!zip || /^zip$/i.test(zip)) continue; // skip header
+        const rawZip     = (r[0] ?? "").toString().trim(); // A (may be "7040" without leading zero)
+        const stateAbbr  = (r[2] || "").trim();            // C = state abbr (AZ)
+        const districtNo = (r[5] || "").trim();            // F = number (1..)
+        const key        = normalizeZipKey(rawZip);        // "7040" -> "07040"
+        if (!key || /^zip$/i.test(rawZip)) continue;       // skip header
         if (stateAbbr && districtNo) {
-          (zipToSD[zip] ||= []).push({ stateAbbr, districtNum: districtNo });
+          (zipToSD[key] ||= []).push({ stateAbbr, districtNum: districtNo });
         }
       }
     } catch (err) {
@@ -913,14 +922,19 @@
     const out   = document.getElementById("zip-output");
     if (!input || !out) return;
 
-    const zip = String(input.value || "").replace(/\D/g, "");
-    if (!zip) { out.style.display = "none"; out.innerHTML = ""; return; }
+    const raw = input.value;
+    const key = normalizeZipKey(raw);   // handles "07040" vs "7040"
+    if (!key.replace(/^0+/, "")) {      // effectively empty
+      out.style.display = "none"; 
+      out.innerHTML = ""; 
+      return; 
+    }
 
-    const hits = zipToSD[zip] || [];
+    const hits = zipToSD[key] || [];
     if (hits.length === 0) {
       out.style.display = "";
       out.innerHTML = `<div style="border:1px solid #D4AF37;border-radius:12px;padding:14px;">
-        <strong>No match</strong> for ZIP ${escapeHtml(zip)}. Some ZIP codes span multiple districts—try a 9-digit ZIP if you have it.
+        <strong>No match</strong> for ZIP ${escapeHtml(normalizeZipKey(raw))}. Some ZIP codes span multiple districts—try a 9-digit ZIP if you have it.
       </div>`;
       return;
     }
@@ -935,7 +949,7 @@
     });
 
     out.style.display = "";
-    out.innerHTML = renderCombinedCard(zip, uniq);
+    out.innerHTML = renderCombinedCard(key, uniq);
   }
 
   function renderDistrictCard(zip, abbr, num) {
