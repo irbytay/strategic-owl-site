@@ -655,7 +655,7 @@
     <img src="owl_logo_white.png" alt="Owl Logo" onerror="this.style.display='none';" />
     <div class="nav-title">The Strategic Owl</div>
   </a>
-  <button class="menu-toggle" id="menuToggle" onclick="toggleMenu()">☰</button>
+  <button class="menu-toggle" id="menuToggle" onclick="toggleMenu()" aria-controls="mobileMenu" aria-expanded="false" aria-label="Toggle menu">☰</button>
   <div class="nav-links" id="mobileMenu">
     <a href="Index.html">Home</a>
     <a href="Dash.html">Dash's</a>
@@ -730,6 +730,17 @@
   </footer>
 
 <script>
+  // --- Mobile menu toggle (restores hamburger functionality) ---
+  function toggleMenu() {
+    const menu = document.getElementById("mobileMenu");
+    const btn  = document.getElementById("menuToggle");
+    if (!menu) return;
+    menu.classList.toggle("show");
+    if (btn) {
+      const expanded = btn.getAttribute("aria-expanded") === "true";
+      btn.setAttribute("aria-expanded", String(!expanded));
+    }
+  }
   // --- CONFIG (yours, unchanged) ---
   const API_KEY  = "AIzaSyCzuh9HBfe0r70r9U35Pe406PPZ-tz6I78";
   const SHEET_ID = "19wBEj9hEkvIyQcoR5E_mBGVAxTzMnddMxk8nuQLAumA";
@@ -1089,6 +1100,31 @@ const statusLine = [primaryText, deadlineText].filter(Boolean).join(" • ");
 
   // --- INIT (kept your calls; added our fetch + listeners) ---
 document.addEventListener("DOMContentLoaded", () => {
+  // Ensure hamburger has ARIA attributes and event binding
+  const menuBtn = document.getElementById("menuToggle");
+  const mobileMenu = document.getElementById("mobileMenu");
+  if (menuBtn) {
+    if (!menuBtn.hasAttribute("aria-controls")) menuBtn.setAttribute("aria-controls", "mobileMenu");
+    menuBtn.setAttribute("aria-expanded", "false");
+    // Bind click as a backup in case inline onclick is removed by CSP
+    menuBtn.addEventListener("click", toggleMenu);
+  }
+  if (mobileMenu) {
+    // Close menu after selecting a link
+    mobileMenu.querySelectorAll("a").forEach(a => {
+      a.addEventListener("click", () => {
+        mobileMenu.classList.remove("show");
+        if (menuBtn) menuBtn.setAttribute("aria-expanded", "false");
+      });
+    });
+  }
+  // On resize to desktop, ensure menu is reset
+  window.addEventListener("resize", () => {
+    if (window.innerWidth > 768 && mobileMenu) {
+      mobileMenu.classList.remove("show");
+      if (menuBtn) menuBtn.setAttribute("aria-expanded", "false");
+    }
+  });
   // Yours:
   fetchStateLinks();
   const stateSel = document.getElementById("state-select");
