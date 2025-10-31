@@ -61,6 +61,7 @@
     align-items: center;
     padding: 14px 20px;
     box-shadow: 0 2px 6px var(--shadow);
+    overflow: visible;
   }
 
   .nav-title {
@@ -156,7 +157,8 @@
     flex-direction: column; /* ✅ stack vertically */
     align-items: center;
     background-color: var(--highlight);
-    position: absolute;
+    position: fixed;
+    z-index: 1000;
     top: 58px;
     left: 0;
     width: 100%;
