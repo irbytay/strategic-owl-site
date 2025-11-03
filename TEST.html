@@ -634,6 +634,25 @@
   transform: translateY(0);
   box-shadow: 0 2px 6px var(--shadow);
 }
+/* Override: make candidate website links golden text, not buttons */
+#zip-output a.candidate-site {
+  background: none;
+  padding: 0;
+  margin-top: 0;
+  box-shadow: none;
+  border-radius: 0;
+  color: var(--understanding);
+  font-weight: 700;
+  text-decoration: underline;
+}
+#zip-output a.candidate-site:hover {
+  text-shadow: 0 0 6px var(--understanding);
+  transform: none;
+}
+#zip-output a.candidate-site:active {
+  transform: none;
+  box-shadow: none;
+}
     /* Primary date text (gold) */
 .primary-date {
   color: var(--understanding);   /* your gold */
@@ -1044,7 +1063,7 @@
       : "";
 
     const site = c.website
-      ? ` <a href="${escapeHtml(c.website)}" target="_blank" rel="noopener" style="margin-left:8px; font-size:12px; text-decoration:underline; color:#0D1B2A;">website</a>`
+      ? ` <a class="candidate-site" href="${escapeHtml(c.website)}" target="_blank" rel="noopener" style="margin-left:8px; font-size:12px;">Candidate Website</a>`
       : "";
 
     return `<li>${escapeHtml(c.name)} <span style="opacity:.8;">(${escapeHtml(c.position)})</span>${extra}${trumpBadge}${impeachBadge}${site}</li>`;
