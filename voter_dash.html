@@ -634,6 +634,25 @@
   transform: translateY(0);
   box-shadow: 0 2px 6px var(--shadow);
 }
+/* Override: make candidate website links golden text, not buttons */
+#zip-output a.candidate-site {
+  background: none;
+  padding: 0;
+  margin-top: 0;
+  box-shadow: none;
+  border-radius: 0;
+  color: var(--understanding);
+  font-weight: 700;
+  text-decoration: underline;
+}
+#zip-output a.candidate-site:hover {
+  text-shadow: 0 0 6px var(--understanding);
+  transform: none;
+}
+#zip-output a.candidate-site:active {
+  transform: none;
+  box-shadow: none;
+}
     /* Primary date text (gold) */
 .primary-date {
   color: var(--understanding);   /* your gold */
@@ -659,7 +678,7 @@
     <img src="owl_logo_white.png" alt="Owl Logo" onerror="this.style.display='none';" />
     <div class="nav-title">The Strategic Owl</div>
   </a>
-  <button class="menu-toggle" id="menuToggle" onclick="toggleMenu()" aria-controls="mobileMenu" aria-expanded="false" aria-label="Toggle menu">☰</button>
+  <button class="menu-toggle" id="menuToggle" aria-controls="mobileMenu" aria-expanded="false" aria-label="Toggle menu">☰</button>
   <div class="nav-links" id="mobileMenu">
     <a href="Index.html">Home</a>
     <a href="Dash.html">Dash's</a>
@@ -687,7 +706,7 @@
         <span>Understanding</span>
       </div>
     </section>
-    <p>Pick your state to register and see your primary date.</p>
+    <p>Select your state to view your primary date, registration deadline, and official registration link.</p>
     <select id="state-select">
   <option value="">Select Your State:</option>
 </select>
@@ -700,14 +719,15 @@
     <a id="state-open" href="#" target="_blank" rel="noopener">Register to Vote</a>
   </div>
 </div>
-    <p>Enter your ZIP to see candidates in your districts or verify your rep on House.gov.</p>
-    <p>Candidate listings and Trump-aligned indicators are still being added.</p>
+<p>Enter your ZIP code to explore candidates in your area — including who is Trump-aligned and who has pledged to hold him accountable. Each listing shows party, district, and a link to the candidate website.</p>
+<p>"Trump Check" shows candidates and alignment indicators. "Verify My Dist" opens House.gov with your ZIP pre-filled so you can confirm your exact district using your street address.</p>
+<p>Candidate data, Trump alignment, and accountability indicators are still being added.</p>
  <div class="zip-lookup" style="margin-top:20px; text-align:center;">
   <label for="zip-input" style="display:block; font-weight:600; margin-bottom:6px;">Check My Ballot</label>
   <div style="display:flex; gap:8px; max-width:420px; margin:0 auto; justify-content:center;">
     <input id="zip-input" type="text" inputmode="numeric" pattern="[0-9]*" placeholder="Enter ZIP (e.g., 85301)" style="flex:1; padding:10px; border:1px solid #D4AF37; border-radius:10px;">
     <button id="zip-go" style="padding:10px 14px; border:1px solid #D4AF37; border-radius:10px; background:#0B1C3D; color:#fff;">Trump Check</button>
-    <button id="zip-validate" style="padding:10px 14px; border:1px solid #D4AF37; border-radius:10px; background:#0B1C3D; color:#fff;">Verify My Rep</button>
+    <button id="zip-validate" style="padding:10px 14px; border:1px solid #D4AF37; border-radius:10px; background:#0B1C3D; color:#fff;">Verify My Dist</button>
   </div>
 </div>
 
@@ -858,7 +878,7 @@
   // Ranges from your screenshots:
   //  - State Elections roster: AH (State full), AI (Position), AJ (Name), AK (District like "AZ-2" or "AK-AtLarge")
   //  - District2Zipcode map:   A (ZIP), C (State abbr), F (District number)
-  const RANGE_ROSTER   = encodeURIComponent("'State Elections'!AH1:AL1000");
+  const RANGE_ROSTER   = encodeURIComponent("'State Elections'!AH1:AN1000");
   const RANGE_ZIPMAP   = encodeURIComponent("'District2Zipcode'!A1:F46654");
 
   // State -> [{ position, name, district }]
@@ -898,7 +918,7 @@
       const json = await res.json();
       const v = json.valueRanges || [];
 
-      // 1) Roster (AH:AL)
+      // 1) Roster (AH:AN)
       const rosterRows = (v[0] && v[0].values) || [];
       stateRosterMap = {};
       for (let i = 0; i < rosterRows.length; i++) {
@@ -908,8 +928,10 @@
         const name     = (r[2] || "").trim(); // AJ
         const district = (r[3] || "").trim(); // AK (e.g., "AZ-2", "AK-AtLarge")
         const aligned  = (r[4] || "").trim(); // AL = Trump Aligned (Yes/No)
+        const impeach  = (r[5] || "").trim(); // AM = Willing to hold Trump accountable (Yes/No)
+        const website  = (r[6] || "").trim(); // AN = Candidate website URL
         if (!stFull || /^state$/i.test(stFull)) continue; // skip header
-        (stateRosterMap[stFull] ||= []).push({ position, name, district, aligned });
+        (stateRosterMap[stFull] ||= []).push({ position, name, district, aligned, impeach, website });
       }
 
       // 2) ZIP map (A:F) using C (abbr) + F (district number)
@@ -1024,12 +1046,28 @@
     return s === "yes" || s === "y" || s === "true" || s === "1";
   }
 
+  function isImpeachFlag(v) {
+    if (v == null) return false;
+    const s = String(v).trim().toLowerCase();
+    return s === "yes" || s === "y" || s === "true" || s === "1";
+  }
+
   function liCandidate(c) {
     const extra = c.district ? ` — <span style="opacity:.8;">${escapeHtml(c.district)}</span>` : "";
-    const badge = isTrumpAligned(c.aligned)
+
+    const trumpBadge = isTrumpAligned(c.aligned)
       ? ` <span title="Trump-aligned" style="margin-left:6px; padding:2px 6px; border-radius:8px; background:#8B0000; color:#fff; font-size:12px; font-weight:700;">TRUMP</span>`
       : "";
-    return `<li>${escapeHtml(c.name)} <span style="opacity:.8;">(${escapeHtml(c.position)})</span>${extra}${badge}</li>`;
+
+    const impeachBadge = isImpeachFlag(c.impeach)
+      ? ` <span title="Willing to hold Trump accountable" style="margin-left:6px; padding:2px 6px; border-radius:8px; background: var(--reliability); color:#fff; font-size:12px; font-weight:700;">IMPEACH</span>`
+      : "";
+
+    const site = c.website
+      ? ` <a class="candidate-site" href="${escapeHtml(c.website)}" target="_blank" rel="noopener" style="margin-left:8px; font-size:12px;">Candidate Website</a>`
+      : "";
+
+    return `<li>${escapeHtml(c.name)} <span style="opacity:.8;">(${escapeHtml(c.position)})</span>${extra}${trumpBadge}${impeachBadge}${site}</li>`;
   }
 
   function escapeHtml(s) {
@@ -1175,6 +1213,21 @@ function openHouseLookupFromZip() {
   const url = "https://ziplook.house.gov/htbin/findrep_house?ZIP=" + encodeURIComponent(z);
   window.open(url, "_blank", "noopener,noreferrer");
 }
+  // Auto-close mobile menu when clicking/tapping outside
+  document.addEventListener('click', function (event) {
+    const menu = document.getElementById('mobileMenu');
+    const toggle = document.getElementById('menuToggle');
+    if (!menu || !toggle) return;
+
+    const isClickInsideMenu = menu.contains(event.target);
+    const isClickOnToggle = toggle.contains(event.target);
+
+    // If menu is shown and user clicks outside both the menu and the toggle button, close it
+    if (menu.classList.contains('show') && !isClickInsideMenu && !isClickOnToggle) {
+      menu.classList.remove('show');
+      toggle.setAttribute('aria-expanded', 'false');
+    }
+  });
 </script>
 
 </body>
