@@ -1213,6 +1213,21 @@ function openHouseLookupFromZip() {
   const url = "https://ziplook.house.gov/htbin/findrep_house?ZIP=" + encodeURIComponent(z);
   window.open(url, "_blank", "noopener,noreferrer");
 }
+  // Auto-close mobile menu when clicking/tapping outside
+  document.addEventListener('click', function (event) {
+    const menu = document.getElementById('mobileMenu');
+    const toggle = document.getElementById('menuToggle');
+
+    if (!menu || !toggle) return;
+
+    const isClickInsideMenu = menu.contains(event.target);
+    const isClickOnToggle = toggle.contains(event.target);
+
+    if (!isClickInsideMenu && !isClickOnToggle && menu.classList.contains('open')) {
+      menu.classList.remove('open');
+      menu.classList.remove('show');
+    }
+  });
 </script>
 
 </body>
