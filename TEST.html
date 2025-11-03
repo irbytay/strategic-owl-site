@@ -61,6 +61,7 @@
     align-items: center;
     padding: 14px 20px;
     box-shadow: 0 2px 6px var(--shadow);
+    overflow: visible;
   }
 
   .nav-title {
@@ -156,7 +157,8 @@
     flex-direction: column; /* ✅ stack vertically */
     align-items: center;
     background-color: var(--highlight);
-    position: absolute;
+    position: fixed;
+    z-index: 1000;
     top: 58px;
     left: 0;
     width: 100%;
@@ -166,7 +168,7 @@
   }
 
   .nav-links.show {
-    display: flex;
+    display: flex !important; /* ensure it overrides any cascade */
     animation: fadeSlideDown 0.3s ease;
   }
 
@@ -244,14 +246,14 @@
     text-align: center;
   }
   h2 {
-  font-family: 'Playfair Display', serif;
-  font-size: 1.5rem;
-  color: var(--understanding); /* golden highlight */
-  font-weight: 600;
-  margin-top: 32px;
-  margin-bottom: 12px;
-  text-align: center;
-}
+    font-family: 'Playfair Display', serif;
+    font-size: 1.5rem;
+    color: var(--understanding); /* golden highlight */
+    font-weight: 600;
+    margin-top: 32px;
+    margin-bottom: 12px;
+    text-align: center;
+  }
   p {
   font-family: 'Inter', sans-serif;
   font-size: 1.05rem;
@@ -648,14 +650,16 @@
   font-size: 12px;
   font-weight: 700;
 }
-</style>
+  </style>
 
+</head>
+<body>
 <nav class="top-nav">
   <a href="TRUOWL3.html" class="nav-logo">
     <img src="owl_logo_white.png" alt="Owl Logo" onerror="this.style.display='none';" />
     <div class="nav-title">The Strategic Owl</div>
   </a>
-  <button class="menu-toggle" id="menuToggle" onclick="toggleMenu()">☰</button>
+  <button class="menu-toggle" id="menuToggle" onclick="toggleMenu()" aria-controls="mobileMenu" aria-expanded="false" aria-label="Toggle menu">☰</button>
   <div class="nav-links" id="mobileMenu">
     <a href="Index.html">Home</a>
     <a href="Dash.html">Dash's</a>
@@ -697,6 +701,7 @@
   </div>
 </div>
     <p>Enter your ZIP to see candidates in your districts or verify your rep on House.gov.</p>
+    <p>Candidate listings and Trump-aligned indicators are still being added.</p>
  <div class="zip-lookup" style="margin-top:20px; text-align:center;">
   <label for="zip-input" style="display:block; font-weight:600; margin-bottom:6px;">Check My Ballot</label>
   <div style="display:flex; gap:8px; max-width:420px; margin:0 auto; justify-content:center;">
@@ -722,13 +727,24 @@
       </div>
     </section>
   </div>
-  </div>
   <!-- 📜 Footer -->
   <footer style="text-align: center; padding: 24px 12px; font-size: 12px; color: #D4AF37; text-shadow: 0 0 6px rgba(0,0,0,0.6);">
     © 2025 The Strategic Owl. All rights reserved. This platform is protected under U.S. copyright and constitutional law. Unauthorized use, duplication, or distortion of content is prohibited. Created by Taylor Irby — designed for clarity, built for truth.
   </footer>
 
 <script>
+  // --- Mobile menu toggle (restores hamburger functionality) ---
+  function toggleMenu() {
+    const menu = document.getElementById("mobileMenu");
+    const btn  = document.getElementById("menuToggle");
+    if (!menu) return;
+    const nowShowing = menu.classList.toggle("show");
+    if (btn) {
+      const expanded = btn.getAttribute("aria-expanded") === "true";
+      btn.setAttribute("aria-expanded", String(!expanded));
+    }
+    try { console.log("toggleMenu: show=", nowShowing); } catch(_) {}
+  }
   // --- CONFIG (yours, unchanged) ---
   const API_KEY  = "AIzaSyCzuh9HBfe0r70r9U35Pe406PPZ-tz6I78";
   const SHEET_ID = "19wBEj9hEkvIyQcoR5E_mBGVAxTzMnddMxk8nuQLAumA";
@@ -842,7 +858,7 @@
   // Ranges from your screenshots:
   //  - State Elections roster: AH (State full), AI (Position), AJ (Name), AK (District like "AZ-2" or "AK-AtLarge")
   //  - District2Zipcode map:   A (ZIP), C (State abbr), F (District number)
-  const RANGE_ROSTER   = encodeURIComponent("'State Elections'!AH1:AL1000");
+  const RANGE_ROSTER   = encodeURIComponent("'State Elections'!AH1:AN1000");
   const RANGE_ZIPMAP   = encodeURIComponent("'District2Zipcode'!A1:F46654");
 
   // State -> [{ position, name, district }]
@@ -864,6 +880,14 @@
     WA:"Washington", WV:"West Virginia", WI:"Wisconsin", WY:"Wyoming", DC:"District of Columbia",
   };
 
+  // --- ZIP normalizer: strip non-digits, keep first 5, and left-pad with zeros ---
+  function normalizeZipKey(z) {
+    let s = String(z == null ? "" : z);
+    s = s.replace(/\D/g, "");        // digits only
+    if (s.length >= 5) s = s.slice(0, 5);
+    return s.padStart(5, "0");       // e.g., "7040" -> "07040"
+  }
+
   // Fetch roster + zip map (kept separate so your original fetch stays intact)
   async function fetchZipAndRoster() {
     const url = `https://sheets.googleapis.com/v4/spreadsheets/${SHEET_ID}/values:batchGet` +
@@ -874,7 +898,7 @@
       const json = await res.json();
       const v = json.valueRanges || [];
 
-      // 1) Roster (AH:AL)
+      // 1) Roster (AH:AN)
       const rosterRows = (v[0] && v[0].values) || [];
       stateRosterMap = {};
       for (let i = 0; i < rosterRows.length; i++) {
@@ -884,8 +908,10 @@
         const name     = (r[2] || "").trim(); // AJ
         const district = (r[3] || "").trim(); // AK (e.g., "AZ-2", "AK-AtLarge")
         const aligned  = (r[4] || "").trim(); // AL = Trump Aligned (Yes/No)
+        const impeach  = (r[5] || "").trim(); // AM = Willing to hold Trump accountable (Yes/No)
+        const website  = (r[6] || "").trim(); // AN = Candidate website URL
         if (!stFull || /^state$/i.test(stFull)) continue; // skip header
-        (stateRosterMap[stFull] ||= []).push({ position, name, district, aligned });
+        (stateRosterMap[stFull] ||= []).push({ position, name, district, aligned, impeach, website });
       }
 
       // 2) ZIP map (A:F) using C (abbr) + F (district number)
@@ -893,12 +919,13 @@
       zipToSD = {};
       for (let i = 0; i < zipRows.length; i++) {
         const r = zipRows[i];
-        const zip        = (r[0] || "").trim(); // A
-        const stateAbbr  = (r[2] || "").trim(); // C = state abbr (AZ)
-        const districtNo = (r[5] || "").trim(); // F = number (1..)
-        if (!zip || /^zip$/i.test(zip)) continue; // skip header
+        const rawZip     = (r[0] ?? "").toString().trim(); // A (may be "7040" without leading zero)
+        const stateAbbr  = (r[2] || "").trim();            // C = state abbr (AZ)
+        const districtNo = (r[5] || "").trim();            // F = number (1..)
+        const key        = normalizeZipKey(rawZip);        // "7040" -> "07040"
+        if (!key || /^zip$/i.test(rawZip)) continue;       // skip header
         if (stateAbbr && districtNo) {
-          (zipToSD[zip] ||= []).push({ stateAbbr, districtNum: districtNo });
+          (zipToSD[key] ||= []).push({ stateAbbr, districtNum: districtNo });
         }
       }
     } catch (err) {
@@ -912,14 +939,19 @@
     const out   = document.getElementById("zip-output");
     if (!input || !out) return;
 
-    const zip = String(input.value || "").replace(/\D/g, "");
-    if (!zip) { out.style.display = "none"; out.innerHTML = ""; return; }
+    const raw = input.value;
+    const key = normalizeZipKey(raw);   // handles "07040" vs "7040"
+    if (!key.replace(/^0+/, "")) {      // effectively empty
+      out.style.display = "none"; 
+      out.innerHTML = ""; 
+      return; 
+    }
 
-    const hits = zipToSD[zip] || [];
+    const hits = zipToSD[key] || [];
     if (hits.length === 0) {
       out.style.display = "";
       out.innerHTML = `<div style="border:1px solid #D4AF37;border-radius:12px;padding:14px;">
-        <strong>No match</strong> for ZIP ${escapeHtml(zip)}. Some ZIP codes span multiple districts—try a 9-digit ZIP if you have it.
+        <strong>No match</strong> for ZIP ${escapeHtml(normalizeZipKey(raw))}. Some ZIP codes span multiple districts—try a 9-digit ZIP if you have it.
       </div>`;
       return;
     }
@@ -934,7 +966,7 @@
     });
 
     out.style.display = "";
-    out.innerHTML = renderCombinedCard(zip, uniq);
+    out.innerHTML = renderCombinedCard(key, uniq);
   }
 
   function renderDistrictCard(zip, abbr, num) {
@@ -994,12 +1026,28 @@
     return s === "yes" || s === "y" || s === "true" || s === "1";
   }
 
+  function isImpeachFlag(v) {
+    if (v == null) return false;
+    const s = String(v).trim().toLowerCase();
+    return s === "yes" || s === "y" || s === "true" || s === "1";
+  }
+
   function liCandidate(c) {
     const extra = c.district ? ` — <span style="opacity:.8;">${escapeHtml(c.district)}</span>` : "";
-    const badge = isTrumpAligned(c.aligned)
+
+    const trumpBadge = isTrumpAligned(c.aligned)
       ? ` <span title="Trump-aligned" style="margin-left:6px; padding:2px 6px; border-radius:8px; background:#8B0000; color:#fff; font-size:12px; font-weight:700;">TRUMP</span>`
       : "";
-    return `<li>${escapeHtml(c.name)} <span style="opacity:.8;">(${escapeHtml(c.position)})</span>${extra}${badge}</li>`;
+
+    const impeachBadge = isImpeachFlag(c.impeach)
+      ? ` <span title="Willing to hold Trump accountable" style="margin-left:6px; padding:2px 6px; border-radius:8px; background: var(--reliability); color:#fff; font-size:12px; font-weight:700;">IMPEACH</span>`
+      : "";
+
+    const site = c.website
+      ? ` <a href="${escapeHtml(c.website)}" target="_blank" rel="noopener" style="margin-left:8px; font-size:12px; text-decoration:underline; color: var(--understanding);">website</a>`
+      : "";
+
+    return `<li>${escapeHtml(c.name)} <span style="opacity:.8;">(${escapeHtml(c.position)})</span>${extra}${trumpBadge}${impeachBadge}${site}</li>`;
   }
 
   function escapeHtml(s) {
@@ -1074,6 +1122,31 @@ const statusLine = [primaryText, deadlineText].filter(Boolean).join(" • ");
 
   // --- INIT (kept your calls; added our fetch + listeners) ---
 document.addEventListener("DOMContentLoaded", () => {
+  // Ensure hamburger has ARIA attributes and event binding
+  const menuBtn = document.getElementById("menuToggle");
+  const mobileMenu = document.getElementById("mobileMenu");
+  if (menuBtn) {
+    if (!menuBtn.hasAttribute("aria-controls")) menuBtn.setAttribute("aria-controls", "mobileMenu");
+    menuBtn.setAttribute("aria-expanded", "false");
+    // Bind click as a backup in case inline onclick is removed by CSP
+    menuBtn.addEventListener("click", toggleMenu);
+  }
+  if (mobileMenu) {
+    // Close menu after selecting a link
+    mobileMenu.querySelectorAll("a").forEach(a => {
+      a.addEventListener("click", () => {
+        mobileMenu.classList.remove("show");
+        if (menuBtn) menuBtn.setAttribute("aria-expanded", "false");
+      });
+    });
+  }
+  // On resize to desktop, ensure menu is reset
+  window.addEventListener("resize", () => {
+    if (window.innerWidth > 768 && mobileMenu) {
+      mobileMenu.classList.remove("show");
+      if (menuBtn) menuBtn.setAttribute("aria-expanded", "false");
+    }
+  });
   // Yours:
   fetchStateLinks();
   const stateSel = document.getElementById("state-select");
