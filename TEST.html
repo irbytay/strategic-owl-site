@@ -342,6 +342,36 @@
     color: #bbf7d0;
   }
 
+  /* --- Auth tabbed view styles --- */
+  .hidden {
+    display: none;
+  }
+
+  .auth-tabs {
+    display: flex;
+    justify-content: center;
+    gap: 8px;
+    margin-top: 12px;
+    margin-bottom: 8px;
+  }
+
+  .auth-tab {
+    padding: 6px 14px;
+    border-radius: 999px;
+    border: 1px solid var(--highlight);
+    background: transparent;
+    color: var(--text-muted);
+    font-size: 0.85rem;
+    cursor: pointer;
+    font-family: 'Inter', sans-serif;
+  }
+
+  .auth-tab.active {
+    border-color: var(--understanding);
+    color: var(--understanding);
+    background-color: rgba(212, 175, 55, 0.08);
+  }
+
   h1 {
     font-family: 'Playfair Display', serif;
     color: var(--understanding);
@@ -798,20 +828,44 @@
   </div>
 </nav>
   <div class="container">
-    <h1>Sign in to Strategic Owl</h1>
+    <h1>Welcome to Strategic Owl</h1>
     <p class="auth-subtitle">
-      Use Apple, Google, or email to sign in. Once you’re in, you’ll be able to create and manage your profile.
+      Log in if you already have an account, or create a new one to start building your profile.
     </p>
-    <div class="auth-card">
-      <button id="btn-apple" class="auth-btn apple">Continue with Apple</button>
-      <button id="btn-google" class="auth-btn google">Continue with Google</button>
+
+    <div class="auth-tabs">
+      <button id="tab-login" class="auth-tab active">Log in</button>
+      <button id="tab-signup" class="auth-tab">Create account</button>
+    </div>
+
+    <!-- Log in view -->
+    <div id="login-view" class="auth-card">
+      <button id="login-apple" class="auth-btn apple">Continue with Apple</button>
+      <button id="login-google" class="auth-btn google">Continue with Google</button>
       <div class="auth-divider">or</div>
       <div class="auth-field">
-        <label for="auth-email">Sign in with email</label>
-        <input id="auth-email" type="email" placeholder="you@example.com" />
+        <label for="login-email">Log in with email</label>
+        <input id="login-email" type="email" placeholder="you@example.com" />
       </div>
-      <button id="btn-email" class="auth-btn email">Send me a sign-in link</button>
-      <div id="auth-message" class="auth-message"></div>
+      <button id="login-email-btn" class="auth-btn email">Send me a sign-in link</button>
+      <div id="login-message" class="auth-message"></div>
+    </div>
+
+    <!-- Sign up view -->
+    <div id="signup-view" class="auth-card hidden">
+      <button id="signup-apple" class="auth-btn apple">Sign up with Apple</button>
+      <button id="signup-google" class="auth-btn google">Sign up with Google</button>
+      <div class="auth-divider">or</div>
+      <div class="auth-field">
+        <label for="signup-email">Email</label>
+        <input id="signup-email" type="email" placeholder="you@example.com" />
+      </div>
+      <div class="auth-field">
+        <label for="signup-password">Password</label>
+        <input id="signup-password" type="password" placeholder="Create a password" />
+      </div>
+      <button id="signup-email-btn" class="auth-btn email">Create account with email</button>
+      <div id="signup-message" class="auth-message"></div>
     </div>
   </div>
   <!-- 📜 Footer -->
@@ -845,18 +899,51 @@
   const sb = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
   window.addEventListener("DOMContentLoaded", async () => {
-    const authMessageEl = document.getElementById("auth-message");
-    const appleBtn = document.getElementById("btn-apple");
-    const googleBtn = document.getElementById("btn-google");
-    const emailBtn = document.getElementById("btn-email");
-    const emailInput = document.getElementById("auth-email");
+    const loginView = document.getElementById("login-view");
+    const signupView = document.getElementById("signup-view");
+    const tabLogin = document.getElementById("tab-login");
+    const tabSignup = document.getElementById("tab-signup");
 
-    const setMessage = (text, type = "error") => {
-      if (!authMessageEl) return;
-      authMessageEl.textContent = text;
-      authMessageEl.classList.remove("error", "success");
-      authMessageEl.classList.add(type === "success" ? "success" : "error");
+    const loginAppleBtn = document.getElementById("login-apple");
+    const loginGoogleBtn = document.getElementById("login-google");
+    const loginEmailBtn = document.getElementById("login-email-btn");
+    const loginEmailInput = document.getElementById("login-email");
+    const loginMsg = document.getElementById("login-message");
+
+    const signupAppleBtn = document.getElementById("signup-apple");
+    const signupGoogleBtn = document.getElementById("signup-google");
+    const signupEmailBtn = document.getElementById("signup-email-btn");
+    const signupEmailInput = document.getElementById("signup-email");
+    const signupPasswordInput = document.getElementById("signup-password");
+    const signupMsg = document.getElementById("signup-message");
+
+    const setMessage = (el, text, type = "error") => {
+      if (!el) return;
+      el.textContent = text;
+      el.classList.remove("error", "success");
+      el.classList.add(type === "success" ? "success" : "error");
     };
+
+    const showLoginView = () => {
+      if (loginView) loginView.classList.remove("hidden");
+      if (signupView) signupView.classList.add("hidden");
+      if (tabLogin) tabLogin.classList.add("active");
+      if (tabSignup) tabSignup.classList.remove("active");
+    };
+
+    const showSignupView = () => {
+      if (loginView) loginView.classList.add("hidden");
+      if (signupView) signupView.classList.remove("hidden");
+      if (tabLogin) tabLogin.classList.remove("active");
+      if (tabSignup) tabSignup.classList.add("active");
+    };
+
+    if (tabLogin) {
+      tabLogin.addEventListener("click", showLoginView);
+    }
+    if (tabSignup) {
+      tabSignup.addEventListener("click", showSignupView);
+    }
 
     // If already logged in, send user into the main app (adjust target as needed)
     const { data: { user } } = await sb.auth.getUser();
@@ -865,44 +952,98 @@
       return;
     }
 
-    if (appleBtn) {
-      appleBtn.onclick = async () => {
-        setMessage("");
+    // Use the current page URL as redirect target in this test environment
+    const redirectTarget = window.location.href;
+
+    // LOGIN: Apple / Google / Email magic link
+    if (loginAppleBtn) {
+      loginAppleBtn.onclick = async () => {
+        setMessage(loginMsg, "");
         const { error } = await sb.auth.signInWithOAuth({
           provider: "apple",
-          options: { redirectTo: window.location.href }
+          options: { redirectTo: redirectTarget }
         });
-        if (error) setMessage(error.message);
+        if (error) setMessage(loginMsg, error.message);
       };
     }
 
-    if (googleBtn) {
-      googleBtn.onclick = async () => {
-        setMessage("");
+    if (loginGoogleBtn) {
+      loginGoogleBtn.onclick = async () => {
+        setMessage(loginMsg, "");
         const { error } = await sb.auth.signInWithOAuth({
           provider: "google",
-          options: { redirectTo: window.location.href }
+          options: { redirectTo: redirectTarget }
         });
-        if (error) setMessage(error.message);
+        if (error) setMessage(loginMsg, error.message);
       };
     }
 
-    if (emailBtn) {
-      emailBtn.onclick = async () => {
-        setMessage("");
-        if (!emailInput || !emailInput.value.trim()) {
-          setMessage("Please enter an email address.");
+    if (loginEmailBtn) {
+      loginEmailBtn.onclick = async () => {
+        setMessage(loginMsg, "");
+        if (!loginEmailInput || !loginEmailInput.value.trim()) {
+          setMessage(loginMsg, "Please enter an email address.");
           return;
         }
-        const email = emailInput.value.trim();
+        const email = loginEmailInput.value.trim();
         const { error } = await sb.auth.signInWithOtp({
           email,
-          options: { emailRedirectTo: window.location.href }
+          options: { emailRedirectTo: redirectTarget }
         });
         if (error) {
-          setMessage(error.message);
+          setMessage(loginMsg, error.message);
         } else {
-          setMessage("Check your email for a sign-in link.", "success");
+          setMessage(loginMsg, "Check your email for a sign-in link.", "success");
+        }
+      };
+    }
+
+    // SIGNUP: Apple / Google (same underlying OAuth), plus email+password sign up
+    if (signupAppleBtn) {
+      signupAppleBtn.onclick = async () => {
+        setMessage(signupMsg, "");
+        const { error } = await sb.auth.signInWithOAuth({
+          provider: "apple",
+          options: { redirectTo: redirectTarget }
+        });
+        if (error) setMessage(signupMsg, error.message);
+      };
+    }
+
+    if (signupGoogleBtn) {
+      signupGoogleBtn.onclick = async () => {
+        setMessage(signupMsg, "");
+        const { error } = await sb.auth.signInWithOAuth({
+          provider: "google",
+          options: { redirectTo: redirectTarget }
+        });
+        if (error) setMessage(signupMsg, error.message);
+      };
+    }
+
+    if (signupEmailBtn) {
+      signupEmailBtn.onclick = async () => {
+        setMessage(signupMsg, "");
+        if (!signupEmailInput || !signupEmailInput.value.trim()) {
+          setMessage(signupMsg, "Please enter an email address.");
+          return;
+        }
+        if (!signupPasswordInput || !signupPasswordInput.value.trim()) {
+          setMessage(signupMsg, "Please create a password.");
+          return;
+        }
+        const email = signupEmailInput.value.trim();
+        const password = signupPasswordInput.value.trim();
+
+        const { error } = await sb.auth.signUp({
+          email,
+          password
+        });
+
+        if (error) {
+          setMessage(signupMsg, error.message);
+        } else {
+          setMessage(signupMsg, "Check your email to confirm your account, then you can log in.", "success");
         }
       };
     }
