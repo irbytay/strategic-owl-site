@@ -798,16 +798,16 @@
   </div>
 </nav>
   <div class="container">
-    <h1>Sign in to Strategic Owl</h1>
+    <h1>Sign in or create your account</h1>
     <p class="auth-subtitle">
-      Use Apple, Google, or email to sign in. Once you’re in, you’ll be able to create and manage your profile.
+      Use Apple, Google, or email. If you’re new, we’ll create your account as part of sign in and then help you finish your profile.
     </p>
     <div class="auth-card">
       <button id="btn-apple" class="auth-btn apple">Continue with Apple</button>
       <button id="btn-google" class="auth-btn google">Continue with Google</button>
       <div class="auth-divider">or</div>
       <div class="auth-field">
-        <label for="auth-email">Sign in with email</label>
+        <label for="auth-email">Sign in or register with email</label>
         <input id="auth-email" type="email" placeholder="you@example.com" />
       </div>
       <button id="btn-email" class="auth-btn email">Send me a sign-in link</button>
@@ -850,6 +850,8 @@
     const googleBtn = document.getElementById("btn-google");
     const emailBtn = document.getElementById("btn-email");
     const emailInput = document.getElementById("auth-email");
+    // Where Supabase should send the user back after auth (test environment)
+    const LOGIN_REDIRECT = window.location.origin + "/test.html";
 
     const setMessage = (text, type = "error") => {
       if (!authMessageEl) return;
@@ -870,7 +872,7 @@
         setMessage("");
         const { error } = await sb.auth.signInWithOAuth({
           provider: "apple",
-          options: { redirectTo: window.location.href }
+          options: { redirectTo: LOGIN_REDIRECT }
         });
         if (error) setMessage(error.message);
       };
@@ -881,7 +883,7 @@
         setMessage("");
         const { error } = await sb.auth.signInWithOAuth({
           provider: "google",
-          options: { redirectTo: window.location.href }
+          options: { redirectTo: LOGIN_REDIRECT }
         });
         if (error) setMessage(error.message);
       };
@@ -897,7 +899,7 @@
         const email = emailInput.value.trim();
         const { error } = await sb.auth.signInWithOtp({
           email,
-          options: { emailRedirectTo: window.location.href }
+          options: { emailRedirectTo: LOGIN_REDIRECT }
         });
         if (error) {
           setMessage(error.message);
