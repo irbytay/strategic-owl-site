@@ -342,6 +342,10 @@
     color: #bbf7d0;
   }
 
+  .hidden {
+    display: none;
+  }
+
   h1 {
     font-family: 'Playfair Display', serif;
     color: var(--understanding);
@@ -798,11 +802,11 @@
   </div>
 </nav>
   <div class="container">
-    <h1>Sign in to Strategic Owl</h1>
+    <h1>Sign in or create your account</h1>
     <p class="auth-subtitle">
-      Use Apple, Google, or email to sign in. Once you’re in, you’ll be able to create and manage your profile.
+      Use Apple, Google, or email. If you’re new, we’ll create your account as part of sign in and then help you finish your profile.
     </p>
-    <div class="auth-card">
+    <div id="auth-view" class="auth-card">
       <button id="btn-apple" class="auth-btn apple">Continue with Apple</button>
       <button id="btn-google" class="auth-btn google">Continue with Google</button>
       <div class="auth-divider">or</div>
@@ -812,6 +816,26 @@
       </div>
       <button id="btn-email" class="auth-btn email">Send me a sign-in link</button>
       <div id="auth-message" class="auth-message"></div>
+    </div>
+    <div id="profile-view" class="auth-card hidden">
+      <h2 style="margin-top:0; margin-bottom:4px;">Finish your profile</h2>
+      <p class="auth-subtitle">
+        Choose how you want to appear on Strategic Owl.
+      </p>
+      <div class="auth-field">
+        <label for="profile-handle">@handle (no spaces)</label>
+        <input id="profile-handle" type="text" placeholder="OwlLogic" />
+      </div>
+      <div class="auth-field">
+        <label for="profile-name">Display name</label>
+        <input id="profile-name" type="text" placeholder="Your name" />
+      </div>
+      <div class="auth-field">
+        <label for="profile-bio">Bio</label>
+        <input id="profile-bio" type="text" placeholder="Short description (optional)" />
+      </div>
+      <button id="btn-save-profile" class="auth-btn email">Save profile</button>
+      <div id="profile-message" class="auth-message"></div>
     </div>
   </div>
   <!-- 📜 Footer -->
@@ -851,6 +875,14 @@
     const emailBtn = document.getElementById("btn-email");
     const emailInput = document.getElementById("auth-email");
 
+    const authView = document.getElementById("auth-view");
+    const profileView = document.getElementById("profile-view");
+    const profileHandle = document.getElementById("profile-handle");
+    const profileName = document.getElementById("profile-name");
+    const profileBio = document.getElementById("profile-bio");
+    const profileBtn = document.getElementById("btn-save-profile");
+    const profileMsg = document.getElementById("profile-message");
+
     const setMessage = (text, type = "error") => {
       if (!authMessageEl) return;
       authMessageEl.textContent = text;
@@ -858,11 +890,53 @@
       authMessageEl.classList.add(type === "success" ? "success" : "error");
     };
 
-    // If already logged in, send user into the main app (adjust target as needed)
+    const showAuth = () => {
+      if (authView) authView.classList.remove("hidden");
+      if (profileView) profileView.classList.add("hidden");
+    };
+
+    const showProfile = () => {
+      if (authView) authView.classList.add("hidden");
+      if (profileView) profileView.classList.remove("hidden");
+    };
+
+    // Check auth state and decide whether to show login or profile completion
     const { data: { user } } = await sb.auth.getUser();
+
     if (user) {
-      window.location.href = "Index.html"; // TODO: change to your post-login page
-      return;
+      try {
+        const { data: profile, error: profileError } = await sb
+          .from("profiles")
+          .select("*")
+          .eq("id", user.id)
+          .single();
+
+        if (profileError) {
+          console.error("Error loading profile:", profileError);
+          showAuth();
+          setMessage("Unable to load your profile. Please try again.");
+        } else if (!profile || !profile.handle) {
+          // No handle yet: show profile completion form
+          showProfile();
+          if (profileName && profile.display_name) {
+            profileName.value = profile.display_name;
+          }
+          if (profileBio && profile.bio) {
+            profileBio.value = profile.bio;
+          }
+        } else {
+          // Profile looks complete → send user into the main app
+          window.location.href = "Index.html"; // change if you want a different landing page
+          return;
+        }
+      } catch (err) {
+        console.error("Unexpected profile error:", err);
+        showAuth();
+        setMessage("Something went wrong. Please try again.");
+      }
+    } else {
+      // Not logged in yet → show auth view
+      showAuth();
     }
 
     if (appleBtn) {
@@ -903,6 +977,65 @@
           setMessage(error.message);
         } else {
           setMessage("Check your email for a sign-in link.", "success");
+        }
+      };
+    }
+
+    if (profileBtn) {
+      profileBtn.onclick = async () => {
+        if (!profileHandle || !profileName) return;
+
+        const rawHandle = profileHandle.value.trim();
+        const displayName = profileName.value.trim();
+        const bio = profileBio ? profileBio.value.trim() : null;
+
+        if (!rawHandle) {
+          if (profileMsg) {
+            profileMsg.textContent = "Please choose a handle.";
+            profileMsg.classList.remove("success");
+            profileMsg.classList.add("error");
+          }
+          return;
+        }
+
+        const normalizedHandle = rawHandle.replace(/\s+/g, "").toLowerCase();
+
+        const { data: { user } } = await sb.auth.getUser();
+        if (!user) {
+          if (profileMsg) {
+            profileMsg.textContent = "You are not logged in.";
+            profileMsg.classList.remove("success");
+            profileMsg.classList.add("error");
+          }
+          return;
+        }
+
+        const { error } = await sb
+          .from("profiles")
+          .update({
+            handle: normalizedHandle,
+            display_name: displayName || user.email,
+            bio: bio,
+            updated_at: new Date().toISOString()
+          })
+          .eq("id", user.id);
+
+        if (error) {
+          console.error("Error saving profile:", error);
+          if (profileMsg) {
+            profileMsg.textContent = error.message;
+            profileMsg.classList.remove("success");
+            profileMsg.classList.add("error");
+          }
+        } else {
+          if (profileMsg) {
+            profileMsg.textContent = "Profile saved — redirecting…";
+            profileMsg.classList.remove("error");
+            profileMsg.classList.add("success");
+          }
+          setTimeout(() => {
+            window.location.href = "Index.html"; // or your main app page
+          }, 800);
         }
       };
     }
