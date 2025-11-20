@@ -492,6 +492,8 @@
     text-shadow: 0 0 6px rgba(0, 0, 0, 0.6);
     font-family: 'Inter', sans-serif;
   }
+<!-- Supabase JS (for auth state and logout) -->
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 </style>
 
 <nav class="top-nav">
@@ -747,6 +749,45 @@
     if (!isClickInsideMenu && !isClickOnToggle && menu.classList.contains('open')) {
       menu.classList.remove('open');
       menu.classList.remove('show');
+    }
+  });
+
+  // 🔐 Supabase auth: show "Sign out" when logged in, "Sign in" when logged out
+  document.addEventListener('DOMContentLoaded', async () => {
+    const SUPABASE_URL = "https://gopyzkcmvkbusdnwjlbb.supabase.co";
+    const SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImdvcHl6a2NtdmtidXNkbndqbGJiIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTExODc5MTAsImV4cCI6MjA2Njc2MzkxMH0.g_c2FGIGDgXi_zCA7_ZaIteVm2S_ZkUkB-CHkdBWxc8";
+
+    if (!window.supabase) {
+      console.warn("Supabase JS not loaded on this page.");
+      return;
+    }
+
+    const sb = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+
+    const loginLink = document.querySelector(".login-link");
+    if (!loginLink) return;
+
+    try {
+      const { data: { user } } = await sb.auth.getUser();
+
+      if (user) {
+        // User is logged in → turn link into "Sign out"
+        loginLink.textContent = "Sign out";
+        loginLink.href = "#";
+
+        loginLink.addEventListener("click", async (e) => {
+          e.preventDefault();
+          await sb.auth.signOut();
+          // After logout, send them back to the home page (or reload)
+          window.location.href = "Index.html";
+        });
+      } else {
+        // Not logged in → keep "Sign in" pointing to your auth page
+        loginLink.textContent = "Sign in";
+        loginLink.href = "test.html"; // your login/register page
+      }
+    } catch (err) {
+      console.error("Error checking auth state:", err);
     }
   });
 </script>
