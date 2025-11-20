@@ -838,10 +838,10 @@
     menuToggleBtn.addEventListener("click", toggleMenu);
   }
 
-  // --- Supabase Auth Setup (fill in your project details) ---
-  const SUPABASE_URL = "https://YOUR-PROJECT-REF.supabase.co";        // TODO: replace with your Supabase project URL
-  const SUPABASE_ANON_KEY = "YOUR-ANON-PUBLIC-KEY";                   // TODO: replace with your Supabase anon key
-
+  // --- Supabase Auth Setup (Strategic Owl project) ---
+  const SUPABASE_URL = "https://gopyzkcmvkbusdnwjlbb.supabase.co";
+  const SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImdvcHl6a2NtdmtidXNkbndqbGJiIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTExODc5MTAsImV4cCI6MjA2Njc2MzkxMH0.g_c2FGIGDgXi_zCA7_ZaIteVm2S_ZkUkB-CHkdBWxc8";
+  
   const sb = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
   window.addEventListener("DOMContentLoaded", async () => {
