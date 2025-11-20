@@ -3,7 +3,8 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>The Strategic Owl | Truth. Reliability. Understanding.</title>
+  <title>The Strategic Owl | Sign in</title>
+  <script src="https://unpkg.com/@supabase/supabase-js@2"></script>
 
   <!-- Open Graph Meta (Facebook, LinkedIn, Discord, etc.) -->
   <meta property="og:title" content="The Strategic Owl | Truth. Reliability. Understanding." />
@@ -248,6 +249,97 @@
     max-width: 960px;
     margin: 100px auto 0 auto;
     padding: 24px;
+  }
+
+  .auth-card {
+    max-width: 420px;
+    margin: 24px auto 0 auto;
+    padding: 24px 20px;
+    background-color: var(--surface);
+    border-radius: 16px;
+    box-shadow: 0 10px 40px var(--shadow);
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .auth-subtitle {
+    font-size: 0.95rem;
+    color: var(--text-muted);
+    text-align: center;
+    margin-top: -4px;
+    margin-bottom: 12px;
+  }
+
+  .auth-btn {
+    width: 100%;
+    padding: 10px 14px;
+    border-radius: 999px;
+    border: none;
+    cursor: pointer;
+    font-size: 0.95rem;
+    font-family: 'Inter', sans-serif;
+  }
+
+  .auth-btn.apple {
+    background-color: #111827;
+    color: #f9fafb;
+  }
+
+  .auth-btn.google {
+    background-color: #f9fafb;
+    color: #111827;
+  }
+
+  .auth-btn.email {
+    background-color: #1d4ed8;
+    color: #f9fafb;
+    margin-top: 6px;
+  }
+
+  .auth-divider {
+    text-align: center;
+    font-size: 0.8rem;
+    color: #9ca3af;
+    margin: 4px 0;
+  }
+
+  .auth-field {
+    margin-top: 4px;
+    margin-bottom: 6px;
+  }
+
+  .auth-field label {
+    font-size: 0.8rem;
+    display: block;
+    margin-bottom: 4px;
+    color: var(--text-muted);
+  }
+
+  .auth-field input {
+    width: 100%;
+    padding: 8px 10px;
+    border-radius: 8px;
+    border: 1px solid #4b5563;
+    background: #020617;
+    color: #e5e7eb;
+    font-size: 0.9rem;
+    font-family: 'Inter', sans-serif;
+  }
+
+  .auth-message {
+    min-height: 18px;
+    font-size: 0.8rem;
+    text-align: center;
+    margin-top: 4px;
+  }
+
+  .auth-message.error {
+    color: #fecaca;
+  }
+
+  .auth-message.success {
+    color: #bbf7d0;
   }
 
   h1 {
@@ -706,34 +798,21 @@
   </div>
 </nav>
   <div class="container">
-    <h1>Voter Dashboard</h1>
-<!-- 🎯 Divider -->
-    <section class="divider-section">
-      <div class="divider-bar">
-        <div class="truth"></div>
-        <div class="reliability"></div>
-        <div class="understanding"></div>
+    <h1>Sign in to Strategic Owl</h1>
+    <p class="auth-subtitle">
+      Use Apple, Google, or email to sign in. Once you’re in, you’ll be able to create and manage your profile.
+    </p>
+    <div class="auth-card">
+      <button id="btn-apple" class="auth-btn apple">Continue with Apple</button>
+      <button id="btn-google" class="auth-btn google">Continue with Google</button>
+      <div class="auth-divider">or</div>
+      <div class="auth-field">
+        <label for="auth-email">Sign in with email</label>
+        <input id="auth-email" type="email" placeholder="you@example.com" />
       </div>
-      <div class="divider-labels">
-        <span>Truth</span>
-        <span>Reliability</span>
-        <span>Understanding</span>
-      </div>
-    </section>
-    
-     <!-- 🎯 Divider -->
-    <section class="divider-section">
-      <div class="divider-bar">
-        <div class="truth"></div>
-        <div class="reliability"></div>
-        <div class="understanding"></div>
-      </div>
-      <div class="divider-labels">
-        <span>Truth</span>
-        <span>Reliability</span>
-        <span>Understanding</span>
-      </div>
-    </section>
+      <button id="btn-email" class="auth-btn email">Send me a sign-in link</button>
+      <div id="auth-message" class="auth-message"></div>
+    </div>
   </div>
   <!-- 📜 Footer -->
   <footer style="text-align: center; padding: 24px 12px; font-size: 12px; color: #D4AF37; text-shadow: 0 0 6px rgba(0,0,0,0.6);">
@@ -753,14 +832,82 @@
     }
     try { console.log("toggleMenu: show=", nowShowing); } catch(_) {}
   }
-  // --- CONFIG (yours, unchanged) ---
-  const API_KEY  = "AIzaSyCzuh9HBfe0r70r9U35Pe406PPZ-tz6I78";
-  const SHEET_ID = "19wBEj9hEkvIyQcoR5E_mBGVAxTzMnddMxk8nuQLAumA";
-  // Tab: "State Elections", Range: A2:D51  (A = URL, B = State, C = Upcoming Election Date, D = Registration Deadline)
-  const RAW_RANGE = "'State Elections'!A2:D51";
-  const RANGE = encodeURIComponent(RAW_RANGE);
 
-  
+  const menuToggleBtn = document.getElementById("menuToggle");
+  if (menuToggleBtn) {
+    menuToggleBtn.addEventListener("click", toggleMenu);
+  }
+
+  // --- Supabase Auth Setup (fill in your project details) ---
+  const SUPABASE_URL = "https://YOUR-PROJECT-REF.supabase.co";        // TODO: replace with your Supabase project URL
+  const SUPABASE_ANON_KEY = "YOUR-ANON-PUBLIC-KEY";                   // TODO: replace with your Supabase anon key
+
+  const sb = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+
+  window.addEventListener("DOMContentLoaded", async () => {
+    const authMessageEl = document.getElementById("auth-message");
+    const appleBtn = document.getElementById("btn-apple");
+    const googleBtn = document.getElementById("btn-google");
+    const emailBtn = document.getElementById("btn-email");
+    const emailInput = document.getElementById("auth-email");
+
+    const setMessage = (text, type = "error") => {
+      if (!authMessageEl) return;
+      authMessageEl.textContent = text;
+      authMessageEl.classList.remove("error", "success");
+      authMessageEl.classList.add(type === "success" ? "success" : "error");
+    };
+
+    // If already logged in, send user into the main app (adjust target as needed)
+    const { data: { user } } = await sb.auth.getUser();
+    if (user) {
+      window.location.href = "Index.html"; // TODO: change to your post-login page
+      return;
+    }
+
+    if (appleBtn) {
+      appleBtn.onclick = async () => {
+        setMessage("");
+        const { error } = await sb.auth.signInWithOAuth({
+          provider: "apple",
+          options: { redirectTo: window.location.href }
+        });
+        if (error) setMessage(error.message);
+      };
+    }
+
+    if (googleBtn) {
+      googleBtn.onclick = async () => {
+        setMessage("");
+        const { error } = await sb.auth.signInWithOAuth({
+          provider: "google",
+          options: { redirectTo: window.location.href }
+        });
+        if (error) setMessage(error.message);
+      };
+    }
+
+    if (emailBtn) {
+      emailBtn.onclick = async () => {
+        setMessage("");
+        if (!emailInput || !emailInput.value.trim()) {
+          setMessage("Please enter an email address.");
+          return;
+        }
+        const email = emailInput.value.trim();
+        const { error } = await sb.auth.signInWithOtp({
+          email,
+          options: { emailRedirectTo: window.location.href }
+        });
+        if (error) {
+          setMessage(error.message);
+        } else {
+          setMessage("Check your email for a sign-in link.", "success");
+        }
+      };
+    }
+  });
+
 </script>
 
 </body>
