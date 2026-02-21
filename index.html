@@ -470,6 +470,129 @@
     display: none;
   }
 }
+  /* 🦉 Flutter-style cards (Homepage feed) */
+  .so-card {
+    width: 100%;
+    max-width: 960px;
+    margin: 16px auto;
+    padding: 16px;
+    border-radius: 16px;
+    border: 1.2px solid rgba(212, 175, 55, 0.35);
+    background: linear-gradient(to bottom right, #0A0F1C, #1A2B4C);
+    box-shadow: 0 10px 22px rgba(212, 175, 55, 0.16);
+  }
+
+  .so-card-title-row {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 12px;
+  }
+
+  .so-card-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.15rem;
+    font-weight: 700;
+    color: var(--understanding);
+    margin: 0;
+  }
+
+  .so-card-subtitle {
+    font-family: 'Inter', sans-serif;
+    font-size: 0.85rem;
+    color: var(--text-muted);
+    margin: 6px 0 0 0;
+  }
+
+  .so-card-body {
+    margin-top: 10px;
+    font-family: 'Inter', sans-serif;
+    color: var(--understanding);
+    font-size: 0.98rem;
+    line-height: 1.45;
+    white-space: pre-wrap;
+  }
+
+  .so-card-body.italic {
+    font-style: italic;
+  }
+
+  .so-actions {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    flex-wrap: nowrap;
+  }
+
+  .so-icon-btn {
+    width: 36px;
+    height: 36px;
+    border-radius: 10px;
+    border: 1px solid rgba(212, 175, 55, 0.25);
+    background: rgba(13, 27, 42, 0.25);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: transform 0.12s ease, background 0.12s ease;
+  }
+
+  .so-icon-btn:hover {
+    transform: translateY(-1px);
+    background: rgba(13, 27, 42, 0.35);
+  }
+
+  .so-icon {
+    width: 18px;
+    height: 18px;
+    fill: var(--understanding);
+  }
+
+  .so-like {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    margin-right: 6px;
+    color: var(--understanding);
+    font-family: 'Inter', sans-serif;
+    font-weight: 700;
+    font-size: 0.85rem;
+    user-select: none;
+  }
+
+  .so-like .heart {
+    width: 18px;
+    height: 18px;
+    fill: var(--understanding);
+  }
+
+  .so-like.liked .heart {
+    fill: var(--understanding);
+    filter: drop-shadow(0 0 6px rgba(212, 175, 55, 0.35));
+  }
+
+  .so-toast {
+    position: fixed;
+    left: 50%;
+    bottom: 18px;
+    transform: translateX(-50%);
+    background: rgba(17, 34, 64, 0.95);
+    border: 1px solid rgba(212, 175, 55, 0.35);
+    color: var(--understanding);
+    padding: 10px 14px;
+    border-radius: 12px;
+    font-family: 'Inter', sans-serif;
+    font-size: 0.9rem;
+    box-shadow: 0 8px 20px rgba(0,0,0,0.35);
+    z-index: 99999;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.18s ease;
+  }
+
+  .so-toast.show {
+    opacity: 1;
+  }
   /* 📜 Footer */
   footer {
     text-align: center;
@@ -514,6 +637,65 @@
         <span>Understanding</span>
       </div>
     </section>
+    <!-- 🦉 Homepage (Google Sheet) dynamic blocks -->
+    <div id="homepage-dynamic">
+      <div class="so-card" id="verified-card" style="display:none;">
+        <div class="so-card-title-row">
+          <div>
+            <h2 class="so-card-title" style="margin:0;">Verified</h2>
+            <p class="so-card-subtitle" id="verified-sub" style="margin:6px 0 0 0;"></p>
+          </div>
+          <div class="so-actions">
+            <button class="so-icon-btn" id="copy-verified" title="Copy" aria-label="Copy verified">
+              <svg class="so-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M16 1H4a2 2 0 0 0-2 2v14h2V3h12V1zm4 4H8a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7a2 2 0 0 0-2-2zm0 18H8V7h12v16z"/></svg>
+            </button>
+            <button class="so-icon-btn" id="share-verified" title="Share" aria-label="Share verified">
+              <svg class="so-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M18 16.08c-.76 0-1.44.3-1.96.77L8.91 12.7a2.5 2.5 0 0 0 0-1.39l7.02-4.11A2.99 2.99 0 1 0 14 5a2.9 2.9 0 0 0 .04.49L7.02 9.6a3 3 0 1 0 0 4.8l7.02 4.11c-.03.16-.04.33-.04.49a3 3 0 1 0 3-2.92z"/></svg>
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <div class="so-card" id="daily-owl-card" style="display:none;">
+        <div class="so-card-title-row">
+          <h2 class="so-card-title">Daily Owl Logic</h2>
+          <div class="so-actions">
+            <div class="so-like" id="like-daily" title="Like">
+              <svg class="heart" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg>
+              <span id="count-daily">0</span>
+            </div>
+            <button class="so-icon-btn" id="copy-daily" title="Copy" aria-label="Copy daily">
+              <svg class="so-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M16 1H4a2 2 0 0 0-2 2v14h2V3h12V1zm4 4H8a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7a2 2 0 0 0-2-2zm0 18H8V7h12v16z"/></svg>
+            </button>
+            <button class="so-icon-btn" id="share-daily" title="Share" aria-label="Share daily">
+              <svg class="so-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M18 16.08c-.76 0-1.44.3-1.96.77L8.91 12.7a2.5 2.5 0 0 0 0-1.39l7.02-4.11A2.99 2.99 0 1 0 14 5a2.9 2.9 0 0 0 .04.49L7.02 9.6a3 3 0 1 0 0 4.8l7.02 4.11c-.03.16-.04.33-.04.49a3 3 0 1 0 3-2.92z"/></svg>
+            </button>
+          </div>
+        </div>
+        <div class="so-card-body" id="daily-owl-text"></div>
+
+        <div style="height:14px;"></div>
+
+        <div class="so-card-title-row">
+          <h2 class="so-card-title">Strategic Positioning</h2>
+          <div class="so-actions">
+            <div class="so-like" id="like-pos" title="Like">
+              <svg class="heart" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg>
+              <span id="count-pos">0</span>
+            </div>
+            <button class="so-icon-btn" id="copy-pos" title="Copy" aria-label="Copy positioning">
+              <svg class="so-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M16 1H4a2 2 0 0 0-2 2v14h2V3h12V1zm4 4H8a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7a2 2 0 0 0-2-2zm0 18H8V7h12v16z"/></svg>
+            </button>
+            <button class="so-icon-btn" id="share-pos" title="Share" aria-label="Share positioning">
+              <svg class="so-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M18 16.08c-.76 0-1.44.3-1.96.77L8.91 12.7a2.5 2.5 0 0 0 0-1.39l7.02-4.11A2.99 2.99 0 1 0 14 5a2.9 2.9 0 0 0 .04.49L7.02 9.6a3 3 0 1 0 0 4.8l7.02 4.11c-.03.16-.04.33-.04.49a3 3 0 1 0 3-2.92z"/></svg>
+            </button>
+          </div>
+        </div>
+        <div class="so-card-body italic" id="pos-text"></div>
+      </div>
+    </div>
+
+    <div class="so-toast" id="so-toast" role="status" aria-live="polite"></div>
     <!-- Legal Popup -->
 <div id="legal-popup">
   <div>
@@ -636,6 +818,182 @@
     © 2026 The Strategic Owl. All rights reserved. This platform is protected under U.S. copyright and constitutional law. Unauthorized use, duplication, or distortion of content is prohibited. Created by Taylor Irby — designed for clarity, built for truth.
   </footer>
 <script>
+  // 🧠 Homepage dynamic: Verified + Daily Owl Logic + Strategic Positioning
+  // Mirrors the Flutter app: Verified from Homepage!C3, Daily Owl Logic + Positioning from Homepage!C7:C8
+
+  const HOMEPAGE_SHEET_ID = "19wBEj9hEkvIyQcoR5E_mBGVAxTzMnddMxk8nuQLAumA";
+  // NOTE: This key is already used in the mobile app and other pages.
+  const HOMEPAGE_API_KEY = "AIzaSyCzuh9HBfe0r70r9U35Pe406PPZ-tz6I78";
+
+  const RANGE_VERIFIED = "Homepage!C3";
+  const RANGE_LOGIC = "Homepage!C7:C8";
+
+  function soToast(msg) {
+    const el = document.getElementById('so-toast');
+    if (!el) return;
+    el.textContent = msg;
+    el.classList.add('show');
+    window.clearTimeout(el.__t);
+    el.__t = window.setTimeout(() => el.classList.remove('show'), 2400);
+  }
+
+  async function fetchHomepageBatch() {
+    const url = new URL(`https://sheets.googleapis.com/v4/spreadsheets/${HOMEPAGE_SHEET_ID}/values:batchGet`);
+    url.searchParams.set('key', HOMEPAGE_API_KEY);
+    url.searchParams.append('ranges', RANGE_VERIFIED);
+    url.searchParams.append('ranges', RANGE_LOGIC);
+
+    const res = await fetch(url.toString());
+    if (!res.ok) throw new Error(`Sheets fetch failed: ${res.status}`);
+    const json = await res.json();
+
+    const out = { verified: '', daily: '', positioning: '' };
+
+    const ranges = json.valueRanges || [];
+    for (const vr of ranges) {
+      const r = vr.range || '';
+      const values = (vr.values && vr.values[0]) ? vr.values[0] : [];
+      if (r.includes('Homepage!C3')) {
+        out.verified = (values[0] || '').toString();
+      }
+      if (r.includes('Homepage!C7')) {
+        // C7:C8 comes back as [[c7],[c8]] or [[c7,c8]] depending on API; normalize both
+        const v = vr.values || [];
+        const c7 = (v[0] && v[0][0]) ? v[0][0] : '';
+        const c8 = (v[1] && v[1][0]) ? v[1][0] : (v[0] && v[0][1]) ? v[0][1] : '';
+        out.daily = (c7 || '').toString();
+        out.positioning = (c8 || '').toString();
+      }
+    }
+    return out;
+  }
+
+  async function copyText(text, label) {
+    const t = (text || '').trim();
+    if (!t) return;
+    try {
+      await navigator.clipboard.writeText(t);
+      soToast(`Copied ${label}.`);
+    } catch (e) {
+      // Fallback for older browsers
+      const ta = document.createElement('textarea');
+      ta.value = t;
+      ta.style.position = 'fixed';
+      ta.style.left = '-9999px';
+      document.body.appendChild(ta);
+      ta.focus();
+      ta.select();
+      document.execCommand('copy');
+      document.body.removeChild(ta);
+      soToast(`Copied ${label}.`);
+    }
+  }
+
+  async function shareText(text, title) {
+    const t = (text || '').trim();
+    if (!t) return;
+    if (navigator.share) {
+      try {
+        await navigator.share({ title, text: t });
+      } catch (_) {
+        // user cancelled
+      }
+    } else {
+      await copyText(t, title);
+      soToast('Share not supported here. Copied instead.');
+    }
+  }
+
+  function setLikeUI(el, countEl, liked) {
+    if (!el || !countEl) return;
+    if (liked) el.classList.add('liked');
+    else el.classList.remove('liked');
+  }
+
+  // Simple local-only likes for the website (no auth). Your Flutter app uses Supabase.
+  // This keeps the HTML page lightweight while still feeling interactive.
+  function initLocalLikes(keyBase) {
+    const dKey = `so_like_daily_${keyBase}`;
+    const pKey = `so_like_pos_${keyBase}`;
+
+    const likeDaily = document.getElementById('like-daily');
+    const countDaily = document.getElementById('count-daily');
+    const likePos = document.getElementById('like-pos');
+    const countPos = document.getElementById('count-pos');
+
+    const dailyLiked = localStorage.getItem(dKey) === '1';
+    const posLiked = localStorage.getItem(pKey) === '1';
+
+    // Counts are per-browser (local). Initialize to 0/1.
+    countDaily.textContent = dailyLiked ? '1' : '0';
+    countPos.textContent = posLiked ? '1' : '0';
+    setLikeUI(likeDaily, countDaily, dailyLiked);
+    setLikeUI(likePos, countPos, posLiked);
+
+    likeDaily.addEventListener('click', () => {
+      const curr = localStorage.getItem(dKey) === '1';
+      localStorage.setItem(dKey, curr ? '0' : '1');
+      countDaily.textContent = curr ? '0' : '1';
+      setLikeUI(likeDaily, countDaily, !curr);
+    });
+
+    likePos.addEventListener('click', () => {
+      const curr = localStorage.getItem(pKey) === '1';
+      localStorage.setItem(pKey, curr ? '0' : '1');
+      countPos.textContent = curr ? '0' : '1';
+      setLikeUI(likePos, countPos, !curr);
+    });
+  }
+
+  async function initHomepageDynamic() {
+    try {
+      const data = await fetchHomepageBatch();
+
+      // Verified
+      const verifiedCard = document.getElementById('verified-card');
+      const verifiedSub = document.getElementById('verified-sub');
+      if (data.verified && verifiedCard && verifiedSub) {
+        verifiedSub.textContent = data.verified;
+        verifiedCard.style.display = 'block';
+
+        const normalizedKey = data.verified
+          .trim()
+          .toLowerCase()
+          .replace('verified:', '')
+          .replace(/\s+/g, '_')
+          .replace(/[^a-z0-9_\-:]/g, '');
+
+        // Likes reset when Verified changes (same concept as your Flutter key)
+        initLocalLikes(normalizedKey || 'unknown');
+
+        document.getElementById('copy-verified')?.addEventListener('click', () => copyText(data.verified, 'Verified'));
+        document.getElementById('share-verified')?.addEventListener('click', () => shareText(data.verified, 'Verified'));
+      }
+
+      // Daily Owl Logic / Positioning
+      const card = document.getElementById('daily-owl-card');
+      const dailyText = document.getElementById('daily-owl-text');
+      const posText = document.getElementById('pos-text');
+
+      if (card && dailyText && posText && (data.daily || data.positioning)) {
+        dailyText.textContent = data.daily || '';
+        posText.textContent = data.positioning || '';
+        card.style.display = 'block';
+
+        document.getElementById('copy-daily')?.addEventListener('click', () => copyText(data.daily, 'Daily Owl Logic'));
+        document.getElementById('share-daily')?.addEventListener('click', () => shareText(data.daily, 'Daily Owl Logic'));
+        document.getElementById('copy-pos')?.addEventListener('click', () => copyText(data.positioning, 'Strategic Positioning'));
+        document.getElementById('share-pos')?.addEventListener('click', () => shareText(data.positioning, 'Strategic Positioning'));
+      }
+
+    } catch (e) {
+      // Fail silently—page still works without the sheet data.
+      console.warn('Homepage dynamic failed:', e);
+    }
+  }
+
+  window.addEventListener('DOMContentLoaded', initHomepageDynamic);
+</script>
   const legalPopup = document.getElementById('legal-popup');
   const lastAccepted = localStorage.getItem('legalPopupAccepted');
   const now = new Date().getTime();
@@ -653,7 +1011,8 @@
     // Also toggle open class for outside click detection
     document.getElementById("mobileMenu").classList.toggle("open");
   }
-  type="application/ld+json">
+  </script>
+<script type="application/ld+json">
 {
   "@context": "https://schema.org",
   "@graph": [
