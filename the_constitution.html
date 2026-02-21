@@ -5,7 +5,6 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Strategic Owl | The Constitution</title>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&family=Playfair+Display:wght@600;700&display=swap" rel="stylesheet" />
-  <link href="https://fonts.googleapis.com/css2?family=Dancing+Script&display=swap" rel="stylesheet">
 
   <style>
   /* 🔹 CSS variables (theme colors) */
@@ -249,16 +248,21 @@
   */
   /* 🔹 Content box (dynamic width) */
   .content-box {
-    background: #fdf6e3;
-    font-family: 'Dancing Script', cursive;
+    background: #FFF8DC; /* parchment tone */
+    font-family: "Times New Roman", Times, serif;
+    font-style: italic;
     font-size: 20px;
-    line-height: 1.5;
-    font-weight: 400;
-    color: #000000;
+    line-height: 1.7;
+    font-weight: 500;
+    color: #5A3E1B; /* ink tone */
+
     padding: 1.5rem;
     border-radius: 8px;
-    border: 2px solid #C4A000;
-    box-shadow: 0 0 10px #C4A000, inset 0 0 5px rgba(0,0,0,0.2);
+    border: 1.5px solid #D2B48C;
+    box-shadow:
+      0 4px 12px rgba(0, 0, 0, 0.25),
+      inset 0 0 8px rgba(0, 0, 0, 0.15);
+
     margin: 1rem auto;
     white-space: pre-wrap;
     overflow-x: auto;
@@ -661,7 +665,7 @@
         fullTextDisplay.id = "founding-text-content";
         // Use innerHTML for displayText, now preserving HTML tags (no escaping)
         fullTextDisplay.innerHTML =
-          `<div style="text-align: center; font-family: 'Dancing Script', cursive; font-size: 24px; font-weight: 600; margin-bottom: 1rem;">${selected}</div>` +
+          `<div style="text-align: center; font-family: 'Times New Roman', Times, serif; font-style: italic; font-size: 24px; font-weight: 600; margin-bottom: 1rem; color: #5A3E1B;">${selected}</div>` +
           displayText;
         fullTextDisplay.className = "content-box wide-box";
         outputDiv.appendChild(fullTextDisplay);
@@ -842,7 +846,7 @@ function initRightsDropdown() {
     const amendmentObj = rightToAmendmentMap[selectedRight];
     // 👉 This is the Rights font — shown when a user selects a right from the first dropdown
     output.innerHTML = amendmentObj
-      ? `<div class="founding-text-box" style="font-family: 'Dancing Script', cursive; font-size: 1.2rem; font-weight: 600; color: #000;">→ Amendment: ${amendmentObj.shorthand}</div>`
+      ? `<div class="founding-text-box" style="font-family: 'Times New Roman', Times, serif; font-style: italic; font-size: 1.2rem; font-weight: 600; color: #5A3E1B;">→ Amendment: ${amendmentObj.shorthand}</div>`
       : "";
 
     // Always update the founding text dropdown to match the right's amendment
