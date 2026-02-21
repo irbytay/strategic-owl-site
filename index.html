@@ -763,51 +763,7 @@
       <a href="the_constitution.html" class="important-link" style="text-align: center; display: inline-block;">Read the Constitution</a>
     </div>
   </div>
-<div class="announcement-box">
-  <h2>How do you know what’s true anymore?</h2>
-  <p>
-    If you’ve felt overwhelmed, misled, or just unsure who to trust — you’re not alone.  
-    I’ve felt it too. That’s why I’ve spent the time building something that helps make sense of it all — not with opinions, but with structure.
-  </p>
-  <h2>So how do you know whats true?</h2>
-  <p>I’ve asked that same question too.
-    Not as a journalist or politician, just as someone trying to make sense of a world full of contradictions. That’s why I built this system. 
-    I use tools most people call “AI,” but really, they’re language models — and I use them literally: to improve how I write, break down complex topics, and build on things I’ve already created. 
-    Sometimes I’ll refine a sentence or generate clean text I can plug into tools that help me visualize and explain what I’m trying to show. 
-    It helps me think more clearly — and when you think clearly, truth starts to show itself.
-  </p>
-  <h2>Objective truth vs subjective truth</h2>
-  <p>
-    Some things are objectively true — true whether we like them or not.  
-    The Earth is round. That’s not an opinion. It’s a measurable fact.  
-    And yet, there are people with real platforms who call it a hoax — not because of evidence, but because NASA is part of the government.  
-    That’s what we call a subjective truth: a belief someone feels in their gut, even when all the facts say otherwise.  
-    One man even built a rocket to prove the Earth was flat. He launched himself into the sky… and died proving NASA right.  
-    That’s why objective truth matters — it keeps us grounded in reality, no matter how loud the spin gets.
-  </p>
-  <h2>Citizenship Is a Fact — Voter Fraud Is a Fear</h2>
-  <p>When you’re born, you get a birth certificate — proof of citizenship. That’s another objective truth. And with that comes the constitutional right to vote, protected by the 14th, 15th, 19th, and 26th Amendments.
-  </p>
-  <p>What isn’t an objective truth is the belief that millions of undocumented immigrants are voting in our elections. That’s a narrative — not a fact. The idea of widespread voter fraud gets repeated so often that it feels real to some people. But it’s not backed by evidence. It’s a subjective fear that’s been turned into political fuel — and that’s exactly why we need systems grounded in verifiable truth.
-  </p>
-  <h2>Truth Deserves Better Tools</h2>
-  <p><a href="TRUOWL3.html" class="important-link">T.R.U. Owl</a> is a system built to help make patterns easier to see — 
-    to separate objective truth from subjective spin. That includes helping people contextualize issues like voter fraud.
-    It’s true that voter fraud exists, but the scale is often misrepresented.
-    That’s why I created a separate tool to show the actual data.
-    You can explore it for yourself — just  
-    <a href="realitycheck.html" class="important-link">select a state and see how many cases exist</a> 
-    based on Heritage Foundation records. 
-    The data speaks for itself: voter fraud is real, but it’s rare. 
-    Context cuts through the noise — and that’s what this platform is all about. It tracks credibility the way it works in real life: you earn it, you lose it, and if you lie, you don’t get to just hit reset.
-  </p>
-  <h2>The End Goal</h2>
-  <p>
-    If more people start asking “Who’s telling the truth?” instead of “Whose side are you on?”—everything changes. 
-    Politicians, media, journalists, and influencers—they’ll have to compete on honesty, not just volume. 
-    This is how we take back the conversation.
-  </p>
-</div>
+<div class="so-card" id="homepage-story-card" style="display:none;"></div>
      <!-- 🎯 Divider -->
     <section class="divider-section">
       <div class="divider-bar">
@@ -837,6 +793,7 @@
 
   const RANGE_VERIFIED = "Homepage!C3";
   const RANGE_LOGIC = "Homepage!C7:C8";
+  const RANGE_STORY = "Homepage!C9:C19";
 
   function soToast(msg) {
     const el = document.getElementById('so-toast');
@@ -847,17 +804,39 @@
     el.__t = window.setTimeout(() => el.classList.remove('show'), 2400);
   }
 
+  function escapeHtml(str) {
+    return String(str)
+      .replace(/&/g, '&amp;')
+      .replace(/</g, '&lt;')
+      .replace(/>/g, '&gt;')
+      .replace(/"/g, '&quot;')
+      .replace(/'/g, '&#039;');
+  }
+
   async function fetchHomepageBatch() {
     const url = new URL(`https://sheets.googleapis.com/v4/spreadsheets/${HOMEPAGE_SHEET_ID}/values:batchGet`);
     url.searchParams.set('key', HOMEPAGE_API_KEY);
     url.searchParams.append('ranges', RANGE_VERIFIED);
     url.searchParams.append('ranges', RANGE_LOGIC);
+    url.searchParams.append('ranges', RANGE_STORY);
 
     const res = await fetch(url.toString());
     if (!res.ok) throw new Error(`Sheets fetch failed: ${res.status}`);
     const json = await res.json();
 
-    const out = { verified: '', daily: '', positioning: '' };
+    const out = {
+      verified: '',
+      daily: '',
+      positioning: '',
+      story: {
+        h1: '', b1: '',
+        h2: '', b2: '',
+        h3: '', b3: '',
+        h4: '', b4: '',
+        h5: '', b5: '',
+        closing: ''
+      }
+    };
 
     const ranges = json.valueRanges || [];
     for (const vr of ranges) {
@@ -873,6 +852,23 @@
         const c8 = (v[1] && v[1][0]) ? v[1][0] : (v[0] && v[0][1]) ? v[0][1] : '';
         out.daily = (c7 || '').toString();
         out.positioning = (c8 || '').toString();
+      }
+      if (r.includes('Homepage!C9')) {
+        const v = vr.values || [];
+        const get = (idx) => (v[idx] && v[idx][0]) ? v[idx][0].toString() : '';
+
+        // v[0]=C9, v[1]=C10, ... v[10]=C19
+        out.story.h1 = get(0);
+        out.story.b1 = get(1);
+        out.story.h2 = get(2);
+        out.story.b2 = get(3);
+        out.story.h3 = get(4);
+        out.story.b3 = get(5);
+        out.story.h4 = get(6);
+        out.story.b4 = get(7);
+        out.story.h5 = get(8);
+        out.story.b5 = get(9);
+        out.story.closing = get(10);
       }
     }
     return out;
@@ -992,6 +988,40 @@
         document.getElementById('share-daily')?.addEventListener('click', () => shareText(data.daily, 'Daily Owl Logic'));
         document.getElementById('copy-pos')?.addEventListener('click', () => copyText(data.positioning, 'Strategic Positioning'));
         document.getElementById('share-pos')?.addEventListener('click', () => shareText(data.positioning, 'Strategic Positioning'));
+      }
+
+      // Homepage story (mirrors main.dart C9–C18, optional closing in C19)
+      const storyCard = document.getElementById('homepage-story-card');
+      const s = data.story || {};
+      const hasStory = [
+        s.h1, s.b1, s.h2, s.b2, s.h3, s.b3, s.h4, s.b4, s.h5, s.b5, s.closing
+      ].some(x => (x || '').trim());
+
+      if (storyCard && hasStory) {
+        const section = (h, b) => {
+          const hh = (h || '').trim();
+          const bb = (b || '').trim();
+          if (!hh && !bb) return '';
+          return `
+            ${hh ? `<div style="text-align:center; font-family:'Times New Roman', Times, serif; font-size:20px; font-weight:700; color: var(--understanding); margin-top: 10px;">${escapeHtml(hh)}</div>` : ''}
+            ${bb ? `<div style="text-align:center; font-family:'Inter', sans-serif; font-size: 1.02rem; color: var(--text-muted); line-height: 1.7; margin-top: 10px; white-space: pre-wrap;">${escapeHtml(bb)}</div>` : ''}
+          `;
+        };
+
+        storyCard.innerHTML = `
+          <div style="text-align:center; font-family:'Merriweather', serif; font-size:18px; font-style: italic; color:#BFA85B; margin-bottom: 10px;">Welcome in. Appreciate you.</div>
+          ${section(s.h1, s.b1)}
+          ${section(s.h2, s.b2)}
+          ${section(s.h3, s.b3)}
+          ${section(s.h4, s.b4)}
+          ${section(s.h5, s.b5)}
+          ${(s.closing || '').trim()
+            ? `<div style="margin-top: 16px; text-align:center; font-family:'Merriweather', serif; font-size:14px; font-style: italic; color:#BFA85B; white-space: pre-wrap;">${escapeHtml((s.closing || '').trim())}</div>`
+            : ''
+          }
+        `;
+
+        storyCard.style.display = 'block';
       }
 
     } catch (e) {
