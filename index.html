@@ -1015,24 +1015,36 @@
 
   window.addEventListener('DOMContentLoaded', initHomepageDynamic);
 </script>
+
+<script>
+  // ⚖️ Legal popup (show on first visit or after 30 days)
   const legalPopup = document.getElementById('legal-popup');
   const lastAccepted = localStorage.getItem('legalPopupAccepted');
-  const now = new Date().getTime();
+  const now = Date.now();
   const thirtyDays = 1000 * 60 * 60 * 24 * 30;
 
-  if (!lastAccepted || now - parseInt(lastAccepted) > thirtyDays) {
-    legalPopup.style.display = 'block';
+  if (legalPopup) {
+    const last = parseInt(lastAccepted || '0', 10);
+    if (!last || (now - last) > thirtyDays) {
+      legalPopup.style.display = 'block';
+    }
+
+    const acceptLink = document.getElementById('accept-link');
+    if (acceptLink) {
+      acceptLink.addEventListener('click', () => {
+        localStorage.setItem('legalPopupAccepted', Date.now().toString());
+      });
+    }
   }
 
-  document.getElementById('accept-link').addEventListener('click', () => {
-  localStorage.setItem('legalPopupAccepted', Date.now().toString());
-});
+  // 🍔 Mobile menu
   function toggleMenu() {
-    document.getElementById("mobileMenu").classList.toggle("show");
-    // Also toggle open class for outside click detection
-    document.getElementById("mobileMenu").classList.toggle("open");
+    const menu = document.getElementById('mobileMenu');
+    if (!menu) return;
+    menu.classList.toggle('show');
+    menu.classList.toggle('open');
   }
-  </script>
+</script>
 <script type="application/ld+json">
 {
   "@context": "https://schema.org",
