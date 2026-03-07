@@ -719,6 +719,18 @@
     <a id="state-open" href="#" target="_blank" rel="noopener">Register to Vote</a>
   </div>
 </div>
+    <p>Select your birth state to view the official birth certificate request link.</p>
+<select id="birth-state-select">
+  <option value="">Select Your Birth State:</option>
+</select>
+
+<div id="birth-state-output" class="state-output">
+  <input id="birth-state-url" readonly />
+  <div class="state-actions">
+    <a id="birth-state-open" href="#" target="_blank" rel="noopener">Birth Certificate Info</a>
+  </div>
+</div>
+    
 <p>Enter your ZIP code to explore candidates in your area — including who is Trump-aligned and who has pledged to hold him accountable. Each listing shows party, district, and a link to the candidate website.</p>
 <p>"Trump Check" shows candidates and alignment indicators. "Verify My Dist" opens House.gov with your ZIP pre-filled so you can confirm your exact district using your street address.</p>
 <p>Candidate data, Trump alignment, and accountability indicators are still being added.</p>
@@ -749,7 +761,7 @@
   </div>
   <!-- 📜 Footer -->
   <footer style="text-align: center; padding: 24px 12px; font-size: 12px; color: #D4AF37; text-shadow: 0 0 6px rgba(0,0,0,0.6);">
-    © 2025 The Strategic Owl. All rights reserved. This platform is protected under U.S. copyright and constitutional law. Unauthorized use, duplication, or distortion of content is prohibited. Created by Taylor Irby — designed for clarity, built for truth.
+    © 2026 The Strategic Owl. All rights reserved. This platform is protected under U.S. copyright and constitutional law. Unauthorized use, duplication, or distortion of content is prohibited. Created by Taylor Irby — designed for clarity, built for truth.
   </footer>
 
 <script>
@@ -771,29 +783,47 @@
   // Tab: "State Elections", Range: A2:D51  (A = URL, B = State, C = Upcoming Election Date, D = Registration Deadline)
   const RAW_RANGE = "'State Elections'!A2:D51";
   const RANGE = encodeURIComponent(RAW_RANGE);
+  const BIRTH_RANGE = encodeURIComponent("'Birth_Cert'!A1:C51");
+let birthStateMap = {};
 
   // State -> { url, date } map
   let stateMetaMap = {};
 
   async function fetchStateLinks() {
-    const url = `https://sheets.googleapis.com/v4/spreadsheets/${SHEET_ID}/values/${RANGE}?key=${API_KEY}`;
+    const url = `https://sheets.googleapis.com/v4/spreadsheets/${SHEET_ID}/values:batchGet?ranges=${RANGE}&ranges=${BIRTH_RANGE}&key=${API_KEY}`;
     try {
       const res = await fetch(url);
       if (!res.ok) throw new Error(`HTTP ${res.status}`);
       const json = await res.json();
-      const rows = json.values || [];
+      const ranges = json.valueRanges || [];
 
-      // Build map: Column B (state) -> { url: Column A, date: Column C, regDeadline: Column D }
+      const voterRows = (ranges[0] && ranges[0].values) || [];
+      const birthRows = (ranges[1] && ranges[1].values) || [];
+
+      // --- voter registration map ---
       stateMetaMap = {};
-      for (const row of rows) {
+      for (const row of voterRows) {
         const url = (row[0] || "").trim();
         const state = (row[1] || "").trim();
         const dateRaw = (row[2] || "").trim();
-        const regRaw  = (row[3] || "").trim(); // Registration deadline (col D)
-        if (state && url) stateMetaMap[state] = { url, date: dateRaw, regDeadline: regRaw }; // last-one-wins
+        const regRaw  = (row[3] || "").trim();
+        if (state && url) stateMetaMap[state] = { url, date: dateRaw, regDeadline: regRaw };
+      }
+
+      // --- birth certificate map ---
+      birthStateMap = {};
+      for (const row of birthRows) {
+        const state = (row[0] || "").trim();
+        const url = (row[1] || "").trim();
+        const enabled = (row[2] || "").toLowerCase();
+
+        if (state && url && enabled === "true") {
+          birthStateMap[state] = url;
+        }
       }
 
       populateStateDropdown();
+      populateBirthStateDropdown();
     } catch (e) {
       console.error("Failed to fetch State Elections data:", e);
     }
@@ -811,6 +841,20 @@
       sel.appendChild(opt);
     }
     sel.disabled = states.length === 0;
+  }
+
+  function populateBirthStateDropdown() {
+    const sel = document.getElementById("birth-state-select");
+    if (!sel) return;
+
+    const states = Object.keys(birthStateMap).sort();
+
+    for (const state of states) {
+      const opt = document.createElement("option");
+      opt.value = state;
+      opt.textContent = state;
+      sel.appendChild(opt);
+    }
   }
 
   function handleStateChange(e) {
@@ -859,6 +903,25 @@
 
     // OPTIONAL: auto-open in a new tab on selection
     // window.open(link, "_blank", "noopener");
+  }
+
+  function handleBirthStateChange(e) {
+
+    const state = e.target.value;
+    const link = birthStateMap[state];
+
+    const wrap = document.getElementById("birth-state-output");
+    const url = document.getElementById("birth-state-url");
+    const btn = document.getElementById("birth-state-open");
+
+    if (!link) {
+      wrap.style.display = "none";
+      return;
+    }
+
+    url.value = link;
+    btn.href = link;
+    wrap.style.display = "block";
   }
 
   function formatDate(input) {
@@ -1171,6 +1234,9 @@ document.addEventListener("DOMContentLoaded", () => {
   fetchStateLinks();
   const stateSel = document.getElementById("state-select");
   if (stateSel) stateSel.addEventListener("change", handleStateChange);
+
+  const birthSel = document.getElementById("birth-state-select");
+  if (birthSel) birthSel.addEventListener("change", handleBirthStateChange);
 
   // New:
   fetchZipAndRoster();
