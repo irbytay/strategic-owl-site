@@ -481,20 +481,21 @@
     text-shadow: 0 0 6px rgba(0, 0, 0, 0.6);
     font-family: 'Inter', sans-serif;
   }
-    /* ── Voter Dashboard: State Picker (brand-aligned) ─────────────────────── */
 /* ── Voter Dashboard: State Picker (brand-aligned) ─────────────────────── */
 /* Center the selected value across browsers */
-#state-select {
-  display: block;             /* ensures margin centering works */
+#state-select,
+#birth-state-select {
+  display: block;
   width: 100%;
   max-width: 360px;
   margin: 12px auto;
-  text-align: center;         /* Safari/iOS */
-  text-align-last: center;    /* Chrome/Edge/Firefox */
-  appearance: auto;           /* restore native look */
+  text-align: center;
+  text-align-last: center;
+  appearance: auto;
   -webkit-appearance: menulist;
 }
-#state-select option { text-align: center; }  /* helps Safari/iOS */
+#state-select option,
+#birth-state-select option { text-align: center; }
 
 /* Output wrapper (hidden by default; JS sets to block) */
 .state-output {
@@ -508,7 +509,8 @@
 }
 
 /* Read-only URL field */
-#state-url {
+#state-url,
+#birth-state-url {
   width: 100%;
   padding: 12px 14px;
   background-color: var(--surface);
@@ -520,9 +522,10 @@
   font-size: 0.98rem;
   text-align: center;
 }
-#state-url::selection {
+#state-url::selection,
+#birth-state-url::selection {
   background: var(--understanding);
-  color: #0D1B2A;            /* deep navy for contrast */
+  color: #0D1B2A;
 }
 
 /* Election date line (from Column C) */
@@ -550,7 +553,8 @@
 }
 
 /* Branded “Open link” button */
-#state-open {
+#state-open,
+#birth-state-open {
   display: inline-block;
   padding: 10px 16px;
   background-color: var(--understanding);
@@ -561,11 +565,13 @@
   box-shadow: 0 2px 6px var(--shadow);
   transition: transform 0.05s ease, box-shadow 0.2s ease, background-color 0.2s ease;
 }
-#state-open:hover {
+#state-open:hover,
+#birth-state-open:hover {
   transform: translateY(-1px);
   box-shadow: 0 4px 10px var(--shadow);
 }
-#state-open:active {
+#state-open:active,
+#birth-state-open:active {
   transform: translateY(0);
   box-shadow: 0 2px 6px var(--shadow);
 }
