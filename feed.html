@@ -504,6 +504,31 @@
     margin: 6px 0 0 0;
   }
 
+  .so-author-row {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-top: 6px;
+  }
+
+  .so-author-avatar {
+    width: 26px;
+    height: 26px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 1px solid rgba(212, 175, 55, 0.45);
+    box-shadow: 0 0 6px rgba(212, 175, 55, 0.25);
+    flex-shrink: 0;
+  }
+
+  .so-author-meta {
+    font-family: 'Inter', sans-serif;
+    font-size: 0.85rem;
+    color: var(--text-muted);
+    margin: 0;
+    line-height: 1.3;
+  }
+
   .so-card-body {
     margin-top: 10px;
     font-family: 'Inter', sans-serif;
@@ -858,7 +883,10 @@
         <div class="so-card-title-row">
           <div>
             <h2 class="so-card-title">Daily Owl Logic</h2>
-            ${post.timestamp ? `<p class="so-card-subtitle">Taylor Irby • ${escapeHtml(post.timestamp)}</p>` : `<p class="so-card-subtitle">Taylor Irby</p>`}
+            <div class="so-author-row">
+              <img src="meusa.png" alt="Taylor Irby" class="so-author-avatar" onerror="this.style.display='none';" />
+              ${post.timestamp ? `<p class="so-author-meta">Taylor Irby • ${escapeHtml(post.timestamp)}</p>` : `<p class="so-author-meta">Taylor Irby</p>`}
+            </div>
           </div>
           <div class="so-actions">
             <button class="so-icon-btn" data-copy="daily" title="Copy Owl Logic" aria-label="Copy Owl Logic">
