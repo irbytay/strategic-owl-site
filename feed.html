@@ -507,8 +507,9 @@
   .so-author-row {
     display: flex;
     align-items: center;
+    justify-content: center;
     gap: 8px;
-    margin-top: 6px;
+    margin-bottom: 8px;
   }
 
   .so-author-avatar {
@@ -527,6 +528,19 @@
     color: var(--text-muted);
     margin: 0;
     line-height: 1.3;
+    text-align: left;
+  }
+
+  .so-author-name {
+    display: block;
+    color: var(--text-muted);
+  }
+
+  .so-author-time {
+    display: block;
+    color: var(--text-muted);
+    font-size: 0.8rem;
+    margin-top: 2px;
   }
 
   .so-card-body {
@@ -881,12 +895,15 @@
     return `
       <article class="so-card perch-post" data-post-id="${escapeHtml(post.id)}">
         <div class="so-card-title-row">
-          <div>
-            <h2 class="so-card-title">Daily Owl Logic</h2>
+          <div style="flex: 1; text-align: center;">
             <div class="so-author-row">
               <img src="meusa.png" alt="Taylor Irby" class="so-author-avatar" onerror="this.style.display='none';" />
-              ${post.timestamp ? `<p class="so-author-meta">Taylor Irby • ${escapeHtml(post.timestamp)}</p>` : `<p class="so-author-meta">Taylor Irby</p>`}
+              <p class="so-author-meta">
+                <span class="so-author-name">Taylor Irby</span>
+                ${post.timestamp ? `<span class="so-author-time">${escapeHtml(post.timestamp)}</span>` : ''}
+              </p>
             </div>
+            <h2 class="so-card-title">Daily Owl Logic</h2>
           </div>
           <div class="so-actions">
             <button class="so-icon-btn" data-copy="daily" title="Copy Owl Logic" aria-label="Copy Owl Logic">
