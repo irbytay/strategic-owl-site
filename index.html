@@ -683,7 +683,10 @@
 </div>
    <!-- 📱 App Promo Section -->
   <div class="misconception-intro-container" style="background: linear-gradient(to bottom right, #1A2B4C, #0D1B2A); border: 1px solid #D4AF37; box-shadow: 0 0 12px rgba(212, 175, 55, 0.3); border-radius: 12px; padding: 24px; margin-top: 40px; text-align: center;">
-    <span class="announcement-label" style="text-align: center; display: block;">Mission Update:</span>
+    <div style="display: flex; justify-content: center; align-items: baseline; gap: 10px; flex-wrap: wrap; margin-bottom: 8px;">
+      <span class="announcement-label" style="text-align: center; display: inline-block;">Mission Update:</span>
+      <span id="mission-update-timestamp" style="font-size: 0.9rem; color: var(--text-muted); font-family: 'Inter', sans-serif;"></span>
+    </div>
     <a href="voter_dash.html" class="important-link" style="text-align: center; display: inline-block;">New Voter Dash</a>
     <p style="text-align: center; max-width: 720px;">The Strategic Owl iPhone app brings everything you see here; credibility tools, the Constitution, and more—into your pocket, optimized for clarity and built for truth.</p>
     <div><a href="https://thestrategicowl.printful.me" class="important-link" style="font-size: 1.15rem; text-align: center; display: inline-block;">New Merch - Go to store!</a></div>
@@ -728,6 +731,7 @@
   const HOMEPAGE_SHEET_ID = "19wBEj9hEkvIyQcoR5E_mBGVAxTzMnddMxk8nuQLAumA";
   const HOMEPAGE_API_KEY = "AIzaSyCzuh9HBfe0r70r9U35Pe406PPZ-tz6I78";
   const RANGE_STORY = "Homepage!C9:C19";
+  const RANGE_MISSION_TIMESTAMP = "Homepage!C3";
 
   function escapeHtml(str) {
     return String(str || '')
@@ -738,32 +742,70 @@
       .replace(/'/g, '&#039;');
   }
 
-  async function fetchHomepageStory() {
-    const url = new URL(`https://sheets.googleapis.com/v4/spreadsheets/${HOMEPAGE_SHEET_ID}/values/${encodeURIComponent(RANGE_STORY)}`);
+  async function fetchHomepageData() {
+    const url = new URL(`https://sheets.googleapis.com/v4/spreadsheets/${HOMEPAGE_SHEET_ID}/values:batchGet`);
     url.searchParams.set('key', HOMEPAGE_API_KEY);
+    url.searchParams.append('ranges', RANGE_MISSION_TIMESTAMP);
+    url.searchParams.append('ranges', RANGE_STORY);
 
     const res = await fetch(url.toString());
     if (!res.ok) throw new Error(`Sheets fetch failed: ${res.status}`);
     const json = await res.json();
-    const v = json.values || [];
-    const get = (idx) => (v[idx] && v[idx][0]) ? v[idx][0].toString() : '';
 
-    return {
-      h1: get(0), b1: get(1),
-      h2: get(2), b2: get(3),
-      h3: get(4), b3: get(5),
-      h4: get(6), b4: get(7),
-      h5: get(8), b5: get(9),
-      closing: get(10)
+    const out = {
+      missionTimestamp: '',
+      story: {
+        h1: '', b1: '',
+        h2: '', b2: '',
+        h3: '', b3: '',
+        h4: '', b4: '',
+        h5: '', b5: '',
+        closing: ''
+      }
     };
+
+    const ranges = json.valueRanges || [];
+    for (const vr of ranges) {
+      const r = vr.range || '';
+
+      if (r.includes('Homepage!C3')) {
+        out.missionTimestamp = (vr.values && vr.values[0] && vr.values[0][0]) ? vr.values[0][0].toString() : '';
+      }
+
+      if (r.includes('Homepage!C9')) {
+        const v = vr.values || [];
+        const get = (idx) => (v[idx] && v[idx][0]) ? v[idx][0].toString() : '';
+
+        out.story.h1 = get(0);
+        out.story.b1 = get(1);
+        out.story.h2 = get(2);
+        out.story.b2 = get(3);
+        out.story.h3 = get(4);
+        out.story.b3 = get(5);
+        out.story.h4 = get(6);
+        out.story.b4 = get(7);
+        out.story.h5 = get(8);
+        out.story.b5 = get(9);
+        out.story.closing = get(10);
+      }
+    }
+
+    return out;
   }
 
   async function initHomepageDynamic() {
     try {
+      const data = await fetchHomepageData();
+
+      const timestampEl = document.getElementById('mission-update-timestamp');
+      if (timestampEl && data.missionTimestamp) {
+        timestampEl.textContent = data.missionTimestamp;
+      }
+
       const storyCard = document.getElementById('homepage-story-card');
       if (!storyCard) return;
 
-      const s = await fetchHomepageStory();
+      const s = data.story || {};
       const hasStory = [
         s.h1, s.b1, s.h2, s.b2, s.h3, s.b3, s.h4, s.b4, s.h5, s.b5, s.closing
       ].some(x => (x || '').trim());
