@@ -1,0 +1,1087 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>The Strategic Owl | Truth. Reliability. Understanding.</title>
+
+  <!-- Open Graph Meta (Facebook, LinkedIn, Discord, etc.) -->
+  <meta property="og:title" content="The Strategic Owl | Truth. Reliability. Understanding." />
+  <meta property="og:description" content="Measure credibility and uncover truth using the TRU OWL Score — a tool for independent thinkers." />
+  <meta property="og:image" content="https://thestrategicowl.com/STOInsightQuiz.png" />
+  <meta property="og:image:type" content="image/png" />
+  <meta property="og:image:width" content="1200" />
+  <meta property="og:image:height" content="630" />
+  <meta property="og:url" content="https://thestrategicowl.com" />
+  <meta property="og:type" content="website" />
+
+  <!-- Twitter Card Meta -->
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="The Strategic Owl | Truth. Reliability. Understanding." />
+  <meta name="twitter:description" content="Measure credibility and uncover truth using the TRU OWL Score — a tool for independent thinkers." />
+  <meta name="twitter:image" content="https://thestrategicowl.com/TSO.png" />
+
+  <!-- Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&family=Playfair+Display:wght@600;700&display=swap" rel="stylesheet" />
+
+  <style>
+  :root {
+    --background: #0D1B2A;
+    --surface: #112240;
+    --highlight: #1A2B4C;
+    --truth: #28A745;
+    --reliability: #3B6CED;
+    --understanding: #D4AF37;
+    --text: #FFFFFF;
+    --text-muted: #7C8A9B;
+    --heading: #FFFFF0;
+    --shadow: rgba(0, 0, 0, 0.3);
+    --bar-red: #FF4C4C;
+    --bar-green: #28A745;
+  }
+
+  body {
+    background-color: var(--background);
+    color: var(--text);
+    font-family: 'Inter', sans-serif;
+    margin: 0;
+    padding: 0;
+  }
+
+  /* 🧭 NAVBAR & MENU */
+  nav.top-nav {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 999;
+    background-color: var(--highlight);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 14px 20px;
+    box-shadow: 0 2px 6px var(--shadow);
+  }
+
+  .nav-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 22px;
+    color: var(--understanding);
+  }
+
+  .menu-toggle {
+    display: none;
+    font-size: 24px;
+    cursor: pointer;
+    color: var(--text);
+    background: none;
+    border: none;
+  }
+
+  .nav-links {
+    display: flex;
+    gap: 28px;
+  }
+
+  .nav-links a {
+    color: var(--text-muted);
+    text-decoration: none;
+    font-size: 15px;
+    transition: color 0.3s ease;
+  }
+
+  .nav-links a:hover {
+    color: var(--understanding);
+  }
+    .nav-logo img {
+  height: 40px;
+  width: 40px;
+}
+    .nav-logo {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  text-decoration: none;
+  font-weight: 600;
+  color: var(--text);
+  font-size: 1.25rem;
+}
+    /* 🎨 TRU Bars */
+  .divider-section {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin: 40px auto;
+  }
+
+  .divider-bar {
+    display: flex;
+    gap: 12px;
+    width: 340px;
+  }
+
+  .divider-bar div {
+    width: 108px;
+    height: 6px;
+    border-radius: 3px;
+    box-shadow: 0 0 4px var(--shadow);
+  }
+
+  .truth { background-color: var(--truth); }
+  .reliability { background-color: var(--reliability); }
+  .understanding { background-color: var(--understanding); }
+
+  .divider-labels {
+    display: flex;
+    justify-content: center;
+    gap: 12px;
+    width: 340px;
+    margin-top: 8px;
+  }
+
+  .divider-labels span {
+    width: 108px;
+    text-align: center;
+    font-size: 0.85rem;
+    color: var(--text-muted);
+  }
+
+  @media (max-width: 768px) {
+  .menu-toggle {
+    display: block;
+  }
+
+  .nav-links {
+    display: none;
+    flex-direction: column; /* ✅ stack vertically */
+    align-items: center;
+    background-color: var(--highlight);
+    position: absolute;
+    top: 58px;
+    left: 0;
+    width: 100%;
+    padding: 12px 0;
+    gap: 12px;
+    box-shadow: 0 3px 8px var(--shadow);
+  }
+
+  .nav-links.show {
+    display: flex;
+    animation: fadeSlideDown 0.3s ease;
+  }
+
+  .nav-links a {
+    padding: 10px 0;
+    width: 100%;
+    text-align: center;
+    font-size: 1rem;
+  }
+
+  @keyframes fadeSlideDown {
+    from {
+      opacity: 0;
+      transform: translateY(-10px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+}
+    #legal-popup {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(13, 27, 42, 0.95);
+  z-index: 9999;
+  overflow-y: auto;
+  padding: 40px 20px;
+  box-sizing: border-box;
+  display: none;
+}
+
+#legal-popup > div {
+  max-width: 680px;
+  width: 100%;
+  margin: 0 auto;
+  background-color: var(--surface);
+  padding: 30px;
+  border-radius: 8px;
+  box-shadow: 0 0 20px var(--shadow);
+  font-family: 'Montserrat', sans-serif;
+  color: var(--text);
+  line-height: 1.6;
+}
+
+@media (max-width: 500px) {
+  #legal-popup > div {
+    padding: 16px 12px;
+    font-size: 0.95rem;
+  }
+
+  .important-link {
+    display: block;
+    text-align: center;
+    margin-top: 16px;
+  }
+}
+
+  /* ✅ YOUR ORIGINAL STYLES BELOW */
+  .container {
+    max-width: 960px;
+    margin: 100px auto 0 auto;
+    padding: 24px;
+  }
+
+  h1 {
+    font-family: 'Playfair Display', serif;
+    color: var(--understanding);
+    font-size: 2.6rem;
+    font-weight: 700;
+    margin-bottom: 16px;
+    text-align: center;
+  }
+  h2 {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.5rem;
+  color: var(--understanding); /* golden highlight */
+  font-weight: 600;
+  margin-top: 32px;
+  margin-bottom: 12px;
+  text-align: center;
+}
+  p {
+  font-family: 'Inter', sans-serif;
+  font-size: 1.05rem;
+  color: var(--text-muted);
+  line-height: 1.6;
+  margin-bottom: 20px;
+  text-align: center;
+  max-width: 700px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+  select {
+    padding: 8px;
+    margin-bottom: 16px;
+    background-color: var(--surface);
+    color: var(--text);
+    border: 1px solid var(--highlight);
+  }
+
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    background-color: var(--surface);
+    margin-top: 12px;
+  }
+
+  th, td {
+    padding: 12px;
+    border-bottom: 1px solid var(--highlight);
+    text-align: left;
+  }
+
+  .text-truth { color: var(--truth); }
+  .text-reliability { color: var(--reliability); }
+  .text-understanding { color: var(--understanding); }
+
+  .total-score {
+    font-weight: bold;
+  }
+
+  .positive-score { color: var(--bar-green); }
+  .negative-score { color: var(--bar-red); }
+
+  .score-bar {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .bar-indicator {
+    width: 10px;
+    height: 24px;
+    border-radius: 2px;
+  }
+
+  .bar-red {
+    background-color: var(--bar-red);
+  }
+
+  .bar-green {
+    background-color: var(--bar-green);
+  }
+    .match-nav-link {
+  color: var(--text-muted);
+  text-decoration: none;
+  font-size: 15px;
+  transition: color 0.3s ease;
+}
+
+.match-nav-link:hover {
+  color: var(--understanding);
+}
+ /* Style the link itself */
+.important-link {
+  color: var(--understanding);               /* Gold color from your theme */
+  font-weight: 700;                          /* Bold for visibility */
+  text-decoration: underline;                /* Underline to signal it's a link */
+  text-underline-offset: 4px;                /* Adds spacing between text and underline */
+  position: relative;                        /* Required for pseudo-elements */
+  transition: color 0.3s ease, text-shadow 0.3s ease;  /* Smooth hover transitions */
+}
+
+/* Add a right-pointing arrow BEFORE the link text */
+.important-link::before {
+  content: '→ ';                             /* Arrow pointing right */
+  display: inline-block;                     /* So we can animate it */
+  margin-right: 6px;                         /* Space between arrow and text */
+  transition: transform 0.3s ease;           /* Smooth movement on hover */
+}
+
+/* Add a left-pointing arrow AFTER the link text */
+.important-link::after {
+  content: ' ←';                             /* Arrow pointing left */
+  display: inline-block;                     /* Enables transform */
+  margin-left: 6px;                          /* Space between text and arrow */
+  transition: transform 0.3s ease;           /* Smooth hover animation */
+}
+
+/* Animate the left-side arrow to move right on hover */
+.important-link:hover::before {
+  transform: translateX(4px);                /* Moves → arrow to the right */
+}
+
+/* Animate the right-side arrow to move left on hover */
+.important-link:hover::after {
+  transform: translateX(-4px);               /* Moves ← arrow to the left */
+}
+
+/* Add glow and optional color change on hover */
+.important-link:hover {
+  text-shadow: 0 0 8px var(--understanding); /* Subtle glow using gold tone */
+  color: var(--truth);                       /* Optional: changes to green (truth color) */
+}
+    /* 📢 Shared Announcement Box Styles */
+.announcement-box {
+  background-color: var(--surface);
+  padding: 24px;
+  border-radius: 12px;
+  margin: 24px auto;
+  max-width: 960px;
+  font-family: 'Inter', sans-serif;
+  color: var(--text);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  font-size: 1.1rem;
+  line-height: 1.7;
+  letter-spacing: 0.1px;
+  gap: 10px;
+}
+
+.announcement-box-mobile {
+  background-color: var(--surface);
+  padding: 20px 16px;
+  border-radius: 12px;
+  margin: 24px auto;
+  font-family: 'Inter', sans-serif;
+  color: var(--text);
+  max-width: 90%;
+  font-size: 1.05rem;
+  line-height: 1.7;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+}
+
+/* 🟢 Label Color */
+.announcement-label {
+  color: var(--truth);
+  font-weight: 600;
+  font-size: 1.1rem;
+}
+
+/* 🔗 Strategic Link Styling */
+.important-link {
+  color: var(--understanding);
+  font-weight: 700;
+  text-decoration: underline;
+  text-underline-offset: 4px;
+  position: relative;
+  transition: color 0.3s ease, text-shadow 0.3s ease;
+}
+
+.important-link::before {
+  content: '→ ';
+  display: inline-block;
+  margin-right: 6px;
+  transition: transform 0.3s ease;
+}
+
+.important-link::after {
+  content: ' ←';
+  display: inline-block;
+  margin-left: 6px;
+  transition: transform 0.3s ease;
+}
+
+.important-link:hover::before {
+  transform: translateX(4px);
+}
+
+.important-link:hover::after {
+  transform: translateX(-4px);
+}
+
+.important-link:hover {
+  text-shadow: 0 0 8px var(--understanding);
+  color: var(--truth);
+}
+
+/* 📱 Mobile Layout */
+@media (max-width: 768px) {
+  .announcement-desktop {
+    display: none;
+  }
+
+  .announcement-mobile {
+    padding: 0;
+    text-align: center;
+  }
+
+  .announcement-box-mobile .important-link {
+    display: inline-block;
+    margin: 6px 0;
+  }
+}
+
+/* 💻 Desktop Layout */
+@media (min-width: 769px) {
+  .announcement-mobile {
+    display: none;
+  }
+}
+  /* 🦉 Flutter-style cards (Homepage feed) */
+  .so-card {
+    width: 100%;
+    max-width: 960px;
+    margin: 16px auto;
+    padding: 16px;
+    border-radius: 16px;
+    border: 1.2px solid rgba(212, 175, 55, 0.35);
+    background: linear-gradient(to bottom right, #0A0F1C, #1A2B4C);
+    box-shadow: 0 10px 22px rgba(212, 175, 55, 0.16);
+  }
+
+  .so-card-title-row {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 12px;
+  }
+
+  .so-card-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.15rem;
+    font-weight: 700;
+    color: var(--understanding);
+    margin: 0;
+  }
+
+  .so-card-subtitle {
+    font-family: 'Inter', sans-serif;
+    font-size: 0.85rem;
+    color: var(--text-muted);
+    margin: 6px 0 0 0;
+  }
+
+  .so-card-body {
+    margin-top: 10px;
+    font-family: 'Inter', sans-serif;
+    color: var(--understanding);
+    font-size: 0.98rem;
+    line-height: 1.45;
+    white-space: pre-wrap;
+  }
+
+  .so-card-body.italic {
+    font-style: italic;
+  }
+
+  .so-actions {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    flex-wrap: nowrap;
+  }
+
+  .so-icon-btn {
+    width: 36px;
+    height: 36px;
+    border-radius: 10px;
+    border: 1px solid rgba(212, 175, 55, 0.25);
+    background: rgba(13, 27, 42, 0.25);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: transform 0.12s ease, background 0.12s ease;
+  }
+
+  .so-icon-btn:hover {
+    transform: translateY(-1px);
+    background: rgba(13, 27, 42, 0.35);
+  }
+
+  .so-icon {
+    width: 18px;
+    height: 18px;
+    fill: var(--understanding);
+  }
+
+  .so-like {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    margin-right: 6px;
+    color: var(--understanding);
+    font-family: 'Inter', sans-serif;
+    font-weight: 700;
+    font-size: 0.85rem;
+    user-select: none;
+  }
+
+  .so-like .heart {
+    width: 18px;
+    height: 18px;
+    fill: var(--understanding);
+  }
+
+  .so-like.liked .heart {
+    fill: var(--understanding);
+    filter: drop-shadow(0 0 6px rgba(212, 175, 55, 0.35));
+  }
+
+  .so-toast {
+    position: fixed;
+    left: 50%;
+    bottom: 18px;
+    transform: translateX(-50%);
+    background: rgba(17, 34, 64, 0.95);
+    border: 1px solid rgba(212, 175, 55, 0.35);
+    color: var(--understanding);
+    padding: 10px 14px;
+    border-radius: 12px;
+    font-family: 'Inter', sans-serif;
+    font-size: 0.9rem;
+    box-shadow: 0 8px 20px rgba(0,0,0,0.35);
+    z-index: 99999;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.18s ease;
+  }
+
+  .so-toast.show {
+    opacity: 1;
+  }
+  /* 📜 Footer */
+  footer {
+    text-align: center;
+    padding: 24px 12px;
+    font-size: 12px;
+    color: #D4AF37;
+    text-shadow: 0 0 6px rgba(0, 0, 0, 0.6);
+    font-family: 'Inter', sans-serif;
+  }
+</style>
+
+<nav class="top-nav">
+  <a href="TRUOWL3.html" class="nav-logo">
+    <img src="owl_logo_white.png" alt="Owl Logo" onerror="this.style.display='none';" />
+    <div class="nav-title">The Strategic Owl</div>
+  </a>
+  <button class="menu-toggle" id="menuToggle" onclick="toggleMenu()">☰</button>
+  <div class="nav-links" id="mobileMenu">
+    <a href="Index.html">Home</a>
+    <a href="Dash.html">Dash's</a>
+    <a href="TRUOWL3.html">T.R.U. Owl</a>
+    <a href="voter_dash.html">Voter Dash</a>
+    <a href="strategic-owl-insight-quiz.html">Insight Quiz</a>
+    <a href="realitycheck.html">Reality Check</a>
+    <a href="the_constitution.html">The Constitution</a>
+    <a href="newcontact3.html">Contact</a>
+    <a href="https://thestrategicowl.printful.me" target="_blank" rel="noopener noreferrer">Owl Merch</a>
+  </div>
+</nav>
+  <div class="container">
+    <h1>The Strategic Owl</h1>
+<!-- 🎯 Divider -->
+    <section class="divider-section">
+      <div class="divider-bar">
+        <div class="truth"></div>
+        <div class="reliability"></div>
+        <div class="understanding"></div>
+      </div>
+      <div class="divider-labels">
+        <span>Truth</span>
+        <span>Reliability</span>
+        <span>Understanding</span>
+      </div>
+    </section>
+   <!-- 📱 App Promo Section -->
+
+    <!-- 🦉 The Perch Feed (Google Sheet) -->
+    <section id="perch-feed-section" aria-labelledby="perch-feed-title">
+      <h2 id="perch-feed-title">The Perch</h2>
+      <p style="text-align: center; max-width: 720px; margin-bottom: 14px;">
+        Owl Logic and The Owl’s Position, updated from the Strategic Owl feed.
+      </p>
+
+      <div style="text-align: center; margin-bottom: 18px;">
+        <button class="so-icon-btn" id="refresh-feed" title="Refresh feed" aria-label="Refresh feed" style="width: auto; padding: 0 14px; color: var(--understanding); font-weight: 700; font-family: 'Inter', sans-serif;">
+          Refresh Feed
+        </button>
+      </div>
+
+      <div id="perch-feed-list">
+        <div class="so-card">
+          <p class="so-card-subtitle" style="text-align:center; margin:0;">Loading the latest Owl Logic…</p>
+        </div>
+      </div>
+    </section>
+
+    <div class="so-toast" id="so-toast" role="status" aria-live="polite"></div>
+    <!-- Legal Popup -->
+<div id="legal-popup">
+  <div>
+    <h1 style="font-family: 'Playfair Display', serif; color: var(--heading); margin-bottom: 20px;">Well hello there.</h1>
+
+    <p>How do you even know what's real anymore?</p>
+    <p>If you've lost trust in the system, you're not wrong. That’s by design.</p>
+
+    <p style="margin-top: 24px;">Now let me get the legal stuff out of the way.</p>
+
+    <p>
+      This site is protected under the <strong>First Amendment</strong> of the United States Constitution.<br>
+      All content herein is published for educational and informational purposes.<br>
+      It is not intended to defame, mislead, or incite.<br>
+      Every claim is supported by public records, sourced materials, or verifiable data — and transparency is built into the system to ensure I’m held to the same standards I use to assess others.
+    </p>
+
+    <p style="font-weight: bold; margin-top: 16px;">
+      Truth-telling is still legal — even if it ruffles a few red hats.
+    </p>
+
+    <h2 style="font-family: 'Playfair Display', serif; color: var(--heading); margin-top: 32px;">Join the Watch</h2>
+
+    <p>
+      By continuing, you're not just entering a site — you're stepping into an experience designed to make you think.<br>
+      You're part of a broader mission to restore trust in what’s real.
+    </p>
+
+    <div style="text-align: center; margin-top: 24px;">
+      <a href="index.html" id="accept-link" class="important-link">I understand. Let me in.</a>
+    </div>
+
+    <p style="margin-top: 12px; font-size: 0.8rem; color: var(--text-muted);">
+      This moment will be remembered for 30 days.<br>
+      This website uses publicly available data, court records, and verifiable sources. Nothing here is hidden — it’s all in the open.
+    </p>
+  </div>
+</div>
+   <!-- 📱 App Promo Section -->
+  <div class="misconception-intro-container" style="background: linear-gradient(to bottom right, #1A2B4C, #0D1B2A); border: 1px solid #D4AF37; box-shadow: 0 0 12px rgba(212, 175, 55, 0.3); border-radius: 12px; padding: 24px; margin-top: 40px; text-align: center;">
+    <span class="announcement-label" style="text-align: center; display: block;">Mission Update:</span>
+    <a href="voter_dash.html" class="important-link" style="text-align: center; display: inline-block;">New Voter Dash</a>
+    <p style="text-align: center; max-width: 720px;">The Strategic Owl iPhone app brings everything you see here; credibility tools, the Constitution, and more—into your pocket, optimized for clarity and built for truth.</p>
+    <div><a href="https://thestrategicowl.printful.me" class="important-link" style="font-size: 1.15rem; text-align: center; display: inline-block;">New Merch - Go to store!</a></div>
+    <a href="https://apps.apple.com/app/the-strategic-owl/id6748349497" class="important-link" style="font-size: 1.15rem; text-align: center; display: inline-block;">Now on  App Store</a>
+    <div style="margin-top: 12px;"><a href="https://github.com/irbytay/strategic-owl-site/releases/download/v1.1.6-android/TheStrategicOwl-1.1.6-build7.apk" class="important-link" style="font-size: 1.15rem; text-align: center; display: inline-block;" download>Download Android APK</a></div>
+    <p style="text-align: center; max-width: 720px; font-size: 0.9rem; margin-top: 8px; color: var(--text-muted);">Android users may need to allow installation from unknown sources. This APK is hosted through the official Strategic Owl GitHub release.</p>
+    <p style="text-align: center; margin-top: 24px;">Explore the platform:</p>
+    <a href="TRUOWL3.html" class="important-link" style="text-align: center; display: inline-block;">The T.R.U. Owl</a>
+    <div style="margin-top: 6px; text-align: center;">
+      <span class="text-truth">Truth</span> · 
+      <span class="text-reliability">Reliability</span> · 
+      <span class="text-understanding">Understanding</span>
+    </div>
+    <div style="margin-top: 12px; display: flex; flex-direction: column; gap: 12px;">
+      <a href="strategic-owl-insight-quiz.html" class="important-link" style="text-align: center; display: inline-block;">Take the Insight Quiz</a>
+      <a href="the_constitution.html" class="important-link" style="text-align: center; display: inline-block;">Read the Constitution</a>
+    </div>
+  </div>
+<div class="so-card" id="homepage-story-card" style="display:none;"></div>
+     <!-- 🎯 Divider -->
+    <section class="divider-section">
+      <div class="divider-bar">
+        <div class="truth"></div>
+        <div class="reliability"></div>
+        <div class="understanding"></div>
+      </div>
+      <div class="divider-labels">
+        <span>Truth</span>
+        <span>Reliability</span>
+        <span>Understanding</span>
+      </div>
+    </section>
+  </div>
+  </div>
+  <!-- 📜 Footer -->
+  <footer style="text-align: center; padding: 24px 12px; font-size: 12px; color: #D4AF37; text-shadow: 0 0 6px rgba(0,0,0,0.6);">
+    © 2026 The Strategic Owl. All rights reserved. This platform is protected under U.S. copyright and constitutional law. Unauthorized use, duplication, or distortion of content is prohibited. Created by Taylor Irby — designed for clarity, built for truth.
+  </footer>
+<script>
+  // 🦉 The Perch feed: Daily Owl Logic + The Owl's Position
+  // Mirrors the Flutter feed.dart logic: Owl_Logic!B2:D21, read in row pairs.
+
+  const PERCH_SHEET_ID = "19wBEj9hEkvIyQcoR5E_mBGVAxTzMnddMxk8nuQLAumA";
+  const PERCH_API_KEY = "AIzaSyCzuh9HBfe0r70r9U35Pe406PPZ-tz6I78";
+  const PERCH_RANGE = "Owl_Logic!B2:D21";
+
+  function soToast(msg) {
+    const el = document.getElementById('so-toast');
+    if (!el) return;
+    el.textContent = msg;
+    el.classList.add('show');
+    window.clearTimeout(el.__t);
+    el.__t = window.setTimeout(() => el.classList.remove('show'), 2400);
+  }
+
+  function escapeHtml(str) {
+    return String(str || '')
+      .replace(/&/g, '&amp;')
+      .replace(/</g, '&lt;')
+      .replace(/>/g, '&gt;')
+      .replace(/"/g, '&quot;')
+      .replace(/'/g, '&#039;');
+  }
+
+  function parsePerchDateTime(dateText, timeText) {
+    const rawDate = String(dateText || '').trim();
+    const rawTime = String(timeText || '').replace(/\bET\b/gi, '').trim();
+
+    const dateParts = rawDate.split('/').map((part) => parseInt(part, 10));
+    if (dateParts.length !== 3 || dateParts.some(Number.isNaN)) return new Date(0);
+
+    let [month, day, year] = dateParts;
+    let hour = 0;
+    let minute = 0;
+
+    const timeMatch = rawTime.match(/^(\d{1,2})(?::(\d{2}))?\s*(AM|PM)?$/i);
+    if (timeMatch) {
+      hour = parseInt(timeMatch[1], 10);
+      minute = timeMatch[2] ? parseInt(timeMatch[2], 10) : 0;
+      const meridiem = (timeMatch[3] || '').toUpperCase();
+      if (meridiem === 'PM' && hour !== 12) hour += 12;
+      if (meridiem === 'AM' && hour === 12) hour = 0;
+    }
+
+    return new Date(year, month - 1, day, hour, minute, 0, 0);
+  }
+
+  function formatPerchTimestamp(dateText, timeText) {
+    const date = String(dateText || '').trim();
+    const time = String(timeText || '').trim();
+    if (date && time) return `${date} • ${time}`;
+    return date || time || '';
+  }
+
+  async function fetchPerchFeed() {
+    const url = new URL(`https://sheets.googleapis.com/v4/spreadsheets/${PERCH_SHEET_ID}/values/${encodeURIComponent(PERCH_RANGE)}`);
+    url.searchParams.set('key', PERCH_API_KEY);
+
+    const res = await fetch(url.toString());
+    if (!res.ok) throw new Error(`Sheets fetch failed: ${res.status}`);
+
+    const json = await res.json();
+    const rows = json.values || [];
+    const posts = [];
+
+    for (let i = 0; i < rows.length; i += 2) {
+      const dailyRow = rows[i] || [];
+      const strategicRow = rows[i + 1] || [];
+
+      const dailyOwlLogic = String(dailyRow[0] || '').trim();
+      const strategicPositioning = String(strategicRow[0] || '').trim();
+      const date = String(dailyRow[2] || '').trim();
+      const time = String(strategicRow[2] || '').trim();
+
+      if (!dailyOwlLogic || !strategicPositioning) continue;
+
+      posts.push({
+        id: `perch-${i}`,
+        dailyOwlLogic,
+        strategicPositioning,
+        date,
+        time,
+        timestamp: formatPerchTimestamp(date, time),
+        sortDate: parsePerchDateTime(date, time),
+      });
+    }
+
+    posts.sort((a, b) => b.sortDate - a.sortDate);
+    return posts;
+  }
+
+  async function copyText(text, label) {
+    const cleanText = String(text || '').trim();
+    if (!cleanText) return;
+
+    try {
+      await navigator.clipboard.writeText(cleanText);
+      soToast(`Copied ${label}.`);
+    } catch (e) {
+      const ta = document.createElement('textarea');
+      ta.value = cleanText;
+      ta.style.position = 'fixed';
+      ta.style.left = '-9999px';
+      document.body.appendChild(ta);
+      ta.focus();
+      ta.select();
+      document.execCommand('copy');
+      document.body.removeChild(ta);
+      soToast(`Copied ${label}.`);
+    }
+  }
+
+  async function shareText(text, title) {
+    const cleanText = String(text || '').trim();
+    if (!cleanText) return;
+
+    if (navigator.share) {
+      try {
+        await navigator.share({ title, text: cleanText });
+      } catch (_) {
+        // User cancelled share sheet.
+      }
+    } else {
+      await copyText(cleanText, title);
+      soToast('Share not supported here. Copied instead.');
+    }
+  }
+
+  function renderPerchPost(post) {
+    const fullPost = `${post.dailyOwlLogic}\n\n${post.strategicPositioning}`;
+
+    return `
+      <article class="so-card perch-post" data-post-id="${escapeHtml(post.id)}">
+        <div class="so-card-title-row">
+          <div>
+            <h2 class="so-card-title">Daily Owl Logic</h2>
+            ${post.timestamp ? `<p class="so-card-subtitle">Taylor Irby • ${escapeHtml(post.timestamp)}</p>` : `<p class="so-card-subtitle">Taylor Irby</p>`}
+          </div>
+          <div class="so-actions">
+            <button class="so-icon-btn" data-copy="daily" title="Copy Owl Logic" aria-label="Copy Owl Logic">
+              <svg class="so-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M16 1H4a2 2 0 0 0-2 2v14h2V3h12V1zm4 4H8a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7a2 2 0 0 0-2-2zm0 18H8V7h12v16z"/></svg>
+            </button>
+            <button class="so-icon-btn" data-share="daily" title="Share Owl Logic" aria-label="Share Owl Logic">
+              <svg class="so-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M18 16.08c-.76 0-1.44.3-1.96.77L8.91 12.7a2.5 2.5 0 0 0 0-1.39l7.02-4.11A2.99 2.99 0 1 0 14 5a2.9 2.9 0 0 0 .04.49L7.02 9.6a3 3 0 1 0 0 4.8l7.02 4.11c-.03.16-.04.33-.04.49a3 3 0 1 0 3-2.92z"/></svg>
+            </button>
+          </div>
+        </div>
+        <div class="so-card-body">${escapeHtml(post.dailyOwlLogic)}</div>
+
+        <div style="height:16px;"></div>
+
+        <div class="so-card-title-row">
+          <h2 class="so-card-title">The Owl’s Position</h2>
+          <div class="so-actions">
+            <button class="so-icon-btn" data-copy="position" title="Copy The Owl’s Position" aria-label="Copy The Owl’s Position">
+              <svg class="so-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M16 1H4a2 2 0 0 0-2 2v14h2V3h12V1zm4 4H8a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7a2 2 0 0 0-2-2zm0 18H8V7h12v16z"/></svg>
+            </button>
+            <button class="so-icon-btn" data-share="position" title="Share The Owl’s Position" aria-label="Share The Owl’s Position">
+              <svg class="so-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M18 16.08c-.76 0-1.44.3-1.96.77L8.91 12.7a2.5 2.5 0 0 0 0-1.39l7.02-4.11A2.99 2.99 0 1 0 14 5a2.9 2.9 0 0 0 .04.49L7.02 9.6a3 3 0 1 0 0 4.8l7.02 4.11c-.03.16-.04.33-.04.49a3 3 0 1 0 3-2.92z"/></svg>
+            </button>
+          </div>
+        </div>
+        <div class="so-card-body italic">${escapeHtml(post.strategicPositioning)}</div>
+
+        <div style="margin-top:16px; text-align:center;">
+          <button class="so-icon-btn" data-copy="full" title="Copy full post" aria-label="Copy full post" style="width:auto; padding:0 14px; color:var(--understanding); font-weight:700; font-family:'Inter', sans-serif;">
+            Copy Full Post
+          </button>
+        </div>
+      </article>
+    `;
+  }
+
+  function attachPerchActions(posts) {
+    document.querySelectorAll('.perch-post').forEach((card) => {
+      const post = posts.find((item) => item.id === card.dataset.postId);
+      if (!post) return;
+
+      const fullPost = `${post.dailyOwlLogic}\n\n${post.strategicPositioning}`;
+
+      card.querySelector('[data-copy="daily"]')?.addEventListener('click', () => copyText(post.dailyOwlLogic, 'Owl Logic'));
+      card.querySelector('[data-share="daily"]')?.addEventListener('click', () => shareText(post.dailyOwlLogic, 'Daily Owl Logic'));
+      card.querySelector('[data-copy="position"]')?.addEventListener('click', () => copyText(post.strategicPositioning, 'The Owl’s Position'));
+      card.querySelector('[data-share="position"]')?.addEventListener('click', () => shareText(post.strategicPositioning, 'The Owl’s Position'));
+      card.querySelector('[data-copy="full"]')?.addEventListener('click', () => copyText(fullPost, 'full post'));
+    });
+  }
+
+  async function loadPerchFeed() {
+    const list = document.getElementById('perch-feed-list');
+    if (!list) return;
+
+    list.innerHTML = `
+      <div class="so-card">
+        <p class="so-card-subtitle" style="text-align:center; margin:0;">Loading the latest Owl Logic…</p>
+      </div>
+    `;
+
+    try {
+      const posts = await fetchPerchFeed();
+
+      if (!posts.length) {
+        list.innerHTML = `
+          <div class="so-card">
+            <p class="so-card-subtitle" style="text-align:center; margin:0;">No feed posts are available right now.</p>
+          </div>
+        `;
+        return;
+      }
+
+      list.innerHTML = posts.map(renderPerchPost).join('');
+      attachPerchActions(posts);
+    } catch (e) {
+      console.warn('The Perch feed failed:', e);
+      list.innerHTML = `
+        <div class="so-card">
+          <p class="so-card-subtitle" style="text-align:center; margin:0;">The feed could not load. Please refresh and try again.</p>
+        </div>
+      `;
+    }
+  }
+
+  window.addEventListener('DOMContentLoaded', () => {
+    loadPerchFeed();
+    document.getElementById('refresh-feed')?.addEventListener('click', loadPerchFeed);
+  });
+</script>
+
+<script>
+  // ⚖️ Legal popup (show on first visit or after 30 days)
+  const legalPopup = document.getElementById('legal-popup');
+  const lastAccepted = localStorage.getItem('legalPopupAccepted');
+  const now = Date.now();
+  const thirtyDays = 1000 * 60 * 60 * 24 * 30;
+
+  if (legalPopup) {
+    const last = parseInt(lastAccepted || '0', 10);
+    if (!last || (now - last) > thirtyDays) {
+      legalPopup.style.display = 'block';
+    }
+
+    const acceptLink = document.getElementById('accept-link');
+    if (acceptLink) {
+      acceptLink.addEventListener('click', () => {
+        localStorage.setItem('legalPopupAccepted', Date.now().toString());
+      });
+    }
+  }
+
+  // 🍔 Mobile menu
+  function toggleMenu() {
+    const menu = document.getElementById('mobileMenu');
+    if (!menu) return;
+    menu.classList.toggle('show');
+    menu.classList.toggle('open');
+  }
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "Person",
+      "name": "Taylor Irby",
+      "url": "https://thestrategicowl.com",
+      "sameAs": [
+        "https://strategicowl.substack.com",
+        "https://www.youtube.com/@StrategicOwl",
+        "https://twitter.com/StrategicOwl"
+      ],
+      "jobTitle": "Founder",
+      "worksFor": {
+        "@type": "Organization",
+        "name": "The Strategic Owl"
+      }
+    },
+    {
+      "@type": "Organization",
+      "name": "The Strategic Owl",
+      "url": "https://thestrategicowl.com",
+      "logo": "https://thestrategicowl.com/TSO.png",
+      "description": "Tools and insights for measuring credibility, decoding misinformation, and inspiring civic awareness.",
+      "founder": {
+        "@type": "Person",
+        "name": "Taylor Irby"
+      },
+      "sameAs": [
+        "https://strategicowl.substack.com",
+        "https://www.youtube.com/@StrategicOwl"
+      ]
+    },
+    {
+      "@type": "WebSite",
+      "name": "The Strategic Owl",
+      "url": "https://thestrategicowl.com",
+      "description": "Strategic analysis, digital tools, and credibility scoring to help people uncover truth in the age of distortion.",
+      "publisher": {
+        "@type": "Organization",
+        "name": "The Strategic Owl"
+      }
+    },
+    {
+      "@type": "WebApplication",
+      "name": "TRU OWL Score Viewer",
+      "url": "https://thestrategicowl.com/the_constitution",
+      "applicationCategory": "EducationalApplication",
+      "operatingSystem": "All",
+      "browserRequirements": "Requires JavaScript",
+      "description": "A digital tool to measure truth, reliability, and understanding through structured credibility scores."
+    },
+    {
+      "@type": "CreativeWork",
+      "name": "The OwlCast Podcast",
+      "url": "https://www.youtube.com/@StrategicOwl",
+      "author": {
+        "@type": "Person",
+        "name": "Taylor Irby"
+      },
+      "inLanguage": "en",
+      "description": "A podcast that blends music, political analysis, and strategic insight to help people break through distortion."
+    }
+  ]
+}
+</script>
+<script>
+  // Auto-close mobile menu when clicking/tapping outside
+  document.addEventListener('click', function (event) {
+    const menu = document.getElementById('mobileMenu');
+    const toggle = document.getElementById('menuToggle');
+
+    if (!menu || !toggle) return;
+
+    const isClickInsideMenu = menu.contains(event.target);
+    const isClickOnToggle = toggle.contains(event.target);
+
+    if (!isClickInsideMenu && !isClickOnToggle && menu.classList.contains('open')) {
+      menu.classList.remove('open');
+      menu.classList.remove('show');
+    }
+  });
+</script>
+
+</body>
+</html>
