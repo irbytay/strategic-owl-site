@@ -687,6 +687,7 @@
       <span class="announcement-label" style="text-align: center; display: inline-block;">Mission Update:</span>
       <span id="mission-update-timestamp" style="font-size: 0.9rem; color: var(--text-muted); font-family: 'Inter', sans-serif;"></span>
     </div>
+    <div id="mission-update-list" style="display: flex; flex-direction: column; align-items: center; gap: 8px; margin-bottom: 18px;"></div>
     <a href="voter_dash.html" class="important-link" style="text-align: center; display: inline-block;">New Voter Dash</a>
     <p style="text-align: center; max-width: 720px;">The Strategic Owl iPhone app brings everything you see here; credibility tools, the Constitution, and more—into your pocket, optimized for clarity and built for truth.</p>
     <div><a href="https://thestrategicowl.printful.me" class="important-link" style="font-size: 1.15rem; text-align: center; display: inline-block;">New Merch - Go to store!</a></div>
@@ -732,6 +733,7 @@
   const HOMEPAGE_API_KEY = "AIzaSyCzuh9HBfe0r70r9U35Pe406PPZ-tz6I78";
   const RANGE_STORY = "Homepage!C9:C19";
   const RANGE_MISSION_TIMESTAMP = "Homepage!C3";
+  const RANGE_MISSION_UPDATES = "Homepage!C4:C6";
 
   function escapeHtml(str) {
     return String(str || '')
@@ -746,6 +748,7 @@
     const url = new URL(`https://sheets.googleapis.com/v4/spreadsheets/${HOMEPAGE_SHEET_ID}/values:batchGet`);
     url.searchParams.set('key', HOMEPAGE_API_KEY);
     url.searchParams.append('ranges', RANGE_MISSION_TIMESTAMP);
+    url.searchParams.append('ranges', RANGE_MISSION_UPDATES);
     url.searchParams.append('ranges', RANGE_STORY);
 
     const res = await fetch(url.toString());
@@ -754,6 +757,7 @@
 
     const out = {
       missionTimestamp: '',
+      missionUpdates: [],
       story: {
         h1: '', b1: '',
         h2: '', b2: '',
@@ -770,6 +774,13 @@
 
       if (r.includes('Homepage!C3')) {
         out.missionTimestamp = (vr.values && vr.values[0] && vr.values[0][0]) ? vr.values[0][0].toString() : '';
+      }
+
+      if (r.includes('Homepage!C4')) {
+        const v = vr.values || [];
+        out.missionUpdates = v
+          .map((row) => row && row[0] ? row[0].toString().trim() : '')
+          .filter(Boolean);
       }
 
       if (r.includes('Homepage!C9')) {
@@ -800,6 +811,13 @@
       const timestampEl = document.getElementById('mission-update-timestamp');
       if (timestampEl && data.missionTimestamp) {
         timestampEl.textContent = data.missionTimestamp;
+      }
+
+      const updatesEl = document.getElementById('mission-update-list');
+      if (updatesEl && Array.isArray(data.missionUpdates) && data.missionUpdates.length) {
+        updatesEl.innerHTML = data.missionUpdates
+          .map((update) => `<div style="font-family: 'Inter', sans-serif; color: var(--understanding); font-size: 1rem; line-height: 1.45; text-align: center; max-width: 720px;">${escapeHtml(update)}</div>`)
+          .join('');
       }
 
       const storyCard = document.getElementById('homepage-story-card');
