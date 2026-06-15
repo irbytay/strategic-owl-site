@@ -641,22 +641,6 @@
    <!-- 📱 App Promo Section -->
 
     <!-- 🦉 Homepage (Google Sheet) dynamic blocks -->
-    <div id="homepage-dynamic">
-      <div class="so-card" id="position-card" style="display:none;">
-        <div class="so-card-title-row">
-          <h2 class="so-card-title">Strategic Positioning</h2>
-          <div class="so-actions">
-            <button class="so-icon-btn" id="copy-pos" title="Copy" aria-label="Copy positioning">
-              <svg class="so-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M16 1H4a2 2 0 0 0-2 2v14h2V3h12V1zm4 4H8a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7a2 2 0 0 0-2-2zm0 18H8V7h12v16z"/></svg>
-            </button>
-            <button class="so-icon-btn" id="share-pos" title="Share" aria-label="Share positioning">
-              <svg class="so-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M18 16.08c-.76 0-1.44.3-1.96.77L8.91 12.7a2.5 2.5 0 0 0 0-1.39l7.02-4.11A2.99 2.99 0 1 0 14 5a2.9 2.9 0 0 0 .04.49L7.02 9.6a3 3 0 1 0 0 4.8l7.02 4.11c-.03.16-.04.33-.04.49a3 3 0 1 0 3-2.92z"/></svg>
-            </button>
-          </div>
-        </div>
-        <div class="so-card-body italic" id="pos-text"></div>
-      </div>
-    </div>
 
     <div class="so-toast" id="so-toast" role="status" aria-live="polite"></div>
     <!-- Legal Popup -->
@@ -739,22 +723,11 @@
     © 2026 The Strategic Owl. All rights reserved. This platform is protected under U.S. copyright and constitutional law. Unauthorized use, duplication, or distortion of content is prohibited. Created by Taylor Irby — designed for clarity, built for truth.
   </footer>
 <script>
-  // 🧠 Homepage dynamic: Strategic Positioning only + homepage story
+  // 🧠 Homepage dynamic: homepage story only
 
   const HOMEPAGE_SHEET_ID = "19wBEj9hEkvIyQcoR5E_mBGVAxTzMnddMxk8nuQLAumA";
   const HOMEPAGE_API_KEY = "AIzaSyCzuh9HBfe0r70r9U35Pe406PPZ-tz6I78";
-
-  const RANGE_POSITIONING = "Homepage!C8";
   const RANGE_STORY = "Homepage!C9:C19";
-
-  function soToast(msg) {
-    const el = document.getElementById('so-toast');
-    if (!el) return;
-    el.textContent = msg;
-    el.classList.add('show');
-    window.clearTimeout(el.__t);
-    el.__t = window.setTimeout(() => el.classList.remove('show'), 2400);
-  }
 
   function escapeHtml(str) {
     return String(str || '')
@@ -765,142 +738,64 @@
       .replace(/'/g, '&#039;');
   }
 
-  async function fetchHomepageBatch() {
-    const url = new URL(`https://sheets.googleapis.com/v4/spreadsheets/${HOMEPAGE_SHEET_ID}/values:batchGet`);
+  async function fetchHomepageStory() {
+    const url = new URL(`https://sheets.googleapis.com/v4/spreadsheets/${HOMEPAGE_SHEET_ID}/values/${encodeURIComponent(RANGE_STORY)}`);
     url.searchParams.set('key', HOMEPAGE_API_KEY);
-    url.searchParams.append('ranges', RANGE_POSITIONING);
-    url.searchParams.append('ranges', RANGE_STORY);
 
     const res = await fetch(url.toString());
     if (!res.ok) throw new Error(`Sheets fetch failed: ${res.status}`);
     const json = await res.json();
+    const v = json.values || [];
+    const get = (idx) => (v[idx] && v[idx][0]) ? v[idx][0].toString() : '';
 
-    const out = {
-      positioning: '',
-      story: {
-        h1: '', b1: '',
-        h2: '', b2: '',
-        h3: '', b3: '',
-        h4: '', b4: '',
-        h5: '', b5: '',
-        closing: ''
-      }
+    return {
+      h1: get(0), b1: get(1),
+      h2: get(2), b2: get(3),
+      h3: get(4), b3: get(5),
+      h4: get(6), b4: get(7),
+      h5: get(8), b5: get(9),
+      closing: get(10)
     };
-
-    const ranges = json.valueRanges || [];
-    for (const vr of ranges) {
-      const r = vr.range || '';
-
-      if (r.includes('Homepage!C8')) {
-        out.positioning = (vr.values && vr.values[0] && vr.values[0][0]) ? vr.values[0][0].toString() : '';
-      }
-
-      if (r.includes('Homepage!C9')) {
-        const v = vr.values || [];
-        const get = (idx) => (v[idx] && v[idx][0]) ? v[idx][0].toString() : '';
-
-        out.story.h1 = get(0);
-        out.story.b1 = get(1);
-        out.story.h2 = get(2);
-        out.story.b2 = get(3);
-        out.story.h3 = get(4);
-        out.story.b3 = get(5);
-        out.story.h4 = get(6);
-        out.story.b4 = get(7);
-        out.story.h5 = get(8);
-        out.story.b5 = get(9);
-        out.story.closing = get(10);
-      }
-    }
-
-    return out;
-  }
-
-  async function copyText(text, label) {
-    const t = (text || '').trim();
-    if (!t) return;
-    try {
-      await navigator.clipboard.writeText(t);
-      soToast(`Copied ${label}.`);
-    } catch (e) {
-      const ta = document.createElement('textarea');
-      ta.value = t;
-      ta.style.position = 'fixed';
-      ta.style.left = '-9999px';
-      document.body.appendChild(ta);
-      ta.focus();
-      ta.select();
-      document.execCommand('copy');
-      document.body.removeChild(ta);
-      soToast(`Copied ${label}.`);
-    }
-  }
-
-  async function shareText(text, title) {
-    const t = (text || '').trim();
-    if (!t) return;
-    if (navigator.share) {
-      try {
-        await navigator.share({ title, text: t });
-      } catch (_) {
-        // user cancelled
-      }
-    } else {
-      await copyText(t, title);
-      soToast('Share not supported here. Copied instead.');
-    }
   }
 
   async function initHomepageDynamic() {
     try {
-      const data = await fetchHomepageBatch();
-
-      const positionCard = document.getElementById('position-card');
-      const posText = document.getElementById('pos-text');
-
-      if (positionCard && posText && data.positioning) {
-        posText.textContent = data.positioning;
-        positionCard.style.display = 'block';
-
-        document.getElementById('copy-pos')?.addEventListener('click', () => copyText(data.positioning, 'Strategic Positioning'));
-        document.getElementById('share-pos')?.addEventListener('click', () => shareText(data.positioning, 'Strategic Positioning'));
-      }
-
       const storyCard = document.getElementById('homepage-story-card');
-      const s = data.story || {};
+      if (!storyCard) return;
+
+      const s = await fetchHomepageStory();
       const hasStory = [
         s.h1, s.b1, s.h2, s.b2, s.h3, s.b3, s.h4, s.b4, s.h5, s.b5, s.closing
       ].some(x => (x || '').trim());
 
-      if (storyCard && hasStory) {
-        const section = (h, b) => {
-          const hh = (h || '').trim();
-          const bb = (b || '').trim();
-          if (!hh && !bb) return '';
-          return `
-            ${hh ? `<div style="text-align:center; font-family:'Times New Roman', Times, serif; font-size:20px; font-weight:700; color: var(--understanding); margin-top: 10px;">${escapeHtml(hh)}</div>` : ''}
-            ${bb ? `<div style="text-align:center; font-family:'Inter', sans-serif; font-size: 1.02rem; color: var(--text-muted); line-height: 1.7; margin-top: 10px; white-space: pre-wrap;">${escapeHtml(bb)}</div>` : ''}
-          `;
-        };
+      if (!hasStory) return;
 
-        storyCard.innerHTML = `
-          <div style="text-align:center; font-family:'Merriweather', serif; font-size:18px; font-style: italic; color:#BFA85B; margin-bottom: 10px;">Welcome in. Appreciate you.</div>
-          ${section(s.h1, s.b1)}
-          ${section(s.h2, s.b2)}
-          ${section(s.h3, s.b3)}
-          ${section(s.h4, s.b4)}
-          ${section(s.h5, s.b5)}
-          ${(s.closing || '').trim()
-            ? `<div style="margin-top: 16px; text-align:center; font-family:'Merriweather', serif; font-size:14px; font-style: italic; color:#BFA85B; white-space: pre-wrap;">${escapeHtml((s.closing || '').trim())}</div>`
-            : ''
-          }
+      const section = (h, b) => {
+        const hh = (h || '').trim();
+        const bb = (b || '').trim();
+        if (!hh && !bb) return '';
+        return `
+          ${hh ? `<div style="text-align:center; font-family:'Times New Roman', Times, serif; font-size:20px; font-weight:700; color: var(--understanding); margin-top: 10px;">${escapeHtml(hh)}</div>` : ''}
+          ${bb ? `<div style="text-align:center; font-family:'Inter', sans-serif; font-size: 1.02rem; color: var(--text-muted); line-height: 1.7; margin-top: 10px; white-space: pre-wrap;">${escapeHtml(bb)}</div>` : ''}
         `;
+      };
 
-        storyCard.style.display = 'block';
-      }
+      storyCard.innerHTML = `
+        <div style="text-align:center; font-family:'Merriweather', serif; font-size:18px; font-style: italic; color:#BFA85B; margin-bottom: 10px;">Welcome in. Appreciate you.</div>
+        ${section(s.h1, s.b1)}
+        ${section(s.h2, s.b2)}
+        ${section(s.h3, s.b3)}
+        ${section(s.h4, s.b4)}
+        ${section(s.h5, s.b5)}
+        ${(s.closing || '').trim()
+          ? `<div style="margin-top: 16px; text-align:center; font-family:'Merriweather', serif; font-size:14px; font-style: italic; color:#BFA85B; white-space: pre-wrap;">${escapeHtml((s.closing || '').trim())}</div>`
+          : ''
+        }
+      `;
 
+      storyCard.style.display = 'block';
     } catch (e) {
-      console.warn('Homepage dynamic failed:', e);
+      console.warn('Homepage story failed:', e);
     }
   }
 
