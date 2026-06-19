@@ -489,6 +489,10 @@
     gap: 12px;
   }
 
+  .so-card-heading-block {
+    flex: 1;
+    text-align: left;
+  }
   .so-card-title {
     font-family: 'Playfair Display', serif;
     font-size: 1.15rem;
@@ -507,7 +511,7 @@
   .so-author-row {
     display: flex;
     align-items: center;
-    justify-content: center;
+    justify-content: flex-start;
     gap: 8px;
     margin-bottom: 8px;
   }
@@ -895,7 +899,7 @@
     return `
       <article class="so-card perch-post" data-post-id="${escapeHtml(post.id)}">
         <div class="so-card-title-row">
-          <div style="flex: 1; text-align: center;">
+          <div class="so-card-heading-block">
             <div class="so-author-row">
               <img src="/meusa.png" alt="Taylor Irby" class="so-author-avatar" onerror="this.style.display='none';" />
               <p class="so-author-meta">
