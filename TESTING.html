@@ -925,17 +925,6 @@ table.tru-table td:nth-child(2) {
   let rowMap = {}, roleMap = {};
   const TRU_SUBMISSION_WEB_APP_URL = "https://script.google.com/macros/s/AKfycbyBLv1woqIhZYU6k7IvHFoBp8uD6EkSAS-_rvWp67Nb0_mxzxGtadkP1LYZWUDRev0/exec";
 
-  function createTRUSubmissionId() {
-    const timestamp = new Date().toISOString().replace(/[-:.TZ]/g, "");
-
-    if (window.crypto && typeof window.crypto.randomUUID === "function") {
-      const uuidPart = window.crypto.randomUUID().split("-")[0].toUpperCase();
-      return `TRU-${timestamp}-${uuidPart}`;
-    }
-
-    const randomPart = Math.random().toString(36).substring(2, 10).toUpperCase();
-    return `TRU-${timestamp}-${randomPart}`;
-  }
   async function fetchTRUData() {
     const API_KEY = "AIzaSyCzuh9HBfe0r70r9U35Pe406PPZ-tz6I78";
     const SHEET_ID = "19wBEj9hEkvIyQcoR5E_mBGVAxTzMnddMxk8nuQLAumA";
@@ -1136,11 +1125,8 @@ table.tru-table td:nth-child(2) {
       return;
     }
 
-    const submissionId = createTRUSubmissionId();
     const formData = new URLSearchParams();
-    formData.append("timestamp", new Date().toISOString());
     formData.append("name", suggestedName);
-    formData.append("submissionId", submissionId);
 
     statusEl.textContent = "Submitting...";
 
@@ -1148,14 +1134,11 @@ table.tru-table td:nth-child(2) {
       await fetch(TRU_SUBMISSION_WEB_APP_URL, {
         method: "POST",
         mode: "no-cors",
-        headers: {
-          "Content-Type": "application/x-www-form-urlencoded;charset=UTF-8"
-        },
-        body: formData.toString()
+        body: formData
       });
 
       nameInput.value = "";
-      statusEl.textContent = `Profile suggestion received. ID: ${submissionId}`;
+      statusEl.textContent = "Profile suggestion sent.";
     } catch (error) {
       console.error("TRU profile suggestion failed:", error);
       statusEl.textContent = "Submission failed. Please try again.";
