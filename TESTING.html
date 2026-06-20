@@ -925,6 +925,20 @@ table.tru-table td:nth-child(2) {
   let rowMap = {}, roleMap = {};
   const TRU_SUBMISSION_WEB_APP_URL = "https://script.google.com/macros/s/AKfycbyBLv1woqIhZYU6k7IvHFoBp8uD6EkSAS-_rvWp67Nb0_mxzxGtadkP1LYZWUDRev0/exec";
 
+  function createTRUSubmissionId() {
+    const timestampPart = new Date()
+      .toISOString()
+      .replace(/[-:.TZ]/g, "");
+
+    if (window.crypto && typeof window.crypto.randomUUID === "function") {
+      const uuidPart = window.crypto.randomUUID().split("-")[0].toUpperCase();
+      return `TRU-${timestampPart}-${uuidPart}`;
+    }
+
+    const fallbackPart = Math.random().toString(36).substring(2, 10).toUpperCase();
+    return `TRU-${timestampPart}-${fallbackPart}`;
+  }
+
   async function fetchTRUData() {
     const API_KEY = "AIzaSyCzuh9HBfe0r70r9U35Pe406PPZ-tz6I78";
     const SHEET_ID = "19wBEj9hEkvIyQcoR5E_mBGVAxTzMnddMxk8nuQLAumA";
@@ -1125,8 +1139,10 @@ table.tru-table td:nth-child(2) {
       return;
     }
 
+    const submissionId = createTRUSubmissionId();
     const formData = new URLSearchParams();
     formData.append("name", suggestedName);
+    formData.append("submissionId", submissionId);
 
     statusEl.textContent = "Submitting...";
 
@@ -1138,7 +1154,7 @@ table.tru-table td:nth-child(2) {
       });
 
       nameInput.value = "";
-      statusEl.textContent = "Profile suggestion sent.";
+      statusEl.textContent = `Profile suggestion sent. ID: ${submissionId}`;
     } catch (error) {
       console.error("TRU profile suggestion failed:", error);
       statusEl.textContent = "Submission failed. Please try again.";
