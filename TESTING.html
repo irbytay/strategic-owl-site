@@ -1132,10 +1132,9 @@ table.tru-table td:nth-child(2) {
 
     const submissionId = createTRUSubmissionId();
     const formData = new URLSearchParams();
-    formData.append("submissionId", submissionId);
+    formData.append("timestamp", new Date().toISOString());
     formData.append("name", suggestedName);
-    formData.append("submission", suggestedName);
-    formData.append("source", "TRU Owl Profile Suggestion");
+    formData.append("submissionId", submissionId);
 
     statusEl.textContent = "Submitting...";
 
