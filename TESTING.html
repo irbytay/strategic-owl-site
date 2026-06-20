@@ -927,7 +927,13 @@ table.tru-table td:nth-child(2) {
 
   function createTRUSubmissionId() {
     const timestamp = new Date().toISOString().replace(/[-:.TZ]/g, "");
-    const randomPart = Math.random().toString(36).substring(2, 8).toUpperCase();
+
+    if (window.crypto && typeof window.crypto.randomUUID === "function") {
+      const uuidPart = window.crypto.randomUUID().split("-")[0].toUpperCase();
+      return `TRU-${timestamp}-${uuidPart}`;
+    }
+
+    const randomPart = Math.random().toString(36).substring(2, 10).toUpperCase();
     return `TRU-${timestamp}-${randomPart}`;
   }
   async function fetchTRUData() {
@@ -1131,7 +1137,7 @@ table.tru-table td:nth-child(2) {
     }
 
     const submissionId = createTRUSubmissionId();
-    const formData = new URLSearchParams();
+    const formData = new FormData();
     formData.append("timestamp", new Date().toISOString());
     formData.append("name", suggestedName);
     formData.append("submissionId", submissionId);
@@ -1146,7 +1152,7 @@ table.tru-table td:nth-child(2) {
       });
 
       nameInput.value = "";
-      statusEl.textContent = "Profile suggestion received.";
+      statusEl.textContent = `Profile suggestion received. ID: ${submissionId}`;
     } catch (error) {
       console.error("TRU profile suggestion failed:", error);
       statusEl.textContent = "Submission failed. Please try again.";
