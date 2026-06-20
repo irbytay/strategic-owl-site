@@ -924,6 +924,12 @@ table.tru-table td:nth-child(2) {
 
   let rowMap = {}, roleMap = {};
   const TRU_SUBMISSION_WEB_APP_URL = "https://script.google.com/macros/s/AKfycbyBLv1woqIhZYU6k7IvHFoBp8uD6EkSAS-_rvWp67Nb0_mxzxGtadkP1LYZWUDRev0/exec";
+
+  function createTRUSubmissionId() {
+    const timestamp = new Date().toISOString().replace(/[-:.TZ]/g, "");
+    const randomPart = Math.random().toString(36).substring(2, 8).toUpperCase();
+    return `TRU-${timestamp}-${randomPart}`;
+  }
   async function fetchTRUData() {
     const API_KEY = "AIzaSyCzuh9HBfe0r70r9U35Pe406PPZ-tz6I78";
     const SHEET_ID = "19wBEj9hEkvIyQcoR5E_mBGVAxTzMnddMxk8nuQLAumA";
@@ -1124,7 +1130,9 @@ table.tru-table td:nth-child(2) {
       return;
     }
 
+    const submissionId = createTRUSubmissionId();
     const formData = new URLSearchParams();
+    formData.append("submissionId", submissionId);
     formData.append("name", suggestedName);
     formData.append("submission", suggestedName);
     formData.append("source", "TRU Owl Profile Suggestion");
