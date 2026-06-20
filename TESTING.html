@@ -426,6 +426,37 @@
   font-size: 0.95rem;
 }
 
+.tru-copy-id-wrap {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.tru-copy-id-code {
+  color: var(--understanding);
+  font-family: 'Inter', sans-serif;
+  font-weight: 700;
+  word-break: break-word;
+}
+
+.tru-copy-id-button {
+  padding: 6px 10px;
+  border-radius: 7px;
+  border: 1px solid rgba(212, 175, 55, 0.65);
+  background-color: var(--highlight);
+  color: var(--understanding);
+  cursor: pointer;
+  font-family: 'Inter', sans-serif;
+  font-size: 0.85rem;
+  font-weight: 700;
+}
+
+.tru-copy-id-button:hover {
+  background-color: var(--surface);
+}
+
   /* Modal-style popup for Scoring Logic */
   #role-box-wrapper {
     display: none;
@@ -1154,10 +1185,28 @@ table.tru-table td:nth-child(2) {
       });
 
       nameInput.value = "";
-      statusEl.textContent = `Profile suggestion sent. ID: ${submissionId}`;
+      statusEl.innerHTML = `
+        <span class="tru-copy-id-wrap">
+          <span>Profile suggestion sent. ID:</span>
+          <span class="tru-copy-id-code">${submissionId}</span>
+          <button class="tru-copy-id-button" type="button" onclick="copyTRUSubmissionId('${submissionId}')">Copy ID</button>
+        </span>
+      `;
     } catch (error) {
       console.error("TRU profile suggestion failed:", error);
       statusEl.textContent = "Submission failed. Please try again.";
+    }
+  }
+
+  async function copyTRUSubmissionId(submissionId) {
+    const statusEl = document.getElementById("truSubmitStatus");
+
+    try {
+      await navigator.clipboard.writeText(submissionId);
+      statusEl.querySelector(".tru-copy-id-button").textContent = "Copied";
+    } catch (error) {
+      console.error("TRU ID copy failed:", error);
+      statusEl.querySelector(".tru-copy-id-button").textContent = "Copy failed";
     }
   }
 
