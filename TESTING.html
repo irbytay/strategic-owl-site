@@ -1154,7 +1154,7 @@ table.tru-table td:nth-child(2) {
     outputContainer.style.display = "block";
   }
 
-  async function submitTRUProfileSuggestion() {
+  function submitTRUProfileSuggestion() {
     const nameInput = document.getElementById("truSuggestedName");
     const statusEl = document.getElementById("truSubmitStatus");
 
@@ -1172,44 +1172,67 @@ table.tru-table td:nth-child(2) {
 
     const submissionId = createTRUSubmissionId();
     const timestamp = new Date().toISOString();
-    const formData = new URLSearchParams();
-    formData.append("timestamp", timestamp);
-    formData.append("name", suggestedName);
-    formData.append("submissionId", submissionId);
+    const callbackName = `handleTRUSubmission_${Date.now()}_${Math.random().toString(36).substring(2, 10)}`;
+    const scriptEl = document.createElement("script");
+    const params = new URLSearchParams({
+      action: "submit",
+      timestamp,
+      name: suggestedName,
+      submissionId,
+      callback: callbackName
+    });
+
+    let didFinish = false;
+
+    function cleanup() {
+      didFinish = true;
+      delete window[callbackName];
+      if (scriptEl.parentNode) scriptEl.parentNode.removeChild(scriptEl);
+    }
+
+    window[callbackName] = function(response) {
+      cleanup();
+
+      if (!response || response.ok !== true) {
+        console.error("TRU submission was not confirmed", response);
+        statusEl.textContent = "Submission failed. Please try again.";
+        return;
+      }
+
+      console.log("TRU submission confirmed", response);
+      nameInput.value = "";
+      statusEl.innerHTML = `
+        <span class="tru-copy-id-wrap">
+          <span>Profile suggestion sent. TRU-ID:</span>
+          <span class="tru-copy-id-code">${response.submissionId || submissionId}</span>
+          <button class="tru-copy-id-button" type="button" onclick="copyTRUSubmissionId('${response.submissionId || submissionId}')">Copy ID</button>
+        </span>
+      `;
+    };
+
+    scriptEl.onerror = function(error) {
+      cleanup();
+      console.error("TRU submission script request failed", error);
+      statusEl.textContent = "Submission failed. Please try again.";
+    };
+
+    setTimeout(function() {
+      if (!didFinish) {
+        cleanup();
+        statusEl.textContent = "Submission could not be confirmed. Please try again.";
+      }
+    }, 12000);
 
     console.log("TRU submission attempt", {
-      url: TRU_SUBMISSION_WEB_APP_URL,
+      url: `${TRU_SUBMISSION_WEB_APP_URL}?${params.toString()}`,
       timestamp,
       name: suggestedName,
       submissionId
     });
 
     statusEl.textContent = "Submitting...";
-
-    try {
-      await fetch(TRU_SUBMISSION_WEB_APP_URL, {
-        method: "POST",
-        mode: "no-cors",
-        body: formData
-      });
-
-      console.log("TRU submission fetch completed", {
-        name: suggestedName,
-        submissionId
-      });
-
-      nameInput.value = "";
-      statusEl.innerHTML = `
-        <span class="tru-copy-id-wrap">
-          <span>Profile suggestion sent. TRU-ID:</span>
-          <span class="tru-copy-id-code">${submissionId}</span>
-          <button class="tru-copy-id-button" type="button" onclick="copyTRUSubmissionId('${submissionId}')">Copy ID</button>
-        </span>
-      `;
-    } catch (error) {
-      console.error("TRU profile suggestion failed:", error);
-      statusEl.textContent = "Submission failed. Please try again.";
-    }
+    scriptEl.src = `${TRU_SUBMISSION_WEB_APP_URL}?${params.toString()}`;
+    document.body.appendChild(scriptEl);
   }
 
   async function copyTRUSubmissionId(submissionId) {
