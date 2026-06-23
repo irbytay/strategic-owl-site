@@ -1020,17 +1020,22 @@ table.tru-table td:nth-child(2) {
 
   function createTRUSubmissionTimestamp() {
     const now = new Date();
+    const easternTimeZone = "America/New_York";
+
     const datePart = new Intl.DateTimeFormat("en-US", {
+      timeZone: easternTimeZone,
       month: "2-digit",
       day: "2-digit",
       year: "numeric"
     }).format(now);
 
     const timePart = new Intl.DateTimeFormat("en-US", {
+      timeZone: easternTimeZone,
       hour: "numeric",
       minute: "2-digit",
       second: "2-digit",
-      hour12: true
+      hour12: true,
+      timeZoneName: "short"
     }).format(now);
 
     return `${datePart} ${timePart}`;
