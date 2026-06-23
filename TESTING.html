@@ -628,75 +628,73 @@ table.tru-table td:nth-child(2) {
   word-wrap: break-word;
 }
 
-/* 📱 Phone-first score card layout */
-@media (max-width: 700px) {
-  #output-container {
-    padding: 16px;
-    margin-top: 24px;
-  }
+/* 📱🖥️ Score card layout for mobile and desktop */
+#output-container {
+  padding: 16px;
+  margin-top: 24px;
+}
 
-  #score-table,
-  #score-table tbody,
-  #score-table tr,
-  #score-table td {
-    display: block;
-    width: 100%;
-    box-sizing: border-box;
-  }
+#score-table,
+#score-table tbody,
+#score-table tr,
+#score-table td {
+  display: block;
+  width: 100%;
+  box-sizing: border-box;
+}
 
-  #score-table thead {
-    display: none;
-  }
+#score-table thead {
+  display: none;
+}
 
-  #score-table tr {
-    background-color: rgba(13, 27, 42, 0.45);
-    border: 1px solid rgba(212, 175, 55, 0.28);
-    border-radius: 12px;
-    margin: 0 0 16px 0;
-    overflow: hidden;
-  }
+#score-table tr {
+  background-color: rgba(13, 27, 42, 0.45);
+  border: 1px solid rgba(212, 175, 55, 0.28);
+  border-radius: 12px;
+  margin: 0 0 16px 0;
+  overflow: hidden;
+}
 
-  #score-table td {
-    border-bottom: none;
-    padding: 14px 16px;
-  }
+#score-table td {
+  border-bottom: none;
+  padding: 14px 16px;
+}
 
-  #score-table td::before {
-    content: none !important;
-    display: none !important;
-  }
+#score-table td::before {
+  content: none !important;
+  display: none !important;
+}
 
-  #score-table td[data-label="Score"] {
-    background-color: rgba(17, 34, 64, 0.95);
-    border-bottom: 1px solid rgba(212, 175, 55, 0.22);
-    text-align: center;
-  }
+#score-table td[data-label="Score"] {
+  background-color: rgba(17, 34, 64, 0.95);
+  border-bottom: 1px solid rgba(212, 175, 55, 0.22);
+  text-align: center;
+}
 
-  #score-table td[data-label="Score"] > div {
-    display: flex !important;
-    flex-direction: row !important;
-    align-items: center !important;
-    justify-content: space-between !important;
-    gap: 12px !important;
-    flex-wrap: nowrap;
-  }
+#score-table td[data-label="Score"] > div {
+  display: flex !important;
+  flex-direction: row !important;
+  align-items: center !important;
+  justify-content: space-between !important;
+  gap: 12px !important;
+  flex-wrap: nowrap;
+}
 
-  #score-table td[data-label="Score"] span:first-child,
-  #score-table td[data-label="Score"] strong {
-    font-size: 1.08rem !important;
-  }
+#score-table td[data-label="Score"] span:first-child,
+#score-table td[data-label="Score"] strong {
+  font-size: 1.08rem !important;
+}
 
-  #score-table td[data-label="Score"] .num-font {
-    font-size: 1.18rem !important;
-  }
+#score-table td[data-label="Score"] .num-font {
+  font-size: 1.18rem !important;
+}
 
-  #score-table td[data-label="Explanation"] {
-    font-family: 'Inter', sans-serif !important;
-    font-size: 1rem !important;
-    line-height: 1.65 !important;
-    color: #DDE3EA !important;
-    text-align: left !important;
-  }
+#score-table td[data-label="Explanation"] {
+  font-family: 'Inter', sans-serif !important;
+  font-size: 1rem !important;
+  line-height: 1.65 !important;
+  color: #DDE3EA !important;
+  text-align: left !important;
 }
     #score-table th:nth-child(1),
 #score-table th:nth-child(2) {
