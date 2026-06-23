@@ -1171,9 +1171,18 @@ table.tru-table td:nth-child(2) {
     }
 
     const submissionId = createTRUSubmissionId();
+    const timestamp = new Date().toISOString();
     const formData = new URLSearchParams();
+    formData.append("timestamp", timestamp);
     formData.append("name", suggestedName);
     formData.append("submissionId", submissionId);
+
+    console.log("TRU submission attempt", {
+      url: TRU_SUBMISSION_WEB_APP_URL,
+      timestamp,
+      name: suggestedName,
+      submissionId
+    });
 
     statusEl.textContent = "Submitting...";
 
@@ -1182,6 +1191,11 @@ table.tru-table td:nth-child(2) {
         method: "POST",
         mode: "no-cors",
         body: formData
+      });
+
+      console.log("TRU submission fetch completed", {
+        name: suggestedName,
+        submissionId
       });
 
       nameInput.value = "";
