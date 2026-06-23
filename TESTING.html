@@ -1136,6 +1136,16 @@ table.tru-table td:nth-child(2) {
     personSelect.disabled = names.length === 0;
   }
 
+  function getTRUCredibilityRating(score) {
+    if (score >= 80) return "Clear-Sighted";
+    if (score >= 40) return "Trusted Perch";
+    if (score >= 1) return "Positive Signal";
+    if (score === 0) return "Unverified";
+    if (score <= -80) return "Civic Warning";
+    if (score <= -40) return "Shadowed Record";
+    return "Clouded Signal";
+  }
+
   function showScores() {
     const select = document.getElementById("person-select");
     const outputContainer = document.getElementById("output-container");
@@ -1185,6 +1195,7 @@ table.tru-table td:nth-child(2) {
     ];
 
     let total = finalTRUScore;
+    const credibilityRating = getTRUCredibilityRating(total);
     scores.forEach(({ label, value, comment, className }) => {
       const tr = document.createElement("tr");
 
@@ -1222,11 +1233,11 @@ table.tru-table td:nth-child(2) {
       <div style="font-family: 'Playfair Display', serif; text-align: center;">
         <span style="font-size: 1.6rem; color: var(--heading); font-weight: bold;">${selected}</span>
         <br />
-        <span style="font-size: 1.3rem; color: var(--understanding);">T.R.U. Owl Credibility Score: 
-          <strong style="color: ${total >= 0 ? 'var(--bar-green)' : 'var(--bar-red)'}; font-family: 'Playfair Display', serif;">
-            ${total >= 0 ? "+" : ""}${total.toFixed(0).replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
-          </strong>
-        </span>
+        <span style="font-size: 1.3rem; color: var(--understanding);">Credibility Rating:</span>
+        <br />
+        <strong style="color: ${total >= 0 ? 'var(--bar-green)' : 'var(--bar-red)'}; font-family: 'Playfair Display', serif; font-size: 1.6rem;">
+          ${credibilityRating}
+        </strong>
       </div>
     `;
     outputContainer.insertBefore(scoreHeader, table);
