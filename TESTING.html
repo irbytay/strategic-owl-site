@@ -605,87 +605,13 @@
 .text-understanding strong {
   color: var(--understanding) !important;
 }
-    /* 📏 Make table columns responsive */
+    /* 📊 Score table layout */
 table.tru-table {
   width: 100%;
   border-collapse: collapse;
   table-layout: fixed;
 }
 
-table.tru-table th:nth-child(1),
-table.tru-table td:nth-child(1) {
-  width: 20%;
-  min-width: 70px;
-  white-space: nowrap;
-}
-
-table.tru-table th:nth-child(2),
-table.tru-table td:nth-child(2) {
-  width: 15%;
-  min-width: 60px;
-  text-align: center;
-}
-
-table.tru-table th:nth-child(3),
-table.tru-table td:nth-child(3) {
-  width: 65%;
-  word-wrap: break-word;
-}
-
-/* 🪶 Mobile stacking fallback (optional) */
-@media (max-width: 480px) {
-  table.tru-table,
-  table.tru-table thead,
-  table.tru-table tbody,
-  table.tru-table th,
-  table.tru-table td,
-  table.tru-table tr {
-    display: block;
-    width: 100%;
-  }
-
-  table.tru-table thead {
-    display: none;
-  }
-
-  table.tru-table td {
-    padding: 12px;
-    border-bottom: 1px solid var(--highlight);
-    position: relative;
-  }
-
-  table.tru-table td::before {
-    content: attr(data-label);
-    font-weight: bold;
-    color: var(--text-muted);
-    display: block;
-    margin-bottom: 6px;
-  }
-}@media (max-width: 600px) {
-  table.tru-table td:nth-child(1) {
-    display: flex;
-    flex-direction: column;
-    font-size: 0.9rem;
-    white-space: normal;
-    min-width: 80px;
-    line-height: 1.2;
-    padding-right: 6px;
-  }
-
-  table.tru-table td:nth-child(2) {
-    display: none; /* Hide the Score column — it’s now stacked */
-  }
-
-  table.tru-table th:nth-child(2) {
-    display: none;
-  }
-
-  table.tru-table td:nth-child(3),
-  table.tru-table th:nth-child(3) {
-    width: 100%;
-  }
-}
-    /* ✅ Updated table layout for 2 columns: Score + Explanation */
 table.tru-table th:nth-child(1),
 table.tru-table td:nth-child(1) {
   width: 35%;
@@ -702,47 +628,74 @@ table.tru-table td:nth-child(2) {
   word-wrap: break-word;
 }
 
-/* 📱 Responsive stacking for mobile */
-@media (max-width: 600px) {
-  table.tru-table,
-  table.tru-table thead,
-  table.tru-table tbody,
-  table.tru-table th,
-  table.tru-table td,
-  table.tru-table tr {
-    display: block;
-    width: 100%;
+/* 📱 Phone-first score card layout */
+@media (max-width: 700px) {
+  #output-container {
+    padding: 16px;
+    margin-top: 24px;
   }
 
-  table.tru-table thead {
+  #score-table,
+  #score-table tbody,
+  #score-table tr,
+  #score-table td {
+    display: block;
+    width: 100%;
+    box-sizing: border-box;
+  }
+
+  #score-table thead {
     display: none;
   }
 
-  table.tru-table td {
-    padding: 12px;
-    border-bottom: 1px solid var(--highlight);
-    position: relative;
+  #score-table tr {
+    background-color: rgba(13, 27, 42, 0.45);
+    border: 1px solid rgba(212, 175, 55, 0.28);
+    border-radius: 12px;
+    margin: 0 0 16px 0;
+    overflow: hidden;
   }
 
-  table.tru-table td::before {
-    content: attr(data-label);
-    font-weight: bold;
-    color: var(--text-muted);
-    display: block;
-    margin-bottom: 6px;
+  #score-table td {
+    border-bottom: none;
+    padding: 14px 16px;
   }
 
-  /* Adjust stacked score cell layout */
-  table.tru-table td[data-label="Score"] {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
+  #score-table td::before {
+    content: none !important;
+    display: none !important;
+  }
+
+  #score-table td[data-label="Score"] {
+    background-color: rgba(17, 34, 64, 0.95);
+    border-bottom: 1px solid rgba(212, 175, 55, 0.22);
     text-align: center;
   }
 
-  /* Explanation stays full width on mobile */
-  table.tru-table td[data-label="Explanation"] {
-    text-align: left;
+  #score-table td[data-label="Score"] > div {
+    display: flex !important;
+    flex-direction: row !important;
+    align-items: center !important;
+    justify-content: space-between !important;
+    gap: 12px !important;
+    flex-wrap: nowrap;
+  }
+
+  #score-table td[data-label="Score"] span:first-child,
+  #score-table td[data-label="Score"] strong {
+    font-size: 1.08rem !important;
+  }
+
+  #score-table td[data-label="Score"] .num-font {
+    font-size: 1.18rem !important;
+  }
+
+  #score-table td[data-label="Explanation"] {
+    font-family: 'Inter', sans-serif !important;
+    font-size: 1rem !important;
+    line-height: 1.65 !important;
+    color: #DDE3EA !important;
+    text-align: left !important;
   }
 }
     #score-table th:nth-child(1),
@@ -998,7 +951,7 @@ table.tru-table td:nth-child(2) {
 </section>
 <!-- 📊 Output container for scores and commentary (initially hidden) -->
 <div id="output-container" style="display:none;">
-  <table id="score-table">
+  <table id="score-table" class="tru-table">
     <thead>
       <tr>
         <!-- 🟩 Score column header (includes Truth, Reliability, etc.) -->
