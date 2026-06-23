@@ -453,100 +453,8 @@
   font-weight: 700;
 }
 
-
 .tru-copy-id-button:hover {
   background-color: var(--surface);
-}
-
-.tru-status-check-card {
-  background-color: var(--surface);
-  border: 1px solid rgba(212, 175, 55, 0.65);
-  border-radius: 12px;
-  padding: 22px;
-  max-width: 720px;
-  margin: 18px auto 10px auto;
-  box-shadow: 0 0 8px rgba(212, 175, 55, 0.18);
-}
-
-.tru-status-check-card h2 {
-  font-family: 'Playfair Display', serif;
-  color: var(--understanding);
-  text-align: center;
-  margin: 0 0 10px 0;
-  font-size: 1.45rem;
-}
-
-.tru-status-check-card p {
-  font-family: 'Inter', sans-serif;
-  color: var(--text-muted);
-  text-align: center;
-  line-height: 1.5;
-  margin: 0 auto 18px auto;
-  max-width: 620px;
-}
-
-.tru-status-check-row {
-  display: flex;
-  gap: 12px;
-  align-items: center;
-  justify-content: center;
-  flex-wrap: wrap;
-}
-
-.tru-status-check-input {
-  width: 100%;
-  max-width: 360px;
-  padding: 12px 14px;
-  border-radius: 8px;
-  border: 1px solid rgba(212, 175, 55, 0.55);
-  background-color: var(--background);
-  color: var(--text);
-  font-family: 'Inter', sans-serif;
-  font-size: 1rem;
-  outline: none;
-}
-
-.tru-status-check-input:focus {
-  border-color: var(--understanding);
-  box-shadow: 0 0 0 2px rgba(212, 175, 55, 0.25);
-}
-
-.tru-status-check-button {
-  padding: 12px 18px;
-  border-radius: 8px;
-  border: 1px solid var(--understanding);
-  background-color: var(--highlight);
-  color: var(--understanding);
-  cursor: pointer;
-  font-family: 'Inter', sans-serif;
-  font-size: 1rem;
-  font-weight: 700;
-}
-
-.tru-status-check-button:hover {
-  background-color: var(--surface);
-}
-
-.tru-status-check-status {
-  min-height: 22px;
-  text-align: center;
-  margin-top: 14px;
-  font-family: 'Inter', sans-serif;
-  color: var(--text-muted);
-  font-size: 0.95rem;
-}
-
-.tru-status-value {
-  font-family: 'Inter', sans-serif;
-  font-weight: 800;
-}
-
-.tru-status-value.pending {
-  color: #FF8C42;
-}
-
-.tru-status-value.completed {
-  color: var(--truth);
 }
 
   /* Modal-style popup for Scoring Logic */
@@ -993,27 +901,6 @@ table.tru-table td:nth-child(2) {
 
   <div id="truSubmitStatus" class="tru-name-submit-status" role="status" aria-live="polite"></div>
 </section>
-<!-- 🦉 Check a T.R.U. Owl profile submission status -->
-<section class="tru-status-check-card" aria-labelledby="tru-status-check-title">
-  <h2 id="tru-status-check-title">Check Submission Status</h2>
-  <p>Paste your TRU-ID to see whether your profile suggestion is still pending or completed.</p>
-
-  <div class="tru-status-check-row">
-    <input
-      id="truStatusLookupId"
-      class="tru-status-check-input"
-      type="text"
-      placeholder="TRU-ID"
-      autocomplete="off"
-    />
-
-    <button class="tru-status-check-button" type="button" onclick="checkTRUSubmissionStatus()">
-      Check Status
-    </button>
-  </div>
-
-  <div id="truStatusLookupResult" class="tru-status-check-status" role="status" aria-live="polite"></div>
-</section>
 <!-- 📊 Output container for scores and commentary (initially hidden) -->
 <div id="output-container" style="display:none;">
   <table id="score-table">
@@ -1309,78 +1196,6 @@ table.tru-table td:nth-child(2) {
       console.error("TRU profile suggestion failed:", error);
       statusEl.textContent = "Submission failed. Please try again.";
     }
-  }
-
-  
-  function checkTRUSubmissionStatus() {
-    const statusInput = document.getElementById("truStatusLookupId");
-    const resultEl = document.getElementById("truStatusLookupResult");
-
-    const submissionId = statusInput.value.trim();
-
-    if (!submissionId) {
-      resultEl.textContent = "Please enter your TRU-ID first.";
-      return;
-    }
-
-    if (!TRU_SUBMISSION_WEB_APP_URL || TRU_SUBMISSION_WEB_APP_URL.includes("PASTE_YOUR")) {
-      resultEl.textContent = "Submission status lookup has not been configured yet.";
-      return;
-    }
-
-    resultEl.textContent = "Checking status...";
-
-    const callbackName = `handleTRUStatusLookup_${Date.now()}`;
-    const script = document.createElement("script");
-    const lookupUrl = `${TRU_SUBMISSION_WEB_APP_URL}?action=status&submissionId=${encodeURIComponent(submissionId)}&callback=${callbackName}`;
-
-    const cleanup = () => {
-      delete window[callbackName];
-      script.remove();
-    };
-
-    const timeoutId = window.setTimeout(() => {
-      cleanup();
-      resultEl.textContent = "Status lookup timed out. Check the Apps Script deployment and doGet lookup code.";
-    }, 12000);
-
-    window[callbackName] = function(data) {
-      window.clearTimeout(timeoutId);
-      cleanup();
-
-      if (!data) {
-        resultEl.textContent = "Status lookup failed. No response was returned.";
-        return;
-      }
-
-      if (data.error) {
-        resultEl.textContent = data.error;
-        return;
-      }
-
-      const status = String(data.status || "").trim();
-
-      if (!status) {
-        resultEl.textContent = "No submission was found for that TRU-ID.";
-        return;
-      }
-
-      const normalizedStatus = status.toLowerCase();
-      const statusClass = normalizedStatus === "completed" ? "completed" : "pending";
-
-      resultEl.innerHTML = `
-        Submission status: <span class="tru-status-value ${statusClass}">${status}</span>
-      `;
-    };
-
-    script.onerror = function() {
-      window.clearTimeout(timeoutId);
-      cleanup();
-      resultEl.textContent = "Status lookup failed. Check the Apps Script deployment and doGet lookup code.";
-    };
-
-    script.src = lookupUrl;
-    document.body.appendChild(script);
   }
 
   async function copyTRUSubmissionId(submissionId) {
