@@ -970,6 +970,24 @@ table.tru-table td:nth-child(2) {
     return `TRU-${timestampPart}-${fallbackPart}`;
   }
 
+  function createTRUSubmissionTimestamp() {
+    const now = new Date();
+    const datePart = new Intl.DateTimeFormat("en-US", {
+      month: "2-digit",
+      day: "2-digit",
+      year: "numeric"
+    }).format(now);
+
+    const timePart = new Intl.DateTimeFormat("en-US", {
+      hour: "numeric",
+      minute: "2-digit",
+      second: "2-digit",
+      hour12: true
+    }).format(now);
+
+    return `${datePart} ${timePart}`;
+  }
+
   async function fetchTRUData() {
     const API_KEY = "AIzaSyCzuh9HBfe0r70r9U35Pe406PPZ-tz6I78";
     const SHEET_ID = "19wBEj9hEkvIyQcoR5E_mBGVAxTzMnddMxk8nuQLAumA";
@@ -1170,7 +1188,7 @@ table.tru-table td:nth-child(2) {
       return;
     }
 
-    const timestamp = new Date().toISOString();
+    const timestamp = createTRUSubmissionTimestamp();
     const submissionId = createTRUSubmissionId();
     const callbackName = `handleTRUSubmission_${Date.now()}_${Math.random().toString(36).substring(2, 10)}`;
     const scriptEl = document.createElement("script");
