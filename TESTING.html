@@ -906,6 +906,35 @@ table.tru-table td:nth-child(2) {
     </select>
   </div>
 </div>
+</div>
+
+<!-- 📊 Output container for scores and commentary (initially hidden) -->
+<div id="output-container" style="display:none;">
+  <table id="score-table" class="tru-table">
+    <thead>
+      <tr>
+        <!-- 🟩 Score column header (includes Truth, Reliability, etc.) -->
+        <th style="text-align: center;">Score</th>
+        <!-- 🟨 Explanation column header -->
+        <th>Explanation</th>
+      </tr>
+    </thead>
+    <!-- 📥 Populated dynamically by JavaScript with score rows -->
+    <tbody id="score-body"></tbody>
+  </table>
+
+  <!-- 🔻 Container for displaying the total score and commentary -->
+  <div id="total-score-box" style="margin-top: 20px;">
+    <!-- 📶 Visual bar and summary commentary -->
+    <div class="score-bar">
+      <!-- 🎯 Vertical color bar (red/green) based on total score -->
+      <div id="indicator-bar" class="bar-indicator"></div>
+      <!-- 🗣️ Text summary under the table (updated via JS) -->
+      <div id="total-score-comment" class="total-score-comment-text"></div>
+    </div>
+  </div>
+</div>
+
 <!-- 🦉 Suggest a T.R.U. Owl profile for review -->
 <section class="tru-name-submit-card" aria-labelledby="tru-name-submit-title">
   <h2 id="tru-name-submit-title">Suggest a Profile</h2>
@@ -949,32 +978,6 @@ table.tru-table td:nth-child(2) {
 
   <div id="truStatusLookupResult" class="tru-status-check-result" role="status" aria-live="polite"></div>
 </section>
-<!-- 📊 Output container for scores and commentary (initially hidden) -->
-<div id="output-container" style="display:none;">
-  <table id="score-table" class="tru-table">
-    <thead>
-      <tr>
-        <!-- 🟩 Score column header (includes Truth, Reliability, etc.) -->
-        <th style="text-align: center;">Score</th>
-        <!-- 🟨 Explanation column header -->
-        <th>Explanation</th>
-      </tr>
-    </thead>
-    <!-- 📥 Populated dynamically by JavaScript with score rows -->
-    <tbody id="score-body"></tbody>
-  </table>
-
-  <!-- 🔻 Container for displaying the total score and commentary -->
-  <div id="total-score-box" style="margin-top: 20px;">
-    <!-- 📶 Visual bar and summary commentary -->
-    <div class="score-bar">
-      <!-- 🎯 Vertical color bar (red/green) based on total score -->
-      <div id="indicator-bar" class="bar-indicator"></div>
-      <!-- 🗣️ Text summary under the table (updated via JS) -->
-      <div id="total-score-comment" class="total-score-comment-text"></div>
-    </div>
-  </div>
-</div>
   
   
     <!-- 🎯 Divider -->
