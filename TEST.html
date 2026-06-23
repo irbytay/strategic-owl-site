@@ -952,7 +952,7 @@ table.tru-table td:nth-child(2) {
 
       console.log("TRU name submission confirmed", response);
       nameInput.value = "";
-      statusEl.textContent = `Submission received: ${response.name || suggestedName}`;
+      statusEl.textContent = `Submission received: ${response.name || suggestedName} — wrote to row ${response.row}`;
     };
 
     scriptEl.onerror = function(error) {
