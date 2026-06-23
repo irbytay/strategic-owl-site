@@ -1170,10 +1170,12 @@ table.tru-table td:nth-child(2) {
       return;
     }
 
+    const timestamp = new Date().toISOString();
     const submissionId = createTRUSubmissionId();
     const callbackName = `handleTRUSubmission_${Date.now()}_${Math.random().toString(36).substring(2, 10)}`;
     const scriptEl = document.createElement("script");
     const params = new URLSearchParams({
+      timestamp,
       name: suggestedName,
       submissionId,
       callback: callbackName
@@ -1223,6 +1225,7 @@ table.tru-table td:nth-child(2) {
 
     console.log("TRU submission attempt", {
       url: `${TRU_SUBMISSION_WEB_APP_URL}?${params.toString()}`,
+      timestamp,
       name: suggestedName,
       submissionId
     });
