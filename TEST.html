@@ -909,6 +909,8 @@ table.tru-table td:nth-child(2) {
 
   <script>
 
+  const TRU_SUBMISSION_WEB_APP_URL = "https://script.google.com/macros/s/AKfycbzVdDK7mfcm4zp0Dn7EVZLJcp2xrAymLO-vwVr-tM4VqTYsrV9JzG2_xnwdUiHa36o5/exec";
+
   function submitTRUProfileSuggestion() {
     const nameInput = document.getElementById("truSuggestedName");
     const statusEl = document.getElementById("truSubmitStatus");
@@ -919,7 +921,56 @@ table.tru-table td:nth-child(2) {
       return;
     }
 
-    statusEl.textContent = `Ready to submit: ${suggestedName}`;
+    if (!TRU_SUBMISSION_WEB_APP_URL || TRU_SUBMISSION_WEB_APP_URL.includes("PASTE_YOUR")) {
+      statusEl.textContent = "Submission URL has not been configured yet.";
+      return;
+    }
+
+    const callbackName = `handleTRUNameSubmit_${Date.now()}_${Math.random().toString(36).substring(2, 10)}`;
+    const scriptEl = document.createElement("script");
+    const params = new URLSearchParams({
+      name: suggestedName,
+      callback: callbackName
+    });
+
+    let didFinish = false;
+
+    function cleanup() {
+      didFinish = true;
+      delete window[callbackName];
+      if (scriptEl.parentNode) scriptEl.parentNode.removeChild(scriptEl);
+    }
+
+    window[callbackName] = function(response) {
+      cleanup();
+
+      if (!response || response.ok !== true) {
+        console.error("TRU name submission failed", response);
+        statusEl.textContent = "Submission failed. Please try again.";
+        return;
+      }
+
+      console.log("TRU name submission confirmed", response);
+      nameInput.value = "";
+      statusEl.textContent = `Submission received: ${response.name || suggestedName}`;
+    };
+
+    scriptEl.onerror = function(error) {
+      cleanup();
+      console.error("TRU name submission request failed", error);
+      statusEl.textContent = "Submission failed. Please try again.";
+    };
+
+    setTimeout(function() {
+      if (!didFinish) {
+        cleanup();
+        statusEl.textContent = "Submission could not be confirmed. Please try again.";
+      }
+    }, 12000);
+
+    statusEl.textContent = "Submitting...";
+    scriptEl.src = `${TRU_SUBMISSION_WEB_APP_URL}?${params.toString()}`;
+    document.body.appendChild(scriptEl);
   }
   const TRU_MULTIPLIERS = {
     5: { truth: 4.0, reliability: 4.0, understanding: 5.0 },
