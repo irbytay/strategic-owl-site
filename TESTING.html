@@ -1170,10 +1170,12 @@ table.tru-table td:nth-child(2) {
       return;
     }
 
-    const callbackName = `handleTRUNameSubmit_${Date.now()}_${Math.random().toString(36).substring(2, 10)}`;
+    const submissionId = createTRUSubmissionId();
+    const callbackName = `handleTRUSubmission_${Date.now()}_${Math.random().toString(36).substring(2, 10)}`;
     const scriptEl = document.createElement("script");
     const params = new URLSearchParams({
       name: suggestedName,
+      submissionId,
       callback: callbackName
     });
 
@@ -1189,19 +1191,26 @@ table.tru-table td:nth-child(2) {
       cleanup();
 
       if (!response || response.ok !== true) {
-        console.error("TRU name submission was not confirmed", response);
+        console.error("TRU submission was not confirmed", response);
         statusEl.textContent = "Submission failed. Please try again.";
         return;
       }
 
-      console.log("TRU name submission confirmed", response);
+      console.log("TRU submission confirmed", response);
+      const confirmedSubmissionId = response.submissionId || submissionId;
       nameInput.value = "";
-      statusEl.textContent = `Submission received: ${response.name || suggestedName}`;
+      statusEl.innerHTML = `
+        <span class="tru-copy-id-wrap">
+          <span>Submission received. TRU-ID:</span>
+          <span class="tru-copy-id-code">${confirmedSubmissionId}</span>
+          <button class="tru-copy-id-button" type="button" onclick="copyTRUSubmissionId('${confirmedSubmissionId}')">Copy ID</button>
+        </span>
+      `;
     };
 
     scriptEl.onerror = function(error) {
       cleanup();
-      console.error("TRU name submission request failed", error);
+      console.error("TRU submission request failed", error);
       statusEl.textContent = "Submission failed. Please try again.";
     };
 
@@ -1212,9 +1221,10 @@ table.tru-table td:nth-child(2) {
       }
     }, 12000);
 
-    console.log("TRU name submission attempt", {
+    console.log("TRU submission attempt", {
       url: `${TRU_SUBMISSION_WEB_APP_URL}?${params.toString()}`,
-      name: suggestedName
+      name: suggestedName,
+      submissionId
     });
 
     statusEl.textContent = "Submitting...";
