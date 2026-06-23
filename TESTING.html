@@ -943,7 +943,7 @@ table.tru-table td:nth-child(2) {
       </div>
     </section>
 
-  <script>
+ <script>
   const TRU_MULTIPLIERS = {
     5: { truth: 4.0, reliability: 4.0, understanding: 5.0 },
     4: { truth: 3.5, reliability: 3.5, understanding: 4.5 },
@@ -1039,12 +1039,10 @@ table.tru-table td:nth-child(2) {
 
     const row = rowMap[selected];
 
-    // Insert prominent heading above the score table
     const existingHeader = document.getElementById("total-score-heading");
     if (existingHeader) existingHeader.remove();
     const scoreHeader = document.createElement("h2");
     scoreHeader.id = "total-score-heading";
-    // The score logic must come after total is calculated
     scoreHeader.style.cssText = `
       font-family: 'Playfair Display', serif;
       font-size: 1.5rem;
@@ -1081,14 +1079,13 @@ table.tru-table td:nth-child(2) {
       const tr = document.createElement("tr");
 
       const tdScore = document.createElement("td");
-      tdScore.className = "";
       tdScore.setAttribute("data-label", "Score");
       tdScore.innerHTML = `
         <div style="display: flex; flex-direction: column; align-items: center;">
           <span class="${className}">${label}</span>
           <span class="num-font" style="color: var(--text); font-weight: bold; font-size: 1.035rem;">
-        ${value >= 0 ? "+" : ""}${value.toFixed(0).replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
-      </span>
+            ${value >= 0 ? "+" : ""}${value.toFixed(0).replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
+          </span>
         </div>
       `;
 
@@ -1110,8 +1107,7 @@ table.tru-table td:nth-child(2) {
 
       total += value;
     });
-    // Set the header after total is calculated
-    // scoreHeader.textContent = `${selected} T.R.U. Owl Credibility Score: ${total >= 0 ? "+" : ""}${total.toFixed(0)}`;
+
     scoreHeader.innerHTML = `
       <div style="font-family: 'Playfair Display', serif; text-align: center;">
         <span style="font-size: 1.6rem; color: var(--heading); font-weight: bold;">${selected}</span>
@@ -1171,12 +1167,12 @@ table.tru-table td:nth-child(2) {
     }
 
     const submissionId = createTRUSubmissionId();
-    const timestamp = new Date().toISOString();
     const callbackName = `handleTRUSubmission_${Date.now()}_${Math.random().toString(36).substring(2, 10)}`;
     const scriptEl = document.createElement("script");
+    
+    // Clean Payload: No tracking timestamp passed from here anymore.
     const params = new URLSearchParams({
       action: "submit",
-      timestamp,
       name: suggestedName,
       submissionId,
       callback: callbackName
@@ -1195,7 +1191,7 @@ table.tru-table td:nth-child(2) {
 
       if (!response || response.ok !== true) {
         console.error("TRU submission was not confirmed", response);
-        statusEl.textContent = "Submission failed. Please try again.";
+        statusEl.textContent = response && response.error ? response.error : "Submission failed. Please try again.";
         return;
       }
 
@@ -1225,7 +1221,6 @@ table.tru-table td:nth-child(2) {
 
     console.log("TRU submission attempt", {
       url: `${TRU_SUBMISSION_WEB_APP_URL}?${params.toString()}`,
-      timestamp,
       name: suggestedName,
       submissionId
     });
@@ -1258,7 +1253,6 @@ table.tru-table td:nth-child(2) {
     document.getElementById("navMenu").classList.toggle("show");
   }
 
-  // Close mobile nav menu when clicking outside
   function closeMenuOnOutsideClick(event) {
     const navMenu = document.getElementById("navMenu");
     const menuToggle = document.querySelector(".menu-toggle");
@@ -1274,7 +1268,6 @@ table.tru-table td:nth-child(2) {
 
   document.addEventListener("click", closeMenuOnOutsideClick);
 
-  // Modal popup logic for Scoring Logic
   function showPopup() {
     document.getElementById('role-box-wrapper').style.display = 'block';
     document.getElementById('modal-overlay').style.display = 'block';
