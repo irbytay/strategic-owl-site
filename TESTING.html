@@ -1312,7 +1312,7 @@ table.tru-table td:nth-child(2) {
   }
 
   
-  async function checkTRUSubmissionStatus() {
+  function checkTRUSubmissionStatus() {
     const statusInput = document.getElementById("truStatusLookupId");
     const resultEl = document.getElementById("truStatusLookupResult");
 
@@ -1328,26 +1328,29 @@ table.tru-table td:nth-child(2) {
       return;
     }
 
-    const lookupUrl = `${TRU_SUBMISSION_WEB_APP_URL}?action=status&submissionId=${encodeURIComponent(submissionId)}`;
     resultEl.textContent = "Checking status...";
 
-    try {
-      const response = await fetch(lookupUrl, {
-        method: "GET",
-        cache: "no-store"
-      });
+    const callbackName = `handleTRUStatusLookup_${Date.now()}`;
+    const script = document.createElement("script");
+    const lookupUrl = `${TRU_SUBMISSION_WEB_APP_URL}?action=status&submissionId=${encodeURIComponent(submissionId)}&callback=${callbackName}`;
 
-      const rawText = await response.text();
+    const cleanup = () => {
+      delete window[callbackName];
+      script.remove();
+    };
 
-      if (!response.ok) {
-        throw new Error(`HTTP error! Status: ${response.status}. Response: ${rawText}`);
-      }
+    const timeoutId = window.setTimeout(() => {
+      cleanup();
+      resultEl.textContent = "Status lookup timed out. Check the Apps Script deployment and doGet lookup code.";
+    }, 12000);
 
-      let data;
-      try {
-        data = JSON.parse(rawText);
-      } catch (parseError) {
-        throw new Error(`Apps Script did not return valid JSON. Response: ${rawText}`);
+    window[callbackName] = function(data) {
+      window.clearTimeout(timeoutId);
+      cleanup();
+
+      if (!data) {
+        resultEl.textContent = "Status lookup failed. No response was returned.";
+        return;
       }
 
       if (data.error) {
@@ -1355,7 +1358,7 @@ table.tru-table td:nth-child(2) {
         return;
       }
 
-      const status = (data.status || "").trim();
+      const status = String(data.status || "").trim();
 
       if (!status) {
         resultEl.textContent = "No submission was found for that TRU-ID.";
@@ -1368,10 +1371,16 @@ table.tru-table td:nth-child(2) {
       resultEl.innerHTML = `
         Submission status: <span class="tru-status-value ${statusClass}">${status}</span>
       `;
-    } catch (error) {
-      console.error("TRU submission status lookup failed:", error);
-      resultEl.textContent = "Status lookup failed. Check the Apps Script lookup code and deployment permissions.";
-    }
+    };
+
+    script.onerror = function() {
+      window.clearTimeout(timeoutId);
+      cleanup();
+      resultEl.textContent = "Status lookup failed. Check the Apps Script deployment and doGet lookup code.";
+    };
+
+    script.src = lookupUrl;
+    document.body.appendChild(script);
   }
 
   async function copyTRUSubmissionId(submissionId) {
