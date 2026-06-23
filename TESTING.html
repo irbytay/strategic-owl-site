@@ -1248,14 +1248,15 @@ table.tru-table td:nth-child(2) {
     const tdTotalComment = document.createElement("td");
     tdTotalComment.className = "total-score";
     tdTotalComment.setAttribute("data-label", "Explanation");
-    tdTotalComment.innerHTML = `<span style="font-family: 'Montserrat', sans-serif; font-size: 1.035rem; color: var(--text-muted); line-height: 1.5;">Final T.R.U. Owl score from TRU_3.0.</span>`;
+    tdTotalComment.innerHTML = `<span style="font-family: 'Montserrat', sans-serif; font-size: 1.035rem; color: var(--text-muted); line-height: 1.5;">${strategicInsight}</span>`;
 
     totalRow.appendChild(tdTotalScore);
     totalRow.appendChild(tdTotalComment);
     tbody.appendChild(totalRow);
 
-    indicatorBar.className = "bar-indicator " + (total >= 0 ? "bar-green" : "bar-red");
-    totalCommentEl.innerHTML = `<span style="font-family: 'Montserrat', sans-serif; font-size: 1.035rem; color: var(--text-muted); line-height: 1.5;">${strategicInsight}</span>`;
+    indicatorBar.className = "bar-indicator";
+    indicatorBar.style.display = "none";
+    totalCommentEl.innerHTML = "";
 
     outputContainer.style.display = "block";
   }
