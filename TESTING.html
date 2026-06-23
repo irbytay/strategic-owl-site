@@ -1096,8 +1096,9 @@ table.tru-table td:nth-child(2) {
   async function fetchTRUData() {
     const API_KEY = "AIzaSyCzuh9HBfe0r70r9U35Pe406PPZ-tz6I78";
     const SHEET_ID = "19wBEj9hEkvIyQcoR5E_mBGVAxTzMnddMxk8nuQLAumA";
-    const RANGE = "TRU!A2:K1000";
-    const url = `https://sheets.googleapis.com/v4/spreadsheets/${SHEET_ID}/values/${RANGE}?key=${API_KEY}`;
+    const RANGE = "'TRU_3.0'!A2:J1000";
+    const encodedRange = encodeURIComponent(RANGE);
+    const url = `https://sheets.googleapis.com/v4/spreadsheets/${SHEET_ID}/values/${encodedRange}?key=${API_KEY}`;
     try {
       const res = await fetch(url);
       if (!res.ok) throw new Error(`HTTP error! Status: ${res.status}`);
@@ -1178,28 +1179,22 @@ table.tru-table td:nth-child(2) {
 
     tbody.innerHTML = "";
 
-    const truthRaw = parseFloat(row[2]) || 0;
-    const reliabilityRaw = parseFloat(row[3]) || 0;
-    const understandingRaw = parseFloat(row[4]) || 0;
-    const commentTruth = row[5] || "";
-    const commentReliability = row[6] || "";
-    const commentUnderstanding = row[7] || "";
-    const summaryBelowTable = row[8] || "";
-    const totalScoreComment = row[9] || "Summary not available";
-    const roleFlag = parseInt(row[10]) || 0;
-
-    const multiplier = TRU_MULTIPLIERS[roleFlag] || TRU_MULTIPLIERS[0];
-    const truthFinal = truthRaw * multiplier.truth;
-    const reliabilityFinal = reliabilityRaw * multiplier.reliability;
-    const understandingFinal = understandingRaw * multiplier.understanding;
+    const truthScore = parseFloat(row[2]) || 0;
+    const reliabilityScore = parseFloat(row[3]) || 0;
+    const understandingScore = parseFloat(row[4]) || 0;
+    const finalTRUScore = parseFloat(row[5]) || 0;
+    const commentTruth = row[6] || "";
+    const commentReliability = row[7] || "";
+    const commentUnderstanding = row[8] || "";
+    const strategicInsight = row[9] || "Strategic insight not available.";
 
     const scores = [
-      { label: "Truth", value: truthFinal, comment: commentTruth, className: "text-truth" },
-      { label: "Reliability", value: reliabilityFinal, comment: commentReliability, className: "text-reliability" },
-      { label: "Understanding", value: understandingFinal, comment: commentUnderstanding, className: "text-understanding" },
+      { label: "Truth", value: truthScore, comment: commentTruth, className: "text-truth" },
+      { label: "Reliability", value: reliabilityScore, comment: commentReliability, className: "text-reliability" },
+      { label: "Understanding", value: understandingScore, comment: commentUnderstanding, className: "text-understanding" },
     ];
 
-    let total = 0;
+    let total = finalTRUScore;
     scores.forEach(({ label, value, comment, className }) => {
       const tr = document.createElement("tr");
 
@@ -1230,8 +1225,6 @@ table.tru-table td:nth-child(2) {
       tr.appendChild(tdScore);
       tr.appendChild(tdComment);
       tbody.appendChild(tr);
-
-      total += value;
     });
     // Set the header after total is calculated
     // scoreHeader.textContent = `${selected} T.R.U. Owl Credibility Score: ${total >= 0 ? "+" : ""}${total.toFixed(0)}`;
@@ -1265,14 +1258,14 @@ table.tru-table td:nth-child(2) {
     const tdTotalComment = document.createElement("td");
     tdTotalComment.className = "total-score";
     tdTotalComment.setAttribute("data-label", "Explanation");
-    tdTotalComment.innerHTML = `<span style="font-family: 'Montserrat', sans-serif; font-size: 1.035rem; color: var(--text-muted); line-height: 1.5;">${totalScoreComment}</span>`;
+    tdTotalComment.innerHTML = `<span style="font-family: 'Montserrat', sans-serif; font-size: 1.035rem; color: var(--text-muted); line-height: 1.5;">Final T.R.U. Owl score from TRU_3.0.</span>`;
 
     totalRow.appendChild(tdTotalScore);
     totalRow.appendChild(tdTotalComment);
     tbody.appendChild(totalRow);
 
     indicatorBar.className = "bar-indicator " + (total >= 0 ? "bar-green" : "bar-red");
-    totalCommentEl.innerHTML = `<span style="font-family: 'Montserrat', sans-serif; font-size: 1.035rem; color: var(--text-muted); line-height: 1.5;">${summaryBelowTable}</span>`;
+    totalCommentEl.innerHTML = `<span style="font-family: 'Montserrat', sans-serif; font-size: 1.035rem; color: var(--text-muted); line-height: 1.5;">${strategicInsight}</span>`;
 
     outputContainer.style.display = "block";
   }
