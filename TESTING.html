@@ -1280,10 +1280,11 @@ table.tru-table td:nth-child(2) {
       nameInput.value = "";
       statusEl.innerHTML = `
         <span class="tru-copy-id-wrap">
-          <span>Submission received. TRU-ID:</span>
-          <span class="tru-copy-id-code">${confirmedSubmissionId}</span>
-          <button class="tru-copy-id-button" type="button" onclick="copyTRUSubmissionId('${confirmedSubmissionId}')">Copy ID</button>
-        </span>
+  <span>Submission received. TRU-ID:</span>
+  <span class="tru-copy-id-code">${confirmedSubmissionId}</span>
+  <button class="tru-copy-id-button" type="button" onclick="copyTRUSubmissionId('${confirmedSubmissionId}')">Copy ID</button>
+  <span class="tru-review-note">Manual review required. Results usually appear within 1–24 hours.</span>
+</span>
       `;
     };
 
