@@ -1004,6 +1004,7 @@ table.tru-table td:nth-child(2) {
 
   let rowMap = {}, roleMap = {};
   const TRU_SUBMISSION_WEB_APP_URL = "https://script.google.com/macros/s/AKfycby_C3cH46bvtA2e-SC3F2_owIS7N40-59VQe0WGfKof9UydDIjYl4v2ZUE4nH0eKusU/exec";
+  const TRU_OUT_OF_SCOPE_MESSAGE = "T.R.U. Scores are built for people who shape political or civic understanding. This submission appears outside that lane.";
 
   function createTRUSubmissionId() {
     const timestampPart = new Date()
@@ -1358,9 +1359,14 @@ table.tru-table td:nth-child(2) {
         return;
       }
 
+      const normalizedStatus = String(response.status || "").trim().toLowerCase();
+      const statusNote = normalizedStatus === "out of scope"
+        ? `<br /><span>${TRU_OUT_OF_SCOPE_MESSAGE}</span>`
+        : "";
+
       resultEl.innerHTML = `
         <span>
-          Status for <strong>${response.name || lookupValue}</strong>: <strong>${response.status}</strong>
+          Status for <strong>${response.name || lookupValue}</strong>: <strong>${response.status}</strong>${statusNote}
         </span>
       `;
     };
