@@ -630,8 +630,10 @@ table.tru-table td:nth-child(2) {
 
 /* 📱🖥️ Score card layout for mobile and desktop */
 #output-container {
-  padding: 16px;
-  margin-top: 24px;
+  width: min(100% - 48px, 960px);
+  box-sizing: border-box;
+  padding: 20px;
+  margin: 24px auto 0 auto;
 }
 
 #score-table,
@@ -651,7 +653,7 @@ table.tru-table td:nth-child(2) {
   background-color: rgba(13, 27, 42, 0.45);
   border: 1px solid rgba(212, 175, 55, 0.28);
   border-radius: 12px;
-  margin: 0 0 16px 0;
+  margin: 0 0 18px 0;
   overflow: hidden;
 }
 
@@ -675,9 +677,9 @@ table.tru-table td:nth-child(2) {
   display: flex !important;
   flex-direction: row !important;
   align-items: center !important;
-  justify-content: space-between !important;
-  gap: 12px !important;
-  flex-wrap: nowrap;
+  justify-content: center !important;
+  gap: 14px !important;
+  flex-wrap: wrap;
 }
 
 #score-table td[data-label="Score"] span:first-child,
@@ -801,16 +803,54 @@ table.tru-table td:nth-child(2) {
 }
     /* Strategic Owl Output Container Branding */
 #output-container {
+      width: min(100% - 48px, 960px);
+      box-sizing: border-box;
       background-color: var(--surface);
       border: 1px solid #D4AF37;
       border-radius: 12px;
-      padding: 20px;
-      margin-top: 30px;
+      padding: 24px;
+      margin: 30px auto 0 auto;
       box-shadow: 0 0 6px rgba(212, 175, 55, 0.2);
       color: var(--text);
       font-family: 'Roboto Slab', serif;
       font-size: 16px;
     }
+
+@media (min-width: 769px) {
+  #score-table tr {
+    display: grid;
+    grid-template-columns: 240px minmax(0, 1fr);
+    align-items: stretch;
+  }
+
+  #score-table td[data-label="Score"] {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-bottom: none;
+    border-right: 1px solid rgba(212, 175, 55, 0.22);
+  }
+
+  #score-table td[data-label="Explanation"] {
+    display: flex;
+    align-items: center;
+    min-height: 96px;
+    padding: 18px 22px;
+  }
+
+  #total-score-heading {
+    max-width: 760px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+}
+
+@media (max-width: 600px) {
+  #output-container {
+    width: calc(100% - 24px);
+    padding: 16px;
+  }
+}
 </style>
 
 <nav class="top-nav">
