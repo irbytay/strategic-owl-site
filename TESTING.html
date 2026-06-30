@@ -1137,14 +1137,14 @@ table.tru-table td:nth-child(2) {
   }
 
   function getTRUCredibilityRating(score) {
-    if (score >= 80) return "Clear-Sighted";
-    if (score >= 40) return "Trusted Perch";
-    if (score >= 1) return "Positive Signal";
-    if (score === 0) return "Unverified";
-    if (score <= -80) return "Civic Warning";
-    if (score <= -40) return "Shadowed Record";
-    return "Clouded Signal";
-  }
+  if (score >= 80) return "Grounded in Reality";
+  if (score >= 40) return "Mostly Grounded";
+  if (score >= 1) return "Leaning Credible";
+  if (score === 0) return "Not Enough to Judge";
+  if (score <= -80) return "Snake in the Grass";
+  if (score <= -40) return "Flat-Earth Logic";
+  return "Drifting from Reality";
+}
 
   function showScores() {
     const select = document.getElementById("person-select");
