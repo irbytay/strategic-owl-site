@@ -374,6 +374,46 @@
   margin: 0 auto 18px auto;
   max-width: 620px;
 }
+.tru-subscriber-validation-row {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+  justify-content: center;
+  flex-wrap: wrap;
+  margin-top: 16px;
+}
+
+.tru-subscriber-validation-input {
+  width: 100%;
+  max-width: 360px;
+  padding: 12px 14px;
+  border-radius: 8px;
+  border: 1px solid rgba(212, 175, 55, 0.55);
+  background-color: var(--background);
+  color: var(--text);
+  font-family: 'Inter', sans-serif;
+  font-size: 1rem;
+  outline: none;
+}
+
+.tru-subscriber-validation-input:focus {
+  border-color: var(--understanding);
+  box-shadow: 0 0 0 2px rgba(212, 175, 55, 0.25);
+}
+
+.tru-subscriber-validation-status {
+  min-height: 22px;
+  text-align: center;
+  margin-top: 14px;
+  font-family: 'Inter', sans-serif;
+  color: var(--text-muted);
+  font-size: 0.95rem;
+  line-height: 1.5;
+}
+
+.tru-profile-fields-locked {
+  display: none;
+}
 
 .tru-name-submit-row {
   display: flex;
@@ -978,21 +1018,39 @@ table.tru-table td:nth-child(2) {
   <h2 id="tru-name-submit-title">Suggest a Profile</h2>
   <p>Enter the name of an influencer, media company, politician, or journalist you think should be reviewed.</p>
 
-  <div class="tru-name-submit-row">
+  <div class="tru-subscriber-validation-row" id="truSubscriberValidationRow">
     <input
-      id="truSuggestedName"
-      class="tru-name-submit-input"
-      type="text"
-      placeholder="Name or organization"
-      autocomplete="off"
+      id="truSubscriberEmail"
+      class="tru-subscriber-validation-input"
+      type="email"
+      placeholder="Paid subscriber email"
+      autocomplete="email"
     />
 
-    <button class="tru-name-submit-button" type="button" onclick="submitTRUProfileSuggestion()">
-      Submit
+    <button class="tru-name-submit-button" type="button" onclick="validateTRUSubscriberEmail()">
+      Validate Email
     </button>
   </div>
 
-  <div id="truSubmitStatus" class="tru-name-submit-status" role="status" aria-live="polite"></div>
+  <div id="truSubscriberValidationStatus" class="tru-subscriber-validation-status" role="status" aria-live="polite"></div>
+
+  <div id="truProfileSubmissionFields" class="tru-profile-fields-locked">
+    <div class="tru-name-submit-row">
+      <input
+        id="truSuggestedName"
+        class="tru-name-submit-input"
+        type="text"
+        placeholder="Name or organization"
+        autocomplete="off"
+      />
+
+      <button class="tru-name-submit-button" type="button" onclick="submitTRUProfileSuggestion()">
+        Submit
+      </button>
+    </div>
+
+    <div id="truSubmitStatus" class="tru-name-submit-status" role="status" aria-live="polite"></div>
+  </div>
 </section>
 
 <!-- 🔎 Check a T.R.U. Owl submission status -->
@@ -1043,6 +1101,7 @@ table.tru-table td:nth-child(2) {
   };
 
   let rowMap = {}, roleMap = {};
+  let isTRUSubscriberValidated = false;
   const TRU_SUBMISSION_WEB_APP_URL = "https://script.google.com/macros/s/AKfycbw0CJSpGbcPu29-xUHU1-fW7T2WTBCZ6A9r8_ti_vUqrLQ5q44FYabC-antyX5fZDaR/exec";
   const TRU_OUT_OF_SCOPE_MESSAGE = "T.R.U. Scores are built for people who shape political or civic understanding. This submission appears outside that lane, or there is not enough public data to review fairly.";
 
@@ -1271,12 +1330,108 @@ table.tru-table td:nth-child(2) {
 
     outputContainer.style.display = "block";
   }
+  function validateTRUSubscriberEmail() {
+  const emailInput = document.getElementById("truSubscriberEmail");
+  const statusEl = document.getElementById("truSubscriberValidationStatus");
+  const fieldsEl = document.getElementById("truProfileSubmissionFields");
+  const validationRowEl = document.getElementById("truSubscriberValidationRow");
+
+  const subscriberEmail = emailInput.value.trim().toLowerCase();
+
+  isTRUSubscriberValidated = false;
+  fieldsEl.style.display = "none";
+
+  if (!subscriberEmail) {
+    statusEl.textContent = "Please enter the email connected to your paid subscription.";
+    return;
+  }
+
+  if (!subscriberEmail.includes("@") || !subscriberEmail.includes(".")) {
+    statusEl.textContent = "Please enter a valid email address.";
+    return;
+  }
+
+  if (!TRU_SUBMISSION_WEB_APP_URL || TRU_SUBMISSION_WEB_APP_URL.includes("PASTE_YOUR")) {
+    statusEl.textContent = "Submission URL has not been configured yet.";
+    return;
+  }
+
+  const callbackName = `handlePaidSubscriberValidation_${Date.now()}_${Math.random().toString(36).substring(2, 10)}`;
+  const scriptEl = document.createElement("script");
+
+  const params = new URLSearchParams({
+    action: "validatePaidSubscriber",
+    email: subscriberEmail,
+    callback: callbackName
+  });
+
+  let didFinish = false;
+
+  function cleanup() {
+    didFinish = true;
+    delete window[callbackName];
+    if (scriptEl.parentNode) scriptEl.parentNode.removeChild(scriptEl);
+  }
+
+  window[callbackName] = function(response) {
+    cleanup();
+
+    if (!response || response.ok !== true) {
+      console.error("TRU subscriber validation failed", response);
+      statusEl.textContent = response && response.error
+        ? response.error
+        : "Subscription validation failed. Please try again.";
+      return;
+    }
+
+    if (response.valid !== true) {
+      isTRUSubscriberValidated = false;
+      fieldsEl.style.display = "none";
+      statusEl.textContent =
+        response.message ||
+        response.error ||
+        "No active paid subscription was found for that email.";
+      return;
+    }
+
+    isTRUSubscriberValidated = true;
+    statusEl.textContent =
+      response.message || "Subscription verified. You can now suggest a profile.";
+
+    validationRowEl.style.display = "none";
+    fieldsEl.style.display = "block";
+  };
+
+  scriptEl.onerror = function(error) {
+    cleanup();
+    console.error("TRU subscriber validation request failed", error);
+    statusEl.textContent = "Subscription validation failed. Please try again.";
+  };
+
+  setTimeout(function() {
+    if (!didFinish) {
+      cleanup();
+      statusEl.textContent = "Subscription validation could not be confirmed. Please try again.";
+    }
+  }, 12000);
+
+  statusEl.textContent = "Checking subscription...";
+  scriptEl.src = `${TRU_SUBMISSION_WEB_APP_URL}?${params.toString()}`;
+  document.body.appendChild(scriptEl);
+}
 
   function submitTRUProfileSuggestion() {
-    const nameInput = document.getElementById("truSuggestedName");
-    const statusEl = document.getElementById("truSubmitStatus");
+    const emailInput = document.getElementById("truSubscriberEmail");
+const nameInput = document.getElementById("truSuggestedName");
+const statusEl = document.getElementById("truSubmitStatus");
 
-    const suggestedName = nameInput.value.trim();
+const subscriberEmail = emailInput.value.trim().toLowerCase();
+const suggestedName = nameInput.value.trim();
+
+if (!isTRUSubscriberValidated) {
+  statusEl.textContent = "Please validate your paid subscriber email first.";
+  return;
+}
 
     if (!suggestedName) {
       statusEl.textContent = "Please enter a name or organization first.";
@@ -1293,11 +1448,13 @@ table.tru-table td:nth-child(2) {
     const callbackName = `handleTRUSubmission_${Date.now()}_${Math.random().toString(36).substring(2, 10)}`;
     const scriptEl = document.createElement("script");
     const params = new URLSearchParams({
-      timestamp,
-      name: suggestedName,
-      submissionId,
-      callback: callbackName
-    });
+  action: "submitProfile",
+  timestamp,
+  name: suggestedName,
+  submissionId,
+  subscriberEmail,
+  callback: callbackName
+});
 
     let didFinish = false;
 
@@ -1343,11 +1500,13 @@ table.tru-table td:nth-child(2) {
     }, 12000);
 
     console.log("TRU submission attempt", {
-      url: `${TRU_SUBMISSION_WEB_APP_URL}?${params.toString()}`,
-      timestamp,
-      name: suggestedName,
-      submissionId
-    });
+  url: `${TRU_SUBMISSION_WEB_APP_URL}?${params.toString()}`,
+  action: "submitProfile",
+  timestamp,
+  name: suggestedName,
+  submissionId,
+  subscriberEmail
+});
 
     statusEl.textContent = "Submitting...";
     scriptEl.src = `${TRU_SUBMISSION_WEB_APP_URL}?${params.toString()}`;
