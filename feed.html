@@ -480,6 +480,11 @@
     border: 1.2px solid rgba(212, 175, 55, 0.35);
     background: linear-gradient(to bottom right, #0A0F1C, #1A2B4C);
     box-shadow: 0 10px 22px rgba(212, 175, 55, 0.16);
+    box-sizing: border-box;
+  }
+
+  #perch-feed-list .so-card {
+    max-width: 820px;
   }
 
   .so-card-title-row {
@@ -558,6 +563,7 @@
 
   .so-card-body {
     margin-top: 10px;
+    max-width: 720px;
     font-family: 'Inter', sans-serif;
     color: var(--understanding);
     font-size: 0.98rem;
@@ -567,6 +573,16 @@
 
   .so-card-body.italic {
     font-style: italic;
+  }
+
+  @media (max-width: 768px) {
+    #perch-feed-list .so-card {
+      max-width: calc(100% - 24px);
+    }
+
+    .so-card-body {
+      max-width: 100%;
+    }
   }
 
   .so-actions {
