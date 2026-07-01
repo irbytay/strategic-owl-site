@@ -1015,15 +1015,19 @@ table.tru-table td:nth-child(2) {
 
 <!-- 🦉 Suggest a T.R.U. Owl profile for review -->
 <section class="tru-name-submit-card" aria-labelledby="tru-name-submit-title">
-  <h2 id="tru-name-submit-title">Suggest a Profile</h2>
-  <p>Enter the name of an influencer, media company, politician, or journalist you think should be reviewed.</p>
+  <h2 id="tru-name-submit-title">Paid Subscriber Feature</h2>
+  <p id="tru-name-submit-description">
+    Paid Substack readers unlock T.R.U. Owl profile suggestions, AI tech tips, and tools for navigating the Neonascent Age.
+    <br /><br />
+    Enter your paid Substack email below, then click Validate Email to unlock the profile suggestion form.
+  </p>
 
   <div class="tru-subscriber-validation-row" id="truSubscriberValidationRow">
     <input
       id="truSubscriberEmail"
       class="tru-subscriber-validation-input"
       type="email"
-      placeholder="Paid subscriber email"
+      placeholder="Paid Substack email"
       autocomplete="email"
     />
 
@@ -1395,6 +1399,18 @@ table.tru-table td:nth-child(2) {
     }
 
     isTRUSubscriberValidated = true;
+
+    const submitTitleEl = document.getElementById("tru-name-submit-title");
+    const submitDescriptionEl = document.getElementById("tru-name-submit-description");
+
+    if (submitTitleEl) {
+      submitTitleEl.textContent = "Suggest a Profile";
+    }
+
+    if (submitDescriptionEl) {
+      submitDescriptionEl.textContent = "Enter the name of an influencer, media company, politician, journalist, or public voice you think should be reviewed.";
+    }
+
     statusEl.textContent =
       response.message || "Subscription verified. You can now suggest a profile.";
 
