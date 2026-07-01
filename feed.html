@@ -548,6 +548,14 @@
     margin-top: 2px;
   }
 
+  .feed-card-brand-mark {
+    width: 86px;
+    height: auto;
+    object-fit: contain;
+    margin-left: auto;
+    flex-shrink: 0;
+  }
+
   .so-card-body {
     margin-top: 10px;
     font-family: 'Inter', sans-serif;
@@ -907,6 +915,7 @@
                 <span class="so-author-name">Taylor Irby</span>
                 ${post.timestamp ? `<span class="so-author-time">${escapeHtml(post.timestamp)}</span>` : ''}
               </p>
+              <img class="feed-card-brand-mark" src="3XTITLE.png" alt="The Strategic Owl" />
             </div>
             <h2 class="so-card-title">Daily Owl Logic</h2>
           </div>
