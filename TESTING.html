@@ -401,6 +401,7 @@
   box-shadow: 0 0 0 2px rgba(212, 175, 55, 0.25);
 }
 
+
 .tru-subscriber-validation-status {
   min-height: 22px;
   text-align: center;
@@ -409,6 +410,24 @@
   color: var(--text-muted);
   font-size: 0.95rem;
   line-height: 1.5;
+}
+
+.tru-substack-subscribe-link {
+  display: inline-block;
+  margin-top: 10px;
+  padding: 10px 16px;
+  border-radius: 8px;
+  border: 1px solid var(--understanding);
+  background-color: var(--highlight);
+  color: var(--understanding);
+  text-decoration: none;
+  font-family: 'Inter', sans-serif;
+  font-size: 0.95rem;
+  font-weight: 700;
+}
+
+.tru-substack-subscribe-link:hover {
+  background-color: var(--surface);
 }
 
 .tru-profile-fields-locked {
@@ -1194,6 +1213,25 @@ function restoreTRUSubscriberValidationCache() {
   unlockTRUProfileSuggestionForm("Access validated.");
 }
 
+function showTRUSubscriberValidationMessage(message, showSubscribeLink = false) {
+  const statusEl = document.getElementById("truSubscriberValidationStatus");
+  if (!statusEl) return;
+
+  statusEl.textContent = message;
+
+  if (!showSubscribeLink) return;
+
+  const subscribeLink = document.createElement("a");
+  subscribeLink.href = "https://strategicowl.substack.com/";
+  subscribeLink.target = "_blank";
+  subscribeLink.rel = "noopener noreferrer";
+  subscribeLink.className = "tru-substack-subscribe-link";
+  subscribeLink.textContent = "Subscribe on Substack";
+
+  statusEl.appendChild(document.createElement("br"));
+  statusEl.appendChild(subscribeLink);
+}
+
   function createTRUSubmissionId() {
     const timestampPart = new Date()
       .toISOString()
@@ -1431,7 +1469,7 @@ function restoreTRUSubscriberValidationCache() {
   fieldsEl.style.display = "none";
 
   if (!subscriberEmail) {
-    statusEl.textContent = "Please enter the email connected to your paid subscription.";
+    statusEl.textContent = "Please enter the email connected to your paid Substack subscription.";
     return;
   }
 
@@ -1476,18 +1514,21 @@ function restoreTRUSubscriberValidationCache() {
     if (response.valid !== true) {
       isTRUSubscriberValidated = false;
       fieldsEl.style.display = "none";
-      statusEl.textContent =
+
+      showTRUSubscriberValidationMessage(
         response.message ||
         response.error ||
-        "No active paid subscription was found for that email.";
+        "No active paid Substack subscription was found for that email.",
+        true
+      );
       return;
     }
 
     saveTRUSubscriberValidationCache(subscriberEmail);
 
-unlockTRUProfileSuggestionForm(
-  response.message || "Subscription verified. You can now suggest a profile."
-);
+    unlockTRUProfileSuggestionForm(
+      response.message || "Subscription verified. You can now suggest a profile."
+    );
   };
 
   scriptEl.onerror = function(error) {
@@ -1503,7 +1544,7 @@ unlockTRUProfileSuggestionForm(
     }
   }, 12000);
 
-  statusEl.textContent = "Checking subscription...";
+  statusEl.textContent = "Checking subscriber access...";
   scriptEl.src = `${TRU_SUBMISSION_WEB_APP_URL}?${params.toString()}`;
   document.body.appendChild(scriptEl);
 }
@@ -1569,7 +1610,7 @@ if (!isTRUSubscriberValidated) {
   <span>Submission received. TRU-ID:</span>
   <span class="tru-copy-id-code">${confirmedSubmissionId}</span>
   <button class="tru-copy-id-button" type="button" onclick="copyTRUSubmissionId('${confirmedSubmissionId}')">Copy ID</button>
-  <span class="tru-review-note">Manual review required. Results usually appear within 1–24 hours. Email update sent when completed.</span>
+  <span class="tru-review-note">Manual review required. Results usually appear within 1–24 hours.</span>
 </span>
       `;
     };
