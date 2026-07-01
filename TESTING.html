@@ -1105,9 +1105,94 @@ table.tru-table td:nth-child(2) {
   };
 
   let rowMap = {}, roleMap = {};
-  let isTRUSubscriberValidated = false;
-  const TRU_SUBMISSION_WEB_APP_URL = "https://script.google.com/macros/s/AKfycbzHMaa4zsuRPRfH3R0E9lnMehSssulxuUjTdLfXxp_iLuWg4yeMfluAIfEuzXNbzblq/exec";
-  const TRU_OUT_OF_SCOPE_MESSAGE = "T.R.U. Scores are built for people who shape political or civic understanding. This submission appears outside that lane, or there is not enough public data to review fairly.";
+let isTRUSubscriberValidated = false;
+const TRU_SUBMISSION_WEB_APP_URL = "https://script.google.com/macros/s/AKfycbzHMaa4zsuRPRfH3R0E9lnMehSssulxuUjTdLfXxp_iLuWg4yeMfluAIfEuzXNbzblq/exec";
+const TRU_OUT_OF_SCOPE_MESSAGE = "T.R.U. Scores are built for people who shape political or civic understanding. This submission appears outside that lane, or there is not enough public data to review fairly.";
+const TRU_SUBSCRIBER_CACHE_KEY = "truSubscriberValidationCache";
+const TRU_SUBSCRIBER_CACHE_DAYS = 7;
+
+function getTRUSubscriberCacheExpiration() {
+  return Date.now() + TRU_SUBSCRIBER_CACHE_DAYS * 24 * 60 * 60 * 1000;
+}
+
+function saveTRUSubscriberValidationCache(email) {
+  if (!email) return;
+
+  try {
+    localStorage.setItem(
+      TRU_SUBSCRIBER_CACHE_KEY,
+      JSON.stringify({
+        email,
+        expiresAt: getTRUSubscriberCacheExpiration()
+      })
+    );
+  } catch (error) {
+    console.warn("Unable to save TRU subscriber validation cache", error);
+  }
+}
+
+function getTRUSubscriberValidationCache() {
+  try {
+    const rawCache = localStorage.getItem(TRU_SUBSCRIBER_CACHE_KEY);
+    if (!rawCache) return null;
+
+    const cache = JSON.parse(rawCache);
+
+    if (!cache || !cache.email || !cache.expiresAt || Date.now() > Number(cache.expiresAt)) {
+      localStorage.removeItem(TRU_SUBSCRIBER_CACHE_KEY);
+      return null;
+    }
+
+    return cache;
+  } catch (error) {
+    localStorage.removeItem(TRU_SUBSCRIBER_CACHE_KEY);
+    return null;
+  }
+}
+
+function unlockTRUProfileSuggestionForm(message) {
+  const statusEl = document.getElementById("truSubscriberValidationStatus");
+  const fieldsEl = document.getElementById("truProfileSubmissionFields");
+  const validationRowEl = document.getElementById("truSubscriberValidationRow");
+  const submitTitleEl = document.getElementById("tru-name-submit-title");
+  const submitDescriptionEl = document.getElementById("tru-name-submit-description");
+
+  isTRUSubscriberValidated = true;
+
+  if (submitTitleEl) {
+    submitTitleEl.textContent = "Suggest a Profile";
+  }
+
+  if (submitDescriptionEl) {
+    submitDescriptionEl.textContent =
+      "Enter the name of an influencer, media company, politician, journalist, or public voice you think should be reviewed.";
+  }
+
+  if (statusEl) {
+    statusEl.textContent = message || "Subscription verified. You can now suggest a profile.";
+  }
+
+  if (validationRowEl) {
+    validationRowEl.style.display = "none";
+  }
+
+  if (fieldsEl) {
+    fieldsEl.style.display = "block";
+  }
+}
+
+function restoreTRUSubscriberValidationCache() {
+  const cache = getTRUSubscriberValidationCache();
+  if (!cache) return;
+
+  const emailInput = document.getElementById("truSubscriberEmail");
+
+  if (emailInput) {
+    emailInput.value = cache.email;
+  }
+
+  unlockTRUProfileSuggestionForm("Subscriber access remembered. You can suggest a profile.");
+}
 
   function createTRUSubmissionId() {
     const timestampPart = new Date()
@@ -1398,24 +1483,11 @@ table.tru-table td:nth-child(2) {
       return;
     }
 
-    isTRUSubscriberValidated = true;
+    saveTRUSubscriberValidationCache(subscriberEmail);
 
-    const submitTitleEl = document.getElementById("tru-name-submit-title");
-    const submitDescriptionEl = document.getElementById("tru-name-submit-description");
-
-    if (submitTitleEl) {
-      submitTitleEl.textContent = "Suggest a Profile";
-    }
-
-    if (submitDescriptionEl) {
-      submitDescriptionEl.textContent = "Enter the name of an influencer, media company, politician, journalist, or public voice you think should be reviewed.";
-    }
-
-    statusEl.textContent =
-      response.message || "Subscription verified. You can now suggest a profile.";
-
-    validationRowEl.style.display = "none";
-    fieldsEl.style.display = "block";
+unlockTRUProfileSuggestionForm(
+  response.message || "Subscription verified. You can now suggest a profile."
+);
   };
 
   scriptEl.onerror = function(error) {
@@ -1622,6 +1694,8 @@ if (!isTRUSubscriberValidated) {
   }
 
   document.addEventListener("DOMContentLoaded", async () => {
+    restoreTRUSubscriberValidationCache();
+
     const data = await fetchTRUData();
     populateDropdowns(data);
     document.getElementById("role-filter").addEventListener("change", e => updatePersonDropdown(e.target.value));
