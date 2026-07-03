@@ -1342,7 +1342,7 @@ function showTRUSubscriberValidationMessage(message, showSubscribeLink = false) 
     });
 
     const roleSelect = document.getElementById("role-filter");
-    roleSelect.innerHTML = '<option value="All">All Profiles</option>';
+    roleSelect.innerHTML = '<option value="All">Select a Role</option>';
     Object.keys(roleMap).sort().forEach(role => {
       const opt = document.createElement("option");
       opt.value = role;
