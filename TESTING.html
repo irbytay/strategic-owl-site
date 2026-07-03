@@ -765,13 +765,47 @@ table.tru-table td:nth-child(2) {
 #score-table td {
   font-family: 'Playfair Display', serif;
 }
-    .total-score-comment-text {
-  font-family: 'Playfair Display', serif;
-  font-size: 1rem;
-  color: var(--text);
-  line-height: 1.5;
-  margin-left: 12px;
-}
+  .tru-language-toggle {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+    flex-wrap: wrap;
+    margin: 0 auto 18px auto;
+  }
+
+  .tru-language-toggle-button {
+    padding: 9px 14px;
+    border-radius: 999px;
+    border: 1px solid rgba(212, 175, 55, 0.55);
+    background-color: rgba(13, 27, 42, 0.75);
+    color: var(--text-muted);
+    cursor: pointer;
+    font-family: 'Inter', sans-serif;
+    font-size: 0.92rem;
+    font-weight: 700;
+    transition: background-color 0.2s ease, color 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease;
+  }
+
+  .tru-language-toggle-button:hover {
+    background-color: var(--highlight);
+    color: var(--understanding);
+  }
+
+  .tru-language-toggle-button.active {
+    border-color: var(--understanding);
+    background-color: var(--highlight);
+    color: var(--understanding);
+    box-shadow: 0 0 0 2px rgba(212, 175, 55, 0.15);
+  }
+
+  .total-score-comment-text {
+    font-family: 'Playfair Display', serif;
+    font-size: 1rem;
+    color: var(--text);
+    line-height: 1.5;
+    margin-left: 12px;
+  }
     /* Target both filter labels */
 .dropdowns-wrapper label {
   font-family: 'Playfair Display', serif;
@@ -1007,6 +1041,15 @@ table.tru-table td:nth-child(2) {
 
 <!-- 📊 Output container for scores and commentary (initially hidden) -->
 <div id="output-container" style="display:none;">
+  <div class="tru-language-toggle" aria-label="Choose explanation style">
+    <button id="tru-point-button" class="tru-language-toggle-button active" type="button" onclick="setTRULanguageMode('point')">
+      The Point
+    </button>
+    <button id="tru-breakdown-button" class="tru-language-toggle-button" type="button" onclick="setTRULanguageMode('breakdown')">
+      The Breakdown
+    </button>
+  </div>
+
   <table id="score-table" class="tru-table">
     <thead>
       <tr>
@@ -1123,8 +1166,9 @@ table.tru-table td:nth-child(2) {
     0: { truth: 1.0, reliability: 1.0, understanding: 2.0 },
   };
 
-  let rowMap = {}, roleMap = {};
+let rowMap = {}, roleMap = {};
 let isTRUSubscriberValidated = false;
+let currentTRULanguageMode = "point";
 const TRU_SUBMISSION_WEB_APP_URL = "https://script.google.com/macros/s/AKfycbzHMaa4zsuRPRfH3R0E9lnMehSssulxuUjTdLfXxp_iLuWg4yeMfluAIfEuzXNbzblq/exec";
 const TRU_OUT_OF_SCOPE_MESSAGE = "T.R.U. Scores are built for people who shape political or civic understanding. This submission appears outside that lane, or there is not enough public data to review fairly.";
 const TRU_SUBSCRIBER_CACHE_KEY = "truSubscriberValidationCache";
@@ -1272,7 +1316,7 @@ function showTRUSubscriberValidationMessage(message, showSubscribeLink = false) 
   async function fetchTRUData() {
     const API_KEY = "AIzaSyCzuh9HBfe0r70r9U35Pe406PPZ-tz6I78";
     const SHEET_ID = "19wBEj9hEkvIyQcoR5E_mBGVAxTzMnddMxk8nuQLAumA";
-    const RANGE = "'TRU_3.0'!A2:J1000";
+    const RANGE = "'TRU_3.0'!A2:N";
     const encodedRange = encodeURIComponent(RANGE);
     const url = `https://sheets.googleapis.com/v4/spreadsheets/${SHEET_ID}/values/${encodedRange}?key=${API_KEY}`;
     try {
@@ -1298,7 +1342,7 @@ function showTRUSubscriberValidationMessage(message, showSubscribeLink = false) 
     });
 
     const roleSelect = document.getElementById("role-filter");
-    roleSelect.innerHTML = '<option value="">Select Role</option>';
+    roleSelect.innerHTML = '<option value="All">All Profiles</option><option value="">Select Role</option>';
     Object.keys(roleMap).sort().forEach(role => {
       const opt = document.createElement("option");
       opt.value = role;
@@ -1322,7 +1366,7 @@ function showTRUSubscriberValidationMessage(message, showSubscribeLink = false) 
     personSelect.disabled = names.length === 0;
   }
 
-  function getTRUCredibilityRating(score) {
+function getTRUCredibilityRating(score) {
   if (score >= 80) return "Grounded in Reality";
   if (score >= 40) return "Mostly Grounded";
   if (score >= 1) return "Leaning Credible";
@@ -1330,6 +1374,46 @@ function showTRUSubscriberValidationMessage(message, showSubscribeLink = false) 
   if (score <= -80) return "Snake in the Grass";
   if (score <= -40) return "Flat-Earth Logic";
   return "Drifting from Reality";
+}
+
+function setTRULanguageMode(mode) {
+  currentTRULanguageMode = mode === "breakdown" ? "breakdown" : "point";
+
+  const pointButton = document.getElementById("tru-point-button");
+  const breakdownButton = document.getElementById("tru-breakdown-button");
+
+  if (pointButton) {
+    pointButton.classList.toggle("active", currentTRULanguageMode === "point");
+  }
+
+  if (breakdownButton) {
+    breakdownButton.classList.toggle("active", currentTRULanguageMode === "breakdown");
+  }
+
+  showScores();
+}
+
+function getTRULanguageComments(row) {
+  const breakdownTruth = row[6] || "";
+  const breakdownReliability = row[7] || "";
+  const breakdownUnderstanding = row[8] || "";
+  const breakdownStrategicInsight = row[9] || "Strategic insight not available.";
+
+  if (currentTRULanguageMode === "breakdown") {
+    return {
+      truth: breakdownTruth,
+      reliability: breakdownReliability,
+      understanding: breakdownUnderstanding,
+      strategicInsight: breakdownStrategicInsight
+    };
+  }
+
+  return {
+    truth: row[10] || breakdownTruth,
+    reliability: row[11] || breakdownReliability,
+    understanding: row[12] || breakdownUnderstanding,
+    strategicInsight: row[13] || breakdownStrategicInsight
+  };
 }
 
   function showScores() {
@@ -1345,6 +1429,17 @@ function showTRUSubscriberValidationMessage(message, showSubscribeLink = false) 
     if (!selected || !rowMap[selected]) {
       outputContainer.style.display = "none";
       return;
+    }
+
+    const pointButton = document.getElementById("tru-point-button");
+    const breakdownButton = document.getElementById("tru-breakdown-button");
+
+    if (pointButton) {
+      pointButton.classList.toggle("active", currentTRULanguageMode === "point");
+    }
+
+    if (breakdownButton) {
+      breakdownButton.classList.toggle("active", currentTRULanguageMode === "breakdown");
     }
 
     const row = rowMap[selected];
@@ -1369,10 +1464,11 @@ function showTRUSubscriberValidationMessage(message, showSubscribeLink = false) 
     const reliabilityScore = parseFloat(row[3]) || 0;
     const understandingScore = parseFloat(row[4]) || 0;
     const finalTRUScore = parseFloat(row[5]) || 0;
-    const commentTruth = row[6] || "";
-    const commentReliability = row[7] || "";
-    const commentUnderstanding = row[8] || "";
-    const strategicInsight = row[9] || "Strategic insight not available.";
+    const languageComments = getTRULanguageComments(row);
+    const commentTruth = languageComments.truth;
+    const commentReliability = languageComments.reliability;
+    const commentUnderstanding = languageComments.understanding;
+    const strategicInsight = languageComments.strategicInsight;
 
     const scores = [
       { label: "Truth", value: truthScore, comment: commentTruth, className: "text-truth" },
@@ -1739,7 +1835,13 @@ if (!isTRUSubscriberValidated) {
 
     const data = await fetchTRUData();
     populateDropdowns(data);
-    document.getElementById("role-filter").addEventListener("change", e => updatePersonDropdown(e.target.value));
+    document.getElementById("role-filter").addEventListener("change", e => {
+      updatePersonDropdown(e.target.value || "All");
+      const outputContainer = document.getElementById("output-container");
+      if (outputContainer) {
+        outputContainer.style.display = "none";
+      }
+    });
     document.getElementById("person-select").addEventListener("change", showScores);
   });
 
