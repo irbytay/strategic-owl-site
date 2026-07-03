@@ -1394,25 +1394,25 @@ function setTRULanguageMode(mode) {
 }
 
 function getTRULanguageComments(row) {
-  const breakdownTruth = row[6] || "";
-  const breakdownReliability = row[7] || "";
-  const breakdownUnderstanding = row[8] || "";
-  const breakdownStrategicInsight = row[9] || "Strategic insight not available.";
+  const pointTruth = row[6] || "";
+  const pointReliability = row[7] || "";
+  const pointUnderstanding = row[8] || "";
+  const pointStrategicInsight = row[9] || "Strategic insight not available.";
 
   if (currentTRULanguageMode === "breakdown") {
     return {
-      truth: breakdownTruth,
-      reliability: breakdownReliability,
-      understanding: breakdownUnderstanding,
-      strategicInsight: breakdownStrategicInsight
+      truth: row[10] || pointTruth,
+      reliability: row[11] || pointReliability,
+      understanding: row[12] || pointUnderstanding,
+      strategicInsight: row[13] || pointStrategicInsight
     };
   }
 
   return {
-    truth: row[10] || breakdownTruth,
-    reliability: row[11] || breakdownReliability,
-    understanding: row[12] || breakdownUnderstanding,
-    strategicInsight: row[13] || breakdownStrategicInsight
+    truth: pointTruth,
+    reliability: pointReliability,
+    understanding: pointUnderstanding,
+    strategicInsight: pointStrategicInsight
   };
 }
 
