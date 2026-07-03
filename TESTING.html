@@ -1045,8 +1045,8 @@ table.tru-table td:nth-child(2) {
     <button id="tru-point-button" class="tru-language-toggle-button active" type="button" onclick="setTRULanguageMode('point')">
       The Point
     </button>
-    <button id="tru-breakdown-button" class="tru-language-toggle-button" type="button" onclick="setTRULanguageMode('breakdown')">
-      The Breakdown
+    <button id="tru-score-logic-button" class="tru-language-toggle-button" type="button" onclick="setTRULanguageMode('scoreLogic')">
+      Score Logic
     </button>
   </div>
 
@@ -1342,7 +1342,7 @@ function showTRUSubscriberValidationMessage(message, showSubscribeLink = false) 
     });
 
     const roleSelect = document.getElementById("role-filter");
-    roleSelect.innerHTML = '<option value="All">Select a Role</option>';
+    roleSelect.innerHTML = '<option value="All">All Profiles</option>';
     Object.keys(roleMap).sort().forEach(role => {
       const opt = document.createElement("option");
       opt.value = role;
@@ -1377,42 +1377,42 @@ function getTRUCredibilityRating(score) {
 }
 
 function setTRULanguageMode(mode) {
-  currentTRULanguageMode = mode === "breakdown" ? "breakdown" : "point";
+  currentTRULanguageMode = mode === "scoreLogic" ? "scoreLogic" : "point";
 
   const pointButton = document.getElementById("tru-point-button");
-  const breakdownButton = document.getElementById("tru-breakdown-button");
+  const scoreLogicButton = document.getElementById("tru-score-logic-button");
 
   if (pointButton) {
     pointButton.classList.toggle("active", currentTRULanguageMode === "point");
   }
 
-  if (breakdownButton) {
-    breakdownButton.classList.toggle("active", currentTRULanguageMode === "breakdown");
+  if (scoreLogicButton) {
+    scoreLogicButton.classList.toggle("active", currentTRULanguageMode === "scoreLogic");
   }
 
   showScores();
 }
 
 function getTRULanguageComments(row) {
-  const pointTruth = row[6] || "";
-  const pointReliability = row[7] || "";
-  const pointUnderstanding = row[8] || "";
-  const pointStrategicInsight = row[9] || "Strategic insight not available.";
+  const scoreLogicTruth = row[6] || "";
+  const scoreLogicReliability = row[7] || "";
+  const scoreLogicUnderstanding = row[8] || "";
+  const scoreLogicStrategicInsight = row[9] || "Strategic insight not available.";
 
-  if (currentTRULanguageMode === "breakdown") {
+  if (currentTRULanguageMode === "scoreLogic") {
     return {
-      truth: row[10] || pointTruth,
-      reliability: row[11] || pointReliability,
-      understanding: row[12] || pointUnderstanding,
-      strategicInsight: row[13] || pointStrategicInsight
+      truth: scoreLogicTruth,
+      reliability: scoreLogicReliability,
+      understanding: scoreLogicUnderstanding,
+      strategicInsight: scoreLogicStrategicInsight
     };
   }
 
   return {
-    truth: pointTruth,
-    reliability: pointReliability,
-    understanding: pointUnderstanding,
-    strategicInsight: pointStrategicInsight
+    truth: row[10] || scoreLogicTruth,
+    reliability: row[11] || scoreLogicReliability,
+    understanding: row[12] || scoreLogicUnderstanding,
+    strategicInsight: row[13] || scoreLogicStrategicInsight
   };
 }
 
@@ -1432,14 +1432,14 @@ function getTRULanguageComments(row) {
     }
 
     const pointButton = document.getElementById("tru-point-button");
-    const breakdownButton = document.getElementById("tru-breakdown-button");
+    const scoreLogicButton = document.getElementById("tru-score-logic-button");
 
     if (pointButton) {
       pointButton.classList.toggle("active", currentTRULanguageMode === "point");
     }
 
-    if (breakdownButton) {
-      breakdownButton.classList.toggle("active", currentTRULanguageMode === "breakdown");
+    if (scoreLogicButton) {
+      scoreLogicButton.classList.toggle("active", currentTRULanguageMode === "scoreLogic");
     }
 
     const row = rowMap[selected];
