@@ -599,6 +599,103 @@
   color: var(--understanding);
 }
 
+.tru-profile-search-card {
+  background-color: var(--surface);
+  border: 1px solid rgba(212, 175, 55, 0.65);
+  border-radius: 12px;
+  padding: 22px;
+  max-width: 720px;
+  margin: 0 auto 26px auto;
+  box-shadow: 0 0 8px rgba(212, 175, 55, 0.18);
+}
+
+.tru-profile-search-card h2 {
+  font-family: 'Playfair Display', serif;
+  color: var(--understanding);
+  text-align: center;
+  margin: 0 0 10px 0;
+  font-size: 1.45rem;
+}
+
+.tru-profile-search-card p {
+  font-family: 'Inter', sans-serif;
+  color: var(--text-muted);
+  text-align: center;
+  line-height: 1.5;
+  margin: 0 auto 18px auto;
+  max-width: 620px;
+}
+
+.tru-profile-search-input {
+  display: block;
+  width: 100%;
+  max-width: 420px;
+  margin: 0 auto;
+  padding: 12px 14px;
+  border-radius: 8px;
+  border: 1px solid rgba(212, 175, 55, 0.55);
+  background-color: var(--background);
+  color: var(--text);
+  font-family: 'Inter', sans-serif;
+  font-size: 1rem;
+  outline: none;
+  box-sizing: border-box;
+  text-align: center;
+}
+
+.tru-profile-search-input:focus {
+  border-color: var(--understanding);
+  box-shadow: 0 0 0 2px rgba(212, 175, 55, 0.25);
+}
+
+.tru-profile-search-results {
+  max-width: 520px;
+  margin: 14px auto 0 auto;
+  font-family: 'Inter', sans-serif;
+}
+
+.tru-profile-search-result-item {
+  width: 100%;
+  padding: 12px 14px;
+  margin-top: 8px;
+  border-radius: 10px;
+  border: 1px solid rgba(212, 175, 55, 0.32);
+  background-color: rgba(13, 27, 42, 0.72);
+  color: var(--text);
+  cursor: pointer;
+  text-align: center;
+  box-sizing: border-box;
+}
+
+.tru-profile-search-result-item:hover {
+  border-color: var(--understanding);
+  background-color: var(--highlight);
+}
+
+.tru-profile-search-result-name {
+  display: block;
+  color: var(--understanding);
+  font-family: 'Playfair Display', serif;
+  font-size: 1.05rem;
+  font-weight: 700;
+}
+
+.tru-profile-search-result-role {
+  display: block;
+  color: var(--text-muted);
+  font-size: 0.9rem;
+  line-height: 1.35;
+  margin-top: 3px;
+}
+
+.tru-profile-search-empty {
+  color: var(--text-muted);
+  text-align: center;
+  font-size: 0.95rem;
+  line-height: 1.5;
+  margin-top: 12px;
+}
+
   /* Modal-style popup for Scoring Logic */
   #role-box-wrapper {
     display: none;
@@ -1037,6 +1134,22 @@ table.tru-table td:nth-child(2) {
     </select>
   </div>
 </div>
+
+<!-- 🔎 Search the current T.R.U. Owl profile list -->
+<section class="tru-profile-search-card" aria-labelledby="tru-profile-search-title">
+  <h2 id="tru-profile-search-title">Find a Profile</h2>
+  <p>Search the current T.R.U. Owl list before suggesting a new profile.</p>
+
+  <input
+    id="truProfileSearchInput"
+    class="tru-profile-search-input"
+    type="text"
+    placeholder="Search name or organization"
+    autocomplete="off"
+  />
+
+  <div id="truProfileSearchResults" class="tru-profile-search-results" aria-live="polite"></div>
+</section>
 </div>
 
 <!-- 📊 Output container for scores and commentary (initially hidden) -->
@@ -1364,6 +1477,86 @@ function showTRUSubscriberValidationMessage(message, showSubscribeLink = false) 
       personSelect.appendChild(opt);
     });
     personSelect.disabled = names.length === 0;
+  }
+
+  function updateTRUProfileSearch(query) {
+    const resultsEl = document.getElementById("truProfileSearchResults");
+    if (!resultsEl) return;
+
+    const normalizedQuery = (query || "").trim().toLowerCase();
+    resultsEl.innerHTML = "";
+
+    if (normalizedQuery.length < 2) {
+      return;
+    }
+
+    const results = Object.entries(rowMap)
+      .map(([name, row]) => {
+        const role = row && row[1] ? row[1] : "Uncategorized";
+        return { name, role };
+      })
+      .filter(({ name, role }) => {
+        const searchableText = `${name} ${role}`.toLowerCase();
+        return searchableText.includes(normalizedQuery);
+      })
+      .sort((a, b) => a.name.localeCompare(b.name))
+      .slice(0, 8);
+
+    if (results.length === 0) {
+      const emptyEl = document.createElement("div");
+      emptyEl.className = "tru-profile-search-empty";
+      emptyEl.textContent = "No current match found.";
+      resultsEl.appendChild(emptyEl);
+      return;
+    }
+
+    results.forEach(({ name, role }) => {
+      const resultEl = document.createElement("button");
+      resultEl.type = "button";
+      resultEl.className = "tru-profile-search-result-item";
+      resultEl.setAttribute("data-name", name);
+      resultEl.setAttribute("data-role", role);
+
+      const nameEl = document.createElement("span");
+      nameEl.className = "tru-profile-search-result-name";
+      nameEl.textContent = name;
+
+      const roleEl = document.createElement("span");
+      roleEl.className = "tru-profile-search-result-role";
+      roleEl.textContent = role;
+
+      resultEl.appendChild(nameEl);
+      resultEl.appendChild(roleEl);
+      resultsEl.appendChild(resultEl);
+    });
+  }
+
+  function loadTRUProfileSearchResult(name, role) {
+    const roleSelect = document.getElementById("role-filter");
+    const personSelect = document.getElementById("person-select");
+    const searchInput = document.getElementById("truProfileSearchInput");
+    const resultsEl = document.getElementById("truProfileSearchResults");
+    const outputContainer = document.getElementById("output-container");
+
+    if (!name || !role || !roleSelect || !personSelect || !rowMap[name]) return;
+
+    roleSelect.value = role;
+    updatePersonDropdown(role);
+
+    personSelect.value = name;
+    showScores();
+
+    if (searchInput) {
+      searchInput.value = "";
+    }
+
+    if (resultsEl) {
+      resultsEl.innerHTML = "";
+    }
+
+    if (outputContainer) {
+      outputContainer.scrollIntoView({ behavior: "smooth", block: "start" });
+    }
   }
 
 function getTRUCredibilityRating(score) {
@@ -1843,6 +2036,26 @@ if (!isTRUSubscriberValidated) {
       }
     });
     document.getElementById("person-select").addEventListener("change", showScores);
+
+    const truProfileSearchInput = document.getElementById("truProfileSearchInput");
+    const truProfileSearchResults = document.getElementById("truProfileSearchResults");
+
+    if (truProfileSearchInput) {
+      truProfileSearchInput.addEventListener("input", e => {
+        updateTRUProfileSearch(e.target.value);
+      });
+    }
+
+    if (truProfileSearchResults) {
+      truProfileSearchResults.addEventListener("click", e => {
+        const resultButton = e.target.closest(".tru-profile-search-result-item");
+        if (!resultButton) return;
+
+        const name = resultButton.getAttribute("data-name");
+        const role = resultButton.getAttribute("data-role");
+        loadTRUProfileSearchResult(name, role);
+      });
+    }
   });
 
   function toggleMenu() {
