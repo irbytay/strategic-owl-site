@@ -670,6 +670,32 @@
     text-shadow: 0 0 6px rgba(0, 0, 0, 0.6);
     font-family: 'Inter', sans-serif;
   }
+    /* 🖼️ Optional image attached to a Perch post */
+.so-post-media {
+  width: 100%;
+  max-width: 620px;
+  margin: 16px auto 18px auto;
+  overflow: hidden;
+  border-radius: 14px;
+  border: 1px solid rgba(212, 175, 55, 0.30);
+  background: #0A0F1C;
+  box-shadow: 0 8px 22px rgba(0, 0, 0, 0.30);
+}
+
+.so-post-image {
+  display: block;
+  width: 100%;
+  height: auto;
+  object-fit: contain;
+}
+
+@media (max-width: 768px) {
+  .so-post-media {
+    max-width: 100%;
+    margin-top: 14px;
+    border-radius: 12px;
+  }
+}
 </style>
 
 <nav class="top-nav">
@@ -794,7 +820,7 @@
 
   const PERCH_SHEET_ID = "19wBEj9hEkvIyQcoR5E_mBGVAxTzMnddMxk8nuQLAumA";
   const PERCH_API_KEY = "AIzaSyCzuh9HBfe0r70r9U35Pe406PPZ-tz6I78";
-  const PERCH_RANGE = "Owl_Logic!B2:D21";
+  const PERCH_RANGE = "Owl_Logic!B2:E21";
 
   function soToast(msg) {
     const el = document.getElementById('so-toast');
@@ -860,21 +886,26 @@
       const strategicRow = rows[i + 1] || [];
 
       const dailyOwlLogic = String(dailyRow[0] || '').trim();
-      const strategicPositioning = String(strategicRow[0] || '').trim();
-      const date = String(dailyRow[2] || '').trim();
-      const time = String(strategicRow[2] || '').trim();
+const strategicPositioning = String(strategicRow[0] || '').trim();
+
+const date = String(dailyRow[2] || '').trim();
+const time = String(strategicRow[2] || '').trim();
+
+// Column E = optional image attached to this post
+const imageUrl = String(dailyRow[3] || '').trim();
 
       if (!dailyOwlLogic || !strategicPositioning) continue;
 
       posts.push({
-        id: `perch-${i}`,
-        dailyOwlLogic,
-        strategicPositioning,
-        date,
-        time,
-        timestamp: formatPerchTimestamp(date, time),
-        sortDate: parsePerchDateTime(date, time),
-      });
+  id: `perch-${i}`,
+  dailyOwlLogic,
+  strategicPositioning,
+  imageUrl,
+  date,
+  time,
+  timestamp: formatPerchTimestamp(date, time),
+  sortDate: parsePerchDateTime(date, time),
+});
     }
 
     posts.sort((a, b) => b.sortDate - a.sortDate);
@@ -946,9 +977,21 @@
         </div>
         <div class="so-card-body">${escapeHtml(post.dailyOwlLogic)}</div>
 
-        <div style="height:16px;"></div>
+${post.imageUrl ? `
+  <div class="so-post-media">
+    <img
+      src="${escapeHtml(post.imageUrl)}"
+      alt="Strategic Owl editorial artwork"
+      class="so-post-image"
+      loading="lazy"
+      decoding="async"
+    />
+  </div>
+` : ''}
 
-        <div class="so-card-title-row">
+<div style="height:16px;"></div>
+
+<div class="so-card-title-row">
           <h2 class="so-card-title">The Owl’s Position</h2>
           <div class="so-actions">
             <button class="so-icon-btn" data-copy="position" title="Copy The Owl’s Position" aria-label="Copy The Owl’s Position">
