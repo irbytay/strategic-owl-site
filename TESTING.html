@@ -675,6 +675,233 @@
   font-size: 12px;
   font-weight: 700;
 }
+
+/* Candidate search and Owl Access frontend preview */
+.nav-actions {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.owl-access-button,
+.candidate-search button,
+.owl-primary-button,
+.owl-secondary-button,
+.owl-position-button {
+  border: 1px solid var(--understanding);
+  border-radius: 10px;
+  background: #0B1C3D;
+  color: var(--text);
+  cursor: pointer;
+  font: inherit;
+  font-weight: 700;
+}
+
+.owl-access-button {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  padding: 8px 11px;
+  white-space: nowrap;
+}
+
+.owl-access-button[data-access="preview"] {
+  background: var(--understanding);
+  color: var(--background);
+}
+
+.candidate-search {
+  margin: 28px auto 10px;
+  max-width: 720px;
+  padding: 20px;
+  border: 1px solid rgba(212, 175, 55, 0.55);
+  border-radius: 14px;
+  background: rgba(17, 34, 64, 0.72);
+}
+
+.candidate-search h2 {
+  margin: 0 0 8px;
+  color: var(--heading);
+  font-family: 'Playfair Display', serif;
+}
+
+.candidate-search-row {
+  display: flex;
+  gap: 8px;
+  margin-top: 14px;
+}
+
+.candidate-search input,
+.owl-field {
+  min-width: 0;
+  flex: 1;
+  padding: 11px 12px;
+  border: 1px solid var(--understanding);
+  border-radius: 10px;
+  background: #fff;
+  color: #111827;
+  font: inherit;
+}
+
+.candidate-search button,
+.owl-primary-button,
+.owl-secondary-button,
+.owl-position-button {
+  padding: 10px 14px;
+}
+
+.candidate-search-status {
+  min-height: 20px;
+  margin: 10px 0 0;
+  color: var(--text-muted);
+  font-size: 14px;
+}
+
+.candidate-results {
+  display: grid;
+  gap: 12px;
+  margin-top: 14px;
+}
+
+.candidate-card {
+  padding: 16px;
+  border: 1px solid rgba(212, 175, 55, 0.42);
+  border-radius: 12px;
+  background: var(--surface);
+  text-align: left;
+}
+
+.candidate-card h3 {
+  margin: 0 0 6px;
+  color: var(--heading);
+}
+
+.candidate-card-meta {
+  margin-bottom: 9px;
+  color: var(--text-muted);
+  font-size: 14px;
+}
+
+.candidate-card-actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 10px;
+  margin-top: 12px;
+}
+
+.candidate-site-link {
+  color: var(--understanding);
+  font-weight: 700;
+}
+
+.candidate-badge {
+  display: inline-block;
+  margin: 2px 5px 2px 0;
+  padding: 3px 7px;
+  border-radius: 8px;
+  color: #fff;
+  font-size: 12px;
+  font-weight: 700;
+}
+
+.candidate-badge.trump { background: #8B0000; }
+.candidate-badge.impeach { background: var(--reliability); }
+
+.owl-position-button::before { content: "\1F512  "; }
+.owl-position-button[data-unlocked="true"]::before { content: "\1F989  "; }
+
+.owl-modal[hidden] { display: none; }
+
+.owl-modal {
+  position: fixed;
+  inset: 0;
+  z-index: 2000;
+  display: grid;
+  place-items: center;
+  padding: 20px;
+  background: rgba(0, 0, 0, 0.72);
+}
+
+.owl-modal-card {
+  width: min(680px, 100%);
+  max-height: 88vh;
+  overflow: auto;
+  padding: 24px;
+  border: 1px solid var(--understanding);
+  border-radius: 16px;
+  background: var(--surface);
+  box-shadow: 0 18px 50px rgba(0, 0, 0, 0.55);
+}
+
+.owl-modal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 16px;
+}
+
+.owl-modal-header h2 { margin: 0; }
+
+.owl-close-button {
+  border: 0;
+  background: transparent;
+  color: var(--text);
+  cursor: pointer;
+  font-size: 28px;
+  line-height: 1;
+}
+
+.owl-preview-note {
+  padding: 10px 12px;
+  border-left: 4px solid var(--understanding);
+  background: rgba(212, 175, 55, 0.1);
+  color: var(--heading);
+  font-size: 14px;
+}
+
+.owl-access-form,
+.owl-access-links {
+  display: grid;
+  gap: 10px;
+  margin-top: 16px;
+}
+
+.owl-access-links { grid-template-columns: 1fr 1fr; }
+.owl-access-links a { text-align: center; text-decoration: none; }
+
+.owl-form-message {
+  min-height: 20px;
+  margin: 8px 0 0;
+  color: var(--understanding);
+}
+
+.owl-topic-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 10px;
+  margin-top: 18px;
+}
+
+.owl-topic-card {
+  padding: 12px;
+  border: 1px solid rgba(212, 175, 55, 0.35);
+  border-radius: 10px;
+  background: var(--highlight);
+}
+
+.owl-topic-card strong { display: block; color: var(--understanding); }
+.owl-topic-card span { display: block; margin-top: 5px; color: var(--text-muted); font-size: 13px; }
+
+body.owl-modal-open { overflow: hidden; }
+
+@media (max-width: 768px) {
+  .nav-actions { margin-left: auto; }
+  .owl-access-button span:last-child { display: none; }
+  .candidate-search-row { flex-direction: column; }
+  .owl-topic-grid,
+  .owl-access-links { grid-template-columns: 1fr; }
+}
   </style>
 
 </head>
@@ -684,7 +911,12 @@
     <img src="owl_logo_white.png" alt="Owl Logo" onerror="this.style.display='none';" />
     <div class="nav-title">The Strategic Owl</div>
   </a>
-  <button class="menu-toggle" id="menuToggle" aria-controls="mobileMenu" aria-expanded="false" aria-label="Toggle menu">☰</button>
+  <div class="nav-actions">
+    <button class="owl-access-button" id="owl-access-open" type="button" data-access="locked" aria-haspopup="dialog">
+      <span aria-hidden="true">&#129417;</span><span>Owl Access</span>
+    </button>
+    <button class="menu-toggle" id="menuToggle" aria-controls="mobileMenu" aria-expanded="false" aria-label="Toggle menu">☰</button>
+  </div>
   <div class="nav-links" id="mobileMenu">
     <a href="Index.html">Home</a>
     <a href="feed.html">The Perch</a>
@@ -752,6 +984,17 @@
 
 <div id="zip-output" style="display:none; margin-top:14px;"></div>
 
+<section class="candidate-search" aria-labelledby="candidate-search-title">
+  <h2 id="candidate-search-title">Search for a Candidate</h2>
+  <p>Search by full or partial name. Basic candidate information is available to everyone.</p>
+  <div class="candidate-search-row">
+    <input id="candidate-name-input" type="search" autocomplete="off" placeholder="Enter candidate name" aria-describedby="candidate-search-status">
+    <button id="candidate-name-go" type="button">Search</button>
+  </div>
+  <p class="candidate-search-status" id="candidate-search-status" role="status"></p>
+  <div class="candidate-results" id="candidate-name-results"></div>
+</section>
+
      <!-- 🎯 Divider -->
     <section class="divider-section">
       <div class="divider-bar">
@@ -770,6 +1013,44 @@
   <footer style="text-align: center; padding: 24px 12px; font-size: 12px; color: #D4AF37; text-shadow: 0 0 6px rgba(0,0,0,0.6);">
     © 2026 The Strategic Owl. All rights reserved. This platform is protected under U.S. copyright and constitutional law. Unauthorized use, duplication, or distortion of content is prohibited. Created by Taylor Irby — designed for clarity, built for truth.
   </footer>
+
+<div class="owl-modal" id="owl-access-modal" role="dialog" aria-modal="true" aria-labelledby="owl-access-title" hidden>
+  <div class="owl-modal-card">
+    <div class="owl-modal-header">
+      <div>
+        <h2 id="owl-access-title">Owl Access</h2>
+        <p>Unlock the complete set of 11 researched candidate positions.</p>
+      </div>
+      <button class="owl-close-button" type="button" data-close-modal aria-label="Close Owl Access">&times;</button>
+    </div>
+    <p class="owl-preview-note"><strong>Frontend preview:</strong> subscriber validation is not connected yet.</p>
+    <div class="owl-access-form">
+      <label for="owl-access-email">Email used for Stripe or paid Substack</label>
+      <input class="owl-field" id="owl-access-email" type="email" autocomplete="email" placeholder="you@example.com">
+      <button class="owl-primary-button" id="owl-check-email" type="button">Check Owl Access</button>
+      <p class="owl-form-message" id="owl-access-message" role="status"></p>
+      <button class="owl-secondary-button" id="owl-preview-toggle" type="button">Preview Subscriber View</button>
+    </div>
+    <div class="owl-access-links">
+      <a class="owl-primary-button" href="https://buy.stripe.com/cNicN5eVt24X2c6aEhdwc05" target="_blank" rel="noopener noreferrer">View Stripe Option</a>
+      <a class="owl-secondary-button" href="https://strategicowl.substack.com/subscribe" target="_blank" rel="noopener noreferrer">View Substack Options</a>
+    </div>
+  </div>
+</div>
+
+<div class="owl-modal" id="owl-positions-modal" role="dialog" aria-modal="true" aria-labelledby="owl-positions-title" hidden>
+  <div class="owl-modal-card">
+    <div class="owl-modal-header">
+      <div>
+        <h2 id="owl-positions-title">Candidate Positions</h2>
+        <p id="owl-positions-candidate"></p>
+      </div>
+      <button class="owl-close-button" type="button" data-close-modal aria-label="Close candidate positions">&times;</button>
+    </div>
+    <p class="owl-preview-note">The layout is complete. Candidate-specific position text will load here after the protected Supabase connection is added.</p>
+    <div class="owl-topic-grid" id="owl-topic-grid"></div>
+  </div>
+</div>
 
 <script>
   // --- Mobile menu toggle (restores hamburger functionality) ---
@@ -953,8 +1234,29 @@ let birthStateMap = {};
 
   // State -> [{ position, name, district }]
   let stateRosterMap = {};
+  let allCandidateRows = [];
+  const candidateByKey = new Map();
+  let rosterReady = false;
+  let rosterLoadError = false;
   // ZIP -> [{ stateAbbr, districtNum }]
   let zipToSD = {};
+
+  const OWL_POSITION_TOPICS = [
+    "Reproductive Rights",
+    "Cannabis Reform",
+    "Democracy & Elections",
+    "Gun Policy",
+    "Climate & Environment",
+    "Education & Curriculum",
+    "Healthcare Access",
+    "Immigration & Border",
+    "Civil & LGBTQ+ Rights",
+    "Economic Policy & Labor",
+    "Religion & Governance"
+  ];
+
+  let owlPreviewUnlocked = false;
+  let pendingCandidateKey = null;
 
   // Two-letter → full state name (to align C=abbr with AH=full)
   const STATE_ABBR_TO_NAME = {
@@ -980,6 +1282,7 @@ let birthStateMap = {};
 
   // Fetch roster + zip map (kept separate so your original fetch stays intact)
   async function fetchZipAndRoster() {
+    rosterLoadError = false;
     const url = `https://sheets.googleapis.com/v4/spreadsheets/${SHEET_ID}/values:batchGet` +
                 `?ranges=${RANGE_ROSTER}&ranges=${RANGE_ZIPMAP}&key=${API_KEY}`;
     try {
@@ -991,6 +1294,8 @@ let birthStateMap = {};
       // 1) Roster (AH:AN)
       const rosterRows = (v[0] && v[0].values) || [];
       stateRosterMap = {};
+      allCandidateRows = [];
+      candidateByKey.clear();
       for (let i = 0; i < rosterRows.length; i++) {
         const r = rosterRows[i];
         const stFull   = (r[0] || "").trim(); // AH = full state name
@@ -1001,7 +1306,19 @@ let birthStateMap = {};
         const impeach  = (r[5] || "").trim(); // AM = Willing to hold Trump accountable (Yes/No)
         const website  = (r[6] || "").trim(); // AN = Candidate website URL
         if (!stFull || /^state$/i.test(stFull)) continue; // skip header
-        (stateRosterMap[stFull] ||= []).push({ position, name, district, aligned, impeach, website });
+        const candidate = {
+          key: `${stFull}|${position}|${name}|${district}|${i}`,
+          stateFullName: stFull,
+          position,
+          name,
+          district,
+          aligned,
+          impeach,
+          website
+        };
+        (stateRosterMap[stFull] ||= []).push(candidate);
+        allCandidateRows.push(candidate);
+        candidateByKey.set(candidate.key, candidate);
       }
 
       // 2) ZIP map (A:F) using C (abbr) + F (district number)
@@ -1018,8 +1335,11 @@ let birthStateMap = {};
           (zipToSD[key] ||= []).push({ stateAbbr, districtNum: districtNo });
         }
       }
+      rosterReady = true;
     } catch (err) {
       console.error("Failed to fetch roster/zip data:", err);
+      rosterReady = false;
+      rosterLoadError = true;
     }
   }
 
@@ -1137,11 +1457,140 @@ let birthStateMap = {};
       ? ` <a class="candidate-site" href="${escapeHtml(c.website)}" target="_blank" rel="noopener" style="margin-left:8px; font-size:12px;">Candidate Website</a>`
       : "";
 
-    return `<li>${escapeHtml(c.name)} <span style="opacity:.8;">(${escapeHtml(c.position)})</span>${extra}${trumpBadge}${impeachBadge}${site}</li>`;
+    const positions = c.key
+      ? ` <button class="owl-position-button" type="button" data-candidate-key="${escapeHtml(c.key)}" data-unlocked="${owlPreviewUnlocked}">View 11 Positions</button>`
+      : "";
+
+    return `<li>${escapeHtml(c.name)} <span style="opacity:.8;">(${escapeHtml(c.position)})</span>${extra}${trumpBadge}${impeachBadge}${site}${positions}</li>`;
   }
 
   function escapeHtml(s) {
     return String(s).replace(/[&<>"']/g, m => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]));
+  }
+
+  function candidateBadges(candidate) {
+    return [
+      isTrumpAligned(candidate.aligned)
+        ? '<span class="candidate-badge trump" title="Trump-aligned">TRUMP</span>'
+        : '',
+      isImpeachFlag(candidate.impeach)
+        ? '<span class="candidate-badge impeach" title="Willing to hold Trump accountable">IMPEACH</span>'
+        : ''
+    ].join('');
+  }
+
+  function renderCandidateCard(candidate) {
+    const location = [candidate.stateFullName, candidate.district].filter(Boolean).join(' • ');
+    const website = candidate.website
+      ? `<a class="candidate-site-link" href="${escapeHtml(candidate.website)}" target="_blank" rel="noopener noreferrer">Candidate Website</a>`
+      : '<span style="color:var(--text-muted)">Website not listed</span>';
+
+    return `
+      <article class="candidate-card">
+        <h3>${escapeHtml(candidate.name || 'Unnamed candidate')}</h3>
+        <div class="candidate-card-meta">${escapeHtml(candidate.position || 'Office not listed')}${location ? ` • ${escapeHtml(location)}` : ''}</div>
+        <div>${candidateBadges(candidate)}</div>
+        <div class="candidate-card-actions">
+          ${website}
+          <button class="owl-position-button" type="button" data-candidate-key="${escapeHtml(candidate.key)}" data-unlocked="${owlPreviewUnlocked}">View 11 Positions</button>
+        </div>
+      </article>`;
+  }
+
+  function handleCandidateSearch() {
+    const input = document.getElementById('candidate-name-input');
+    const status = document.getElementById('candidate-search-status');
+    const results = document.getElementById('candidate-name-results');
+    if (!input || !status || !results) return;
+
+    const query = input.value.trim().toLocaleLowerCase();
+    results.innerHTML = '';
+
+    if (query.length < 2) {
+      status.textContent = 'Enter at least two letters of a candidate’s name.';
+      return;
+    }
+    if (!rosterReady) {
+      status.textContent = rosterLoadError
+        ? 'Candidate data could not be loaded. Please refresh the page and try again.'
+        : 'Candidate data is still loading. Please try again in a moment.';
+      return;
+    }
+
+    const matches = allCandidateRows
+      .filter(candidate => String(candidate.name || '').toLocaleLowerCase().includes(query))
+      .sort((a, b) => String(a.name || '').localeCompare(String(b.name || ''), undefined, { sensitivity: 'base' }));
+
+    if (!matches.length) {
+      status.textContent = `No candidates found for “${input.value.trim()}.”`;
+      return;
+    }
+
+    const visibleMatches = matches.slice(0, 40);
+    status.textContent = matches.length > visibleMatches.length
+      ? `${matches.length} candidates found. Showing the first ${visibleMatches.length}.`
+      : `${matches.length} candidate${matches.length === 1 ? '' : 's'} found.`;
+    results.innerHTML = visibleMatches.map(renderCandidateCard).join('');
+  }
+
+  function openOwlModal(modalId) {
+    const modal = document.getElementById(modalId);
+    if (!modal) return;
+    modal.hidden = false;
+    document.body.classList.add('owl-modal-open');
+    const focusTarget = modal.querySelector('input, button, a');
+    if (focusTarget) focusTarget.focus();
+  }
+
+  function closeOwlModal(modal) {
+    if (!modal) return;
+    modal.hidden = true;
+    if (!document.querySelector('.owl-modal:not([hidden])')) {
+      document.body.classList.remove('owl-modal-open');
+    }
+  }
+
+  function updateOwlPreviewState() {
+    const accessButton = document.getElementById('owl-access-open');
+    const previewButton = document.getElementById('owl-preview-toggle');
+    if (accessButton) {
+      accessButton.dataset.access = owlPreviewUnlocked ? 'preview' : 'locked';
+      const label = accessButton.querySelector('span:last-child');
+      if (label) label.textContent = owlPreviewUnlocked ? 'Owl Preview Active' : 'Owl Access';
+    }
+    if (previewButton) {
+      previewButton.textContent = owlPreviewUnlocked ? 'Exit Subscriber Preview' : 'Preview Subscriber View';
+    }
+    document.querySelectorAll('.owl-position-button').forEach(button => {
+      button.dataset.unlocked = String(owlPreviewUnlocked);
+    });
+  }
+
+  function openCandidatePositions(candidateKey) {
+    const candidate = candidateByKey.get(candidateKey);
+    if (!candidate) return;
+
+    if (!owlPreviewUnlocked) {
+      pendingCandidateKey = candidateKey;
+      openOwlModal('owl-access-modal');
+      return;
+    }
+
+    const title = document.getElementById('owl-positions-candidate');
+    const grid = document.getElementById('owl-topic-grid');
+    if (title) {
+      title.textContent = [candidate.name, candidate.position, candidate.stateFullName, candidate.district]
+        .filter(Boolean)
+        .join(' • ');
+    }
+    if (grid) {
+      grid.innerHTML = OWL_POSITION_TOPICS.map(topic => `
+        <div class="owl-topic-card">
+          <strong>${escapeHtml(topic)}</strong>
+          <span>Candidate position will load after Supabase is connected.</span>
+        </div>`).join('');
+    }
+    openOwlModal('owl-positions-modal');
   }
 
   // ---------- NEW HELPERS FOR CONSOLIDATED CARD ----------
@@ -1262,6 +1711,75 @@ document.addEventListener("DOMContentLoaded", () => {
     // openHouseLookupFromZip() must be defined (see previous snippet)
     zipValidateBtn.addEventListener("click", openHouseLookupFromZip);
   }
+
+  const candidateSearchButton = document.getElementById('candidate-name-go');
+  const candidateSearchInput = document.getElementById('candidate-name-input');
+  if (candidateSearchButton) candidateSearchButton.addEventListener('click', handleCandidateSearch);
+  if (candidateSearchInput) {
+    candidateSearchInput.addEventListener('keydown', event => {
+      if (event.key === 'Enter') handleCandidateSearch();
+    });
+  }
+
+  const accessOpenButton = document.getElementById('owl-access-open');
+  if (accessOpenButton) {
+    accessOpenButton.addEventListener('click', () => openOwlModal('owl-access-modal'));
+  }
+
+  const emailCheckButton = document.getElementById('owl-check-email');
+  if (emailCheckButton) {
+    emailCheckButton.addEventListener('click', () => {
+      const input = document.getElementById('owl-access-email');
+      const message = document.getElementById('owl-access-message');
+      const email = input ? input.value.trim() : '';
+      if (!message) return;
+      message.textContent = email && email.includes('@') && email.includes('.')
+        ? 'The form is ready. Subscriber checking will begin when Supabase is connected.'
+        : 'Enter the email used for your Stripe or paid Substack subscription.';
+    });
+  }
+
+  const previewToggle = document.getElementById('owl-preview-toggle');
+  if (previewToggle) {
+    previewToggle.addEventListener('click', () => {
+      owlPreviewUnlocked = !owlPreviewUnlocked;
+      updateOwlPreviewState();
+      closeOwlModal(document.getElementById('owl-access-modal'));
+      if (owlPreviewUnlocked && pendingCandidateKey) {
+        const candidateKey = pendingCandidateKey;
+        pendingCandidateKey = null;
+        openCandidatePositions(candidateKey);
+      } else if (!owlPreviewUnlocked) {
+        pendingCandidateKey = null;
+        closeOwlModal(document.getElementById('owl-positions-modal'));
+      }
+    });
+  }
+
+  document.addEventListener('click', event => {
+    const positionButton = event.target.closest('.owl-position-button');
+    if (positionButton) {
+      openCandidatePositions(positionButton.dataset.candidateKey || '');
+      return;
+    }
+
+    const closeButton = event.target.closest('[data-close-modal]');
+    if (closeButton) {
+      closeOwlModal(closeButton.closest('.owl-modal'));
+      return;
+    }
+
+    if (event.target.classList && event.target.classList.contains('owl-modal')) {
+      closeOwlModal(event.target);
+    }
+  });
+
+  document.addEventListener('keydown', event => {
+    if (event.key !== 'Escape') return;
+    document.querySelectorAll('.owl-modal:not([hidden])').forEach(closeOwlModal);
+  });
+
+  updateOwlPreviewState();
 });
   // --- ZIP → House lookup helpers ---
 function buildZipForHouse(raw) {
