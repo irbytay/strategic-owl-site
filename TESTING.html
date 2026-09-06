@@ -23,7 +23,7 @@
 
   <!-- Fonts -->
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&family=Playfair+Display:wght@600;700&display=swap" rel="stylesheet" />
-  <script src="owl-access.js" defer></script>
+  <script src="owl-access.js?v=2" defer></script>
 
   <style>
   :root {
@@ -1007,13 +1007,11 @@ body.owl-modal-open { overflow: hidden; }
       </div>
       <button class="owl-close-button" type="button" data-close-modal aria-label="Close Owl Access">&times;</button>
     </div>
-    <p class="owl-preview-note"><strong>Frontend preview:</strong> subscriber validation is not connected yet.</p>
     <div class="owl-access-form">
       <label for="owl-access-email">Email used for Stripe or paid Substack</label>
       <input class="owl-field" id="owl-access-email" type="email" autocomplete="email" placeholder="you@example.com">
       <button class="owl-primary-button" id="owl-check-email" type="button">Check Owl Access</button>
       <p class="owl-form-message" id="owl-access-message" role="status"></p>
-      <button class="owl-secondary-button" id="owl-preview-toggle" type="button">Preview Subscriber View</button>
     </div>
     <div class="owl-access-links">
       <a class="owl-primary-button" href="https://buy.stripe.com/cNicN5eVt24X2c6aEhdwc05" target="_blank" rel="noopener noreferrer">View Stripe Option</a>
@@ -1239,11 +1237,10 @@ let birthStateMap = {};
     "Religion & Governance"
   ];
 
-  let owlPreviewUnlocked = false;
   let pendingCandidateKey = null;
 
   function hasOwlAccess() {
-    return owlPreviewUnlocked || Boolean(
+    return Boolean(
       window.StrategicOwlAccess && window.StrategicOwlAccess.isActive()
     );
   }
@@ -1540,20 +1537,12 @@ let birthStateMap = {};
     }
   }
 
-  function updateOwlPreviewState() {
+  function updateOwlAccessState() {
     const accessButton = document.getElementById('owl-access-open');
-    const previewButton = document.getElementById('owl-preview-toggle');
-    const subscriberAccessActive = Boolean(
-      window.StrategicOwlAccess && window.StrategicOwlAccess.isActive()
-    );
-    const accessActive = subscriberAccessActive || owlPreviewUnlocked;
+    const accessActive = hasOwlAccess();
 
     if (accessButton) {
       accessButton.dataset.access = accessActive ? 'active' : 'locked';
-    }
-    if (previewButton) {
-      previewButton.hidden = subscriberAccessActive;
-      previewButton.textContent = owlPreviewUnlocked ? 'Exit Subscriber Preview' : 'Preview Subscriber View';
     }
     document.querySelectorAll('.owl-position-button').forEach(button => {
       button.dataset.unlocked = String(accessActive);
@@ -1722,32 +1711,59 @@ document.addEventListener("DOMContentLoaded", () => {
 
   const emailCheckButton = document.getElementById('owl-check-email');
   if (emailCheckButton) {
-    emailCheckButton.addEventListener('click', () => {
+    emailCheckButton.addEventListener('click', async () => {
       const input = document.getElementById('owl-access-email');
       const message = document.getElementById('owl-access-message');
-      const email = input ? input.value.trim() : '';
+      const email = input ? input.value.trim().toLowerCase() : '';
       if (!message) return;
-      message.textContent = email && email.includes('@') && email.includes('.')
-        ? 'The form is ready. Subscriber checking will begin when Supabase is connected.'
-        : 'Enter the email used for your Stripe or paid Substack subscription.';
-    });
-  }
 
-  const previewToggle = document.getElementById('owl-preview-toggle');
-  if (previewToggle) {
-    previewToggle.addEventListener('click', () => {
-      owlPreviewUnlocked = !owlPreviewUnlocked;
-      updateOwlPreviewState();
-      closeOwlModal(document.getElementById('owl-access-modal'));
-      if (owlPreviewUnlocked && pendingCandidateKey) {
-        const candidateKey = pendingCandidateKey;
-        pendingCandidateKey = null;
-        openCandidatePositions(candidateKey);
-      } else if (!hasOwlAccess()) {
-        pendingCandidateKey = null;
-        closeOwlModal(document.getElementById('owl-positions-modal'));
+      if (!email || !email.includes('@') || !email.includes('.')) {
+        message.textContent = 'Enter the email used for your Stripe or paid Substack subscription.';
+        return;
+      }
+
+      if (!window.StrategicOwlAccess) {
+        message.textContent = 'Owl Access could not load. Please refresh and try again.';
+        return;
+      }
+
+      emailCheckButton.disabled = true;
+      message.textContent = 'Checking Owl Access...';
+      if (accessOpenButton) accessOpenButton.dataset.access = 'loading';
+
+      try {
+        const result = await window.StrategicOwlAccess.validateEmail(email);
+
+        if (result.valid === true) {
+          message.textContent = result.message || 'Owl Access confirmed.';
+          updateOwlAccessState();
+
+          if (!pendingCandidateKey) {
+            window.setTimeout(() => {
+              closeOwlModal(document.getElementById('owl-access-modal'));
+            }, 650);
+          }
+        } else {
+          message.textContent = result.message || result.error ||
+            'No active paid subscription was found for that email.';
+        }
+      } catch (error) {
+        console.error('Owl Access validation failed:', error);
+        message.textContent = 'Owl Access could not be checked. Please try again.';
+      } finally {
+        emailCheckButton.disabled = false;
+        if (!hasOwlAccess() && accessOpenButton) {
+          accessOpenButton.dataset.access = 'locked';
+        }
       }
     });
+
+    const emailInput = document.getElementById('owl-access-email');
+    if (emailInput) {
+      emailInput.addEventListener('keydown', event => {
+        if (event.key === 'Enter') emailCheckButton.click();
+      });
+    }
   }
 
   document.addEventListener('click', event => {
@@ -1774,7 +1790,7 @@ document.addEventListener("DOMContentLoaded", () => {
   });
 
   window.addEventListener('strategic-owl-access-change', event => {
-    updateOwlPreviewState();
+    updateOwlAccessState();
 
     if (event.detail && event.detail.active && pendingCandidateKey) {
       const candidateKey = pendingCandidateKey;
@@ -1784,7 +1800,7 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   });
 
-  updateOwlPreviewState();
+  updateOwlAccessState();
 });
   // --- ZIP → House lookup helpers ---
 function buildZipForHouse(raw) {
