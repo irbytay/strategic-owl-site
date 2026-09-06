@@ -1,0 +1,457 @@
+/* Styles migrated from the_constitution.html. */
+/* 🔹 CSS variables (theme colors) */
+  :root {
+    --background: #0D1B2A;
+    --surface: #112240;
+    --highlight: #1A2B4C;
+    --truth: #28A745;
+    --reliability: #3B6CED;
+    --understanding: #D4AF37;
+    --text: #FFFFFF;
+    --text-muted: #7C8A9B;
+    --heading: #FFFFF0;
+    --shadow: rgba(0, 0, 0, 0.3);
+    --bar-red: #FF4C4C;
+    --bar-green: #28A745;
+  }
+
+  /* 🔹 Body base styles */
+  body {
+    background-color: var(--background);
+    color: var(--text);
+    font-family: 'Inter', sans-serif;
+    margin: 0;
+    padding: 0;
+  }
+
+  /* 🧭 NAVBAR & MENU */
+  /* 🔹 Navbar styles */
+  nav.top-nav {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 999;
+    background-color: var(--highlight);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 14px 20px;
+    box-shadow: 0 2px 6px var(--shadow);
+  }
+
+  /* 🔹 Navbar title */
+  .nav-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 22px;
+    color: var(--understanding);
+  }
+
+  /* 🔹 Navbar menu toggle button */
+  .menu-toggle {
+    display: none;
+    font-size: 24px;
+    cursor: pointer;
+    color: var(--text);
+    background: none;
+    border: none;
+  }
+
+  /* 🔹 Navbar links container */
+  .nav-links {
+    display: flex;
+    gap: 20px;
+  }
+
+  /* 🔹 Navbar link styles */
+  .nav-links a {
+    color: var(--text-muted);
+    text-decoration: none;
+    font-size: 15px;
+    transition: color 0.3s ease;
+  }
+
+  /* 🔹 Navbar link hover effect */
+  .nav-links a:hover {
+    color: var(--understanding);
+  }
+    /* 🔹 Navbar logo image */
+    .nav-logo img {
+  height: 40px;
+  width: 40px;
+}
+    /* 🔹 Navbar logo container */
+    .nav-logo {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  text-decoration: none;
+  font-weight: 600;
+  color: var(--text);
+  font-size: 1.25rem;
+}
+    /* 🔹 TRU Bars section */
+  .divider-section {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin: 40px auto;
+  }
+
+  /* 🔹 TRU Bars bar container */
+  .divider-bar {
+    display: flex;
+    gap: 12px;
+    width: 340px;
+  }
+
+  /* 🔹 Individual TRU bar */
+  .divider-bar div {
+    width: 108px;
+    height: 6px;
+    border-radius: 3px;
+    box-shadow: 0 0 4px var(--shadow);
+  }
+
+  /* 🔹 TRU bar colors */
+  .truth { background-color: var(--truth); }
+  .reliability { background-color: var(--reliability); }
+  .understanding { background-color: var(--understanding); }
+
+  /* 🔹 TRU Bars labels container */
+  .divider-labels {
+    display: flex;
+    justify-content: center;
+    gap: 12px;
+    width: 340px;
+    margin-top: 8px;
+  }
+
+  /* 🔹 TRU Bars label text */
+  .divider-labels span {
+    width: 108px;
+    text-align: center;
+    font-size: 0.85rem;
+    color: var(--text-muted);
+  }
+
+  /* 🔹 Responsive styles for navbar (mobile) */
+  @media (max-width: 768px) {
+    /* 🔹 Show menu toggle on mobile */
+    .menu-toggle {
+      display: block;
+    }
+
+    /* 🔹 Mobile navbar links container */
+    .nav-links {
+      display: none;
+      flex-direction: column;
+      align-items: center;/* 👈 links side-by-side on mobile */
+      justify-content: center;
+      background-color: var(--highlight);
+      position: absolute;
+      top: 58px;
+      left: 0;
+      width: 100%;
+      padding: 10px 0;
+      gap: 20px;
+      box-shadow: 0 3px 8px var(--shadow);
+    }
+    /* 🔹 Mobile navbar link styles */
+    .nav-links a {
+  padding: 10px 0;
+  width: 100%;
+  text-align: center;
+  font-size: 1rem;
+}
+
+    /* 🔹 Show mobile navbar links */
+    .nav-links.show {
+      display: flex;
+      animation: fadeSlideDown 0.3s ease;
+    }
+
+    /* 🔹 Animation for mobile navbar links */
+    @keyframes fadeSlideDown {
+      from {
+        opacity: 0;
+        transform: translateY(-10px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+  }
+    /* 🔹 Responsive styles for legal popup and text (mobile) */
+    @media (max-width: 500px) {
+  #legal-popup > div {
+    padding: 12px;
+    font-size: 0.95rem;
+  }
+
+  #accept-btn {
+    width: 100%;
+    font-size: 1rem;
+  }
+
+  p {
+    font-size: 0.95rem;
+    margin-bottom: 16px;
+  }
+}
+
+  /* 🔹 Founding text style box (amendment quick output) */
+  /* ⚠️ This style is applied to the right-side display that is injected via JS when a right is selected.
+     The text itself (e.g., "→ Amendment: 1 (I)") comes from the hardcoded map in JavaScript (rightToAmendmentMap),
+     not from the Google Sheet.
+  */
+  .founding-text-box {
+  background: #FFF8DC; /* parchment tone */
+  border-radius: 8px;
+  border: 1.5px solid #D2B48C; /* softer parchment border */
+  box-shadow: 
+    0 4px 12px rgba(0, 0, 0, 0.25),
+    inset 0 0 8px rgba(0, 0, 0, 0.15);
+
+  font-family: "Times New Roman", Times, serif;
+  font-style: italic;
+  font-size: 1.2rem;
+  font-weight: 500;
+  color: #5A3E1B; /* rich brown ink tone */
+
+  padding: 1.5rem;
+  margin: 1.5rem auto;
+  max-width: 720px;
+  text-align: left; /* reads more constitutional */
+  line-height: 1.7;
+  white-space: pre-line;
+}
+  /* 🔹 Main container */
+  .container {
+    max-width: 960px;
+    margin: 100px auto 0 auto;
+    padding: 24px;
+  }
+
+  /* ⚠️ This class is applied to content dynamically inserted from the Google Sheet (e.g., full amendment text,
+     strategic insights, and prompts). The data comes from the range "the_constitution!A2:G1000" for insights
+     and founding text, and "the_constitution!F2:G100" for subject lookup.
+  */
+  /* 🔹 Content box (dynamic width) */
+  .content-box {
+    background: #FFF8DC; /* parchment tone */
+    font-family: "Times New Roman", Times, serif;
+    font-style: italic;
+    font-size: 20px;
+    line-height: 1.7;
+    font-weight: 500;
+    color: #5A3E1B; /* ink tone */
+
+    padding: 1.5rem;
+    border-radius: 8px;
+    border: 1.5px solid #D2B48C;
+    box-shadow:
+      0 4px 12px rgba(0, 0, 0, 0.25),
+      inset 0 0 8px rgba(0, 0, 0, 0.15);
+
+    margin: 1rem auto;
+    white-space: pre-wrap;
+    overflow-x: auto;
+  }
+  /* 🔹 Wide content box */
+  .wide-box {
+    max-width: 1200px;
+  }
+  /* 🔹 Narrow content box */
+  .narrow-box {
+    max-width: 720px;
+  }
+
+  /* 🔹 Heading 1 styles */
+  h1 {
+    font-family: 'Playfair Display', serif;
+    color: var(--understanding);
+    margin-bottom: 16px;
+    text-align: center;
+  }
+  /* 🔹 Heading 2 styles */
+  h2 {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.5rem;
+  color: var(--understanding); /* golden highlight */
+  font-weight: 600;
+  margin-top: 32px;
+  margin-bottom: 12px;
+  text-align: center;
+}
+  /* 🔹 Paragraph styles */
+  p {
+  font-family: 'Inter', sans-serif;
+  font-size: 1.05rem;
+  color: var(--text-muted);
+  line-height: 1.6;
+  margin-bottom: 20px;
+  text-align: center;
+  max-width: 700px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+  /* 🔹 Dropdown select styles */
+  select {
+    padding: 12px 14px;
+    background-color: rgba(255, 255, 255, 0.05);
+    color: var(--understanding);
+    font-family: 'Copperplate', serif;
+    font-size: 15px;
+    font-weight: 500;
+    border: 1px solid rgba(212, 175, 55, 0.4);
+    border-radius: 12px;
+    width: 100%;
+    max-width: 420px;
+    box-shadow: 0 4px 12px rgba(212, 175, 55, 0.2);
+    appearance: none;
+    background-image: url("data:image/svg+xml;utf8,<svg fill='%23D4AF37' height='18' viewBox='0 0 24 24' width='18' xmlns='http://www.w3.org/2000/svg'><path d='M7 10l5 5 5-5z'/></svg>");
+    background-repeat: no-repeat;
+    background-position: right 10px center;
+    background-size: 16px;
+    transition: box-shadow 0.3s ease, border-color 0.3s ease;
+  }
+
+  /* 🔹 Label styles */
+  label {
+    color: var(--understanding);
+    font-family: 'Copperplate', serif;
+    font-size: 16px;
+    font-weight: 500;
+    text-align: center;
+  }
+
+  /* 🔹 Dropdown hover/focus styles */
+  select:hover,
+  select:focus {
+    border-color: var(--understanding);
+    box-shadow: 0 0 10px var(--understanding);
+    outline: none;
+  }
+
+  /* 🔹 Table styles */
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    background-color: var(--surface);
+    margin-top: 12px;
+  }
+
+  /* 🔹 Table header and cell styles */
+  th, td {
+    padding: 12px;
+    border-bottom: 1px solid var(--highlight);
+    text-align: left;
+  }
+
+  /* 🔹 TRU colored text */
+  .text-truth { color: var(--truth); }
+  .text-reliability { color: var(--reliability); }
+  .text-understanding { color: var(--understanding); }
+
+  /* 🔹 Total score text */
+  .total-score {
+    font-weight: bold;
+  }
+
+  /* 🔹 Score coloring */
+  .positive-score { color: var(--bar-green); }
+  .negative-score { color: var(--bar-red); }
+
+  /* 🔹 Score bar container */
+  .score-bar {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  /* 🔹 Score bar indicator */
+  .bar-indicator {
+    width: 10px;
+    height: 24px;
+    border-radius: 2px;
+  }
+
+  /* 🔹 Red bar (negative) */
+  .bar-red {
+    background-color: var(--bar-red);
+  }
+
+  /* 🔹 Green bar (positive) */
+  .bar-green {
+    background-color: var(--bar-green);
+  }
+    /* 🔹 Match navigation link */
+    .match-nav-link {
+  color: var(--text-muted);
+  text-decoration: none;
+  font-size: 15px;
+  transition: color 0.3s ease;
+}
+
+/* 🔹 Match navigation link hover */
+.match-nav-link:hover {
+  color: var(--understanding);
+}
+
+/* 🔹 Important link (styled, with arrows and hover effect) */
+.important-link {
+  color: var(--understanding);               /* Gold color from your theme */
+  font-weight: 700;                          /* Bold for visibility */
+  text-decoration: underline;                /* Underline to signal it's a link */
+  text-underline-offset: 4px;                /* Adds spacing between text and underline */
+  position: relative;                        /* Required for pseudo-elements */
+  transition: color 0.3s ease, text-shadow 0.3s ease;  /* Smooth hover transitions */
+}
+
+/* 🔹 Important link: right-pointing arrow before */
+.important-link::before {
+  content: '→ ';                             /* Arrow pointing right */
+  display: inline-block;                     /* So we can animate it */
+  margin-right: 6px;                         /* Space between arrow and text */
+  transition: transform 0.3s ease;           /* Smooth movement on hover */
+}
+
+/* 🔹 Important link: left-pointing arrow after */
+.important-link::after {
+  content: ' ←';                             /* Arrow pointing left */
+  display: inline-block;                     /* Enables transform */
+  margin-left: 6px;                          /* Space between text and arrow */
+  transition: transform 0.3s ease;           /* Smooth hover animation */
+}
+
+/* 🔹 Important link: animate left arrow on hover */
+.important-link:hover::before {
+  transform: translateX(4px);                /* Moves → arrow to the right */
+}
+
+/* 🔹 Important link: animate right arrow on hover */
+.important-link:hover::after {
+  transform: translateX(-4px);               /* Moves ← arrow to the left */
+}
+
+/* 🔹 Important link: hover glow and color change */
+.important-link:hover {
+  text-shadow: 0 0 8px var(--understanding); /* Subtle glow using gold tone */
+  color: var(--truth);                       /* Optional: changes to green (truth color) */
+}
+
+/* 🔹 Strategic intro box */
+.strategic-intro-box {
+  border: 2px solid #C4A000;
+  background-color: rgba(255, 255, 255, 0.85);
+  border-radius: 12px;
+  padding: 1.25rem;
+  margin: 0 auto 2rem auto;
+  max-width: 800px;
+  text-align: center;
+  font-family: 'Times New Roman', serif;
+  box-shadow: 0 0 10px rgba(196, 160, 0, 0.2);
+}

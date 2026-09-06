@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Media Influence Quiz | The Strategic Owl</title>
+  <meta name="description" content="Explore how media framing and information habits influence what you believe." />
+
+  <!-- Open Graph Meta (Facebook, LinkedIn, Discord, etc.) -->
+  <meta property="og:title" content="The Strategic Owl | Truth. Reliability. Understanding." />
+  <meta property="og:description" content="Measure credibility and uncover truth using the TRU OWL Score — a tool for independent thinkers." />
+  <meta property="og:image" content="https://thestrategicowl.com/STOInsightQuiz.png" />
+  <meta property="og:image:type" content="image/png" />
+  <meta property="og:image:width" content="1200" />
+  <meta property="og:image:height" content="630" />
+  <meta property="og:url" content="https://thestrategicowl.com" />
+  <meta property="og:type" content="website" />
+
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&family=Playfair+Display:wght@600;700&display=swap" rel="stylesheet" />
+
+  
+
+  <link rel="icon" type="image/png" href="assets/images/3X.png" />
+  <link rel="stylesheet" href="assets/css/pages/media-influence-quiz.css" />
+  <link rel="stylesheet" href="assets/css/site.css?v=20260906-4" />
+  <script src="assets/js/site-shell.js?v=20260906-3" defer></script>
+  <script src="assets/js/owl-access.js" defer></script>
+</head>
+<body class="site-body" data-page="media-influence-quiz">
+  <a class="skip-link" href="#main-content">Skip to content</a>
+  <div id="site-header"></div>
+  <main id="main-content" class="site-page site-page--media-influence-quiz" tabindex="-1">
+<div class="container">
+    <h1 style="text-align: center; color: var(--understanding); font-family: 'Playfair Display', serif;">
+    Insight Quiz
+  </h1>
+<!-- 🎯 Divider -->
+    <section class="divider-section">
+      <div class="divider-bar">
+        <div class="truth"></div>
+        <div class="reliability"></div>
+        <div class="understanding"></div>
+      </div>
+      <div class="divider-labels">
+        <span>Truth</span>
+        <span>Reliability</span>
+        <span>Understanding</span>
+      </div>
+    </section>
+ <!-- 🦉 Strategic Owl Radicalization Quiz -->
+<div id="quiz-container" class="container">
+
+  <div style="
+    background: linear-gradient(to bottom right, #1A2B4C, #0D1B2A);
+    border: 1px solid var(--understanding);
+    border-radius: 12px;
+    box-shadow: 0 0 10px rgba(212, 175, 55, 0.2);
+    padding: 24px;
+    margin-bottom: 32px;
+    max-width: 720px;
+    margin-left: auto;
+    margin-right: auto;
+    color: #CCCCCC;
+    font-family: 'Roboto', sans-serif;
+    line-height: 1.6;
+    font-size: 1rem;
+    text-align: center;
+  ">
+    <p style="margin-bottom: 12px;">
+      This tool measures civic alignment — not political views. It’s anonymous, quick, and reveals how your beliefs align with American values like liberty, civic duty, and equal justice.
+    </p>
+    <p style="margin-bottom: 0;">
+      Answer honestly. This isn’t a test — it’s a mirror.
+    </p>
+  </div>
+
+  <div id="quiz-question" style="margin-top: 40px; text-align: center;"></div>
+
+  <div id="quiz-scale" style="display: flex; flex-wrap: wrap; justify-content: center; gap: 10px; margin: 20px 0;"></div>
+
+  <!-- Inline narrative response area -->
+  <div id="narrative-display" style="max-width: 600px; margin: 0 auto; padding: 20px; display: none; background-color: var(--surface); color: var(--text); border-left: 4px solid var(--reliability); border-radius: 8px; font-size: 1rem; font-family: 'Inter', sans-serif;"></div>
+
+  <!-- "Next" button shown AFTER delay -->
+  <button id="next-question" style="
+  display: none;
+  margin: 20px auto 0;
+  background-color: transparent;
+  color: var(--understanding);
+  padding: 10px 24px;
+  border: 2px solid var(--understanding);
+  border-radius: 10px;
+  font-size: 1rem;
+  font-family: 'Montserrat', sans-serif;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+" onmouseover="this.style.backgroundColor='var(--understanding)'; this.style.color='var(--navy)';"
+  onmouseout="this.style.backgroundColor='transparent'; this.style.color='var(--understanding)';">
+  Yes. Continue →
+</button>
+
+  <div id="quiz-result" style="margin-top: 40px;"></div>
+</div>
+  </main>
+  <div id="site-footer"></div>
+  <script src="assets/js/pages/media-influence-quiz.js" defer></script>
+</body>
+</html>
