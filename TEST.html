@@ -1041,6 +1041,135 @@ table.tru-table td:nth-child(2) {
     padding: 16px;
   }
 }
+
+/* Owl Access frontend shell. Supabase connection is added in the final phase. */
+.tru-nav-actions {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.tru-owl-access-button {
+  width: 42px;
+  height: 42px;
+  display: grid;
+  place-items: center;
+  border: 1px solid var(--understanding);
+  border-radius: 50%;
+  background: #0B1C3D;
+  color: var(--text);
+  cursor: pointer;
+  font-size: 21px;
+}
+
+.tru-owl-access-button[data-access="active"] {
+  background: var(--understanding);
+  color: var(--background);
+  box-shadow: 0 0 0 3px rgba(212, 175, 55, 0.18);
+}
+
+.tru-owl-modal[hidden] { display: none; }
+
+.tru-owl-modal {
+  position: fixed;
+  inset: 0;
+  z-index: 2000;
+  display: grid;
+  place-items: center;
+  padding: 20px;
+  background: rgba(0, 0, 0, 0.72);
+}
+
+.tru-owl-modal-card {
+  width: min(620px, 100%);
+  max-height: 88vh;
+  overflow: auto;
+  padding: 24px;
+  border: 1px solid var(--understanding);
+  border-radius: 16px;
+  background: var(--surface);
+  box-shadow: 0 18px 50px rgba(0, 0, 0, 0.55);
+}
+
+.tru-owl-modal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 16px;
+}
+
+.tru-owl-modal-header h2 { margin: 0; }
+
+.tru-owl-close-button {
+  border: 0;
+  background: transparent;
+  color: var(--text);
+  cursor: pointer;
+  font-size: 28px;
+  line-height: 1;
+}
+
+.tru-owl-form,
+.tru-owl-links {
+  display: grid;
+  gap: 10px;
+  margin-top: 16px;
+}
+
+.tru-owl-links { grid-template-columns: 1fr 1fr; }
+
+.tru-owl-field,
+.tru-owl-primary-button,
+.tru-owl-secondary-button {
+  box-sizing: border-box;
+  width: 100%;
+  min-width: 0;
+  padding: 11px 12px;
+  border: 1px solid var(--understanding);
+  border-radius: 10px;
+  font: inherit;
+}
+
+.tru-owl-field {
+  background: #fff;
+  color: #111827;
+}
+
+.tru-owl-primary-button,
+.tru-owl-secondary-button {
+  background: #0B1C3D;
+  color: var(--text);
+  cursor: pointer;
+  font-weight: 700;
+  text-align: center;
+  text-decoration: none;
+}
+
+.tru-owl-note,
+.tru-owl-message {
+  color: var(--text-muted);
+  font-size: 14px;
+  line-height: 1.5;
+}
+
+.tru-owl-note {
+  padding: 10px 12px;
+  border-left: 4px solid var(--understanding);
+  background: rgba(212, 175, 55, 0.1);
+}
+
+.tru-owl-message {
+  min-height: 20px;
+  margin: 0;
+  color: var(--understanding);
+}
+
+body.tru-owl-modal-open { overflow: hidden; }
+
+@media (max-width: 768px) {
+  .tru-nav-actions { margin-left: auto; }
+  .tru-owl-links { grid-template-columns: 1fr; }
+}
 </style>
 
 <nav class="top-nav">
@@ -1048,7 +1177,6 @@ table.tru-table td:nth-child(2) {
   <img src="owl_logo_white.png" alt="Owl Logo" onerror="this.style.display='none';" />
   <div class="nav-title">The Strategic Owl</div>
 </a>
-  <button class="menu-toggle" onclick="toggleMenu()">☰</button>
   <div class="nav-links" id="navMenu">
   <a href="Index.html">Home</a>
   <a href="feed.html">The Perch</a>
@@ -1061,6 +1189,10 @@ table.tru-table td:nth-child(2) {
 <a href="newcontact3.html">Contact</a>
 <a href="https://thestrategicowl.printful.me" target="_blank" rel="noopener noreferrer">Owl Merch</a>
 </div>
+  <div class="tru-nav-actions">
+    <button class="tru-owl-access-button" id="truOwlAccessOpen" type="button" data-access="locked" aria-haspopup="dialog" aria-label="Open Owl Access" title="Owl Access">&#129417;</button>
+    <button class="menu-toggle" onclick="toggleMenu()" aria-label="Toggle menu">☰</button>
+  </div>
 </nav>
   <div class="container">
     <h1 style="color: var(--understanding); font-size: 2.6rem; font-weight: 700;">T.R.U. Owl</h1>
@@ -1269,6 +1401,32 @@ table.tru-table td:nth-child(2) {
       </div>
     </section>
 
+  <div class="tru-owl-modal" id="truOwlAccessModal" role="dialog" aria-modal="true" aria-labelledby="truOwlAccessTitle" hidden>
+    <div class="tru-owl-modal-card">
+      <div class="tru-owl-modal-header">
+        <div>
+          <h2 id="truOwlAccessTitle">Owl Access</h2>
+          <p>Owl Access includes T.R.U. profile suggestions and expanded candidate research.</p>
+        </div>
+        <button class="tru-owl-close-button" type="button" data-tru-owl-close aria-label="Close Owl Access">&times;</button>
+      </div>
+
+      <p class="tru-owl-note">This testing page continues using its existing paid-Substack validation. Stripe validation will be connected with Supabase in the final phase.</p>
+
+      <div class="tru-owl-form">
+        <label for="truOwlAccessEmail">Paid Substack email</label>
+        <input class="tru-owl-field" id="truOwlAccessEmail" type="email" autocomplete="email" placeholder="you@example.com">
+        <button class="tru-owl-primary-button" id="truOwlAccessContinue" type="button">Validate Owl Access</button>
+        <p class="tru-owl-message" id="truOwlAccessMessage" role="status"></p>
+      </div>
+
+      <div class="tru-owl-links">
+        <a class="tru-owl-primary-button" href="https://buy.stripe.com/cNicN5eVt24X2c6aEhdwc05" target="_blank" rel="noopener noreferrer">View Stripe Option</a>
+        <a class="tru-owl-secondary-button" href="https://strategicowl.substack.com/subscribe" target="_blank" rel="noopener noreferrer">View Substack Options</a>
+      </div>
+    </div>
+  </div>
+
   <script>
   const TRU_MULTIPLIERS = {
     5: { truth: 4.0, reliability: 4.0, understanding: 5.0 },
@@ -1286,6 +1444,62 @@ const TRU_SUBMISSION_WEB_APP_URL = "https://script.google.com/macros/s/AKfycbzHM
 const TRU_OUT_OF_SCOPE_MESSAGE = "T.R.U. Scores are built for people who shape political or civic understanding. This submission appears outside that lane, or there is not enough public data to review fairly.";
 const TRU_SUBSCRIBER_CACHE_KEY = "truSubscriberValidationCache";
 const TRU_SUBSCRIBER_CACHE_DAYS = 7;
+
+function syncTRUOwlAccessState() {
+  const accessButton = document.getElementById("truOwlAccessOpen");
+  const messageEl = document.getElementById("truOwlAccessMessage");
+  if (accessButton) {
+    accessButton.dataset.access = isTRUSubscriberValidated ? "active" : "locked";
+    accessButton.setAttribute(
+      "aria-label",
+      isTRUSubscriberValidated ? "Owl Access is active" : "Open Owl Access"
+    );
+    accessButton.title = isTRUSubscriberValidated ? "Owl Access active" : "Owl Access";
+  }
+  if (messageEl && isTRUSubscriberValidated) {
+    messageEl.textContent = "Owl Access is active on this device.";
+  }
+}
+
+function openTRUOwlAccessModal() {
+  const modal = document.getElementById("truOwlAccessModal");
+  const modalEmail = document.getElementById("truOwlAccessEmail");
+  const existingEmail = document.getElementById("truSubscriberEmail");
+  if (!modal) return;
+  if (modalEmail && existingEmail && !modalEmail.value) {
+    modalEmail.value = existingEmail.value;
+  }
+  modal.hidden = false;
+  document.body.classList.add("tru-owl-modal-open");
+  if (modalEmail) modalEmail.focus();
+}
+
+function closeTRUOwlAccessModal() {
+  const modal = document.getElementById("truOwlAccessModal");
+  if (!modal) return;
+  modal.hidden = true;
+  document.body.classList.remove("tru-owl-modal-open");
+}
+
+function validateTRUOwlAccessFromModal() {
+  const modalEmail = document.getElementById("truOwlAccessEmail");
+  const existingEmail = document.getElementById("truSubscriberEmail");
+  const messageEl = document.getElementById("truOwlAccessMessage");
+  const email = modalEmail ? modalEmail.value.trim().toLowerCase() : "";
+
+  if (!email || !email.includes("@") || !email.includes(".")) {
+    if (messageEl) messageEl.textContent = "Enter a valid paid Substack email.";
+    return;
+  }
+  if (!existingEmail) return;
+
+  existingEmail.value = email;
+  closeTRUOwlAccessModal();
+
+  const subscriberCard = document.querySelector(".tru-name-submit-card");
+  if (subscriberCard) subscriberCard.scrollIntoView({ behavior: "smooth", block: "center" });
+  window.setTimeout(validateTRUSubscriberEmail, 250);
+}
 
 function getTRUSubscriberCacheExpiration() {
   return Date.now() + TRU_SUBSCRIBER_CACHE_DAYS * 24 * 60 * 60 * 1000;
@@ -1355,6 +1569,8 @@ function unlockTRUProfileSuggestionForm(message) {
   if (fieldsEl) {
     fieldsEl.style.display = "block";
   }
+
+  syncTRUOwlAccessState();
 }
 
 function restoreTRUSubscriberValidationCache() {
@@ -1755,6 +1971,7 @@ function getTRULanguageComments(row) {
   const subscriberEmail = emailInput.value.trim().toLowerCase();
 
   isTRUSubscriberValidated = false;
+  syncTRUOwlAccessState();
   fieldsEl.style.display = "none";
 
   if (!subscriberEmail) {
@@ -1802,6 +2019,7 @@ function getTRULanguageComments(row) {
 
     if (response.valid !== true) {
       isTRUSubscriberValidated = false;
+      syncTRUOwlAccessState();
       fieldsEl.style.display = "none";
 
       showTRUSubscriberValidationMessage(
@@ -2025,6 +2243,28 @@ if (!isTRUSubscriberValidated) {
 
   document.addEventListener("DOMContentLoaded", async () => {
     restoreTRUSubscriberValidationCache();
+    syncTRUOwlAccessState();
+
+    const accessOpenButton = document.getElementById("truOwlAccessOpen");
+    const accessContinueButton = document.getElementById("truOwlAccessContinue");
+    const modal = document.getElementById("truOwlAccessModal");
+
+    if (accessOpenButton) accessOpenButton.addEventListener("click", openTRUOwlAccessModal);
+    if (accessContinueButton) accessContinueButton.addEventListener("click", validateTRUOwlAccessFromModal);
+
+    document.querySelectorAll("[data-tru-owl-close]").forEach(button => {
+      button.addEventListener("click", closeTRUOwlAccessModal);
+    });
+
+    if (modal) {
+      modal.addEventListener("click", event => {
+        if (event.target === modal) closeTRUOwlAccessModal();
+      });
+    }
+
+    document.addEventListener("keydown", event => {
+      if (event.key === "Escape" && modal && !modal.hidden) closeTRUOwlAccessModal();
+    });
 
     const data = await fetchTRUData();
     populateDropdowns(data);
