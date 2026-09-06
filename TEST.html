@@ -23,6 +23,7 @@
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&family=Playfair+Display:wght@600;700&display=swap" rel="stylesheet" />
   <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600&display=swap" rel="stylesheet">
   <link href="https://fonts.googleapis.com/css2?family=Roboto+Slab:wght@400;500;700&display=swap" rel="stylesheet">
+  <script src="owl-access.js" defer></script>
 
   <style>
   :root {
@@ -1049,25 +1050,6 @@ table.tru-table td:nth-child(2) {
   gap: 10px;
 }
 
-.tru-owl-access-button {
-  width: 42px;
-  height: 42px;
-  display: grid;
-  place-items: center;
-  border: 1px solid var(--understanding);
-  border-radius: 50%;
-  background: #0B1C3D;
-  color: var(--text);
-  cursor: pointer;
-  font-size: 21px;
-}
-
-.tru-owl-access-button[data-access="active"] {
-  background: var(--understanding);
-  color: var(--background);
-  box-shadow: 0 0 0 3px rgba(212, 175, 55, 0.18);
-}
-
 .tru-owl-modal[hidden] { display: none; }
 
 .tru-owl-modal {
@@ -1188,9 +1170,9 @@ body.tru-owl-modal-open { overflow: hidden; }
 <a href="the_constitution.html">The Constitution</a>
 <a href="newcontact3.html">Contact</a>
 <a href="https://thestrategicowl.printful.me" target="_blank" rel="noopener noreferrer">Owl Merch</a>
-</div>
+  </div>
   <div class="tru-nav-actions">
-    <button class="tru-owl-access-button" id="truOwlAccessOpen" type="button" data-access="locked" aria-haspopup="dialog" aria-label="Open Owl Access" title="Owl Access">&#129417;</button>
+    <owl-access-button id="owl-access-open" data-access="locked"></owl-access-button>
     <button class="menu-toggle" onclick="toggleMenu()" aria-label="Toggle menu">☰</button>
   </div>
 </nav>
@@ -1446,7 +1428,7 @@ const TRU_SUBSCRIBER_CACHE_KEY = "truSubscriberValidationCache";
 const TRU_SUBSCRIBER_CACHE_DAYS = 7;
 
 function syncTRUOwlAccessState() {
-  const accessButton = document.getElementById("truOwlAccessOpen");
+  const accessButton = document.getElementById("owl-access-open");
   const messageEl = document.getElementById("truOwlAccessMessage");
   if (accessButton) {
     accessButton.dataset.access = isTRUSubscriberValidated ? "active" : "locked";
@@ -1508,14 +1490,20 @@ function getTRUSubscriberCacheExpiration() {
 function saveTRUSubscriberValidationCache(email) {
   if (!email) return;
 
+  const expiresAt = getTRUSubscriberCacheExpiration();
+
   try {
     localStorage.setItem(
       TRU_SUBSCRIBER_CACHE_KEY,
       JSON.stringify({
         email,
-        expiresAt: getTRUSubscriberCacheExpiration()
+        expiresAt
       })
     );
+
+    if (window.StrategicOwlAccess) {
+      window.StrategicOwlAccess.activate(email, expiresAt);
+    }
   } catch (error) {
     console.warn("Unable to save TRU subscriber validation cache", error);
   }
@@ -1524,7 +1512,11 @@ function saveTRUSubscriberValidationCache(email) {
 function getTRUSubscriberValidationCache() {
   try {
     const rawCache = localStorage.getItem(TRU_SUBSCRIBER_CACHE_KEY);
-    if (!rawCache) return null;
+    if (!rawCache) {
+      return window.StrategicOwlAccess
+        ? window.StrategicOwlAccess.getSession()
+        : null;
+    }
 
     const cache = JSON.parse(rawCache);
 
@@ -1576,6 +1568,10 @@ function unlockTRUProfileSuggestionForm(message) {
 function restoreTRUSubscriberValidationCache() {
   const cache = getTRUSubscriberValidationCache();
   if (!cache) return;
+
+  if (window.StrategicOwlAccess) {
+    window.StrategicOwlAccess.activate(cache.email, cache.expiresAt);
+  }
 
   const emailInput = document.getElementById("truSubscriberEmail");
 
@@ -2245,7 +2241,7 @@ if (!isTRUSubscriberValidated) {
     restoreTRUSubscriberValidationCache();
     syncTRUOwlAccessState();
 
-    const accessOpenButton = document.getElementById("truOwlAccessOpen");
+    const accessOpenButton = document.getElementById("owl-access-open");
     const accessContinueButton = document.getElementById("truOwlAccessContinue");
     const modal = document.getElementById("truOwlAccessModal");
 
