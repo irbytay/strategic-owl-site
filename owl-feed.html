@@ -3,8 +3,8 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>The Strategic Owl</title>
-  <meta name="description" content="Credibility tools, voter resources, and public-interest research from The Strategic Owl." />
+  <title>Owl Feed | The Strategic Owl</title>
+  <meta name="description" content="The latest research, analysis, and updates from The Strategic Owl." />
 
   <!-- Open Graph Meta (Facebook, LinkedIn, Discord, etc.) -->
   <meta property="og:title" content="The Strategic Owl | Truth. Reliability. Understanding." />
@@ -28,19 +28,22 @@
   
 
   <link rel="icon" type="image/png" href="assets/images/3X.png" />
-  <link rel="stylesheet" href="assets/css/pages/home.css" />
+  <link rel="stylesheet" href="assets/css/pages/owl-feed.css?v=20260906-3" />
   <link rel="stylesheet" href="assets/css/site.css?v=20260906-4" />
   <script src="assets/js/site-shell.js?v=20260906-3" defer></script>
   <script src="assets/js/owl-access.js" defer></script>
 </head>
-<body class="site-body" data-page="home">
+<body class="site-body" data-page="owl-feed">
   <a class="skip-link" href="#main-content">Skip to content</a>
   <div id="site-header"></div>
-  <main id="main-content" class="site-page site-page--home" tabindex="-1">
-<div class="container">
-    <h1>The Strategic Owl</h1>
-<!-- 🎯 Divider -->
-    <section class="divider-section">
+  <main id="main-content" class="site-page site-page--owl-feed" tabindex="-1">
+  <div class="container">
+    <header class="perch-page-heading">
+      <img class="perch-page-mark" src="assets/images/3X.png" alt="" />
+      <h1 id="perch-feed-title">The Perch</h1>
+    </header>
+
+    <section class="divider-section" aria-label="Truth, Reliability, Understanding">
       <div class="divider-bar">
         <div class="truth"></div>
         <div class="reliability"></div>
@@ -52,9 +55,24 @@
         <span>Understanding</span>
       </div>
     </section>
-   <!-- 📱 App Promo Section -->
+    <!-- The Perch Feed (Supabase owl_posts) -->
+    <section id="perch-feed-section" aria-labelledby="perch-feed-title">
+      <p class="perch-page-intro">
+        Owl Logic and The Owl’s Position, updated from the Strategic Owl feed.
+      </p>
 
-    <!-- 🦉 Homepage (Google Sheet) dynamic blocks -->
+      <div class="perch-refresh-row">
+        <button class="perch-refresh-button" id="refresh-feed" title="Refresh feed" aria-label="Refresh feed">
+          Refresh Feed
+        </button>
+      </div>
+
+      <div id="perch-feed-list">
+        <div class="so-card">
+          <p class="so-card-subtitle" style="text-align:center; margin:0;">Loading the latest Owl Logic…</p>
+        </div>
+      </div>
+    </section>
 
     <div class="so-toast" id="so-toast" role="status" aria-live="polite"></div>
     <!-- Legal Popup -->
@@ -95,45 +113,8 @@
     </p>
   </div>
 </div>
-   <!-- 📱 App Promo Section -->
-  <div class="misconception-intro-container" style="background: linear-gradient(to bottom right, #1A2B4C, #0D1B2A); border: 1px solid #D4AF37; box-shadow: 0 0 12px rgba(212, 175, 55, 0.3); border-radius: 12px; padding: 24px; margin-top: 40px; text-align: center;">
-    <div style="display: flex; justify-content: center; align-items: baseline; gap: 10px; flex-wrap: wrap; margin-bottom: 8px;">
-      <span class="announcement-label" style="text-align: center; display: inline-block;">Mission Update:</span>
-      <span id="mission-update-timestamp" style="font-size: 0.9rem; color: var(--text-muted); font-family: 'Inter', sans-serif;"></span>
-    </div>
-    <div id="mission-update-list" style="display: flex; flex-direction: column; align-items: center; gap: 8px; margin-bottom: 18px;"></div>
-    <a href="voter-resources.html" class="important-link" style="text-align: center; display: inline-block;">New Voter Dash</a>
-    <p style="text-align: center; max-width: 720px;">The Strategic Owl iPhone app brings everything you see here; credibility tools, the Constitution, and more—into your pocket, optimized for clarity and built for truth.</p>
-    <div><a href="https://thestrategicowl.printful.me" class="important-link" style="font-size: 1.15rem; text-align: center; display: inline-block;">New Merch - Go to store!</a></div>
-    <a href="https://apps.apple.com/app/the-strategic-owl/id6748349497" class="important-link" style="font-size: 1.15rem; text-align: center; display: inline-block;">Now on  App Store</a>
-    
-    <p style="text-align: center; margin-top: 24px;">Explore the platform:</p>
-    <a href="credibility-scores.html" class="important-link" style="text-align: center; display: inline-block;">The T.R.U. Owl</a>
-    <div style="margin-top: 6px; text-align: center;">
-      <span class="text-truth">Truth</span> · 
-      <span class="text-reliability">Reliability</span> · 
-      <span class="text-understanding">Understanding</span>
-    </div>
-    <div style="margin-top: 12px; display: flex; flex-direction: column; gap: 12px;">
-      <a href="media-influence-quiz.html" class="important-link" style="text-align: center; display: inline-block;">Take the Insight Quiz</a>
-      <a href="constitution.html" class="important-link" style="text-align: center; display: inline-block;">Read the Constitution</a>
-    </div>
-  </div>
-<div class="so-card" id="homepage-story-card" style="display:none;"></div>
-     <!-- 🎯 Divider -->
-    <section class="divider-section">
-      <div class="divider-bar">
-        <div class="truth"></div>
-        <div class="reliability"></div>
-        <div class="understanding"></div>
-      </div>
-      <div class="divider-labels">
-        <span>Truth</span>
-        <span>Reliability</span>
-        <span>Understanding</span>
-      </div>
-    </section>
-  </div>
+  
+    <div class="so-card" id="homepage-story-card" style="display:none;"></div>
   </div>
   <!-- 📜 Footer -->
   
@@ -209,6 +190,6 @@
 </script>
   </main>
   <div id="site-footer"></div>
-  <script src="assets/js/pages/home.js" defer></script>
+  <script src="assets/js/pages/owl-feed.js?v=20260906-2" defer></script>
 </body>
 </html>
