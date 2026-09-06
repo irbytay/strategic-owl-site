@@ -23,6 +23,7 @@
 
   <!-- Fonts -->
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&family=Playfair+Display:wght@600;700&display=swap" rel="stylesheet" />
+  <script src="owl-access.js" defer></script>
 
   <style>
   :root {
@@ -683,7 +684,6 @@
   gap: 10px;
 }
 
-.owl-access-button,
 .candidate-search button,
 .owl-primary-button,
 .owl-secondary-button,
@@ -695,19 +695,6 @@
   cursor: pointer;
   font: inherit;
   font-weight: 700;
-}
-
-.owl-access-button {
-  display: inline-flex;
-  align-items: center;
-  gap: 7px;
-  padding: 8px 11px;
-  white-space: nowrap;
-}
-
-.owl-access-button[data-access="preview"] {
-  background: var(--understanding);
-  color: var(--background);
 }
 
 .candidate-search {
@@ -897,7 +884,6 @@ body.owl-modal-open { overflow: hidden; }
 
 @media (max-width: 768px) {
   .nav-actions { margin-left: auto; }
-  .owl-access-button span:last-child { display: none; }
   .candidate-search-row { flex-direction: column; }
   .owl-topic-grid,
   .owl-access-links { grid-template-columns: 1fr; }
@@ -912,9 +898,7 @@ body.owl-modal-open { overflow: hidden; }
     <div class="nav-title">The Strategic Owl</div>
   </a>
   <div class="nav-actions">
-    <button class="owl-access-button" id="owl-access-open" type="button" data-access="locked" aria-haspopup="dialog">
-      <span aria-hidden="true">&#129417;</span><span>Owl Access</span>
-    </button>
+    <owl-access-button id="owl-access-open" data-access="locked"></owl-access-button>
     <button class="menu-toggle" id="menuToggle" aria-controls="mobileMenu" aria-expanded="false" aria-label="Toggle menu">☰</button>
   </div>
   <div class="nav-links" id="mobileMenu">
@@ -1258,6 +1242,12 @@ let birthStateMap = {};
   let owlPreviewUnlocked = false;
   let pendingCandidateKey = null;
 
+  function hasOwlAccess() {
+    return owlPreviewUnlocked || Boolean(
+      window.StrategicOwlAccess && window.StrategicOwlAccess.isActive()
+    );
+  }
+
   // Two-letter → full state name (to align C=abbr with AH=full)
   const STATE_ABBR_TO_NAME = {
     AL:"Alabama", AK:"Alaska", AZ:"Arizona", AR:"Arkansas", CA:"California", CO:"Colorado",
@@ -1458,7 +1448,7 @@ let birthStateMap = {};
       : "";
 
     const positions = c.key
-      ? ` <button class="owl-position-button" type="button" data-candidate-key="${escapeHtml(c.key)}" data-unlocked="${owlPreviewUnlocked}">View 11 Positions</button>`
+      ? ` <button class="owl-position-button" type="button" data-candidate-key="${escapeHtml(c.key)}" data-unlocked="${hasOwlAccess()}">View 11 Positions</button>`
       : "";
 
     return `<li>${escapeHtml(c.name)} <span style="opacity:.8;">(${escapeHtml(c.position)})</span>${extra}${trumpBadge}${impeachBadge}${site}${positions}</li>`;
@@ -1492,7 +1482,7 @@ let birthStateMap = {};
         <div>${candidateBadges(candidate)}</div>
         <div class="candidate-card-actions">
           ${website}
-          <button class="owl-position-button" type="button" data-candidate-key="${escapeHtml(candidate.key)}" data-unlocked="${owlPreviewUnlocked}">View 11 Positions</button>
+          <button class="owl-position-button" type="button" data-candidate-key="${escapeHtml(candidate.key)}" data-unlocked="${hasOwlAccess()}">View 11 Positions</button>
         </div>
       </article>`;
   }
@@ -1553,16 +1543,20 @@ let birthStateMap = {};
   function updateOwlPreviewState() {
     const accessButton = document.getElementById('owl-access-open');
     const previewButton = document.getElementById('owl-preview-toggle');
+    const subscriberAccessActive = Boolean(
+      window.StrategicOwlAccess && window.StrategicOwlAccess.isActive()
+    );
+    const accessActive = subscriberAccessActive || owlPreviewUnlocked;
+
     if (accessButton) {
-      accessButton.dataset.access = owlPreviewUnlocked ? 'preview' : 'locked';
-      const label = accessButton.querySelector('span:last-child');
-      if (label) label.textContent = owlPreviewUnlocked ? 'Owl Preview Active' : 'Owl Access';
+      accessButton.dataset.access = accessActive ? 'active' : 'locked';
     }
     if (previewButton) {
+      previewButton.hidden = subscriberAccessActive;
       previewButton.textContent = owlPreviewUnlocked ? 'Exit Subscriber Preview' : 'Preview Subscriber View';
     }
     document.querySelectorAll('.owl-position-button').forEach(button => {
-      button.dataset.unlocked = String(owlPreviewUnlocked);
+      button.dataset.unlocked = String(accessActive);
     });
   }
 
@@ -1570,7 +1564,7 @@ let birthStateMap = {};
     const candidate = candidateByKey.get(candidateKey);
     if (!candidate) return;
 
-    if (!owlPreviewUnlocked) {
+    if (!hasOwlAccess()) {
       pendingCandidateKey = candidateKey;
       openOwlModal('owl-access-modal');
       return;
@@ -1749,7 +1743,7 @@ document.addEventListener("DOMContentLoaded", () => {
         const candidateKey = pendingCandidateKey;
         pendingCandidateKey = null;
         openCandidatePositions(candidateKey);
-      } else if (!owlPreviewUnlocked) {
+      } else if (!hasOwlAccess()) {
         pendingCandidateKey = null;
         closeOwlModal(document.getElementById('owl-positions-modal'));
       }
@@ -1777,6 +1771,17 @@ document.addEventListener("DOMContentLoaded", () => {
   document.addEventListener('keydown', event => {
     if (event.key !== 'Escape') return;
     document.querySelectorAll('.owl-modal:not([hidden])').forEach(closeOwlModal);
+  });
+
+  window.addEventListener('strategic-owl-access-change', event => {
+    updateOwlPreviewState();
+
+    if (event.detail && event.detail.active && pendingCandidateKey) {
+      const candidateKey = pendingCandidateKey;
+      pendingCandidateKey = null;
+      closeOwlModal(document.getElementById('owl-access-modal'));
+      openCandidatePositions(candidateKey);
+    }
   });
 
   updateOwlPreviewState();
