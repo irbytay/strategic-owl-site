@@ -945,6 +945,70 @@
   text-align: center;
 }
 
+.so-helpful-btn,
+.perch-post-action-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 7px;
+  min-height: 42px;
+  border: 1px solid rgba(212, 175, 55, 0.42);
+  border-radius: 13px;
+  background: rgba(17, 34, 64, 0.58);
+  color: var(--understanding);
+  cursor: pointer;
+  font-family: Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  font-size: 0.92rem;
+  font-weight: 700;
+  transition: background 0.16s ease, border-color 0.16s ease, transform 0.16s ease;
+}
+
+.so-helpful-btn {
+  flex: 0 0 auto;
+  min-height: 36px;
+  padding: 6px 9px;
+  border-color: transparent;
+  background: transparent;
+}
+
+.so-helpful-btn:hover,
+.perch-post-action-button:hover {
+  transform: translateY(-1px);
+  border-color: rgba(212, 175, 55, 0.72);
+  background: rgba(212, 175, 55, 0.12);
+}
+
+.so-helpful-btn:disabled {
+  cursor: wait;
+  opacity: 0.58;
+  transform: none;
+}
+
+.so-helpful-btn.liked {
+  border-color: rgba(212, 175, 55, 0.48);
+  background: rgba(212, 175, 55, 0.12);
+  box-shadow: 0 0 14px rgba(212, 175, 55, 0.12);
+}
+
+.so-helpful-icon,
+.perch-post-action-button svg {
+  width: 18px;
+  height: 18px;
+  fill: currentColor;
+  flex: 0 0 auto;
+}
+
+.perch-post-action-button {
+  min-width: 150px;
+  padding: 9px 16px;
+}
+
+@media (max-width: 420px) {
+  .so-helpful-btn {
+    font-size: 0.86rem;
+  }
+}
+
 @media (max-width: 600px) {
   .site-page--owl-feed > .container {
     margin-top: 12px;
