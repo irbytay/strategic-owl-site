@@ -2,7 +2,7 @@
   const SUPABASE_URL = "https://gopyzkcmvkbusdnwjlbb.supabase.co";
   const SUPABASE_PUBLISHABLE_KEY =
     "sb_publishable_CYM_aXzslre6SE8P-tTYBw_sw_-gQ1h";
-  const OWL_POST_PAGES_URL = "https://owl-post-pages.irbytay.workers.dev";
+  const OWL_POST_PAGES_URL = "https://thestrategicowl.com/post/";
   let perchSupabaseClient = null;
   let perchSessionPromise = null;
 
@@ -178,9 +178,8 @@
   }
 
   function buildPostShareUrl(postId) {
-    const url = new URL(OWL_POST_PAGES_URL);
-    url.searchParams.set('id', String(postId || '').trim());
-    return url.toString();
+    const cleanedPostId = String(postId || '').trim();
+    return `${OWL_POST_PAGES_URL}${encodeURIComponent(cleanedPostId)}`;
   }
 
   async function sharePost(post, text, title) {
