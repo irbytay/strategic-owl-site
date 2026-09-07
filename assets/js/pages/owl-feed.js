@@ -3,6 +3,51 @@
   const SUPABASE_PUBLISHABLE_KEY =
     "sb_publishable_CYM_aXzslre6SE8P-tTYBw_sw_-gQ1h";
   const OWL_POST_PAGES_URL = "https://owl-post-pages.irbytay.workers.dev";
+  let perchSupabaseClient = null;
+  let perchSessionPromise = null;
+
+  function getPerchSupabaseClient() {
+    if (perchSupabaseClient) return perchSupabaseClient;
+    if (!window.supabase?.createClient) return null;
+
+    perchSupabaseClient = window.supabase.createClient(
+      SUPABASE_URL,
+      SUPABASE_PUBLISHABLE_KEY,
+      {
+        auth: {
+          autoRefreshToken: true,
+          persistSession: true,
+          detectSessionInUrl: false,
+        },
+      },
+    );
+    return perchSupabaseClient;
+  }
+
+  async function ensurePerchSession() {
+    if (perchSessionPromise) return perchSessionPromise;
+
+    perchSessionPromise = (async () => {
+      const client = getPerchSupabaseClient();
+      if (!client) throw new Error('Supabase browser client did not load.');
+
+      const { data: sessionData, error: sessionError } = await client.auth.getSession();
+      if (sessionError) throw sessionError;
+      if (sessionData.session?.user?.id) return sessionData.session.user;
+
+      const { data, error } = await client.auth.signInAnonymously();
+      if (error) throw error;
+      if (!data.user?.id) throw new Error('Supabase did not create an anonymous session.');
+      return data.user;
+    })();
+
+    try {
+      return await perchSessionPromise;
+    } catch (error) {
+      perchSessionPromise = null;
+      throw error;
+    }
+  }
 
   function soToast(msg) {
     const el = document.getElementById('so-toast');
@@ -159,6 +204,83 @@
     }
   }
 
+  function helpfulItemKey(postId, section) {
+    return `owl_logic_feed:${postId}:${section}`;
+  }
+
+  function updateHelpfulButton(button, count, liked) {
+    if (!button) return;
+    button.disabled = false;
+    button.dataset.liked = liked ? 'true' : 'false';
+    button.setAttribute('aria-pressed', liked ? 'true' : 'false');
+    button.classList.toggle('liked', liked);
+
+    const label = button.querySelector('[data-helpful-label]');
+    if (label) label.textContent = count > 0 ? `${count} Helpful` : 'Helpful';
+  }
+
+  async function refreshHelpfulStates(posts) {
+    const validPosts = posts.filter((post) => String(post.id || '').trim());
+    if (!validPosts.length) return;
+
+    const user = await ensurePerchSession();
+    const client = getPerchSupabaseClient();
+    const itemKeys = validPosts.flatMap((post) => [
+      helpfulItemKey(post.id, 'daily_owl_logic'),
+      helpfulItemKey(post.id, 'strategic_positioning'),
+    ]);
+
+    const { data, error } = await client
+      .from('likes')
+      .select('item_key,user_id')
+      .in('item_key', itemKeys);
+
+    if (error) throw error;
+
+    const counts = new Map();
+    const mine = new Set();
+    (data || []).forEach((row) => {
+      counts.set(row.item_key, (counts.get(row.item_key) || 0) + 1);
+      if (row.user_id === user.id) mine.add(row.item_key);
+    });
+
+    validPosts.forEach((post) => {
+      const card = document.querySelector(`.perch-post[data-post-id="${CSS.escape(post.id)}"]`);
+      if (!card) return;
+
+      ['daily_owl_logic', 'strategic_positioning'].forEach((section) => {
+        const key = helpfulItemKey(post.id, section);
+        const button = card.querySelector(`[data-helpful="${section}"]`);
+        updateHelpfulButton(button, counts.get(key) || 0, mine.has(key));
+      });
+    });
+  }
+
+  async function toggleHelpful(post, section, button) {
+    if (!button || button.disabled) return;
+    button.disabled = true;
+
+    try {
+      const user = await ensurePerchSession();
+      const client = getPerchSupabaseClient();
+      const itemKey = helpfulItemKey(post.id, section);
+      const isLiked = button.dataset.liked === 'true';
+
+      const request = isLiked
+        ? client.from('likes').delete().eq('item_key', itemKey).eq('user_id', user.id)
+        : client.from('likes').insert({ item_key: itemKey, user_id: user.id });
+      const { error } = await request;
+      if (error) throw error;
+
+      await refreshHelpfulStates([post]);
+      soToast(isLiked ? 'Helpful reaction removed.' : 'Marked as Helpful.');
+    } catch (error) {
+      console.warn('Helpful reaction failed:', error);
+      button.disabled = false;
+      soToast('Helpful is unavailable right now.');
+    }
+  }
+
   function renderPerchPost(post) {
     return `
       <details class="so-card perch-post" data-post-id="${escapeHtml(post.id)}">
@@ -191,14 +313,10 @@
         <div class="perch-post-details">
           <div class="so-card-title-row">
             <h3 class="so-card-title">Owl Logic</h3>
-            <div class="so-actions">
-              <button class="so-icon-btn" data-copy="daily" title="Copy Owl Logic" aria-label="Copy Owl Logic">
-                <svg class="so-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M16 1H4a2 2 0 0 0-2 2v14h2V3h12V1zm4 4H8a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7a2 2 0 0 0-2-2zm0 18H8V7h12v16z"/></svg>
-              </button>
-              <button class="so-icon-btn" data-share="daily" title="Share Owl Logic" aria-label="Share Owl Logic">
-                <svg class="so-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M18 16.08c-.76 0-1.44.3-1.96.77L8.91 12.7a2.5 2.5 0 0 0 0-1.39l7.02-4.11A2.99 2.99 0 1 0 14 5a2.9 2.9 0 0 0 .04.49L7.02 9.6a3 3 0 1 0 0 4.8l7.02 4.11c-.03.16-.04.33-.04.49a3 3 0 1 0 3-2.92z"/></svg>
-              </button>
-            </div>
+            <button class="so-helpful-btn" data-helpful="daily_owl_logic" data-liked="false" type="button" aria-label="Mark Owl Logic as Helpful" aria-pressed="false" disabled>
+              <svg class="so-helpful-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M1 21h4V9H1v12zm22-10c0-1.1-.9-2-2-2h-6.31l.95-4.57.03-.32c0-.41-.17-.79-.44-1.06L14.17 2 7.59 8.59C7.22 8.95 7 9.45 7 10v9c0 1.1.9 2 2 2h9c.83 0 1.54-.5 1.84-1.22l3.02-7.05c.09-.23.14-.47.14-.73v-1z"/></svg>
+              <span data-helpful-label>Helpful</span>
+            </button>
           </div>
           <div class="so-card-body">${escapeHtml(post.dailyOwlLogic)}</div>
 
@@ -206,14 +324,10 @@
 
           <div class="so-card-title-row">
             <h3 class="so-card-title">The Owl’s Position</h3>
-            <div class="so-actions">
-              <button class="so-icon-btn" data-copy="position" title="Copy The Owl’s Position" aria-label="Copy The Owl’s Position">
-                <svg class="so-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M16 1H4a2 2 0 0 0-2 2v14h2V3h12V1zm4 4H8a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7a2 2 0 0 0-2-2zm0 18H8V7h12v16z"/></svg>
-              </button>
-              <button class="so-icon-btn" data-share="position" title="Share The Owl’s Position" aria-label="Share The Owl’s Position">
-                <svg class="so-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M18 16.08c-.76 0-1.44.3-1.96.77L8.91 12.7a2.5 2.5 0 0 0 0-1.39l7.02-4.11A2.99 2.99 0 1 0 14 5a2.9 2.9 0 0 0 .04.49L7.02 9.6a3 3 0 1 0 0 4.8l7.02 4.11c-.03.16-.04.33-.04.49a3 3 0 1 0 3-2.92z"/></svg>
-              </button>
-            </div>
+            <button class="so-helpful-btn" data-helpful="strategic_positioning" data-liked="false" type="button" aria-label="Mark The Owl’s Position as Helpful" aria-pressed="false" disabled>
+              <svg class="so-helpful-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M1 21h4V9H1v12zm22-10c0-1.1-.9-2-2-2h-6.31l.95-4.57.03-.32c0-.41-.17-.79-.44-1.06L14.17 2 7.59 8.59C7.22 8.95 7 9.45 7 10v9c0 1.1.9 2 2 2h9c.83 0 1.54-.5 1.84-1.22l3.02-7.05c.09-.23.14-.47.14-.73v-1z"/></svg>
+              <span data-helpful-label>Helpful</span>
+            </button>
           </div>
           <div class="so-card-body italic">${escapeHtml(post.strategicPositioning)}</div>
 
@@ -230,8 +344,9 @@
           ` : ''}
 
           <div class="perch-full-post-action">
-            <button class="perch-copy-full" data-copy="full" title="Copy full post" aria-label="Copy full post">
-              Copy Full Post
+            <button class="perch-post-action-button" data-share="full" type="button" title="Share post" aria-label="Share post">
+              <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M18 16.08c-.76 0-1.44.3-1.96.77L8.91 12.7a2.5 2.5 0 0 0 0-1.39l7.02-4.11A2.99 2.99 0 1 0 14 5a2.9 2.9 0 0 0 .04.49L7.02 9.6a3 3 0 1 0 0 4.8l7.02 4.11c-.03.16-.04.33-.04.49a3 3 0 1 0 3-2.92z"/></svg>
+              <span>Share Post</span>
             </button>
           </div>
         </div>
@@ -246,11 +361,17 @@
 
       const fullPost = buildFullPostText(post);
 
-      card.querySelector('[data-copy="daily"]')?.addEventListener('click', () => copyText(post.dailyOwlLogic, 'Owl Logic'));
-      card.querySelector('[data-share="daily"]')?.addEventListener('click', () => sharePost(post, post.dailyOwlLogic, 'Daily Owl Logic'));
-      card.querySelector('[data-copy="position"]')?.addEventListener('click', () => copyText(post.strategicPositioning, 'The Owl’s Position'));
-      card.querySelector('[data-share="position"]')?.addEventListener('click', () => sharePost(post, post.strategicPositioning, 'The Owl’s Position'));
-      card.querySelector('[data-copy="full"]')?.addEventListener('click', () => copyText(fullPost, 'full post'));
+      card.querySelector('[data-helpful="daily_owl_logic"]')?.addEventListener('click', (event) => {
+        toggleHelpful(post, 'daily_owl_logic', event.currentTarget);
+      });
+      card.querySelector('[data-helpful="strategic_positioning"]')?.addEventListener('click', (event) => {
+        toggleHelpful(post, 'strategic_positioning', event.currentTarget);
+      });
+      card.querySelector('[data-share="full"]')?.addEventListener('click', () => sharePost(post, fullPost, post.subject));
+    });
+
+    refreshHelpfulStates(posts).catch((error) => {
+      console.warn('Helpful totals failed to load:', error);
     });
   }
 
