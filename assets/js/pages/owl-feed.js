@@ -182,23 +182,20 @@
     return `${OWL_POST_PAGES_URL}${encodeURIComponent(cleanedPostId)}`;
   }
 
-  async function sharePost(post, text, title) {
-    const cleanText = String(text || '').trim();
+  async function sharePost(post) {
     const postUrl = buildPostShareUrl(post.id);
-    if (!cleanText || !post.id) return;
+    if (!post.id) return;
 
     if (navigator.share) {
       try {
         await navigator.share({
-          title: post.subject || title,
-          text: cleanText,
           url: postUrl,
         });
       } catch (_) {
         // User cancelled share sheet.
       }
     } else {
-      await copyText(`${cleanText}\n\n${postUrl}`, `${title} and post link`);
+      await copyText(postUrl, 'post link');
       soToast('Share not supported here. Post link copied instead.');
     }
   }
@@ -358,15 +355,13 @@
       const post = posts.find((item) => item.id === card.dataset.postId);
       if (!post) return;
 
-      const fullPost = buildFullPostText(post);
-
       card.querySelector('[data-helpful="daily_owl_logic"]')?.addEventListener('click', (event) => {
         toggleHelpful(post, 'daily_owl_logic', event.currentTarget);
       });
       card.querySelector('[data-helpful="strategic_positioning"]')?.addEventListener('click', (event) => {
         toggleHelpful(post, 'strategic_positioning', event.currentTarget);
       });
-      card.querySelector('[data-share="full"]')?.addEventListener('click', () => sharePost(post, fullPost, post.subject));
+      card.querySelector('[data-share="full"]')?.addEventListener('click', () => sharePost(post));
     });
 
     refreshHelpfulStates(posts).catch((error) => {
