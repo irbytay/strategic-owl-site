@@ -2,6 +2,7 @@
   const SUPABASE_URL = "https://gopyzkcmvkbusdnwjlbb.supabase.co";
   const SUPABASE_PUBLISHABLE_KEY =
     "sb_publishable_CYM_aXzslre6SE8P-tTYBw_sw_-gQ1h";
+  const OWL_POST_PAGES_URL = "https://owl-post-pages.irbytay.workers.dev";
 
   function soToast(msg) {
     const el = document.getElementById('so-toast');
@@ -131,19 +132,30 @@
     }
   }
 
-  async function shareText(text, title) {
+  function buildPostShareUrl(postId) {
+    const url = new URL(OWL_POST_PAGES_URL);
+    url.searchParams.set('id', String(postId || '').trim());
+    return url.toString();
+  }
+
+  async function sharePost(post, text, title) {
     const cleanText = String(text || '').trim();
-    if (!cleanText) return;
+    const postUrl = buildPostShareUrl(post.id);
+    if (!cleanText || !post.id) return;
 
     if (navigator.share) {
       try {
-        await navigator.share({ title, text: cleanText });
+        await navigator.share({
+          title: post.subject || title,
+          text: cleanText,
+          url: postUrl,
+        });
       } catch (_) {
         // User cancelled share sheet.
       }
     } else {
-      await copyText(cleanText, title);
-      soToast('Share not supported here. Copied instead.');
+      await copyText(`${cleanText}\n\n${postUrl}`, `${title} and post link`);
+      soToast('Share not supported here. Post link copied instead.');
     }
   }
 
@@ -235,9 +247,9 @@
       const fullPost = buildFullPostText(post);
 
       card.querySelector('[data-copy="daily"]')?.addEventListener('click', () => copyText(post.dailyOwlLogic, 'Owl Logic'));
-      card.querySelector('[data-share="daily"]')?.addEventListener('click', () => shareText(post.dailyOwlLogic, 'Daily Owl Logic'));
+      card.querySelector('[data-share="daily"]')?.addEventListener('click', () => sharePost(post, post.dailyOwlLogic, 'Daily Owl Logic'));
       card.querySelector('[data-copy="position"]')?.addEventListener('click', () => copyText(post.strategicPositioning, 'The Owl’s Position'));
-      card.querySelector('[data-share="position"]')?.addEventListener('click', () => shareText(post.strategicPositioning, 'The Owl’s Position'));
+      card.querySelector('[data-share="position"]')?.addEventListener('click', () => sharePost(post, post.strategicPositioning, 'The Owl’s Position'));
       card.querySelector('[data-copy="full"]')?.addEventListener('click', () => copyText(fullPost, 'full post'));
     });
   }
