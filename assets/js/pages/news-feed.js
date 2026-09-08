@@ -2,7 +2,7 @@
   "use strict";
 
   const NEWS_READER_FUNCTION = "news-reader";
-  const NEWS_BETA_ADMINISTRATOR_ONLY = true;
+  const NEWS_BETA_ADMINISTRATOR_ONLY = false;
   const NEWS_SHARE_BASE_URL = "https://thestrategicowl.com/news";
 
   let currentAccess = null;
@@ -107,6 +107,10 @@
     const workspace = byId("news-workspace");
     if (gate) gate.hidden = true;
     if (workspace) workspace.hidden = false;
+    const badge = document.querySelector(".news-preview-badge");
+    const title = byId("news-reader-title");
+    if (badge) badge.textContent = currentAccess?.administrator ? "Administrator Preview" : "Owl Access";
+    if (title) title.textContent = currentAccess?.administrator ? "Testing Feed" : "My News Feed";
   }
 
   async function getAuthorizedAccess() {

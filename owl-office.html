@@ -9,11 +9,11 @@
 
   <link rel="icon" type="image/png" href="assets/images/3X.png" />
   <link rel="stylesheet" href="assets/css/site.css?v=20260907-2" />
-  <link rel="stylesheet" href="assets/css/pages/owl-office.css?v=20260907-1" />
-  <script src="assets/js/site-shell.js?v=20260908-1" defer></script>
+  <link rel="stylesheet" href="assets/css/pages/owl-office.css?v=20260908-2" />
+  <script src="assets/js/site-shell.js?v=20260908-2" defer></script>
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2" defer></script>
   <script src="assets/js/owl-access.js?v=20260907-2" defer></script>
-  <script src="assets/js/pages/owl-office.js?v=20260907-1" defer></script>
+  <script src="assets/js/pages/owl-office.js?v=20260908-2" defer></script>
 </head>
 <body class="site-body" data-page="owl-office">
   <a class="skip-link" href="#main-content">Skip to content</a>
@@ -59,6 +59,13 @@
             <span class="office-badge" id="office-inbox-count" hidden>0</span>
           </span>
           <span><strong>Owl Inbox</strong><small>Audience requests</small></span>
+        </button>
+        <button class="office-action" id="office-news-admin" type="button">
+          <span class="office-action-icon">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 5h16v14H4Z"></path><path d="M8 9h8"></path><path d="M8 13h5"></path></svg>
+            <span class="office-badge" id="office-news-count" hidden>0</span>
+          </span>
+          <span><strong>News Administration</strong><small>Sources and Owl Insights</small></span>
         </button>
       </nav>
 
@@ -136,6 +143,120 @@
       <p class="office-inbox-message" id="office-inbox-message" role="status"></p>
       <div class="office-inbox-list" id="office-inbox-list"></div>
     </section>
+  </dialog>
+
+  <dialog class="office-dialog office-dialog--news" id="office-news-dialog" aria-labelledby="office-news-title">
+    <section class="office-dialog-card">
+      <button class="office-dialog-close" type="button" data-close-dialog aria-label="Close">×</button>
+      <p class="office-eyebrow">News Feed</p>
+      <h2 id="office-news-title">News Administration</h2>
+
+      <div class="office-news-toolbar">
+        <div class="office-news-tabs" role="group" aria-label="News administration view">
+          <button type="button" data-news-admin-view="requests" aria-pressed="true">Requests <span id="office-news-request-count">0</span></button>
+          <button type="button" data-news-admin-view="sources" aria-pressed="false">Sources <span id="office-news-source-count">0</span></button>
+          <button type="button" data-news-admin-view="articles" aria-pressed="false">Articles <span id="office-news-item-count">0</span></button>
+        </div>
+        <button class="office-refresh-button" id="office-refresh-news" type="button">Refresh</button>
+      </div>
+
+      <p class="office-news-message" id="office-news-message" role="status" aria-live="polite"></p>
+
+      <section class="office-news-panel" data-news-admin-panel="requests">
+        <div class="office-news-list" id="office-news-request-list"></div>
+      </section>
+
+      <section class="office-news-panel" data-news-admin-panel="sources" hidden>
+        <div class="office-news-panel-heading">
+          <p>Manage connected feeds and their visibility.</p>
+          <button class="office-button office-button--primary" id="office-add-source" type="button">Add Source</button>
+        </div>
+        <div class="office-news-list" id="office-news-source-list"></div>
+      </section>
+
+      <section class="office-news-panel" data-news-admin-panel="articles" hidden>
+        <form class="office-news-filters" id="office-news-filter-form">
+          <select id="office-news-source-filter" aria-label="Filter articles by source">
+            <option value="">All Sources</option>
+          </select>
+          <input id="office-news-search" type="search" maxlength="100" placeholder="Search headlines" aria-label="Search article headlines" />
+          <button class="office-refresh-button" type="submit">Search</button>
+        </form>
+        <div class="office-news-list" id="office-news-item-list"></div>
+      </section>
+    </section>
+  </dialog>
+
+  <dialog class="office-dialog office-dialog--wide" id="office-source-dialog" aria-labelledby="office-source-title">
+    <form class="office-dialog-card" id="office-source-form">
+      <button class="office-dialog-close" type="button" data-close-dialog aria-label="Close">×</button>
+      <p class="office-eyebrow">News Feed</p>
+      <h2 id="office-source-title">Add News Source</h2>
+      <label for="office-source-name">Source name</label>
+      <input id="office-source-name" name="sourceName" maxlength="120" required />
+      <label for="office-source-feed">RSS feed address</label>
+      <input id="office-source-feed" name="feedUrl" type="url" inputmode="url" placeholder="https://example.com/feed" required />
+      <label for="office-source-website">Website address <span>(optional)</span></label>
+      <input id="office-source-website" name="websiteUrl" type="url" inputmode="url" placeholder="https://example.com" />
+      <div class="office-form-grid">
+        <label for="office-source-alignment">Alignment <span>(optional)</span>
+          <input id="office-source-alignment" name="alignmentLabel" maxlength="120" />
+        </label>
+        <label for="office-source-category">Category <span>(optional)</span>
+          <input id="office-source-category" name="sourceCategory" maxlength="120" />
+        </label>
+        <label for="office-source-content">Content type <span>(optional)</span>
+          <input id="office-source-content" name="contentType" maxlength="120" />
+        </label>
+        <label for="office-source-media">Media type
+          <select id="office-source-media" name="defaultMediaType">
+            <option value="unknown">Unknown</option>
+            <option value="article">Article</option>
+            <option value="image">Image</option>
+            <option value="video">Video</option>
+            <option value="audio">Audio</option>
+            <option value="document">Document</option>
+            <option value="mixed">Mixed</option>
+          </select>
+        </label>
+      </div>
+      <p class="office-form-message" data-form-message></p>
+      <button class="office-button office-button--primary" type="submit">Add for Testing</button>
+    </form>
+  </dialog>
+
+  <dialog class="office-dialog office-dialog--wide" id="office-insight-dialog" aria-labelledby="office-insight-title">
+    <form class="office-dialog-card" id="office-insight-form">
+      <button class="office-dialog-close" type="button" data-close-dialog aria-label="Close">×</button>
+      <p class="office-eyebrow">Article Analysis</p>
+      <h2 id="office-insight-title">Owl Insight</h2>
+      <p class="office-insight-source" id="office-insight-source"></p>
+      <a class="office-insight-link" id="office-insight-link" target="_blank" rel="noopener noreferrer">Read Original</a>
+      <input id="office-insight-item-id" name="itemId" type="hidden" />
+      <label for="office-insight-label">Owl label <span>(optional)</span></label>
+      <input id="office-insight-label" name="owlLabel" maxlength="120" placeholder="What readers should notice" />
+      <label for="office-insight-labels">Tags <span>(comma separated)</span></label>
+      <input id="office-insight-labels" name="labels" maxlength="500" placeholder="Primary Source, Context, Misleading" />
+      <label for="office-insight-analysis">Your analysis</label>
+      <textarea id="office-insight-analysis" name="owlAnalysis" rows="8" maxlength="12000"></textarea>
+      <div class="office-form-grid">
+        <label for="office-insight-status">Status
+          <select id="office-insight-status" name="reviewStatus">
+            <option value="draft">Draft</option>
+            <option value="published">Published</option>
+          </select>
+        </label>
+        <label class="office-check-field" for="office-insight-public">
+          <input id="office-insight-public" name="public" type="checkbox" />
+          <span>Show on public share page</span>
+        </label>
+      </div>
+      <p class="office-form-message" data-form-message></p>
+      <div class="office-insight-actions">
+        <button class="office-button office-button--danger" id="office-hide-insight" type="button" hidden>Hide Insight</button>
+        <button class="office-button office-button--primary" type="submit">Save Insight</button>
+      </div>
+    </form>
   </dialog>
 
   <dialog class="office-dialog office-dialog--confirm" id="office-sign-out-dialog" aria-labelledby="office-sign-out-title">

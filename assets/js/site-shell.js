@@ -1,7 +1,7 @@
 (function () {
   "use strict";
 
-  const NEWS_BETA_ADMINISTRATOR_ONLY = true;
+  const NEWS_BETA_ADMINISTRATOR_ONLY = false;
 
   const pages = [
     ["home", "Home", "index.html"],
