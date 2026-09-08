@@ -5,6 +5,9 @@
   const NEWS_BETA_ADMINISTRATOR_ONLY = true;
 
   let currentAccess = null;
+  let currentSources = [];
+  let currentScope = "all";
+  let requestsLoaded = false;
   let loading = false;
 
   const byId = (id) => document.getElementById(id);
@@ -144,7 +147,19 @@
       }
     );
 
-    if (error) throw error;
+    if (error) {
+      let message = error.message || "The News Feed request failed.";
+      try {
+        const response = error.context;
+        if (response && typeof response.clone === "function") {
+          const details = await response.clone().json();
+          message = details?.error || details?.message || message;
+        }
+      } catch {
+        // Keep the original Supabase error when no JSON response is available.
+      }
+      throw new Error(message);
+    }
     if (data?.ok === false) {
       throw new Error(data.error || "The News Feed could not be loaded.");
     }
@@ -159,7 +174,8 @@
       alignment: String(firstValue(source, ["alignmentLabel", "alignment_label", "alignment"])),
       category: String(firstValue(source, ["sourceCategory", "source_category", "category"])),
       contentType: String(firstValue(source, ["contentType", "content_type"])),
-      websiteUrl: safeUrl(firstValue(source, ["websiteUrl", "website_url"]))
+      websiteUrl: safeUrl(firstValue(source, ["websiteUrl", "website_url"])),
+      following: Boolean(firstValue(source, ["following", "isFollowing", "is_following"], false))
     };
   }
 
@@ -183,6 +199,7 @@
 
   function renderSources(rawSources) {
     const sources = rawSources.map(normalizeSource);
+    currentSources = sources;
     const host = byId("news-source-list");
     const count = byId("news-source-count");
     if (count) count.textContent = String(sources.length);
@@ -196,16 +213,31 @@
     host.innerHTML = sources.map((source) => {
       const details = [source.alignment, source.category, source.contentType].filter(Boolean).join(" · ");
       return `
-        <article class="news-source-card">
+        <article class="news-source-card" data-following="${String(source.following)}">
           <div class="news-source-title-row">
             <h3>${escapeHtml(source.name)}</h3>
             <span class="news-source-status" data-status="${escapeHtml(source.status)}">${escapeHtml(source.status)}</span>
           </div>
-          ${details ? `<p>${escapeHtml(details)}</p>` : ""}
+          <div class="news-source-footer">
+            ${details ? `<p>${escapeHtml(details)}</p>` : "<p>News source</p>"}
+            <button
+              class="news-follow-button"
+              type="button"
+              data-source-id="${escapeHtml(source.id)}"
+              data-following="${String(source.following)}"
+              aria-pressed="${String(source.following)}"
+            >${source.following ? "Following" : "Follow"}</button>
+          </div>
         </article>`;
     }).join("");
 
     return sources;
+  }
+
+  function updateScopeButtons(scope) {
+    document.querySelectorAll("[data-news-scope]").forEach((button) => {
+      button.setAttribute("aria-pressed", String(button.dataset.newsScope === scope));
+    });
   }
 
   function renderItems(rawItems, sources) {
@@ -265,17 +297,32 @@
     try {
       const [sourcePayload, feedPayload] = await Promise.all([
         invokeReader("listNewsSources", { includeTesting: true }),
-        invokeReader("listNewsFeed", { includeTesting: true, limit: 50, pageSize: 50 })
+        invokeReader("listNewsFeed", {
+          includeTesting: true,
+          scope: currentScope,
+          limit: 50,
+          pageSize: 50
+        })
       ]);
 
       const rawSources = extractArray(sourcePayload, ["sources", "newsSources", "results"]);
       const rawItems = extractArray(feedPayload, ["items", "newsItems", "articles", "feed", "results"]);
       const sources = renderSources(rawSources);
       renderItems(rawItems, sources);
+      const returnedScope = String(firstValue(feedPayload, ["feedMode", "feed_mode"], currentScope));
+      const hasFollows = Boolean(firstValue(feedPayload, ["hasFollows", "has_follows"], sources.some((source) => source.following)));
+      currentScope = returnedScope === "following" ? "following" : "all";
+      updateScopeButtons(currentScope);
       if (status) {
-        status.textContent = rawItems.length
-          ? `Showing ${rawItems.length} imported ${rawItems.length === 1 ? "story" : "stories"}.`
-          : "The connection worked, but no stories were returned.";
+        if (!hasFollows) {
+          status.textContent = "Follow a source to build your personal feed. Showing all available stories.";
+        } else if (rawItems.length) {
+          status.textContent = currentScope === "following"
+            ? `Showing ${rawItems.length} ${rawItems.length === 1 ? "story" : "stories"} from followed sources.`
+            : `Showing ${rawItems.length} ${rawItems.length === 1 ? "story" : "stories"} from all sources.`;
+        } else {
+          status.textContent = "No stories were returned for this view.";
+        }
       }
     } catch (error) {
       console.error("Unable to load News Feed preview", error);
@@ -291,14 +338,148 @@
     }
   }
 
+  async function changeFollow(button) {
+    const sourceId = String(button?.dataset.sourceId || "");
+    const following = button?.dataset.following === "true";
+    if (!sourceId || !currentAccess?.client) return;
+
+    button.disabled = true;
+    button.textContent = following ? "Removing…" : "Following…";
+
+    try {
+      await invokeReader(
+        following ? "unfollowNewsSource" : "followNewsSource",
+        { sourceId }
+      );
+      if (!following) currentScope = "following";
+      await loadNews();
+    } catch (error) {
+      console.error("Unable to change followed source", error);
+      const status = byId("news-status");
+      if (status) status.textContent = error?.message || "The source selection could not be changed.";
+      button.disabled = false;
+      button.textContent = following ? "Following" : "Follow";
+    }
+  }
+
+  function normalizeRequest(request) {
+    const resolved = firstValue(request, ["resolvedSource", "resolved_source"], {});
+    return {
+      id: String(firstValue(request, ["id"])),
+      sourceName: String(firstValue(request, ["sourceName", "source_name", "requested_source_name"], "Requested source")),
+      status: String(firstValue(request, ["status"], "pending")).toLowerCase(),
+      adminNotes: String(firstValue(request, ["adminNotes", "admin_notes"])),
+      createdAt: firstValue(request, ["createdAt", "created_at"]),
+      resolvedName: String(firstValue(resolved, ["name", "sourceName", "source_name"]))
+    };
+  }
+
+  function renderRequests(rawRequests) {
+    const host = byId("news-request-history");
+    if (!host) return;
+    const requests = rawRequests.map(normalizeRequest);
+
+    if (!requests.length) {
+      host.innerHTML = '<p class="news-empty">You haven’t requested a source yet.</p>';
+      return;
+    }
+
+    host.innerHTML = requests.map((request) => {
+      const date = formatDate(request.createdAt);
+      const note = request.adminNotes || (request.resolvedName
+        ? `Connected to ${request.resolvedName}.`
+        : "Your request is being tracked.");
+      return `
+        <article class="news-request-card">
+          <h3>${escapeHtml(request.sourceName)}</h3>
+          <span class="news-request-status" data-status="${escapeHtml(request.status)}">${escapeHtml(request.status)}</span>
+          <p>${date ? `${escapeHtml(date)} · ` : ""}${escapeHtml(note)}</p>
+        </article>`;
+    }).join("");
+  }
+
+  async function loadRequests(force = false) {
+    const host = byId("news-request-history");
+    if (!host || (!force && requestsLoaded)) return;
+    host.innerHTML = '<p class="news-empty">Loading your requests…</p>';
+
+    try {
+      const payload = await invokeReader("listMyNewsSourceRequests");
+      const requests = extractArray(payload, ["requests", "sourceRequests", "results"]);
+      renderRequests(requests);
+      requestsLoaded = true;
+    } catch (error) {
+      console.error("Unable to load source requests", error);
+      host.innerHTML = `<p class="news-empty">${escapeHtml(error?.message || "Your requests could not be loaded.")}</p>`;
+    }
+  }
+
+  function openRequestDialog() {
+    const dialog = byId("news-request-dialog");
+    if (!dialog?.open) dialog?.showModal();
+    document.body.classList.add("owl-dialog-open");
+    window.setTimeout(() => byId("news-request-name")?.focus(), 0);
+  }
+
+  function closeRequestDialog() {
+    const dialog = byId("news-request-dialog");
+    if (dialog?.open) dialog.close();
+    document.body.classList.remove("owl-dialog-open");
+  }
+
+  async function submitSourceRequest(event) {
+    event.preventDefault();
+    const form = event.currentTarget;
+    const message = byId("news-request-message");
+    const submit = byId("news-request-submit");
+    const values = Object.fromEntries(new FormData(form).entries());
+    const websiteUrl = String(values.websiteUrl || "").trim();
+    const feedUrl = String(values.feedUrl || "").trim();
+
+    if (!websiteUrl && !feedUrl) {
+      if (message) message.textContent = "Enter the website or RSS feed address.";
+      return;
+    }
+
+    if (submit) {
+      submit.disabled = true;
+      submit.textContent = "Sending…";
+    }
+    if (message) message.textContent = "";
+
+    try {
+      const result = await invokeReader("submitNewsSourceRequest", {
+        sourceName: String(values.sourceName || "").trim(),
+        websiteUrl,
+        feedUrl,
+        reason: String(values.reason || "").trim()
+      });
+      if (message) message.textContent = result.message || "Your source request was sent.";
+      form.reset();
+      requestsLoaded = false;
+      await loadRequests(true);
+      window.setTimeout(closeRequestDialog, 900);
+    } catch (error) {
+      console.error("Unable to submit source request", error);
+      if (message) message.textContent = error?.message || "The source request could not be sent.";
+    } finally {
+      if (submit) {
+        submit.disabled = false;
+        submit.textContent = "Send Request";
+      }
+    }
+  }
+
   async function initializeNewsFeed() {
     try {
       currentAccess = await getAuthorizedAccess();
 
       if (!currentAccess) {
         showGate(
-          "Administrator preview",
-          "Sign in through Owl Access to test the News Feed.",
+          NEWS_BETA_ADMINISTRATOR_ONLY ? "Administrator preview" : "Owl Access required",
+          NEWS_BETA_ADMINISTRATOR_ONLY
+            ? "Sign in through Owl Access to test the News Feed."
+            : "Confirm your Owl Access to choose sources and open your News Feed.",
           "Open Owl Access"
         );
         return;
@@ -325,6 +506,39 @@
   }
 
   byId("news-refresh")?.addEventListener("click", loadNews);
+  byId("news-source-list")?.addEventListener("click", (event) => {
+    const button = event.target.closest(".news-follow-button");
+    if (button) changeFollow(button);
+  });
+  document.querySelectorAll("[data-news-scope]").forEach((button) => {
+    button.addEventListener("click", async () => {
+      const requestedScope = button.dataset.newsScope;
+      if (requestedScope !== "following" && requestedScope !== "all") return;
+      currentScope = requestedScope;
+      updateScopeButtons(currentScope);
+      await loadNews();
+    });
+  });
+  byId("news-request-open")?.addEventListener("click", openRequestDialog);
+  byId("news-request-form")?.addEventListener("submit", submitSourceRequest);
+  byId("news-request-dialog")?.addEventListener("click", (event) => {
+    if (event.target === event.currentTarget) closeRequestDialog();
+  });
+  document.querySelectorAll("[data-close-news-dialog]").forEach((button) => {
+    button.addEventListener("click", closeRequestDialog);
+  });
+  byId("news-requests-toggle")?.addEventListener("click", async (event) => {
+    const host = byId("news-request-history");
+    if (!host) return;
+    const open = host.hidden;
+    host.hidden = !open;
+    event.currentTarget.setAttribute("aria-expanded", String(open));
+    event.currentTarget.textContent = open ? "Hide Requests" : "My Requests";
+    if (open) await loadRequests();
+  });
+  document.addEventListener("keydown", (event) => {
+    if (event.key === "Escape") closeRequestDialog();
+  });
   window.addEventListener("strategic-owl-access-change", initializeNewsFeed);
   initializeNewsFeed();
 })();
