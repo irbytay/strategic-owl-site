@@ -14,6 +14,7 @@
   let inboxRequests = [];
   let inboxView = "active";
   let newsAdminView = "requests";
+  let newsSourceFilter = "testing";
   let newsSources = [];
   let newsSourceRequests = [];
   let newsItems = [];
@@ -516,13 +517,40 @@
       filter.appendChild(option);
     }
 
+    const sourceCounts = {
+      all: newsSources.length,
+      testing: 0,
+      active: 0,
+      paused: 0,
+      retired: 0
+    };
+    for (const source of newsSources) {
+      if (Object.hasOwn(sourceCounts, source.status)) {
+        sourceCounts[source.status] += 1;
+      }
+    }
+    for (const [status, count] of Object.entries(sourceCounts)) {
+      const countElement = byId(`office-source-filter-${status}`);
+      if (countElement) countElement.textContent = String(count);
+    }
+    document.querySelectorAll("[data-source-filter]").forEach((button) => {
+      button.setAttribute("aria-pressed", String(button.dataset.sourceFilter === newsSourceFilter));
+    });
+
+    const visibleSources = newsSourceFilter === "all"
+      ? newsSources
+      : newsSources.filter((source) => source.status === newsSourceFilter);
+
     list.replaceChildren();
-    if (!newsSources.length) {
-      appendText(list, "p", "No connected news sources.", "office-empty");
+    if (!visibleSources.length) {
+      const emptyMessage = newsSourceFilter === "all"
+        ? "No connected news sources."
+        : `No ${newsSourceFilter} sources.`;
+      appendText(list, "p", emptyMessage, "office-empty");
       return;
     }
 
-    for (const source of newsSources) {
+    for (const source of visibleSources) {
       const card = document.createElement("article");
       card.className = "office-news-card";
       card.dataset.sourceId = source.id;
@@ -571,9 +599,9 @@
 
       const actions = document.createElement("div");
       actions.className = "office-news-card-actions";
-      actions.appendChild(newsButton("Edit Source", "office-button--secondary", "source-edit", source.id));
+      actions.appendChild(newsButton("Edit", "office-news-text-action", "source-edit", source.id));
       if (source.status === "testing" || source.status === "active") {
-        actions.appendChild(newsButton("Refresh Feed", "office-button--secondary", "source-ingest", source.id));
+        actions.appendChild(newsButton("Refresh", "office-news-text-action", "source-ingest", source.id));
       }
       card.appendChild(actions);
       list.appendChild(card);
@@ -1126,6 +1154,12 @@
       button.addEventListener("click", () => {
         newsAdminView = button.dataset.newsAdminView;
         updateNewsAdminView();
+      });
+    });
+    document.querySelectorAll("[data-source-filter]").forEach((button) => {
+      button.addEventListener("click", () => {
+        newsSourceFilter = button.dataset.sourceFilter || "all";
+        renderNewsSources();
       });
     });
     byId("office-news-request-list")?.addEventListener("click", (event) => {
