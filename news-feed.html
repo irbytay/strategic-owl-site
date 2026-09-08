@@ -10,11 +10,11 @@
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
   <link rel="icon" type="image/png" href="assets/images/3X.png" />
   <link rel="stylesheet" href="assets/css/site.css?v=20260908-1" />
-  <link rel="stylesheet" href="assets/css/pages/news-feed.css?v=20260908-3" />
+  <link rel="stylesheet" href="assets/css/pages/news-feed.css?v=20260908-6" />
   <script src="assets/js/site-shell.js?v=20260908-2" defer></script>
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2" defer></script>
   <script src="assets/js/owl-access.js?v=20260907-3" defer></script>
-  <script src="assets/js/pages/news-feed.js?v=20260908-5" defer></script>
+  <script src="assets/js/pages/news-feed.js?v=20260908-6" defer></script>
 </head>
 <body class="site-body" data-page="news-feed">
   <a class="skip-link" href="#main-content">Skip to content</a>
@@ -24,102 +24,43 @@
     <header class="news-heading">
       <img class="news-page-mark" src="assets/images/3X.png" alt="" />
       <h1>News Feed</h1>
-      <p>Political reporting and primary sources, organized in one place.</p>
     </header>
-
-    <section class="divider-section" aria-label="Truth, Reliability, Understanding">
-      <div class="divider-bar">
-        <div class="truth"></div>
-        <div class="reliability"></div>
-        <div class="understanding"></div>
-      </div>
-      <div class="divider-labels">
-        <span>Truth</span>
-        <span>Reliability</span>
-        <span>Understanding</span>
-      </div>
-    </section>
 
     <section class="news-gate" id="news-gate" aria-live="polite">
       <div class="news-spinner" aria-hidden="true"></div>
-      <h2>Confirming administrator access…</h2>
-      <p>Please keep this page open.</p>
+      <h2>Opening News Feed…</h2>
     </section>
 
     <section class="news-workspace" id="news-workspace" hidden>
-      <div class="news-preview-row">
-        <span class="news-preview-badge">Administrator Preview</span>
-        <button class="news-refresh-button" id="news-refresh" type="button">Refresh</button>
+      <div class="news-pull-indicator" id="news-pull-indicator" aria-hidden="true">
+        <span>
+          <svg viewBox="0 0 24 24"><path d="M20 11a8 8 0 1 0 2 5"></path><path d="m20 4v7h-7"></path></svg>
+        </span>
       </div>
 
-      <section class="news-source-section" aria-labelledby="news-source-title">
-        <div class="news-section-heading">
-          <div>
-            <p class="news-eyebrow">Connected Feeds</p>
-            <h2 id="news-source-title">Sources</h2>
+      <section class="news-reader-section news-reader-section--stream" aria-label="News articles">
+        <div class="news-feed-controls">
+          <div class="news-feed-tabs" role="group" aria-label="Choose news view">
+            <button type="button" data-news-scope="following" aria-pressed="false">Following</button>
+            <button type="button" data-news-scope="all" aria-pressed="true">All Sources</button>
           </div>
-          <span class="news-count" id="news-source-count">0</span>
-        </div>
-        <p class="news-section-copy">Follow the sources you want included in your personal feed.</p>
-        <div class="news-source-list" id="news-source-list">
-          <p class="news-empty">Loading sources…</p>
-        </div>
-      </section>
-
-      <section class="news-reader-section" aria-labelledby="news-reader-title">
-        <div class="news-section-heading">
-          <div>
-            <p class="news-eyebrow">Latest Updates</p>
-            <h2 id="news-reader-title">Testing Feed</h2>
+          <div class="news-feed-actions">
+            <a class="news-sources-link" href="news-sources.html">Sources</a>
+            <button class="news-refresh-button news-refresh-button--desktop" id="news-refresh" type="button">
+              <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20 11a8 8 0 1 0 2 5"></path><path d="m20 4v7h-7"></path></svg>
+              <span>Refresh Feed</span>
+            </button>
           </div>
-          <span class="news-count" id="news-item-count">0</span>
-        </div>
-        <div class="news-feed-tabs" role="group" aria-label="Choose news view">
-          <button type="button" data-news-scope="following" aria-pressed="false">Following</button>
-          <button type="button" data-news-scope="all" aria-pressed="true">All Sources</button>
         </div>
         <p class="news-status" id="news-status" role="status" aria-live="polite"></p>
         <div class="news-item-list" id="news-item-list">
           <p class="news-empty">Loading news…</p>
         </div>
       </section>
-
-      <section class="news-request-section" aria-labelledby="news-request-title">
-        <div>
-          <p class="news-eyebrow">Owl Access</p>
-          <h2 id="news-request-title">Missing a Source?</h2>
-          <p>Request a political news source for review.</p>
-        </div>
-        <div class="news-request-actions">
-          <button class="news-access-button" id="news-request-open" type="button">Request a Source</button>
-          <button class="news-refresh-button" id="news-requests-toggle" type="button" aria-expanded="false" aria-controls="news-request-history">My Requests</button>
-        </div>
-        <div class="news-request-history" id="news-request-history" hidden>
-          <p class="news-empty">Open My Requests to view your request history.</p>
-        </div>
-      </section>
     </section>
   </main>
 
   <div id="site-footer"></div>
-
-  <dialog class="news-dialog" id="news-request-dialog" aria-labelledby="news-request-dialog-title">
-    <form class="news-dialog-card" id="news-request-form">
-      <button class="news-dialog-close" type="button" data-close-news-dialog aria-label="Close">×</button>
-      <p class="news-eyebrow">Source Request</p>
-      <h2 id="news-request-dialog-title">Request a Source</h2>
-      <p class="news-dialog-intro">Only the source name is required. Share anything else you happen to know.</p>
-
-      <label for="news-request-name">Source name</label>
-      <input id="news-request-name" name="sourceName" minlength="2" maxlength="120" required />
-
-      <label for="news-request-reason">Anything else you know? <span>(optional)</span></label>
-      <textarea id="news-request-reason" name="reason" rows="4" maxlength="500" placeholder="A website, social account, article, or where you saw it"></textarea>
-
-      <p class="news-form-message" id="news-request-message" role="status" aria-live="polite"></p>
-      <button class="news-access-button" id="news-request-submit" type="submit">Send Request</button>
-    </form>
-  </dialog>
 
   <div class="news-toast" id="news-toast" role="status" aria-live="polite"></div>
 </body>

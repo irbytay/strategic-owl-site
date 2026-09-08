@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="robots" content="noindex, nofollow" />
+  <title>News Sources | The Strategic Owl</title>
+  <meta name="description" content="Choose the sources included in your Strategic Owl News Feed." />
+
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+  <link rel="icon" type="image/png" href="assets/images/3X.png" />
+  <link rel="stylesheet" href="assets/css/site.css?v=20260908-1" />
+  <link rel="stylesheet" href="assets/css/pages/news-feed.css?v=20260908-6" />
+  <script src="assets/js/site-shell.js?v=20260908-2" defer></script>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2" defer></script>
+  <script src="assets/js/owl-access.js?v=20260907-3" defer></script>
+  <script src="assets/js/pages/news-sources.js?v=20260908-1" defer></script>
+</head>
+<body class="site-body" data-page="news-feed">
+  <a class="skip-link" href="#main-content">Skip to content</a>
+  <div id="site-header"></div>
+
+  <main id="main-content" class="site-page site-page--news-feed news-sources-page" tabindex="-1">
+    <header class="news-sources-heading">
+      <a href="news-feed.html">← News Feed</a>
+      <h1>Sources</h1>
+    </header>
+
+    <section class="news-gate" id="news-sources-gate" aria-live="polite">
+      <div class="news-spinner" aria-hidden="true"></div>
+      <h2>Opening Sources…</h2>
+    </section>
+
+    <section class="news-sources-workspace" id="news-sources-workspace" hidden>
+      <p class="news-source-summary" id="news-source-summary" role="status" aria-live="polite"></p>
+      <div class="news-source-rows" id="news-source-list">
+        <p class="news-empty">Loading sources…</p>
+      </div>
+
+      <section class="news-source-request-bar" aria-label="Source requests">
+        <p>Don’t see a source?</p>
+        <div>
+          <button class="news-text-button" id="news-request-open" type="button">Request a Source</button>
+          <button class="news-text-button" id="news-requests-toggle" type="button" aria-expanded="false" aria-controls="news-request-history">My Requests</button>
+        </div>
+      </section>
+
+      <div class="news-request-history" id="news-request-history" hidden>
+        <p class="news-empty">Open My Requests to view your request history.</p>
+      </div>
+    </section>
+  </main>
+
+  <div id="site-footer"></div>
+
+  <dialog class="news-dialog" id="news-request-dialog" aria-labelledby="news-request-dialog-title">
+    <form class="news-dialog-card" id="news-request-form">
+      <button class="news-dialog-close" type="button" data-close-news-dialog aria-label="Close">×</button>
+      <p class="news-eyebrow">Source Request</p>
+      <h2 id="news-request-dialog-title">Request a Source</h2>
+      <p class="news-dialog-intro">Only the source name is required.</p>
+
+      <label for="news-request-name">Source name</label>
+      <input id="news-request-name" name="sourceName" minlength="2" maxlength="120" required />
+
+      <label for="news-request-reason">Anything else you know? <span>(optional)</span></label>
+      <textarea id="news-request-reason" name="reason" rows="4" maxlength="500" placeholder="A website, social account, article, or where you saw it"></textarea>
+
+      <p class="news-form-message" id="news-request-message" role="status" aria-live="polite"></p>
+      <button class="news-access-button" id="news-request-submit" type="submit">Send Request</button>
+    </form>
+  </dialog>
+
+  <div class="news-toast" id="news-toast" role="status" aria-live="polite"></div>
+</body>
+</html>

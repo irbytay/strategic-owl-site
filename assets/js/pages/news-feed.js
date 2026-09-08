@@ -11,6 +11,9 @@
   let requestsLoaded = false;
   let loading = false;
   let toastTimer = 0;
+  let pullStartY = null;
+  let pullDistance = 0;
+  let pullRefreshing = false;
 
   const byId = (id) => document.getElementById(id);
 
@@ -107,10 +110,6 @@
     const workspace = byId("news-workspace");
     if (gate) gate.hidden = true;
     if (workspace) workspace.hidden = false;
-    const badge = document.querySelector(".news-preview-badge");
-    const title = byId("news-reader-title");
-    if (badge) badge.textContent = currentAccess?.administrator ? "Administrator Preview" : "Owl Access";
-    if (title) title.textContent = currentAccess?.administrator ? "Testing Feed" : "My News Feed";
   }
 
   async function getAuthorizedAccess() {
@@ -286,7 +285,7 @@
     if (!host) return;
 
     if (!items.length) {
-      host.innerHTML = '<p class="news-empty">No imported stories were returned. Refresh the testing sources and try again.</p>';
+      host.innerHTML = '<p class="news-empty">No stories yet.</p>';
       return;
     }
 
@@ -388,9 +387,10 @@
     const status = byId("news-status");
     if (refreshButton) {
       refreshButton.disabled = true;
-      refreshButton.textContent = "Refreshing…";
+      const label = refreshButton.querySelector("span");
+      if (label) label.textContent = "Refreshing…";
     }
-    if (status) status.textContent = "Loading the testing feed…";
+    if (status) status.textContent = "Updating…";
 
     try {
       const [sourcePayload, feedPayload] = await Promise.all([
@@ -413,13 +413,11 @@
       updateScopeButtons(currentScope);
       if (status) {
         if (!hasFollows) {
-          status.textContent = "Follow a source to build your personal feed. Showing all available stories.";
+          status.textContent = "Choose Sources to build your Following feed.";
         } else if (rawItems.length) {
-          status.textContent = currentScope === "following"
-            ? `Showing ${rawItems.length} ${rawItems.length === 1 ? "story" : "stories"} from followed sources.`
-            : `Showing ${rawItems.length} ${rawItems.length === 1 ? "story" : "stories"} from all sources.`;
+          status.textContent = "Updated just now";
         } else {
-          status.textContent = "No stories were returned for this view.";
+          status.textContent = "No stories in this view.";
         }
       }
     } catch (error) {
@@ -431,9 +429,67 @@
       loading = false;
       if (refreshButton) {
         refreshButton.disabled = false;
-        refreshButton.textContent = "Refresh";
+        const label = refreshButton.querySelector("span");
+        if (label) label.textContent = "Refresh Feed";
       }
     }
+  }
+
+  function setPullIndicator(distance, state = "pulling") {
+    const indicator = byId("news-pull-indicator");
+    if (!indicator) return;
+    const bounded = Math.max(0, Math.min(distance, 96));
+    indicator.style.setProperty("--news-pull-distance", `${bounded}px`);
+    indicator.dataset.state = state;
+  }
+
+  function resetPullIndicator() {
+    pullStartY = null;
+    pullDistance = 0;
+    window.setTimeout(() => setPullIndicator(0, "idle"), 180);
+  }
+
+  function installPullToRefresh() {
+    const surface = byId("main-content");
+    if (!surface || !window.matchMedia("(max-width: 700px)").matches) return;
+
+    surface.addEventListener("touchstart", (event) => {
+      if (pullRefreshing || loading || window.scrollY > 0 || event.touches.length !== 1) return;
+      pullStartY = event.touches[0].clientY;
+      pullDistance = 0;
+    }, { passive: true });
+
+    surface.addEventListener("touchmove", (event) => {
+      if (pullStartY === null || event.touches.length !== 1) return;
+      const movement = event.touches[0].clientY - pullStartY;
+      if (movement <= 0) {
+        resetPullIndicator();
+        return;
+      }
+      if (event.cancelable) event.preventDefault();
+      pullDistance = Math.min(96, movement * 0.55);
+      setPullIndicator(pullDistance, pullDistance >= 64 ? "ready" : "pulling");
+    }, { passive: false });
+
+    surface.addEventListener("touchend", async () => {
+      if (pullStartY === null) return;
+      const shouldRefresh = pullDistance >= 64;
+      pullStartY = null;
+      if (!shouldRefresh) {
+        resetPullIndicator();
+        return;
+      }
+      pullRefreshing = true;
+      setPullIndicator(54, "refreshing");
+      try {
+        await loadNews();
+      } finally {
+        pullRefreshing = false;
+        resetPullIndicator();
+      }
+    }, { passive: true });
+
+    surface.addEventListener("touchcancel", resetPullIndicator, { passive: true });
   }
 
   async function changeFollow(button) {
@@ -587,8 +643,8 @@
     } catch (error) {
       console.error("News Feed access check failed", error);
       showGate(
-        "Administrator access required",
-        "Administrator access could not be confirmed. Please sign in again.",
+        "Owl Access required",
+        "Your access could not be confirmed. Please sign in again.",
         "Open Owl Access"
       );
     }
@@ -633,5 +689,6 @@
     if (event.key === "Escape") closeRequestDialog();
   });
   window.addEventListener("strategic-owl-access-change", initializeNewsFeed);
+  installPullToRefresh();
   initializeNewsFeed();
 })();
