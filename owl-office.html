@@ -9,11 +9,11 @@
 
   <link rel="icon" type="image/png" href="assets/images/3X.png" />
   <link rel="stylesheet" href="assets/css/site.css?v=20260907-2" />
-  <link rel="stylesheet" href="assets/css/pages/owl-office.css?v=20260908-4" />
+  <link rel="stylesheet" href="assets/css/pages/owl-office.css?v=20260908-5" />
   <script src="assets/js/site-shell.js?v=20260908-2" defer></script>
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2" defer></script>
   <script src="assets/js/owl-access.js?v=20260907-2" defer></script>
-  <script src="assets/js/pages/owl-office.js?v=20260908-4" defer></script>
+  <script src="assets/js/pages/owl-office.js?v=20260908-5" defer></script>
 </head>
 <body class="site-body" data-page="owl-office">
   <a class="skip-link" href="#main-content">Skip to content</a>
@@ -167,9 +167,15 @@
       </section>
 
       <section class="office-news-panel" data-news-admin-panel="sources" hidden>
-        <div class="office-news-panel-heading">
-          <p>Manage connected feeds and their visibility.</p>
-          <button class="office-button office-button--primary" id="office-add-source" type="button">Add Source</button>
+        <div class="office-source-toolbar">
+          <div class="office-source-filters" role="group" aria-label="Filter sources by status">
+            <button type="button" data-source-filter="all" aria-pressed="false">All <span id="office-source-filter-all">0</span></button>
+            <button type="button" data-source-filter="testing" aria-pressed="true">Testing <span id="office-source-filter-testing">0</span></button>
+            <button type="button" data-source-filter="active" aria-pressed="false">Active <span id="office-source-filter-active">0</span></button>
+            <button type="button" data-source-filter="paused" aria-pressed="false">Paused <span id="office-source-filter-paused">0</span></button>
+            <button type="button" data-source-filter="retired" aria-pressed="false">Retired <span id="office-source-filter-retired">0</span></button>
+          </div>
+          <button class="office-source-add" id="office-add-source" type="button"><span aria-hidden="true">＋</span> Add Source</button>
         </div>
         <div class="office-news-list" id="office-news-source-list"></div>
       </section>
