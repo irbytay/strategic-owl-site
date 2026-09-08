@@ -299,6 +299,43 @@
     return result;
   }
 
+  async function invokeAudienceAction(action, values = {}) {
+    const owlSession = getSession();
+    if (!owlSession || owlSession.source === "administrator") {
+      throw new Error("Owl Access is required.");
+    }
+
+    const session = await ensureSupabaseSession();
+    const response = await fetch(SUPABASE_FUNCTION_URL, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        apikey: SUPABASE_PUBLISHABLE_KEY,
+        Authorization: `Bearer ${session.access_token}`
+      },
+      body: JSON.stringify({
+        ...values,
+        action,
+        email: owlSession.email
+      })
+    });
+
+    let result;
+    try {
+      result = await response.json();
+    } catch {
+      result = { ok: false, valid: false };
+    }
+
+    if (!response.ok || result.ok !== true || result.valid !== true) {
+      throw new Error(
+        result.error || "Owl Access could not be confirmed. Please try again."
+      );
+    }
+
+    return result;
+  }
+
   async function beginAdministratorSignIn(email) {
     const normalizedEmail = String(email || "").trim().toLowerCase();
     if (!normalizedEmail) throw new Error("Enter the administrator email first.");
@@ -618,6 +655,7 @@
     getSession,
     isActive,
     isAdministrator,
+    invokeAudienceAction,
     open,
     requireAdministrator,
     refreshButtons,
