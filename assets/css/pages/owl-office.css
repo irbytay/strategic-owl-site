@@ -1,0 +1,565 @@
+.office-page {
+  width: min(100%, 900px);
+}
+
+.office-heading {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 16px;
+  text-align: left;
+}
+
+.office-heading img {
+  width: 64px;
+  height: 64px;
+  object-fit: contain;
+}
+
+.office-heading p,
+.office-eyebrow {
+  margin: 0 0 3px;
+  color: var(--owl-muted);
+  font-family: Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  font-size: 0.78rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+.office-heading h1 {
+  margin: 0;
+  color: var(--owl-gold);
+  font-size: clamp(2rem, 7vw, 3rem) !important;
+}
+
+.office-gate,
+.office-profile-card,
+.office-action,
+.office-dialog-card {
+  border: 1px solid rgba(212, 175, 55, 0.42);
+  background:
+    linear-gradient(145deg, rgba(47, 71, 110, 0.45), rgba(12, 28, 47, 0.72));
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.11),
+    0 16px 38px rgba(0, 0, 0, 0.28);
+  -webkit-backdrop-filter: blur(24px) saturate(150%);
+  backdrop-filter: blur(24px) saturate(150%);
+}
+
+.office-gate {
+  display: grid;
+  justify-items: center;
+  width: min(100%, 560px);
+  margin: 20px auto;
+  padding: 34px 24px;
+  border-radius: 20px;
+  text-align: center;
+}
+
+.office-gate[hidden] {
+  display: none;
+}
+
+.office-gate h2 {
+  margin: 16px 0 6px;
+  color: var(--owl-gold);
+}
+
+.office-gate p {
+  margin: 0;
+  color: var(--owl-muted);
+}
+
+.office-gate .office-button {
+  margin-top: 20px;
+}
+
+.office-spinner {
+  width: 34px;
+  height: 34px;
+  border: 3px solid rgba(212, 175, 55, 0.22);
+  border-top-color: var(--owl-gold);
+  border-radius: 50%;
+  animation: office-spin 700ms linear infinite;
+}
+
+@keyframes office-spin {
+  to { transform: rotate(360deg); }
+}
+
+.office-workspace {
+  display: grid;
+  gap: 20px;
+}
+
+.office-workspace[hidden] {
+  display: none;
+}
+
+.office-actions {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 14px;
+}
+
+.office-action {
+  display: flex;
+  align-items: center;
+  min-height: 92px;
+  padding: 18px;
+  border-radius: 18px;
+  color: var(--owl-body);
+  text-align: left;
+  cursor: pointer;
+}
+
+.office-action:hover {
+  border-color: rgba(212, 175, 55, 0.8);
+  background:
+    linear-gradient(145deg, rgba(58, 84, 127, 0.55), rgba(16, 34, 55, 0.82));
+}
+
+.office-action > svg,
+.office-action-icon > svg {
+  flex: 0 0 auto;
+  width: 30px;
+  height: 30px;
+  margin-right: 14px;
+  fill: none;
+  stroke: var(--owl-gold);
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  stroke-width: 1.8;
+}
+
+.office-action-icon {
+  position: relative;
+  display: inline-flex;
+}
+
+.office-action span:last-child {
+  display: grid;
+  gap: 2px;
+}
+
+.office-action strong {
+  color: var(--owl-gold);
+  font-size: 1.08rem;
+}
+
+.office-action small {
+  color: var(--owl-muted);
+  font-family: Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  font-size: 0.82rem;
+}
+
+.office-badge {
+  position: absolute;
+  top: -8px;
+  right: 4px;
+  display: grid;
+  min-width: 20px;
+  height: 20px;
+  padding: 0 5px;
+  place-items: center;
+  border: 2px solid var(--owl-header);
+  border-radius: 999px;
+  background: #e45b5b;
+  color: white;
+  font: 800 10px/1 Inter, sans-serif;
+}
+
+.office-badge[hidden] {
+  display: none;
+}
+
+.office-profile-card {
+  display: grid;
+  grid-template-columns: 184px minmax(0, 1fr);
+  align-items: center;
+  gap: 28px;
+  padding: 26px;
+  border-radius: 22px;
+}
+
+.office-profile-image-frame {
+  width: 180px;
+  height: 180px;
+  padding: 4px;
+  overflow: hidden;
+  border: 1px solid rgba(212, 175, 55, 0.72);
+  border-radius: 22px;
+  background: rgba(8, 19, 34, 0.68);
+}
+
+.office-profile-image-frame img {
+  width: 100%;
+  height: 100%;
+  border-radius: 17px;
+  object-fit: cover;
+}
+
+.office-profile-copy h2 {
+  margin: 0 0 8px;
+  color: var(--owl-gold);
+  font-size: 1.7rem;
+}
+
+.office-profile-copy > p:not(.office-eyebrow) {
+  margin: 0;
+  color: var(--owl-muted);
+}
+
+.office-profile-buttons,
+.office-account-actions,
+.office-confirm-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 18px;
+}
+
+.office-account-actions {
+  justify-content: center;
+  margin-top: 0;
+}
+
+.office-button,
+.office-refresh-button,
+.office-inbox-tabs button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 46px;
+  padding: 10px 17px;
+  border-radius: 12px;
+  font-family: Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  font-size: 0.92rem;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.office-button:disabled,
+.office-refresh-button:disabled {
+  cursor: wait;
+  opacity: 0.62;
+}
+
+.office-button[hidden] {
+  display: none;
+}
+
+.office-button--primary {
+  border: 1px solid var(--owl-gold);
+  background: var(--owl-gold);
+  color: var(--owl-navy);
+}
+
+.office-button--secondary,
+.office-refresh-button {
+  border: 1px solid rgba(212, 175, 55, 0.66);
+  background: rgba(255, 255, 255, 0.035);
+  color: var(--owl-gold);
+}
+
+.office-button--danger {
+  border: 1px solid rgba(255, 138, 138, 0.75);
+  background: rgba(255, 138, 138, 0.04);
+  color: var(--owl-danger);
+}
+
+.office-dialog {
+  width: min(92vw, 520px);
+  max-height: min(90vh, 900px);
+  margin: auto;
+  padding: 0;
+  overflow: visible;
+  border: 0;
+  background: transparent;
+  color: var(--owl-body);
+}
+
+.office-dialog--wide {
+  width: min(94vw, 700px);
+}
+
+.office-dialog--inbox {
+  width: min(96vw, 860px);
+}
+
+.office-dialog--confirm {
+  width: min(90vw, 430px);
+}
+
+.office-dialog::backdrop {
+  background: rgba(2, 8, 17, 0.76);
+  -webkit-backdrop-filter: blur(8px);
+  backdrop-filter: blur(8px);
+}
+
+.office-dialog-card {
+  position: relative;
+  max-height: min(90vh, 900px);
+  padding: 28px;
+  overflow-y: auto;
+  border-radius: 24px;
+}
+
+.office-dialog-card h2 {
+  margin: 0 44px 22px 0;
+  color: var(--owl-gold);
+  font-size: 1.65rem;
+}
+
+.office-dialog-card label {
+  display: block;
+  margin: 15px 0 6px;
+  color: var(--owl-body);
+  font-family: Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  font-size: 0.9rem;
+  font-weight: 700;
+}
+
+.office-dialog-card label span {
+  color: var(--owl-muted);
+  font-weight: 500;
+}
+
+.office-dialog-card input,
+.office-dialog-card textarea,
+.office-inbox-card select {
+  width: 100%;
+  padding: 12px 14px;
+  border: 1px solid rgba(212, 175, 55, 0.46);
+  border-radius: 12px;
+  background: rgba(7, 18, 32, 0.78);
+  color: var(--owl-body);
+  font-family: Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  font-size: 16px;
+}
+
+.office-dialog-card textarea {
+  resize: vertical;
+}
+
+.office-dialog-card > .office-button {
+  width: 100%;
+  margin-top: 12px;
+}
+
+.office-dialog-close {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  z-index: 2;
+  display: grid;
+  width: 44px;
+  min-height: 44px;
+  padding: 0;
+  place-items: center;
+  border: 0;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.04);
+  color: var(--owl-muted);
+  font-size: 29px;
+  cursor: pointer;
+}
+
+.office-form-message,
+.office-inbox-message {
+  min-height: 24px;
+  margin: 12px 0 0;
+  color: var(--owl-danger);
+  font-family: Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  font-size: 0.88rem;
+  text-align: center;
+}
+
+.office-post-preview {
+  display: block;
+  width: min(100%, 300px);
+  max-height: 240px;
+  margin: 14px auto 0;
+  border-radius: 14px;
+  object-fit: cover;
+}
+
+.office-post-preview[hidden] {
+  display: none;
+}
+
+.office-inbox-toolbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 12px;
+}
+
+.office-inbox-tabs {
+  display: flex;
+  padding: 3px;
+  border: 1px solid rgba(124, 138, 155, 0.5);
+  border-radius: 12px;
+  background: rgba(6, 19, 34, 0.65);
+}
+
+.office-inbox-tabs button {
+  min-height: 40px;
+  border: 0;
+  background: transparent;
+  color: var(--owl-muted);
+}
+
+.office-inbox-tabs button[aria-pressed="true"] {
+  background: var(--owl-gold);
+  color: var(--owl-navy);
+}
+
+.office-inbox-list {
+  display: grid;
+  gap: 12px;
+}
+
+.office-inbox-card {
+  padding: 17px;
+  border: 1px solid rgba(124, 138, 155, 0.42);
+  border-radius: 16px;
+  background: rgba(9, 24, 41, 0.72);
+}
+
+.office-inbox-card-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.office-inbox-card h3 {
+  margin: 0;
+  color: var(--owl-gold);
+  font-size: 1.12rem;
+}
+
+.office-inbox-card time,
+.office-inbox-meta {
+  color: var(--owl-muted);
+  font-family: Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  font-size: 0.79rem;
+}
+
+.office-inbox-card p {
+  margin: 10px 0;
+}
+
+.office-inbox-take {
+  padding-left: 12px;
+  border-left: 2px solid rgba(212, 175, 55, 0.58);
+  color: var(--owl-muted);
+}
+
+.office-inbox-card select {
+  max-width: 190px;
+  margin-top: 8px;
+}
+
+.office-empty {
+  padding: 30px 18px;
+  color: var(--owl-muted);
+  text-align: center;
+}
+
+.office-confirm-actions {
+  justify-content: flex-end;
+}
+
+.office-toast {
+  position: fixed;
+  right: 20px;
+  bottom: 20px;
+  z-index: 10050;
+  max-width: min(88vw, 420px);
+  padding: 12px 16px;
+  border: 1px solid rgba(212, 175, 55, 0.52);
+  border-radius: 12px;
+  background: rgba(10, 25, 43, 0.96);
+  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.38);
+  color: var(--owl-body);
+  font-family: Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  opacity: 0;
+  pointer-events: none;
+  transform: translateY(10px);
+  transition: opacity 160ms ease, transform 160ms ease;
+}
+
+.office-toast[data-visible="true"] {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+@media (max-width: 650px) {
+  .office-heading {
+    gap: 10px;
+  }
+
+  .office-heading img {
+    width: 48px;
+    height: 48px;
+  }
+
+  .office-actions,
+  .office-profile-card {
+    grid-template-columns: 1fr;
+  }
+
+  .office-action {
+    min-height: 82px;
+  }
+
+  .office-profile-card {
+    justify-items: center;
+    gap: 20px;
+    padding: 20px;
+    text-align: center;
+  }
+
+  .office-profile-image-frame {
+    width: 156px;
+    height: 156px;
+  }
+
+  .office-profile-buttons,
+  .office-account-actions {
+    justify-content: stretch;
+  }
+
+  .office-profile-buttons .office-button,
+  .office-account-actions .office-button {
+    flex: 1 1 100%;
+  }
+
+  .office-dialog-card {
+    padding: 24px 17px 18px;
+  }
+
+  .office-inbox-toolbar {
+    align-items: stretch;
+    flex-direction: column;
+  }
+
+  .office-inbox-tabs button {
+    flex: 1;
+  }
+
+  .office-inbox-card-header {
+    flex-direction: column;
+    gap: 3px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .office-spinner {
+    animation: none;
+  }
+}
