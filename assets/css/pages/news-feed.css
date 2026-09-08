@@ -584,6 +584,20 @@
   box-shadow: none;
 }
 
+.news-personal-heading {
+  align-items: flex-end;
+  margin-bottom: 4px;
+}
+
+.news-personal-heading h2 {
+  line-height: 1.1;
+}
+
+.news-manage-link {
+  margin-bottom: 3px;
+  color: var(--owl-gold);
+}
+
 .news-feed-controls {
   display: flex;
   align-items: center;
@@ -1062,6 +1076,11 @@
   .news-feed-controls {
     align-items: flex-end;
     gap: 10px;
+  }
+
+  .news-personal-heading {
+    align-items: flex-end;
+    margin-bottom: 2px;
   }
 
   .news-reader-section--stream .news-feed-tabs {
