@@ -7,7 +7,7 @@
 
   let currentAccess = null;
   let currentSources = [];
-  let currentScope = "all";
+  let currentScope = "following";
   let requestsLoaded = false;
   let loading = false;
   let toastTimer = 0;
@@ -274,6 +274,29 @@
     document.querySelectorAll("[data-news-scope]").forEach((button) => {
       button.setAttribute("aria-pressed", String(button.dataset.newsScope === scope));
     });
+
+    const viewTitle = byId("news-view-title");
+    if (viewTitle) {
+      viewTitle.textContent = scope === "following"
+        ? "Sources You Follow"
+        : "All Sources";
+    }
+  }
+
+  function installImageFallbacks(host) {
+    host.querySelectorAll(".news-item-image").forEach((image) => {
+      image.addEventListener("error", () => {
+        const placeholder = document.createElement("span");
+        placeholder.className = "news-item-image-placeholder";
+
+        const logo = document.createElement("img");
+        logo.src = "assets/images/3X.png";
+        logo.alt = "";
+
+        placeholder.appendChild(logo);
+        image.replaceWith(placeholder);
+      }, { once: true });
+    });
   }
 
   function renderItems(rawItems, sources) {
@@ -342,6 +365,8 @@
           </div>
         </details>`;
     }).join("");
+
+    installImageFallbacks(host);
   }
 
   async function copyShareUrl(shareUrl) {
