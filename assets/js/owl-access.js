@@ -3,9 +3,10 @@
 
   const STORAGE_KEY = "strategicOwlAccessSession";
   const LEGACY_TRU_KEY = "truSubscriberValidationCache";
+  const ADMIN_PENDING_KEY = "strategicOwlAdministratorPending";
   const DEFAULT_ACCESS_DAYS = 7;
-  const SUPABASE_FUNCTION_URL =
-    "https://gopyzkcmvkbusdnwjlbb.supabase.co/functions/v1/validate-subscriber";
+  const SUPABASE_URL = "https://gopyzkcmvkbusdnwjlbb.supabase.co";
+  const SUPABASE_FUNCTION_URL = `${SUPABASE_URL}/functions/v1/validate-subscriber`;
   const SUPABASE_PUBLISHABLE_KEY =
     "sb_publishable_CYM_aXzslre6SE8P-tTYBw_sw_-gQ1h";
   const STRIPE_URL = "https://buy.stripe.com/cNicN5eVt24X2c6aEhdwc05";
@@ -14,6 +15,8 @@
     "https://billing.stripe.com/p/login/7sY8wP4gP5h9182aEhdwc00";
   const SUBSTACK_MANAGE_URL = "https://strategicowl.substack.com/";
   let memorySession = null;
+  let supabaseClient = null;
+  let administratorAuthError = "";
 
   function normalizeSources(source, sources) {
     const normalized = Array.isArray(sources)
@@ -73,6 +76,73 @@
     return Boolean(getSession());
   }
 
+  function isAdministrator() {
+    return getSession()?.source === "administrator";
+  }
+
+  function getSupabaseClient() {
+    if (supabaseClient) return supabaseClient;
+    if (!window.supabase?.createClient) {
+      throw new Error("The secure sign-in service did not load.");
+    }
+    supabaseClient = window.supabase.createClient(
+      SUPABASE_URL,
+      SUPABASE_PUBLISHABLE_KEY,
+      {
+        auth: {
+          persistSession: true,
+          autoRefreshToken: true,
+          detectSessionInUrl: true,
+          flowType: "pkce"
+        }
+      }
+    );
+    return supabaseClient;
+  }
+
+  async function ensureSupabaseSession() {
+    const client = getSupabaseClient();
+    const { data: sessionData, error: sessionError } = await client.auth.getSession();
+    if (sessionError) throw sessionError;
+    if (sessionData.session) return sessionData.session;
+
+    const { data, error } = await client.auth.signInAnonymously();
+    if (error) throw error;
+    if (!data.session) throw new Error("A secure website session could not be created.");
+    return data.session;
+  }
+
+  function readPendingAdministrator() {
+    try {
+      const raw = localStorage.getItem(ADMIN_PENDING_KEY);
+      if (!raw) return null;
+      const pending = JSON.parse(raw);
+      const email = String(pending?.email || "").trim().toLowerCase();
+      const startedAt = Number(pending?.startedAt);
+      if (!email || !Number.isFinite(startedAt) || Date.now() - startedAt > 30 * 60000) {
+        localStorage.removeItem(ADMIN_PENDING_KEY);
+        return null;
+      }
+      return { email, startedAt };
+    } catch {
+      localStorage.removeItem(ADMIN_PENDING_KEY);
+      return null;
+    }
+  }
+
+  function savePendingAdministrator(email) {
+    const pending = {
+      email: String(email || "").trim().toLowerCase(),
+      startedAt: Date.now()
+    };
+    localStorage.setItem(ADMIN_PENDING_KEY, JSON.stringify(pending));
+    return pending;
+  }
+
+  function clearPendingAdministrator() {
+    localStorage.removeItem(ADMIN_PENDING_KEY);
+  }
+
   function refreshButtons() {
     document.querySelectorAll("owl-access-button").forEach((element) => {
       if (typeof element.refresh === "function") element.refresh();
@@ -89,9 +159,24 @@
     const stripeManagement = dialog.querySelector("[data-owl-manage-stripe]");
     const substackManagement = dialog.querySelector("[data-owl-manage-substack]");
     const management = dialog.querySelector("[data-owl-management]");
+    const administratorSignIn = dialog.querySelector("[data-owl-administrator-sign-in]");
+    const administratorMessage = dialog.querySelector("[data-owl-administrator-message]");
+    const activeLabel = dialog.querySelector("[data-owl-active-label]");
+    const offers = dialog.querySelector(".owl-access-offers");
+    const pendingAdministrator = readPendingAdministrator();
     if (locked) locked.hidden = Boolean(session);
     if (active) active.hidden = !session;
     if (email) email.textContent = session ? session.email : "";
+    if (administratorSignIn) {
+      administratorSignIn.hidden = Boolean(session) || !pendingAdministrator;
+    }
+    if (administratorMessage) administratorMessage.textContent = administratorAuthError;
+    if (offers) offers.hidden = Boolean(pendingAdministrator) && !session;
+    if (activeLabel) {
+      activeLabel.textContent = session?.source === "administrator"
+        ? "Administrator access is active on this device."
+        : "Owl Access is active on this device.";
+    }
     const sources = session?.activeSources || [];
     const showStripe = sources.includes("owl_access");
     const showSubstack = sources.includes("substack");
@@ -139,12 +224,24 @@
   }
 
   function clear() {
+    const previousSession = getSession();
     memorySession = null;
     try {
       localStorage.removeItem(STORAGE_KEY);
       localStorage.removeItem(LEGACY_TRU_KEY);
+      clearPendingAdministrator();
     } catch (error) {
       console.warn("Unable to clear Owl Access status", error);
+    }
+    administratorAuthError = "";
+    if (previousSession?.source === "administrator") {
+      try {
+        getSupabaseClient().auth.signOut().catch((error) => {
+          console.warn("Unable to end administrator sign in", error);
+        });
+      } catch (error) {
+        console.warn("Unable to end administrator sign in", error);
+      }
     }
     announceChange(null);
   }
@@ -159,12 +256,13 @@
       };
     }
 
+    const session = await ensureSupabaseSession();
     const response = await fetch(SUPABASE_FUNCTION_URL, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
         apikey: SUPABASE_PUBLISHABLE_KEY,
-        Authorization: `Bearer ${SUPABASE_PUBLISHABLE_KEY}`
+        Authorization: `Bearer ${session.access_token}`
       },
       body: JSON.stringify({ action: "validate", email: normalizedEmail })
     });
@@ -201,6 +299,104 @@
     return result;
   }
 
+  async function beginAdministratorSignIn(email) {
+    const normalizedEmail = String(email || "").trim().toLowerCase();
+    if (!normalizedEmail) throw new Error("Enter the administrator email first.");
+
+    savePendingAdministrator(normalizedEmail);
+    administratorAuthError = "";
+    const client = getSupabaseClient();
+    const redirectTo = `${window.location.origin}/`;
+    const { error } = await client.auth.signInWithOAuth({
+      provider: "apple",
+      options: { redirectTo }
+    });
+    if (error) throw error;
+  }
+
+  async function authorizeAdministrator(email, session) {
+    const response = await fetch(SUPABASE_FUNCTION_URL, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        apikey: SUPABASE_PUBLISHABLE_KEY,
+        Authorization: `Bearer ${session.access_token}`
+      },
+      body: JSON.stringify({
+        action: "authorizeAdministrator",
+        email
+      })
+    });
+
+    let result;
+    try {
+      result = await response.json();
+    } catch {
+      result = { ok: false, administratorAuthorized: false };
+    }
+    if (!response.ok || result.administratorAuthorized !== true) {
+      throw new Error(
+        result.error || "This Apple account is not authorized for The Owl's Office."
+      );
+    }
+    return result;
+  }
+
+  async function finishPendingAdministratorSignIn() {
+    const pending = readPendingAdministrator();
+    if (!pending) return false;
+
+    const client = getSupabaseClient();
+    const { data, error } = await client.auth.getSession();
+    if (error) throw error;
+    const session = data.session;
+    if (!session || session.user?.is_anonymous) return false;
+
+    try {
+      await authorizeAdministrator(pending.email, session);
+      activate(
+        pending.email,
+        Date.now() + DEFAULT_ACCESS_DAYS * 86400000,
+        "administrator",
+        ["administrator"]
+      );
+      clearPendingAdministrator();
+      administratorAuthError = "";
+      window.history.replaceState({}, document.title, window.location.pathname);
+      window.setTimeout(open, 0);
+      return true;
+    } catch (error) {
+      administratorAuthError = error?.message || "Administrator access could not be confirmed.";
+      clearPendingAdministrator();
+      await client.auth.signOut();
+      updateDialog();
+      window.setTimeout(open, 0);
+      return false;
+    }
+  }
+
+  async function restoreAdministratorSession() {
+    if (readPendingAdministrator()) {
+      return finishPendingAdministratorSignIn();
+    }
+    const owlSession = getSession();
+    if (owlSession?.source !== "administrator") return false;
+
+    const client = getSupabaseClient();
+    const { data, error } = await client.auth.getSession();
+    if (error || !data.session || data.session.user?.is_anonymous) {
+      clear();
+      return false;
+    }
+    try {
+      await authorizeAdministrator(owlSession.email, data.session);
+      return true;
+    } catch {
+      clear();
+      return false;
+    }
+  }
+
   function ensureDialog() {
     let dialog = document.getElementById("owl-access-dialog");
     if (dialog) return dialog;
@@ -221,6 +417,11 @@
             <button class="owl-access-primary" type="submit">Check Owl Access</button>
           </form>
           <p class="owl-access-message" role="status" aria-live="polite"></p>
+          <div class="owl-access-administrator-sign-in" data-owl-administrator-sign-in hidden>
+            <p>Administrator email confirmed. Continue with Apple to securely open The Owl’s Office.</p>
+            <button class="owl-access-secondary" type="button" data-owl-continue-apple>Continue with Apple</button>
+            <p class="owl-access-administrator-message" data-owl-administrator-message role="status" aria-live="polite"></p>
+          </div>
           <div class="owl-access-offers">
             <p>Need Owl Access?</p>
             <div class="owl-access-links">
@@ -234,7 +435,7 @@
             <svg viewBox="0 0 24 24"><circle cx="12" cy="7.5" r="3.5"></circle><path d="M5 20c.55-4.15 3.15-6.4 7-6.4s6.45 2.25 7 6.4"></path></svg>
             <span>✓</span>
           </div>
-          <strong>Owl Access is active on this device.</strong>
+          <strong data-owl-active-label>Owl Access is active on this device.</strong>
           <p class="owl-access-session-email"></p>
           <div class="owl-access-management" data-owl-management hidden>
             <p>Manage your subscription through the provider that bills you.</p>
@@ -252,12 +453,29 @@
     const input = dialog.querySelector("#owl-access-email");
     const submit = form?.querySelector('button[type="submit"]');
     const message = dialog.querySelector(".owl-access-message");
+    const administratorButton = dialog.querySelector("[data-owl-continue-apple]");
+    const administratorMessage = dialog.querySelector("[data-owl-administrator-message]");
 
     dialog.querySelector(".owl-access-close")?.addEventListener("click", () => dialog.close());
     dialog.querySelector("[data-owl-sign-out]")?.addEventListener("click", () => {
       clear();
       if (message) message.textContent = "Signed out on this device.";
       input?.focus();
+    });
+    administratorButton?.addEventListener("click", async () => {
+      const pending = readPendingAdministrator();
+      const email = pending?.email || input?.value.trim().toLowerCase() || "";
+      administratorButton.disabled = true;
+      administratorButton.textContent = "Opening Apple…";
+      if (administratorMessage) administratorMessage.textContent = "";
+      try {
+        await beginAdministratorSignIn(email);
+      } catch (error) {
+        administratorAuthError = error?.message || "Apple sign in could not be started.";
+        if (administratorMessage) administratorMessage.textContent = administratorAuthError;
+        administratorButton.disabled = false;
+        administratorButton.textContent = "Continue with Apple";
+      }
     });
     dialog.addEventListener("click", (event) => {
       if (event.target === dialog) dialog.close();
@@ -278,9 +496,19 @@
       try {
         const result = await validateEmail(email);
         if (result.valid === true) {
+          clearPendingAdministrator();
+          administratorAuthError = "";
           if (message) message.textContent = result.message || "Owl Access confirmed.";
           updateDialog();
+        } else if (result.requiresAdministratorSignIn === true) {
+          savePendingAdministrator(email);
+          administratorAuthError = "";
+          if (message) {
+            message.textContent = result.message || "Administrator email confirmed.";
+          }
+          updateDialog();
         } else if (message) {
+          clearPendingAdministrator();
           message.textContent = result.message || result.error || "No active subscription was found for that email.";
         }
       } catch (error) {
@@ -320,14 +548,18 @@
             button:active { transform:scale(.96); }
             button:focus-visible { outline:3px solid rgba(212,175,55,.5); outline-offset:2px; }
             .person { width:27px; height:27px; fill:none; stroke:currentColor; stroke-linecap:round; stroke-linejoin:round; stroke-width:1.8; }
+            .administrator { display:none; width:29px; height:29px; fill:none; stroke:currentColor; stroke-linecap:round; stroke-linejoin:round; stroke-width:1.7; }
             .check { position:absolute; right:2px; bottom:2px; box-sizing:border-box; width:17px; height:17px; display:none; place-items:center; border:2px solid var(--owl-header, #1A2B4C); border-radius:50%; background:var(--owl-success, #77C593); color:#0D1B2A; font:700 12px/1 system-ui,sans-serif; }
             button[data-state="active"] .check { display:grid; }
+            button[data-state="administrator"] .person, button[data-state="administrator"] .check { display:none; }
+            button[data-state="administrator"] .administrator { display:block; }
             button[data-state="loading"]::after { position:absolute; inset:3px; border:2px solid transparent; border-top-color:currentColor; border-radius:50%; content:""; animation:spin 700ms linear infinite; }
             @keyframes spin { to { transform:rotate(360deg); } }
             @media (prefers-reduced-motion: reduce) { button { transition:none; } button[data-state="loading"]::after { animation:none; } }
           </style>
           <button type="button" aria-haspopup="dialog">
             <svg class="person" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="7.5" r="3.5"></circle><path d="M5 20c.55-4.15 3.15-6.4 7-6.4s6.45 2.25 7 6.4"></path></svg>
+            <svg class="administrator" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2.5 19 5.4v5.4c0 4.7-2.8 8.5-7 10.7-4.2-2.2-7-6-7-10.7V5.4L12 2.5Z"></path><circle cx="12" cy="9" r="2.2"></circle><path d="M8.7 15.8c.45-2.1 1.55-3.2 3.3-3.2s2.85 1.1 3.3 3.2"></path></svg>
             <span class="check" aria-hidden="true">✓</span>
           </button>`;
         root.querySelector("button")?.addEventListener("click", open);
@@ -339,9 +571,21 @@
       const button = this.shadowRoot?.querySelector("button");
       if (!button) return;
       const active = isActive();
-      button.dataset.state = active ? "active" : "locked";
-      button.setAttribute("aria-label", active ? "Owl Access is active" : "Open Owl Access");
-      button.title = active ? "Owl Access active" : "Owl Access";
+      const administrator = isAdministrator();
+      button.dataset.state = administrator ? "administrator" : active ? "active" : "locked";
+      button.setAttribute(
+        "aria-label",
+        administrator
+          ? "Open The Owl's Office"
+          : active
+          ? "Owl Access is active"
+          : "Open Owl Access"
+      );
+      button.title = administrator
+        ? "The Owl's Office"
+        : active
+        ? "Owl Access active"
+        : "Owl Access";
     }
   }
 
@@ -353,8 +597,10 @@
     storageKey: STORAGE_KEY,
     activate,
     clear,
+    getSupabaseClient,
     getSession,
     isActive,
+    isAdministrator,
     open,
     refreshButtons,
     validateEmail
@@ -368,4 +614,7 @@
   });
 
   getSession();
+  restoreAdministratorSession().catch((error) => {
+    console.warn("Unable to restore administrator access", error);
+  });
 })();
