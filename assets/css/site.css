@@ -517,8 +517,25 @@ body.site-body .divider-labels > span {
 }
 
 .owl-access-active[hidden],
-.owl-access-locked[hidden] {
+.owl-access-locked[hidden],
+.owl-access-management[hidden],
+.owl-access-subscribe-link[hidden] {
   display: none;
+}
+
+.owl-access-management {
+  width: 100%;
+  padding-top: 4px;
+}
+
+.owl-access-management p {
+  margin: 0 0 12px;
+  color: var(--owl-muted);
+  text-align: center;
+}
+
+.owl-access-management .owl-access-links {
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
 }
 
 .owl-access-active-icon {
