@@ -18,6 +18,7 @@
   let newsSourceRequests = [];
   let newsItems = [];
   let selectedNewsItem = null;
+  let reviewingSourceRequestId = "";
   let newsAdminLoading = false;
   let toastTimer = null;
 
@@ -446,19 +447,6 @@
         const controls = document.createElement("div");
         controls.className = "office-news-card-controls";
 
-        if (request.status === "pending") {
-          const feedLabel = document.createElement("label");
-          feedLabel.textContent = "RSS feed address";
-          const feed = document.createElement("input");
-          feed.type = "url";
-          feed.inputMode = "url";
-          feed.value = request.requested_feed_url || "";
-          feed.placeholder = "https://example.com/feed";
-          feed.dataset.requestFeed = "";
-          feedLabel.appendChild(feed);
-          controls.appendChild(feedLabel);
-        }
-
         const notesLabel = document.createElement("label");
         notesLabel.textContent = "Administrator notes";
         const notes = document.createElement("textarea");
@@ -493,7 +481,7 @@
         const actions = document.createElement("div");
         actions.className = "office-news-card-actions";
         if (request.status === "pending") {
-          actions.appendChild(newsButton("Add for Testing", "office-button--primary", "request-testing", request.id));
+          actions.appendChild(newsButton("Review Source", "office-button--primary", "request-review", request.id));
           actions.appendChild(newsButton("Mark Duplicate", "office-button--secondary", "request-duplicate", request.id));
         } else if (request.resolved_source_id) {
           actions.appendChild(newsButton("Make Live", "office-button--primary", "request-live", request.id));
@@ -685,29 +673,43 @@
     return byId("office-news-request-list")?.querySelector(`[data-request-id="${requestId}"]`);
   }
 
+  function openSourceEditor(request = null) {
+    const form = byId("office-source-form");
+    if (!form) return;
+    form.reset();
+    form.querySelector("[data-form-message]").textContent = "";
+    reviewingSourceRequestId = request?.id || "";
+    byId("office-source-title").textContent = request ? "Review News Source" : "Add News Source";
+    const requestDetails = byId("office-source-request-details");
+    requestDetails.hidden = !request?.request_reason;
+    requestDetails.textContent = request?.request_reason
+      ? `Requester’s note: ${request.request_reason}`
+      : "";
+    byId("office-source-name").value = request?.requested_source_name || "";
+    byId("office-source-feed").value = request?.requested_feed_url || "";
+    byId("office-source-website").value = request?.requested_website_url || "";
+    openDialog(byId("office-source-dialog"));
+    window.setTimeout(() => {
+      (request?.requested_source_name ? byId("office-source-feed") : byId("office-source-name"))?.focus();
+    }, 0);
+  }
+
   async function handleNewsRequestAction(button) {
     const request = newsSourceRequests.find((entry) => entry.id === button.dataset.newsId);
     const card = requestCard(button.dataset.newsId);
     if (!request || !card) return;
+    if (button.dataset.newsAction === "request-review") {
+      openSourceEditor(request);
+      return;
+    }
     const notes = card.querySelector("[data-request-notes]")?.value.trim() || "";
     const selectedSourceId = card.querySelector("[data-request-source]")?.value || "";
-    const feedUrl = card.querySelector("[data-request-feed]")?.value.trim() || request.requested_feed_url || "";
     const readyLabel = button.textContent;
     setBusy(button, true, "Working…", readyLabel);
     setNewsMessage("");
 
     try {
-      if (button.dataset.newsAction === "request-testing") {
-        if (!feedUrl) throw new Error("Add the RSS feed address before testing this source.");
-        await invokeNewsAdmin("createNewsSource", {
-          requestId: request.id,
-          sourceName: request.requested_source_name,
-          websiteUrl: request.requested_website_url || "",
-          feedUrl,
-          status: "testing"
-        });
-        showToast("Source added for testing.");
-      } else if (button.dataset.newsAction === "request-reject") {
+      if (button.dataset.newsAction === "request-reject") {
         await invokeNewsAdmin("reviewSourceRequest", {
           requestId: request.id,
           status: "rejected",
@@ -786,10 +788,12 @@
     try {
       await invokeNewsAdmin("createNewsSource", {
         ...values,
+        ...(reviewingSourceRequestId ? { requestId: reviewingSourceRequestId } : {}),
         status: "testing",
         feedFormat: "rss"
       });
       form.reset();
+      reviewingSourceRequestId = "";
       closeDialog(byId("office-source-dialog"));
       showToast("Source added for testing.");
       newsAdminView = "sources";
@@ -1095,7 +1099,7 @@
       const button = event.target.closest("[data-news-action='article-insight']");
       if (button) openNewsInsight(button.dataset.newsId);
     });
-    byId("office-add-source")?.addEventListener("click", () => openDialog(byId("office-source-dialog")));
+    byId("office-add-source")?.addEventListener("click", () => openSourceEditor());
     byId("office-source-form")?.addEventListener("submit", submitNewsSource);
     byId("office-news-filter-form")?.addEventListener("submit", filterNewsItems);
     byId("office-insight-status")?.addEventListener("change", syncInsightPublicControl);

@@ -531,13 +531,6 @@
     const message = byId("news-request-message");
     const submit = byId("news-request-submit");
     const values = Object.fromEntries(new FormData(form).entries());
-    const websiteUrl = String(values.websiteUrl || "").trim();
-    const feedUrl = String(values.feedUrl || "").trim();
-
-    if (!websiteUrl && !feedUrl) {
-      if (message) message.textContent = "Enter the website or RSS feed address.";
-      return;
-    }
 
     if (submit) {
       submit.disabled = true;
@@ -548,8 +541,6 @@
     try {
       const result = await invokeReader("submitNewsSourceRequest", {
         sourceName: String(values.sourceName || "").trim(),
-        websiteUrl,
-        feedUrl,
         reason: String(values.reason || "").trim()
       });
       if (message) message.textContent = result.message || "Your source request was sent.";

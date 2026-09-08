@@ -14,7 +14,7 @@
   <script src="assets/js/site-shell.js?v=20260908-2" defer></script>
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2" defer></script>
   <script src="assets/js/owl-access.js?v=20260907-3" defer></script>
-  <script src="assets/js/pages/news-feed.js?v=20260908-4" defer></script>
+  <script src="assets/js/pages/news-feed.js?v=20260908-5" defer></script>
 </head>
 <body class="site-body" data-page="news-feed">
   <a class="skip-link" href="#main-content">Skip to content</a>
@@ -108,19 +108,13 @@
       <button class="news-dialog-close" type="button" data-close-news-dialog aria-label="Close">×</button>
       <p class="news-eyebrow">Source Request</p>
       <h2 id="news-request-dialog-title">Request a Source</h2>
-      <p class="news-dialog-intro">Enter the source and at least one website or RSS address.</p>
+      <p class="news-dialog-intro">Only the source name is required. Share anything else you happen to know.</p>
 
       <label for="news-request-name">Source name</label>
-      <input id="news-request-name" name="sourceName" maxlength="120" required />
+      <input id="news-request-name" name="sourceName" minlength="2" maxlength="120" required />
 
-      <label for="news-request-website">Website address</label>
-      <input id="news-request-website" name="websiteUrl" type="url" inputmode="url" placeholder="https://example.com" />
-
-      <label for="news-request-feed">RSS feed address</label>
-      <input id="news-request-feed" name="feedUrl" type="url" inputmode="url" placeholder="https://example.com/feed" />
-
-      <label for="news-request-reason">Why should it be added? <span>(optional)</span></label>
-      <textarea id="news-request-reason" name="reason" rows="4" maxlength="500"></textarea>
+      <label for="news-request-reason">Anything else you know? <span>(optional)</span></label>
+      <textarea id="news-request-reason" name="reason" rows="4" maxlength="500" placeholder="A website, social account, article, or where you saw it"></textarea>
 
       <p class="news-form-message" id="news-request-message" role="status" aria-live="polite"></p>
       <button class="news-access-button" id="news-request-submit" type="submit">Send Request</button>
