@@ -1,9 +1,12 @@
 (function () {
   "use strict";
 
+  const NEWS_BETA_ADMINISTRATOR_ONLY = true;
+
   const pages = [
     ["home", "Home", "index.html"],
     ["owl-feed", "Owl Feed", "owl-feed.html"],
+    ["news-feed", "News", "news-feed.html", NEWS_BETA_ADMINISTRATOR_ONLY ? "administrator" : ""],
     ["credibility-scores", "Credibility", "credibility-scores.html"],
     ["tru-rankings", "T.R.U. Rankings", "tru-rankings.html"],
     ["voter-resources", "Voter Resources", "voter-resources.html"],
@@ -14,10 +17,21 @@
   ];
 
   function pageLinks(activePage) {
-    return pages.map(([id, label, href]) => {
+    return pages.map(([id, label, href, visibility]) => {
       const current = id === activePage ? ' aria-current="page"' : "";
-      return `<a href="${href}"${current}>${label}</a>`;
+      const administratorOnly = visibility === "administrator"
+        ? ' data-administrator-only="true" hidden style="display:none"'
+        : "";
+      return `<a href="${href}"${current}${administratorOnly}>${label}</a>`;
     }).join("");
+  }
+
+  function updateAdministratorNavigation() {
+    const administrator = Boolean(window.StrategicOwlAccess?.isAdministrator());
+    document.querySelectorAll('[data-administrator-only="true"]').forEach((link) => {
+      link.hidden = !administrator;
+      link.style.display = administrator ? "" : "none";
+    });
   }
 
   function renderShell() {
@@ -84,6 +98,9 @@
     window.addEventListener("resize", () => {
       if (window.innerWidth > 1240 && menu?.dataset.open === "true") setMenu(false);
     });
+
+    window.addEventListener("strategic-owl-access-change", updateAdministratorNavigation);
+    document.addEventListener("DOMContentLoaded", updateAdministratorNavigation, { once: true });
   }
 
   renderShell();
