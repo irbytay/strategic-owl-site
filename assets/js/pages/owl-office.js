@@ -19,6 +19,7 @@
   let newsItems = [];
   let selectedNewsItem = null;
   let reviewingSourceRequestId = "";
+  let editingNewsSourceId = "";
   let newsAdminLoading = false;
   let toastTimer = null;
 
@@ -570,6 +571,7 @@
 
       const actions = document.createElement("div");
       actions.className = "office-news-card-actions";
+      actions.appendChild(newsButton("Edit Source", "office-button--secondary", "source-edit", source.id));
       if (source.status === "testing" || source.status === "active") {
         actions.appendChild(newsButton("Refresh Feed", "office-button--secondary", "source-ingest", source.id));
       }
@@ -673,24 +675,61 @@
     return byId("office-news-request-list")?.querySelector(`[data-request-id="${requestId}"]`);
   }
 
-  function openSourceEditor(request = null) {
+  function setSourceSelectValue(id, value, fallback) {
+    const select = byId(id);
+    if (!select) return;
+    const requestedValue = String(value || fallback || "");
+    select.querySelectorAll("[data-legacy-option]").forEach((option) => option.remove());
+    const existingOption = Array.from(select.options)
+      .find((option) => option.value === requestedValue);
+
+    if (existingOption) {
+      select.value = requestedValue;
+      return;
+    }
+
+    if (requestedValue) {
+      const legacyOption = document.createElement("option");
+      legacyOption.value = requestedValue;
+      legacyOption.textContent = `${requestedValue} (current)`;
+      legacyOption.dataset.legacyOption = "true";
+      select.appendChild(legacyOption);
+      select.value = requestedValue;
+      return;
+    }
+
+    select.value = fallback || "";
+  }
+
+  function openSourceEditor(request = null, source = null) {
     const form = byId("office-source-form");
     if (!form) return;
     form.reset();
     form.querySelector("[data-form-message]").textContent = "";
-    reviewingSourceRequestId = request?.id || "";
-    byId("office-source-title").textContent = request ? "Review News Source" : "Add News Source";
+    editingNewsSourceId = source?.id || "";
+    reviewingSourceRequestId = source ? "" : request?.id || "";
+    byId("office-source-title").textContent = source
+      ? "Edit News Source"
+      : request
+        ? "Review News Source"
+        : "Add News Source";
     const requestDetails = byId("office-source-request-details");
-    requestDetails.hidden = !request?.request_reason;
+    requestDetails.hidden = Boolean(source) || !request?.request_reason;
     requestDetails.textContent = request?.request_reason
       ? `Requester’s note: ${request.request_reason}`
       : "";
-    byId("office-source-name").value = request?.requested_source_name || "";
-    byId("office-source-feed").value = request?.requested_feed_url || "";
-    byId("office-source-website").value = request?.requested_website_url || "";
+    byId("office-source-name").value = source?.source_name || request?.requested_source_name || "";
+    byId("office-source-feed").value = source?.feed_url || request?.requested_feed_url || "";
+    byId("office-source-website").value = source?.website_url || request?.requested_website_url || "";
+    setSourceSelectValue("office-source-format", source?.feed_format, "rss");
+    setSourceSelectValue("office-source-alignment", source?.alignment_label, "Not Assessed");
+    setSourceSelectValue("office-source-category", source?.source_category, "Not Assessed");
+    setSourceSelectValue("office-source-content", source?.content_type, "Not Assessed");
+    setSourceSelectValue("office-source-media", source?.default_media_type, "unknown");
+    byId("office-source-submit").textContent = source ? "Save Changes" : "Add for Testing";
     openDialog(byId("office-source-dialog"));
     window.setTimeout(() => {
-      (request?.requested_source_name ? byId("office-source-feed") : byId("office-source-name"))?.focus();
+      (source || request?.requested_source_name ? byId("office-source-feed") : byId("office-source-name"))?.focus();
     }, 0);
   }
 
@@ -783,19 +822,25 @@
     const button = form.querySelector('button[type="submit"]');
     const message = form.querySelector("[data-form-message]");
     const values = Object.fromEntries(new FormData(form).entries());
-    setBusy(button, true, "Adding…", "Add for Testing");
+    const editing = Boolean(editingNewsSourceId);
+    const readyLabel = editing ? "Save Changes" : "Add for Testing";
+    setBusy(button, true, editing ? "Saving…" : "Adding…", readyLabel);
     message.textContent = "";
     try {
-      await invokeNewsAdmin("createNewsSource", {
+      await invokeNewsAdmin(editing ? "updateNewsSource" : "createNewsSource", {
         ...values,
-        ...(reviewingSourceRequestId ? { requestId: reviewingSourceRequestId } : {}),
-        status: "testing",
-        feedFormat: "rss"
+        ...(editing
+          ? { sourceId: editingNewsSourceId }
+          : {
+              ...(reviewingSourceRequestId ? { requestId: reviewingSourceRequestId } : {}),
+              status: "testing"
+            })
       });
       form.reset();
+      editingNewsSourceId = "";
       reviewingSourceRequestId = "";
       closeDialog(byId("office-source-dialog"));
-      showToast("Source added for testing.");
+      showToast(editing ? "Source changes saved." : "Source added for testing.");
       newsAdminView = "sources";
       updateNewsAdminView();
       await loadNewsAdministration();
@@ -803,7 +848,7 @@
       console.error("News source creation failed", error);
       message.textContent = error?.message || "The news source could not be added.";
     } finally {
-      setBusy(button, false, "Adding…", "Add for Testing");
+      setBusy(button, false, editing ? "Saving…" : "Adding…", readyLabel);
     }
   }
 
@@ -1092,8 +1137,14 @@
       if (select) changeNewsSourceStatus(select);
     });
     byId("office-news-source-list")?.addEventListener("click", (event) => {
-      const button = event.target.closest("[data-news-action='source-ingest']");
-      if (button) refreshNewsSource(button);
+      const button = event.target.closest("[data-news-action^='source-']");
+      if (!button) return;
+      if (button.dataset.newsAction === "source-edit") {
+        const source = newsSources.find((entry) => entry.id === button.dataset.newsId);
+        if (source) openSourceEditor(null, source);
+      } else if (button.dataset.newsAction === "source-ingest") {
+        refreshNewsSource(button);
+      }
     });
     byId("office-news-item-list")?.addEventListener("click", (event) => {
       const button = event.target.closest("[data-news-action='article-insight']");

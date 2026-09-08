@@ -348,6 +348,14 @@
   resize: vertical;
 }
 
+.office-field-help {
+  margin: 14px 0 0;
+  color: var(--owl-muted);
+  font-family: Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  font-size: 0.82rem;
+  line-height: 1.4;
+}
+
 .office-dialog-card > .office-button {
   width: 100%;
   margin-top: 12px;

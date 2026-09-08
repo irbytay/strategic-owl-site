@@ -9,11 +9,11 @@
 
   <link rel="icon" type="image/png" href="assets/images/3X.png" />
   <link rel="stylesheet" href="assets/css/site.css?v=20260907-2" />
-  <link rel="stylesheet" href="assets/css/pages/owl-office.css?v=20260908-3" />
+  <link rel="stylesheet" href="assets/css/pages/owl-office.css?v=20260908-4" />
   <script src="assets/js/site-shell.js?v=20260908-2" defer></script>
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2" defer></script>
   <script src="assets/js/owl-access.js?v=20260907-2" defer></script>
-  <script src="assets/js/pages/owl-office.js?v=20260908-3" defer></script>
+  <script src="assets/js/pages/owl-office.js?v=20260908-4" defer></script>
 </head>
 <body class="site-body" data-page="owl-office">
   <a class="skip-link" href="#main-content">Skip to content</a>
@@ -195,19 +195,64 @@
       <p class="office-source-request-details" id="office-source-request-details" hidden></p>
       <label for="office-source-name">Source name</label>
       <input id="office-source-name" name="sourceName" maxlength="120" required />
-      <label for="office-source-feed">RSS feed address</label>
+      <label for="office-source-feed">Feed address</label>
       <input id="office-source-feed" name="feedUrl" type="url" inputmode="url" placeholder="https://example.com/feed" required />
       <label for="office-source-website">Website address <span>(optional)</span></label>
       <input id="office-source-website" name="websiteUrl" type="url" inputmode="url" placeholder="https://example.com" />
+      <label for="office-source-format">Feed format</label>
+      <select id="office-source-format" name="feedFormat">
+        <option value="rss">RSS</option>
+        <option value="atom">Atom</option>
+        <option value="youtube">YouTube</option>
+        <option value="api">API</option>
+        <option value="unknown">Unknown</option>
+      </select>
+      <p class="office-field-help">Use the standard labels below so every source is organized consistently.</p>
       <div class="office-form-grid">
-        <label for="office-source-alignment">Alignment <span>(optional)</span>
-          <input id="office-source-alignment" name="alignmentLabel" maxlength="120" />
+        <label for="office-source-alignment">Alignment
+          <select id="office-source-alignment" name="alignmentLabel">
+            <option value="Not Assessed">Not Assessed</option>
+            <option value="Nonpartisan">Nonpartisan</option>
+            <option value="Left">Left</option>
+            <option value="Center-Left">Center-Left</option>
+            <option value="Center">Center</option>
+            <option value="Center-Right">Center-Right</option>
+            <option value="Right">Right</option>
+            <option value="Populist Right">Populist Right</option>
+            <option value="Mixed">Mixed</option>
+          </select>
         </label>
-        <label for="office-source-category">Category <span>(optional)</span>
-          <input id="office-source-category" name="sourceCategory" maxlength="120" />
+        <label for="office-source-category">Category
+          <select id="office-source-category" name="sourceCategory">
+            <option value="Not Assessed">Not Assessed</option>
+            <option value="General News">General News</option>
+            <option value="Government">Government</option>
+            <option value="Congress &amp; Policy">Congress &amp; Policy</option>
+            <option value="Courts &amp; Law">Courts &amp; Law</option>
+            <option value="Elections">Elections</option>
+            <option value="Fact-Checking">Fact-Checking</option>
+            <option value="Polling &amp; Research">Polling &amp; Research</option>
+            <option value="Investigative Journalism">Investigative Journalism</option>
+            <option value="National Politics">National Politics</option>
+            <option value="State &amp; Local Politics">State &amp; Local Politics</option>
+            <option value="National Security">National Security</option>
+            <option value="Economy &amp; Finance">Economy &amp; Finance</option>
+          </select>
         </label>
-        <label for="office-source-content">Content type <span>(optional)</span>
-          <input id="office-source-content" name="contentType" maxlength="120" />
+        <label for="office-source-content">Content type
+          <select id="office-source-content" name="contentType">
+            <option value="Not Assessed">Not Assessed</option>
+            <option value="Primary Source">Primary Source</option>
+            <option value="Reporting">Reporting</option>
+            <option value="Investigative Reporting">Investigative Reporting</option>
+            <option value="Analysis">Analysis</option>
+            <option value="Fact Check">Fact Check</option>
+            <option value="Research">Research</option>
+            <option value="Commentary">Commentary</option>
+            <option value="Opinion">Opinion</option>
+            <option value="Aggregation">Aggregation</option>
+            <option value="Mixed">Mixed</option>
+          </select>
         </label>
         <label for="office-source-media">Media type
           <select id="office-source-media" name="defaultMediaType">
@@ -222,7 +267,7 @@
         </label>
       </div>
       <p class="office-form-message" data-form-message></p>
-      <button class="office-button office-button--primary" type="submit">Add for Testing</button>
+      <button class="office-button office-button--primary" id="office-source-submit" type="submit">Add for Testing</button>
     </form>
   </dialog>
 
