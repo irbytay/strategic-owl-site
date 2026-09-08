@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="robots" content="noindex, nofollow" />
+  <title>The Owl's Office | The Strategic Owl</title>
+  <meta name="description" content="Private administrator tools for The Strategic Owl." />
+
+  <link rel="icon" type="image/png" href="assets/images/3X.png" />
+  <link rel="stylesheet" href="assets/css/site.css?v=20260907-2" />
+  <link rel="stylesheet" href="assets/css/pages/owl-office.css?v=20260907-1" />
+  <script src="assets/js/site-shell.js?v=20260906-3" defer></script>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2" defer></script>
+  <script src="assets/js/owl-access.js?v=20260907-2" defer></script>
+  <script src="assets/js/pages/owl-office.js?v=20260907-1" defer></script>
+</head>
+<body class="site-body" data-page="owl-office">
+  <a class="skip-link" href="#main-content">Skip to content</a>
+  <div id="site-header"></div>
+
+  <main id="main-content" class="site-page office-page" tabindex="-1">
+    <header class="office-heading">
+      <img src="assets/images/3X.png" alt="" />
+      <div>
+        <p>Administrator</p>
+        <h1>The Owl's Office</h1>
+      </div>
+    </header>
+
+    <section class="divider-section" aria-label="Truth, Reliability, Understanding">
+      <div class="divider-bar">
+        <div class="truth"></div>
+        <div class="reliability"></div>
+        <div class="understanding"></div>
+      </div>
+      <div class="divider-labels">
+        <span>Truth</span>
+        <span>Reliability</span>
+        <span>Understanding</span>
+      </div>
+    </section>
+
+    <section class="office-gate" id="office-gate" aria-live="polite">
+      <div class="office-spinner" aria-hidden="true"></div>
+      <h2>Confirming administrator access…</h2>
+      <p>Please keep this page open.</p>
+    </section>
+
+    <section class="office-workspace" id="office-workspace" hidden>
+      <nav class="office-actions" aria-label="Office tools">
+        <button class="office-action" id="office-new-post" type="button">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 20h9"></path><path d="M16.5 3.5a2.1 2.1 0 0 1 3 3L8 18l-4 1 1-4Z"></path></svg>
+          <span><strong>New Owl Post</strong><small>Publish to The Perch</small></span>
+        </button>
+        <button class="office-action" id="office-inbox" type="button">
+          <span class="office-action-icon">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 4h16v16H4Z"></path><path d="m4 13 4 1 2 3h4l2-3 4-1"></path></svg>
+            <span class="office-badge" id="office-inbox-count" hidden>0</span>
+          </span>
+          <span><strong>Owl Inbox</strong><small>Audience requests</small></span>
+        </button>
+      </nav>
+
+      <section class="office-profile-card" aria-labelledby="office-profile-title">
+        <div class="office-profile-image-frame">
+          <img id="office-profile-image" src="assets/images/3X.png" alt="Current Owl profile" />
+        </div>
+        <div class="office-profile-copy">
+          <p class="office-eyebrow">Publisher Profile</p>
+          <h2 id="office-profile-title">Taylor Irby</h2>
+          <p>Update the image used by The Strategic Owl profile.</p>
+          <input id="office-profile-file" type="file" accept="image/jpeg,image/png,image/webp,image/heic,image/heif" hidden />
+          <div class="office-profile-buttons">
+            <button class="office-button office-button--secondary" id="office-choose-profile" type="button">Choose Photo</button>
+            <button class="office-button office-button--primary" id="office-save-profile" type="button" hidden>Update Profile</button>
+          </div>
+        </div>
+      </section>
+
+      <div class="office-account-actions">
+        <button class="office-button office-button--secondary" id="office-add-user" type="button">Add User</button>
+        <button class="office-button office-button--danger" id="office-sign-out" type="button">Sign Out</button>
+      </div>
+    </section>
+  </main>
+
+  <div id="site-footer"></div>
+  <div class="office-toast" id="office-toast" role="status" aria-live="polite"></div>
+
+  <dialog class="office-dialog" id="office-add-user-dialog" aria-labelledby="office-add-user-title">
+    <form class="office-dialog-card" id="office-add-user-form">
+      <button class="office-dialog-close" type="button" data-close-dialog aria-label="Close">×</button>
+      <p class="office-eyebrow">Access</p>
+      <h2 id="office-add-user-title">Add User</h2>
+      <label for="office-user-name">Name</label>
+      <input id="office-user-name" name="name" autocomplete="name" required />
+      <label for="office-user-email">Email</label>
+      <input id="office-user-email" name="email" type="email" autocomplete="email" required />
+      <p class="office-form-message" data-form-message></p>
+      <button class="office-button office-button--primary" type="submit">Add User</button>
+    </form>
+  </dialog>
+
+  <dialog class="office-dialog office-dialog--wide" id="office-post-dialog" aria-labelledby="office-post-title">
+    <form class="office-dialog-card" id="office-post-form">
+      <button class="office-dialog-close" type="button" data-close-dialog aria-label="Close">×</button>
+      <p class="office-eyebrow">The Perch</p>
+      <h2 id="office-post-title">New Owl Post</h2>
+      <label for="office-post-subject">Subject</label>
+      <input id="office-post-subject" name="subject" minlength="3" maxlength="120" required />
+      <label for="office-post-logic">Owl Logic</label>
+      <textarea id="office-post-logic" name="logic" rows="7" required></textarea>
+      <label for="office-post-position">The Owl's Position</label>
+      <textarea id="office-post-position" name="position" rows="7" required></textarea>
+      <label for="office-post-image">Image <span>(optional)</span></label>
+      <input id="office-post-image" name="image" type="file" accept="image/jpeg,image/png,image/webp,image/heic,image/heif" />
+      <img class="office-post-preview" id="office-post-preview" alt="Selected post preview" hidden />
+      <p class="office-form-message" data-form-message></p>
+      <button class="office-button office-button--primary" type="submit">Publish to The Perch</button>
+    </form>
+  </dialog>
+
+  <dialog class="office-dialog office-dialog--inbox" id="office-inbox-dialog" aria-labelledby="office-inbox-title">
+    <section class="office-dialog-card">
+      <button class="office-dialog-close" type="button" data-close-dialog aria-label="Close">×</button>
+      <p class="office-eyebrow">Audience Requests</p>
+      <h2 id="office-inbox-title">Owl Inbox</h2>
+      <div class="office-inbox-toolbar">
+        <div class="office-inbox-tabs" role="group" aria-label="Inbox view">
+          <button type="button" data-inbox-view="active" aria-pressed="true">Active <span id="office-active-count">0</span></button>
+          <button type="button" data-inbox-view="archived" aria-pressed="false">Archive <span id="office-archive-count">0</span></button>
+        </div>
+        <button class="office-refresh-button" id="office-refresh-inbox" type="button">Refresh</button>
+      </div>
+      <p class="office-inbox-message" id="office-inbox-message" role="status"></p>
+      <div class="office-inbox-list" id="office-inbox-list"></div>
+    </section>
+  </dialog>
+
+  <dialog class="office-dialog office-dialog--confirm" id="office-sign-out-dialog" aria-labelledby="office-sign-out-title">
+    <section class="office-dialog-card">
+      <h2 id="office-sign-out-title">Sign Out?</h2>
+      <p>You can sign in again through Owl Access.</p>
+      <div class="office-confirm-actions">
+        <button class="office-button office-button--secondary" type="button" data-close-dialog>Cancel</button>
+        <button class="office-button office-button--danger" id="office-confirm-sign-out" type="button">Sign Out</button>
+      </div>
+    </section>
+  </dialog>
+</body>
+</html>
