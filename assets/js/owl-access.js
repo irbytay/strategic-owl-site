@@ -397,6 +397,17 @@
     }
   }
 
+  async function requireAdministrator() {
+    const owlSession = getSession();
+    if (owlSession?.source !== "administrator") return null;
+
+    const client = getSupabaseClient();
+    const { data, error } = await client.auth.getSession();
+    if (error || !data.session || data.session.user?.is_anonymous) return null;
+    await authorizeAdministrator(owlSession.email, data.session);
+    return { client, session: data.session, owlSession };
+  }
+
   function ensureDialog() {
     let dialog = document.getElementById("owl-access-dialog");
     if (dialog) return dialog;
@@ -562,7 +573,13 @@
             <svg class="administrator" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2.5 19 5.4v5.4c0 4.7-2.8 8.5-7 10.7-4.2-2.2-7-6-7-10.7V5.4L12 2.5Z"></path><circle cx="12" cy="9" r="2.2"></circle><path d="M8.7 15.8c.45-2.1 1.55-3.2 3.3-3.2s2.85 1.1 3.3 3.2"></path></svg>
             <span class="check" aria-hidden="true">✓</span>
           </button>`;
-        root.querySelector("button")?.addEventListener("click", open);
+        root.querySelector("button")?.addEventListener("click", () => {
+          if (isAdministrator() && document.body.dataset.page !== "owl-office") {
+            window.location.href = "owl-office.html";
+            return;
+          }
+          open();
+        });
       }
       this.refresh();
     }
@@ -602,6 +619,7 @@
     isActive,
     isAdministrator,
     open,
+    requireAdministrator,
     refreshButtons,
     validateEmail
   });
