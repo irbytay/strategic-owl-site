@@ -10,11 +10,11 @@
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
   <link rel="icon" type="image/png" href="assets/images/3X.png" />
   <link rel="stylesheet" href="assets/css/site.css?v=20260908-1" />
-  <link rel="stylesheet" href="assets/css/pages/news-feed.css?v=20260908-6" />
+  <link rel="stylesheet" href="assets/css/pages/news-feed.css?v=20260908-7" />
   <script src="assets/js/site-shell.js?v=20260908-2" defer></script>
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2" defer></script>
   <script src="assets/js/owl-access.js?v=20260907-3" defer></script>
-  <script src="assets/js/pages/news-feed.js?v=20260908-6" defer></script>
+  <script src="assets/js/pages/news-feed.js?v=20260908-7" defer></script>
 </head>
 <body class="site-body" data-page="news-feed">
   <a class="skip-link" href="#main-content">Skip to content</a>
@@ -39,13 +39,19 @@
       </div>
 
       <section class="news-reader-section news-reader-section--stream" aria-label="News articles">
+        <div class="news-section-heading news-personal-heading">
+          <div>
+            <p class="news-eyebrow">Your News</p>
+            <h2 id="news-view-title">Sources You Follow</h2>
+          </div>
+          <a class="news-sources-link news-manage-link" href="news-sources.html">Manage</a>
+        </div>
         <div class="news-feed-controls">
           <div class="news-feed-tabs" role="group" aria-label="Choose news view">
-            <button type="button" data-news-scope="following" aria-pressed="false">Following</button>
-            <button type="button" data-news-scope="all" aria-pressed="true">All Sources</button>
+            <button type="button" data-news-scope="following" aria-pressed="true">Following</button>
+            <button type="button" data-news-scope="all" aria-pressed="false">All Sources</button>
           </div>
           <div class="news-feed-actions">
-            <a class="news-sources-link" href="news-sources.html">Sources</a>
             <button class="news-refresh-button news-refresh-button--desktop" id="news-refresh" type="button">
               <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20 11a8 8 0 1 0 2 5"></path><path d="m20 4v7h-7"></path></svg>
               <span>Refresh Feed</span>
