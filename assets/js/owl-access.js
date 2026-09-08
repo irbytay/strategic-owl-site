@@ -10,14 +10,28 @@
     "sb_publishable_CYM_aXzslre6SE8P-tTYBw_sw_-gQ1h";
   const STRIPE_URL = "https://buy.stripe.com/cNicN5eVt24X2c6aEhdwc05";
   const SUBSTACK_URL = "https://strategicowl.substack.com/subscribe";
+  const STRIPE_MANAGE_URL =
+    "https://billing.stripe.com/p/login/7sY8wP4gP5h9182aEhdwc00";
+  const SUBSTACK_MANAGE_URL = "https://strategicowl.substack.com/";
   let memorySession = null;
+
+  function normalizeSources(source, sources) {
+    const normalized = Array.isArray(sources)
+      ? sources.map((value) => String(value || "").trim().toLowerCase()).filter(Boolean)
+      : [];
+    const primarySource = String(source || "").trim().toLowerCase();
+    if (primarySource && !normalized.includes(primarySource)) normalized.unshift(primarySource);
+    return [...new Set(normalized)];
+  }
 
   function normalizeSession(value) {
     if (!value || typeof value !== "object") return null;
     const email = String(value.email || "").trim().toLowerCase();
     const expiresAt = Number(value.expiresAt);
     if (!email || !Number.isFinite(expiresAt) || expiresAt <= Date.now()) return null;
-    return { email, expiresAt };
+    const source = String(value.source || "").trim().toLowerCase();
+    const activeSources = normalizeSources(source, value.activeSources || value.sources);
+    return { email, expiresAt, source, activeSources };
   }
 
   function readStoredSession(key) {
@@ -72,9 +86,18 @@
     const locked = dialog.querySelector(".owl-access-locked");
     const active = dialog.querySelector(".owl-access-active");
     const email = dialog.querySelector(".owl-access-session-email");
+    const stripeManagement = dialog.querySelector("[data-owl-manage-stripe]");
+    const substackManagement = dialog.querySelector("[data-owl-manage-substack]");
+    const management = dialog.querySelector("[data-owl-management]");
     if (locked) locked.hidden = Boolean(session);
     if (active) active.hidden = !session;
     if (email) email.textContent = session ? session.email : "";
+    const sources = session?.activeSources || [];
+    const showStripe = sources.includes("owl_access");
+    const showSubstack = sources.includes("substack");
+    if (stripeManagement) stripeManagement.hidden = !showStripe;
+    if (substackManagement) substackManagement.hidden = !showSubstack;
+    if (management) management.hidden = !showStripe && !showSubstack;
   }
 
   function announceChange(session) {
@@ -84,15 +107,25 @@
       detail: {
         active: Boolean(session),
         email: session ? session.email : "",
-        expiresAt: session ? session.expiresAt : null
+        expiresAt: session ? session.expiresAt : null,
+        source: session ? session.source : "",
+        activeSources: session ? session.activeSources : []
       }
     }));
   }
 
-  function activate(email, expiresAt) {
+  function activate(email, expiresAt, source, activeSources) {
+    const normalizedEmail = String(email || "").trim().toLowerCase();
+    const existingSession = getSession();
+    const preserveExistingSource =
+      source === undefined && existingSession?.email === normalizedEmail;
     const session = normalizeSession({
-      email,
-      expiresAt: expiresAt || Date.now() + DEFAULT_ACCESS_DAYS * 86400000
+      email: normalizedEmail,
+      expiresAt: expiresAt || Date.now() + DEFAULT_ACCESS_DAYS * 86400000,
+      source: preserveExistingSource ? existingSession.source : source,
+      activeSources: preserveExistingSource
+        ? existingSession.activeSources
+        : activeSources
     });
     if (!session) return false;
     memorySession = session;
@@ -157,7 +190,12 @@
       const expiresAt = Number.isFinite(providedExpiration)
         ? providedExpiration
         : Date.now() + DEFAULT_ACCESS_DAYS * 86400000;
-      activate(normalizedEmail, expiresAt);
+      activate(
+        normalizedEmail,
+        expiresAt,
+        result.source,
+        result.activeSources
+      );
     }
 
     return result;
@@ -198,6 +236,13 @@
           </div>
           <strong>Owl Access is active on this device.</strong>
           <p class="owl-access-session-email"></p>
+          <div class="owl-access-management" data-owl-management hidden>
+            <p>Manage your subscription through the provider that bills you.</p>
+            <div class="owl-access-links">
+              <a class="owl-access-subscribe-link" data-owl-manage-stripe href="${STRIPE_MANAGE_URL}" target="_blank" rel="noopener noreferrer" hidden>Manage Stripe</a>
+              <a class="owl-access-subscribe-link" data-owl-manage-substack href="${SUBSTACK_MANAGE_URL}" target="_blank" rel="noopener noreferrer" hidden>Manage Substack</a>
+            </div>
+          </div>
           <button class="owl-access-secondary" type="button" data-owl-sign-out>Sign Out</button>
         </section>
       </div>`;
