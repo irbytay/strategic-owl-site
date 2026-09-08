@@ -6,6 +6,7 @@ This is the clean, GitHub Pages-ready version of The Strategic Owl website.
 
 - `index.html` — Home
 - `owl-feed.html` — Owl Feed
+- `news-feed.html` — Owl Access News Feed
 - `credibility-scores.html` — Credibility Scores
 - `tru-rankings.html` — T.R.U. Rankings
 - `voter-resources.html` — Voter Resources
