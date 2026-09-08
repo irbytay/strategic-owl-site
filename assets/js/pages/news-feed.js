@@ -3,12 +3,14 @@
 
   const NEWS_READER_FUNCTION = "news-reader";
   const NEWS_BETA_ADMINISTRATOR_ONLY = true;
+  const NEWS_SHARE_BASE_URL = "https://thestrategicowl.com/news";
 
   let currentAccess = null;
   let currentSources = [];
   let currentScope = "all";
   let requestsLoaded = false;
   let loading = false;
+  let toastTimer = 0;
 
   const byId = (id) => document.getElementById(id);
 
@@ -46,6 +48,27 @@
       if (Array.isArray(payload?.data?.[key])) return payload.data[key];
     }
     return [];
+  }
+
+  function normalizeStringList(value) {
+    if (Array.isArray(value)) {
+      return value.map((item) => String(item || "").trim()).filter(Boolean);
+    }
+    if (typeof value === "string") {
+      return value.split(",").map((item) => item.trim()).filter(Boolean);
+    }
+    return [];
+  }
+
+  function showToast(message) {
+    const toast = byId("news-toast");
+    if (!toast) return;
+    window.clearTimeout(toastTimer);
+    toast.textContent = message;
+    toast.dataset.visible = "true";
+    toastTimer = window.setTimeout(() => {
+      toast.dataset.visible = "false";
+    }, 2400);
   }
 
   function formatDate(value) {
@@ -184,6 +207,8 @@
     const sourceId = String(firstValue(item, ["sourceId", "source_id"], firstValue(nestedSource, ["id"])));
     const mappedSource = sourceMap.get(sourceId) || {};
     const media = Array.isArray(item?.media) ? item.media[0] || {} : {};
+    const rawInsight = firstValue(item, ["owlInsight", "owl_insight"], null);
+    const insightAnalysis = String(firstValue(rawInsight, ["owlAnalysis", "owl_analysis", "analysis"]));
 
     return {
       id: String(firstValue(item, ["id", "newsItemId", "news_item_id"])),
@@ -192,8 +217,16 @@
       publishedAt: firstValue(item, ["publishedAt", "published_at", "sourceUpdatedAt", "source_updated_at"]),
       originalUrl: safeUrl(firstValue(item, ["canonicalUrl", "canonical_url", "articleLink", "article_link", "url"])),
       imageUrl: safeUrl(firstValue(item, ["primaryMediaUrl", "primary_media_url", "thumbnailUrl", "thumbnail_url", "imageUrl", "image_url"], firstValue(media, ["url", "mediaUrl", "media_url"]))),
+      authors: normalizeStringList(firstValue(item, ["authors", "author", "byline"], [])),
+      categories: normalizeStringList(firstValue(item, ["categories", "category"], [])),
       sourceName: String(firstValue(nestedSource, ["sourceName", "source_name", "name"], mappedSource.name || firstValue(item, ["sourceName", "source_name"], "News Source"))),
-      sourceStatus: String(firstValue(nestedSource, ["status"], mappedSource.status || firstValue(item, ["sourceStatus", "source_status"], "active"))).toLowerCase()
+      sourceStatus: String(firstValue(nestedSource, ["status"], mappedSource.status || firstValue(item, ["sourceStatus", "source_status"], "active"))).toLowerCase(),
+      owlInsight: insightAnalysis ? {
+        label: String(firstValue(rawInsight, ["owlLabel", "owl_label"], "Owl Insight")),
+        labels: normalizeStringList(firstValue(rawInsight, ["labels"], [])),
+        analysis: insightAnalysis,
+        public: Boolean(firstValue(rawInsight, ["public", "isPublic", "is_public"], false))
+      } : null
     };
   }
 
@@ -261,6 +294,26 @@
       const originalLink = item.originalUrl
         ? `<a class="news-original-link" href="${escapeHtml(item.originalUrl)}" target="_blank" rel="noopener noreferrer">Read Original</a>`
         : "";
+      const metadata = [...item.authors, ...item.categories].slice(0, 6);
+      const metadataMarkup = metadata.length
+        ? `<div class="news-item-meta">${metadata.map((value) => `<span>${escapeHtml(value)}</span>`).join("")}</div>`
+        : "";
+      const insightMarkup = item.owlInsight
+        ? `<aside class="news-owl-insight">
+            <div class="news-owl-insight-heading">
+              <strong>${escapeHtml(item.owlInsight.label)}</strong>
+              <span>${item.owlInsight.public ? "Public Owl Insight" : "Owl Access Insight"}</span>
+            </div>
+            <p>${escapeHtml(item.owlInsight.analysis)}</p>
+            ${item.owlInsight.labels.length
+              ? `<div class="news-insight-labels">${item.owlInsight.labels.map((label) => `<span>${escapeHtml(label)}</span>`).join("")}</div>`
+              : ""}
+          </aside>`
+        : "";
+      const canShare = item.sourceStatus === "active" && Boolean(item.id);
+      const shareButton = canShare
+        ? `<button class="news-share-button" type="button" data-share-id="${escapeHtml(item.id)}">Share</button>`
+        : `<button class="news-share-button" type="button" disabled title="Sharing becomes available after this source is approved">Share when Live</button>`;
 
       return `
         <details class="news-item">
@@ -276,11 +329,52 @@
             </span>
           </summary>
           <div class="news-item-details">
+            ${metadataMarkup}
             <p>${escapeHtml(item.summary)}</p>
-            ${originalLink}
+            ${insightMarkup}
+            <div class="news-item-actions">
+              ${originalLink}
+              ${shareButton}
+            </div>
           </div>
         </details>`;
     }).join("");
+  }
+
+  async function copyShareUrl(shareUrl) {
+    if (navigator.clipboard?.writeText) {
+      await navigator.clipboard.writeText(shareUrl);
+      return;
+    }
+
+    const field = document.createElement("textarea");
+    field.value = shareUrl;
+    field.setAttribute("readonly", "");
+    field.style.position = "fixed";
+    field.style.opacity = "0";
+    document.body.appendChild(field);
+    field.select();
+    document.execCommand("copy");
+    field.remove();
+  }
+
+  async function shareStory(itemId) {
+    const cleanId = String(itemId || "").trim();
+    if (!cleanId) return;
+    const shareUrl = `${NEWS_SHARE_BASE_URL}/${encodeURIComponent(cleanId)}`;
+
+    try {
+      if (typeof navigator.share === "function") {
+        await navigator.share({ url: shareUrl });
+        return;
+      }
+      await copyShareUrl(shareUrl);
+      showToast("Link copied");
+    } catch (error) {
+      if (error?.name === "AbortError") return;
+      console.error("Unable to share news story", error);
+      showToast("The link could not be shared.");
+    }
   }
 
   async function loadNews() {
@@ -509,6 +603,10 @@
   byId("news-source-list")?.addEventListener("click", (event) => {
     const button = event.target.closest(".news-follow-button");
     if (button) changeFollow(button);
+  });
+  byId("news-item-list")?.addEventListener("click", (event) => {
+    const button = event.target.closest("[data-share-id]");
+    if (button) shareStory(button.dataset.shareId);
   });
   document.querySelectorAll("[data-news-scope]").forEach((button) => {
     button.addEventListener("click", async () => {
