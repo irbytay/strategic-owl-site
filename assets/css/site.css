@@ -429,6 +429,14 @@ body.site-body .divider-labels > span {
   text-align: center;
 }
 
+.owl-access-intro p {
+  margin: 0;
+}
+
+.owl-access-intro p + p {
+  margin-top: 12px;
+}
+
 .owl-access-form {
   display: grid;
   gap: 10px;
@@ -519,6 +527,11 @@ body.site-body .divider-labels > span {
 .owl-access-administrator-sign-in p {
   margin: 0;
   color: var(--owl-muted);
+  text-align: center;
+}
+
+.owl-access-apple-subscriber strong {
+  color: white;
   text-align: center;
 }
 
