@@ -390,6 +390,7 @@ body.site-body .divider-labels > span {
 .owl-access-card {
   position: relative;
   padding: 28px;
+  text-align: center;
 }
 
 .owl-access-close {
@@ -424,7 +425,8 @@ body.site-body .divider-labels > span {
 }
 
 .owl-access-intro {
-  margin: 0 auto 22px;
+  max-width: 390px;
+  margin: 0 auto 20px;
   color: var(--owl-muted);
   text-align: center;
 }
@@ -434,7 +436,18 @@ body.site-body .divider-labels > span {
 }
 
 .owl-access-intro p + p {
-  margin-top: 12px;
+  margin-top: 16px;
+}
+
+.owl-access-promise {
+  color: var(--owl-body);
+  font-size: 1.04rem;
+  line-height: 1.55;
+}
+
+.owl-access-benefits {
+  font-size: 0.98rem;
+  line-height: 1.48;
 }
 
 .owl-access-form {
@@ -446,6 +459,7 @@ body.site-body .divider-labels > span {
   color: white;
   font-size: 1rem;
   font-weight: 700;
+  text-align: center;
 }
 
 .owl-access-form input {
@@ -499,6 +513,11 @@ body.site-body .divider-labels > span {
   text-align: center;
 }
 
+.owl-access-message:empty {
+  min-height: 0;
+  margin: 0;
+}
+
 .owl-access-offers {
   margin-top: 22px;
   padding-top: 18px;
@@ -532,7 +551,18 @@ body.site-body .divider-labels > span {
 
 .owl-access-apple-subscriber strong {
   color: white;
+  font-size: 1.04rem;
   text-align: center;
+}
+
+.owl-access-apple-subscriber {
+  gap: 8px;
+  margin-top: 18px;
+  padding-top: 16px;
+}
+
+.owl-access-apple-subscriber .owl-access-secondary {
+  margin-top: 4px;
 }
 
 .owl-access-administrator-message {
