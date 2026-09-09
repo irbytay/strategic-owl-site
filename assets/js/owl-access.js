@@ -14,6 +14,8 @@
   const STRIPE_MANAGE_URL =
     "https://billing.stripe.com/p/login/7sY8wP4gP5h9182aEhdwc00";
   const SUBSTACK_MANAGE_URL = "https://strategicowl.substack.com/";
+  const APP_STORE_URL =
+    "https://apps.apple.com/app/the-strategic-owl/id6748349497";
   let memorySession = null;
   let supabaseClient = null;
   let administratorAuthError = "";
@@ -161,6 +163,7 @@
     const management = dialog.querySelector("[data-owl-management]");
     const administratorSignIn = dialog.querySelector("[data-owl-administrator-sign-in]");
     const administratorMessage = dialog.querySelector("[data-owl-administrator-message]");
+    const appleSubscriber = dialog.querySelector("[data-owl-apple-subscriber]");
     const activeLabel = dialog.querySelector("[data-owl-active-label]");
     const offers = dialog.querySelector(".owl-access-offers");
     const pendingAdministrator = readPendingAdministrator();
@@ -169,6 +172,9 @@
     if (email) email.textContent = session ? session.email : "";
     if (administratorSignIn) {
       administratorSignIn.hidden = Boolean(session) || !pendingAdministrator;
+    }
+    if (appleSubscriber) {
+      appleSubscriber.hidden = Boolean(session) || Boolean(pendingAdministrator);
     }
     if (administratorMessage) administratorMessage.textContent = administratorAuthError;
     if (offers) offers.hidden = Boolean(pendingAdministrator) && !session;
@@ -457,7 +463,10 @@
       <div class="owl-access-card">
         <button class="owl-access-close" type="button" aria-label="Close Owl Access">×</button>
         <h2 class="owl-access-heading" id="owl-access-heading">Owl Access</h2>
-        <p class="owl-access-intro">Unlock the complete researched view while keeping the public tools open to everyone.</p>
+        <div class="owl-access-intro">
+          <p>Choose the sources in your News Feed. No ads. No algorithms.</p>
+          <p>Owl Access includes Owl Insights, expanded candidate research, Ask the Owl, T.R.U. suggestions, and saved quiz history.</p>
+        </div>
         <section class="owl-access-locked">
           <form class="owl-access-form" novalidate>
             <label for="owl-access-email">Email used for Stripe or paid Substack</label>
@@ -465,6 +474,12 @@
             <button class="owl-access-primary" type="submit">Check Owl Access</button>
           </form>
           <p class="owl-access-message" role="status" aria-live="polite"></p>
+          <div class="owl-access-administrator-sign-in owl-access-apple-subscriber" data-owl-apple-subscriber>
+            <p>or</p>
+            <strong>Subscribed through Apple?</strong>
+            <p>Apple subscriptions are verified in The Strategic Owl app.</p>
+            <a class="owl-access-secondary" href="${APP_STORE_URL}" target="_blank" rel="noopener noreferrer">Check Apple Access in the App</a>
+          </div>
           <div class="owl-access-administrator-sign-in" data-owl-administrator-sign-in hidden>
             <p>Administrator email confirmed. Continue with Apple to securely open The Owl’s Office.</p>
             <button class="owl-access-secondary" type="button" data-owl-continue-apple>Continue with Apple</button>
