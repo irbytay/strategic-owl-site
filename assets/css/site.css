@@ -440,9 +440,35 @@ body.site-body .divider-labels > span {
 }
 
 .owl-access-promise {
+  line-height: 1.45;
+}
+
+.owl-access-promise-intro,
+.owl-access-principle {
+  display: block;
+}
+
+.owl-access-promise-intro {
   color: var(--owl-body);
   font-size: 1.04rem;
-  line-height: 1.55;
+}
+
+.owl-access-principle {
+  color: var(--owl-gold);
+  font-family: "Inter", Arial, sans-serif;
+  font-size: 0.9rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  line-height: 1.35;
+  text-transform: uppercase;
+}
+
+.owl-access-promise-intro + .owl-access-principle {
+  margin-top: 12px;
+}
+
+.owl-access-principle + .owl-access-principle {
+  margin-top: 3px;
 }
 
 .owl-access-benefits {
