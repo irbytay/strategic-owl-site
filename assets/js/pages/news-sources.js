@@ -301,7 +301,7 @@
     try {
       currentAccess = await getAuthorizedAccess();
       if (!currentAccess) {
-        showGate("Owl Access required", "Open Owl Access to choose your news sources.", true);
+        showGate("Owl Access required", "Choose the sources you want in your News Feed. Follow or remove them at any time.", true);
         return;
       }
       byId("news-sources-gate").hidden = true;

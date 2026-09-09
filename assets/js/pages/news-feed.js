@@ -773,7 +773,7 @@
           NEWS_BETA_ADMINISTRATOR_ONLY ? "Administrator preview" : "Owl Access required",
           NEWS_BETA_ADMINISTRATOR_ONLY
             ? "Sign in through Owl Access to test the News Feed."
-            : "Confirm your Owl Access to choose sources and open your News Feed.",
+            : "You choose the sources. Stories are shown newest first. No algorithm decides what you see. Follow or remove sources anytime, request new ones, and read Owl Insights alongside the reporting. No ads. No algorithms.",
           "Open Owl Access"
         );
         return;
