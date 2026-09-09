@@ -4,8 +4,9 @@
   const NEWS_READER_FUNCTION = "news-reader";
   const NEWS_BETA_ADMINISTRATOR_ONLY = false;
   const NEWS_SHARE_BASE_URL = "https://thestrategicowl.com/news";
-  const NEWS_CACHE_VERSION = 2;
+  const NEWS_CACHE_VERSION = 3;
   const NEWS_CACHE_PREFIX = "strategic-owl-news-feed";
+  const NEWS_PAGE_SIZE = 50;
 
   let currentAccess = null;
   let currentScope = "following";
@@ -21,6 +22,9 @@
   let loadedItems = [];
   let loadedHasFollows = false;
   let selectedSourceId = "";
+  let nextBefore = "";
+  let hasMore = false;
+  let paginationObserver = null;
 
   const byId = (id) => document.getElementById(id);
 
@@ -139,7 +143,7 @@
     }
   }
 
-  function saveNewsView(scope, rawSources, rawItems, hasFollows) {
+  function saveNewsView(scope, rawSources, rawItems, hasFollows, nextPageBefore, moreAvailable) {
     const cache = readNewsCache() || {
       version: NEWS_CACHE_VERSION,
       views: {}
@@ -149,6 +153,8 @@
       sources: rawSources,
       items: rawItems,
       hasFollows,
+      nextBefore: nextPageBefore || "",
+      hasMore: Boolean(moreAvailable),
       savedAt: Date.now()
     };
     cache.ui = {
@@ -183,7 +189,10 @@
     const sources = renderSources(view.sources);
     const visibleItems = view.hasFollows ? view.items : [];
     selectedSourceId = String(cache.ui?.sourceFilterId || "");
+    nextBefore = String(view.nextBefore || "");
+    hasMore = Boolean(view.hasMore && nextBefore);
     renderItems(visibleItems, sources, { hasFollows: view.hasFollows });
+    updatePaginationState();
     currentScope = "following";
 
     const status = byId("news-status");
@@ -441,7 +450,7 @@
     });
   }
 
-  function configureSourceFilter(sources, hasFollows, itemCount) {
+  function configureSourceFilter(sources, hasFollows) {
     const host = byId("news-feed-filter");
     const select = byId("news-source-filter");
     if (!host || !select) return;
@@ -459,7 +468,23 @@
       ))
     ].join("");
     select.value = selectedSourceId;
-    host.hidden = !hasFollows || followedSources.length < 2 || itemCount === 0;
+    host.hidden = !hasFollows || followedSources.length < 2;
+  }
+
+  function updatePaginationState() {
+    const sentinel = byId("news-load-more");
+    if (!sentinel) return;
+    sentinel.hidden = !hasMore || !nextBefore || !loadedHasFollows;
+    sentinel.dataset.loading = String(loading);
+  }
+
+  function mergeNewsItems(existingItems, newItems) {
+    const merged = new Map();
+    [...existingItems, ...newItems].forEach((item) => {
+      const id = String(firstValue(item, ["id", "newsItemId", "news_item_id"]));
+      if (id && !merged.has(id)) merged.set(id, item);
+    });
+    return Array.from(merged.values());
   }
 
   function renderItems(rawItems, sources, { hasFollows = true } = {}) {
@@ -468,7 +493,7 @@
     loadedSources = sources;
     loadedItems = rawItems;
     loadedHasFollows = hasFollows;
-    configureSourceFilter(sources, hasFollows, allItems.length);
+    configureSourceFilter(sources, hasFollows);
     const items = selectedSourceId
       ? allItems.filter((item) => item.sourceId === selectedSourceId)
       : allItems;
@@ -597,9 +622,11 @@
     }
   }
 
-  async function loadNews() {
+  async function loadNews({ append = false } = {}) {
     if (loading || !currentAccess?.client) return;
+    if (append && (!hasMore || !nextBefore)) return;
     loading = true;
+    updatePaginationState();
     const refreshButton = byId("news-refresh");
     const status = byId("news-status");
     if (refreshButton) {
@@ -607,37 +634,68 @@
       const label = refreshButton.querySelector("span");
       if (label) label.textContent = "Refreshing…";
     }
-    if (status) status.textContent = "Updating…";
+    if (status && !append) status.textContent = "Updating…";
 
     try {
-      const [sourcePayload, feedPayload] = await Promise.all([
-        invokeReader("listNewsSources", { includeTesting: true }),
-        invokeReader("listNewsFeed", {
-          includeTesting: true,
-          scope: "following",
-          limit: 50,
-          pageSize: 50
-        })
-      ]);
+      let rawSources = loadedSources;
+      let sources = loadedSources;
 
-      const rawSources = extractArray(sourcePayload, ["sources", "newsSources", "results"]);
-      const rawItems = extractArray(feedPayload, ["items", "newsItems", "articles", "feed", "results"]);
-      const sources = renderSources(rawSources);
+      if (!append) {
+        const sourcePayload = await invokeReader("listNewsSources", { includeTesting: true });
+        rawSources = extractArray(sourcePayload, ["sources", "newsSources", "results"]);
+        sources = renderSources(rawSources);
+
+        const followedSourceIds = new Set(
+          sources.filter((source) => source.following).map((source) => source.id)
+        );
+        if (selectedSourceId && !followedSourceIds.has(selectedSourceId)) {
+          selectedSourceId = "";
+        }
+      }
+
+      const feedPayload = await invokeReader("listNewsFeed", {
+        includeTesting: true,
+        scope: "following",
+        limit: NEWS_PAGE_SIZE,
+        pageSize: NEWS_PAGE_SIZE,
+        ...(selectedSourceId ? { sourceId: selectedSourceId } : {}),
+        ...(append && nextBefore ? { before: nextBefore } : {})
+      });
+
+      const pageItems = extractArray(feedPayload, ["items", "newsItems", "articles", "feed", "results"]);
       const hasFollows = Boolean(firstValue(feedPayload, ["hasFollows", "has_follows"], sources.some((source) => source.following)));
-      const visibleItems = hasFollows ? rawItems : [];
+      const visibleItems = hasFollows
+        ? (append ? mergeNewsItems(loadedItems, pageItems) : pageItems)
+        : [];
+      const preservedUi = append
+        ? { scrollY: window.scrollY || 0, openItemIds: openNewsItemIds() }
+        : null;
+
+      nextBefore = String(firstValue(feedPayload, ["nextBefore", "next_before"], ""));
+      hasMore = Boolean(firstValue(
+        feedPayload,
+        ["hasMore", "has_more"],
+        pageItems.length === NEWS_PAGE_SIZE && Boolean(nextBefore)
+      )) && Boolean(nextBefore);
+
       renderItems(visibleItems, sources, { hasFollows });
+      if (preservedUi) restoreNewsPosition(preservedUi);
       currentScope = "following";
       if (status) status.textContent = "";
-      saveNewsView(currentScope, rawSources, visibleItems, hasFollows);
+      saveNewsView(currentScope, rawSources, visibleItems, hasFollows, nextBefore, hasMore);
     } catch (error) {
       console.error("Unable to load News Feed preview", error);
-      if (!byId("news-item-list")?.querySelector(".news-item")) {
+      if (append) {
+        hasMore = false;
+        showToast(error?.message || "More stories could not be loaded.");
+      } else if (!byId("news-item-list")?.querySelector(".news-item")) {
         renderSources([]);
         renderItems([], []);
       }
-      if (status) status.textContent = error?.message || "The News Feed could not be loaded.";
+      if (status && !append) status.textContent = error?.message || "The News Feed could not be loaded.";
     } finally {
       loading = false;
+      updatePaginationState();
       if (refreshButton) {
         refreshButton.disabled = false;
         const label = refreshButton.querySelector("span");
@@ -701,6 +759,18 @@
     }, { passive: true });
 
     surface.addEventListener("touchcancel", resetPullIndicator, { passive: true });
+  }
+
+  function installInfiniteScroll() {
+    const sentinel = byId("news-load-more");
+    if (!sentinel || !("IntersectionObserver" in window)) return;
+    paginationObserver?.disconnect();
+    paginationObserver = new IntersectionObserver((entries) => {
+      if (entries.some((entry) => entry.isIntersecting)) {
+        loadNews({ append: true });
+      }
+    }, { rootMargin: "500px 0px" });
+    paginationObserver.observe(sentinel);
   }
 
   async function changeFollow(button) {
@@ -883,8 +953,9 @@
   byId("news-refresh")?.addEventListener("click", () => loadNews());
   byId("news-source-filter")?.addEventListener("change", (event) => {
     selectedSourceId = String(event.currentTarget.value || "");
-    renderItems(loadedItems, loadedSources, { hasFollows: loadedHasFollows });
-    rememberNewsPosition();
+    nextBefore = "";
+    hasMore = false;
+    loadNews();
   });
   byId("news-item-list")?.addEventListener("click", (event) => {
     const viewSelected = event.target.closest("#news-view-selected");
@@ -926,5 +997,6 @@
     if (document.visibilityState === "hidden") rememberNewsPosition();
   });
   installPullToRefresh();
+  installInfiniteScroll();
   initializeNewsFeed();
 })();
