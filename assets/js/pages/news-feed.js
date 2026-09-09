@@ -4,11 +4,10 @@
   const NEWS_READER_FUNCTION = "news-reader";
   const NEWS_BETA_ADMINISTRATOR_ONLY = false;
   const NEWS_SHARE_BASE_URL = "https://thestrategicowl.com/news";
-  const NEWS_CACHE_VERSION = 1;
+  const NEWS_CACHE_VERSION = 2;
   const NEWS_CACHE_PREFIX = "strategic-owl-news-feed";
 
   let currentAccess = null;
-  let currentSources = [];
   let currentScope = "following";
   let requestsLoaded = false;
   let loading = false;
@@ -167,28 +166,19 @@
     });
   }
 
-  function restoreNewsView(requestedScope = "") {
+  function restoreNewsView() {
     const cache = readNewsCache();
     if (!cache) return false;
-    const scope = requestedScope || cache.ui?.scope || currentScope;
-    const view = cache.views?.[scope];
+    const view = cache.views?.following;
     if (!view || !Array.isArray(view.sources) || !Array.isArray(view.items)) return false;
 
     const sources = renderSources(view.sources);
-    renderItems(view.items, sources);
-    currentScope = view.scope === "following" ? "following" : "all";
-    updateScopeButtons(currentScope);
+    const visibleItems = view.hasFollows ? view.items : [];
+    renderItems(visibleItems, sources, { hasFollows: view.hasFollows });
+    currentScope = "following";
 
     const status = byId("news-status");
-    if (status) {
-      if (!view.hasFollows) {
-        status.textContent = "Choose Sources to build your Following feed.";
-      } else if (view.items.length) {
-        status.textContent = `Updated ${formatDate(view.savedAt)}`;
-      } else {
-        status.textContent = "No stories in this view.";
-      }
-    }
+    if (status) status.textContent = "";
 
     restoreNewsPosition(cache.ui);
     return true;
@@ -354,53 +344,50 @@
   }
 
   function renderSources(rawSources) {
-    const sources = rawSources.map(normalizeSource);
-    currentSources = sources;
-    const host = byId("news-source-list");
-    const count = byId("news-source-count");
-    if (count) count.textContent = String(sources.length);
-    if (!host) return sources;
-
-    if (!sources.length) {
-      host.innerHTML = '<p class="news-empty">No news sources are available for this preview yet.</p>';
-      return sources;
-    }
-
-    host.innerHTML = sources.map((source) => {
-      const details = [source.alignment, source.category, source.contentType].filter(Boolean).join(" · ");
-      return `
-        <article class="news-source-card" data-following="${String(source.following)}">
-          <div class="news-source-title-row">
-            <h3>${escapeHtml(source.name)}</h3>
-            <span class="news-source-status" data-status="${escapeHtml(source.status)}">${escapeHtml(source.status)}</span>
-          </div>
-          <div class="news-source-footer">
-            ${details ? `<p>${escapeHtml(details)}</p>` : "<p>News source</p>"}
-            <button
-              class="news-follow-button"
-              type="button"
-              data-source-id="${escapeHtml(source.id)}"
-              data-following="${String(source.following)}"
-              aria-pressed="${String(source.following)}"
-            >${source.following ? "Following" : "Follow"}</button>
-          </div>
-        </article>`;
-    }).join("");
-
+    const sources = rawSources
+      .map(normalizeSource)
+      .sort((left, right) => left.name.localeCompare(right.name));
     return sources;
   }
 
-  function updateScopeButtons(scope) {
-    document.querySelectorAll("[data-news-scope]").forEach((button) => {
-      button.setAttribute("aria-pressed", String(button.dataset.newsScope === scope));
-    });
+  function followButtonContent(following, pending = "") {
+    const icon = following ? "✓" : "+";
+    const label = pending || (following ? "Following" : "Follow");
+    return `<span class="news-follow-icon" aria-hidden="true">${icon}</span><span>${label}</span>`;
+  }
 
-    const viewTitle = byId("news-view-title");
-    if (viewTitle) {
-      viewTitle.textContent = scope === "following"
-        ? "Sources You Follow"
-        : "All Sources";
+  function renderSourceChoices(sources) {
+    const availableSources = sources.filter((source) => !source.following);
+
+    if (!availableSources.length) {
+      return '<p class="news-empty">No sources are available yet.</p>';
     }
+
+    return availableSources.map((source) => {
+      const details = [source.alignment, source.category, source.contentType].filter(Boolean).join(" · ");
+      const testing = currentAccess?.administrator && source.status === "testing"
+        ? '<span class="news-source-row-status">Testing</span>'
+        : "";
+
+      return `
+        <article class="news-onboarding-source-row">
+          <div>
+            <div class="news-source-row-title">
+              <h3>${escapeHtml(source.name)}</h3>
+              ${testing}
+            </div>
+            ${details ? `<p>${escapeHtml(details)}</p>` : '<p class="news-source-detail-empty">Source details pending</p>'}
+          </div>
+          <button
+            class="news-follow-button"
+            type="button"
+            data-source-id="${escapeHtml(source.id)}"
+            data-following="false"
+            aria-label="Follow ${escapeHtml(source.name)}"
+            aria-pressed="false"
+          >${followButtonContent(false)}</button>
+        </article>`;
+    }).join("");
   }
 
   function installImageFallbacks(host) {
@@ -419,7 +406,7 @@
     });
   }
 
-  function renderItems(rawItems, sources) {
+  function renderItems(rawItems, sources, { hasFollows = true } = {}) {
     const sourceMap = new Map(sources.map((source) => [source.id, source]));
     const items = rawItems.map((item) => normalizeItem(item, sourceMap));
     const host = byId("news-item-list");
@@ -428,7 +415,17 @@
     if (!host) return;
 
     if (!items.length) {
-      host.innerHTML = '<p class="news-empty">No stories yet.</p>';
+      host.innerHTML = hasFollows
+        ? '<p class="news-empty">No recent stories from your sources.</p>'
+        : `<section class="news-feed-onboarding" aria-labelledby="news-following-empty-title">
+            <div class="news-feed-onboarding-heading">
+            <h3 id="news-following-empty-title">Build Your Feed</h3>
+              <p>Choose a source to begin.</p>
+            </div>
+            <div class="news-onboarding-source-list" id="news-source-list">
+              ${renderSourceChoices(sources)}
+            </div>
+          </section>`;
       return;
     }
 
@@ -542,7 +539,7 @@
         invokeReader("listNewsSources", { includeTesting: true }),
         invokeReader("listNewsFeed", {
           includeTesting: true,
-          scope: currentScope,
+          scope: "following",
           limit: 50,
           pageSize: 50
         })
@@ -551,21 +548,12 @@
       const rawSources = extractArray(sourcePayload, ["sources", "newsSources", "results"]);
       const rawItems = extractArray(feedPayload, ["items", "newsItems", "articles", "feed", "results"]);
       const sources = renderSources(rawSources);
-      renderItems(rawItems, sources);
-      const returnedScope = String(firstValue(feedPayload, ["feedMode", "feed_mode"], currentScope));
       const hasFollows = Boolean(firstValue(feedPayload, ["hasFollows", "has_follows"], sources.some((source) => source.following)));
-      currentScope = returnedScope === "following" ? "following" : "all";
-      updateScopeButtons(currentScope);
-      if (status) {
-        if (!hasFollows) {
-          status.textContent = "Choose Sources to build your Following feed.";
-        } else if (rawItems.length) {
-          status.textContent = "Updated just now";
-        } else {
-          status.textContent = "No stories in this view.";
-        }
-      }
-      saveNewsView(currentScope, rawSources, rawItems, hasFollows);
+      const visibleItems = hasFollows ? rawItems : [];
+      renderItems(visibleItems, sources, { hasFollows });
+      currentScope = "following";
+      if (status) status.textContent = "";
+      saveNewsView(currentScope, rawSources, visibleItems, hasFollows);
     } catch (error) {
       console.error("Unable to load News Feed preview", error);
       if (!byId("news-item-list")?.querySelector(".news-item")) {
@@ -646,7 +634,10 @@
     if (!sourceId || !currentAccess?.client) return;
 
     button.disabled = true;
-    button.textContent = following ? "Removing…" : "Following…";
+    button.innerHTML = followButtonContent(
+      following,
+      following ? "Removing…" : "Following…"
+    );
 
     try {
       await invokeReader(
@@ -661,7 +652,7 @@
       const status = byId("news-status");
       if (status) status.textContent = error?.message || "The source selection could not be changed.";
       button.disabled = false;
-      button.textContent = following ? "Following" : "Follow";
+      button.innerHTML = followButtonContent(following);
     }
   }
 
@@ -802,26 +793,14 @@
   }
 
   byId("news-refresh")?.addEventListener("click", () => loadNews());
-  byId("news-source-list")?.addEventListener("click", (event) => {
-    const button = event.target.closest(".news-follow-button");
-    if (button) changeFollow(button);
-  });
   byId("news-item-list")?.addEventListener("click", (event) => {
+    const followButton = event.target.closest(".news-follow-button");
+    if (followButton) {
+      changeFollow(followButton);
+      return;
+    }
     const button = event.target.closest("[data-share-id]");
     if (button) shareStory(button.dataset.shareId);
-  });
-  document.querySelectorAll("[data-news-scope]").forEach((button) => {
-    button.addEventListener("click", async () => {
-      const requestedScope = button.dataset.newsScope;
-      if (requestedScope !== "following" && requestedScope !== "all") return;
-      if (requestedScope === currentScope) return;
-      rememberNewsPosition();
-      currentScope = requestedScope;
-      updateScopeButtons(currentScope);
-      if (!restoreNewsView(requestedScope)) {
-        await loadNews();
-      }
-    });
   });
   byId("news-request-open")?.addEventListener("click", openRequestDialog);
   byId("news-request-form")?.addEventListener("submit", submitSourceRequest);

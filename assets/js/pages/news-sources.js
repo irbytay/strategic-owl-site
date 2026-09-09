@@ -58,6 +58,19 @@
     }, 2400);
   }
 
+  function clearNewsFeedCache() {
+    try {
+      const matchingKeys = [];
+      for (let index = 0; index < window.sessionStorage.length; index += 1) {
+        const key = window.sessionStorage.key(index);
+        if (key?.startsWith("strategic-owl-news-feed:")) matchingKeys.push(key);
+      }
+      matchingKeys.forEach((key) => window.sessionStorage.removeItem(key));
+    } catch {
+      // Source changes still succeed when browser storage is unavailable.
+    }
+  }
+
   function showGate(heading, message, allowAccess = false) {
     const gate = byId("news-sources-gate");
     const workspace = byId("news-sources-workspace");
@@ -143,43 +156,84 @@
     };
   }
 
+  function followButtonContent(following, pending = "") {
+    const icon = following ? "✓" : "+";
+    const label = pending || (following ? "Following" : "Follow");
+    return `<span class="news-follow-icon" aria-hidden="true">${icon}</span><span>${label}</span>`;
+  }
+
+  function sourceRow(source) {
+    const details = [source.alignment, source.category, source.contentType].filter(Boolean).join(" · ");
+    const testing = currentAccess?.administrator && source.status === "testing"
+      ? '<span class="news-source-row-status">Testing</span>'
+      : "";
+    const actionLabel = source.following ? `Stop following ${source.name}` : `Follow ${source.name}`;
+
+    return `
+      <article class="news-source-row">
+        <div>
+          <div class="news-source-row-title">
+            <h3>${escapeHtml(source.name)}</h3>
+            ${testing}
+          </div>
+          ${details ? `<p>${escapeHtml(details)}</p>` : '<p class="news-source-detail-empty">Source details pending</p>'}
+        </div>
+        <button
+          class="news-follow-button"
+          type="button"
+          data-source-id="${escapeHtml(source.id)}"
+          data-following="${String(source.following)}"
+          aria-label="${escapeHtml(actionLabel)}"
+          aria-pressed="${String(source.following)}"
+        >${followButtonContent(source.following)}</button>
+      </article>`;
+  }
+
+  function sourceGroup(id, heading, groupSources, emptyMessage) {
+    return `
+      <section class="news-source-group" aria-labelledby="${id}">
+        <div class="news-source-group-heading">
+          <h2 id="${id}">${heading}</h2>
+          <span aria-label="${groupSources.length} sources">${groupSources.length}</span>
+        </div>
+        <div class="news-source-rows">
+          ${groupSources.length
+            ? groupSources.map(sourceRow).join("")
+            : `<p class="news-source-group-empty">${emptyMessage}</p>`}
+        </div>
+      </section>`;
+  }
+
   function renderSources(rawSources) {
-    sources = rawSources.map(normalizeSource);
+    sources = rawSources
+      .map(normalizeSource)
+      .sort((left, right) => left.name.localeCompare(right.name));
     const list = byId("news-source-list");
     const summary = byId("news-source-summary");
-    const followingCount = sources.filter((source) => source.following).length;
-    if (summary) {
-      summary.textContent = `${followingCount} following · ${sources.length} available`;
-    }
+    if (summary) summary.textContent = "";
     if (!list) return;
     if (!sources.length) {
       list.innerHTML = '<p class="news-empty">No sources are available yet.</p>';
       return;
     }
 
-    list.innerHTML = sources.map((source) => {
-      const details = [source.alignment, source.category, source.contentType].filter(Boolean).join(" · ");
-      const testing = currentAccess?.administrator && source.status === "testing"
-        ? '<span class="news-source-row-status">Testing</span>'
-        : "";
-      return `
-        <article class="news-source-row">
-          <div>
-            <div class="news-source-row-title">
-              <h2>${escapeHtml(source.name)}</h2>
-              ${testing}
-            </div>
-            ${details ? `<p>${escapeHtml(details)}</p>` : ""}
-          </div>
-          <button
-            class="news-follow-button"
-            type="button"
-            data-source-id="${escapeHtml(source.id)}"
-            data-following="${String(source.following)}"
-            aria-pressed="${String(source.following)}"
-          >${source.following ? "Following" : "Follow"}</button>
-        </article>`;
-    }).join("");
+    const followingSources = sources.filter((source) => source.following);
+    const availableSources = sources.filter((source) => !source.following);
+
+    list.innerHTML = [
+      sourceGroup(
+        "news-following-sources-title",
+        "Following",
+        followingSources,
+        "No sources selected."
+      ),
+      sourceGroup(
+        "news-available-sources-title",
+        "Available Sources",
+        availableSources,
+        "All available sources are in your feed."
+      )
+    ].join("");
   }
 
   async function loadSources() {
@@ -200,15 +254,16 @@
     const following = button.dataset.following === "true";
     if (!sourceId) return;
     button.disabled = true;
-    button.textContent = following ? "Removing…" : "Adding…";
+    button.innerHTML = followButtonContent(following, following ? "Removing…" : "Adding…");
     try {
       await invokeReader(following ? "unfollowNewsSource" : "followNewsSource", { sourceId });
+      clearNewsFeedCache();
       await loadSources();
     } catch (error) {
       console.error("Unable to change source selection", error);
       showToast(error?.message || "The source selection could not be changed.");
       button.disabled = false;
-      button.textContent = following ? "Following" : "Follow";
+      button.innerHTML = followButtonContent(following);
     }
   }
 
