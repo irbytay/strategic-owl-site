@@ -15,6 +15,8 @@
   let pullStartY = null;
   let pullDistance = 0;
   let pullRefreshing = false;
+  let onboardingSources = [];
+  let onboardingActive = false;
 
   const byId = (id) => document.getElementById(id);
 
@@ -201,7 +203,11 @@
   function showGate(heading, message, buttonLabel = "") {
     const gate = byId("news-gate");
     const workspace = byId("news-workspace");
+    const toolbar = byId("news-feed-toolbar");
+    const pullHint = byId("news-pull-hint");
     if (workspace) workspace.hidden = true;
+    if (toolbar) toolbar.hidden = true;
+    if (pullHint) pullHint.hidden = true;
     if (!gate) return;
 
     gate.hidden = false;
@@ -218,8 +224,12 @@
   function showWorkspace() {
     const gate = byId("news-gate");
     const workspace = byId("news-workspace");
+    const toolbar = byId("news-feed-toolbar");
+    const pullHint = byId("news-pull-hint");
     if (gate) gate.hidden = true;
     if (workspace) workspace.hidden = false;
+    if (toolbar) toolbar.hidden = false;
+    if (pullHint) pullHint.hidden = false;
   }
 
   async function getAuthorizedAccess() {
@@ -356,21 +366,38 @@
     return `<span class="news-follow-icon" aria-hidden="true">${icon}</span><span>${label}</span>`;
   }
 
-  function renderSourceChoices(sources) {
-    const availableSources = sources.filter((source) => !source.following);
+  function onboardingSelectionCount() {
+    return onboardingSources.filter((source) => source.following).length;
+  }
 
-    if (!availableSources.length) {
+  function updateOnboardingAction() {
+    const button = byId("news-view-selected");
+    if (!button) return;
+    const count = onboardingSelectionCount();
+    button.hidden = count === 0;
+    button.textContent = `View My News (${count})`;
+  }
+
+  function onboardingButtonContent(following, pending = "") {
+    if (pending) return `<span>${escapeHtml(pending)}</span>`;
+    if (following) return '<span class="news-follow-icon" aria-hidden="true">✓</span>';
+    return '<span class="news-follow-icon" aria-hidden="true">+</span><span>Follow</span>';
+  }
+
+  function renderSourceChoices(sources) {
+    if (!sources.length) {
       return '<p class="news-empty">No sources are available yet.</p>';
     }
 
-    return availableSources.map((source) => {
+    return sources.map((source) => {
       const details = [source.alignment, source.category, source.contentType].filter(Boolean).join(" · ");
       const testing = currentAccess?.administrator && source.status === "testing"
         ? '<span class="news-source-row-status">Testing</span>'
         : "";
+      const actionLabel = source.following ? `Remove ${source.name}` : `Follow ${source.name}`;
 
       return `
-        <article class="news-onboarding-source-row">
+        <article class="news-onboarding-source-row" data-selected="${String(source.following)}">
           <div>
             <div class="news-source-row-title">
               <h3>${escapeHtml(source.name)}</h3>
@@ -382,10 +409,10 @@
             class="news-follow-button"
             type="button"
             data-source-id="${escapeHtml(source.id)}"
-            data-following="false"
-            aria-label="Follow ${escapeHtml(source.name)}"
-            aria-pressed="false"
-          >${followButtonContent(false)}</button>
+            data-following="${String(source.following)}"
+            aria-label="${escapeHtml(actionLabel)}"
+            aria-pressed="${String(source.following)}"
+          >${onboardingButtonContent(source.following)}</button>
         </article>`;
     }).join("");
   }
@@ -415,19 +442,28 @@
     if (!host) return;
 
     if (!items.length) {
+      onboardingActive = !hasFollows;
+      onboardingSources = onboardingActive ? sources : [];
       host.innerHTML = hasFollows
         ? '<p class="news-empty">No recent stories from your sources.</p>'
         : `<section class="news-feed-onboarding" aria-labelledby="news-following-empty-title">
             <div class="news-feed-onboarding-heading">
-            <h3 id="news-following-empty-title">Build Your Feed</h3>
-              <p>Choose a source to begin.</p>
+              <h3 id="news-following-empty-title">Choose Your Sources</h3>
+              <p>Follow one or more sources to build your news feed.</p>
             </div>
             <div class="news-onboarding-source-list" id="news-source-list">
               ${renderSourceChoices(sources)}
             </div>
+            <div class="news-onboarding-actions">
+              <button class="news-view-selected" id="news-view-selected" type="button" hidden>View My News (0)</button>
+            </div>
           </section>`;
+      updateOnboardingAction();
       return;
     }
+
+    onboardingActive = false;
+    onboardingSources = [];
 
     host.innerHTML = items.map((item) => {
       const image = item.imageUrl
@@ -634,10 +670,9 @@
     if (!sourceId || !currentAccess?.client) return;
 
     button.disabled = true;
-    button.innerHTML = followButtonContent(
-      following,
-      following ? "Removing…" : "Following…"
-    );
+    button.innerHTML = onboardingActive
+      ? onboardingButtonContent(following, following ? "Removing…" : "Adding…")
+      : followButtonContent(following, following ? "Removing…" : "Following…");
 
     try {
       await invokeReader(
@@ -645,6 +680,18 @@
         { sourceId }
       );
       clearNewsCache();
+      if (onboardingActive) {
+        const source = onboardingSources.find((entry) => entry.id === sourceId);
+        if (source) source.following = !following;
+        button.dataset.following = String(!following);
+        button.setAttribute("aria-pressed", String(!following));
+        button.setAttribute("aria-label", `${following ? "Follow" : "Remove"} ${source?.name || "source"}`);
+        button.innerHTML = onboardingButtonContent(!following);
+        button.disabled = false;
+        button.closest(".news-onboarding-source-row")?.setAttribute("data-selected", String(!following));
+        updateOnboardingAction();
+        return;
+      }
       if (!following) currentScope = "following";
       await loadNews();
     } catch (error) {
@@ -652,7 +699,9 @@
       const status = byId("news-status");
       if (status) status.textContent = error?.message || "The source selection could not be changed.";
       button.disabled = false;
-      button.innerHTML = followButtonContent(following);
+      button.innerHTML = onboardingActive
+        ? onboardingButtonContent(following)
+        : followButtonContent(following);
     }
   }
 
@@ -794,6 +843,11 @@
 
   byId("news-refresh")?.addEventListener("click", () => loadNews());
   byId("news-item-list")?.addEventListener("click", (event) => {
+    const viewSelected = event.target.closest("#news-view-selected");
+    if (viewSelected) {
+      loadNews();
+      return;
+    }
     const followButton = event.target.closest(".news-follow-button");
     if (followButton) {
       changeFollow(followButton);
