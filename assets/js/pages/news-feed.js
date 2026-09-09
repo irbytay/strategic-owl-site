@@ -17,6 +17,10 @@
   let pullRefreshing = false;
   let onboardingSources = [];
   let onboardingActive = false;
+  let loadedSources = [];
+  let loadedItems = [];
+  let loadedHasFollows = false;
+  let selectedSourceId = "";
 
   const byId = (id) => document.getElementById(id);
 
@@ -120,7 +124,8 @@
     cache.ui = {
       scope: currentScope,
       scrollY: Math.max(0, window.scrollY || 0),
-      openItemIds: openNewsItemIds()
+      openItemIds: openNewsItemIds(),
+      sourceFilterId: selectedSourceId
     };
     writeNewsCache(cache);
   }
@@ -149,7 +154,8 @@
     cache.ui = {
       scope,
       scrollY: Math.max(0, window.scrollY || 0),
-      openItemIds: openNewsItemIds()
+      openItemIds: openNewsItemIds(),
+      sourceFilterId: selectedSourceId
     };
     writeNewsCache(cache);
   }
@@ -176,6 +182,7 @@
 
     const sources = renderSources(view.sources);
     const visibleItems = view.hasFollows ? view.items : [];
+    selectedSourceId = String(cache.ui?.sourceFilterId || "");
     renderItems(visibleItems, sources, { hasFollows: view.hasFollows });
     currentScope = "following";
 
@@ -343,6 +350,7 @@
       authors: normalizeStringList(firstValue(item, ["authors", "author", "byline"], [])),
       categories: normalizeStringList(firstValue(item, ["categories", "category"], [])),
       sourceName: String(firstValue(nestedSource, ["sourceName", "source_name", "name"], mappedSource.name || firstValue(item, ["sourceName", "source_name"], "News Source"))),
+      sourceId,
       sourceStatus: String(firstValue(nestedSource, ["status"], mappedSource.status || firstValue(item, ["sourceStatus", "source_status"], "active"))).toLowerCase(),
       owlInsight: insightAnalysis ? {
         label: String(firstValue(rawInsight, ["owlLabel", "owl_label"], "Owl Insight")),
@@ -433,9 +441,37 @@
     });
   }
 
+  function configureSourceFilter(sources, hasFollows, itemCount) {
+    const host = byId("news-feed-filter");
+    const select = byId("news-source-filter");
+    if (!host || !select) return;
+
+    const followedSources = sources.filter((source) => source.following);
+    const validSourceIds = new Set(followedSources.map((source) => source.id));
+    if (selectedSourceId && !validSourceIds.has(selectedSourceId)) {
+      selectedSourceId = "";
+    }
+
+    select.innerHTML = [
+      '<option value="">All Followed Sources</option>',
+      ...followedSources.map((source) => (
+        `<option value="${escapeHtml(source.id)}">${escapeHtml(source.name)}</option>`
+      ))
+    ].join("");
+    select.value = selectedSourceId;
+    host.hidden = !hasFollows || followedSources.length < 2 || itemCount === 0;
+  }
+
   function renderItems(rawItems, sources, { hasFollows = true } = {}) {
     const sourceMap = new Map(sources.map((source) => [source.id, source]));
-    const items = rawItems.map((item) => normalizeItem(item, sourceMap));
+    const allItems = rawItems.map((item) => normalizeItem(item, sourceMap));
+    loadedSources = sources;
+    loadedItems = rawItems;
+    loadedHasFollows = hasFollows;
+    configureSourceFilter(sources, hasFollows, allItems.length);
+    const items = selectedSourceId
+      ? allItems.filter((item) => item.sourceId === selectedSourceId)
+      : allItems;
     const host = byId("news-item-list");
     const count = byId("news-item-count");
     if (count) count.textContent = String(items.length);
@@ -444,8 +480,11 @@
     if (!items.length) {
       onboardingActive = !hasFollows;
       onboardingSources = onboardingActive ? sources : [];
+      const selectedSource = sources.find((source) => source.id === selectedSourceId);
       host.innerHTML = hasFollows
-        ? '<p class="news-empty">No recent stories from your sources.</p>'
+        ? `<p class="news-empty">${selectedSource
+            ? `No recent stories from ${escapeHtml(selectedSource.name)}.`
+            : "No recent stories from your sources."}</p>`
         : `<section class="news-feed-onboarding" aria-labelledby="news-following-empty-title">
             <div class="news-feed-onboarding-heading">
               <h3 id="news-following-empty-title">Choose Your Sources</h3>
@@ -842,6 +881,11 @@
   }
 
   byId("news-refresh")?.addEventListener("click", () => loadNews());
+  byId("news-source-filter")?.addEventListener("change", (event) => {
+    selectedSourceId = String(event.currentTarget.value || "");
+    renderItems(loadedItems, loadedSources, { hasFollows: loadedHasFollows });
+    rememberNewsPosition();
+  });
   byId("news-item-list")?.addEventListener("click", (event) => {
     const viewSelected = event.target.closest("#news-view-selected");
     if (viewSelected) {

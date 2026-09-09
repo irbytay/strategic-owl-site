@@ -596,6 +596,60 @@
   box-shadow: none;
 }
 
+.news-feed-filter {
+  display: flex;
+  align-items: center;
+  min-height: 42px;
+  margin: 0 0 2px;
+  border-bottom: 1px solid rgba(212, 175, 55, 0.2);
+}
+
+.news-feed-filter[hidden] {
+  display: none;
+}
+
+.news-source-filter-control {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  max-width: 100%;
+}
+
+.news-source-filter-control select {
+  max-width: min(100%, 320px);
+  min-height: 38px;
+  padding: 6px 25px 6px 2px;
+  border: 0;
+  border-radius: 0;
+  outline: 0;
+  appearance: none;
+  -webkit-appearance: none;
+  background: transparent;
+  color: var(--owl-gold);
+  cursor: pointer;
+  font-family: Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  font-size: 0.82rem;
+  font-weight: 700;
+}
+
+.news-source-filter-control select:focus-visible {
+  box-shadow: 0 2px 0 var(--owl-gold);
+}
+
+.news-source-filter-control svg {
+  position: absolute;
+  right: 3px;
+  width: 15px;
+  height: 15px;
+  fill: none;
+  stroke: currentColor;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  stroke-width: 1.8;
+  color: var(--owl-gold);
+  pointer-events: none;
+}
+
 .news-feed-toolbar {
   position: absolute;
   right: 0;

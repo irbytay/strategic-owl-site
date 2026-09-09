@@ -406,7 +406,6 @@
       clearPendingAdministrator();
       administratorAuthError = "";
       window.history.replaceState({}, document.title, window.location.pathname);
-      window.setTimeout(open, 0);
       return true;
     } catch (error) {
       administratorAuthError = error?.message || "Administrator access could not be confirmed.";
@@ -565,8 +564,7 @@
         if (result.valid === true) {
           clearPendingAdministrator();
           administratorAuthError = "";
-          if (message) message.textContent = result.message || "Owl Access confirmed.";
-          updateDialog();
+          dialog.close();
         } else if (result.requiresAdministratorSignIn === true) {
           savePendingAdministrator(email);
           administratorAuthError = "";
