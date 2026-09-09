@@ -464,8 +464,8 @@
         <button class="owl-access-close" type="button" aria-label="Close Owl Access">×</button>
         <h2 class="owl-access-heading" id="owl-access-heading">Owl Access</h2>
         <div class="owl-access-intro">
-          <p>Choose the sources in your News Feed. No ads. No algorithms.</p>
-          <p>Owl Access includes Owl Insights, expanded candidate research, Ask the Owl, T.R.U. suggestions, and saved quiz history.</p>
+          <p class="owl-access-promise">Choose the sources in your News Feed.<br />No ads.<br />No algorithms.</p>
+          <p class="owl-access-benefits">Owl Access includes Owl Insights, expanded candidate research, Ask the Owl, T.R.U. suggestions, and saved quiz history.</p>
         </div>
         <section class="owl-access-locked">
           <form class="owl-access-form" novalidate>
