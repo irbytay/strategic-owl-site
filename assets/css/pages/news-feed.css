@@ -3,6 +3,7 @@
 }
 
 .news-heading {
+  position: relative;
   display: grid;
   justify-items: center;
   gap: 9px;
@@ -1408,24 +1409,37 @@
   }
 
   .news-heading-row {
-    display: grid;
-    grid-template-columns: minmax(0, 1fr) auto;
-    gap: 12px;
+    position: static;
+    display: flex;
+    justify-content: center;
   }
 
   .site-page--news-feed .news-heading h1 {
-    justify-self: start;
-    padding-left: 8px;
+    padding-left: 0;
     font-size: clamp(2rem, 11vw, 2.5rem) !important;
   }
 
   .news-feed-toolbar {
-    position: static;
+    position: absolute;
+    top: 8px;
+    right: auto;
+    left: calc(50% + 36px);
   }
 
   .news-manage-sources {
     min-height: 36px;
-    padding: 5px 10px;
+    padding: 4px 2px;
+    border: 0;
+    border-radius: 0;
+    background: transparent;
+    box-shadow: none;
+    font-size: 0.8rem;
+  }
+
+  .news-manage-sources:hover,
+  .news-manage-sources:focus-visible {
+    border: 0;
+    background: transparent;
   }
 
   .news-feed-controls {
