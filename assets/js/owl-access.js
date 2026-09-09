@@ -194,6 +194,8 @@
   function announceChange(session) {
     refreshButtons();
     updateDialog();
+    const dialog = document.getElementById("owl-access-dialog");
+    if (session && dialog?.open) dialog.close();
     window.dispatchEvent(new CustomEvent("strategic-owl-access-change", {
       detail: {
         active: Boolean(session),
@@ -564,7 +566,7 @@
         if (result.valid === true) {
           clearPendingAdministrator();
           administratorAuthError = "";
-          dialog.close();
+          if (dialog.open) dialog.close();
         } else if (result.requiresAdministratorSignIn === true) {
           savePendingAdministrator(email);
           administratorAuthError = "";
