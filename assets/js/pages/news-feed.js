@@ -4,6 +4,8 @@
   const NEWS_READER_FUNCTION = "news-reader";
   const NEWS_BETA_ADMINISTRATOR_ONLY = false;
   const NEWS_SHARE_BASE_URL = "https://thestrategicowl.com/news";
+  const NEWS_CACHE_VERSION = 1;
+  const NEWS_CACHE_PREFIX = "strategic-owl-news-feed";
 
   let currentAccess = null;
   let currentSources = [];
@@ -72,6 +74,124 @@
     toastTimer = window.setTimeout(() => {
       toast.dataset.visible = "false";
     }, 2400);
+  }
+
+  function newsCacheKey() {
+    const identity = String(
+      currentAccess?.owlSession?.email ||
+      currentAccess?.session?.user?.id ||
+      "owl-access"
+    ).trim().toLowerCase();
+    return `${NEWS_CACHE_PREFIX}:${NEWS_CACHE_VERSION}:${encodeURIComponent(identity)}`;
+  }
+
+  function readNewsCache() {
+    if (!currentAccess?.owlSession) return null;
+    try {
+      const stored = window.sessionStorage.getItem(newsCacheKey());
+      if (!stored) return null;
+      const cache = JSON.parse(stored);
+      if (cache?.version !== NEWS_CACHE_VERSION || !cache.views) return null;
+      return cache;
+    } catch {
+      return null;
+    }
+  }
+
+  function writeNewsCache(cache) {
+    if (!currentAccess?.owlSession) return;
+    try {
+      window.sessionStorage.setItem(newsCacheKey(), JSON.stringify(cache));
+    } catch {
+      // A full or restricted browser store should never prevent the live feed from working.
+    }
+  }
+
+  function openNewsItemIds() {
+    return Array.from(document.querySelectorAll(".news-item[open][data-item-id]"))
+      .map((item) => item.dataset.itemId)
+      .filter(Boolean);
+  }
+
+  function rememberNewsPosition() {
+    const cache = readNewsCache();
+    if (!cache) return;
+    cache.ui = {
+      scope: currentScope,
+      scrollY: Math.max(0, window.scrollY || 0),
+      openItemIds: openNewsItemIds()
+    };
+    writeNewsCache(cache);
+  }
+
+  function clearNewsCache() {
+    if (!currentAccess?.owlSession) return;
+    try {
+      window.sessionStorage.removeItem(newsCacheKey());
+    } catch {
+      // The next live request remains the fallback when browser storage is unavailable.
+    }
+  }
+
+  function saveNewsView(scope, rawSources, rawItems, hasFollows) {
+    const cache = readNewsCache() || {
+      version: NEWS_CACHE_VERSION,
+      views: {}
+    };
+    cache.views[scope] = {
+      scope,
+      sources: rawSources,
+      items: rawItems,
+      hasFollows,
+      savedAt: Date.now()
+    };
+    cache.ui = {
+      scope,
+      scrollY: Math.max(0, window.scrollY || 0),
+      openItemIds: openNewsItemIds()
+    };
+    writeNewsCache(cache);
+  }
+
+  function restoreNewsPosition(ui) {
+    const openIds = new Set(Array.isArray(ui?.openItemIds) ? ui.openItemIds : []);
+    document.querySelectorAll(".news-item[data-item-id]").forEach((item) => {
+      item.open = openIds.has(item.dataset.itemId);
+    });
+
+    const scrollY = Number(ui?.scrollY || 0);
+    window.requestAnimationFrame(() => {
+      window.requestAnimationFrame(() => {
+        window.scrollTo({ top: Math.max(0, scrollY), left: 0, behavior: "auto" });
+      });
+    });
+  }
+
+  function restoreNewsView(requestedScope = "") {
+    const cache = readNewsCache();
+    if (!cache) return false;
+    const scope = requestedScope || cache.ui?.scope || currentScope;
+    const view = cache.views?.[scope];
+    if (!view || !Array.isArray(view.sources) || !Array.isArray(view.items)) return false;
+
+    const sources = renderSources(view.sources);
+    renderItems(view.items, sources);
+    currentScope = view.scope === "following" ? "following" : "all";
+    updateScopeButtons(currentScope);
+
+    const status = byId("news-status");
+    if (status) {
+      if (!view.hasFollows) {
+        status.textContent = "Choose Sources to build your Following feed.";
+      } else if (view.items.length) {
+        status.textContent = `Updated ${formatDate(view.savedAt)}`;
+      } else {
+        status.textContent = "No stories in this view.";
+      }
+    }
+
+    restoreNewsPosition(cache.ui);
+    return true;
   }
 
   function formatDate(value) {
@@ -342,7 +462,7 @@
         : `<button class="news-share-button" type="button" disabled title="Sharing becomes available after this source is approved">Share when Live</button>`;
 
       return `
-        <details class="news-item">
+        <details class="news-item" data-item-id="${escapeHtml(item.id)}">
           <summary class="news-item-summary">
             ${image}
             <div class="news-item-copy">
@@ -445,10 +565,13 @@
           status.textContent = "No stories in this view.";
         }
       }
+      saveNewsView(currentScope, rawSources, rawItems, hasFollows);
     } catch (error) {
       console.error("Unable to load News Feed preview", error);
-      renderSources([]);
-      renderItems([], []);
+      if (!byId("news-item-list")?.querySelector(".news-item")) {
+        renderSources([]);
+        renderItems([], []);
+      }
       if (status) status.textContent = error?.message || "The News Feed could not be loaded.";
     } finally {
       loading = false;
@@ -530,6 +653,7 @@
         following ? "unfollowNewsSource" : "followNewsSource",
         { sourceId }
       );
+      clearNewsCache();
       if (!following) currentScope = "following";
       await loadNews();
     } catch (error) {
@@ -664,7 +788,9 @@
       }
 
       showWorkspace();
-      await loadNews();
+      if (!restoreNewsView()) {
+        await loadNews();
+      }
     } catch (error) {
       console.error("News Feed access check failed", error);
       showGate(
@@ -675,7 +801,7 @@
     }
   }
 
-  byId("news-refresh")?.addEventListener("click", loadNews);
+  byId("news-refresh")?.addEventListener("click", () => loadNews());
   byId("news-source-list")?.addEventListener("click", (event) => {
     const button = event.target.closest(".news-follow-button");
     if (button) changeFollow(button);
@@ -688,9 +814,13 @@
     button.addEventListener("click", async () => {
       const requestedScope = button.dataset.newsScope;
       if (requestedScope !== "following" && requestedScope !== "all") return;
+      if (requestedScope === currentScope) return;
+      rememberNewsPosition();
       currentScope = requestedScope;
       updateScopeButtons(currentScope);
-      await loadNews();
+      if (!restoreNewsView(requestedScope)) {
+        await loadNews();
+      }
     });
   });
   byId("news-request-open")?.addEventListener("click", openRequestDialog);
@@ -714,6 +844,10 @@
     if (event.key === "Escape") closeRequestDialog();
   });
   window.addEventListener("strategic-owl-access-change", initializeNewsFeed);
+  window.addEventListener("pagehide", rememberNewsPosition);
+  document.addEventListener("visibilitychange", () => {
+    if (document.visibilityState === "hidden") rememberNewsPosition();
+  });
   installPullToRefresh();
   initializeNewsFeed();
 })();
