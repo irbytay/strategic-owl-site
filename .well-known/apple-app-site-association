@@ -5,7 +5,8 @@
       {
         "appID": "6F5VP2TZCU.com.thestrategicowl.app",
         "paths": [
-          "/post/*"
+          "/post/*",
+          "/news/*"
         ]
       }
     ]
