@@ -10,11 +10,11 @@
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
   <link rel="icon" type="image/png" href="assets/images/3X.png" />
   <link rel="stylesheet" href="assets/css/site.css?v=20260908-4" />
-  <link rel="stylesheet" href="assets/css/pages/news-feed.css?v=20260909-4" />
+  <link rel="stylesheet" href="assets/css/pages/news-feed.css?v=20260909-5" />
   <script src="assets/js/site-shell.js?v=20260908-2" defer></script>
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2" defer></script>
   <script src="assets/js/owl-access.js?v=20260908-3" defer></script>
-  <script src="assets/js/pages/news-feed.js?v=20260909-3" defer></script>
+  <script src="assets/js/pages/news-feed.js?v=20260909-4" defer></script>
 </head>
 <body class="site-body" data-page="news-feed">
   <a class="skip-link" href="#main-content">Skip to content</a>
@@ -23,7 +23,26 @@
   <main id="main-content" class="site-page site-page--news-feed" tabindex="-1">
     <header class="news-heading">
       <img class="news-page-mark" src="assets/images/3X.png" alt="" />
-      <h1>News Feed</h1>
+      <div class="news-heading-row">
+        <h1>News Feed</h1>
+        <nav class="news-feed-toolbar" id="news-feed-toolbar" aria-label="News Feed controls" hidden>
+          <a class="news-manage-sources" href="news-sources.html">
+            <svg viewBox="0 0 24 24" aria-hidden="true">
+              <path d="M4 7h10"></path><path d="M18 7h2"></path><circle cx="16" cy="7" r="2"></circle>
+              <path d="M4 17h2"></path><path d="M10 17h10"></path><circle cx="8" cy="17" r="2"></circle>
+            </svg>
+            <span>Sources</span>
+          </a>
+          <button class="news-refresh-icon" id="news-refresh" type="button" aria-label="Refresh News Feed" title="Refresh News Feed">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20 11a8 8 0 1 0 2 5"></path><path d="m20 4v7h-7"></path></svg>
+          </button>
+        </nav>
+      </div>
+
+      <p class="news-pull-hint" id="news-pull-hint" hidden>
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 4v12"></path><path d="m7 11 5 5 5-5"></path></svg>
+        <span>Pull down to refresh</span>
+      </p>
     </header>
 
     <section class="news-gate" id="news-gate" aria-live="polite">
@@ -37,24 +56,6 @@
           <svg viewBox="0 0 24 24"><path d="M20 11a8 8 0 1 0 2 5"></path><path d="m20 4v7h-7"></path></svg>
         </span>
       </div>
-
-      <nav class="news-feed-toolbar" aria-label="News Feed controls">
-        <a class="news-manage-sources" href="news-sources.html">
-          <svg viewBox="0 0 24 24" aria-hidden="true">
-            <path d="M4 7h10"></path><path d="M18 7h2"></path><circle cx="16" cy="7" r="2"></circle>
-            <path d="M4 17h2"></path><path d="M10 17h10"></path><circle cx="8" cy="17" r="2"></circle>
-          </svg>
-          <span>Sources</span>
-        </a>
-        <button class="news-refresh-icon" id="news-refresh" type="button" aria-label="Refresh News Feed" title="Refresh News Feed">
-          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20 11a8 8 0 1 0 2 5"></path><path d="m20 4v7h-7"></path></svg>
-        </button>
-      </nav>
-
-      <p class="news-pull-hint">
-        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 4v12"></path><path d="m7 11 5 5 5-5"></path></svg>
-        <span>Pull down to refresh</span>
-      </p>
 
       <section class="news-reader-section news-reader-section--stream" aria-label="News articles">
         <p class="news-status" id="news-status" role="status" aria-live="polite"></p>
