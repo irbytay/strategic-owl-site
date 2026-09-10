@@ -2,6 +2,7 @@
   "use strict";
 
   const NEWS_READER_FUNCTION = "news-reader";
+  const NEWS_ADMIN_FUNCTION = "news-admin";
   const NEWS_BETA_ADMINISTRATOR_ONLY = false;
   const NEWS_SHARE_BASE_URL = "https://thestrategicowl.com/news";
   const NEWS_CACHE_VERSION = 3;
@@ -25,6 +26,7 @@
   let nextBefore = "";
   let hasMore = false;
   let paginationObserver = null;
+  let selectedAdminNewsItem = null;
 
   const byId = (id) => document.getElementById(id);
 
@@ -328,6 +330,35 @@
     return data || {};
   }
 
+  async function invokeNewsAdmin(action, values = {}) {
+    if (!currentAccess?.administrator || !currentAccess?.client) {
+      throw new Error("Administrator access is required.");
+    }
+
+    const { data, error } = await currentAccess.client.functions.invoke(
+      NEWS_ADMIN_FUNCTION,
+      { body: { action, ...values } }
+    );
+
+    if (error) {
+      let message = error.message || "The news administration request failed.";
+      try {
+        const response = error.context;
+        if (response && typeof response.clone === "function") {
+          const details = await response.clone().json();
+          message = details?.error || details?.message || message;
+        }
+      } catch {
+        // Keep the original Supabase error when no JSON response is available.
+      }
+      throw new Error(message);
+    }
+    if (data?.ok === false) {
+      throw new Error(data.error || "The news administration request failed.");
+    }
+    return data || {};
+  }
+
   function normalizeSource(source) {
     return {
       id: String(firstValue(source, ["id", "sourceId", "source_id"])),
@@ -557,6 +588,9 @@
       const shareButton = canShare
         ? `<button class="news-share-button" type="button" data-share-id="${escapeHtml(item.id)}">Share</button>`
         : `<button class="news-share-button" type="button" disabled title="Sharing becomes available after this source is approved">Share when Live</button>`;
+      const insightButton = currentAccess?.administrator
+        ? `<button class="news-admin-insight-button" type="button" data-admin-insight-id="${escapeHtml(item.id)}">${item.owlInsight ? "Edit Insight" : "Add Insight"}</button>`
+        : "";
 
       return `
         <details class="news-item" data-item-id="${escapeHtml(item.id)}">
@@ -577,6 +611,7 @@
             ${insightMarkup}
             <div class="news-item-actions">
               ${originalLink}
+              ${insightButton}
               ${shareButton}
             </div>
           </div>
@@ -619,6 +654,133 @@
       if (error?.name === "AbortError") return;
       console.error("Unable to share news story", error);
       showToast("The link could not be shared.");
+    }
+  }
+
+  function syncNewsDialogState() {
+    document.body.classList.toggle(
+      "owl-dialog-open",
+      Boolean(document.querySelector(".news-dialog[open]"))
+    );
+  }
+
+  function closeNewsInsightDialog() {
+    const dialog = byId("news-insight-dialog");
+    if (dialog?.open) dialog.close();
+    syncNewsDialogState();
+  }
+
+  function syncInsightPublicControl() {
+    const published = byId("news-insight-status")?.value === "published";
+    const checkbox = byId("news-insight-public");
+    if (!checkbox) return;
+    checkbox.disabled = !published;
+    if (!published) checkbox.checked = false;
+  }
+
+  function setInsightBusy(button, busy, busyLabel, readyLabel) {
+    if (!button) return;
+    button.disabled = busy;
+    button.textContent = busy ? busyLabel : readyLabel;
+  }
+
+  async function openNewsInsight(itemId, trigger) {
+    if (!currentAccess?.administrator) return;
+    const originalLabel = trigger?.textContent || "Add Insight";
+    setInsightBusy(trigger, true, "Opening…", originalLabel);
+
+    try {
+      const result = await invokeNewsAdmin("getNewsItem", { itemId });
+      selectedAdminNewsItem = result.item || null;
+      if (!selectedAdminNewsItem) {
+        throw new Error("The article could not be found.");
+      }
+
+      const insight = selectedAdminNewsItem.insight || {};
+      byId("news-insight-title").textContent = selectedAdminNewsItem.headline || "Owl Insight";
+      byId("news-insight-source").textContent = selectedAdminNewsItem.source?.source_name || "News article";
+      byId("news-insight-item-id").value = selectedAdminNewsItem.id;
+      byId("news-insight-label").value = insight.owl_label || "";
+      byId("news-insight-labels").value = Array.isArray(insight.labels)
+        ? insight.labels.join(", ")
+        : "";
+      byId("news-insight-analysis").value = insight.owl_analysis || "";
+      byId("news-insight-status").value = insight.review_status === "published"
+        ? "published"
+        : "draft";
+      byId("news-insight-public").checked = Boolean(insight.is_public);
+      byId("news-insight-hide").hidden = !selectedAdminNewsItem.insight || insight.review_status === "hidden";
+      byId("news-insight-message").textContent = "";
+      syncInsightPublicControl();
+
+      const original = byId("news-insight-original");
+      const originalUrl = safeUrl(selectedAdminNewsItem.canonical_url);
+      original.hidden = !originalUrl;
+      if (originalUrl) original.href = originalUrl;
+
+      const dialog = byId("news-insight-dialog");
+      if (!dialog?.open) dialog?.showModal();
+      syncNewsDialogState();
+      window.setTimeout(() => byId("news-insight-label")?.focus(), 0);
+    } catch (error) {
+      console.error("News article load failed", error);
+      showToast(error?.message || "The article could not be loaded.");
+    } finally {
+      setInsightBusy(trigger, false, "Opening…", originalLabel);
+    }
+  }
+
+  async function saveNewsInsight(event) {
+    event.preventDefault();
+    const button = byId("news-insight-save");
+    const message = byId("news-insight-message");
+    const labels = byId("news-insight-labels").value
+      .split(",")
+      .map((label) => label.trim())
+      .filter(Boolean);
+    setInsightBusy(button, true, "Saving…", "Save Insight");
+    message.textContent = "";
+
+    try {
+      await invokeNewsAdmin("saveNewsInsight", {
+        itemId: byId("news-insight-item-id").value,
+        owlLabel: byId("news-insight-label").value.trim(),
+        labels,
+        owlAnalysis: byId("news-insight-analysis").value.trim(),
+        reviewStatus: byId("news-insight-status").value,
+        public: byId("news-insight-public").checked
+      });
+      closeNewsInsightDialog();
+      clearNewsCache();
+      await loadNews();
+      showToast("Owl Insight saved.");
+    } catch (error) {
+      console.error("Owl Insight save failed", error);
+      message.textContent = error?.message || "The Owl Insight could not be saved.";
+    } finally {
+      setInsightBusy(button, false, "Saving…", "Save Insight");
+    }
+  }
+
+  async function hideNewsInsight() {
+    const button = byId("news-insight-hide");
+    const message = byId("news-insight-message");
+    const itemId = byId("news-insight-item-id")?.value;
+    if (!itemId) return;
+    setInsightBusy(button, true, "Hiding…", "Hide Insight");
+    message.textContent = "";
+
+    try {
+      await invokeNewsAdmin("hideNewsInsight", { itemId });
+      closeNewsInsightDialog();
+      clearNewsCache();
+      await loadNews();
+      showToast("Owl Insight hidden.");
+    } catch (error) {
+      console.error("Owl Insight hide failed", error);
+      message.textContent = error?.message || "The Owl Insight could not be hidden.";
+    } finally {
+      setInsightBusy(button, false, "Hiding…", "Hide Insight");
     }
   }
 
@@ -968,8 +1130,23 @@
       changeFollow(followButton);
       return;
     }
+    const insightButton = event.target.closest("[data-admin-insight-id]");
+    if (insightButton) {
+      openNewsInsight(insightButton.dataset.adminInsightId, insightButton);
+      return;
+    }
     const button = event.target.closest("[data-share-id]");
     if (button) shareStory(button.dataset.shareId);
+  });
+  byId("news-insight-form")?.addEventListener("submit", saveNewsInsight);
+  byId("news-insight-hide")?.addEventListener("click", hideNewsInsight);
+  byId("news-insight-status")?.addEventListener("change", syncInsightPublicControl);
+  byId("news-insight-dialog")?.addEventListener("click", (event) => {
+    if (event.target === event.currentTarget) closeNewsInsightDialog();
+  });
+  byId("news-insight-dialog")?.addEventListener("close", syncNewsDialogState);
+  document.querySelectorAll("[data-close-news-insight]").forEach((button) => {
+    button.addEventListener("click", closeNewsInsightDialog);
   });
   byId("news-request-open")?.addEventListener("click", openRequestDialog);
   byId("news-request-form")?.addEventListener("submit", submitSourceRequest);
@@ -989,7 +1166,10 @@
     if (open) await loadRequests();
   });
   document.addEventListener("keydown", (event) => {
-    if (event.key === "Escape") closeRequestDialog();
+    if (event.key === "Escape") {
+      closeRequestDialog();
+      closeNewsInsightDialog();
+    }
   });
   window.addEventListener("strategic-owl-access-change", initializeNewsFeed);
   window.addEventListener("pagehide", rememberNewsPosition);
