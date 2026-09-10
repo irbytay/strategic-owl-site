@@ -777,8 +777,8 @@
         ? `<button class="news-share-button" type="button" data-share-id="${escapeHtml(item.id)}">Share</button>`
         : `<button class="news-share-button" type="button" disabled title="Sharing becomes available after this source is approved">Share when Live</button>`;
       const accessLabel = articleAccessLabel(item.articleAccess);
-      const accessMarkup = ["limited", "subscription"].includes(item.articleAccess)
-        ? `<span class="news-item-access" data-access="${escapeHtml(item.articleAccess)}">${escapeHtml(accessLabel)}</span>`
+      const accessMarkup = accessLabel
+        ? `<span class="news-item-access" data-access="${escapeHtml(item.articleAccess)}">· ${escapeHtml(accessLabel)}</span>`
         : "";
       const insightButton = currentAccess?.administrator
         ? `<button class="news-admin-insight-button" type="button" data-admin-insight-id="${escapeHtml(item.id)}">${item.owlInsight ? "Edit Insight" : "Add Insight"}</button>`

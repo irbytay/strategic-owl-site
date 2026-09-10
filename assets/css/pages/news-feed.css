@@ -1847,7 +1847,8 @@
   text-transform: none;
 }
 
-.news-source-access[data-access="free"] {
+.news-source-access[data-access="free"],
+.news-item-access[data-access="free"] {
   color: var(--owl-truth);
 }
 
