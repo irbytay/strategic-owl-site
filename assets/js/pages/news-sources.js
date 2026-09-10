@@ -7,6 +7,21 @@
   let sources = [];
   let requestsLoaded = false;
   let toastTimer = 0;
+  let selectedSourceGroup = "all";
+
+  const sourceFilters = {
+    search: "",
+    category: "",
+    contentType: "",
+    mediaType: "",
+    articleAccess: ""
+  };
+
+  const accessLabels = {
+    free: "Free to read",
+    limited: "Some free access",
+    subscription: "Subscription required"
+  };
 
   const byId = (id) => document.getElementById(id);
 
@@ -152,8 +167,111 @@
       alignment: String(firstValue(source, ["alignmentLabel", "alignment_label", "alignment"])),
       category: String(firstValue(source, ["sourceCategory", "source_category", "category"])),
       contentType: String(firstValue(source, ["contentType", "content_type"])),
+      mediaType: String(firstValue(source, ["defaultMediaType", "default_media_type"])),
+      articleAccess: String(firstValue(source, ["articleAccess", "article_access"])).toLowerCase(),
       following: Boolean(firstValue(source, ["following", "isFollowing", "is_following"], false))
     };
+  }
+
+  function sourceGroups(source) {
+    const groups = new Set();
+    const alignment = source.alignment.trim().toLowerCase();
+    const contentType = source.contentType.trim().toLowerCase();
+
+    if (alignment === "left" || alignment === "center-left") groups.add("left");
+    if (["center", "nonpartisan", "mixed"].includes(alignment)) groups.add("middle");
+    if (["center-right", "right", "populist right"].includes(alignment)) groups.add("right");
+    if (contentType === "primary source") groups.add("primary");
+
+    return groups;
+  }
+
+  function articleAccessLabel(value) {
+    return accessLabels[String(value || "").toLowerCase()] || "";
+  }
+
+  function uniqueSourceValues(key) {
+    return Array.from(new Set(
+      sources.map((source) => String(source[key] || "").trim()).filter(Boolean)
+    )).sort((left, right) => left.localeCompare(right));
+  }
+
+  function populateSourceFilter(selectId, key, emptyLabel, labelForValue = (value) => value) {
+    const select = byId(selectId);
+    if (!select) return;
+    const selected = String(sourceFilters[key] || "");
+    const values = uniqueSourceValues(key);
+    select.innerHTML = [
+      `<option value="">${escapeHtml(emptyLabel)}</option>`,
+      ...values.map((value) => `<option value="${escapeHtml(value)}">${escapeHtml(labelForValue(value))}</option>`)
+    ].join("");
+    if (selected && values.includes(selected)) select.value = selected;
+    else sourceFilters[key] = "";
+  }
+
+  function configureSourceFilters() {
+    populateSourceFilter("news-source-category-filter", "category", "All categories");
+    populateSourceFilter("news-source-content-filter", "contentType", "All content");
+    populateSourceFilter("news-source-media-filter", "mediaType", "All media", (value) => {
+      if (value.toLowerCase() === "unknown") return "Unknown";
+      return value.charAt(0).toUpperCase() + value.slice(1);
+    });
+    populateSourceFilter("news-source-access-filter", "articleAccess", "All access", articleAccessLabel);
+  }
+
+  function updateSourceOverview() {
+    const activeSources = sources.filter((source) => source.status === "active");
+    const count = byId("news-active-source-count");
+    const breakdown = byId("news-alignment-breakdown");
+    if (count) count.textContent = `${activeSources.length} active ${activeSources.length === 1 ? "source" : "sources"}`;
+    if (breakdown) {
+      const groupCounts = [
+        ["Left", "left"],
+        ["Middle", "middle"],
+        ["Right", "right"]
+      ].map(([label, group]) => [
+        label,
+        activeSources.filter((source) => sourceGroups(source).has(group)).length
+      ]);
+      const primaryCount = activeSources.filter((source) => sourceGroups(source).has("primary")).length;
+      const viewpointSummary = groupCounts.map(([label, total]) => `${label} ${total}`).join(" · ");
+      breakdown.textContent = primaryCount
+        ? `${viewpointSummary} · ${primaryCount} primary`
+        : viewpointSummary;
+    }
+  }
+
+  function activeSourceFilterCount() {
+    return [
+      selectedSourceGroup === "all" ? "" : selectedSourceGroup,
+      sourceFilters.search,
+      sourceFilters.category,
+      sourceFilters.contentType,
+      sourceFilters.mediaType,
+      sourceFilters.articleAccess
+    ].filter(Boolean).length;
+  }
+
+  function updateSourceFilterState() {
+    document.querySelectorAll("[data-source-group]").forEach((button) => {
+      button.setAttribute("aria-pressed", String(button.dataset.sourceGroup === selectedSourceGroup));
+    });
+    const count = byId("news-source-filter-count");
+    const total = activeSourceFilterCount();
+    if (count) {
+      count.textContent = String(total);
+      count.hidden = total === 0;
+    }
+  }
+
+  function sourceMatchesFilters(source) {
+    if (selectedSourceGroup !== "all" && !sourceGroups(source).has(selectedSourceGroup)) return false;
+    if (sourceFilters.search && !source.name.toLowerCase().includes(sourceFilters.search.toLowerCase())) return false;
+    if (sourceFilters.category && source.category !== sourceFilters.category) return false;
+    if (sourceFilters.contentType && source.contentType !== sourceFilters.contentType) return false;
+    if (sourceFilters.mediaType && source.mediaType !== sourceFilters.mediaType) return false;
+    if (sourceFilters.articleAccess && source.articleAccess !== sourceFilters.articleAccess) return false;
+    return true;
   }
 
   function followButtonContent(following, pending = "") {
@@ -164,6 +282,7 @@
 
   function sourceRow(source) {
     const details = [source.alignment, source.category, source.contentType].filter(Boolean).join(" · ");
+    const accessLabel = articleAccessLabel(source.articleAccess);
     const testing = currentAccess?.administrator && source.status === "testing"
       ? '<span class="news-source-row-status">Testing</span>'
       : "";
@@ -177,6 +296,7 @@
             ${testing}
           </div>
           ${details ? `<p>${escapeHtml(details)}</p>` : '<p class="news-source-detail-empty">Source details pending</p>'}
+          ${accessLabel ? `<p class="news-source-access" data-access="${escapeHtml(source.articleAccess)}">${escapeHtml(accessLabel)}</p>` : ""}
         </div>
         <button
           class="news-follow-button"
@@ -204,21 +324,38 @@
       </section>`;
   }
 
-  function renderSources(rawSources) {
-    sources = rawSources
-      .map(normalizeSource)
-      .sort((left, right) => left.name.localeCompare(right.name));
+  function renderSources(rawSources = null) {
+    if (Array.isArray(rawSources)) {
+      sources = rawSources
+        .map(normalizeSource)
+        .sort((left, right) => left.name.localeCompare(right.name));
+      configureSourceFilters();
+      updateSourceOverview();
+    }
     const list = byId("news-source-list");
     const summary = byId("news-source-summary");
-    if (summary) summary.textContent = "";
+    updateSourceFilterState();
     if (!list) return;
     if (!sources.length) {
       list.innerHTML = '<p class="news-empty">No sources are available yet.</p>';
+      if (summary) summary.textContent = "";
       return;
     }
 
-    const followingSources = sources.filter((source) => source.following);
-    const availableSources = sources.filter((source) => !source.following);
+    const filteredSources = sources.filter(sourceMatchesFilters);
+    const followingSources = filteredSources.filter((source) => source.following);
+    const availableSources = filteredSources.filter((source) => !source.following);
+
+    if (summary) {
+      summary.textContent = activeSourceFilterCount()
+        ? `${filteredSources.length} of ${sources.length} sources shown`
+        : "";
+    }
+
+    if (!filteredSources.length) {
+      list.innerHTML = '<p class="news-empty">No sources match these filters.</p>';
+      return;
+    }
 
     list.innerHTML = [
       sourceGroup(
@@ -371,6 +508,41 @@
   byId("news-source-list")?.addEventListener("click", (event) => {
     const button = event.target.closest(".news-follow-button");
     if (button) changeFollow(button);
+  });
+  document.querySelectorAll("[data-source-group]").forEach((button) => {
+    button.addEventListener("click", () => {
+      selectedSourceGroup = button.dataset.sourceGroup || "all";
+      renderSources();
+    });
+  });
+  byId("news-source-filter-toggle")?.addEventListener("click", (event) => {
+    const panel = byId("news-source-filter-panel");
+    const open = Boolean(panel?.hidden);
+    if (panel) panel.hidden = !open;
+    event.currentTarget.setAttribute("aria-expanded", String(open));
+  });
+  byId("news-source-search")?.addEventListener("input", (event) => {
+    sourceFilters.search = String(event.currentTarget.value || "").trim();
+    renderSources();
+  });
+  for (const [id, key] of [
+    ["news-source-category-filter", "category"],
+    ["news-source-content-filter", "contentType"],
+    ["news-source-media-filter", "mediaType"],
+    ["news-source-access-filter", "articleAccess"]
+  ]) {
+    byId(id)?.addEventListener("change", (event) => {
+      sourceFilters[key] = String(event.currentTarget.value || "");
+      renderSources();
+    });
+  }
+  byId("news-source-clear-filters")?.addEventListener("click", () => {
+    selectedSourceGroup = "all";
+    Object.keys(sourceFilters).forEach((key) => { sourceFilters[key] = ""; });
+    const search = byId("news-source-search");
+    if (search) search.value = "";
+    configureSourceFilters();
+    renderSources();
   });
   byId("news-request-open")?.addEventListener("click", openRequestDialog);
   byId("news-request-form")?.addEventListener("submit", submitSourceRequest);

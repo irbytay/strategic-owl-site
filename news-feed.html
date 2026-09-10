@@ -10,11 +10,11 @@
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
   <link rel="icon" type="image/png" href="assets/images/3X.png" />
   <link rel="stylesheet" href="assets/css/site.css?v=20260908-4" />
-  <link rel="stylesheet" href="assets/css/pages/news-feed.css?v=20260909-9" />
+  <link rel="stylesheet" href="assets/css/pages/news-feed.css?v=20260910-1" />
   <script src="assets/js/site-shell.js?v=20260908-2" defer></script>
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2" defer></script>
   <script src="assets/js/owl-access.js?v=20260909-2" defer></script>
-  <script src="assets/js/pages/news-feed.js?v=20260909-7" defer></script>
+  <script src="assets/js/pages/news-feed.js?v=20260910-1" defer></script>
 </head>
 <body class="site-body" data-page="news-feed">
   <a class="skip-link" href="#main-content">Skip to content</a>
@@ -65,7 +65,41 @@
             </select>
             <svg viewBox="0 0 24 24" aria-hidden="true"><path d="m7 10 5 5 5-5"></path></svg>
           </div>
+          <button class="news-feed-more-filters" id="news-feed-more-filters" type="button" aria-expanded="false" aria-controls="news-feed-filter-panel">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 7h10"></path><path d="M18 7h2"></path><circle cx="16" cy="7" r="2"></circle><path d="M4 17h2"></path><path d="M10 17h10"></path><circle cx="8" cy="17" r="2"></circle></svg>
+            <span>Filters</span>
+            <b id="news-feed-filter-count" hidden>0</b>
+          </button>
         </div>
+        <section class="news-feed-filter-panel" id="news-feed-filter-panel" aria-label="News Feed filters" hidden>
+          <div class="news-source-filter-grid">
+            <label for="news-feed-viewpoint-filter">Viewpoint
+              <select id="news-feed-viewpoint-filter">
+                <option value="all">All viewpoints</option>
+                <option value="left">Left</option>
+                <option value="middle">Middle</option>
+                <option value="right">Right</option>
+                <option value="primary">Primary</option>
+              </select>
+            </label>
+            <label for="news-feed-category-filter">Category
+              <select id="news-feed-category-filter"><option value="">All categories</option></select>
+            </label>
+            <label for="news-feed-content-filter">Content type
+              <select id="news-feed-content-filter"><option value="">All content</option></select>
+            </label>
+            <label for="news-feed-media-filter">Media type
+              <select id="news-feed-media-filter"><option value="">All media</option></select>
+            </label>
+            <label for="news-feed-access-filter">Article access
+              <select id="news-feed-access-filter"><option value="">All access</option></select>
+            </label>
+          </div>
+          <div class="news-feed-filter-actions">
+            <button class="news-source-clear-filters" id="news-feed-clear-filters" type="button">Clear</button>
+            <button class="news-feed-apply-filters" id="news-feed-apply-filters" type="button">Apply Filters</button>
+          </div>
+        </section>
         <p class="news-status" id="news-status" role="status" aria-live="polite"></p>
         <div class="news-item-list" id="news-item-list">
           <p class="news-empty">Loading news…</p>

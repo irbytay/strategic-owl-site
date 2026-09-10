@@ -5,7 +5,7 @@
   const NEWS_ADMIN_FUNCTION = "news-admin";
   const NEWS_BETA_ADMINISTRATOR_ONLY = false;
   const NEWS_SHARE_BASE_URL = "https://thestrategicowl.com/news";
-  const NEWS_CACHE_VERSION = 3;
+  const NEWS_CACHE_VERSION = 4;
   const NEWS_CACHE_PREFIX = "strategic-owl-news-feed";
   const NEWS_PAGE_SIZE = 50;
 
@@ -23,6 +23,13 @@
   let loadedItems = [];
   let loadedHasFollows = false;
   let selectedSourceId = "";
+  const feedFilters = {
+    viewpoint: "all",
+    category: "",
+    contentType: "",
+    mediaType: "",
+    articleAccess: ""
+  };
   let nextBefore = "";
   let hasMore = false;
   let paginationObserver = null;
@@ -131,7 +138,8 @@
       scope: currentScope,
       scrollY: Math.max(0, window.scrollY || 0),
       openItemIds: openNewsItemIds(),
-      sourceFilterId: selectedSourceId
+      sourceFilterId: selectedSourceId,
+      feedFilters: { ...feedFilters }
     };
     writeNewsCache(cache);
   }
@@ -163,7 +171,8 @@
       scope,
       scrollY: Math.max(0, window.scrollY || 0),
       openItemIds: openNewsItemIds(),
-      sourceFilterId: selectedSourceId
+      sourceFilterId: selectedSourceId,
+      feedFilters: { ...feedFilters }
     };
     writeNewsCache(cache);
   }
@@ -191,6 +200,7 @@
     const sources = renderSources(view.sources);
     const visibleItems = view.hasFollows ? view.items : [];
     selectedSourceId = String(cache.ui?.sourceFilterId || "");
+    Object.assign(feedFilters, cache.ui?.feedFilters || {});
     nextBefore = String(view.nextBefore || "");
     hasMore = Boolean(view.hasMore && nextBefore);
     renderItems(visibleItems, sources, { hasFollows: view.hasFollows });
@@ -367,6 +377,8 @@
       alignment: String(firstValue(source, ["alignmentLabel", "alignment_label", "alignment"])),
       category: String(firstValue(source, ["sourceCategory", "source_category", "category"])),
       contentType: String(firstValue(source, ["contentType", "content_type"])),
+      mediaType: String(firstValue(source, ["defaultMediaType", "default_media_type", "mediaType", "media_type"])),
+      articleAccess: String(firstValue(source, ["articleAccess", "article_access"])).toLowerCase(),
       websiteUrl: safeUrl(firstValue(source, ["websiteUrl", "website_url"])),
       following: Boolean(firstValue(source, ["following", "isFollowing", "is_following"], false))
     };
@@ -392,6 +404,7 @@
       sourceName: String(firstValue(nestedSource, ["sourceName", "source_name", "name"], mappedSource.name || firstValue(item, ["sourceName", "source_name"], "News Source"))),
       sourceId,
       sourceStatus: String(firstValue(nestedSource, ["status"], mappedSource.status || firstValue(item, ["sourceStatus", "source_status"], "active"))).toLowerCase(),
+      articleAccess: String(firstValue(nestedSource, ["articleAccess", "article_access"], mappedSource.articleAccess || firstValue(item, ["articleAccess", "article_access"]))).toLowerCase(),
       owlInsight: insightAnalysis ? {
         label: String(firstValue(rawInsight, ["owlLabel", "owl_label"], "Owl Insight")),
         labels: normalizeStringList(firstValue(rawInsight, ["labels"], [])),
@@ -406,6 +419,104 @@
       .map(normalizeSource)
       .sort((left, right) => left.name.localeCompare(right.name));
     return sources;
+  }
+
+  const ARTICLE_ACCESS_LABELS = {
+    free: "Free to read",
+    limited: "Some free access",
+    subscription: "Subscription required"
+  };
+
+  function articleAccessLabel(value) {
+    return ARTICLE_ACCESS_LABELS[String(value || "").trim().toLowerCase()] || "";
+  }
+
+  function distinctFollowedValues(sources, key) {
+    return Array.from(new Set(
+      sources
+        .filter((source) => source.following)
+        .map((source) => String(source[key] || "").trim())
+        .filter(Boolean)
+    )).sort((left, right) => left.localeCompare(right));
+  }
+
+  function populateFeedFilter(id, sources, key, allLabel, labelForValue = (value) => value) {
+    const select = byId(id);
+    if (!select) return;
+    const current = String(feedFilters[key] || "");
+    const values = distinctFollowedValues(sources, key);
+    select.innerHTML = [
+      `<option value="">${escapeHtml(allLabel)}</option>`,
+      ...values.map((value) => `<option value="${escapeHtml(value)}">${escapeHtml(labelForValue(value))}</option>`)
+    ].join("");
+    if (current && values.includes(current)) {
+      select.value = current;
+    } else {
+      feedFilters[key] = "";
+      select.value = "";
+    }
+  }
+
+  function activeFeedFilterCount() {
+    return [
+      feedFilters.viewpoint !== "all" ? feedFilters.viewpoint : "",
+      feedFilters.category,
+      feedFilters.contentType,
+      feedFilters.mediaType,
+      feedFilters.articleAccess
+    ].filter(Boolean).length;
+  }
+
+  function updateFeedFilterCount() {
+    const count = activeFeedFilterCount();
+    const badge = byId("news-feed-filter-count");
+    if (badge) {
+      badge.textContent = String(count);
+      badge.hidden = count === 0;
+    }
+  }
+
+  function configureFeedFilters(sources, hasFollows) {
+    const viewpoint = byId("news-feed-viewpoint-filter");
+    if (viewpoint) viewpoint.value = feedFilters.viewpoint || "all";
+    populateFeedFilter("news-feed-category-filter", sources, "category", "All categories");
+    populateFeedFilter("news-feed-content-filter", sources, "contentType", "All content");
+    populateFeedFilter("news-feed-media-filter", sources, "mediaType", "All media");
+    populateFeedFilter("news-feed-access-filter", sources, "articleAccess", "All access", articleAccessLabel);
+    updateFeedFilterCount();
+
+    const moreFilters = byId("news-feed-more-filters");
+    if (moreFilters) moreFilters.hidden = !hasFollows;
+  }
+
+  function readFeedFilterControls() {
+    feedFilters.viewpoint = String(byId("news-feed-viewpoint-filter")?.value || "all");
+    feedFilters.category = String(byId("news-feed-category-filter")?.value || "");
+    feedFilters.contentType = String(byId("news-feed-content-filter")?.value || "");
+    feedFilters.mediaType = String(byId("news-feed-media-filter")?.value || "");
+    feedFilters.articleAccess = String(byId("news-feed-access-filter")?.value || "");
+    updateFeedFilterCount();
+  }
+
+  function resetFeedFilterControls() {
+    Object.assign(feedFilters, {
+      viewpoint: "all",
+      category: "",
+      contentType: "",
+      mediaType: "",
+      articleAccess: ""
+    });
+    [
+      ["news-feed-viewpoint-filter", "all"],
+      ["news-feed-category-filter", ""],
+      ["news-feed-content-filter", ""],
+      ["news-feed-media-filter", ""],
+      ["news-feed-access-filter", ""]
+    ].forEach(([id, value]) => {
+      const control = byId(id);
+      if (control) control.value = value;
+    });
+    updateFeedFilterCount();
   }
 
   function followButtonContent(following, pending = "") {
@@ -439,6 +550,7 @@
 
     return sources.map((source) => {
       const details = [source.alignment, source.category, source.contentType].filter(Boolean).join(" · ");
+      const access = articleAccessLabel(source.articleAccess);
       const testing = currentAccess?.administrator && source.status === "testing"
         ? '<span class="news-source-row-status">Testing</span>'
         : "";
@@ -452,6 +564,7 @@
               ${testing}
             </div>
             ${details ? `<p>${escapeHtml(details)}</p>` : '<p class="news-source-detail-empty">Source details pending</p>'}
+            ${access ? `<span class="news-source-access" data-access="${escapeHtml(source.articleAccess)}">${escapeHtml(access)}</span>` : ""}
           </div>
           <button
             class="news-follow-button"
@@ -500,6 +613,7 @@
     ].join("");
     select.value = selectedSourceId;
     host.hidden = !hasFollows || followedSources.length < 2;
+    configureFeedFilters(sources, hasFollows);
   }
 
   function updatePaginationState() {
@@ -588,6 +702,10 @@
       const shareButton = canShare
         ? `<button class="news-share-button" type="button" data-share-id="${escapeHtml(item.id)}">Share</button>`
         : `<button class="news-share-button" type="button" disabled title="Sharing becomes available after this source is approved">Share when Live</button>`;
+      const accessLabel = articleAccessLabel(item.articleAccess);
+      const accessMarkup = ["limited", "subscription"].includes(item.articleAccess)
+        ? `<span class="news-item-access" data-access="${escapeHtml(item.articleAccess)}">${escapeHtml(accessLabel)}</span>`
+        : "";
       const insightButton = currentAccess?.administrator
         ? `<button class="news-admin-insight-button" type="button" data-admin-insight-id="${escapeHtml(item.id)}">${item.owlInsight ? "Edit Insight" : "Add Insight"}</button>`
         : "";
@@ -597,7 +715,7 @@
           <summary class="news-item-summary">
             ${image}
             <div class="news-item-copy">
-              <p class="news-item-source">${escapeHtml(item.sourceName)}${item.sourceStatus === "testing" ? " · Testing" : ""}</p>
+              <p class="news-item-source"><span>${escapeHtml(item.sourceName)}${item.sourceStatus === "testing" ? " · Testing" : ""}</span>${accessMarkup}</p>
               <h3>${escapeHtml(item.headline)}</h3>
               ${published ? `<p class="news-item-date">${escapeHtml(published)}</p>` : ""}
             </div>
@@ -821,6 +939,11 @@
         limit: NEWS_PAGE_SIZE,
         pageSize: NEWS_PAGE_SIZE,
         ...(selectedSourceId ? { sourceId: selectedSourceId } : {}),
+        ...(feedFilters.viewpoint !== "all" ? { viewpoint: feedFilters.viewpoint } : {}),
+        ...(feedFilters.category ? { sourceCategory: feedFilters.category } : {}),
+        ...(feedFilters.contentType ? { sourceContentType: feedFilters.contentType } : {}),
+        ...(feedFilters.mediaType ? { sourceMediaType: feedFilters.mediaType } : {}),
+        ...(feedFilters.articleAccess ? { articleAccess: feedFilters.articleAccess } : {}),
         ...(append && nextBefore ? { before: nextBefore } : {})
       });
 
@@ -1115,6 +1238,28 @@
   byId("news-refresh")?.addEventListener("click", () => loadNews());
   byId("news-source-filter")?.addEventListener("change", (event) => {
     selectedSourceId = String(event.currentTarget.value || "");
+    nextBefore = "";
+    hasMore = false;
+    loadNews();
+  });
+  byId("news-feed-more-filters")?.addEventListener("click", (event) => {
+    const panel = byId("news-feed-filter-panel");
+    if (!panel) return;
+    const open = panel.hidden;
+    panel.hidden = !open;
+    event.currentTarget.setAttribute("aria-expanded", String(open));
+  });
+  byId("news-feed-apply-filters")?.addEventListener("click", () => {
+    readFeedFilterControls();
+    nextBefore = "";
+    hasMore = false;
+    const panel = byId("news-feed-filter-panel");
+    if (panel) panel.hidden = true;
+    byId("news-feed-more-filters")?.setAttribute("aria-expanded", "false");
+    loadNews();
+  });
+  byId("news-feed-clear-filters")?.addEventListener("click", () => {
+    resetFeedFilterControls();
     nextBefore = "";
     hasMore = false;
     loadNews();

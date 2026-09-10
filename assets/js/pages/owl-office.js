@@ -560,7 +560,12 @@
       header.appendChild(newsStatusBadge(source.status));
       card.appendChild(header);
 
-      const details = [source.alignment_label, source.source_category, source.content_type]
+      const accessLabel = {
+        free: "Free to read",
+        limited: "Some free access",
+        subscription: "Subscription required"
+      }[String(source.article_access || "").toLowerCase()];
+      const details = [source.alignment_label, source.source_category, source.content_type, accessLabel]
         .filter(Boolean).join(" · ");
       if (details) appendText(card, "p", details);
       appendNewsLink(card, "Website", source.website_url);
@@ -754,6 +759,7 @@
     setSourceSelectValue("office-source-category", source?.source_category, "Not Assessed");
     setSourceSelectValue("office-source-content", source?.content_type, "Not Assessed");
     setSourceSelectValue("office-source-media", source?.default_media_type, "unknown");
+    setSourceSelectValue("office-source-access", source?.article_access, "");
     byId("office-source-submit").textContent = source ? "Save Changes" : "Add for Testing";
     openDialog(byId("office-source-dialog"));
     window.setTimeout(() => {

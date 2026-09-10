@@ -10,11 +10,11 @@
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
   <link rel="icon" type="image/png" href="assets/images/3X.png" />
   <link rel="stylesheet" href="assets/css/site.css?v=20260908-4" />
-  <link rel="stylesheet" href="assets/css/pages/news-feed.css?v=20260909-8" />
+  <link rel="stylesheet" href="assets/css/pages/news-feed.css?v=20260910-1" />
   <script src="assets/js/site-shell.js?v=20260908-2" defer></script>
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2" defer></script>
   <script src="assets/js/owl-access.js?v=20260909-2" defer></script>
-  <script src="assets/js/pages/news-sources.js?v=20260909-2" defer></script>
+  <script src="assets/js/pages/news-sources.js?v=20260910-1" defer></script>
 </head>
 <body class="site-body" data-page="news-feed">
   <a class="skip-link" href="#main-content">Skip to content</a>
@@ -23,7 +23,7 @@
   <main id="main-content" class="site-page site-page--news-feed news-sources-page" tabindex="-1">
     <header class="news-sources-heading">
       <a href="news-feed.html">← News Feed</a>
-      <h1>Manage Sources</h1>
+      <h1>Sources</h1>
     </header>
 
     <section class="news-gate" id="news-sources-gate" aria-live="polite">
@@ -33,6 +33,48 @@
 
     <section class="news-sources-workspace" id="news-sources-workspace" hidden>
       <p class="news-sources-intro">Choose what appears in your News Feed.</p>
+      <section class="news-source-overview" aria-label="Available source overview">
+        <strong id="news-active-source-count">0 active sources</strong>
+        <p id="news-alignment-breakdown"></p>
+        <span>A range of sources, clearly labeled.</span>
+      </section>
+
+      <div class="news-source-controls">
+        <nav class="news-source-viewpoints" aria-label="Filter sources by viewpoint">
+          <button type="button" data-source-group="all" aria-pressed="true">All</button>
+          <button type="button" data-source-group="left" aria-pressed="false">Left</button>
+          <button type="button" data-source-group="middle" aria-pressed="false">Middle</button>
+          <button type="button" data-source-group="right" aria-pressed="false">Right</button>
+          <button type="button" data-source-group="primary" aria-pressed="false">Primary</button>
+        </nav>
+        <button class="news-source-filter-toggle" id="news-source-filter-toggle" type="button" aria-expanded="false" aria-controls="news-source-filter-panel">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 7h10"></path><path d="M18 7h2"></path><circle cx="16" cy="7" r="2"></circle><path d="M4 17h2"></path><path d="M10 17h10"></path><circle cx="8" cy="17" r="2"></circle></svg>
+          <span>Filters</span>
+          <b id="news-source-filter-count" hidden>0</b>
+        </button>
+      </div>
+
+      <section class="news-source-filter-panel" id="news-source-filter-panel" aria-label="More source filters" hidden>
+        <label class="news-source-search-field" for="news-source-search">
+          <span>Source name</span>
+          <input id="news-source-search" type="search" autocomplete="off" placeholder="Search sources" />
+        </label>
+        <div class="news-source-filter-grid">
+          <label for="news-source-category-filter">Category
+            <select id="news-source-category-filter"><option value="">All categories</option></select>
+          </label>
+          <label for="news-source-content-filter">Content type
+            <select id="news-source-content-filter"><option value="">All content</option></select>
+          </label>
+          <label for="news-source-media-filter">Media type
+            <select id="news-source-media-filter"><option value="">All media</option></select>
+          </label>
+          <label for="news-source-access-filter">Article access
+            <select id="news-source-access-filter"><option value="">All access</option></select>
+          </label>
+        </div>
+        <button class="news-source-clear-filters" id="news-source-clear-filters" type="button">Clear filters</button>
+      </section>
       <p class="news-source-summary" id="news-source-summary" role="status" aria-live="polite"></p>
       <div class="news-source-groups" id="news-source-list">
         <p class="news-empty">Loading sources…</p>
