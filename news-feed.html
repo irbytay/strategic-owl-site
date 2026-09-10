@@ -10,11 +10,11 @@
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
   <link rel="icon" type="image/png" href="assets/images/3X.png" />
   <link rel="stylesheet" href="assets/css/site.css?v=20260908-4" />
-  <link rel="stylesheet" href="assets/css/pages/news-feed.css?v=20260909-8" />
+  <link rel="stylesheet" href="assets/css/pages/news-feed.css?v=20260909-9" />
   <script src="assets/js/site-shell.js?v=20260908-2" defer></script>
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2" defer></script>
   <script src="assets/js/owl-access.js?v=20260909-2" defer></script>
-  <script src="assets/js/pages/news-feed.js?v=20260909-6" defer></script>
+  <script src="assets/js/pages/news-feed.js?v=20260909-7" defer></script>
 </head>
 <body class="site-body" data-page="news-feed">
   <a class="skip-link" href="#main-content">Skip to content</a>
@@ -79,6 +79,45 @@
   </main>
 
   <div id="site-footer"></div>
+
+  <dialog class="news-dialog news-dialog--insight" id="news-insight-dialog" aria-labelledby="news-insight-title">
+    <form class="news-dialog-card" id="news-insight-form">
+      <button class="news-dialog-close" type="button" data-close-news-insight aria-label="Close">×</button>
+      <p class="news-eyebrow">Article Analysis</p>
+      <h2 id="news-insight-title">Owl Insight</h2>
+      <p class="news-insight-source" id="news-insight-source"></p>
+      <a class="news-insight-original" id="news-insight-original" target="_blank" rel="noopener noreferrer">Read Original</a>
+      <input id="news-insight-item-id" name="itemId" type="hidden" />
+
+      <label for="news-insight-label">Owl label <span>(optional)</span></label>
+      <input id="news-insight-label" name="owlLabel" maxlength="120" placeholder="What readers should notice" />
+
+      <label for="news-insight-labels">Tags <span>(comma separated)</span></label>
+      <input id="news-insight-labels" name="labels" maxlength="500" placeholder="Primary Source, Context, Misleading" />
+
+      <label for="news-insight-analysis">Your analysis</label>
+      <textarea id="news-insight-analysis" name="owlAnalysis" rows="8" maxlength="12000" required></textarea>
+
+      <div class="news-insight-settings">
+        <label for="news-insight-status">Status
+          <select id="news-insight-status" name="reviewStatus">
+            <option value="draft">Draft</option>
+            <option value="published">Published</option>
+          </select>
+        </label>
+        <label class="news-insight-public" for="news-insight-public">
+          <input id="news-insight-public" name="public" type="checkbox" />
+          <span>Show on public share page</span>
+        </label>
+      </div>
+
+      <p class="news-form-message" id="news-insight-message" role="status" aria-live="polite"></p>
+      <div class="news-insight-actions">
+        <button class="news-insight-hide" id="news-insight-hide" type="button" hidden>Hide Insight</button>
+        <button class="news-access-button" id="news-insight-save" type="submit">Save Insight</button>
+      </div>
+    </form>
+  </dialog>
 
   <div class="news-toast" id="news-toast" role="status" aria-live="polite"></div>
 </body>
