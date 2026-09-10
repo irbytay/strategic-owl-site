@@ -99,7 +99,8 @@
 .news-access-button,
 .news-refresh-button,
 .news-original-link,
-.news-share-button {
+.news-share-button,
+.news-admin-insight-button {
   display: inline-flex;
   align-items: center;
   justify-content: center;
@@ -125,7 +126,8 @@
 .news-access-button:hover,
 .news-refresh-button:hover,
 .news-original-link:hover,
-.news-share-button:hover {
+.news-share-button:hover,
+.news-admin-insight-button:hover {
   border-color: var(--owl-gold);
   filter: brightness(1.08);
   transform: translateY(-1px);
@@ -553,8 +555,14 @@
 }
 
 .news-original-link,
-.news-share-button {
+.news-share-button,
+.news-admin-insight-button {
   min-width: 140px;
+}
+
+.news-admin-insight-button {
+  background: linear-gradient(145deg, rgba(255, 255, 255, 0.13), rgba(17, 34, 64, 0.68));
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.2), 0 8px 22px rgba(0, 0, 0, 0.18);
 }
 
 .news-share-button:disabled {
@@ -1409,7 +1417,8 @@
 }
 
 .news-dialog-card input,
-.news-dialog-card textarea {
+.news-dialog-card textarea,
+.news-dialog-card select {
   width: 100%;
   min-height: 48px;
   padding: 11px 13px;
@@ -1424,6 +1433,89 @@
 .news-dialog-card textarea {
   min-height: 108px;
   resize: vertical;
+}
+
+.news-dialog--insight {
+  width: min(94vw, 700px);
+  overflow: hidden;
+  background: rgba(14, 31, 54, 0.88);
+  -webkit-backdrop-filter: blur(24px) saturate(150%);
+  backdrop-filter: blur(24px) saturate(150%);
+}
+
+.news-dialog--insight .news-dialog-card {
+  max-height: 88vh;
+  overflow-y: auto;
+  background:
+    linear-gradient(150deg, rgba(255, 255, 255, 0.08), transparent 34%),
+    linear-gradient(145deg, rgba(26, 43, 76, 0.72), rgba(13, 27, 42, 0.78));
+}
+
+.news-insight-source {
+  margin: -3px 0 0;
+  color: var(--owl-muted);
+  font-family: Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  font-size: 0.92rem;
+}
+
+.news-insight-original {
+  justify-self: start;
+  color: var(--owl-gold);
+  font-family: Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  font-size: 0.9rem;
+  font-weight: 700;
+}
+
+.news-insight-original[hidden],
+.news-insight-hide[hidden] {
+  display: none;
+}
+
+.news-insight-settings {
+  display: grid;
+  grid-template-columns: minmax(180px, 0.8fr) minmax(220px, 1.2fr);
+  align-items: end;
+  gap: 12px;
+}
+
+.news-insight-public {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  min-height: 48px;
+  padding: 10px 12px;
+  border: 1px solid rgba(212, 175, 55, 0.35);
+  border-radius: 12px;
+}
+
+.news-dialog-card .news-insight-public input {
+  width: 20px;
+  min-height: 20px;
+  margin: 0;
+  padding: 0;
+  accent-color: var(--owl-gold);
+}
+
+.news-insight-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+}
+
+.news-insight-actions button {
+  min-height: 44px;
+  padding: 9px 16px;
+  border-radius: 13px;
+  cursor: pointer;
+  font-family: Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  font-size: 0.94rem;
+  font-weight: 700;
+}
+
+.news-insight-hide {
+  border: 1px solid rgba(255, 138, 138, 0.58);
+  background: rgba(255, 138, 138, 0.08);
+  color: var(--owl-danger);
 }
 
 .news-dialog-close {
@@ -1638,8 +1730,18 @@
   }
 
   .news-original-link,
-  .news-share-button {
+  .news-share-button,
+  .news-admin-insight-button {
     width: 100%;
+  }
+
+  .news-insight-settings {
+    grid-template-columns: 1fr;
+  }
+
+  .news-insight-actions {
+    display: grid;
+    grid-template-columns: 1fr;
   }
 
   .news-request-section {
