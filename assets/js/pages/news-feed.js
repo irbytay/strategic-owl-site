@@ -19,6 +19,7 @@
   let pullRefreshing = false;
   let onboardingSources = [];
   let onboardingActive = false;
+  let onboardingSourceGroup = "all";
   let loadedSources = [];
   let loadedItems = [];
   let loadedHasFollows = false;
@@ -384,6 +385,65 @@
     };
   }
 
+  function sourceGroups(source) {
+    const groups = new Set();
+    const alignment = String(source.alignment || "").trim().toLowerCase();
+    const contentType = String(source.contentType || "").trim().toLowerCase();
+
+    if (alignment === "left" || alignment === "center-left") groups.add("left");
+    if (["center", "nonpartisan", "mixed"].includes(alignment)) groups.add("middle");
+    if (["center-right", "right", "populist right"].includes(alignment)) groups.add("right");
+    if (contentType === "primary source") groups.add("primary");
+    return groups;
+  }
+
+  function renderSourceDashboard(sources) {
+    const activeSources = sources.filter((source) => source.status === "active");
+    const totalFor = (group) => activeSources.filter((source) => sourceGroups(source).has(group)).length;
+    const metrics = [
+      ["Left", totalFor("left")],
+      ["Middle", totalFor("middle")],
+      ["Right", totalFor("right")],
+      ["Primary", totalFor("primary")]
+    ];
+
+    return `
+      <section class="news-source-dashboard" aria-label="Available source overview">
+        <div class="news-source-dashboard-heading">
+          <span class="news-source-dashboard-mark" aria-hidden="true">
+            <img src="assets/images/3X.png" alt="" />
+          </span>
+          <div>
+            <strong>${activeSources.length} active ${activeSources.length === 1 ? "source" : "sources"}</strong>
+            <p>Available for your News Feed</p>
+          </div>
+        </div>
+        <div class="news-source-dashboard-metrics">
+          ${metrics.map(([label, total]) => `<span><strong>${total}</strong><small>${label}</small></span>`).join("")}
+        </div>
+        <p class="news-source-dashboard-note">Each source is labeled so you can choose your own mix.</p>
+      </section>`;
+  }
+
+  function renderOnboardingViewpoints() {
+    const groups = [
+      ["all", "All"],
+      ["left", "Left"],
+      ["middle", "Middle"],
+      ["right", "Right"],
+      ["primary", "Primary"]
+    ];
+    return `
+      <nav class="news-onboarding-viewpoints" aria-label="Filter sources by viewpoint">
+        ${groups.map(([value, label]) => `
+          <button
+            type="button"
+            data-onboarding-source-group="${value}"
+            aria-pressed="${String(value === onboardingSourceGroup)}"
+          >${label}</button>`).join("")}
+      </nav>`;
+  }
+
   function normalizeItem(item, sourceMap) {
     const nestedSource = firstValue(item, ["source", "newsSource", "news_sources"], {});
     const sourceId = String(firstValue(item, ["sourceId", "source_id"], firstValue(nestedSource, ["id"])));
@@ -487,6 +547,11 @@
 
     const moreFilters = byId("news-feed-more-filters");
     if (moreFilters) moreFilters.hidden = !hasFollows;
+    if (!hasFollows) {
+      const filterPanel = byId("news-feed-filter-panel");
+      if (filterPanel) filterPanel.hidden = true;
+      moreFilters?.setAttribute("aria-expanded", "false");
+    }
   }
 
   function readFeedFilterControls() {
@@ -548,7 +613,14 @@
       return '<p class="news-empty">No sources are available yet.</p>';
     }
 
-    return sources.map((source) => {
+    const visibleSources = onboardingSourceGroup === "all"
+      ? sources
+      : sources.filter((source) => sourceGroups(source).has(onboardingSourceGroup));
+    if (!visibleSources.length) {
+      return '<p class="news-empty">No sources are available in this group.</p>';
+    }
+
+    return visibleSources.map((source) => {
       const details = [source.alignment, source.category, source.contentType].filter(Boolean).join(" · ");
       const access = articleAccessLabel(source.articleAccess);
       const testing = currentAccess?.administrator && source.status === "testing"
@@ -660,7 +732,9 @@
               <h3 id="news-following-empty-title">Choose Your Sources</h3>
               <p>Follow one or more sources to build your news feed.</p>
             </div>
-            <div class="news-onboarding-source-list" id="news-source-list">
+            ${renderSourceDashboard(sources)}
+            ${renderOnboardingViewpoints()}
+            <div class="news-onboarding-source-list" id="news-onboarding-source-list">
               ${renderSourceChoices(sources)}
             </div>
             <div class="news-onboarding-actions">
@@ -1265,6 +1339,16 @@
     loadNews();
   });
   byId("news-item-list")?.addEventListener("click", (event) => {
+    const sourceGroupButton = event.target.closest("[data-onboarding-source-group]");
+    if (sourceGroupButton) {
+      onboardingSourceGroup = sourceGroupButton.dataset.onboardingSourceGroup || "all";
+      document.querySelectorAll("[data-onboarding-source-group]").forEach((button) => {
+        button.setAttribute("aria-pressed", String(button.dataset.onboardingSourceGroup === onboardingSourceGroup));
+      });
+      const sourceList = byId("news-onboarding-source-list");
+      if (sourceList) sourceList.innerHTML = renderSourceChoices(onboardingSources);
+      return;
+    }
     const viewSelected = event.target.closest("#news-view-selected");
     if (viewSelected) {
       loadNews();

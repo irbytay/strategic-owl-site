@@ -222,23 +222,17 @@
   function updateSourceOverview() {
     const activeSources = sources.filter((source) => source.status === "active");
     const count = byId("news-active-source-count");
-    const breakdown = byId("news-alignment-breakdown");
     if (count) count.textContent = `${activeSources.length} active ${activeSources.length === 1 ? "source" : "sources"}`;
-    if (breakdown) {
-      const groupCounts = [
-        ["Left", "left"],
-        ["Middle", "middle"],
-        ["Right", "right"]
-      ].map(([label, group]) => [
-        label,
-        activeSources.filter((source) => sourceGroups(source).has(group)).length
-      ]);
-      const primaryCount = activeSources.filter((source) => sourceGroups(source).has("primary")).length;
-      const viewpointSummary = groupCounts.map(([label, total]) => `${label} ${total}`).join(" · ");
-      breakdown.textContent = primaryCount
-        ? `${viewpointSummary} · ${primaryCount} primary`
-        : viewpointSummary;
-    }
+    const totals = {
+      left: activeSources.filter((source) => sourceGroups(source).has("left")).length,
+      middle: activeSources.filter((source) => sourceGroups(source).has("middle")).length,
+      right: activeSources.filter((source) => sourceGroups(source).has("right")).length,
+      primary: activeSources.filter((source) => sourceGroups(source).has("primary")).length
+    };
+    Object.entries(totals).forEach(([group, total]) => {
+      const element = byId(`news-${group}-source-count`);
+      if (element) element.textContent = String(total);
+    });
   }
 
   function activeSourceFilterCount() {

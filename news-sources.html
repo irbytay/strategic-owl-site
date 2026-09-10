@@ -10,11 +10,11 @@
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
   <link rel="icon" type="image/png" href="assets/images/3X.png" />
   <link rel="stylesheet" href="assets/css/site.css?v=20260908-4" />
-  <link rel="stylesheet" href="assets/css/pages/news-feed.css?v=20260910-1" />
+  <link rel="stylesheet" href="assets/css/pages/news-feed.css?v=20260910-2" />
   <script src="assets/js/site-shell.js?v=20260908-2" defer></script>
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2" defer></script>
   <script src="assets/js/owl-access.js?v=20260909-2" defer></script>
-  <script src="assets/js/pages/news-sources.js?v=20260910-1" defer></script>
+  <script src="assets/js/pages/news-sources.js?v=20260910-2" defer></script>
 </head>
 <body class="site-body" data-page="news-feed">
   <a class="skip-link" href="#main-content">Skip to content</a>
@@ -33,10 +33,23 @@
 
     <section class="news-sources-workspace" id="news-sources-workspace" hidden>
       <p class="news-sources-intro">Choose what appears in your News Feed.</p>
-      <section class="news-source-overview" aria-label="Available source overview">
-        <strong id="news-active-source-count">0 active sources</strong>
-        <p id="news-alignment-breakdown"></p>
-        <span>A range of sources, clearly labeled.</span>
+      <section class="news-source-dashboard" aria-label="Available source overview">
+        <div class="news-source-dashboard-heading">
+          <span class="news-source-dashboard-mark" aria-hidden="true">
+            <img src="assets/images/3X.png" alt="" />
+          </span>
+          <div>
+            <strong id="news-active-source-count">0 active sources</strong>
+            <p>Available for your News Feed</p>
+          </div>
+        </div>
+        <div class="news-source-dashboard-metrics" id="news-alignment-breakdown">
+          <span><strong id="news-left-source-count">0</strong><small>Left</small></span>
+          <span><strong id="news-middle-source-count">0</strong><small>Middle</small></span>
+          <span><strong id="news-right-source-count">0</strong><small>Right</small></span>
+          <span><strong id="news-primary-source-count">0</strong><small>Primary</small></span>
+        </div>
+        <p class="news-source-dashboard-note">Each source is labeled so you can choose your own mix.</p>
       </section>
 
       <div class="news-source-controls">
