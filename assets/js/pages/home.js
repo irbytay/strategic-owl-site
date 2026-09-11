@@ -88,7 +88,12 @@
       const updatesEl = document.getElementById('mission-update-list');
       if (updatesEl && Array.isArray(data.missionUpdates) && data.missionUpdates.length) {
         updatesEl.innerHTML = data.missionUpdates
-          .map((update) => `<div style="font-family: 'Inter', sans-serif; color: var(--understanding); font-size: 1rem; line-height: 1.45; text-align: center; max-width: 720px;">${escapeHtml(update)}</div>`)
+          .map((update) => `
+            <div class="home-update-item">
+              <span class="home-update-item__dot" aria-hidden="true"></span>
+              <span>${escapeHtml(update)}</span>
+            </div>
+          `)
           .join('');
       }
 
