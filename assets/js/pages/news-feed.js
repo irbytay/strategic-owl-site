@@ -926,8 +926,12 @@
         : `<span class="news-item-image-placeholder"><img src="assets/images/3X.png" alt="" /></span>`;
       const published = formatDate(item.publishedAt);
       const metadata = [...item.authors, ...item.categories].slice(0, 6);
-      const metadataMarkup = metadata.length
-        ? `<div class="news-item-meta">${metadata.map((value) => `<span>${escapeHtml(value)}</span>`).join("")}</div>`
+      const accessLabel = articleAccessLabel(item.articleAccess);
+      const accessMarkup = accessLabel
+        ? `<span class="news-item-access" data-access="${escapeHtml(item.articleAccess)}">${escapeHtml(accessLabel)}</span>`
+        : "";
+      const metadataMarkup = accessMarkup || metadata.length
+        ? `<div class="news-item-meta">${accessMarkup}${metadata.map((value) => `<span>${escapeHtml(value)}</span>`).join("")}</div>`
         : "";
       const insightMarkup = item.owlInsight
         ? `<aside class="news-owl-insight">
@@ -941,17 +945,12 @@
               : ""}
           </aside>`
         : "";
-      const accessLabel = articleAccessLabel(item.articleAccess);
-      const accessMarkup = accessLabel
-        ? `<span class="news-item-access" data-access="${escapeHtml(item.articleAccess)}">· ${escapeHtml(accessLabel)}</span>`
-        : "";
-
       return `
         <details class="news-item" data-item-id="${escapeHtml(item.id)}">
           <summary class="news-item-summary">
             ${image}
             <div class="news-item-copy">
-              <p class="news-item-source"><span>${escapeHtml(item.sourceName)}${item.sourceStatus === "testing" ? " · Testing" : ""}</span>${accessMarkup}</p>
+              <p class="news-item-source"><span>${escapeHtml(item.sourceName)}${item.sourceStatus === "testing" ? " · Testing" : ""}</span></p>
               <h3>${escapeHtml(item.headline)}</h3>
               ${published ? `<p class="news-item-date">${escapeHtml(published)}</p>` : ""}
             </div>
