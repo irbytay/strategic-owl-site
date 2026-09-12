@@ -591,8 +591,8 @@
     const fullReader = hasFullReader(item);
     const readerUnavailable = readerCheckedIds.has(item.id) && !fullReader;
     const readerControl = fullReader
-      ? `<button class="news-item-action news-item-action--internal" type="button" data-open-reader-id="${escapeHtml(item.id)}" aria-label="Read this article inside The Strategic Owl">
-          <span>Read in Owl</span>
+      ? `<button class="news-item-action news-item-action--internal" type="button" data-open-reader-id="${escapeHtml(item.id)}" aria-label="Open this article in the Owl Reader">
+          <span>Owl Reader</span>
         </button>`
       : "";
     const promptButton = readerUnavailable
@@ -618,11 +618,11 @@
           <span>${item.owlInsight ? "Edit Insight" : "Add Insight"}</span>
         </button>`
       : "";
-    const secondaryActions = `<span class="news-item-secondary-actions${readerControl ? "" : " news-item-secondary-actions--standalone"}">
-        ${promptButton}${originalButton}${shareButton}
+    const secondaryActions = `<span class="news-item-secondary-actions news-item-secondary-actions--standalone">
+        ${readerControl}${promptButton}${originalButton}${shareButton}
       </span>`;
 
-    return `${readerControl}${secondaryActions}${insightButton}`;
+    return `${secondaryActions}${insightButton}`;
   }
 
   function distinctFollowedValues(sources, key) {
