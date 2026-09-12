@@ -578,7 +578,7 @@
   border: 0;
   border-left: 1px solid rgba(255, 255, 255, 0.11);
   background: transparent;
-  color: var(--owl-gold);
+  color: var(--owl-muted);
   cursor: pointer;
   font-family: Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
   font-size: 0.84rem;
@@ -602,10 +602,43 @@
   stroke-width: 1.8;
 }
 
+.news-item-action > span:last-child {
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
 .news-item-action:hover,
 .news-item-action:focus-visible {
   background: rgba(212, 175, 55, 0.1);
   color: #f4d66c;
+}
+
+.news-item-action--primary {
+  margin: 2px;
+  min-height: 42px;
+  border-left: 0;
+  border-radius: 11px;
+  background: var(--owl-gold);
+  color: var(--owl-navy);
+  box-shadow: 0 7px 18px rgba(0, 0, 0, 0.18);
+}
+
+.news-item-action--primary:hover,
+.news-item-action--primary:focus-visible {
+  background: #e2bd42;
+  color: var(--owl-navy);
+}
+
+.news-item-action--status {
+  cursor: default;
+  color: var(--owl-muted);
+}
+
+.news-item-action--status:hover {
+  background: transparent;
+  color: var(--owl-muted);
 }
 
 .news-item-action:disabled {
@@ -614,11 +647,7 @@
   transform: none;
 }
 
-.news-item-action[aria-busy="true"] {
-  cursor: wait;
-}
-
-.news-item-action[aria-busy="true"] svg {
+.news-item-action--checking svg {
   animation: news-reader-pulse 900ms ease-in-out infinite alternate;
 }
 
@@ -2326,10 +2355,11 @@
   }
 
   .news-item-action {
-    gap: 5px;
-    min-height: 48px;
+    flex-direction: column;
+    gap: 3px;
+    min-height: 58px;
     padding: 7px 5px;
-    font-size: 0.76rem;
+    font-size: 0.7rem;
   }
 
   .news-item-action svg {

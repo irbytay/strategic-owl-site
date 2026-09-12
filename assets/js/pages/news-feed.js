@@ -40,6 +40,8 @@
   let activeReaderItem = null;
   let pendingOriginalUrl = "";
   let renderedItemsById = new Map();
+  const readerCheckingIds = new Set();
+  const readerCheckedIds = new Set();
 
   const byId = (id) => document.getElementById(id);
 
@@ -187,6 +189,7 @@
     const openIds = new Set(Array.isArray(ui?.openItemIds) ? ui.openItemIds : []);
     document.querySelectorAll(".news-item[data-item-id]").forEach((item) => {
       item.open = openIds.has(item.dataset.itemId);
+      if (item.open) prepareArticleReader(item.dataset.itemId);
     });
 
     const scrollY = Number(ui?.scrollY || 0);
@@ -501,7 +504,7 @@
     const insightAnalysis = String(firstValue(rawInsight, ["owlAnalysis", "owl_analysis", "analysis"]));
     const rawReader = firstValue(item, ["reader", "readerResult", "reader_result"], {});
     const contentText = String(firstValue(item, ["contentText", "content_text", "content"]));
-    const summaryText = String(firstValue(item, ["summaryText", "summary_text", "summary", "excerpt"], "Open the original source to read this story."));
+    const summaryText = String(firstValue(item, ["summaryText", "summary_text", "summary", "excerpt"]));
     const suppliedReaderText = String(firstValue(rawReader, ["text", "readerText", "reader_text"]));
     const readerText = suppliedReaderText || (contentText.length >= summaryText.length ? contentText : summaryText);
     const rawReaderMode = String(firstValue(
@@ -509,7 +512,9 @@
       ["mode", "readerMode", "reader_mode"],
       firstValue(item, ["readerMode", "reader_mode"])
     )).trim().toLowerCase();
-    const readerMode = rawReaderMode === "reader" ? "full" : rawReaderMode;
+    const readerMode = rawReaderMode === "reader"
+      ? "full"
+      : rawReaderMode || (readerText.length >= MIN_FULL_READER_LENGTH ? "full" : "preview");
 
     return {
       id: String(firstValue(item, ["id", "newsItemId", "news_item_id"])),
@@ -560,6 +565,65 @@
 
   function articleAccessLabel(value) {
     return ARTICLE_ACCESS_LABELS[String(value || "").trim().toLowerCase()] || "";
+  }
+
+  function hasMeaningfulPreviewText(value) {
+    const text = String(value || "").replace(/\s+/g, " ").trim();
+    if (!text) return false;
+    const normalized = text.toLowerCase().replace(/[.!]+$/, "");
+    return ![
+      "open the original source to read this story",
+      "open the original source to read the full story",
+      "read the full article at the original source",
+      "read more at the original source"
+    ].includes(normalized);
+  }
+
+  function hasMeaningfulPreview(item) {
+    return hasMeaningfulPreviewText(item?.summary);
+  }
+
+  function renderArticleActions(item) {
+    const fullReader = hasFullReader(item);
+    const preview = hasMeaningfulPreview(item);
+    const checking = readerCheckingIds.has(item.id);
+    const readerControl = fullReader
+      ? `<button class="news-item-action news-item-action--primary" type="button" data-open-reader-id="${escapeHtml(item.id)}" aria-label="Read the full article here">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 5.5A3.5 3.5 0 0 1 7.5 2H11v17H7.5A3.5 3.5 0 0 0 4 22Z"></path><path d="M20 5.5A3.5 3.5 0 0 0 16.5 2H13v17h3.5A3.5 3.5 0 0 1 20 22Z"></path></svg>
+          <span>Full Read</span>
+        </button>`
+      : preview
+        ? `<span class="news-item-action news-item-action--status${checking ? " news-item-action--checking" : ""}" role="status">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 3h9l3 3v15H6Z"></path><path d="M14 3v4h4"></path><path d="M9 12h6"></path><path d="M9 16h6"></path></svg>
+            <span>${checking ? "Checking" : "Preview Only"}</span>
+          </span>`
+        : "";
+    const originalLabel = fullReader
+      ? "Original"
+      : preview
+        ? "Continue at Source"
+        : "Read at Source";
+    const originalButton = item.originalUrl
+      ? `<button class="news-item-action${fullReader ? "" : " news-item-action--primary"}" type="button" data-original-url="${escapeHtml(item.originalUrl)}" data-original-source="${escapeHtml(item.sourceName)}" aria-label="${escapeHtml(originalLabel)} at ${escapeHtml(item.sourceName)}">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M14 5h5v5"></path><path d="m19 5-9 9"></path><path d="M19 13v6H5V5h6"></path></svg>
+          <span>${escapeHtml(originalLabel)}</span>
+        </button>`
+      : "";
+    const canShare = item.sourceStatus === "active" && Boolean(item.id);
+    const shareButton = `<button class="news-item-action" type="button"${canShare
+      ? ` data-share-id="${escapeHtml(item.id)}" aria-label="Share this article"`
+      : " disabled title=\"Sharing becomes available after this source is approved\""}>
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 16V4"></path><path d="m8 8 4-4 4 4"></path><path d="M5 12v7h14v-7"></path></svg>
+        <span>Share</span>
+      </button>`;
+    const insightButton = currentAccess?.administrator
+      ? `<button class="news-item-action" type="button" data-admin-insight-id="${escapeHtml(item.id)}" aria-label="${item.owlInsight ? "Edit" : "Add"} Owl Insight">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="m12 3 1.4 4.2L18 9l-4.6 1.8L12 15l-1.4-4.2L6 9l4.6-1.8Z"></path><path d="m18.5 14 .8 2.2 2.2.8-2.2.8-.8 2.2-.8-2.2-2.2-.8 2.2-.8Z"></path></svg>
+          <span>Insight</span>
+        </button>`
+      : "";
+
+    return `${readerControl}${originalButton}${shareButton}${insightButton}`;
   }
 
   function distinctFollowedValues(sources, key) {
@@ -825,12 +889,6 @@
         ? `<img class="news-item-image" src="${escapeHtml(item.imageUrl)}" alt="" loading="lazy" />`
         : `<span class="news-item-image-placeholder"><img src="assets/images/3X.png" alt="" /></span>`;
       const published = formatDate(item.publishedAt);
-      const originalButton = item.originalUrl
-        ? `<button class="news-item-action" type="button" data-original-url="${escapeHtml(item.originalUrl)}" data-original-source="${escapeHtml(item.sourceName)}" aria-label="Read the original article at ${escapeHtml(item.sourceName)}">
-            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M14 5h5v5"></path><path d="m19 5-9 9"></path><path d="M19 13v6H5V5h6"></path></svg>
-            <span>Original</span>
-          </button>`
-        : "";
       const metadata = [...item.authors, ...item.categories].slice(0, 6);
       const metadataMarkup = metadata.length
         ? `<div class="news-item-meta">${metadata.map((value) => `<span>${escapeHtml(value)}</span>`).join("")}</div>`
@@ -847,31 +905,9 @@
               : ""}
           </aside>`
         : "";
-      const canShare = item.sourceStatus === "active" && Boolean(item.id);
-      const shareButton = canShare
-        ? `<button class="news-item-action" type="button" data-share-id="${escapeHtml(item.id)}" aria-label="Share this article">
-            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 16V4"></path><path d="m8 8 4-4 4 4"></path><path d="M5 12v7h14v-7"></path></svg>
-            <span>Share</span>
-          </button>`
-        : `<button class="news-item-action" type="button" disabled title="Sharing becomes available after this source is approved">
-            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 16V4"></path><path d="m8 8 4-4 4 4"></path><path d="M5 12v7h14v-7"></path></svg>
-            <span>Share</span>
-          </button>`;
-      const readerButton = item.id
-        ? `<button class="news-item-action" type="button" data-reader-id="${escapeHtml(item.id)}" aria-label="Check for a reader version of this article">
-            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 5.5A3.5 3.5 0 0 1 7.5 2H11v17H7.5A3.5 3.5 0 0 0 4 22Z"></path><path d="M20 5.5A3.5 3.5 0 0 0 16.5 2H13v17h3.5A3.5 3.5 0 0 1 20 22Z"></path></svg>
-            <span data-reader-label>Reader</span>
-          </button>`
-        : "";
       const accessLabel = articleAccessLabel(item.articleAccess);
       const accessMarkup = accessLabel
         ? `<span class="news-item-access" data-access="${escapeHtml(item.articleAccess)}">· ${escapeHtml(accessLabel)}</span>`
-        : "";
-      const insightButton = currentAccess?.administrator
-          ? `<button class="news-item-action" type="button" data-admin-insight-id="${escapeHtml(item.id)}" aria-label="${item.owlInsight ? "Edit" : "Add"} Owl Insight">
-            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="m12 3 1.4 4.2L18 9l-4.6 1.8L12 15l-1.4-4.2L6 9l4.6-1.8Z"></path><path d="m18.5 14 .8 2.2 2.2.8-2.2.8-.8 2.2-.8-2.2-2.2-.8 2.2-.8Z"></path></svg>
-            <span>Insight</span>
-          </button>`
         : "";
 
       return `
@@ -889,13 +925,10 @@
           </summary>
           <div class="news-item-details">
             ${metadataMarkup}
-            <p>${escapeHtml(item.summary)}</p>
+            ${hasMeaningfulPreview(item) ? `<p>${escapeHtml(item.summary)}</p>` : ""}
             ${insightMarkup}
             <div class="news-item-actions" aria-label="Article actions">
-              ${readerButton}
-              ${originalButton}
-              ${shareButton}
-              ${insightButton}
+              ${renderArticleActions(item)}
             </div>
           </div>
         </details>`;
@@ -910,14 +943,6 @@
       item.readerMode === "full" &&
       String(item.readerText || "").trim().length >= MIN_FULL_READER_LENGTH
     );
-  }
-
-  function setReaderBusy(button, busy) {
-    if (!button) return;
-    button.disabled = busy;
-    button.setAttribute("aria-busy", String(busy));
-    const label = button.querySelector("[data-reader-label]");
-    if (label) label.textContent = busy ? "Checking" : "Reader";
   }
 
   function renderReaderText(text) {
@@ -965,15 +990,26 @@
     syncNewsDialogState();
   }
 
-  async function loadArticleReader(itemId, trigger) {
+  function updateArticleActions(itemId) {
     const item = renderedItemsById.get(String(itemId || ""));
     if (!item) return;
-    if (hasFullReader(item)) {
-      openArticleReader(item);
-      return;
-    }
+    const card = Array.from(document.querySelectorAll(".news-item[data-item-id]"))
+      .find((element) => element.dataset.itemId === item.id);
+    const actions = card?.querySelector(".news-item-actions");
+    if (actions) actions.innerHTML = renderArticleActions(item);
+  }
 
-    setReaderBusy(trigger, true);
+  async function prepareArticleReader(itemId) {
+    const item = renderedItemsById.get(String(itemId || ""));
+    if (
+      !item ||
+      hasFullReader(item) ||
+      readerCheckingIds.has(item.id) ||
+      readerCheckedIds.has(item.id)
+    ) return;
+
+    readerCheckingIds.add(item.id);
+    updateArticleActions(item.id);
     try {
       const result = await invokeCloudflareReader(item.id);
       const reader = result?.reader && typeof result.reader === "object"
@@ -981,26 +1017,22 @@
         : {};
       const readerText = String(firstValue(reader, ["text", "readerText", "reader_text"])).trim();
       const rawReaderMode = String(firstValue(reader, ["mode", "readerMode", "reader_mode"])).trim().toLowerCase();
+      const resolvedReaderMode = rawReaderMode === "reader" ? "full" : rawReaderMode;
       const updatedItem = {
         ...item,
         originalUrl: safeUrl(result?.originalUrl) || item.originalUrl,
-        readerMode: rawReaderMode === "reader" ? "full" : rawReaderMode,
+        readerMode: resolvedReaderMode,
         readerText,
         readerTextSource: String(firstValue(reader, ["textSource", "text_source", "source"])).trim().toLowerCase(),
         readerTextLength: Number(firstValue(reader, ["textLength", "text_length", "length"], readerText.length)) || readerText.length
       };
       renderedItemsById.set(item.id, updatedItem);
-
-      if (hasFullReader(updatedItem)) {
-        openArticleReader(updatedItem);
-      } else {
-        showToast("This story is available from the original source.");
-      }
     } catch (error) {
       console.error("Article reader check failed", error);
-      showToast("Reader is unavailable right now. You can still open Original.");
     } finally {
-      setReaderBusy(trigger, false);
+      readerCheckingIds.delete(item.id);
+      readerCheckedIds.add(item.id);
+      updateArticleActions(item.id);
     }
   }
 
@@ -1009,19 +1041,18 @@
 
 Title: ${item.headline || "Untitled article"}
 Publisher: ${item.sourceName || "Unknown publisher"}
-Original link: ${item.originalUrl || "Not available"}
+Original URL: ${item.originalUrl || "Not available"}
 
-Article text:
-${item.readerText || ""}
-
-Please provide:
+Please:
 1. A concise explanation of the article's central claim or development.
-2. What is established fact, what is a claim, and what remains uncertain.
-3. The general consensus among reliable sources, including meaningful disagreement.
-4. Relevant historical context that helps explain why this matters.
-5. Important context the article may be missing.
+2. Verify its most important factual claims.
+3. Separate established facts from allegations, opinions, predictions, and uncertainty.
+4. Explain the broader consensus among reliable sources and identify meaningful disagreement.
+5. Provide relevant historical or legal context.
+6. Identify important context the article may have omitted.
+7. Link to primary records and reliable sources whenever possible.
 
-Use clear, approachable language. Do not assume partisan or institutional claims are true without evidence. Cite reliable sources and link to primary records when possible.`;
+Use clear, approachable, nonpartisan language. Do not assume the article, headline, or institutional claims are accurate without checking the evidence. If you cannot access the article, say so and research the reported subject using the title, publisher, and URL.`;
   }
 
   async function copyResearchPrompt() {
@@ -1617,9 +1648,18 @@ Use clear, approachable language. Do not assume partisan or institutional claims
       changeFollow(followButton);
       return;
     }
-    const readerButton = event.target.closest("[data-reader-id]");
+    const summary = event.target.closest(".news-item-summary");
+    if (summary) {
+      const article = summary.closest(".news-item[data-item-id]");
+      if (article && !article.open) {
+        window.setTimeout(() => prepareArticleReader(article.dataset.itemId), 0);
+      }
+      return;
+    }
+    const readerButton = event.target.closest("[data-open-reader-id]");
     if (readerButton) {
-      loadArticleReader(readerButton.dataset.readerId, readerButton);
+      const item = renderedItemsById.get(readerButton.dataset.openReaderId);
+      if (item) openArticleReader(item);
       return;
     }
     const originalButton = event.target.closest("[data-original-url]");
