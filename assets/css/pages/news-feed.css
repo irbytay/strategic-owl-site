@@ -1726,18 +1726,57 @@
 .news-leaving-dialog {
   width: min(92vw, 480px);
   overflow: hidden;
+  isolation: isolate;
+  border-color: rgba(212, 175, 55, 0.42);
+  background:
+    linear-gradient(135deg, rgba(255, 255, 255, 0.13), transparent 32%),
+    linear-gradient(145deg, rgba(42, 66, 104, 0.82), rgba(9, 21, 37, 0.88));
+  box-shadow:
+    0 28px 90px rgba(0, 0, 0, 0.68),
+    0 0 38px rgba(212, 175, 55, 0.11),
+    inset 0 1px 0 rgba(255, 255, 255, 0.22);
+  -webkit-backdrop-filter: blur(28px) saturate(155%);
+  backdrop-filter: blur(28px) saturate(155%);
 }
 
 .news-leaving-card {
+  position: relative;
+  z-index: 1;
   display: grid;
   gap: 10px;
   padding: 28px;
+}
+
+.news-leaving-card::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  right: 32px;
+  left: 32px;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.54), transparent);
+  pointer-events: none;
 }
 
 .news-leaving-card h2 {
   margin: 0;
   color: var(--owl-gold);
   font-size: 1.65rem;
+}
+
+.news-leaving-card .news-eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.news-leaving-card .news-eyebrow::before {
+  content: "";
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: var(--owl-truth);
+  box-shadow: 0 0 10px rgba(46, 211, 95, 0.28);
 }
 
 .news-leaving-card > p:not(.news-eyebrow) {
@@ -1762,15 +1801,41 @@
 }
 
 .news-leaving-cancel {
-  border: 1px solid rgba(255, 255, 255, 0.18);
-  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(255, 255, 255, 0.22);
+  background: linear-gradient(145deg, rgba(255, 255, 255, 0.11), rgba(255, 255, 255, 0.05));
   color: var(--owl-body);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.12);
 }
 
 .news-leaving-continue {
-  border: 1px solid var(--owl-gold);
-  background: var(--owl-gold);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 7px;
+  border: 1px solid rgba(250, 220, 111, 0.86);
+  background: linear-gradient(145deg, #e2bf46, #cfa82f);
   color: var(--owl-navy);
+  box-shadow: 0 9px 24px rgba(212, 175, 55, 0.18), inset 0 1px 0 rgba(255, 255, 255, 0.48);
+}
+
+.news-leaving-continue::after {
+  content: "↗";
+  font-size: 1rem;
+  line-height: 1;
+}
+
+.news-leaving-actions button {
+  transition: transform 150ms ease, filter 150ms ease, border-color 150ms ease;
+}
+
+.news-leaving-actions button:hover {
+  filter: brightness(1.07);
+  transform: translateY(-1px);
+}
+
+.news-leaving-actions button:focus-visible {
+  outline: 2px solid rgba(242, 205, 83, 0.82);
+  outline-offset: 3px;
 }
 
 .news-dialog-card {
