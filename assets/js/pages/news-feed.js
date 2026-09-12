@@ -16,6 +16,7 @@
   let requestsLoaded = false;
   let loading = false;
   let toastTimer = 0;
+  let readerPromptTimer = 0;
   let pullStartY = null;
   let pullDistance = 0;
   let pullRefreshing = false;
@@ -588,7 +589,6 @@
     const preview = hasMeaningfulPreview(item);
     const readerControl = fullReader
       ? `<button class="news-item-action news-item-action--primary" type="button" data-open-reader-id="${escapeHtml(item.id)}" aria-label="Read the full article here">
-          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 5.5A3.5 3.5 0 0 1 7.5 2H11v17H7.5A3.5 3.5 0 0 0 4 22Z"></path><path d="M20 5.5A3.5 3.5 0 0 0 16.5 2H13v17h3.5A3.5 3.5 0 0 1 20 22Z"></path></svg>
           <span>Full Read</span>
         </button>`
       : "";
@@ -599,7 +599,6 @@
         : "Read at Source";
     const originalButton = item.originalUrl
       ? `<button class="news-item-action${fullReader ? "" : " news-item-action--primary"}" type="button" data-original-url="${escapeHtml(item.originalUrl)}" data-original-source="${escapeHtml(item.sourceName)}" aria-label="${escapeHtml(originalLabel)} at ${escapeHtml(item.sourceName)}">
-          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M14 5h5v5"></path><path d="m19 5-9 9"></path><path d="M19 13v6H5V5h6"></path></svg>
           <span>${escapeHtml(originalLabel)}</span>
         </button>`
       : "";
@@ -607,13 +606,11 @@
     const shareButton = `<button class="news-item-action" type="button"${canShare
       ? ` data-share-id="${escapeHtml(item.id)}" aria-label="Share this article"`
       : " disabled title=\"Sharing becomes available after this source is approved\""}>
-        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 16V4"></path><path d="m8 8 4-4 4 4"></path><path d="M5 12v7h14v-7"></path></svg>
         <span>Share</span>
       </button>`;
     const insightButton = currentAccess?.administrator
-      ? `<button class="news-item-action" type="button" data-admin-insight-id="${escapeHtml(item.id)}" aria-label="${item.owlInsight ? "Edit" : "Add"} Owl Insight">
-          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="m12 3 1.4 4.2L18 9l-4.6 1.8L12 15l-1.4-4.2L6 9l4.6-1.8Z"></path><path d="m18.5 14 .8 2.2 2.2.8-2.2.8-.8 2.2-.8-2.2-2.2-.8 2.2-.8Z"></path></svg>
-          <span>Insight</span>
+      ? `<button class="news-item-action news-item-action--admin" type="button" data-admin-insight-id="${escapeHtml(item.id)}" aria-label="${item.owlInsight ? "Edit" : "Add"} Owl Insight">
+          <span>${item.owlInsight ? "Edit Insight" : "Add Insight"}</span>
         </button>`
       : "";
 
@@ -942,10 +939,17 @@
   function renderReaderText(text) {
     const host = byId("news-reader-copy");
     if (!host) return;
+    const sourceName = String(activeReaderItem?.sourceName || "").trim().toLowerCase();
     const paragraphs = String(text || "")
       .trim()
       .split(/\n{2,}/)
-      .map((value) => value.trim())
+      .map((value) => value.replace(/&copy;/gi, "©").replace(/&nbsp;/gi, " ").trim())
+      .filter((value) => value.toLowerCase() !== "in:")
+      .filter((value) => {
+        const normalized = value.toLowerCase();
+        return !(normalized.startsWith("/") && sourceName && normalized.includes(sourceName));
+      })
+      .filter((value) => !/(?:©|copyright)\s*\d{4}[^\n]*all rights reserved/i.test(value))
       .filter(Boolean);
     host.replaceChildren(...paragraphs.map((paragraph) => {
       const element = document.createElement("p");
@@ -969,6 +973,8 @@
       : "";
     original.dataset.originalUrl = originalUrl;
     original.dataset.originalSource = item.sourceName || "the publisher";
+    window.clearTimeout(readerPromptTimer);
+    setReaderPromptState("idle");
     byId("news-reader-message").textContent = "";
 
     const dialog = byId("news-reader-dialog");
@@ -981,7 +987,22 @@
     const dialog = byId("news-reader-dialog");
     if (dialog?.open) dialog.close();
     activeReaderItem = null;
+    window.clearTimeout(readerPromptTimer);
+    setReaderPromptState("idle");
     syncNewsDialogState();
+  }
+
+  function setReaderPromptState(state) {
+    const button = byId("news-reader-copy-prompt");
+    const label = button?.querySelector("span");
+    if (!button || !label) return;
+    button.dataset.state = state;
+    button.disabled = state === "copying";
+    label.textContent = state === "copied"
+      ? "✓ Prompt Copied"
+      : state === "copying"
+        ? "Copying…"
+        : "Copy Research Prompt";
   }
 
   function updateArticleActions(itemId) {
@@ -1051,11 +1072,16 @@ Use clear, approachable, nonpartisan language. Do not assume the article, headli
   async function copyResearchPrompt() {
     if (!activeReaderItem) return;
     const message = byId("news-reader-message");
+    window.clearTimeout(readerPromptTimer);
+    setReaderPromptState("copying");
     try {
       await copyShareUrl(researchPromptFor(activeReaderItem));
-      if (message) message.textContent = "Research prompt copied.";
+      if (message) message.textContent = "";
+      setReaderPromptState("copied");
+      readerPromptTimer = window.setTimeout(() => setReaderPromptState("idle"), 2200);
     } catch (error) {
       console.error("Unable to copy research prompt", error);
+      setReaderPromptState("idle");
       if (message) message.textContent = "The prompt could not be copied.";
     }
   }
