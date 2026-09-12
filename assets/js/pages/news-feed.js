@@ -586,18 +586,12 @@
   function renderArticleActions(item) {
     const fullReader = hasFullReader(item);
     const preview = hasMeaningfulPreview(item);
-    const checking = readerCheckingIds.has(item.id);
     const readerControl = fullReader
       ? `<button class="news-item-action news-item-action--primary" type="button" data-open-reader-id="${escapeHtml(item.id)}" aria-label="Read the full article here">
           <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 5.5A3.5 3.5 0 0 1 7.5 2H11v17H7.5A3.5 3.5 0 0 0 4 22Z"></path><path d="M20 5.5A3.5 3.5 0 0 0 16.5 2H13v17h3.5A3.5 3.5 0 0 1 20 22Z"></path></svg>
           <span>Full Read</span>
         </button>`
-      : preview
-        ? `<span class="news-item-action news-item-action--status${checking ? " news-item-action--checking" : ""}" role="status">
-            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 3h9l3 3v15H6Z"></path><path d="M14 3v4h4"></path><path d="M9 12h6"></path><path d="M9 16h6"></path></svg>
-            <span>${checking ? "Checking" : "Preview Only"}</span>
-          </span>`
-        : "";
+      : "";
     const originalLabel = fullReader
       ? "Original"
       : preview
@@ -1009,7 +1003,6 @@
     ) return;
 
     readerCheckingIds.add(item.id);
-    updateArticleActions(item.id);
     try {
       const result = await invokeCloudflareReader(item.id);
       const reader = result?.reader && typeof result.reader === "object"

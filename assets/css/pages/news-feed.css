@@ -631,28 +631,10 @@
   color: var(--owl-navy);
 }
 
-.news-item-action--status {
-  cursor: default;
-  color: var(--owl-muted);
-}
-
-.news-item-action--status:hover {
-  background: transparent;
-  color: var(--owl-muted);
-}
-
 .news-item-action:disabled {
   cursor: not-allowed;
   opacity: 0.52;
   transform: none;
-}
-
-.news-item-action--checking svg {
-  animation: news-reader-pulse 900ms ease-in-out infinite alternate;
-}
-
-@keyframes news-reader-pulse {
-  to { opacity: 0.34; }
 }
 
 .news-toast {
