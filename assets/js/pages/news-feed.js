@@ -5,7 +5,9 @@
   const NEWS_ADMIN_FUNCTION = "news-admin";
   const NEWS_BETA_ADMINISTRATOR_ONLY = false;
   const NEWS_SHARE_BASE_URL = "https://thestrategicowl.com/news";
-  const NEWS_CACHE_VERSION = 4;
+  const NEWS_READER_API_URL = "https://thestrategicowl.com/api/news-reader";
+  const MIN_FULL_READER_LENGTH = 1200;
+  const NEWS_CACHE_VERSION = 5;
   const NEWS_CACHE_PREFIX = "strategic-owl-news-feed";
   const NEWS_PAGE_SIZE = 50;
 
@@ -35,6 +37,9 @@
   let hasMore = false;
   let paginationObserver = null;
   let selectedAdminNewsItem = null;
+  let activeReaderItem = null;
+  let pendingOriginalUrl = "";
+  let renderedItemsById = new Map();
 
   const byId = (id) => document.getElementById(id);
 
@@ -341,6 +346,49 @@
     return data || {};
   }
 
+  async function invokeCloudflareReader(articleId) {
+    if (!currentAccess?.client || !currentAccess?.owlSession) {
+      throw new Error("Owl Access is required.");
+    }
+
+    const sessionResult = await currentAccess.client.auth.getSession();
+    if (sessionResult.error) throw sessionResult.error;
+    const session = sessionResult.data?.session || currentAccess.session;
+    const accessToken = String(session?.access_token || "").trim();
+    if (!accessToken) throw new Error("Your News Feed session has expired.");
+    currentAccess.session = session;
+
+    const controller = new AbortController();
+    const timer = window.setTimeout(() => controller.abort(), 12000);
+    try {
+      const response = await fetch(NEWS_READER_API_URL, {
+        method: "POST",
+        signal: controller.signal,
+        headers: {
+          authorization: `Bearer ${accessToken}`,
+          "content-type": "application/json"
+        },
+        body: JSON.stringify({
+          articleId,
+          email: currentAccess.owlSession.email
+        })
+      });
+
+      let data = {};
+      try {
+        data = await response.json();
+      } catch {
+        data = {};
+      }
+      if (!response.ok || data?.ok === false) {
+        throw new Error(data?.error || "The Reader is unavailable right now.");
+      }
+      return data;
+    } finally {
+      window.clearTimeout(timer);
+    }
+  }
+
   async function invokeNewsAdmin(action, values = {}) {
     if (!currentAccess?.administrator || !currentAccess?.client) {
       throw new Error("Administrator access is required.");
@@ -451,11 +499,22 @@
     const media = Array.isArray(item?.media) ? item.media[0] || {} : {};
     const rawInsight = firstValue(item, ["owlInsight", "owl_insight"], null);
     const insightAnalysis = String(firstValue(rawInsight, ["owlAnalysis", "owl_analysis", "analysis"]));
+    const rawReader = firstValue(item, ["reader", "readerResult", "reader_result"], {});
+    const contentText = String(firstValue(item, ["contentText", "content_text", "content"]));
+    const summaryText = String(firstValue(item, ["summaryText", "summary_text", "summary", "excerpt"], "Open the original source to read this story."));
+    const suppliedReaderText = String(firstValue(rawReader, ["text", "readerText", "reader_text"]));
+    const readerText = suppliedReaderText || (contentText.length >= summaryText.length ? contentText : summaryText);
+    const rawReaderMode = String(firstValue(
+      rawReader,
+      ["mode", "readerMode", "reader_mode"],
+      firstValue(item, ["readerMode", "reader_mode"])
+    )).trim().toLowerCase();
+    const readerMode = rawReaderMode === "reader" ? "full" : rawReaderMode;
 
     return {
       id: String(firstValue(item, ["id", "newsItemId", "news_item_id"])),
       headline: String(firstValue(item, ["headline", "title"], "Untitled story")),
-      summary: String(firstValue(item, ["summaryText", "summary_text", "summary", "excerpt"], "Open the original source to read this story.")),
+      summary: summaryText,
       publishedAt: firstValue(item, ["publishedAt", "published_at", "sourceUpdatedAt", "source_updated_at"]),
       originalUrl: safeUrl(firstValue(item, ["canonicalUrl", "canonical_url", "articleLink", "article_link", "url"])),
       imageUrl: safeUrl(firstValue(item, ["primaryMediaUrl", "primary_media_url", "thumbnailUrl", "thumbnail_url", "imageUrl", "image_url"], firstValue(media, ["url", "mediaUrl", "media_url"]))),
@@ -465,6 +524,18 @@
       sourceId,
       sourceStatus: String(firstValue(nestedSource, ["status"], mappedSource.status || firstValue(item, ["sourceStatus", "source_status"], "active"))).toLowerCase(),
       articleAccess: String(firstValue(nestedSource, ["articleAccess", "article_access"], mappedSource.articleAccess || firstValue(item, ["articleAccess", "article_access"]))).toLowerCase(),
+      readerMode,
+      readerText,
+      readerTextSource: String(firstValue(
+        rawReader,
+        ["textSource", "text_source", "source"],
+        firstValue(item, ["readerTextSource", "reader_text_source"])
+      )).trim().toLowerCase(),
+      readerTextLength: Number(firstValue(
+        rawReader,
+        ["textLength", "text_length", "length"],
+        firstValue(item, ["readerTextLength", "reader_text_length"], readerText.length)
+      )) || readerText.length,
       owlInsight: insightAnalysis ? {
         label: String(firstValue(rawInsight, ["owlLabel", "owl_label"], "Owl Insight")),
         labels: normalizeStringList(firstValue(rawInsight, ["labels"], [])),
@@ -707,6 +778,7 @@
   function renderItems(rawItems, sources, { hasFollows = true } = {}) {
     const sourceMap = new Map(sources.map((source) => [source.id, source]));
     const allItems = rawItems.map((item) => normalizeItem(item, sourceMap));
+    renderedItemsById = new Map(allItems.map((item) => [item.id, item]));
     loadedSources = sources;
     loadedItems = rawItems;
     loadedHasFollows = hasFollows;
@@ -753,8 +825,11 @@
         ? `<img class="news-item-image" src="${escapeHtml(item.imageUrl)}" alt="" loading="lazy" />`
         : `<span class="news-item-image-placeholder"><img src="assets/images/3X.png" alt="" /></span>`;
       const published = formatDate(item.publishedAt);
-      const originalLink = item.originalUrl
-        ? `<a class="news-original-link" href="${escapeHtml(item.originalUrl)}" target="_blank" rel="noopener noreferrer">Read Original</a>`
+      const originalButton = item.originalUrl
+        ? `<button class="news-item-action" type="button" data-original-url="${escapeHtml(item.originalUrl)}" data-original-source="${escapeHtml(item.sourceName)}" aria-label="Read the original article at ${escapeHtml(item.sourceName)}">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M14 5h5v5"></path><path d="m19 5-9 9"></path><path d="M19 13v6H5V5h6"></path></svg>
+            <span>Original</span>
+          </button>`
         : "";
       const metadata = [...item.authors, ...item.categories].slice(0, 6);
       const metadataMarkup = metadata.length
@@ -774,14 +849,29 @@
         : "";
       const canShare = item.sourceStatus === "active" && Boolean(item.id);
       const shareButton = canShare
-        ? `<button class="news-share-button" type="button" data-share-id="${escapeHtml(item.id)}">Share</button>`
-        : `<button class="news-share-button" type="button" disabled title="Sharing becomes available after this source is approved">Share when Live</button>`;
+        ? `<button class="news-item-action" type="button" data-share-id="${escapeHtml(item.id)}" aria-label="Share this article">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 16V4"></path><path d="m8 8 4-4 4 4"></path><path d="M5 12v7h14v-7"></path></svg>
+            <span>Share</span>
+          </button>`
+        : `<button class="news-item-action" type="button" disabled title="Sharing becomes available after this source is approved">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 16V4"></path><path d="m8 8 4-4 4 4"></path><path d="M5 12v7h14v-7"></path></svg>
+            <span>Share</span>
+          </button>`;
+      const readerButton = item.id
+        ? `<button class="news-item-action" type="button" data-reader-id="${escapeHtml(item.id)}" aria-label="Check for a reader version of this article">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 5.5A3.5 3.5 0 0 1 7.5 2H11v17H7.5A3.5 3.5 0 0 0 4 22Z"></path><path d="M20 5.5A3.5 3.5 0 0 0 16.5 2H13v17h3.5A3.5 3.5 0 0 1 20 22Z"></path></svg>
+            <span data-reader-label>Reader</span>
+          </button>`
+        : "";
       const accessLabel = articleAccessLabel(item.articleAccess);
       const accessMarkup = accessLabel
         ? `<span class="news-item-access" data-access="${escapeHtml(item.articleAccess)}">· ${escapeHtml(accessLabel)}</span>`
         : "";
       const insightButton = currentAccess?.administrator
-        ? `<button class="news-admin-insight-button" type="button" data-admin-insight-id="${escapeHtml(item.id)}">${item.owlInsight ? "Edit Insight" : "Add Insight"}</button>`
+          ? `<button class="news-item-action" type="button" data-admin-insight-id="${escapeHtml(item.id)}" aria-label="${item.owlInsight ? "Edit" : "Add"} Owl Insight">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="m12 3 1.4 4.2L18 9l-4.6 1.8L12 15l-1.4-4.2L6 9l4.6-1.8Z"></path><path d="m18.5 14 .8 2.2 2.2.8-2.2.8-.8 2.2-.8-2.2-2.2-.8 2.2-.8Z"></path></svg>
+            <span>Insight</span>
+          </button>`
         : "";
 
       return `
@@ -801,16 +891,176 @@
             ${metadataMarkup}
             <p>${escapeHtml(item.summary)}</p>
             ${insightMarkup}
-            <div class="news-item-actions">
-              ${originalLink}
-              ${insightButton}
+            <div class="news-item-actions" aria-label="Article actions">
+              ${readerButton}
+              ${originalButton}
               ${shareButton}
+              ${insightButton}
             </div>
           </div>
         </details>`;
     }).join("");
 
     installImageFallbacks(host);
+  }
+
+  function hasFullReader(item) {
+    return Boolean(
+      item &&
+      item.readerMode === "full" &&
+      String(item.readerText || "").trim().length >= MIN_FULL_READER_LENGTH
+    );
+  }
+
+  function setReaderBusy(button, busy) {
+    if (!button) return;
+    button.disabled = busy;
+    button.setAttribute("aria-busy", String(busy));
+    const label = button.querySelector("[data-reader-label]");
+    if (label) label.textContent = busy ? "Checking" : "Reader";
+  }
+
+  function renderReaderText(text) {
+    const host = byId("news-reader-copy");
+    if (!host) return;
+    const paragraphs = String(text || "")
+      .trim()
+      .split(/\n{2,}/)
+      .map((value) => value.trim())
+      .filter(Boolean);
+    host.replaceChildren(...paragraphs.map((paragraph) => {
+      const element = document.createElement("p");
+      element.textContent = paragraph;
+      return element;
+    }));
+  }
+
+  function openArticleReader(item) {
+    if (!hasFullReader(item)) return;
+    activeReaderItem = item;
+    byId("news-reader-title").textContent = item.headline || "Article";
+    byId("news-reader-attribution").textContent = `Content provided by ${item.sourceName || "the source"}`;
+    renderReaderText(item.readerText);
+
+    const original = byId("news-reader-original");
+    const originalUrl = safeUrl(item.originalUrl);
+    original.hidden = !originalUrl;
+    original.textContent = originalUrl
+      ? `View Original at ${item.sourceName || "Source"}`
+      : "";
+    original.dataset.originalUrl = originalUrl;
+    original.dataset.originalSource = item.sourceName || "the publisher";
+    byId("news-reader-message").textContent = "";
+
+    const dialog = byId("news-reader-dialog");
+    if (!dialog?.open) dialog?.showModal();
+    syncNewsDialogState();
+    window.setTimeout(() => dialog?.querySelector("[data-close-news-reader]")?.focus(), 0);
+  }
+
+  function closeArticleReader() {
+    const dialog = byId("news-reader-dialog");
+    if (dialog?.open) dialog.close();
+    activeReaderItem = null;
+    syncNewsDialogState();
+  }
+
+  async function loadArticleReader(itemId, trigger) {
+    const item = renderedItemsById.get(String(itemId || ""));
+    if (!item) return;
+    if (hasFullReader(item)) {
+      openArticleReader(item);
+      return;
+    }
+
+    setReaderBusy(trigger, true);
+    try {
+      const result = await invokeCloudflareReader(item.id);
+      const reader = result?.reader && typeof result.reader === "object"
+        ? result.reader
+        : {};
+      const readerText = String(firstValue(reader, ["text", "readerText", "reader_text"])).trim();
+      const rawReaderMode = String(firstValue(reader, ["mode", "readerMode", "reader_mode"])).trim().toLowerCase();
+      const updatedItem = {
+        ...item,
+        originalUrl: safeUrl(result?.originalUrl) || item.originalUrl,
+        readerMode: rawReaderMode === "reader" ? "full" : rawReaderMode,
+        readerText,
+        readerTextSource: String(firstValue(reader, ["textSource", "text_source", "source"])).trim().toLowerCase(),
+        readerTextLength: Number(firstValue(reader, ["textLength", "text_length", "length"], readerText.length)) || readerText.length
+      };
+      renderedItemsById.set(item.id, updatedItem);
+
+      if (hasFullReader(updatedItem)) {
+        openArticleReader(updatedItem);
+      } else {
+        showToast("This story is available from the original source.");
+      }
+    } catch (error) {
+      console.error("Article reader check failed", error);
+      showToast("Reader is unavailable right now. You can still open Original.");
+    } finally {
+      setReaderBusy(trigger, false);
+    }
+  }
+
+  function researchPromptFor(item) {
+    return `Research this article using current, reliable sources and help me understand it clearly.
+
+Title: ${item.headline || "Untitled article"}
+Publisher: ${item.sourceName || "Unknown publisher"}
+Original link: ${item.originalUrl || "Not available"}
+
+Article text:
+${item.readerText || ""}
+
+Please provide:
+1. A concise explanation of the article's central claim or development.
+2. What is established fact, what is a claim, and what remains uncertain.
+3. The general consensus among reliable sources, including meaningful disagreement.
+4. Relevant historical context that helps explain why this matters.
+5. Important context the article may be missing.
+
+Use clear, approachable language. Do not assume partisan or institutional claims are true without evidence. Cite reliable sources and link to primary records when possible.`;
+  }
+
+  async function copyResearchPrompt() {
+    if (!activeReaderItem) return;
+    const message = byId("news-reader-message");
+    try {
+      await copyShareUrl(researchPromptFor(activeReaderItem));
+      if (message) message.textContent = "Research prompt copied.";
+    } catch (error) {
+      console.error("Unable to copy research prompt", error);
+      if (message) message.textContent = "The prompt could not be copied.";
+    }
+  }
+
+  function openLeavingDialog(value, sourceName = "the publisher") {
+    const url = safeUrl(value);
+    if (!url) return;
+    pendingOriginalUrl = url;
+    const continueButton = byId("news-leaving-continue");
+    if (continueButton) {
+      continueButton.textContent = `Continue to ${sourceName || "Source"}`;
+    }
+    const dialog = byId("news-leaving-dialog");
+    if (!dialog?.open) dialog?.showModal();
+    syncNewsDialogState();
+    window.setTimeout(() => continueButton?.focus(), 0);
+  }
+
+  function closeLeavingDialog() {
+    const dialog = byId("news-leaving-dialog");
+    if (dialog?.open) dialog.close();
+    pendingOriginalUrl = "";
+    syncNewsDialogState();
+  }
+
+  function continueToOriginal() {
+    const url = pendingOriginalUrl;
+    closeLeavingDialog();
+    if (url) window.open(url, "_blank", "noopener,noreferrer");
   }
 
   async function copyShareUrl(shareUrl) {
@@ -873,12 +1123,19 @@
   function setInsightBusy(button, busy, busyLabel, readyLabel) {
     if (!button) return;
     button.disabled = busy;
-    button.textContent = busy ? busyLabel : readyLabel;
+    const nestedLabel = button.matches(".news-item-action")
+      ? button.querySelector("span")
+      : null;
+    if (nestedLabel) {
+      nestedLabel.textContent = busy ? busyLabel : readyLabel;
+    } else {
+      button.textContent = busy ? busyLabel : readyLabel;
+    }
   }
 
   async function openNewsInsight(itemId, trigger) {
     if (!currentAccess?.administrator) return;
-    const originalLabel = trigger?.textContent || "Add Insight";
+    const originalLabel = trigger?.querySelector("span")?.textContent || trigger?.textContent?.trim() || "Add Insight";
     setInsightBusy(trigger, true, "Opening…", originalLabel);
 
     try {
@@ -908,7 +1165,8 @@
       const original = byId("news-insight-original");
       const originalUrl = safeUrl(selectedAdminNewsItem.canonical_url);
       original.hidden = !originalUrl;
-      if (originalUrl) original.href = originalUrl;
+      original.dataset.originalUrl = originalUrl;
+      original.dataset.originalSource = selectedAdminNewsItem.source?.source_name || "the publisher";
 
       const dialog = byId("news-insight-dialog");
       if (!dialog?.open) dialog?.showModal();
@@ -1359,6 +1617,16 @@
       changeFollow(followButton);
       return;
     }
+    const readerButton = event.target.closest("[data-reader-id]");
+    if (readerButton) {
+      loadArticleReader(readerButton.dataset.readerId, readerButton);
+      return;
+    }
+    const originalButton = event.target.closest("[data-original-url]");
+    if (originalButton) {
+      openLeavingDialog(originalButton.dataset.originalUrl, originalButton.dataset.originalSource);
+      return;
+    }
     const insightButton = event.target.closest("[data-admin-insight-id]");
     if (insightButton) {
       openNewsInsight(insightButton.dataset.adminInsightId, insightButton);
@@ -1374,8 +1642,38 @@
     if (event.target === event.currentTarget) closeNewsInsightDialog();
   });
   byId("news-insight-dialog")?.addEventListener("close", syncNewsDialogState);
+  byId("news-insight-original")?.addEventListener("click", (event) => {
+    openLeavingDialog(event.currentTarget.dataset.originalUrl, event.currentTarget.dataset.originalSource);
+  });
   document.querySelectorAll("[data-close-news-insight]").forEach((button) => {
     button.addEventListener("click", closeNewsInsightDialog);
+  });
+  byId("news-reader-copy-prompt")?.addEventListener("click", copyResearchPrompt);
+  byId("news-reader-original")?.addEventListener("click", (event) => {
+    openLeavingDialog(event.currentTarget.dataset.originalUrl, event.currentTarget.dataset.originalSource);
+  });
+  byId("news-reader-dialog")?.addEventListener("click", (event) => {
+    if (event.target === event.currentTarget) closeArticleReader();
+  });
+  byId("news-reader-dialog")?.addEventListener("cancel", (event) => {
+    event.preventDefault();
+    closeArticleReader();
+  });
+  byId("news-reader-dialog")?.addEventListener("close", syncNewsDialogState);
+  document.querySelectorAll("[data-close-news-reader]").forEach((button) => {
+    button.addEventListener("click", closeArticleReader);
+  });
+  byId("news-leaving-dialog")?.addEventListener("click", (event) => {
+    if (event.target === event.currentTarget) closeLeavingDialog();
+  });
+  byId("news-leaving-dialog")?.addEventListener("cancel", (event) => {
+    event.preventDefault();
+    closeLeavingDialog();
+  });
+  byId("news-leaving-dialog")?.addEventListener("close", syncNewsDialogState);
+  byId("news-leaving-continue")?.addEventListener("click", continueToOriginal);
+  document.querySelectorAll("[data-close-news-leaving]").forEach((button) => {
+    button.addEventListener("click", closeLeavingDialog);
   });
   byId("news-request-open")?.addEventListener("click", openRequestDialog);
   byId("news-request-form")?.addEventListener("submit", submitSourceRequest);
@@ -1396,8 +1694,15 @@
   });
   document.addEventListener("keydown", (event) => {
     if (event.key === "Escape") {
-      closeRequestDialog();
-      closeNewsInsightDialog();
+      if (byId("news-leaving-dialog")?.open) {
+        closeLeavingDialog();
+      } else if (byId("news-insight-dialog")?.open) {
+        closeNewsInsightDialog();
+      } else if (byId("news-reader-dialog")?.open) {
+        closeArticleReader();
+      } else {
+        closeRequestDialog();
+      }
     }
   });
   window.addEventListener("strategic-owl-access-change", initializeNewsFeed);

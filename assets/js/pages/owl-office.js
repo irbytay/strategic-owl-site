@@ -417,6 +417,30 @@
     return button;
   }
 
+  function newsArticleAction({ label, icon, url = "", action = "", id = "" }) {
+    const safeHref = safeUrl(url);
+    const control = safeHref
+      ? document.createElement("a")
+      : document.createElement("button");
+    if (safeHref) {
+      control.href = safeHref;
+      control.target = "_blank";
+      control.rel = "noopener noreferrer";
+    } else {
+      control.type = "button";
+      control.dataset.newsAction = action;
+      if (id) control.dataset.newsId = id;
+    }
+    control.className = "office-news-article-action";
+    control.insertAdjacentHTML("beforeend", icon === "original"
+      ? '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M14 5h5v5"></path><path d="m19 5-9 9"></path><path d="M19 13v6H5V5h6"></path></svg>'
+      : '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="m12 3 1.4 4.2L18 9l-4.6 1.8L12 15l-1.4-4.2L6 9l4.6-1.8Z"></path><path d="m18.5 14 .8 2.2 2.2.8-2.2.8-.8 2.2-.8-2.2-2.2-.8 2.2-.8Z"></path></svg>');
+    const text = document.createElement("span");
+    text.textContent = label;
+    control.appendChild(text);
+    return control;
+  }
+
   function renderNewsRequests() {
     const list = byId("office-news-request-list");
     if (!list) return;
@@ -635,10 +659,21 @@
       const sourceName = item.source?.source_name || "News source";
       appendText(card, "p", [sourceName, formatDate(item.published_at)].filter(Boolean).join(" · "));
       if (item.summary_text) appendText(card, "p", item.summary_text);
-      appendNewsLink(card, "Read Original", item.canonical_url);
       const actions = document.createElement("div");
-      actions.className = "office-news-card-actions";
-      actions.appendChild(newsButton(item.insight ? "Edit Insight" : "Add Insight", "office-button--primary", "article-insight", item.id));
+      actions.className = "office-news-card-actions office-news-article-actions";
+      if (safeUrl(item.canonical_url)) {
+        actions.appendChild(newsArticleAction({
+          label: "Original",
+          icon: "original",
+          url: item.canonical_url
+        }));
+      }
+      actions.appendChild(newsArticleAction({
+        label: item.insight ? "Edit Insight" : "Add Insight",
+        icon: "insight",
+        action: "article-insight",
+        id: item.id
+      }));
       card.appendChild(actions);
       list.appendChild(card);
     }

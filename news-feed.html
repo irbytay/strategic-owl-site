@@ -10,11 +10,11 @@
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
   <link rel="icon" type="image/png" href="assets/images/3X.png" />
   <link rel="stylesheet" href="assets/css/site.css?v=20260908-4" />
-  <link rel="stylesheet" href="assets/css/pages/news-feed.css?v=20260910-3" />
+  <link rel="stylesheet" href="assets/css/pages/news-feed.css?v=20260911-1" />
   <script src="assets/js/site-shell.js?v=20260908-2" defer></script>
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2" defer></script>
   <script src="assets/js/owl-access.js?v=20260909-2" defer></script>
-  <script src="assets/js/pages/news-feed.js?v=20260910-3" defer></script>
+  <script src="assets/js/pages/news-feed.js?v=20260911-1" defer></script>
 </head>
 <body class="site-body" data-page="news-feed">
   <a class="skip-link" href="#main-content">Skip to content</a>
@@ -114,13 +114,50 @@
 
   <div id="site-footer"></div>
 
+  <dialog class="news-dialog news-reader-dialog" id="news-reader-dialog" aria-labelledby="news-reader-title">
+    <section class="news-reader-shell">
+      <header class="news-reader-header">
+        <button class="news-reader-back" type="button" data-close-news-reader aria-label="Return to the News Feed">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="m15 18-6-6 6-6"></path></svg>
+          <span>News Feed</span>
+        </button>
+        <span>Reader</span>
+      </header>
+      <article class="news-reader-paper">
+        <h2 id="news-reader-title">Article</h2>
+        <p class="news-reader-attribution" id="news-reader-attribution"></p>
+        <div class="news-reader-copy" id="news-reader-copy"></div>
+        <footer class="news-reader-footer">
+          <button class="news-reader-prompt" id="news-reader-copy-prompt" type="button">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 8h11v11H8Z"></path><path d="M5 16H4V5h11v1"></path></svg>
+            <span>Copy Research Prompt</span>
+          </button>
+          <button class="news-reader-original" id="news-reader-original" type="button"></button>
+          <p class="news-reader-message" id="news-reader-message" role="status" aria-live="polite"></p>
+        </footer>
+      </article>
+    </section>
+  </dialog>
+
+  <dialog class="news-dialog news-leaving-dialog" id="news-leaving-dialog" aria-labelledby="news-leaving-title">
+    <section class="news-leaving-card">
+      <p class="news-eyebrow">Original Source</p>
+      <h2 id="news-leaving-title">Leaving The Strategic Owl</h2>
+      <p>The publisher’s advertising, subscription, and privacy practices may apply.</p>
+      <div class="news-leaving-actions">
+        <button class="news-leaving-cancel" type="button" data-close-news-leaving>Stay Here</button>
+        <button class="news-leaving-continue" id="news-leaving-continue" type="button">Continue to Source</button>
+      </div>
+    </section>
+  </dialog>
+
   <dialog class="news-dialog news-dialog--insight" id="news-insight-dialog" aria-labelledby="news-insight-title">
     <form class="news-dialog-card" id="news-insight-form">
       <button class="news-dialog-close" type="button" data-close-news-insight aria-label="Close">×</button>
       <p class="news-eyebrow">Article Analysis</p>
       <h2 id="news-insight-title">Owl Insight</h2>
       <p class="news-insight-source" id="news-insight-source"></p>
-      <a class="news-insight-original" id="news-insight-original" target="_blank" rel="noopener noreferrer">Read Original</a>
+      <button class="news-insight-original" id="news-insight-original" type="button">Read Original</button>
       <input id="news-insight-item-id" name="itemId" type="hidden" />
 
       <label for="news-insight-label">Owl label <span>(optional)</span></label>
