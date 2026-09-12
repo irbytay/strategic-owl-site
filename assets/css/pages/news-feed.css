@@ -711,6 +711,14 @@
   transform: translateY(0);
 }
 
+.news-toast[data-kind="success"] {
+  border-color: rgba(212, 175, 55, 0.78);
+  background: #f5f1e8;
+  color: #0d1b2a;
+  box-shadow: 0 14px 34px rgba(0, 0, 0, 0.42), 0 0 20px rgba(212, 175, 55, 0.12);
+  font-weight: 800;
+}
+
 .news-reader-section--stream {
   padding: 0;
   border: 0;

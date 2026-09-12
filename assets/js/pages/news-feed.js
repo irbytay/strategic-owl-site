@@ -92,14 +92,17 @@
     return [];
   }
 
-  function showToast(message) {
+  function showToast(message, kind = "") {
     const toast = byId("news-toast");
     if (!toast) return;
     window.clearTimeout(toastTimer);
     toast.textContent = message;
+    if (kind) toast.dataset.kind = kind;
+    else delete toast.dataset.kind;
     toast.dataset.visible = "true";
     toastTimer = window.setTimeout(() => {
       toast.dataset.visible = "false";
+      delete toast.dataset.kind;
     }, 2400);
   }
 
@@ -586,14 +589,20 @@
 
   function renderArticleActions(item) {
     const fullReader = hasFullReader(item);
+    const readerUnavailable = readerCheckedIds.has(item.id) && !fullReader;
     const readerControl = fullReader
       ? `<button class="news-item-action news-item-action--internal" type="button" data-open-reader-id="${escapeHtml(item.id)}" aria-label="Read this article inside The Strategic Owl">
           <span>Read in Owl</span>
         </button>`
       : "";
+    const promptButton = readerUnavailable
+      ? `<button class="news-item-action" type="button" data-copy-prompt-id="${escapeHtml(item.id)}" aria-label="Copy a research prompt for this article">
+          <span>Research Prompt</span>
+        </button>`
+      : "";
     const originalButton = item.originalUrl
       ? `<button class="news-item-action" type="button" data-original-url="${escapeHtml(item.originalUrl)}" data-original-source="${escapeHtml(item.sourceName)}" aria-label="Read the original article at ${escapeHtml(item.sourceName)}">
-          <span>Read Original</span>
+          <span>Source</span>
           <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M14 5h5v5"></path><path d="m19 5-9 9"></path><path d="M19 13v6H5V5h6"></path></svg>
         </button>`
       : "";
@@ -609,8 +618,8 @@
           <span>${item.owlInsight ? "Edit Insight" : "Add Insight"}</span>
         </button>`
       : "";
-    const secondaryActions = `<span class="news-item-secondary-actions${fullReader ? "" : " news-item-secondary-actions--standalone"}">
-        ${originalButton}${shareButton}
+    const secondaryActions = `<span class="news-item-secondary-actions${readerControl ? "" : " news-item-secondary-actions--standalone"}">
+        ${promptButton}${originalButton}${shareButton}
       </span>`;
 
     return `${readerControl}${secondaryActions}${insightButton}`;
@@ -1099,6 +1108,18 @@ Please:
 7. Link to primary records and reliable sources whenever possible.
 
 Use clear, approachable, nonpartisan language. Do not assume the article, headline, or institutional claims are accurate without checking the evidence. If you cannot access the article, say so and research the reported subject using the title, publisher, and URL.`;
+  }
+
+  async function copyArticleResearchPrompt(itemId) {
+    const item = renderedItemsById.get(String(itemId || ""));
+    if (!item) return;
+    try {
+      await copyShareUrl(researchPromptFor(item));
+      showToast("✓  Research prompt copied", "success");
+    } catch (error) {
+      console.error("Unable to copy research prompt", error);
+      showToast("The prompt could not be copied.");
+    }
   }
 
   async function copyResearchPrompt() {
@@ -1714,6 +1735,11 @@ Use clear, approachable, nonpartisan language. Do not assume the article, headli
     if (readerButton) {
       const item = renderedItemsById.get(readerButton.dataset.openReaderId);
       if (item) openArticleReader(item);
+      return;
+    }
+    const promptButton = event.target.closest("[data-copy-prompt-id]");
+    if (promptButton) {
+      copyArticleResearchPrompt(promptButton.dataset.copyPromptId);
       return;
     }
     const originalButton = event.target.closest("[data-original-url]");
