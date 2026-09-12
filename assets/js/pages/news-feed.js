@@ -93,6 +93,36 @@
     return [];
   }
 
+  function normalizeReaderBlocks(value) {
+    if (!Array.isArray(value)) return [];
+    return value.slice(0, 600).map((rawBlock) => {
+      const rawType = String(rawBlock?.type || "paragraph");
+      const type = ["paragraph", "heading", "quote", "listItem"].includes(rawType)
+        ? rawType
+        : "paragraph";
+      const spans = (Array.isArray(rawBlock?.spans) ? rawBlock.spans : [])
+        .slice(0, 400)
+        .map((rawSpan) => {
+          const text = String(rawSpan?.text || "");
+          const marks = (Array.isArray(rawSpan?.marks) ? rawSpan.marks : [])
+            .map((mark) => String(mark || "").trim().toLowerCase())
+            .filter((mark) => mark === "bold" || mark === "italic");
+          return {
+            text,
+            marks: Array.from(new Set(marks)),
+            href: safeUrl(rawSpan?.href)
+          };
+        })
+        .filter((span) => span.text.trim());
+      return {
+        type,
+        level: Math.min(4, Math.max(2, Number(rawBlock?.level) || 2)),
+        ordered: rawBlock?.ordered === true,
+        spans
+      };
+    }).filter((block) => block.spans.length);
+  }
+
   function showToast(message, kind = "") {
     const toast = byId("news-toast");
     if (!toast) return;
@@ -547,6 +577,11 @@
     const contentText = String(firstValue(item, ["contentText", "content_text", "content"]));
     const summaryText = String(firstValue(item, ["summaryText", "summary_text", "summary", "excerpt"]));
     const suppliedReaderText = String(firstValue(rawReader, ["text", "readerText", "reader_text"]));
+    const readerBlocks = normalizeReaderBlocks(firstValue(
+      rawReader,
+      ["blocks", "readerBlocks", "reader_blocks"],
+      firstValue(item, ["readerBlocks", "reader_blocks"], [])
+    ));
     const readerText = suppliedReaderText || (contentText.length >= summaryText.length ? contentText : summaryText);
     const rawReaderMode = String(firstValue(
       rawReader,
@@ -572,6 +607,7 @@
       articleAccess: String(firstValue(nestedSource, ["articleAccess", "article_access"], mappedSource.articleAccess || firstValue(item, ["articleAccess", "article_access"]))).toLowerCase(),
       readerMode,
       readerText,
+      readerBlocks,
       readerTextSource: String(firstValue(
         rawReader,
         ["textSource", "text_source", "source"],
@@ -626,8 +662,9 @@
 
   function renderArticleActions(item) {
     const fullReader = hasFullReader(item);
+    const readerBuilding = readerCheckingIds.has(item.id);
     const readerUnavailable = readerCheckedIds.has(item.id) && !fullReader;
-    const readerControl = fullReader
+    const readerControl = fullReader && !readerBuilding
       ? `<button class="news-item-action news-item-action--internal" type="button" data-open-reader-id="${escapeHtml(item.id)}" aria-label="Open this article in the Owl Reader">
           <span>Owl Reader</span>
         </button>`
@@ -984,22 +1021,112 @@
     );
   }
 
-  function renderReaderText(text) {
+  function cleanReaderFragment(value) {
+    const text = String(value || "")
+      .replace(/&copy;/gi, "©")
+      .replace(/&nbsp;|&#160;/gi, " ")
+      .replace(/&quot;|&#34;/gi, '"')
+      .replace(/&amp;/gi, "&")
+      .trim();
+    const attributes = text.match(
+      /\b(?:data-[a-z0-9_-]+|src|srcset|sizes|width|height|alt|loading|decoding)\s*=/gi
+    ) || [];
+    const imageSignal = /\b(?:src|srcset|data-large-file)\s*=|wp-content\/uploads|https?:\/\/[^\s"']+\.(?:avif|gif|jpe?g|png|webp)/i.test(text);
+    if (attributes.length < 2 || !imageSignal) return text;
+    const alt = text.match(/\balt\s*=\s*"([^"]*)"/i)?.[1]
+      || text.match(/\balt\s*=\s*'([^']*)'/i)?.[1]
+      || "";
+    return alt.trim();
+  }
+
+  function shouldShowReaderText(value, item) {
+    const text = String(value || "").trim();
+    const normalized = text.toLowerCase();
+    const sourceName = String(item?.sourceName || "").trim().toLowerCase();
+    if (!text || normalized === "in:") return false;
+    if (normalized === String(item?.headline || "").trim().toLowerCase()) return false;
+    if (normalized.startsWith("/") && sourceName && normalized.includes(sourceName)) return false;
+    return !/(?:©|copyright)\s*\d{4}[^\n]*all rights reserved/i.test(text);
+  }
+
+  function readerBlockText(block) {
+    return (Array.isArray(block?.spans) ? block.spans : [])
+      .map((span) => span.text)
+      .join("")
+      .trim();
+  }
+
+  function appendReaderSpans(parent, spans) {
+    for (const span of spans) {
+      const element = span.href
+        ? document.createElement("button")
+        : document.createElement("span");
+      if (span.href) {
+        element.type = "button";
+        element.classList.add("news-reader-inline-link");
+        element.dataset.readerSourceUrl = span.href;
+      }
+      if (span.marks.includes("bold")) element.classList.add("is-bold");
+      if (span.marks.includes("italic")) element.classList.add("is-italic");
+      element.textContent = span.text;
+      parent.append(element);
+    }
+  }
+
+  function renderReaderText(item) {
     const host = byId("news-reader-copy");
     if (!host) return;
-    const sourceName = String(activeReaderItem?.sourceName || "").trim().toLowerCase();
-    const paragraphs = String(text || "")
+    host.replaceChildren();
+    const blocks = normalizeReaderBlocks(item?.readerBlocks);
+    let activeList = null;
+    let activeListType = "";
+    let previousText = "";
+
+    for (const block of blocks) {
+      const originalText = readerBlockText(block);
+      const cleanedText = cleanReaderFragment(originalText);
+      if (!shouldShowReaderText(cleanedText, item) || cleanedText === previousText) continue;
+      previousText = cleanedText;
+      const spans = cleanedText === originalText
+        ? block.spans
+        : [{ text: cleanedText, marks: [], href: "" }];
+
+      if (block.type === "listItem") {
+        const listType = block.ordered ? "ol" : "ul";
+        if (!activeList || activeListType !== listType) {
+          activeList = document.createElement(listType);
+          activeListType = listType;
+          host.append(activeList);
+        }
+        const itemElement = document.createElement("li");
+        appendReaderSpans(itemElement, spans);
+        activeList.append(itemElement);
+        continue;
+      }
+
+      activeList = null;
+      activeListType = "";
+      const tagName = block.type === "heading"
+        ? ({ 2: "h3", 3: "h4", 4: "h5" }[block.level] || "h3")
+        : block.type === "quote"
+          ? "blockquote"
+          : "p";
+      const element = document.createElement(tagName);
+      appendReaderSpans(element, spans);
+      host.append(element);
+    }
+
+    if (host.childElementCount) return;
+    const paragraphs = String(item?.readerText || "")
       .trim()
       .split(/\n{2,}/)
-      .map((value) => value.replace(/&copy;/gi, "©").replace(/&nbsp;/gi, " ").trim())
-      .filter((value) => value.toLowerCase() !== "in:")
-      .filter((value) => {
-        const normalized = value.toLowerCase();
-        return !(normalized.startsWith("/") && sourceName && normalized.includes(sourceName));
-      })
-      .filter((value) => !/(?:©|copyright)\s*\d{4}[^\n]*all rights reserved/i.test(value))
+      .map(cleanReaderFragment)
+      .filter((value) => shouldShowReaderText(value, item))
       .filter(Boolean);
-    host.replaceChildren(...paragraphs.map((paragraph) => {
+    const uniqueParagraphs = paragraphs.filter((paragraph, index) => (
+      index === 0 || paragraphs[index - 1] !== paragraph
+    ));
+    host.replaceChildren(...uniqueParagraphs.map((paragraph) => {
       const element = document.createElement("p");
       element.textContent = paragraph;
       return element;
@@ -1011,7 +1138,7 @@
     activeReaderItem = item;
     byId("news-reader-title").textContent = item.headline || "Article";
     byId("news-reader-attribution").textContent = `Content provided by ${item.sourceName || "the source"}`;
-    renderReaderText(item.readerText);
+    renderReaderText(item);
 
     const original = byId("news-reader-original");
     const originalUrl = safeUrl(item.originalUrl);
@@ -1094,7 +1221,6 @@
     const item = renderedItemsById.get(String(itemId || ""));
     if (
       !item ||
-      hasFullReader(item) ||
       readerCheckingIds.has(item.id) ||
       readerCheckedIds.has(item.id)
     ) return;
@@ -1114,6 +1240,7 @@
         originalUrl: safeUrl(result?.originalUrl) || item.originalUrl,
         readerMode: resolvedReaderMode,
         readerText,
+        readerBlocks: normalizeReaderBlocks(firstValue(reader, ["blocks", "readerBlocks", "reader_blocks"], [])),
         readerTextSource: String(firstValue(reader, ["textSource", "text_source", "source"])).trim().toLowerCase(),
         readerTextLength: Number(firstValue(reader, ["textLength", "text_length", "length"], readerText.length)) || readerText.length
       };
@@ -1810,6 +1937,11 @@ Use clear, approachable, nonpartisan language. Do not assume the article, headli
     openLeavingDialog(event.currentTarget.dataset.originalUrl, event.currentTarget.dataset.originalSource);
   });
   byId("news-reader-dialog")?.addEventListener("click", (event) => {
+    const inlineLink = event.target.closest("[data-reader-source-url]");
+    if (inlineLink) {
+      openLeavingDialog(inlineLink.dataset.readerSourceUrl, activeReaderItem?.sourceName || "the publisher");
+      return;
+    }
     if (event.target === event.currentTarget) closeArticleReader();
   });
   byId("news-reader-dialog")?.addEventListener("cancel", (event) => {

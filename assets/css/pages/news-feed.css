@@ -1700,7 +1700,7 @@
   transition: background 220ms ease, color 220ms ease;
 }
 
-.news-reader-paper h2 {
+.news-reader-paper > h2 {
   max-width: 680px;
   margin: 0 auto;
   color: var(--reader-title);
@@ -1711,7 +1711,7 @@
   text-wrap: balance;
 }
 
-.news-reader-paper h2::before {
+.news-reader-paper > h2::before {
   content: "";
   display: block;
   width: 46px;
@@ -1743,6 +1743,76 @@
   font-size: clamp(1.08rem, 2vw, 1.2rem);
   line-height: 1.76;
   white-space: pre-line;
+}
+
+.news-reader-copy h3,
+.news-reader-copy h4,
+.news-reader-copy h5 {
+  margin: 1.5em 0 0.65em;
+  color: var(--reader-title);
+  font-family: "Owl Times", Georgia, "Times New Roman", serif;
+  font-weight: 700;
+  line-height: 1.35;
+}
+
+.news-reader-copy h3 {
+  font-size: clamp(1.35rem, 3vw, 1.55rem);
+}
+
+.news-reader-copy h4 {
+  font-size: clamp(1.22rem, 2.6vw, 1.4rem);
+}
+
+.news-reader-copy h5 {
+  font-size: clamp(1.12rem, 2.3vw, 1.28rem);
+}
+
+.news-reader-copy blockquote {
+  margin: 1.5em 0;
+  padding: 0.2em 0 0.2em 1.1em;
+  border-left: 3px solid var(--owl-gold);
+  color: var(--reader-text);
+  font-family: "Owl Times", Georgia, "Times New Roman", serif;
+  font-size: clamp(1.08rem, 2vw, 1.2rem);
+  font-style: italic;
+  line-height: 1.76;
+}
+
+.news-reader-copy ul,
+.news-reader-copy ol {
+  margin: 0 0 1.35em;
+  padding-left: 1.5em;
+  color: var(--reader-text);
+  font-family: "Owl Times", Georgia, "Times New Roman", serif;
+  font-size: clamp(1.08rem, 2vw, 1.2rem);
+  line-height: 1.7;
+}
+
+.news-reader-copy li + li {
+  margin-top: 0.55em;
+}
+
+.news-reader-copy .is-bold {
+  font-weight: 700;
+}
+
+.news-reader-copy .is-italic {
+  font-style: italic;
+}
+
+.news-reader-inline-link {
+  display: inline;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  color: var(--reader-link);
+  cursor: pointer;
+  font: inherit;
+  line-height: inherit;
+  text-align: inherit;
+  text-decoration: underline;
+  text-underline-offset: 3px;
 }
 
 .news-reader-footer {
@@ -2640,7 +2710,7 @@
     padding: 28px 20px calc(34px + env(safe-area-inset-bottom));
   }
 
-  .news-reader-paper h2 {
+  .news-reader-paper > h2 {
     font-size: clamp(1.85rem, 9vw, 2.45rem);
   }
 
