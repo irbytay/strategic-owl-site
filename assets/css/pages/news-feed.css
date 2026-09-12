@@ -605,8 +605,8 @@
 .news-item-action--internal {
   grid-column: 1;
   min-height: 44px;
-  font-family: "Owl Times", Georgia, "Times New Roman", serif;
-  font-size: 1.18rem;
+  font-family: Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  font-size: 0.86rem;
   color: var(--owl-gold);
 }
 
@@ -1536,6 +1536,16 @@
 }
 
 .news-reader-dialog {
+  --reader-surface: #f3efe5;
+  --reader-highlight: rgba(255, 255, 255, 0.58);
+  --reader-title: #122238;
+  --reader-text: #222d39;
+  --reader-muted: #59616b;
+  --reader-line: rgba(18, 34, 56, 0.2);
+  --reader-action-bg: #142b49;
+  --reader-action-border: #1b3558;
+  --reader-action-text: #f1cd53;
+  --reader-link: #244d7d;
   width: min(94vw, 820px);
   height: min(92dvh, 980px);
   max-height: 92dvh;
@@ -1543,6 +1553,19 @@
   border-color: rgba(212, 175, 55, 0.38);
   border-radius: 24px;
   background: #0d1b2a;
+}
+
+.news-reader-dialog[data-reader-theme="dark"] {
+  --reader-surface: #142a46;
+  --reader-highlight: rgba(67, 102, 142, 0.42);
+  --reader-title: #d4af37;
+  --reader-text: #f2ede1;
+  --reader-muted: #b7c3d1;
+  --reader-line: rgba(212, 175, 55, 0.24);
+  --reader-action-bg: #203b5e;
+  --reader-action-border: rgba(212, 175, 55, 0.46);
+  --reader-action-text: #e2bd48;
+  --reader-link: #e2bd48;
 }
 
 .news-reader-shell {
@@ -1568,6 +1591,49 @@
 
 .news-reader-header > span {
   grid-column: 2;
+}
+
+.news-reader-theme {
+  grid-column: 3;
+  justify-self: end;
+  display: grid;
+  width: 40px;
+  height: 40px;
+  padding: 0;
+  place-items: center;
+  border: 1px solid rgba(212, 175, 55, 0.28);
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.06);
+  color: var(--owl-gold);
+  cursor: pointer;
+  transition: background 150ms ease, border-color 150ms ease, transform 150ms ease;
+}
+
+.news-reader-theme:hover,
+.news-reader-theme:focus-visible {
+  border-color: rgba(212, 175, 55, 0.62);
+  background: rgba(212, 175, 55, 0.1);
+  transform: translateY(-1px);
+}
+
+.news-reader-theme svg {
+  grid-area: 1 / 1;
+  width: 19px;
+  height: 19px;
+  fill: none;
+  stroke: currentColor;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  stroke-width: 1.8;
+}
+
+.news-reader-theme-sun,
+.news-reader-dialog[data-reader-theme="dark"] .news-reader-theme-moon {
+  display: none;
+}
+
+.news-reader-dialog[data-reader-theme="dark"] .news-reader-theme-sun {
+  display: block;
 }
 
 .news-reader-back {
@@ -1600,16 +1666,17 @@
   padding: clamp(30px, 6vw, 62px) clamp(22px, 7vw, 76px) 42px;
   overflow-y: auto;
   background:
-    radial-gradient(circle at 50% 0, rgba(255, 255, 255, 0.58), transparent 38%),
-    #f3efe5;
-  color: #172231;
+    radial-gradient(circle at 50% 0, var(--reader-highlight), transparent 42%),
+    var(--reader-surface);
+  color: var(--reader-text);
   overscroll-behavior: contain;
+  transition: background 220ms ease, color 220ms ease;
 }
 
 .news-reader-paper h2 {
   max-width: 680px;
   margin: 0 auto;
-  color: #122238;
+  color: var(--reader-title);
   font-family: "Owl Times", Georgia, "Times New Roman", serif;
   font-size: clamp(2rem, 5vw, 3rem);
   font-weight: 700;
@@ -1632,8 +1699,8 @@
   max-width: 680px;
   margin: 14px auto 0;
   padding-bottom: 20px;
-  border-bottom: 1px solid rgba(18, 34, 56, 0.2);
-  color: #59616b;
+  border-bottom: 1px solid var(--reader-line);
+  color: var(--reader-muted);
   font: 650 0.88rem/1.45 Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
 }
 
@@ -1644,7 +1711,7 @@
 
 .news-reader-copy p {
   margin: 0 0 1.25em;
-  color: #222d39;
+  color: var(--reader-text);
   font-family: "Owl Times", Georgia, "Times New Roman", serif;
   font-size: clamp(1.08rem, 2vw, 1.2rem);
   line-height: 1.76;
@@ -1657,7 +1724,7 @@
   max-width: 680px;
   margin: 42px auto 0;
   padding: 24px 0 calc(10px + env(safe-area-inset-bottom));
-  border-top: 1px solid rgba(18, 34, 56, 0.2);
+  border-top: 1px solid var(--reader-line);
 }
 
 .news-reader-prompt,
@@ -1674,9 +1741,9 @@
 
 .news-reader-prompt {
   padding: 10px 16px;
-  border: 1px solid #1b3558;
-  background: #142b49;
-  color: #f1cd53;
+  border: 1px solid var(--reader-action-border);
+  background: var(--reader-action-bg);
+  color: var(--reader-action-text);
   box-shadow: 0 8px 20px rgba(20, 43, 73, 0.18);
 }
 
@@ -1707,7 +1774,7 @@
   padding: 7px 10px;
   border: 0;
   background: transparent;
-  color: #244d7d;
+  color: var(--reader-link);
   text-decoration: underline;
   text-underline-offset: 4px;
 }
@@ -2498,7 +2565,7 @@
     grid-column: 1;
     justify-self: center;
     min-height: 44px;
-    font-size: 1.24rem;
+    font-size: 0.92rem;
   }
 
   .news-item-secondary-actions,

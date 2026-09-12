@@ -6,6 +6,7 @@
   const NEWS_BETA_ADMINISTRATOR_ONLY = false;
   const NEWS_SHARE_BASE_URL = "https://thestrategicowl.com/news";
   const NEWS_READER_API_URL = "https://thestrategicowl.com/api/news-reader";
+  const NEWS_READER_THEME_KEY = "strategic-owl-reader-theme";
   const MIN_FULL_READER_LENGTH = 1200;
   const NEWS_CACHE_VERSION = 5;
   const NEWS_CACHE_PREFIX = "strategic-owl-news-feed";
@@ -104,6 +105,42 @@
       toast.dataset.visible = "false";
       delete toast.dataset.kind;
     }, 2400);
+  }
+
+  function savedReaderTheme() {
+    try {
+      const saved = window.localStorage.getItem(NEWS_READER_THEME_KEY);
+      if (saved === "light" || saved === "dark") return saved;
+    } catch {
+      // Browser privacy settings may disable local storage.
+    }
+    return window.matchMedia?.("(prefers-color-scheme: dark)")?.matches ? "dark" : "light";
+  }
+
+  function applyReaderTheme(theme, { persist = false } = {}) {
+    const resolvedTheme = theme === "dark" ? "dark" : "light";
+    const dialog = byId("news-reader-dialog");
+    const button = byId("news-reader-theme");
+    if (dialog) dialog.dataset.readerTheme = resolvedTheme;
+    if (button) {
+      const label = resolvedTheme === "dark"
+        ? "Use light reading mode"
+        : "Use dark reading mode";
+      button.setAttribute("aria-label", label);
+      button.title = label;
+    }
+    if (persist) {
+      try {
+        window.localStorage.setItem(NEWS_READER_THEME_KEY, resolvedTheme);
+      } catch {
+        // The selected mode still applies for the current page.
+      }
+    }
+  }
+
+  function toggleReaderTheme() {
+    const currentTheme = byId("news-reader-dialog")?.dataset.readerTheme || savedReaderTheme();
+    applyReaderTheme(currentTheme === "dark" ? "light" : "dark", { persist: true });
   }
 
   function newsCacheKey() {
@@ -1769,6 +1806,7 @@ Use clear, approachable, nonpartisan language. Do not assume the article, headli
     button.addEventListener("click", closeNewsInsightDialog);
   });
   byId("news-reader-copy-prompt")?.addEventListener("click", copyResearchPrompt);
+  byId("news-reader-theme")?.addEventListener("click", toggleReaderTheme);
   byId("news-reader-original")?.addEventListener("click", (event) => {
     openLeavingDialog(event.currentTarget.dataset.originalUrl, event.currentTarget.dataset.originalSource);
   });
@@ -1832,5 +1870,6 @@ Use clear, approachable, nonpartisan language. Do not assume the article, headli
   });
   installPullToRefresh();
   installInfiniteScroll();
+  applyReaderTheme(savedReaderTheme());
   initializeNewsFeed();
 })();
