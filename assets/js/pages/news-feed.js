@@ -917,9 +917,9 @@
             ${metadataMarkup}
             ${hasMeaningfulPreview(item) ? `<p>${escapeHtml(item.summary)}</p>` : ""}
             ${insightMarkup}
-            <div class="news-item-reader-building" data-reader-building role="status" aria-live="polite" hidden>
-              <span class="news-item-reader-spinner" aria-hidden="true"></span>
-              <span>Building your Owl Reader view…</span>
+            <div class="news-item-reader-status" data-reader-status role="status" aria-live="polite" hidden>
+              <span class="news-item-reader-spinner" data-reader-spinner aria-hidden="true"></span>
+              <span data-reader-status-text></span>
             </div>
             <div class="news-item-actions" aria-label="Article actions">
               ${renderArticleActions(item)}
@@ -1015,8 +1015,21 @@
       .find((element) => element.dataset.itemId === item.id);
     const actions = card?.querySelector(".news-item-actions");
     if (actions) actions.innerHTML = renderArticleActions(item);
-    const building = card?.querySelector("[data-reader-building]");
-    if (building) building.hidden = !readerCheckingIds.has(item.id);
+    const status = card?.querySelector("[data-reader-status]");
+    const statusText = status?.querySelector("[data-reader-status-text]");
+    const spinner = status?.querySelector("[data-reader-spinner]");
+    const building = readerCheckingIds.has(item.id);
+    const unavailable = readerCheckedIds.has(item.id) && !hasFullReader(item);
+    if (status) {
+      status.hidden = !building && !unavailable;
+      status.dataset.state = building ? "building" : "unavailable";
+    }
+    if (spinner) spinner.hidden = !building;
+    if (statusText) {
+      statusText.textContent = building
+        ? "Building your Owl Reader view…"
+        : "This one stays at the source.";
+    }
   }
 
   function followExpandedArticle(summary) {

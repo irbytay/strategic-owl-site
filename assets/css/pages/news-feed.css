@@ -650,7 +650,7 @@
   justify-self: center;
 }
 
-.news-item-reader-building {
+.news-item-reader-status {
   display: flex;
   align-items: center;
   justify-content: center;
@@ -663,8 +663,14 @@
   font-weight: 700;
 }
 
-.news-item-reader-building[hidden] {
+.news-item-reader-status[hidden],
+.news-item-reader-spinner[hidden] {
   display: none;
+}
+
+.news-item-reader-status[data-state="unavailable"] {
+  color: var(--owl-muted);
+  font-weight: 600;
 }
 
 .news-item-reader-spinner {
