@@ -586,20 +586,15 @@
 
   function renderArticleActions(item) {
     const fullReader = hasFullReader(item);
-    const preview = hasMeaningfulPreview(item);
     const readerControl = fullReader
-      ? `<button class="news-item-action news-item-action--primary" type="button" data-open-reader-id="${escapeHtml(item.id)}" aria-label="Read the full article here">
-          <span>Full Read</span>
+      ? `<button class="news-item-action news-item-action--internal" type="button" data-open-reader-id="${escapeHtml(item.id)}" aria-label="Read this article inside The Strategic Owl">
+          <span>Read in Owl</span>
         </button>`
       : "";
-    const originalLabel = fullReader
-      ? "Original"
-      : preview
-        ? "Continue at Source"
-        : "Read at Source";
     const originalButton = item.originalUrl
-      ? `<button class="news-item-action${fullReader ? "" : " news-item-action--primary"}" type="button" data-original-url="${escapeHtml(item.originalUrl)}" data-original-source="${escapeHtml(item.sourceName)}" aria-label="${escapeHtml(originalLabel)} at ${escapeHtml(item.sourceName)}">
-          <span>${escapeHtml(originalLabel)}</span>
+      ? `<button class="news-item-action" type="button" data-original-url="${escapeHtml(item.originalUrl)}" data-original-source="${escapeHtml(item.sourceName)}" aria-label="Read the original article at ${escapeHtml(item.sourceName)}">
+          <span>Read Original</span>
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M14 5h5v5"></path><path d="m19 5-9 9"></path><path d="M19 13v6H5V5h6"></path></svg>
         </button>`
       : "";
     const canShare = item.sourceStatus === "active" && Boolean(item.id);
@@ -607,14 +602,18 @@
       ? ` data-share-id="${escapeHtml(item.id)}" aria-label="Share this article"`
       : " disabled title=\"Sharing becomes available after this source is approved\""}>
         <span>Share</span>
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 16V4"></path><path d="m8 8 4-4 4 4"></path><path d="M5 12v7h14v-7"></path></svg>
       </button>`;
     const insightButton = currentAccess?.administrator
       ? `<button class="news-item-action news-item-action--admin" type="button" data-admin-insight-id="${escapeHtml(item.id)}" aria-label="${item.owlInsight ? "Edit" : "Add"} Owl Insight">
           <span>${item.owlInsight ? "Edit Insight" : "Add Insight"}</span>
         </button>`
       : "";
+    const secondaryActions = `<span class="news-item-secondary-actions${fullReader ? "" : " news-item-secondary-actions--standalone"}">
+        ${originalButton}${shareButton}
+      </span>`;
 
-    return `${readerControl}${originalButton}${shareButton}${insightButton}`;
+    return `${readerControl}${secondaryActions}${insightButton}`;
   }
 
   function distinctFollowedValues(sources, key) {
@@ -918,6 +917,10 @@
             ${metadataMarkup}
             ${hasMeaningfulPreview(item) ? `<p>${escapeHtml(item.summary)}</p>` : ""}
             ${insightMarkup}
+            <div class="news-item-reader-building" data-reader-building role="status" aria-live="polite" hidden>
+              <span class="news-item-reader-spinner" aria-hidden="true"></span>
+              <span>Building your Owl Reader view…</span>
+            </div>
             <div class="news-item-actions" aria-label="Article actions">
               ${renderArticleActions(item)}
             </div>
@@ -1012,6 +1015,21 @@
       .find((element) => element.dataset.itemId === item.id);
     const actions = card?.querySelector(".news-item-actions");
     if (actions) actions.innerHTML = renderArticleActions(item);
+    const building = card?.querySelector("[data-reader-building]");
+    if (building) building.hidden = !readerCheckingIds.has(item.id);
+  }
+
+  function followExpandedArticle(summary) {
+    const reducedMotion = window.matchMedia?.("(prefers-reduced-motion: reduce)")?.matches;
+    window.requestAnimationFrame(() => {
+      window.requestAnimationFrame(() => {
+        summary.scrollIntoView({
+          behavior: reducedMotion ? "auto" : "smooth",
+          block: "start",
+          inline: "nearest"
+        });
+      });
+    });
   }
 
   async function prepareArticleReader(itemId) {
@@ -1024,6 +1042,7 @@
     ) return;
 
     readerCheckingIds.add(item.id);
+    updateArticleActions(item.id);
     try {
       const result = await invokeCloudflareReader(item.id);
       const reader = result?.reader && typeof result.reader === "object"
@@ -1671,7 +1690,10 @@ Use clear, approachable, nonpartisan language. Do not assume the article, headli
     if (summary) {
       const article = summary.closest(".news-item[data-item-id]");
       if (article && !article.open) {
-        window.setTimeout(() => prepareArticleReader(article.dataset.itemId), 0);
+        window.setTimeout(() => {
+          followExpandedArticle(summary);
+          prepareArticleReader(article.dataset.itemId);
+        }, 0);
       }
       return;
     }

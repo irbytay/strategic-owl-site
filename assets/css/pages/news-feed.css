@@ -383,6 +383,7 @@
   padding: 14px;
   cursor: pointer;
   list-style: none;
+  scroll-margin-top: calc(var(--owl-header-height) + 14px);
 }
 
 .news-item-summary::-webkit-details-marker { display: none; }
@@ -549,9 +550,10 @@
 }
 
 .news-item-actions {
-  display: flex;
-  align-items: stretch;
-  gap: 8px;
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
+  align-items: center;
+  gap: 0 10px;
   width: 100%;
   margin-top: 18px;
   padding-top: 12px;
@@ -562,9 +564,10 @@
   display: inline-flex;
   align-items: center;
   justify-content: center;
+  gap: 6px;
   flex: 0 0 auto;
-  min-height: 48px;
-  padding: 10px 14px;
+  min-height: 44px;
+  padding: 10px 11px;
   border: 0;
   border-radius: 11px;
   background: transparent;
@@ -577,8 +580,19 @@
   transition: color 150ms ease, background 150ms ease;
 }
 
-.news-item-action > span:last-child {
+.news-item-action > span {
   white-space: nowrap;
+}
+
+.news-item-action svg {
+  flex: 0 0 auto;
+  width: 16px;
+  height: 16px;
+  fill: none;
+  stroke: currentColor;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  stroke-width: 1.9;
 }
 
 .news-item-action:hover,
@@ -587,17 +601,23 @@
   color: #f4d66c;
 }
 
-.news-item-action--primary {
-  flex: 0 1 240px;
-  background: var(--owl-gold);
-  color: var(--owl-navy);
-  box-shadow: 0 5px 14px rgba(0, 0, 0, 0.15);
+.news-item-action--internal {
+  grid-column: 2;
+  min-height: 48px;
+  font-family: "Owl Times", Georgia, "Times New Roman", serif;
+  font-size: 1.34rem;
+  color: var(--owl-gold);
 }
 
-.news-item-action--primary:hover,
-.news-item-action--primary:focus-visible {
-  background: #e2bd42;
-  color: var(--owl-navy);
+.news-item-action--internal > span {
+  padding-bottom: 3px;
+  border-bottom: 2px solid rgba(212, 175, 55, 0.78);
+  text-shadow: 0 0 12px rgba(212, 175, 55, 0.18);
+}
+
+.news-item-action--internal:hover,
+.news-item-action--internal:focus-visible {
+  color: #f4d66c;
 }
 
 .news-item-action:disabled {
@@ -607,11 +627,56 @@
 }
 
 .news-item-action--admin {
+  grid-column: 1 / -1;
+  justify-self: end;
   min-height: 40px;
   margin-left: auto;
   padding-right: 4px;
   color: rgba(212, 175, 55, 0.82);
   font-size: 0.8rem;
+}
+
+.news-item-secondary-actions {
+  grid-column: 3;
+  justify-self: end;
+  display: inline-flex;
+  align-items: center;
+  gap: 2px;
+}
+
+.news-item-secondary-actions--standalone {
+  grid-column: 1 / -1;
+  justify-self: center;
+}
+
+.news-item-reader-building {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 9px;
+  min-height: 28px;
+  margin-top: 13px;
+  color: var(--owl-gold);
+  font-family: Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  font-size: 0.84rem;
+  font-weight: 700;
+}
+
+.news-item-reader-building[hidden] {
+  display: none;
+}
+
+.news-item-reader-spinner {
+  width: 16px;
+  height: 16px;
+  border: 2px solid rgba(212, 175, 55, 0.25);
+  border-top-color: var(--owl-gold);
+  border-radius: 50%;
+  animation: owl-reader-spin 720ms linear infinite;
+}
+
+@keyframes owl-reader-spin {
+  to { transform: rotate(360deg); }
 }
 
 .news-toast {
@@ -2339,25 +2404,32 @@
   }
 
   .news-item-actions {
-    gap: 5px;
-    flex-wrap: wrap;
+    grid-template-columns: 1fr;
+    gap: 0;
   }
 
   .news-item-action {
-    flex: 1 1 0;
-    min-height: 48px;
+    min-height: 44px;
     padding: 8px 7px;
     font-size: 0.82rem;
   }
 
-  .news-item-action--primary {
-    flex: 2 1 0;
-    max-width: none;
+  .news-item-action--internal {
+    grid-column: 1;
+    justify-self: center;
+    min-height: 48px;
+  }
+
+  .news-item-secondary-actions,
+  .news-item-secondary-actions--standalone {
+    grid-column: 1;
+    justify-self: center;
   }
 
   .news-item-action--admin {
-    flex: 1 0 100%;
+    grid-column: 1;
     justify-content: flex-end;
+    justify-self: end;
     min-height: 38px;
     margin-left: 0;
     padding-right: 3px;
@@ -2480,6 +2552,7 @@
 
 @media (prefers-reduced-motion: reduce) {
   .news-spinner { animation: none; }
+  .news-item-reader-spinner { animation: none; }
   .news-chevron { transition: none; }
   .news-toast { transition: none; }
 }
