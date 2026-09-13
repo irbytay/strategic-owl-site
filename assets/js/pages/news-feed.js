@@ -1205,17 +1205,22 @@
     if (!hasFullReader(item)) return;
     activeReaderItem = item;
     byId("news-reader-title").textContent = item.headline || "Article";
-    byId("news-reader-attribution").textContent = `Content provided by ${item.sourceName || "the source"}`;
+    byId("news-reader-attribution").textContent = `Source: ${item.sourceName || "the publisher"}`;
     renderReaderText(item);
 
-    const original = byId("news-reader-original");
     const originalUrl = safeUrl(item.originalUrl);
-    original.hidden = !originalUrl;
-    original.textContent = originalUrl
-      ? `View Original at ${item.sourceName || "Source"}`
-      : "";
-    original.dataset.originalUrl = originalUrl;
-    original.dataset.originalSource = item.sourceName || "the publisher";
+    for (const id of ["news-reader-original", "news-reader-original-top"]) {
+      const original = byId(id);
+      if (!original) continue;
+      original.hidden = !originalUrl;
+      if (id === "news-reader-original") {
+        original.textContent = originalUrl
+          ? `View original at ${item.sourceName || "Source"}`
+          : "";
+      }
+      original.dataset.originalUrl = originalUrl;
+      original.dataset.originalSource = item.sourceName || "the publisher";
+    }
     window.clearTimeout(readerPromptTimer);
     setReaderPromptState("idle");
     byId("news-reader-message").textContent = "";
@@ -1242,10 +1247,10 @@
     button.dataset.state = state;
     button.disabled = state === "copying";
     label.textContent = state === "copied"
-      ? "✓ Prompt Copied"
+      ? "Prompt copied"
       : state === "copying"
         ? "Copying…"
-        : "Copy Research Prompt";
+        : "Research Prompt";
   }
 
   function updateArticleActions(itemId) {
@@ -2009,9 +2014,11 @@ Use clear, approachable, nonpartisan language. Do not assume the article, headli
   });
   byId("news-reader-copy-prompt")?.addEventListener("click", copyResearchPrompt);
   byId("news-reader-theme")?.addEventListener("click", toggleReaderTheme);
-  byId("news-reader-original")?.addEventListener("click", (event) => {
-    openLeavingDialog(event.currentTarget.dataset.originalUrl, event.currentTarget.dataset.originalSource);
-  });
+  for (const id of ["news-reader-original", "news-reader-original-top"]) {
+    byId(id)?.addEventListener("click", (event) => {
+      openLeavingDialog(event.currentTarget.dataset.originalUrl, event.currentTarget.dataset.originalSource);
+    });
+  }
   byId("news-reader-dialog")?.addEventListener("click", (event) => {
     const inlineLink = event.target.closest("[data-reader-source-url]");
     if (inlineLink) {

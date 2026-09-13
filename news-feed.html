@@ -130,14 +130,20 @@
       <article class="news-reader-paper">
         <h2 id="news-reader-title">Article</h2>
         <p class="news-reader-attribution" id="news-reader-attribution"></p>
+        <div class="news-reader-top-actions">
+          <button class="news-reader-original-top" id="news-reader-original-top" type="button">
+            <span>Source</span>
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M14 5h5v5M19 5l-9 9"></path><path d="M19 13v6H5V5h6"></path></svg>
+          </button>
+          <button class="news-reader-prompt" id="news-reader-copy-prompt" type="button">
+            <span>Research Prompt</span>
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 8h11v11H8Z"></path><path d="M5 16H4V5h11v1"></path></svg>
+          </button>
+        </div>
+        <p class="news-reader-message" id="news-reader-message" role="status" aria-live="polite"></p>
         <div class="news-reader-copy" id="news-reader-copy"></div>
         <footer class="news-reader-footer">
-          <button class="news-reader-prompt" id="news-reader-copy-prompt" type="button">
-            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 8h11v11H8Z"></path><path d="M5 16H4V5h11v1"></path></svg>
-            <span>Copy Research Prompt</span>
-          </button>
           <button class="news-reader-original" id="news-reader-original" type="button"></button>
-          <p class="news-reader-message" id="news-reader-message" role="status" aria-live="polite"></p>
         </footer>
       </article>
     </section>

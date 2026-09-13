@@ -1725,10 +1725,19 @@
 .news-reader-attribution {
   max-width: 680px;
   margin: 14px auto 0;
-  padding-bottom: 20px;
-  border-bottom: 1px solid var(--reader-line);
   color: var(--reader-muted);
   font: 650 0.88rem/1.45 Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+}
+
+.news-reader-top-actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px 24px;
+  max-width: 680px;
+  margin: 8px auto 0;
+  padding: 0 0 15px;
+  border-bottom: 1px solid var(--reader-line);
 }
 
 .news-reader-copy {
@@ -1845,29 +1854,30 @@
 }
 
 .news-reader-prompt,
+.news-reader-original-top,
 .news-reader-original {
   display: inline-flex;
   align-items: center;
   justify-content: center;
   gap: 8px;
-  min-height: 48px;
-  border-radius: 12px;
   cursor: pointer;
   font: 750 0.93rem/1.2 Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
 }
 
-.news-reader-prompt {
-  padding: 10px 16px;
-  border: 1px solid var(--reader-action-border);
-  background: var(--reader-action-bg);
-  color: var(--reader-action-text);
-  box-shadow: 0 8px 20px rgba(20, 43, 73, 0.18);
+.news-reader-prompt,
+.news-reader-original-top {
+  min-height: 40px;
+  padding: 4px 0;
+  border: 0;
+  background: transparent;
+  color: var(--reader-link);
+  text-decoration: underline;
+  text-decoration-color: var(--owl-gold);
+  text-underline-offset: 4px;
 }
 
 .news-reader-prompt[data-state="copied"] {
-  border-color: var(--owl-gold);
-  background: var(--owl-gold);
-  color: var(--owl-navy);
+  color: var(--reader-link);
 }
 
 .news-reader-prompt:disabled {
@@ -1875,9 +1885,10 @@
   opacity: 0.76;
 }
 
-.news-reader-prompt svg {
-  width: 18px;
-  height: 18px;
+.news-reader-prompt svg,
+.news-reader-original-top svg {
+  width: 16px;
+  height: 16px;
   fill: none;
   stroke: currentColor;
   stroke-linecap: round;
@@ -1896,19 +1907,16 @@
   text-underline-offset: 4px;
 }
 
-.news-reader-original[hidden] {
+.news-reader-original[hidden],
+.news-reader-original-top[hidden] {
   display: none;
 }
 
 .news-reader-message {
-  margin: 0;
-  padding: 10px 12px;
-  border: 1px solid rgba(130, 43, 43, 0.24);
-  border-radius: 10px;
-  background: rgba(130, 43, 43, 0.08);
-  color: #721f27;
+  max-width: 680px;
+  margin: 10px auto 0;
+  color: var(--reader-text);
   font: 650 0.84rem/1.4 Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-  text-align: center;
 }
 
 .news-reader-message:empty {
