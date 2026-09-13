@@ -102,7 +102,7 @@
       const type = ["paragraph", "heading", "quote", "listItem"].includes(rawType)
         ? rawType
         : "paragraph";
-      const spans = (Array.isArray(rawBlock?.spans) ? rawBlock.spans : [])
+      let spans = (Array.isArray(rawBlock?.spans) ? rawBlock.spans : [])
         .slice(0, 400)
         .map((rawSpan) => {
           const text = String(rawSpan?.text || "");
@@ -116,6 +116,14 @@
           };
         })
         .filter((span) => span.text.trim());
+      const textLength = spans.reduce((length, span) => length + span.text.trim().length, 0);
+      const linkedLength = spans.reduce(
+        (length, span) => length + (span.href ? span.text.trim().length : 0),
+        0
+      );
+      if (textLength >= 30 && linkedLength / textLength >= 0.85) {
+        spans = spans.map((span) => ({ ...span, href: "" }));
+      }
       return {
         type,
         level: Math.min(4, Math.max(2, Number(rawBlock?.level) || 2)),
