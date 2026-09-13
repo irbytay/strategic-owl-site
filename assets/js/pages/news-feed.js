@@ -1241,16 +1241,20 @@
   }
 
   function setReaderPromptState(state) {
-    const button = byId("news-reader-copy-prompt");
-    const label = button?.querySelector("span");
-    if (!button || !label) return;
-    button.dataset.state = state;
-    button.disabled = state === "copying";
-    label.textContent = state === "copied"
-      ? "Prompt copied"
-      : state === "copying"
-        ? "Copying…"
-        : "Research Prompt";
+    for (const id of ["news-reader-copy-prompt", "news-reader-copy-prompt-bottom"]) {
+      const button = byId(id);
+      const label = button?.querySelector("span");
+      if (!button || !label) continue;
+      button.dataset.state = state;
+      button.disabled = state === "copying";
+      label.textContent = state === "copied"
+        ? "Prompt copied"
+        : state === "copying"
+          ? "Copying…"
+          : id === "news-reader-copy-prompt-bottom"
+            ? "Copy Research Prompt"
+            : "Research Prompt";
+    }
   }
 
   function updateArticleActions(itemId) {
@@ -2012,7 +2016,9 @@ Use clear, approachable, nonpartisan language. Do not assume the article, headli
   document.querySelectorAll("[data-close-news-insight]").forEach((button) => {
     button.addEventListener("click", closeNewsInsightDialog);
   });
-  byId("news-reader-copy-prompt")?.addEventListener("click", copyResearchPrompt);
+  for (const id of ["news-reader-copy-prompt", "news-reader-copy-prompt-bottom"]) {
+    byId(id)?.addEventListener("click", copyResearchPrompt);
+  }
   byId("news-reader-theme")?.addEventListener("click", toggleReaderTheme);
   for (const id of ["news-reader-original", "news-reader-original-top"]) {
     byId(id)?.addEventListener("click", (event) => {

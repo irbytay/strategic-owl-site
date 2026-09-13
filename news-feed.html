@@ -10,11 +10,11 @@
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
   <link rel="icon" type="image/png" href="assets/images/3X.png" />
   <link rel="stylesheet" href="assets/css/site.css?v=20260908-4" />
-  <link rel="stylesheet" href="assets/css/pages/news-feed.css?v=20260913-2" />
+  <link rel="stylesheet" href="assets/css/pages/news-feed.css?v=20260913-3" />
   <script src="assets/js/site-shell.js?v=20260908-2" defer></script>
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2" defer></script>
   <script src="assets/js/owl-access.js?v=20260909-2" defer></script>
-  <script src="assets/js/pages/news-feed.js?v=20260913-3" defer></script>
+  <script src="assets/js/pages/news-feed.js?v=20260913-4" defer></script>
 </head>
 <body class="site-body" data-page="news-feed">
   <a class="skip-link" href="#main-content">Skip to content</a>
@@ -131,18 +131,13 @@
         <h2 id="news-reader-title">Article</h2>
         <p class="news-reader-attribution" id="news-reader-attribution"></p>
         <div class="news-reader-top-actions">
-          <button class="news-reader-original-top" id="news-reader-original-top" type="button">
-            <span>Source</span>
-            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M14 5h5v5M19 5l-9 9"></path><path d="M19 13v6H5V5h6"></path></svg>
-          </button>
-          <button class="news-reader-prompt" id="news-reader-copy-prompt" type="button">
-            <span>Research Prompt</span>
-            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 8h11v11H8Z"></path><path d="M5 16H4V5h11v1"></path></svg>
-          </button>
+          <button class="news-reader-original-top" id="news-reader-original-top" type="button">Source</button>
+          <button class="news-reader-prompt" id="news-reader-copy-prompt" type="button"><span>Research Prompt</span></button>
         </div>
         <p class="news-reader-message" id="news-reader-message" role="status" aria-live="polite"></p>
         <div class="news-reader-copy" id="news-reader-copy"></div>
         <footer class="news-reader-footer">
+          <button class="news-reader-prompt news-reader-prompt-bottom" id="news-reader-copy-prompt-bottom" type="button"><span>Copy Research Prompt</span></button>
           <button class="news-reader-original" id="news-reader-original" type="button"></button>
         </footer>
       </article>

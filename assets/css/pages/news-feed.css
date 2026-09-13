@@ -1846,6 +1846,7 @@
 
 .news-reader-footer {
   display: grid;
+  justify-items: center;
   gap: 12px;
   max-width: 680px;
   margin: 42px auto 0;
@@ -1856,12 +1857,15 @@
 .news-reader-prompt,
 .news-reader-original-top,
 .news-reader-original {
+  appearance: none;
+  box-sizing: border-box;
   display: inline-flex;
   align-items: center;
   justify-content: center;
   gap: 8px;
   cursor: pointer;
   font: 750 0.93rem/1.2 Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  white-space: normal;
 }
 
 .news-reader-prompt,
@@ -1880,20 +1884,24 @@
   color: var(--reader-link);
 }
 
+.news-reader-prompt-bottom {
+  width: min(100%, 320px);
+  min-height: 48px;
+  padding: 10px 18px;
+  border: 1px solid var(--reader-action-border);
+  border-radius: 12px;
+  background: var(--reader-action-bg);
+  color: var(--reader-action-text);
+  text-decoration: none;
+}
+
+.news-reader-prompt-bottom[data-state="copied"] {
+  color: var(--reader-action-text);
+}
+
 .news-reader-prompt:disabled {
   cursor: wait;
   opacity: 0.76;
-}
-
-.news-reader-prompt svg,
-.news-reader-original-top svg {
-  width: 16px;
-  height: 16px;
-  fill: none;
-  stroke: currentColor;
-  stroke-linecap: round;
-  stroke-linejoin: round;
-  stroke-width: 1.8;
 }
 
 .news-reader-original {
