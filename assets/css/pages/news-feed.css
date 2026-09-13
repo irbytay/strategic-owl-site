@@ -1745,6 +1745,26 @@
   white-space: pre-line;
 }
 
+.news-reader-figure {
+  display: flex;
+  justify-content: center;
+  max-width: 100%;
+  margin: 1.65em 0 1.9em;
+  overflow: hidden;
+  border: 1px solid var(--reader-line);
+  border-radius: 12px;
+  background: var(--reader-highlight);
+}
+
+.news-reader-figure img {
+  display: block;
+  width: auto;
+  max-width: 100%;
+  height: auto;
+  max-height: 70vh;
+  object-fit: contain;
+}
+
 .news-reader-copy h3,
 .news-reader-copy h4,
 .news-reader-copy h5 {

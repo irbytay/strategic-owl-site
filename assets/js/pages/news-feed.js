@@ -133,6 +133,23 @@
     }).filter((block) => block.spans.length);
   }
 
+  function normalizeReaderImages(value) {
+    if (!Array.isArray(value)) return [];
+    const seen = new Set();
+    return value.slice(0, 12).map((rawImage) => {
+      if (String(rawImage?.url || "").length > 4096) return null;
+      const url = safeUrl(rawImage?.url);
+      if (!url || !url.startsWith("https://") || seen.has(url)) return null;
+      seen.add(url);
+      return {
+        url,
+        alt: String(rawImage?.alt || "").trim().slice(0, 280),
+        afterText: String(rawImage?.afterText || "").trim().slice(0, 120),
+        afterBlock: Math.min(600, Math.max(0, Math.floor(Number(rawImage?.afterBlock) || 0)))
+      };
+    }).filter(Boolean);
+  }
+
   function showToast(message, kind = "") {
     const toast = byId("news-toast");
     if (!toast) return;
@@ -592,6 +609,7 @@
       ["blocks", "readerBlocks", "reader_blocks"],
       firstValue(item, ["readerBlocks", "reader_blocks"], [])
     ));
+    const readerImages = normalizeReaderImages(firstValue(rawReader, ["images", "readerImages", "reader_images"], []));
     const readerText = suppliedReaderText || (contentText.length >= summaryText.length ? contentText : summaryText);
     const rawReaderMode = String(firstValue(
       rawReader,
@@ -618,6 +636,7 @@
       readerMode,
       readerText,
       readerBlocks,
+      readerImages,
       readerTextSource: String(firstValue(
         rawReader,
         ["textSource", "text_source", "source"],
@@ -1088,14 +1107,48 @@
     if (!host) return;
     host.replaceChildren();
     const blocks = normalizeReaderBlocks(item?.readerBlocks);
+    const images = normalizeReaderImages(item?.readerImages);
+    const imagesByBlock = new Map();
+    for (const image of images) {
+      const anchor = image.afterText;
+      const anchorIndex = anchor
+        ? blocks.findIndex((block) => readerBlockText(block).startsWith(anchor))
+        : -1;
+      const blockIndex = anchorIndex >= 0
+        ? anchorIndex + 1
+        : Math.min(blocks.length, image.afterBlock);
+      const grouped = imagesByBlock.get(blockIndex) || [];
+      grouped.push(image);
+      imagesByBlock.set(blockIndex, grouped);
+    }
+    function appendImagesAfter(blockIndex) {
+      for (const image of imagesByBlock.get(blockIndex) || []) {
+        const figure = document.createElement("figure");
+        figure.className = "news-reader-figure";
+        const picture = document.createElement("img");
+        picture.alt = image.alt;
+        picture.loading = "lazy";
+        picture.decoding = "async";
+        picture.referrerPolicy = "no-referrer";
+        picture.addEventListener("error", () => figure.remove(), { once: true });
+        picture.src = image.url;
+        figure.append(picture);
+        host.append(figure);
+      }
+    }
     let activeList = null;
     let activeListType = "";
     let previousText = "";
+    let renderedTextBlocks = 0;
 
-    for (const block of blocks) {
+    appendImagesAfter(0);
+    for (const [index, block] of blocks.entries()) {
       const originalText = readerBlockText(block);
       const cleanedText = cleanReaderFragment(originalText);
-      if (!shouldShowReaderText(cleanedText, item) || cleanedText === previousText) continue;
+      if (!shouldShowReaderText(cleanedText, item) || cleanedText === previousText) {
+        appendImagesAfter(index + 1);
+        continue;
+      }
       previousText = cleanedText;
       const spans = cleanedText === originalText
         ? block.spans
@@ -1111,6 +1164,8 @@
         const itemElement = document.createElement("li");
         appendReaderSpans(itemElement, spans);
         activeList.append(itemElement);
+        renderedTextBlocks += 1;
+        appendImagesAfter(index + 1);
         continue;
       }
 
@@ -1124,9 +1179,12 @@
       const element = document.createElement(tagName);
       appendReaderSpans(element, spans);
       host.append(element);
+      renderedTextBlocks += 1;
+      appendImagesAfter(index + 1);
     }
 
-    if (host.childElementCount) return;
+    if (renderedTextBlocks) return;
+    host.replaceChildren();
     const paragraphs = String(item?.readerText || "")
       .trim()
       .split(/\n{2,}/)
@@ -1251,6 +1309,7 @@
         readerMode: resolvedReaderMode,
         readerText,
         readerBlocks: normalizeReaderBlocks(firstValue(reader, ["blocks", "readerBlocks", "reader_blocks"], [])),
+        readerImages: normalizeReaderImages(firstValue(reader, ["images", "readerImages", "reader_images"], [])),
         readerTextSource: String(firstValue(reader, ["textSource", "text_source", "source"])).trim().toLowerCase(),
         readerTextLength: Number(firstValue(reader, ["textLength", "text_length", "length"], readerText.length)) || readerText.length
       };
