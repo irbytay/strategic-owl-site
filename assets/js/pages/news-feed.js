@@ -7,7 +7,6 @@
   const NEWS_SHARE_BASE_URL = "https://thestrategicowl.com/news";
   const NEWS_READER_API_URL = "https://thestrategicowl.com/api/news-reader";
   const NEWS_READER_THEME_KEY = "strategic-owl-reader-theme";
-  const MIN_FULL_READER_LENGTH = 1200;
   const NEWS_CACHE_VERSION = 5;
   const NEWS_CACHE_PREFIX = "strategic-owl-news-feed";
   const NEWS_PAGE_SIZE = 50;
@@ -618,7 +617,7 @@
     )).trim().toLowerCase();
     const readerMode = rawReaderMode === "reader"
       ? "full"
-      : rawReaderMode || (readerText.length >= MIN_FULL_READER_LENGTH ? "full" : "preview");
+      : rawReaderMode || "preview";
 
     return {
       id: String(firstValue(item, ["id", "newsItemId", "news_item_id"])),
@@ -1045,8 +1044,9 @@
   function hasFullReader(item) {
     return Boolean(
       item &&
+      readerCheckedIds.has(item.id) &&
       item.readerMode === "full" &&
-      String(item.readerText || "").trim().length >= MIN_FULL_READER_LENGTH
+      String(item.readerText || "").trim()
     );
   }
 
@@ -1316,6 +1316,13 @@
       renderedItemsById.set(item.id, updatedItem);
     } catch (error) {
       console.error("Article reader check failed", error);
+      renderedItemsById.set(item.id, {
+        ...item,
+        readerMode: "preview",
+        readerText: "",
+        readerBlocks: [],
+        readerImages: []
+      });
     } finally {
       readerCheckingIds.delete(item.id);
       readerCheckedIds.add(item.id);
