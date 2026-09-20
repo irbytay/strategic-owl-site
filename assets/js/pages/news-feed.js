@@ -1021,9 +1021,6 @@
               <span>${item.owlInsight.public ? "Public Owl Insight" : "Owl Access Insight"}</span>
             </div>
             <p>${escapeHtml(item.owlInsight.analysis)}</p>
-            ${item.owlInsight.labels.length
-              ? `<div class="news-insight-labels">${item.owlInsight.labels.map((label) => `<span>${escapeHtml(label)}</span>`).join("")}</div>`
-              : ""}
           </aside>`
         : "";
       return `
@@ -1521,9 +1518,6 @@ Use clear, approachable, nonpartisan language. Do not assume the article, headli
       byId("news-insight-source").textContent = selectedAdminNewsItem.source?.source_name || "News article";
       byId("news-insight-item-id").value = selectedAdminNewsItem.id;
       byId("news-insight-label").value = insight.owl_label || "";
-      byId("news-insight-labels").value = Array.isArray(insight.labels)
-        ? insight.labels.join(", ")
-        : "";
       byId("news-insight-analysis").value = insight.owl_analysis || "";
       byId("news-insight-status").value = insight.review_status === "published"
         ? "published"
@@ -1555,10 +1549,6 @@ Use clear, approachable, nonpartisan language. Do not assume the article, headli
     event.preventDefault();
     const button = byId("news-insight-save");
     const message = byId("news-insight-message");
-    const labels = byId("news-insight-labels").value
-      .split(",")
-      .map((label) => label.trim())
-      .filter(Boolean);
     setInsightBusy(button, true, "Saving…", "Save Insight");
     message.textContent = "";
 
@@ -1566,7 +1556,7 @@ Use clear, approachable, nonpartisan language. Do not assume the article, headli
       await invokeNewsAdmin("saveNewsInsight", {
         itemId: byId("news-insight-item-id").value,
         owlLabel: byId("news-insight-label").value.trim(),
-        labels,
+        labels: [],
         owlAnalysis: byId("news-insight-analysis").value.trim(),
         reviewStatus: byId("news-insight-status").value,
         public: byId("news-insight-public").checked

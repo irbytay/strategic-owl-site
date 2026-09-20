@@ -1115,7 +1115,6 @@
       byId("office-insight-source").textContent = selectedNewsItem.source?.source_name || "News article";
       byId("office-insight-item-id").value = selectedNewsItem.id;
       byId("office-insight-label").value = insight.owl_label || "";
-      byId("office-insight-labels").value = Array.isArray(insight.labels) ? insight.labels.join(", ") : "";
       byId("office-insight-analysis").value = insight.owl_analysis || "";
       byId("office-insight-status").value = insight.review_status === "published" ? "published" : "draft";
       byId("office-insight-public").checked = Boolean(insight.is_public);
@@ -1140,15 +1139,13 @@
     const form = event.currentTarget;
     const button = form.querySelector('button[type="submit"]');
     const message = form.querySelector("[data-form-message]");
-    const labels = byId("office-insight-labels").value
-      .split(",").map((label) => label.trim()).filter(Boolean);
     setBusy(button, true, "Saving…", "Save Insight");
     message.textContent = "";
     try {
       await invokeNewsAdmin("saveNewsInsight", {
         itemId: byId("office-insight-item-id").value,
         owlLabel: byId("office-insight-label").value.trim(),
-        labels,
+        labels: [],
         owlAnalysis: byId("office-insight-analysis").value.trim(),
         reviewStatus: byId("office-insight-status").value,
         public: byId("office-insight-public").checked
