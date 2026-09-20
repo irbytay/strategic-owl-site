@@ -171,8 +171,38 @@
       <label for="news-insight-analysis">Your analysis</label>
       <textarea id="news-insight-analysis" name="owlAnalysis" rows="8" maxlength="12000" required></textarea>
 
-      <fieldset class="news-insight-taxonomy">
+      <fieldset class="news-insight-scope">
         <legend>Applies to</legend>
+        <div class="news-insight-scope-options">
+          <label class="news-insight-scope-option">
+            <input type="radio" name="insightScope" value="article" checked />
+            <span>This article</span>
+            <small>Only this story</small>
+          </label>
+          <label class="news-insight-scope-option">
+            <input type="radio" name="insightScope" value="cluster" />
+            <span>Developing story</span>
+            <small>Related coverage of the same event</small>
+          </label>
+          <label class="news-insight-scope-option">
+            <input type="radio" name="insightScope" value="subject" />
+            <span>Matching subjects</span>
+            <small>Future articles with these subjects</small>
+          </label>
+        </div>
+      </fieldset>
+
+      <section class="news-insight-story" id="news-insight-story-panel" hidden>
+        <label for="news-insight-story-select">Developing story</label>
+        <select id="news-insight-story-select">
+          <option value="">Choose a developing story</option>
+        </select>
+        <p class="news-insight-taxonomy-help" id="news-insight-story-help">Confirmed and suggested matches from this article appear first.</p>
+        <button class="news-insight-add-subject" id="news-insight-create-story" type="button">Start a developing story with this article</button>
+      </section>
+
+      <fieldset class="news-insight-taxonomy" id="news-insight-subject-panel" hidden>
+        <legend>Matching subjects</legend>
         <p class="news-insight-taxonomy-help">Suggested from this article. Strong matches are already selected.</p>
         <div class="news-insight-taxonomy-options" id="news-insight-subjects"></div>
         <button class="news-insight-add-subject" id="news-insight-add-subject" type="button">Add another subject</button>

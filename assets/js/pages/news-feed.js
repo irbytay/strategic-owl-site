@@ -42,6 +42,8 @@
   let editingReusableInsightItemLinks = [];
   let insightTaxonomy = [];
   let insightSubjectAssignments = new Map();
+  let insightStoryClusters = [];
+  let insightStoryAssignments = new Map();
   let activeReaderItem = null;
   let pendingOriginalUrl = "";
   let renderedItemsById = new Map();
@@ -1494,6 +1496,75 @@ Use clear, approachable, nonpartisan language. Do not assume the article, headli
     if (!published) checkbox.checked = false;
   }
 
+  function selectedInsightScope() {
+    return document.querySelector('input[name="insightScope"]:checked')?.value || "article";
+  }
+
+  function setInsightScope(scope) {
+    const resolved = ["article", "cluster", "subject"].includes(scope) ? scope : "article";
+    const input = document.querySelector(`input[name="insightScope"][value="${resolved}"]`);
+    if (input) input.checked = true;
+    syncInsightScopePanels();
+  }
+
+  function syncInsightScopePanels() {
+    const scope = selectedInsightScope();
+    const storyPanel = byId("news-insight-story-panel");
+    const subjectPanel = byId("news-insight-subject-panel");
+    if (storyPanel) storyPanel.hidden = scope !== "cluster";
+    if (subjectPanel) subjectPanel.hidden = scope !== "subject";
+  }
+
+  function populateInsightStories(clusters, assignments, selectedId = "") {
+    const select = byId("news-insight-story-select");
+    if (!select) return;
+    insightStoryAssignments = new Map();
+    for (const assignment of assignments) {
+      const cluster = assignment?.news_story_clusters;
+      const clusterId = String(cluster?.id || "");
+      if (clusterId) insightStoryAssignments.set(clusterId, assignment);
+    }
+
+    const byIdMap = new Map();
+    for (const assignment of assignments) {
+      const cluster = assignment?.news_story_clusters;
+      if (cluster?.id) byIdMap.set(String(cluster.id), cluster);
+    }
+    for (const cluster of clusters) {
+      if (cluster?.id) byIdMap.set(String(cluster.id), cluster);
+    }
+    insightStoryClusters = [...byIdMap.values()].filter((cluster) => (
+      String(cluster?.status || "active") === "active" || String(cluster?.id || "") === selectedId
+    ));
+
+    const assignmentRank = (clusterId) => {
+      const status = insightStoryAssignments.get(clusterId)?.membership_status;
+      return status === "confirmed" ? 2 : status === "suggested" ? 1 : 0;
+    };
+    insightStoryClusters.sort((left, right) => {
+      const leftId = String(left?.id || "");
+      const rightId = String(right?.id || "");
+      return assignmentRank(rightId) - assignmentRank(leftId) ||
+        String(right?.latest_published_at || "").localeCompare(String(left?.latest_published_at || ""));
+    });
+
+    select.innerHTML = '<option value="">Choose a developing story</option>';
+    for (const cluster of insightStoryClusters) {
+      const clusterId = String(cluster.id || "");
+      const assignment = insightStoryAssignments.get(clusterId);
+      const suffix = assignment?.membership_status === "confirmed"
+        ? " · Confirmed match"
+        : assignment?.membership_status === "suggested"
+        ? " · Suggested match"
+        : "";
+      const option = document.createElement("option");
+      option.value = clusterId;
+      option.textContent = `${cluster.title || "Developing story"}${suffix}`;
+      select.appendChild(option);
+    }
+    select.value = selectedId && byIdMap.has(selectedId) ? selectedId : "";
+  }
+
   function setInsightBusy(button, busy, busyLabel, readyLabel) {
     if (!button) return;
     button.disabled = busy;
@@ -1595,9 +1666,10 @@ Use clear, approachable, nonpartisan language. Do not assume the article, headli
     setInsightBusy(trigger, true, "Opening…", originalLabel);
 
     try {
-      const [result, taxonomyResult] = await Promise.all([
+      const [result, taxonomyResult, storyResult] = await Promise.all([
         invokeNewsAdmin("getNewsItem", { itemId }),
-        invokeNewsAdmin("listTaxonomy", { taxonomyType: "all" })
+        invokeNewsAdmin("listTaxonomy", { taxonomyType: "all" }),
+        invokeNewsAdmin("listStoryClusters", { status: "active", limit: 100 })
       ]);
       selectedAdminNewsItem = result.item || null;
       if (!selectedAdminNewsItem) {
@@ -1643,6 +1715,25 @@ Use clear, approachable, nonpartisan language. Do not assume the article, headli
         assignments,
         reusableSubjectIds.size ? reusableSubjectIds : recommendedSubjectIds
       );
+      const storyAssignments = Array.isArray(selectedAdminNewsItem.storyAssignments)
+        ? selectedAdminNewsItem.storyAssignments
+        : [];
+      const linkedStoryId = String(
+        reusableInsight?.owl_insight_clusters?.[0]?.story_cluster_id || ""
+      );
+      const recommendedStoryId = String(
+        storyAssignments.find((row) => row.membership_status === "confirmed")?.news_story_clusters?.id ||
+        storyAssignments.find((row) => row.membership_status === "suggested")?.news_story_clusters?.id ||
+        ""
+      );
+      populateInsightStories(
+        Array.isArray(storyResult.storyClusters) ? storyResult.storyClusters : [],
+        storyAssignments,
+        linkedStoryId || recommendedStoryId
+      );
+      setInsightScope(
+        reusableInsight?.scope_type || (selectedAdminNewsItem.insight ? "article" : "article")
+      );
       byId("news-insight-status").value = insight.review_status === "published"
         ? "published"
         : "draft";
@@ -1673,9 +1764,15 @@ Use clear, approachable, nonpartisan language. Do not assume the article, headli
     event.preventDefault();
     const button = byId("news-insight-save");
     const message = byId("news-insight-message");
+    const scopeType = selectedInsightScope();
     const subjectIds = [...selectedInsightSubjectIds()];
-    if (!subjectIds.length) {
+    const storyClusterId = byId("news-insight-story-select")?.value || "";
+    if (scopeType === "subject" && !subjectIds.length) {
       message.textContent = "Choose at least one subject this Insight applies to.";
+      return;
+    }
+    if (scopeType === "cluster" && !storyClusterId) {
+      message.textContent = "Choose a developing story, or start one with this article.";
       return;
     }
     setInsightBusy(button, true, "Saving…", "Save Insight");
@@ -1683,24 +1780,45 @@ Use clear, approachable, nonpartisan language. Do not assume the article, headli
 
     try {
       const itemId = byId("news-insight-item-id").value;
-      await Promise.all(subjectIds.map((subjectId) => {
-        const assignment = insightSubjectAssignments.get(subjectId);
-        if (assignment?.assignment_status === "confirmed") return Promise.resolve();
-        return invokeNewsAdmin("reviewItemSubject", {
-          itemId,
-          subjectId,
-          assignmentStatus: "confirmed",
-          manual: !assignment
-        });
-      }));
-      const itemLinks = editingReusableInsightItemLinks.filter((link) => link.itemId !== itemId);
-      itemLinks.push({ itemId, relationship: "include" });
+      if (scopeType === "subject") {
+        await Promise.all(subjectIds.map((subjectId) => {
+          const assignment = insightSubjectAssignments.get(subjectId);
+          if (assignment?.assignment_status === "confirmed") return Promise.resolve();
+          return invokeNewsAdmin("reviewItemSubject", {
+            itemId,
+            subjectId,
+            assignmentStatus: "confirmed",
+            manual: !assignment
+          });
+        }));
+      }
+      if (scopeType === "cluster") {
+        const assignment = insightStoryAssignments.get(storyClusterId);
+        if (assignment?.membership_status !== "confirmed") {
+          await invokeNewsAdmin("reviewStoryClusterItem", {
+            storyClusterId,
+            itemId,
+            membershipStatus: "confirmed",
+            manual: !assignment
+          });
+        }
+      }
+      const itemLinks = scopeType === "cluster"
+        ? []
+        : scopeType === "article"
+        ? [{ itemId, relationship: "include" }]
+        : [
+            ...editingReusableInsightItemLinks.filter((link) => link.itemId !== itemId),
+            { itemId, relationship: "include" }
+          ];
       await invokeNewsAdmin("saveReusableInsight", {
         insightId: editingReusableInsightId || undefined,
         owlLabel: byId("news-insight-label").value.trim(),
         labels: [],
         owlAnalysis: byId("news-insight-analysis").value.trim(),
-        subjectIds,
+        scopeType,
+        storyClusterId: scopeType === "cluster" ? storyClusterId : undefined,
+        subjectIds: scopeType === "subject" ? subjectIds : [],
         subjectMatchMode: "any",
         itemLinks,
         reviewStatus: byId("news-insight-status").value,
@@ -1715,6 +1833,45 @@ Use clear, approachable, nonpartisan language. Do not assume the article, headli
       message.textContent = error?.message || "The Owl Insight could not be saved.";
     } finally {
       setInsightBusy(button, false, "Saving…", "Save Insight");
+    }
+  }
+
+  async function createInsightStory() {
+    const button = byId("news-insight-create-story");
+    const message = byId("news-insight-message");
+    const itemId = byId("news-insight-item-id")?.value || "";
+    if (!selectedAdminNewsItem || !itemId) return;
+    setInsightBusy(button, true, "Starting…", "Start a developing story with this article");
+    message.textContent = "";
+    try {
+      const result = await invokeNewsAdmin("saveStoryCluster", {
+        title: selectedAdminNewsItem.headline,
+        status: "active",
+        representativeItemId: itemId
+      });
+      const cluster = result.storyCluster;
+      if (!cluster?.id) throw new Error("The developing story could not be created.");
+      const assignment = (cluster.news_story_cluster_items || [])
+        .find((row) => String(row.news_item_id || "") === itemId) || {
+          story_cluster_id: cluster.id,
+          news_item_id: itemId,
+          membership_status: "confirmed",
+          assignment_method: "manual",
+          news_story_clusters: cluster
+        };
+      if (!assignment.news_story_clusters) assignment.news_story_clusters = cluster;
+      populateInsightStories(
+        [cluster, ...insightStoryClusters],
+        [assignment, ...insightStoryAssignments.values()],
+        String(cluster.id)
+      );
+      setInsightScope("cluster");
+      message.textContent = "Developing story started. Save the Insight when you’re ready.";
+    } catch (error) {
+      console.error("Developing story creation failed", error);
+      message.textContent = error?.message || "The developing story could not be started.";
+    } finally {
+      setInsightBusy(button, false, "Starting…", "Start a developing story with this article");
     }
   }
 
@@ -2164,7 +2321,11 @@ Use clear, approachable, nonpartisan language. Do not assume the article, headli
   });
   byId("news-insight-form")?.addEventListener("submit", saveNewsInsight);
   byId("news-insight-hide")?.addEventListener("click", hideNewsInsight);
+  byId("news-insight-create-story")?.addEventListener("click", createInsightStory);
   byId("news-insight-status")?.addEventListener("change", syncInsightPublicControl);
+  document.querySelectorAll('input[name="insightScope"]').forEach((input) => {
+    input.addEventListener("change", syncInsightScopePanels);
+  });
   byId("news-insight-add-subject")?.addEventListener("click", () => {
     const panel = byId("news-insight-taxonomy-search");
     if (!panel) return;
