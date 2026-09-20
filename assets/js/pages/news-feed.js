@@ -7,7 +7,7 @@
   const NEWS_SHARE_BASE_URL = "https://thestrategicowl.com/news";
   const NEWS_READER_API_URL = "https://thestrategicowl.com/api/news-reader";
   const NEWS_READER_THEME_KEY = "strategic-owl-reader-theme";
-  const NEWS_CACHE_VERSION = 5;
+  const NEWS_CACHE_VERSION = 6;
   const NEWS_CACHE_PREFIX = "strategic-owl-news-feed";
   const NEWS_PAGE_SIZE = 50;
 
@@ -608,6 +608,14 @@
     const rawReader = firstValue(item, ["reader", "readerResult", "reader_result"], {});
     const contentText = String(firstValue(item, ["contentText", "content_text", "content"]));
     const summaryText = String(firstValue(item, ["summaryText", "summary_text", "summary", "excerpt"]));
+    const primaryMediaType = String(firstValue(item, ["primaryMediaType", "primary_media_type"])).trim().toLowerCase();
+    const thumbnailUrl = safeUrl(firstValue(item, ["thumbnailUrl", "thumbnail_url", "imageUrl", "image_url"]));
+    const primaryImageUrl = primaryMediaType === "image"
+      ? safeUrl(firstValue(item, ["primaryMediaUrl", "primary_media_url"]))
+      : "";
+    const mediaImageUrl = String(firstValue(media, ["type", "mediaType", "media_type"])).toLowerCase() === "image"
+      ? safeUrl(firstValue(media, ["url", "mediaUrl", "media_url"]))
+      : "";
     const suppliedReaderText = String(firstValue(rawReader, ["text", "readerText", "reader_text"]));
     const readerBlocks = normalizeReaderBlocks(firstValue(
       rawReader,
@@ -641,7 +649,7 @@
       summary: summaryText,
       publishedAt: firstValue(item, ["publishedAt", "published_at", "sourceUpdatedAt", "source_updated_at"]),
       originalUrl: safeUrl(firstValue(item, ["canonicalUrl", "canonical_url", "articleLink", "article_link", "url"])),
-      imageUrl: safeUrl(firstValue(item, ["primaryMediaUrl", "primary_media_url", "thumbnailUrl", "thumbnail_url", "imageUrl", "image_url"], firstValue(media, ["url", "mediaUrl", "media_url"]))),
+      imageUrl: thumbnailUrl || primaryImageUrl || mediaImageUrl,
       authors: normalizeStringList(firstValue(item, ["authors", "author", "byline"], [])),
       categories: normalizeStringList(firstValue(item, ["categories", "category"], [])),
       sourceName: String(firstValue(nestedSource, ["sourceName", "source_name", "name"], mappedSource.name || firstValue(item, ["sourceName", "source_name"], "News Source"))),
