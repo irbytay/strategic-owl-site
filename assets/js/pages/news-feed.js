@@ -38,6 +38,8 @@
   let hasMore = false;
   let paginationObserver = null;
   let selectedAdminNewsItem = null;
+  let editingReusableInsightId = "";
+  let editingReusableInsightItemLinks = [];
   let activeReaderItem = null;
   let pendingOriginalUrl = "";
   let renderedItemsById = new Map();
@@ -659,10 +661,12 @@
         firstValue(item, ["readerTextLength", "reader_text_length"], readerText.length)
       )) || readerText.length,
       owlInsight: insightAnalysis ? {
+        id: String(firstValue(rawInsight, ["id", "insightId", "insight_id"])),
         label: String(firstValue(rawInsight, ["owlLabel", "owl_label"], "Owl Insight")),
         labels: normalizeStringList(firstValue(rawInsight, ["labels"], [])),
         analysis: insightAnalysis,
-        public: Boolean(firstValue(rawInsight, ["public", "isPublic", "is_public"], false))
+        public: Boolean(firstValue(rawInsight, ["public", "isPublic", "is_public"], false)),
+        reusable: Boolean(firstValue(rawInsight, ["reusable"], false))
       } : null
     };
   }
@@ -1501,29 +1505,94 @@ Use clear, approachable, nonpartisan language. Do not assume the article, headli
     }
   }
 
+  function populateInsightTaxonomy(taxonomy, selectedIds = new Set()) {
+    const host = byId("news-insight-subjects");
+    if (!host) return;
+    const activeTerms = taxonomy
+      .filter((term) => String(term?.status || "").toLowerCase() === "active")
+      .sort((left, right) => {
+        const typeOrder = String(left?.subject_type || "").localeCompare(String(right?.subject_type || ""));
+        return typeOrder || String(left?.subject_name || "").localeCompare(String(right?.subject_name || ""));
+      });
+
+    if (!activeTerms.length) {
+      host.innerHTML = '<p class="news-insight-taxonomy-empty">No active taxonomy terms are available.</p>';
+      return;
+    }
+
+    host.replaceChildren(...activeTerms.map((term) => {
+      const label = document.createElement("label");
+      label.className = "news-insight-taxonomy-option";
+      const input = document.createElement("input");
+      input.type = "checkbox";
+      input.name = "insightSubject";
+      input.value = String(term.id || "");
+      input.checked = selectedIds.has(input.value);
+      const copy = document.createElement("span");
+      copy.textContent = String(term.subject_name || "Taxonomy term");
+      const type = document.createElement("small");
+      type.textContent = String(term.subject_type || "subject");
+      label.append(input, copy, type);
+      return label;
+    }));
+  }
+
   async function openNewsInsight(itemId, trigger) {
     if (!currentAccess?.administrator) return;
     const originalLabel = trigger?.querySelector("span")?.textContent || trigger?.textContent?.trim() || "Add Insight";
     setInsightBusy(trigger, true, "Opening…", originalLabel);
 
     try {
-      const result = await invokeNewsAdmin("getNewsItem", { itemId });
+      const [result, taxonomyResult] = await Promise.all([
+        invokeNewsAdmin("getNewsItem", { itemId }),
+        invokeNewsAdmin("listTaxonomy", { taxonomyType: "all" })
+      ]);
       selectedAdminNewsItem = result.item || null;
       if (!selectedAdminNewsItem) {
         throw new Error("The article could not be found.");
       }
 
-      const insight = selectedAdminNewsItem.insight || {};
+      const visibleInsight = renderedItemsById.get(String(itemId || ""))?.owlInsight;
+      const linkedReusable = (selectedAdminNewsItem.reusableInsights || [])
+        .map((row) => row?.owl_insights)
+        .find((entry) => entry && entry.review_status !== "hidden") ||
+        (visibleInsight?.reusable && visibleInsight.id ? { id: visibleInsight.id } : null);
+      let reusableInsight = null;
+      if (linkedReusable?.id) {
+        const reusableResult = await invokeNewsAdmin("getReusableInsight", { insightId: linkedReusable.id });
+        reusableInsight = reusableResult.insight || null;
+      }
+      const insight = reusableInsight || selectedAdminNewsItem.insight || {};
+      editingReusableInsightId = String(reusableInsight?.id || "");
+      editingReusableInsightItemLinks = Array.isArray(reusableInsight?.owl_insight_items)
+        ? reusableInsight.owl_insight_items.map((row) => ({
+            itemId: row.news_item_id,
+            relationship: row.relationship
+          }))
+        : [];
       byId("news-insight-title").textContent = selectedAdminNewsItem.headline || "Owl Insight";
       byId("news-insight-source").textContent = selectedAdminNewsItem.source?.source_name || "News article";
       byId("news-insight-item-id").value = selectedAdminNewsItem.id;
       byId("news-insight-label").value = insight.owl_label || "";
       byId("news-insight-analysis").value = insight.owl_analysis || "";
+      byId("news-insight-match").value = insight.subject_match_mode === "all" ? "all" : "any";
+      const reusableSubjectIds = new Set(
+        (reusableInsight?.owl_insight_subjects || []).map((row) => String(row.subject_id || ""))
+      );
+      const confirmedArticleSubjectIds = new Set(
+        (selectedAdminNewsItem.subjectAssignments || [])
+          .filter((row) => row.assignment_status === "confirmed")
+          .map((row) => String(row.subject_id || ""))
+      );
+      populateInsightTaxonomy(
+        Array.isArray(taxonomyResult.taxonomy) ? taxonomyResult.taxonomy : [],
+        reusableSubjectIds.size ? reusableSubjectIds : confirmedArticleSubjectIds
+      );
       byId("news-insight-status").value = insight.review_status === "published"
         ? "published"
         : "draft";
       byId("news-insight-public").checked = Boolean(insight.is_public);
-      byId("news-insight-hide").hidden = !selectedAdminNewsItem.insight || insight.review_status === "hidden";
+      byId("news-insight-hide").hidden = !editingReusableInsightId && (!selectedAdminNewsItem.insight || insight.review_status === "hidden");
       byId("news-insight-message").textContent = "";
       syncInsightPublicControl();
 
@@ -1549,15 +1618,28 @@ Use clear, approachable, nonpartisan language. Do not assume the article, headli
     event.preventDefault();
     const button = byId("news-insight-save");
     const message = byId("news-insight-message");
+    const subjectIds = Array.from(document.querySelectorAll('#news-insight-subjects input[name="insightSubject"]:checked'))
+      .map((input) => input.value)
+      .filter(Boolean);
+    if (!subjectIds.length) {
+      message.textContent = "Choose at least one subject this Insight applies to.";
+      return;
+    }
     setInsightBusy(button, true, "Saving…", "Save Insight");
     message.textContent = "";
 
     try {
-      await invokeNewsAdmin("saveNewsInsight", {
-        itemId: byId("news-insight-item-id").value,
+      const itemId = byId("news-insight-item-id").value;
+      const itemLinks = editingReusableInsightItemLinks.filter((link) => link.itemId !== itemId);
+      itemLinks.push({ itemId, relationship: "include" });
+      await invokeNewsAdmin("saveReusableInsight", {
+        insightId: editingReusableInsightId || undefined,
         owlLabel: byId("news-insight-label").value.trim(),
         labels: [],
         owlAnalysis: byId("news-insight-analysis").value.trim(),
+        subjectIds,
+        subjectMatchMode: byId("news-insight-match").value,
+        itemLinks,
         reviewStatus: byId("news-insight-status").value,
         public: byId("news-insight-public").checked
       });
@@ -1582,7 +1664,11 @@ Use clear, approachable, nonpartisan language. Do not assume the article, headli
     message.textContent = "";
 
     try {
-      await invokeNewsAdmin("hideNewsInsight", { itemId });
+      if (editingReusableInsightId) {
+        await invokeNewsAdmin("hideReusableInsight", { insightId: editingReusableInsightId });
+      } else {
+        await invokeNewsAdmin("hideNewsInsight", { itemId });
+      }
       closeNewsInsightDialog();
       clearNewsCache();
       await loadNews();

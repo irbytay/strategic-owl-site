@@ -10,11 +10,11 @@
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
   <link rel="icon" type="image/png" href="assets/images/3X.png" />
   <link rel="stylesheet" href="assets/css/site.css?v=20260908-4" />
-  <link rel="stylesheet" href="assets/css/pages/news-feed.css?v=20260920-1" />
+  <link rel="stylesheet" href="assets/css/pages/news-feed.css?v=20260920-2" />
   <script src="assets/js/site-shell.js?v=20260908-2" defer></script>
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2" defer></script>
   <script src="assets/js/owl-access.js?v=20260909-2" defer></script>
-  <script src="assets/js/pages/news-feed.js?v=20260920-1" defer></script>
+  <script src="assets/js/pages/news-feed.js?v=20260920-2" defer></script>
 </head>
 <body class="site-body" data-page="news-feed">
   <a class="skip-link" href="#main-content">Skip to content</a>
@@ -171,6 +171,18 @@
       <label for="news-insight-analysis">Your analysis</label>
       <textarea id="news-insight-analysis" name="owlAnalysis" rows="8" maxlength="12000" required></textarea>
 
+      <fieldset class="news-insight-taxonomy">
+        <legend>Applies to <span>(select one or more)</span></legend>
+        <div class="news-insight-taxonomy-options" id="news-insight-subjects"></div>
+      </fieldset>
+
+      <label for="news-insight-match">Matching
+        <select id="news-insight-match" name="subjectMatchMode">
+          <option value="any">Any selected subject</option>
+          <option value="all">All selected subjects</option>
+        </select>
+      </label>
+
       <div class="news-insight-settings">
         <label for="news-insight-status">Status
           <select id="news-insight-status" name="reviewStatus">
@@ -180,7 +192,7 @@
         </label>
         <label class="news-insight-public" for="news-insight-public">
           <input id="news-insight-public" name="public" type="checkbox" />
-          <span>Show on public share page</span>
+          <span>Available to readers</span>
         </label>
       </div>
 
