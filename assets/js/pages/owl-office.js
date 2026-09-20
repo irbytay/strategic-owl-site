@@ -1123,6 +1123,9 @@
     badge.hidden = pending === 0;
     byId("office-news-request-count").textContent = String(pending);
     byId("office-news-source-count").textContent = String(sourceCount || newsSources.length);
+    if (byId("office-news-source-tab-count")) {
+      byId("office-news-source-tab-count").textContent = String(sourceCount || newsSources.length);
+    }
     byId("office-news-item-count").textContent = String(itemCount);
   }
 
