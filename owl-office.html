@@ -65,7 +65,7 @@
             <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 5h16v14H4Z"></path><path d="M8 9h8"></path><path d="M8 13h5"></path></svg>
             <span class="office-badge" id="office-news-count" hidden>0</span>
           </span>
-          <span><strong>News Administration</strong><small>Sources and Owl Insights</small></span>
+          <span><strong>News Desk</strong><small>Coverage, stories, and Owl Insights</small></span>
         </button>
       </nav>
 
@@ -148,24 +148,58 @@
   <dialog class="office-dialog office-dialog--news" id="office-news-dialog" aria-labelledby="office-news-title">
     <section class="office-dialog-card">
       <button class="office-dialog-close" type="button" data-close-dialog aria-label="Close">×</button>
-      <p class="office-eyebrow">News Feed</p>
-      <h2 id="office-news-title">News Administration</h2>
+      <p class="office-eyebrow">Owl Office</p>
+      <h2 id="office-news-title">News Desk</h2>
 
       <div class="office-news-toolbar">
-        <div class="office-news-tabs" role="group" aria-label="News administration view">
-          <button type="button" data-news-admin-view="requests" aria-pressed="true">Requests <span id="office-news-request-count">0</span></button>
-          <button type="button" data-news-admin-view="sources" aria-pressed="false">Sources <span id="office-news-source-count">0</span></button>
+        <div class="office-news-tabs" role="group" aria-label="News desk view">
+          <button type="button" data-news-admin-view="dashboard" aria-pressed="true">Dashboard</button>
+          <button type="button" data-news-admin-view="stories" aria-pressed="false">Stories <span id="office-story-count">0</span></button>
           <button type="button" data-news-admin-view="articles" aria-pressed="false">Articles <span id="office-news-item-count">0</span></button>
-          <button type="button" data-news-admin-view="taxonomy" aria-pressed="false">Taxonomy <span id="office-taxonomy-count">0</span></button>
-          <button type="button" data-news-admin-view="insights" aria-pressed="false">Reusable Insights <span id="office-reusable-insight-count">0</span></button>
-          <button type="button" data-news-admin-view="rights" aria-pressed="false">Reader Rights <span id="office-rights-count">0</span></button>
+          <button type="button" data-news-admin-view="insights" aria-pressed="false">Insights <span id="office-reusable-insight-count">0</span></button>
+          <button type="button" data-news-admin-view="manage" aria-pressed="false">Manage</button>
         </div>
         <button class="office-refresh-button" id="office-refresh-news" type="button">Refresh</button>
       </div>
 
       <p class="office-news-message" id="office-news-message" role="status" aria-live="polite"></p>
 
-      <section class="office-news-panel" data-news-admin-panel="requests">
+      <section class="office-news-panel" data-news-admin-panel="dashboard">
+        <form class="office-desk-search" id="office-desk-search-form">
+          <input id="office-desk-search" type="search" maxlength="100" placeholder="Search subjects, headlines, or sources" aria-label="Search the news desk" />
+          <button class="office-refresh-button" type="submit">Search</button>
+          <button class="office-source-add" id="office-dashboard-new-insight" type="button"><span aria-hidden="true">＋</span> New Insight</button>
+        </form>
+        <div class="office-desk-metrics" aria-label="News desk summary">
+          <button type="button" data-dashboard-target="stories"><strong id="office-metric-stories">0</strong><span>Active stories</span></button>
+          <button type="button" data-dashboard-target="articles"><strong id="office-metric-articles">0</strong><span>Recent articles</span></button>
+          <button type="button" data-dashboard-target="insights"><strong id="office-metric-insights">0</strong><span>Insights</span></button>
+          <button type="button" data-dashboard-target="manage"><strong id="office-metric-attention">0</strong><span>Needs attention</span></button>
+        </div>
+        <div class="office-dashboard-grid">
+          <section class="office-dashboard-section">
+            <div class="office-dashboard-heading">
+              <div><p class="office-section-kicker">Coverage</p><h3>Subjects across sources</h3></div>
+              <button class="office-news-text-action" type="button" data-dashboard-target="articles">View articles</button>
+            </div>
+            <div class="office-subject-dashboard" id="office-subject-dashboard"></div>
+          </section>
+          <aside class="office-dashboard-section office-dashboard-queue">
+            <div class="office-dashboard-heading"><div><p class="office-section-kicker">Your desk</p><h3>Needs attention</h3></div></div>
+            <div id="office-dashboard-queue"></div>
+          </aside>
+        </div>
+      </section>
+
+      <section class="office-news-panel" data-news-admin-panel="stories" hidden>
+        <div class="office-news-panel-heading">
+          <div><p class="office-section-kicker">Developing coverage</p><h3>Stories across sources</h3></div>
+          <p>Review related coverage and decide where an Insight belongs.</p>
+        </div>
+        <div class="office-news-list office-story-list" id="office-story-list"></div>
+      </section>
+
+      <section class="office-news-panel" data-news-admin-panel="requests" hidden>
         <div class="office-news-list" id="office-news-request-list"></div>
       </section>
 
@@ -208,6 +242,7 @@
           <button type="button" data-taxonomy-filter="entity" aria-pressed="false">Entities</button>
           <button type="button" data-taxonomy-filter="geography" aria-pressed="false">Geography</button>
         </div>
+        <input class="office-manage-search" id="office-taxonomy-search" type="search" placeholder="Search terms or matching phrases" aria-label="Search taxonomy" />
         <div class="office-news-list" id="office-taxonomy-list"></div>
       </section>
 
@@ -225,6 +260,18 @@
           <button class="office-source-add" id="office-add-right" type="button"><span aria-hidden="true">＋</span> Add Rights Record</button>
         </div>
         <div class="office-news-list" id="office-rights-list"></div>
+      </section>
+
+      <section class="office-news-panel" data-news-admin-panel="manage" hidden>
+        <div class="office-manage-header">
+          <div><p class="office-section-kicker">Settings</p><h3>Manage the News Feed</h3><p>Sources, requests, matching terms, and reading rights remain here when you need them.</p></div>
+        </div>
+        <div class="office-manage-grid">
+          <button type="button" data-manage-target="sources"><strong>Sources</strong><span id="office-news-source-count">0</span><small>Connect, test, pause, and refresh publishers.</small></button>
+          <button type="button" data-manage-target="requests"><strong>Requests</strong><span id="office-news-request-count">0</span><small>Review source requests from readers.</small></button>
+          <button type="button" data-manage-target="taxonomy"><strong>Taxonomy</strong><span id="office-taxonomy-count">0</span><small>Manage subjects and their matching language.</small></button>
+          <button type="button" data-manage-target="rights"><strong>Reader Rights</strong><span id="office-rights-count">0</span><small>Control full-text and image permissions.</small></button>
+        </div>
       </section>
     </section>
   </dialog>
@@ -413,15 +460,28 @@
   <dialog class="office-dialog office-dialog--wide" id="office-reusable-insight-dialog" aria-labelledby="office-reusable-insight-title">
     <form class="office-dialog-card" id="office-reusable-insight-form">
       <button class="office-dialog-close" type="button" data-close-dialog aria-label="Close">×</button>
-      <p class="office-eyebrow">Reusable Analysis</p>
-      <h2 id="office-reusable-insight-title">Reusable Owl Insight</h2>
+      <p class="office-eyebrow">Owl Insight</p>
+      <h2 id="office-reusable-insight-title">Apply an Insight</h2>
       <input id="office-reusable-insight-id" type="hidden" />
       <label for="office-reusable-label">Owl label</label>
       <input id="office-reusable-label" maxlength="120" placeholder="What readers should notice" />
       <label for="office-reusable-analysis">Your analysis</label>
       <textarea id="office-reusable-analysis" rows="8" maxlength="12000"></textarea>
-      <label for="office-reusable-subjects">Applies to confirmed tags <span>(select one or more)</span></label>
-      <select id="office-reusable-subjects" multiple size="9"></select>
+      <fieldset class="office-insight-scope-picker">
+        <legend>Where should this appear?</legend>
+        <label><input type="radio" name="officeReusableScope" value="article" disabled /> Selected article <small>Available when the Insight began from an article</small></label>
+        <label><input type="radio" name="officeReusableScope" value="subject" checked /> Matching subjects <small>Future articles with these confirmed subjects</small></label>
+        <label><input type="radio" name="officeReusableScope" value="cluster" /> Developing story <small>Coverage connected to the same story</small></label>
+      </fieldset>
+      <div id="office-reusable-subject-fields">
+        <label for="office-reusable-subjects">Subjects <span>(select one or more)</span></label>
+        <select id="office-reusable-subjects" multiple size="9"></select>
+      </div>
+      <div id="office-reusable-story-fields" hidden>
+        <label for="office-reusable-story">Developing story</label>
+        <select id="office-reusable-story"><option value="">Choose a developing story</option></select>
+      </div>
+      <p class="office-insight-reach" id="office-reusable-reach">Choose where this Insight should appear.</p>
       <div class="office-form-grid">
         <label for="office-reusable-match">Matching
           <select id="office-reusable-match">
