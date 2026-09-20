@@ -618,6 +618,16 @@
     const readerMode = rawReaderMode === "reader"
       ? "full"
       : rawReaderMode || "preview";
+    const readerNotice = String(firstValue(
+      rawReader,
+      ["notice", "readerNotice", "reader_notice"],
+      firstValue(item, ["readerNotice", "reader_notice"])
+    )).trim();
+    const readerUnavailableReason = String(firstValue(
+      rawReader,
+      ["unavailableReason", "unavailable_reason"],
+      firstValue(item, ["readerUnavailableReason", "reader_unavailable_reason", "unavailableReason", "unavailable_reason"])
+    )).trim().toLowerCase();
 
     return {
       id: String(firstValue(item, ["id", "newsItemId", "news_item_id"])),
@@ -634,6 +644,8 @@
       articleAccess: String(firstValue(nestedSource, ["articleAccess", "article_access"], mappedSource.articleAccess || firstValue(item, ["articleAccess", "article_access"]))).toLowerCase(),
       readerMode,
       readerText,
+      readerNotice,
+      readerUnavailableReason,
       readerBlocks,
       readerImages,
       readerTextSource: String(firstValue(
@@ -686,6 +698,10 @@
 
   function hasMeaningfulPreview(item) {
     return hasMeaningfulPreviewText(item?.summary);
+  }
+
+  function readerUnavailableNotice(item) {
+    return String(item?.readerNotice || "").trim() || "This one stays at the source.";
   }
 
   function renderArticleActions(item) {
@@ -1277,7 +1293,7 @@
     if (statusText) {
       statusText.textContent = building
         ? "Building your Owl Reader view…"
-        : "This one stays at the source.";
+        : readerUnavailableNotice(item);
     }
   }
 
@@ -1317,6 +1333,8 @@
         originalUrl: safeUrl(result?.originalUrl) || item.originalUrl,
         readerMode: resolvedReaderMode,
         readerText,
+        readerNotice: String(firstValue(reader, ["notice", "readerNotice", "reader_notice"])).trim(),
+        readerUnavailableReason: String(firstValue(reader, ["unavailableReason", "unavailable_reason"])).trim().toLowerCase(),
         readerBlocks: normalizeReaderBlocks(firstValue(reader, ["blocks", "readerBlocks", "reader_blocks"], [])),
         readerImages: normalizeReaderImages(firstValue(reader, ["images", "readerImages", "reader_images"], [])),
         readerTextSource: String(firstValue(reader, ["textSource", "text_source", "source"])).trim().toLowerCase(),
@@ -1329,6 +1347,8 @@
         ...item,
         readerMode: "preview",
         readerText: "",
+        readerNotice: "Owl Reader could not prepare this article right now. You can still read it at the original source.",
+        readerUnavailableReason: "reader_request_failed",
         readerBlocks: [],
         readerImages: []
       });
