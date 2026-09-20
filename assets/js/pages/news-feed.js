@@ -1373,22 +1373,196 @@
   }
 
   function researchPromptFor(item) {
-    return `Research this article using current, reliable sources and help me understand it clearly.
+    return `Use the article, post, video, claim, report, study, speech, interview, announcement, or other source I provide as a starting point to research the subject it reports on.
 
-Title: ${item.headline || "Untitled article"}
-Publisher: ${item.sourceName || "Unknown publisher"}
+My goal is not simply to understand the source itself. I want to understand the underlying subject, determine what is actually important, and avoid wasting time on stories or claims that are receiving attention without having much real-world consequence.
+
+Source title or description: ${item.headline || "Untitled article"}
+Publisher, speaker, organization, or creator: ${item.sourceName || "Unknown publisher"}
 Original URL: ${item.originalUrl || "Not available"}
 
-Please:
-1. A concise explanation of the article's central claim or development.
-2. Verify its most important factual claims.
-3. Separate established facts from allegations, opinions, predictions, and uncertainty.
-4. Explain the broader consensus among reliable sources and identify meaningful disagreement.
-5. Provide relevant historical or legal context.
-6. Identify important context the article may have omitted.
-7. Link to primary records and reliable sources whenever possible.
+Research the underlying subject using current, reliable sources. Treat the original material as a lead, not as an authoritative account.
 
-Use clear, approachable, nonpartisan language. Do not assume the article, headline, or institutional claims are accurate without checking the evidence. If you cannot access the article, say so and research the reported subject using the title, publisher, and URL.`;
+### First: What is actually going on?
+
+Explain the subject in plain English.
+
+Tell me:
+
+- what happened
+- what is verified
+- who or what is involved
+- what has actually changed, if anything
+- what remains uncertain
+
+Separate documented facts and actions from allegations, rhetoric, opinion, prediction, speculation, marketing, advocacy, and political or promotional messaging.
+
+### Then: Is this worth my attention?
+
+Do not assume something is important simply because politicians, media outlets, social media, companies, celebrities, influencers, organizations, or other powerful or popular people are talking about it.
+
+Look for concrete consequences.
+
+Ask:
+
+- Did something actually happen, or did somebody mainly say something?
+- Did a law, policy, court ruling, government action, scientific finding, financial event, military action, business decision, technological development, public-health development, or other meaningful event occur?
+- Does this affect people's rights, money, safety, government, work, health, technology, community, environment, or daily life?
+- Is there credible evidence that the situation could have meaningful consequences?
+- Is the attention surrounding the subject much larger than its documented significance?
+- Is this mostly a continuation of an existing argument, controversy, or news cycle rather than a meaningful new development?
+
+If the subject appears to have little concrete consequence, say so plainly and briefly explain why.
+
+Do not call something a "distraction" merely because it is controversial or heavily covered. Only use that description when there is credible evidence supporting it.
+
+Otherwise, explain that the subject may be receiving substantial attention despite limited evidence of material consequence.
+
+### What might deserve more attention?
+
+Look at the broader context surrounding the subject.
+
+If another development directly connected to this subject has substantially greater documented consequences, explain that.
+
+Do not change the subject simply because something else seems more interesting.
+
+Any comparison should have a clear factual connection to the original subject, event, person, organization, institution, industry, or larger situation.
+
+The purpose is to distinguish attention from consequence.
+
+### Give me the context I actually need
+
+Provide whatever background materially improves understanding.
+
+Depending on the subject, that could include:
+
+- historical context
+- legal or constitutional context
+- scientific evidence
+- economic data
+- technical explanation
+- geopolitical context
+- cultural or social context
+- previous statements or actions
+- court decisions
+- legislation
+- government records
+- company filings
+- research
+- datasets
+- relevant timelines
+
+Do not bury me in background that does not materially change my understanding of the subject.
+
+### When government power, law, elections, or constitutional issues are involved
+
+If the subject involves an elected official, government agency, use of public power, elections, civil rights, constitutional authority, law enforcement, military authority, or an oath of office, do not reduce substantive legal or constitutional questions to partisan disagreement.
+
+Check the relevant Constitution, statutes, court decisions, official records, congressional or legislative records, executive actions, election records, agency documents, or other primary evidence when available.
+
+Clearly distinguish between:
+
+- what the Constitution or law actually says
+- documented actions
+- findings by courts or other official bodies
+- allegations or interpretations
+- unresolved legal or constitutional questions
+
+Do not declare that someone violated a law, Constitution, oath, rule, or ethical standard merely because a politician, commentator, article, activist, company, or organization says so.
+
+Show the relevant record and explain what has and has not been formally established.
+
+Apply the same evidentiary standard regardless of the person, party, ideology, organization, company, institution, or government involved.
+
+### Check the original source against the broader record
+
+Verify its most important claims independently.
+
+Look for:
+
+- primary records
+- newer developments
+- corrections
+- missing context
+- contradictory evidence
+- direct quotes in their original context
+- reliable reporting from multiple sources
+- original research or data
+- official documents
+- relevant expert analysis
+
+Explain meaningful disagreement among reliable sources without manufacturing disagreement where the evidence is strong.
+
+If stronger or newer evidence contradicts the original source, explain the discrepancy.
+
+If the original source exaggerates, oversimplifies, omits important context, or presents speculation as fact, explain that clearly.
+
+### Sources
+
+Prioritize primary sources whenever possible, including original documents, datasets, studies, court records, legislation, transcripts, government records, company filings, official reports, research papers, direct statements, and other firsthand evidence.
+
+Use reliable secondary sources when they provide useful reporting, analysis, explanation, or independent verification.
+
+Link to the strongest primary and reliable secondary sources so I can examine the evidence myself.
+
+### Writing style
+
+Write for an average person who wants enough context to genuinely understand what is happening without spending an hour researching it.
+
+Use normal, direct, conversational language.
+
+Do not sound like a government report, academic paper, corporate memo, public-relations statement, cable-news segment, or institutional press release.
+
+Avoid jargon when ordinary language works.
+
+If a technical, legal, scientific, financial, political, or industry-specific term matters, explain it simply.
+
+Do not assume the reader already understands the subject.
+
+Use short paragraphs and useful headings.
+
+Do not overwhelm me with every available fact.
+
+Prioritize information that materially changes how the subject should be understood.
+
+Do not manufacture importance.
+
+Do not manufacture outrage.
+
+Do not dismiss something merely because it is receiving excessive attention.
+
+Help me distinguish what people are talking about from what actually happened and what has meaningful consequences.
+
+### TL;DR
+
+End with a short TL;DR in plain English.
+
+Answer:
+
+What happened?
+What is actually verified?
+
+Does it matter?
+What concrete consequence, if any, makes this worth paying attention to?
+
+What should I not get distracted by?
+What part of the conversation is mostly rhetoric, speculation, repetition, hype, outrage, or attention without much supporting consequence?
+
+What should I notice instead?
+What fact, development, evidence, or context most changes how the subject should be understood?
+
+What don't we know yet?
+What remains unresolved, disputed, uncertain, or developing?
+
+Write the TL;DR so someone who reads nothing else still walks away with an accurate and useful understanding of the subject.
+
+### Final instruction
+
+After the TL;DR, do not offer additional help, suggest follow-up questions, recommend further research, or ask whether I want anything else.
+
+End the response with exactly:
+
+Enjoy your day.`;
   }
 
   async function copyArticleResearchPrompt(itemId) {
