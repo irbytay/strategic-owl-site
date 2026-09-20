@@ -701,7 +701,7 @@
   }
 
   function readerUnavailableNotice(item) {
-    return String(item?.readerNotice || "").trim() || "This one stays at the source.";
+    return String(item?.readerNotice || "").trim() || "This story stays at the source.";
   }
 
   function renderArticleActions(item) {
@@ -1347,7 +1347,7 @@
         ...item,
         readerMode: "preview",
         readerText: "",
-        readerNotice: "Owl Reader could not prepare this article right now. You can still read it at the original source.",
+        readerNotice: "Owl Reader could not prepare this story.",
         readerUnavailableReason: "reader_request_failed",
         readerBlocks: [],
         readerImages: []
