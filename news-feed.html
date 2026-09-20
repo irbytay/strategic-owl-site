@@ -10,11 +10,11 @@
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
   <link rel="icon" type="image/png" href="assets/images/3X.png" />
   <link rel="stylesheet" href="assets/css/site.css?v=20260908-4" />
-  <link rel="stylesheet" href="assets/css/pages/news-feed.css?v=20260920-3" />
+  <link rel="stylesheet" href="assets/css/pages/news-feed.css?v=20260920-4" />
   <script src="assets/js/site-shell.js?v=20260908-2" defer></script>
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2" defer></script>
   <script src="assets/js/owl-access.js?v=20260909-2" defer></script>
-  <script src="assets/js/pages/news-feed.js?v=20260920-3" defer></script>
+  <script src="assets/js/pages/news-feed.js?v=20260920-4" defer></script>
 </head>
 <body class="site-body" data-page="news-feed">
   <a class="skip-link" href="#main-content">Skip to content</a>
@@ -169,7 +169,7 @@
       <input id="news-insight-label" name="owlLabel" maxlength="120" placeholder="What readers should notice" />
 
       <label for="news-insight-analysis">Your analysis</label>
-      <textarea id="news-insight-analysis" name="owlAnalysis" rows="8" maxlength="12000" required></textarea>
+      <textarea id="news-insight-analysis" name="owlAnalysis" rows="6" maxlength="12000" required></textarea>
 
       <fieldset class="news-insight-scope">
         <legend>Applies to</legend>
@@ -177,17 +177,17 @@
           <label class="news-insight-scope-option">
             <input type="radio" name="insightScope" value="article" checked />
             <span>This article</span>
-            <small>Only this story</small>
+            <small>Only this article</small>
           </label>
           <label class="news-insight-scope-option">
             <input type="radio" name="insightScope" value="cluster" />
             <span>Developing story</span>
-            <small>Related coverage of the same event</small>
+            <small>Related coverage</small>
           </label>
           <label class="news-insight-scope-option">
             <input type="radio" name="insightScope" value="subject" />
             <span>Matching subjects</span>
-            <small>Future articles with these subjects</small>
+            <small>Current and future matches</small>
           </label>
         </div>
       </fieldset>
