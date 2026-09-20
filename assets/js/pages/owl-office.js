@@ -827,6 +827,23 @@
   }
 
   function inferredSubjectCoverage() {
+    const completeCoverage = Array.isArray(newsDashboardSummary?.subjectCoverage)
+      ? newsDashboardSummary.subjectCoverage
+      : [];
+    if (completeCoverage.length) {
+      return completeCoverage.map((group) => ({
+        term: {
+          id: group.id,
+          subject_name: group.subjectName,
+          subject_type: group.subjectType
+        },
+        items: Array.isArray(group.recentArticles) ? group.recentArticles : [],
+        sources: (group.sources || []).map((source) => source.source_name).filter(Boolean),
+        articleCount: Number(group.articleCount || 0),
+        sourceCount: Number(group.sourceCount || 0),
+        insight: group.insight || null
+      }));
+    }
     const groups = [];
     for (const term of newsTaxonomy.filter((entry) => entry.status === "active" && entry.subject_type === "subject")) {
       const aliases = Array.isArray(term.news_subject_aliases)
@@ -842,9 +859,12 @@
       const insight = reusableInsights.find((entry) =>
         (entry.owl_insight_subjects || []).some((row) => String(row.subject_id || row.news_subjects?.id || "") === String(term.id))
       );
-      groups.push({ term, items: matched, sources, insight });
+      groups.push({ term, items: matched, sources, articleCount: matched.length, sourceCount: sources.length, insight });
     }
-    return groups.sort((left, right) => right.sources.length - left.sources.length || right.items.length - left.items.length);
+    return groups.sort((left, right) =>
+      Number(right.sourceCount || right.sources.length) - Number(left.sourceCount || left.sources.length) ||
+      Number(right.articleCount || right.items.length) - Number(left.articleCount || left.items.length)
+    );
   }
 
   function renderSubjectDashboard() {
@@ -862,14 +882,16 @@
         : "No strong subject matches were found in the current article window.", "office-empty");
       return;
     }
-    for (const { term, items, sources, insight } of groups.slice(0, 12)) {
+    for (const { term, items, sources, articleCount: totalArticles, sourceCount: totalSources, insight } of groups.slice(0, 12)) {
       const card = document.createElement("article");
       card.className = "office-subject-card";
       const top = document.createElement("div");
       top.className = "office-subject-card-top";
       const title = document.createElement("div");
       appendText(title, "h4", term.subject_name);
-      appendText(title, "p", `${items.length} article${items.length === 1 ? "" : "s"} · ${sources.length} source${sources.length === 1 ? "" : "s"}`);
+      const articleCount = Number(totalArticles || items.length);
+      const sourceCount = Number(totalSources || sources.length);
+      appendText(title, "p", `${articleCount} article${articleCount === 1 ? "" : "s"} · ${sourceCount} source${sourceCount === 1 ? "" : "s"}`);
       top.append(title, newsStatusBadge(insight?.review_status || "needs insight"));
       card.appendChild(top);
       appendText(card, "p", sources.slice(0, 6).join(" · ") || "Source unavailable", "office-subject-sources");
@@ -903,16 +925,20 @@
     }
     for (const story of storyClusters) {
       const memberships = Array.isArray(story.news_story_cluster_items) ? story.news_story_cluster_items : [];
-      const confirmed = memberships.filter((row) => row.membership_status === "confirmed").length;
-      const suggested = memberships.filter((row) => row.membership_status === "suggested").length;
+      const coverage = story.editorialCoverage || {};
+      const confirmed = Number(coverage.confirmedCount ?? memberships.filter((row) => row.membership_status === "confirmed").length);
+      const suggested = Number(coverage.suggestedCount ?? memberships.filter((row) => row.membership_status === "suggested").length);
+      const sourceCount = Number(coverage.sourceCount || 0);
       const card = document.createElement("article");
       card.className = "office-story-card";
       const header = document.createElement("div");
       header.className = "office-news-card-header";
       appendText(header, "h3", story.title || "Developing story");
-      header.appendChild(newsStatusBadge(story.status || "active"));
+      header.appendChild(newsStatusBadge(coverage.insight?.review_status || "needs insight"));
       card.appendChild(header);
-      appendText(card, "p", `${confirmed} confirmed article${confirmed === 1 ? "" : "s"}${suggested ? ` · ${suggested} suggested` : ""}`);
+      appendText(card, "p", `${confirmed} confirmed article${confirmed === 1 ? "" : "s"}${sourceCount ? ` · ${sourceCount} source${sourceCount === 1 ? "" : "s"}` : ""}${suggested ? ` · ${suggested} suggested` : ""}`);
+      const sourceNames = (coverage.sources || []).map((source) => source.source_name).filter(Boolean);
+      if (sourceNames.length) appendText(card, "p", sourceNames.slice(0, 8).join(" · "), "office-subject-sources");
       if (story.summary) appendText(card, "p", story.summary);
       appendText(card, "p", story.latest_published_at ? `Latest coverage ${formatDate(story.latest_published_at)}` : "Waiting for coverage", "office-story-date");
       const actions = document.createElement("div");
@@ -928,9 +954,12 @@
     const host = byId("office-dashboard-queue");
     if (!host) return;
     host.replaceChildren();
-    const suggested = storyClusters.reduce((sum, story) => sum +
-      (story.news_story_cluster_items || []).filter((row) => row.membership_status === "suggested").length, 0);
-    const withoutInsight = inferredSubjectCoverage().filter((group) => !group.insight).length;
+    const suggested = Number(
+      newsDashboardSummary?.attention?.suggestedStoryMatches ??
+      storyClusters.reduce((sum, story) => sum +
+        (story.news_story_cluster_items || []).filter((row) => row.membership_status === "suggested").length, 0)
+    );
+    const withoutInsight = Number(newsDashboardSummary?.attention?.subjectsWithoutInsights ?? inferredSubjectCoverage().filter((group) => !group.insight).length);
     const pending = Number(newsDashboardSummary?.requests?.pending || 0);
     const rows = [
       [suggested, "suggested story matches", "stories"],
@@ -946,7 +975,7 @@
       host.appendChild(button);
     }
     byId("office-metric-stories").textContent = String(storyClusters.length);
-    byId("office-metric-articles").textContent = String(newsItems.length);
+    byId("office-metric-articles").textContent = String(Number(newsDashboardSummary?.items?.active || newsItems.length));
     byId("office-metric-insights").textContent = String(reusableInsights.length);
     byId("office-metric-attention").textContent = String(suggested + withoutInsight + pending);
   }
@@ -1089,7 +1118,12 @@
       newsTaxonomy = Array.isArray(taxonomyResult.taxonomy) ? taxonomyResult.taxonomy : [];
       reusableInsights = Array.isArray(reusableResult.insights) ? reusableResult.insights : [];
       readerRights = Array.isArray(rightsResult.rights) ? rightsResult.rights : [];
-      storyClusters = Array.isArray(storyResult.storyClusters) ? storyResult.storyClusters : [];
+      const storyCoverage = new Map((dashboardResult.dashboard?.storyCoverage || [])
+        .map((story) => [String(story.id), story]));
+      storyClusters = (Array.isArray(storyResult.storyClusters) ? storyResult.storyClusters : []).map((story) => ({
+        ...story,
+        editorialCoverage: storyCoverage.get(String(story.id)) || null
+      }));
       updateNewsDashboard(dashboardResult.dashboard || {});
       renderNewsSources();
       renderNewsRequests();
@@ -1324,6 +1358,25 @@
       setNewsMessage(error?.message || "The articles could not be loaded.");
     } finally {
       setBusy(button, false, "Searching…", "Search");
+    }
+  }
+
+  async function loadScopedNewsItems({ subjectId = "", storyClusterId = "" } = {}) {
+    setNewsMessage("Loading matching articles…");
+    try {
+      const result = await invokeNewsAdmin("listNewsItems", {
+        status: "active",
+        limit: 100,
+        subjectId,
+        storyClusterId
+      });
+      newsItems = Array.isArray(result.items) ? result.items : [];
+      activeSubjectFilter = subjectId;
+      activeStoryFilter = storyClusterId;
+      renderNewsItems();
+      setNewsMessage("");
+    } catch (error) {
+      setNewsMessage(error?.message || "The matching articles could not be loaded.");
     }
   }
 
@@ -1873,11 +1926,10 @@
       if (!action) return;
       if (action.dataset.newsAction === "reusable-edit") editReusableInsight(action.dataset.newsId);
       if (action.dataset.newsAction === "dashboard-subject") {
-        activeSubjectFilter = action.dataset.newsId || "";
-        activeStoryFilter = "";
+        const subjectId = action.dataset.newsId || "";
         byId("office-news-search").value = "";
         showNewsAdminView("articles");
-        renderNewsItems();
+        loadScopedNewsItems({ subjectId });
       }
       if (action.dataset.newsAction === "clear-subject-filter") {
         activeSubjectFilter = "";
@@ -1901,11 +1953,10 @@
         syncReusableInsightScope();
       }
       if (action.dataset.newsAction === "story-view") {
-        activeStoryFilter = action.dataset.newsId || "";
-        activeSubjectFilter = "";
+        const storyClusterId = action.dataset.newsId || "";
         byId("office-news-search").value = "";
         showNewsAdminView("articles");
-        renderNewsItems();
+        loadScopedNewsItems({ storyClusterId });
       }
     });
     byId("office-desk-search-form")?.addEventListener("submit", (event) => {
