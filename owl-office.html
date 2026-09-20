@@ -9,11 +9,11 @@
 
   <link rel="icon" type="image/png" href="assets/images/3X.png" />
   <link rel="stylesheet" href="assets/css/site.css?v=20260908-4" />
-  <link rel="stylesheet" href="assets/css/pages/owl-office.css?v=20260919-1" />
+  <link rel="stylesheet" href="assets/css/pages/owl-office.css?v=20260920-2" />
   <script src="assets/js/site-shell.js?v=20260908-2" defer></script>
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2" defer></script>
   <script src="assets/js/owl-access.js?v=20260909-2" defer></script>
-  <script src="assets/js/pages/owl-office.js?v=20260920-1" defer></script>
+  <script src="assets/js/pages/owl-office.js?v=20260920-2" defer></script>
 </head>
 <body class="site-body" data-page="owl-office">
   <a class="skip-link" href="#main-content">Skip to content</a>
@@ -154,7 +154,7 @@
       <div class="office-news-toolbar">
         <div class="office-news-tabs" role="group" aria-label="News desk view">
           <button type="button" data-news-admin-view="dashboard" aria-pressed="true">Dashboard</button>
-          <button type="button" data-news-admin-view="stories" aria-pressed="false">Stories <span id="office-story-count">0</span></button>
+          <button type="button" data-news-admin-view="stories" aria-pressed="false">Coverage <span id="office-story-count">0</span></button>
           <button type="button" data-news-admin-view="articles" aria-pressed="false">Articles <span id="office-news-item-count">0</span></button>
           <button type="button" data-news-admin-view="insights" aria-pressed="false">Insights <span id="office-reusable-insight-count">0</span></button>
           <button type="button" data-news-admin-view="manage" aria-pressed="false">Manage</button>
@@ -166,12 +166,12 @@
 
       <section class="office-news-panel" data-news-admin-panel="dashboard">
         <form class="office-desk-search" id="office-desk-search-form">
-          <input id="office-desk-search" type="search" maxlength="100" placeholder="Search subjects, headlines, or sources" aria-label="Search the news desk" />
+          <input id="office-desk-search" type="search" maxlength="100" placeholder="Search coverage, headlines, people, or sources" aria-label="Search the news desk" />
           <button class="office-refresh-button" type="submit">Search</button>
           <button class="office-source-add" id="office-dashboard-new-insight" type="button"><span aria-hidden="true">＋</span> New Insight</button>
         </form>
         <div class="office-desk-metrics" aria-label="News desk summary">
-          <button type="button" data-dashboard-target="stories"><strong id="office-metric-stories">0</strong><span>Active stories</span></button>
+          <button type="button" data-dashboard-target="stories"><strong id="office-metric-stories">0</strong><span>Coverage groups</span></button>
           <button type="button" data-dashboard-target="articles"><strong id="office-metric-articles">0</strong><span>Recent articles</span></button>
           <button type="button" data-dashboard-target="insights"><strong id="office-metric-insights">0</strong><span>Insights</span></button>
           <button type="button" data-dashboard-target="manage"><strong id="office-metric-attention">0</strong><span>Needs attention</span></button>
@@ -179,7 +179,7 @@
         <div class="office-dashboard-grid">
           <section class="office-dashboard-section">
             <div class="office-dashboard-heading">
-              <div><p class="office-section-kicker">Coverage</p><h3>Subjects across sources</h3></div>
+              <div><p class="office-section-kicker">Coverage</p><h3>What sources are covering</h3></div>
               <button class="office-news-text-action" type="button" data-dashboard-target="articles">View articles</button>
             </div>
             <div class="office-subject-dashboard" id="office-subject-dashboard"></div>
@@ -193,8 +193,11 @@
 
       <section class="office-news-panel" data-news-admin-panel="stories" hidden>
         <div class="office-news-panel-heading">
-          <div><p class="office-section-kicker">Developing coverage</p><h3>Stories across sources</h3></div>
-          <p>Review related coverage and decide where an Insight belongs.</p>
+          <div><p class="office-section-kicker">Coverage Groups</p><h3>Related reporting, together</h3></div>
+          <div class="office-panel-heading-actions">
+            <p>Confirm suggestions, compare sources, and apply one Insight across the group.</p>
+            <button class="office-source-add" id="office-add-coverage-group" type="button"><span aria-hidden="true">＋</span> New Group</button>
+          </div>
         </div>
         <div class="office-news-list office-story-list" id="office-story-list"></div>
       </section>
@@ -226,6 +229,14 @@
           <input id="office-news-search" type="search" maxlength="100" placeholder="Search headlines" aria-label="Search article headlines" />
           <button class="office-refresh-button" type="submit">Search</button>
         </form>
+        <div class="office-bulk-toolbar" id="office-article-bulk-toolbar">
+          <strong><span id="office-selected-article-count">0</span> selected</strong>
+          <select id="office-bulk-coverage-group" aria-label="Coverage Group for selected articles">
+            <option value="">Choose a Coverage Group</option>
+          </select>
+          <button class="office-refresh-button" id="office-assign-selected-articles" type="button" disabled>Apply Group</button>
+          <button class="office-news-text-action" id="office-clear-selected-articles" type="button">Clear</button>
+        </div>
         <div class="office-news-list" id="office-news-item-list"></div>
       </section>
 
@@ -269,7 +280,7 @@
         <div class="office-manage-grid">
           <button type="button" data-manage-target="sources"><strong>Sources</strong><span id="office-news-source-count">0</span><small>Connect, test, pause, and refresh publishers.</small></button>
           <button type="button" data-manage-target="requests"><strong>Requests</strong><span id="office-news-request-count">0</span><small>Review source requests from readers.</small></button>
-          <button type="button" data-manage-target="taxonomy"><strong>Taxonomy</strong><span id="office-taxonomy-count">0</span><small>Manage subjects and their matching language.</small></button>
+          <button type="button" data-manage-target="stories"><strong>Coverage Groups</strong><span id="office-coverage-manage-count">0</span><small>Manage stories, topics, people, organizations, and places.</small></button>
           <button type="button" data-manage-target="rights"><strong>Reader Rights</strong><span id="office-rights-count">0</span><small>Control full-text and image permissions.</small></button>
         </div>
       </section>
@@ -469,26 +480,16 @@
       <textarea id="office-reusable-analysis" rows="8" maxlength="12000"></textarea>
       <fieldset class="office-insight-scope-picker">
         <legend>Where should this appear?</legend>
-        <label><input type="radio" name="officeReusableScope" value="article" disabled /> Selected article <small>Available when the Insight began from an article</small></label>
-        <label><input type="radio" name="officeReusableScope" value="subject" checked /> Matching subjects <small>Future articles with these confirmed subjects</small></label>
-        <label><input type="radio" name="officeReusableScope" value="cluster" /> Developing story <small>Coverage connected to the same story</small></label>
+        <label><input type="radio" name="officeReusableScope" value="cluster" checked /> Coverage Groups <small>Every confirmed article in one or more selected groups</small></label>
+        <label><input type="radio" name="officeReusableScope" value="article" disabled /> Selected articles <small>Use only for specific exceptions</small></label>
       </fieldset>
-      <div id="office-reusable-subject-fields">
-        <label for="office-reusable-subjects">Subjects <span>(select one or more)</span></label>
-        <select id="office-reusable-subjects" multiple size="9"></select>
-      </div>
-      <div id="office-reusable-story-fields" hidden>
-        <label for="office-reusable-story">Developing story</label>
-        <select id="office-reusable-story"><option value="">Choose a developing story</option></select>
+      <div id="office-reusable-story-fields">
+        <label for="office-reusable-story">Coverage Groups <span>(select one or more)</span></label>
+        <select id="office-reusable-story" multiple size="8"></select>
+        <p class="office-field-help">Choose the smallest useful set. New confirmed articles in these groups inherit this Insight.</p>
       </div>
       <p class="office-insight-reach" id="office-reusable-reach">Choose where this Insight should appear.</p>
       <div class="office-form-grid">
-        <label for="office-reusable-match">Matching
-          <select id="office-reusable-match">
-            <option value="any">Any selected tag</option>
-            <option value="all">All selected tags</option>
-          </select>
-        </label>
         <label for="office-reusable-status">Status
           <select id="office-reusable-status">
             <option value="draft">Draft</option>
@@ -502,6 +503,54 @@
       </label>
       <p class="office-form-message" data-form-message></p>
       <button class="office-button office-button--primary" type="submit">Save Reusable Insight</button>
+    </form>
+  </dialog>
+
+  <dialog class="office-dialog office-dialog--wide" id="office-coverage-group-dialog" aria-labelledby="office-coverage-group-title">
+    <form class="office-dialog-card" id="office-coverage-group-form">
+      <button class="office-dialog-close" type="button" data-close-dialog aria-label="Close">×</button>
+      <p class="office-eyebrow">Coverage</p>
+      <h2 id="office-coverage-group-title">New Coverage Group</h2>
+      <input id="office-coverage-group-id" type="hidden" />
+      <label for="office-coverage-group-name">Name</label>
+      <input id="office-coverage-group-name" maxlength="300" placeholder="What is this coverage about?" required />
+      <div class="office-form-grid">
+        <label for="office-coverage-group-type">Type
+          <select id="office-coverage-group-type">
+            <option value="story">Story</option>
+            <option value="topic">Topic</option>
+            <option value="person">Person</option>
+            <option value="organization">Organization</option>
+            <option value="place">Place</option>
+          </select>
+        </label>
+        <label for="office-coverage-group-visibility">Visibility
+          <select id="office-coverage-group-visibility">
+            <option value="private">Admin only</option>
+            <option value="beta">Beta</option>
+            <option value="public">Public</option>
+          </select>
+        </label>
+      </div>
+      <label for="office-coverage-group-summary">What connects this coverage? <span>(optional)</span></label>
+      <textarea id="office-coverage-group-summary" rows="4" maxlength="4000"></textarea>
+      <p class="office-form-message" data-form-message></p>
+      <button class="office-button office-button--primary" type="submit">Save Coverage Group</button>
+    </form>
+  </dialog>
+
+  <dialog class="office-dialog office-dialog--wide" id="office-article-coverage-dialog" aria-labelledby="office-article-coverage-title">
+    <form class="office-dialog-card" id="office-article-coverage-form">
+      <button class="office-dialog-close" type="button" data-close-dialog aria-label="Close">×</button>
+      <p class="office-eyebrow">Article Coverage</p>
+      <h2 id="office-article-coverage-title">Assign Coverage</h2>
+      <p class="office-insight-source" id="office-article-coverage-source"></p>
+      <input id="office-article-coverage-item-id" type="hidden" />
+      <label for="office-article-coverage-groups">Coverage Groups <span>(select one or more)</span></label>
+      <select id="office-article-coverage-groups" multiple size="8"></select>
+      <div class="office-coverage-signals" id="office-article-coverage-signals"></div>
+      <p class="office-form-message" data-form-message></p>
+      <button class="office-button office-button--primary" type="submit">Apply Coverage</button>
     </form>
   </dialog>
 

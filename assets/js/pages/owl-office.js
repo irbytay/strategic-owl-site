@@ -22,6 +22,8 @@
   let reusableInsights = [];
   let readerRights = [];
   let storyClusters = [];
+  let coverageGroups = [];
+  let selectedArticleIds = new Set();
   let newsDashboardSummary = {};
   let taxonomyFilter = "all";
   let taxonomySearch = "";
@@ -653,40 +655,21 @@
     if (!list) return;
     list.replaceChildren();
 
-    const subject = activeSubjectFilter
-      ? newsTaxonomy.find((entry) => String(entry.id) === String(activeSubjectFilter))
+    const group = activeStoryFilter
+      ? coverageGroups.find((entry) => String(entry.id) === String(activeStoryFilter))
       : null;
-    const aliases = subject && Array.isArray(subject.news_subject_aliases)
-      ? subject.news_subject_aliases.map((alias) => alias.alias_text).filter(Boolean)
-      : [];
-    const phrases = subject ? [subject.subject_name, ...aliases].map((value) => String(value).toLocaleLowerCase()) : [];
-    const story = activeStoryFilter
-      ? storyClusters.find((entry) => String(entry.id) === String(activeStoryFilter))
-      : null;
-    const storyItemIds = new Set((story?.news_story_cluster_items || [])
-      .filter((row) => row.membership_status !== "rejected" && row.membership_status !== "removed")
-      .map((row) => String(row.news_item_id)));
-    const visibleItems = subject
-      ? newsItems.filter((item) => phrases.some((phrase) => phrase.length > 2 && searchableArticleText(item).includes(phrase)))
-      : story
-      ? newsItems.filter((item) => storyItemIds.has(String(item.id)))
+    const visibleItems = group
+      ? newsItems.filter((item) => (item.coverageGroups || []).some((row) =>
+        String(row.story_cluster_id) === String(group.id) && row.membership_status !== "rejected"))
       : newsItems;
 
-    if (subject) {
-      const notice = appendText(list, "p", `Showing recent articles connected to ${subject.subject_name}.`, "office-filter-notice");
-      const clear = document.createElement("button");
-      clear.type = "button";
-      clear.className = "office-news-text-action";
-      clear.dataset.newsAction = "clear-subject-filter";
-      clear.textContent = "Clear subject";
-      notice.append(" ", clear);
-    } else if (story) {
-      const notice = appendText(list, "p", `Showing recent articles in ${story.title}.`, "office-filter-notice");
+    if (group) {
+      const notice = appendText(list, "p", `Showing articles in ${group.title}.`, "office-filter-notice");
       const clear = document.createElement("button");
       clear.type = "button";
       clear.className = "office-news-text-action";
       clear.dataset.newsAction = "clear-story-filter";
-      clear.textContent = "Clear story";
+      clear.textContent = "Clear group";
       notice.append(" ", clear);
     }
 
@@ -698,14 +681,43 @@
     for (const item of visibleItems) {
       const card = document.createElement("article");
       card.className = "office-news-card";
+      card.dataset.itemId = item.id;
       const header = document.createElement("div");
       header.className = "office-news-card-header";
-      appendText(header, "h3", item.headline || "Untitled article");
-      header.appendChild(newsStatusBadge(item.insight?.review_status || "unanalyzed"));
+      const titleWrap = document.createElement("div");
+      titleWrap.className = "office-article-title-wrap";
+      const select = document.createElement("input");
+      select.type = "checkbox";
+      select.className = "office-article-selector";
+      select.dataset.selectArticle = item.id;
+      select.checked = selectedArticleIds.has(String(item.id));
+      select.setAttribute("aria-label", `Select ${item.headline || "article"}`);
+      appendText(titleWrap, "h3", item.headline || "Untitled article");
+      header.append(select, titleWrap);
+      const appliedInsights = Array.isArray(item.reusableInsights) ? item.reusableInsights : [];
+      header.appendChild(newsStatusBadge(appliedInsights.length ? `${appliedInsights.length} insight${appliedInsights.length === 1 ? "" : "s"}` : "no insight"));
       card.appendChild(header);
       const sourceName = item.source?.source_name || "News source";
-      appendText(card, "p", [sourceName, formatDate(item.published_at)].filter(Boolean).join(" · "));
+      const sourceLine = [sourceName, item.source?.alignment_label, formatDate(item.published_at)].filter(Boolean).join(" · ");
+      appendText(card, "p", sourceLine);
       if (item.summary_text) appendText(card, "p", item.summary_text);
+      const memberships = Array.isArray(item.coverageGroups) ? item.coverageGroups : [];
+      const confirmedGroups = memberships
+        .filter((row) => row.membership_status === "confirmed")
+        .map((row) => row.news_story_clusters?.title)
+        .filter(Boolean);
+      const suggestedGroups = memberships
+        .filter((row) => row.membership_status === "suggested")
+        .map((row) => row.news_story_clusters?.title)
+        .filter(Boolean);
+      if (confirmedGroups.length || suggestedGroups.length || appliedInsights.length) {
+        const chips = document.createElement("div");
+        chips.className = "office-coverage-chip-row";
+        for (const name of confirmedGroups.slice(0, 6)) appendText(chips, "span", name);
+        for (const name of suggestedGroups.slice(0, 4)) appendText(chips, "span", `Suggested: ${name}`);
+        for (const insight of appliedInsights.slice(0, 3)) appendText(chips, "span", `Insight: ${insight.owl_label || "Owl Insight"}`);
+        card.appendChild(chips);
+      }
       const actions = document.createElement("div");
       actions.className = "office-news-card-actions office-news-article-actions";
       if (safeUrl(item.canonical_url)) {
@@ -716,20 +728,29 @@
         }));
       }
       actions.appendChild(newsArticleAction({
-        label: item.insight ? "Edit Insight" : "Add Insight",
+        label: "Add Insight",
         icon: "insight",
         action: "article-insight",
         id: item.id
       }));
       actions.appendChild(newsArticleAction({
-        label: "Review Tags",
+        label: "Coverage",
         icon: "insight",
-        action: "article-tags",
+        action: "article-coverage",
         id: item.id
       }));
       card.appendChild(actions);
       list.appendChild(card);
     }
+    syncArticleBulkToolbar();
+  }
+
+  function syncArticleBulkToolbar() {
+    const count = selectedArticleIds.size;
+    const countNode = byId("office-selected-article-count");
+    if (countNode) countNode.textContent = String(count);
+    const assign = byId("office-assign-selected-articles");
+    if (assign) assign.disabled = !count || !byId("office-bulk-coverage-group")?.value;
   }
 
   function taxonomyName(term) {
@@ -747,7 +768,7 @@
       return [term.subject_name, term.description, ...aliases.map((alias) => alias.alias_text)]
         .filter(Boolean).some((value) => String(value).toLocaleLowerCase().includes(query));
     });
-    byId("office-taxonomy-count").textContent = String(newsTaxonomy.length);
+    if (byId("office-taxonomy-count")) byId("office-taxonomy-count").textContent = String(newsTaxonomy.length);
     list.replaceChildren();
     if (!filtered.length) {
       appendText(list, "p", "No taxonomy terms match this view.", "office-empty");
@@ -801,13 +822,16 @@
       header.appendChild(newsStatusBadge(insight.review_status));
       card.appendChild(header);
       if (insight.owl_analysis) appendText(card, "p", insight.owl_analysis);
-      const subjects = (insight.owl_insight_subjects || []).map((row) => taxonomyName(row)).filter(Boolean);
-      const linkedStory = insight.owl_insight_clusters?.[0]?.news_story_clusters;
+      const linkedGroups = (insight.owl_insight_clusters || [])
+        .map((row) => row.news_story_clusters)
+        .filter(Boolean);
       const linkedItems = Array.isArray(insight.owl_insight_items) ? insight.owl_insight_items : [];
       let appliesTo = "Coverage has not been selected.";
-      if (insight.scope_type === "cluster" && linkedStory) appliesTo = `Developing story: ${linkedStory.title}`;
+      if (insight.scope_type === "cluster" && linkedGroups.length) {
+        appliesTo = `Coverage: ${linkedGroups.map((group) => group.title).join(" · ")}`;
+      }
       else if (insight.scope_type === "article" || linkedItems.length) appliesTo = `${linkedItems.length || 1} selected article${linkedItems.length === 1 ? "" : "s"}`;
-      else if (subjects.length) appliesTo = `Subjects: ${subjects.join(", ")}`;
+      else if ((insight.owl_insight_subjects || []).length) appliesTo = "Legacy subject-based Insight";
       appendText(card, "p", appliesTo, "office-insight-scope");
       const actions = document.createElement("div");
       actions.className = "office-news-card-actions";
@@ -872,43 +896,42 @@
     if (!list) return;
     list.replaceChildren();
     const query = deskSearch.toLocaleLowerCase();
-    const groups = inferredSubjectCoverage().filter(({ term, items, sources }) => !query ||
-      [term.subject_name, ...sources, ...items.map((item) => item.headline)]
-        .some((value) => String(value || "").toLocaleLowerCase().includes(query))
-    );
+    const groups = coverageGroups.filter((group) => !query || [
+      group.title,
+      group.summary,
+      ...(group.recentArticles || []).map((item) => item?.headline),
+      ...(group.alignmentCoverage || []).map((row) => row.alignment_label)
+    ].some((value) => String(value || "").toLocaleLowerCase().includes(query)));
     if (!groups.length) {
       appendText(list, "p", query
-        ? "No subjects in the current article window match that search."
-        : "No strong subject matches were found in the current article window.", "office-empty");
+        ? "No Coverage Groups match that search."
+        : "No Coverage Groups are ready yet.", "office-empty");
       return;
     }
-    for (const { term, items, sources, articleCount: totalArticles, sourceCount: totalSources, insight } of groups.slice(0, 12)) {
+    for (const group of groups.slice(0, 12)) {
       const card = document.createElement("article");
       card.className = "office-subject-card";
       const top = document.createElement("div");
       top.className = "office-subject-card-top";
       const title = document.createElement("div");
-      appendText(title, "h4", term.subject_name);
-      const articleCount = Number(totalArticles || items.length);
-      const sourceCount = Number(totalSources || sources.length);
+      appendText(title, "h4", group.title || "Coverage Group");
+      const articleCount = Number(group.stats?.article_count || 0);
+      const sourceCount = Number(group.stats?.source_count || 0);
       appendText(title, "p", `${articleCount} article${articleCount === 1 ? "" : "s"} · ${sourceCount} source${sourceCount === 1 ? "" : "s"}`);
-      top.append(title, newsStatusBadge(insight?.review_status || "needs insight"));
+      const insightCount = Array.isArray(group.insights) ? group.insights.length : 0;
+      top.append(title, newsStatusBadge(insightCount ? `${insightCount} insight${insightCount === 1 ? "" : "s"}` : group.review_status));
       card.appendChild(top);
-      appendText(card, "p", sources.slice(0, 6).join(" · ") || "Source unavailable", "office-subject-sources");
+      const alignment = (group.alignmentCoverage || [])
+        .map((row) => `${row.alignment_label}: ${row.source_count}`)
+        .join(" · ");
+      appendText(card, "p", alignment || `${group.group_type || "story"} · source alignment not assessed`, "office-subject-sources");
       const headlines = document.createElement("ul");
-      for (const item of items.slice(0, 3)) appendText(headlines, "li", item.headline || "Untitled article");
+      for (const item of (group.recentArticles || []).slice(0, 3)) appendText(headlines, "li", item?.headline || "Untitled article");
       card.appendChild(headlines);
       const actions = document.createElement("div");
       actions.className = "office-news-card-actions";
-      const review = newsButton("Review Articles", "office-news-text-action", "dashboard-subject", term.id);
-      review.dataset.subjectName = term.subject_name;
-      actions.appendChild(review);
-      if (insight) actions.appendChild(newsButton("Edit Insight", "office-news-text-action", "reusable-edit", insight.id));
-      else {
-        const add = newsButton("Add Insight", "office-news-text-action", "dashboard-insight", term.id);
-        add.dataset.subjectId = term.id;
-        actions.appendChild(add);
-      }
+      actions.appendChild(newsButton("Review Articles", "office-news-text-action", "story-view", group.id));
+      actions.appendChild(newsButton("Apply Insight", "office-news-text-action", "story-insight", group.id));
       card.appendChild(actions);
       list.appendChild(card);
     }
@@ -917,34 +940,35 @@
   function renderStoryClusters() {
     const list = byId("office-story-list");
     if (!list) return;
-    byId("office-story-count").textContent = String(storyClusters.length);
+    byId("office-story-count").textContent = String(coverageGroups.length);
+    if (byId("office-coverage-manage-count")) byId("office-coverage-manage-count").textContent = String(coverageGroups.length);
     list.replaceChildren();
-    if (!storyClusters.length) {
-      appendText(list, "p", "No active developing stories yet. Start one while adding an Insight to an article.", "office-empty");
+    if (!coverageGroups.length) {
+      appendText(list, "p", "No Coverage Groups yet. Create one here or begin from an article.", "office-empty");
       return;
     }
-    for (const story of storyClusters) {
-      const memberships = Array.isArray(story.news_story_cluster_items) ? story.news_story_cluster_items : [];
-      const coverage = story.editorialCoverage || {};
-      const confirmed = Number(coverage.confirmedCount ?? memberships.filter((row) => row.membership_status === "confirmed").length);
-      const suggested = Number(coverage.suggestedCount ?? memberships.filter((row) => row.membership_status === "suggested").length);
-      const sourceCount = Number(coverage.sourceCount || 0);
+    for (const story of coverageGroups) {
+      const coverage = story.stats || {};
+      const confirmed = Number(coverage.article_count || 0);
+      const suggested = Number(coverage.suggested_article_count || 0);
+      const sourceCount = Number(coverage.source_count || 0);
       const card = document.createElement("article");
       card.className = "office-story-card";
       const header = document.createElement("div");
       header.className = "office-news-card-header";
       appendText(header, "h3", story.title || "Developing story");
-      header.appendChild(newsStatusBadge(coverage.insight?.review_status || "needs insight"));
+      header.appendChild(newsStatusBadge(`${story.group_type || "story"} · ${story.review_status || "confirmed"}`));
       card.appendChild(header);
       appendText(card, "p", `${confirmed} confirmed article${confirmed === 1 ? "" : "s"}${sourceCount ? ` · ${sourceCount} source${sourceCount === 1 ? "" : "s"}` : ""}${suggested ? ` · ${suggested} suggested` : ""}`);
-      const sourceNames = (coverage.sources || []).map((source) => source.source_name).filter(Boolean);
-      if (sourceNames.length) appendText(card, "p", sourceNames.slice(0, 8).join(" · "), "office-subject-sources");
+      const alignment = (story.alignmentCoverage || []).map((row) => `${row.alignment_label}: ${row.source_count}`).join(" · ");
+      if (alignment) appendText(card, "p", alignment, "office-subject-sources");
       if (story.summary) appendText(card, "p", story.summary);
-      appendText(card, "p", story.latest_published_at ? `Latest coverage ${formatDate(story.latest_published_at)}` : "Waiting for coverage", "office-story-date");
+      appendText(card, "p", coverage.latest_confirmed_article_at ? `Latest coverage ${formatDate(coverage.latest_confirmed_article_at)}` : "Waiting for coverage", "office-story-date");
       const actions = document.createElement("div");
       actions.className = "office-news-card-actions";
       actions.appendChild(newsButton("View Articles", "office-news-text-action", "story-view", story.id));
-      actions.appendChild(newsButton("Add Insight", "office-news-text-action", "story-insight", story.id));
+      actions.appendChild(newsButton(story.insights?.length ? "Manage Insights" : "Add Insight", "office-news-text-action", "story-insight", story.id));
+      actions.appendChild(newsButton("Edit Group", "office-news-text-action", "coverage-edit", story.id));
       card.appendChild(actions);
       list.appendChild(card);
     }
@@ -954,16 +978,12 @@
     const host = byId("office-dashboard-queue");
     if (!host) return;
     host.replaceChildren();
-    const suggested = Number(
-      newsDashboardSummary?.attention?.suggestedStoryMatches ??
-      storyClusters.reduce((sum, story) => sum +
-        (story.news_story_cluster_items || []).filter((row) => row.membership_status === "suggested").length, 0)
-    );
-    const withoutInsight = Number(newsDashboardSummary?.attention?.subjectsWithoutInsights ?? inferredSubjectCoverage().filter((group) => !group.insight).length);
+    const suggested = Number(newsDashboardSummary?.attention?.suggestedCoverageMatches ?? 0);
+    const withoutInsight = coverageGroups.filter((group) => !(group.insights || []).length).length;
     const pending = Number(newsDashboardSummary?.requests?.pending || 0);
     const rows = [
-      [suggested, "suggested story matches", "stories"],
-      [withoutInsight, "covered subjects without an Insight", "insights"],
+      [suggested, "suggested coverage matches", "stories"],
+      [withoutInsight, "Coverage Groups without an Insight", "insights"],
       [pending, "source requests waiting", "requests"]
     ];
     for (const [count, label, target] of rows) {
@@ -974,7 +994,7 @@
       appendText(button, "span", label);
       host.appendChild(button);
     }
-    byId("office-metric-stories").textContent = String(storyClusters.length);
+    byId("office-metric-stories").textContent = String(coverageGroups.length);
     byId("office-metric-articles").textContent = String(Number(newsDashboardSummary?.items?.active || newsItems.length));
     byId("office-metric-insights").textContent = String(reusableInsights.length);
     byId("office-metric-attention").textContent = String(suggested + withoutInsight + pending);
@@ -1032,16 +1052,27 @@
 
   function populateInsightStorySelect() {
     const select = byId("office-reusable-story");
-    if (!select) return;
-    const current = select.value;
-    select.innerHTML = '<option value="">Choose a developing story</option>';
-    for (const story of storyClusters) {
+    const articleSelect = byId("office-article-coverage-groups");
+    const bulkSelect = byId("office-bulk-coverage-group");
+    if (!select || !articleSelect || !bulkSelect) return;
+    const selected = new Set(Array.from(select.selectedOptions).map((option) => option.value));
+    const articleSelected = new Set(Array.from(articleSelect.selectedOptions).map((option) => option.value));
+    const bulkCurrent = bulkSelect.value;
+    select.replaceChildren();
+    articleSelect.replaceChildren();
+    bulkSelect.innerHTML = '<option value="">Choose a Coverage Group</option>';
+    for (const story of coverageGroups.filter((entry) => entry.status === "active" && entry.review_status !== "rejected")) {
       const option = document.createElement("option");
       option.value = story.id;
-      option.textContent = story.title || "Developing story";
+      option.textContent = `${story.group_type || "story"}: ${story.title || "Coverage Group"}`;
       select.appendChild(option);
+      articleSelect.appendChild(option.cloneNode(true));
+      bulkSelect.appendChild(option.cloneNode(true));
     }
-    select.value = current;
+    Array.from(select.options).forEach((option) => { option.selected = selected.has(option.value); });
+    Array.from(articleSelect.options).forEach((option) => { option.selected = articleSelected.has(option.value); });
+    bulkSelect.value = bulkCurrent;
+    syncArticleBulkToolbar();
   }
 
   function populateRightsSources() {
@@ -1102,37 +1133,30 @@
     setBusy(refresh, true, "Refreshing…", "Refresh");
     setNewsMessage("Loading news administration…");
     try {
-      const [dashboardResult, sourceResult, requestResult, itemResult, taxonomyResult, reusableResult, rightsResult, storyResult] = await Promise.all([
+      const [dashboardResult, sourceResult, requestResult, itemResult, reusableResult, rightsResult, coverageResult] = await Promise.all([
         invokeNewsAdmin("getAdminDashboard"),
         invokeNewsAdmin("listNewsSources"),
         invokeNewsAdmin("listSourceRequests", { status: "all", limit: 200 }),
         invokeNewsAdmin("listNewsItems", { status: "active", limit: 50 }),
-        invokeNewsAdmin("listTaxonomy", { taxonomyType: "all" }),
         invokeNewsAdmin("listReusableInsights", { reviewStatus: "all", limit: 100 }),
         invokeNewsAdmin("listReaderRights"),
-        invokeNewsAdmin("listStoryClusters", { status: "active", limit: 100 })
+        invokeNewsAdmin("listCoverageGroups", { status: "active", reviewStatus: "all", visibility: "all", limit: 100 })
       ]);
       newsSources = Array.isArray(sourceResult.sources) ? sourceResult.sources : [];
       newsSourceRequests = Array.isArray(requestResult.requests) ? requestResult.requests : [];
       newsItems = Array.isArray(itemResult.items) ? itemResult.items : [];
-      newsTaxonomy = Array.isArray(taxonomyResult.taxonomy) ? taxonomyResult.taxonomy : [];
+      newsTaxonomy = [];
       reusableInsights = Array.isArray(reusableResult.insights) ? reusableResult.insights : [];
       readerRights = Array.isArray(rightsResult.rights) ? rightsResult.rights : [];
-      const storyCoverage = new Map((dashboardResult.dashboard?.storyCoverage || [])
-        .map((story) => [String(story.id), story]));
-      storyClusters = (Array.isArray(storyResult.storyClusters) ? storyResult.storyClusters : []).map((story) => ({
-        ...story,
-        editorialCoverage: storyCoverage.get(String(story.id)) || null
-      }));
+      coverageGroups = Array.isArray(coverageResult.coverageGroups) ? coverageResult.coverageGroups : [];
+      storyClusters = coverageGroups;
       updateNewsDashboard(dashboardResult.dashboard || {});
       renderNewsSources();
       renderNewsRequests();
       renderNewsItems();
-      renderTaxonomy();
       renderReusableInsights();
       renderReaderRights();
       renderEditorialDashboard();
-      populateTaxonomySelect();
       populateInsightStorySelect();
       populateRightsSources();
       setNewsMessage("");
@@ -1597,25 +1621,29 @@
     }
   }
 
-  function openReusableInsightEditor(insight = null) {
+  function openReusableInsightEditor(insight = null, options = {}) {
     const form = byId("office-reusable-insight-form");
     form.reset();
     form.querySelector("[data-form-message]").textContent = "";
-    editingReusableInsight = insight;
+    const seededItem = options.item || null;
+    editingReusableInsight = insight || (seededItem ? {
+      scope_type: "article",
+      owl_insight_items: [{ news_item_id: seededItem.id, relationship: "include", news_items: seededItem }]
+    } : null);
     byId("office-reusable-insight-id").value = insight?.id || "";
     byId("office-reusable-label").value = insight?.owl_label || "";
     byId("office-reusable-analysis").value = insight?.owl_analysis || "";
-    byId("office-reusable-match").value = insight?.subject_match_mode || "any";
     byId("office-reusable-status").value = insight?.review_status === "published" ? "published" : "draft";
     byId("office-reusable-public").checked = Boolean(insight?.is_public);
-    const scope = ["article", "cluster", "subject"].includes(insight?.scope_type) ? insight.scope_type : "subject";
+    const scope = editingReusableInsight?.scope_type === "article" ? "article" : "cluster";
     const articleScopeControl = form.querySelector('input[name="officeReusableScope"][value="article"]');
-    if (articleScopeControl) articleScopeControl.disabled = scope !== "article";
+    const linkedItems = editingReusableInsight?.owl_insight_items || [];
+    if (articleScopeControl) articleScopeControl.disabled = !linkedItems.length;
     const scopeControl = form.querySelector(`input[name="officeReusableScope"][value="${scope}"]`);
     if (scopeControl) scopeControl.checked = true;
-    byId("office-reusable-story").value = insight?.owl_insight_clusters?.[0]?.story_cluster_id || "";
-    const selected = new Set((insight?.owl_insight_subjects || []).map((row) => row.subject_id));
-    Array.from(byId("office-reusable-subjects").options).forEach((option) => {
+    const selected = new Set((insight?.owl_insight_clusters || []).map((row) => String(row.story_cluster_id || row.news_story_clusters?.id || "")));
+    if (options.coverageGroupId) selected.add(String(options.coverageGroupId));
+    Array.from(byId("office-reusable-story").options).forEach((option) => {
       option.selected = selected.has(option.value);
     });
     syncReusableInsightScope();
@@ -1623,19 +1651,22 @@
   }
 
   function selectedReusableInsightScope() {
-    return document.querySelector('input[name="officeReusableScope"]:checked')?.value || "subject";
+    return document.querySelector('input[name="officeReusableScope"]:checked')?.value || "cluster";
   }
 
   function syncReusableInsightScope() {
     const scope = selectedReusableInsightScope();
-    byId("office-reusable-subject-fields").hidden = scope !== "subject";
     byId("office-reusable-story-fields").hidden = scope !== "cluster";
     const reach = byId("office-reusable-reach");
     if (!reach) return;
     if (scope === "cluster") {
-      const story = storyClusters.find((entry) => entry.id === byId("office-reusable-story").value);
-      const count = story?.news_story_cluster_items?.filter((row) => row.membership_status === "confirmed").length || 0;
-      reach.textContent = story ? `This will follow ${count} confirmed article${count === 1 ? "" : "s"} in “${story.title}.”` : "Choose the developing story this Insight should follow.";
+      const selectedIds = new Set(Array.from(byId("office-reusable-story").selectedOptions).map((option) => option.value));
+      const selectedGroups = coverageGroups.filter((entry) => selectedIds.has(String(entry.id)));
+      const articleCount = selectedGroups.reduce((total, group) => total + Number(group.stats?.article_count || 0), 0);
+      const sourceCount = new Set(selectedGroups.flatMap((group) => (group.alignmentCoverage || []).map((row) => `${group.id}:${row.alignment_label}`))).size;
+      reach.textContent = selectedGroups.length
+        ? `This will follow ${articleCount} confirmed article${articleCount === 1 ? "" : "s"} across ${selectedGroups.length} Coverage Group${selectedGroups.length === 1 ? "" : "s"}${sourceCount ? ` and ${sourceCount} alignment segment${sourceCount === 1 ? "" : "s"}` : ""}.`
+        : "Choose at least one Coverage Group.";
       return;
     }
     if (scope === "article") {
@@ -1643,13 +1674,6 @@
       reach.textContent = `This Insight is connected to ${linked.length || 1} selected article${linked.length === 1 ? "" : "s"}.`;
       return;
     }
-    const selectedIds = new Set(Array.from(byId("office-reusable-subjects").selectedOptions).map((option) => option.value));
-    const coverage = inferredSubjectCoverage().filter((group) => selectedIds.has(String(group.term.id)));
-    const itemIds = new Set(coverage.flatMap((group) => group.items.map((item) => item.id)));
-    const sourceNames = new Set(coverage.flatMap((group) => group.sources));
-    reach.textContent = selectedIds.size
-      ? `Currently matches ${itemIds.size} recent article${itemIds.size === 1 ? "" : "s"} from ${sourceNames.size} source${sourceNames.size === 1 ? "" : "s"}.`
-      : "Choose the subjects this Insight should follow.";
   }
 
   async function saveReusableInsight(event) {
@@ -1657,7 +1681,7 @@
     const form = event.currentTarget;
     const button = form.querySelector('button[type="submit"]');
     const message = form.querySelector("[data-form-message]");
-    const subjectIds = Array.from(byId("office-reusable-subjects").selectedOptions).map((option) => option.value);
+    const coverageGroupIds = Array.from(byId("office-reusable-story").selectedOptions).map((option) => option.value);
     const scopeType = selectedReusableInsightScope();
     setBusy(button, true, "Saving…", "Save Reusable Insight");
     try {
@@ -1666,15 +1690,13 @@
         owlLabel: byId("office-reusable-label").value.trim(),
         owlAnalysis: byId("office-reusable-analysis").value.trim(),
         scopeType,
-        subjectIds: scopeType === "subject" ? subjectIds : [],
-        storyClusterId: scopeType === "cluster" ? byId("office-reusable-story").value : undefined,
-        subjectMatchMode: byId("office-reusable-match").value,
+        coverageGroupIds: scopeType === "cluster" ? coverageGroupIds : [],
         reviewStatus: byId("office-reusable-status").value,
         public: byId("office-reusable-public").checked,
-        itemLinks: scopeType !== "cluster" ? (editingReusableInsight?.owl_insight_items || []).map((row) => ({
+        itemLinks: (editingReusableInsight?.owl_insight_items || []).map((row) => ({
           itemId: row.news_item_id,
           relationship: row.relationship
-        })) : []
+        }))
       });
       closeDialog(byId("office-reusable-insight-dialog"));
       showToast("Reusable Owl Insight saved.");
@@ -1683,6 +1705,139 @@
       message.textContent = error?.message || "The reusable Insight could not be saved.";
     } finally {
       setBusy(button, false, "Saving…", "Save Reusable Insight");
+    }
+  }
+
+  function openCoverageGroupEditor(group = null) {
+    const form = byId("office-coverage-group-form");
+    form.reset();
+    form.querySelector("[data-form-message]").textContent = "";
+    byId("office-coverage-group-id").value = group?.id || "";
+    byId("office-coverage-group-name").value = group?.title || "";
+    byId("office-coverage-group-type").value = group?.group_type || "story";
+    byId("office-coverage-group-visibility").value = group?.visibility || "private";
+    byId("office-coverage-group-summary").value = group?.summary || "";
+    byId("office-coverage-group-title").textContent = group ? "Edit Coverage Group" : "New Coverage Group";
+    openDialog(byId("office-coverage-group-dialog"));
+  }
+
+  async function saveCoverageGroup(event) {
+    event.preventDefault();
+    const form = event.currentTarget;
+    const button = form.querySelector('button[type="submit"]');
+    const message = form.querySelector("[data-form-message]");
+    setBusy(button, true, "Saving…", "Save Coverage Group");
+    message.textContent = "";
+    try {
+      await invokeNewsAdmin("saveCoverageGroup", {
+        coverageGroupId: byId("office-coverage-group-id").value || undefined,
+        title: byId("office-coverage-group-name").value.trim(),
+        groupType: byId("office-coverage-group-type").value,
+        visibility: byId("office-coverage-group-visibility").value,
+        reviewStatus: "confirmed",
+        status: "active",
+        summary: byId("office-coverage-group-summary").value.trim()
+      });
+      closeDialog(byId("office-coverage-group-dialog"));
+      showToast("Coverage Group saved.");
+      await loadNewsAdministration();
+    } catch (error) {
+      message.textContent = error?.message || "The Coverage Group could not be saved.";
+    } finally {
+      setBusy(button, false, "Saving…", "Save Coverage Group");
+    }
+  }
+
+  async function openArticleCoverage(itemId) {
+    setNewsMessage("Loading article coverage…");
+    try {
+      const result = await invokeNewsAdmin("getNewsItem", { itemId });
+      selectedNewsItem = result.item || null;
+      if (!selectedNewsItem) throw new Error("The article could not be found.");
+      byId("office-article-coverage-item-id").value = selectedNewsItem.id;
+      byId("office-article-coverage-title").textContent = selectedNewsItem.headline || "Assign Coverage";
+      byId("office-article-coverage-source").textContent = selectedNewsItem.source?.source_name || "News article";
+      byId("office-article-coverage-form").querySelector("[data-form-message]").textContent = "";
+      const assignedIds = new Set((selectedNewsItem.storyAssignments || [])
+        .filter((row) => row.membership_status === "confirmed")
+        .map((row) => String(row.news_story_clusters?.id || "")));
+      Array.from(byId("office-article-coverage-groups").options).forEach((option) => {
+        option.selected = assignedIds.has(option.value);
+      });
+      const signals = byId("office-article-coverage-signals");
+      signals.replaceChildren();
+      const usefulSignals = (selectedNewsItem.coverageSignals || []).filter((signal) => !["author", "keyword"].includes(signal.signal_type));
+      if (usefulSignals.length) {
+        appendText(signals, "strong", "Article signals");
+        const row = document.createElement("div");
+        row.className = "office-coverage-chip-row";
+        for (const signal of usefulSignals.slice(0, 16)) appendText(row, "span", signal.display_value);
+        signals.appendChild(row);
+      }
+      openDialog(byId("office-article-coverage-dialog"));
+      setNewsMessage("");
+    } catch (error) {
+      setNewsMessage(error?.message || "Article coverage could not be loaded.");
+    }
+  }
+
+  async function saveArticleCoverage(event) {
+    event.preventDefault();
+    const form = event.currentTarget;
+    const button = form.querySelector('button[type="submit"]');
+    const message = form.querySelector("[data-form-message]");
+    const itemId = byId("office-article-coverage-item-id").value;
+    const groupIds = Array.from(byId("office-article-coverage-groups").selectedOptions).map((option) => option.value);
+    if (!groupIds.length) {
+      message.textContent = "Choose at least one Coverage Group.";
+      return;
+    }
+    setBusy(button, true, "Applying…", "Apply Coverage");
+    try {
+      await Promise.all(groupIds.map((coverageGroupId) => invokeNewsAdmin("bulkAssignCoverageGroupItems", {
+        coverageGroupId,
+        itemIds: [itemId],
+        membershipStatus: "confirmed"
+      })));
+      closeDialog(byId("office-article-coverage-dialog"));
+      showToast(`Article added to ${groupIds.length} Coverage Group${groupIds.length === 1 ? "" : "s"}.`);
+      await loadNewsAdministration();
+    } catch (error) {
+      message.textContent = error?.message || "Coverage could not be applied.";
+    } finally {
+      setBusy(button, false, "Applying…", "Apply Coverage");
+    }
+  }
+
+  async function assignSelectedArticles() {
+    const coverageGroupId = byId("office-bulk-coverage-group")?.value || "";
+    if (!coverageGroupId || !selectedArticleIds.size) return;
+    const button = byId("office-assign-selected-articles");
+    setBusy(button, true, "Applying…", "Apply Group");
+    try {
+      await invokeNewsAdmin("bulkAssignCoverageGroupItems", {
+        coverageGroupId,
+        itemIds: [...selectedArticleIds],
+        membershipStatus: "confirmed"
+      });
+      showToast(`${selectedArticleIds.size} article${selectedArticleIds.size === 1 ? "" : "s"} added to the Coverage Group.`);
+      selectedArticleIds.clear();
+      await loadNewsAdministration();
+    } catch (error) {
+      setNewsMessage(error?.message || "The selected articles could not be assigned.");
+    } finally {
+      setBusy(button, false, "Applying…", "Apply Group");
+      syncArticleBulkToolbar();
+    }
+  }
+
+  async function openReusableInsightForArticle(itemId) {
+    try {
+      const result = await invokeNewsAdmin("getNewsItem", { itemId });
+      if (!result.item) throw new Error("The article could not be found.");
+      openReusableInsightEditor(null, { item: result.item });
+    } catch (error) {
+      setNewsMessage(error?.message || "The article could not be loaded.");
     }
   }
 
@@ -1925,38 +2080,22 @@
       const action = event.target.closest("[data-news-action]");
       if (!action) return;
       if (action.dataset.newsAction === "reusable-edit") editReusableInsight(action.dataset.newsId);
-      if (action.dataset.newsAction === "dashboard-subject") {
-        const subjectId = action.dataset.newsId || "";
-        byId("office-news-search").value = "";
-        showNewsAdminView("articles");
-        loadScopedNewsItems({ subjectId });
-      }
-      if (action.dataset.newsAction === "clear-subject-filter") {
-        activeSubjectFilter = "";
-        renderNewsItems();
-      }
       if (action.dataset.newsAction === "clear-story-filter") {
         activeStoryFilter = "";
-        renderNewsItems();
-      }
-      if (action.dataset.newsAction === "dashboard-insight") {
-        openReusableInsightEditor();
-        const option = byId("office-reusable-subjects")?.querySelector(`option[value="${action.dataset.subjectId}"]`);
-        if (option) option.selected = true;
-        syncReusableInsightScope();
+        filterNewsItems();
       }
       if (action.dataset.newsAction === "story-insight") {
-        openReusableInsightEditor();
-        const clusterRadio = byId("office-reusable-insight-form")?.querySelector('input[name="officeReusableScope"][value="cluster"]');
-        if (clusterRadio) clusterRadio.checked = true;
-        byId("office-reusable-story").value = action.dataset.newsId || "";
-        syncReusableInsightScope();
+        openReusableInsightEditor(null, { coverageGroupId: action.dataset.newsId || "" });
       }
       if (action.dataset.newsAction === "story-view") {
         const storyClusterId = action.dataset.newsId || "";
         byId("office-news-search").value = "";
         showNewsAdminView("articles");
         loadScopedNewsItems({ storyClusterId });
+      }
+      if (action.dataset.newsAction === "coverage-edit") {
+        const group = coverageGroups.find((entry) => String(entry.id) === String(action.dataset.newsId));
+        if (group) openCoverageGroupEditor(group);
       }
     });
     byId("office-desk-search-form")?.addEventListener("submit", (event) => {
@@ -1996,8 +2135,15 @@
     byId("office-news-item-list")?.addEventListener("click", (event) => {
       const button = event.target.closest("[data-news-action^='article-']");
       if (!button) return;
-      if (button.dataset.newsAction === "article-insight") openNewsInsight(button.dataset.newsId);
-      if (button.dataset.newsAction === "article-tags") openTagReview(button.dataset.newsId);
+      if (button.dataset.newsAction === "article-insight") openReusableInsightForArticle(button.dataset.newsId);
+      if (button.dataset.newsAction === "article-coverage") openArticleCoverage(button.dataset.newsId);
+    });
+    byId("office-news-item-list")?.addEventListener("change", (event) => {
+      const checkbox = event.target.closest("[data-select-article]");
+      if (!checkbox) return;
+      if (checkbox.checked) selectedArticleIds.add(String(checkbox.dataset.selectArticle));
+      else selectedArticleIds.delete(String(checkbox.dataset.selectArticle));
+      syncArticleBulkToolbar();
     });
     document.querySelectorAll("[data-taxonomy-filter]").forEach((button) => {
       button.addEventListener("click", () => {
@@ -2039,8 +2185,16 @@
     byId("office-add-reusable-insight")?.addEventListener("click", () => openReusableInsightEditor());
     byId("office-reusable-insight-form")?.addEventListener("submit", saveReusableInsight);
     document.querySelectorAll('input[name="officeReusableScope"]').forEach((input) => input.addEventListener("change", syncReusableInsightScope));
-    byId("office-reusable-subjects")?.addEventListener("change", syncReusableInsightScope);
     byId("office-reusable-story")?.addEventListener("change", syncReusableInsightScope);
+    byId("office-add-coverage-group")?.addEventListener("click", () => openCoverageGroupEditor());
+    byId("office-coverage-group-form")?.addEventListener("submit", saveCoverageGroup);
+    byId("office-article-coverage-form")?.addEventListener("submit", saveArticleCoverage);
+    byId("office-bulk-coverage-group")?.addEventListener("change", syncArticleBulkToolbar);
+    byId("office-assign-selected-articles")?.addEventListener("click", assignSelectedArticles);
+    byId("office-clear-selected-articles")?.addEventListener("click", () => {
+      selectedArticleIds.clear();
+      renderNewsItems();
+    });
     byId("office-add-right")?.addEventListener("click", () => openRightsEditor());
     byId("office-rights-form")?.addEventListener("submit", saveReaderRight);
     byId("office-right-source")?.addEventListener("change", (event) => {
