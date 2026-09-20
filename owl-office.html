@@ -156,6 +156,9 @@
           <button type="button" data-news-admin-view="requests" aria-pressed="true">Requests <span id="office-news-request-count">0</span></button>
           <button type="button" data-news-admin-view="sources" aria-pressed="false">Sources <span id="office-news-source-count">0</span></button>
           <button type="button" data-news-admin-view="articles" aria-pressed="false">Articles <span id="office-news-item-count">0</span></button>
+          <button type="button" data-news-admin-view="taxonomy" aria-pressed="false">Taxonomy <span id="office-taxonomy-count">0</span></button>
+          <button type="button" data-news-admin-view="insights" aria-pressed="false">Reusable Insights <span id="office-reusable-insight-count">0</span></button>
+          <button type="button" data-news-admin-view="rights" aria-pressed="false">Reader Rights <span id="office-rights-count">0</span></button>
         </div>
         <button class="office-refresh-button" id="office-refresh-news" type="button">Refresh</button>
       </div>
@@ -190,6 +193,38 @@
           <button class="office-refresh-button" type="submit">Search</button>
         </form>
         <div class="office-news-list" id="office-news-item-list"></div>
+      </section>
+
+      <section class="office-news-panel" data-news-admin-panel="taxonomy" hidden>
+        <div class="office-news-panel-heading">
+          <p>Manage the controlled terms used to suggest article tags.</p>
+          <button class="office-source-add" id="office-add-taxonomy" type="button"><span aria-hidden="true">＋</span> Add Term</button>
+        </div>
+        <div class="office-taxonomy-filters" role="group" aria-label="Filter taxonomy">
+          <button type="button" data-taxonomy-filter="all" aria-pressed="true">All</button>
+          <button type="button" data-taxonomy-filter="subject" aria-pressed="false">Subjects</button>
+          <button type="button" data-taxonomy-filter="event" aria-pressed="false">Events</button>
+          <button type="button" data-taxonomy-filter="theme" aria-pressed="false">Themes</button>
+          <button type="button" data-taxonomy-filter="entity" aria-pressed="false">Entities</button>
+          <button type="button" data-taxonomy-filter="geography" aria-pressed="false">Geography</button>
+        </div>
+        <div class="office-news-list" id="office-taxonomy-list"></div>
+      </section>
+
+      <section class="office-news-panel" data-news-admin-panel="insights" hidden>
+        <div class="office-news-panel-heading">
+          <p>Write one Insight and connect it to every confirmed matching article.</p>
+          <button class="office-source-add" id="office-add-reusable-insight" type="button"><span aria-hidden="true">＋</span> New Insight</button>
+        </div>
+        <div class="office-news-list" id="office-reusable-insight-list"></div>
+      </section>
+
+      <section class="office-news-panel" data-news-admin-panel="rights" hidden>
+        <div class="office-news-panel-heading">
+          <p>Full text and images remain blocked unless an active record permits them.</p>
+          <button class="office-source-add" id="office-add-right" type="button"><span aria-hidden="true">＋</span> Add Rights Record</button>
+        </div>
+        <div class="office-news-list" id="office-rights-list"></div>
       </section>
     </section>
   </dialog>
@@ -317,6 +352,139 @@
         <button class="office-button office-button--danger" id="office-hide-insight" type="button" hidden>Hide Insight</button>
         <button class="office-button office-button--primary" type="submit">Save Insight</button>
       </div>
+    </form>
+  </dialog>
+
+  <dialog class="office-dialog office-dialog--wide" id="office-tag-dialog" aria-labelledby="office-tag-title">
+    <section class="office-dialog-card">
+      <button class="office-dialog-close" type="button" data-close-dialog aria-label="Close">×</button>
+      <p class="office-eyebrow">Article Classification</p>
+      <h2 id="office-tag-title">Review Suggested Tags</h2>
+      <p class="office-insight-source" id="office-tag-source"></p>
+      <input id="office-tag-item-id" type="hidden" />
+      <label for="office-tag-access">Article access override
+        <select id="office-tag-access">
+          <option value="">Use source default</option>
+          <option value="free">Free to read</option>
+          <option value="limited">Some free access</option>
+          <option value="subscription">Subscription required</option>
+        </select>
+      </label>
+      <button class="office-button office-button--secondary" id="office-save-tag-access" type="button">Save Access Setting</button>
+      <div class="office-inline-entry">
+        <select id="office-tag-add-term"><option value="">Add a confirmed tag</option></select>
+        <button class="office-news-text-action" id="office-add-confirmed-tag" type="button">Add Tag</button>
+      </div>
+      <div class="office-tag-review-list" id="office-tag-review-list"></div>
+      <p class="office-form-message" id="office-tag-message"></p>
+    </section>
+  </dialog>
+
+  <dialog class="office-dialog office-dialog--wide" id="office-taxonomy-dialog" aria-labelledby="office-taxonomy-title">
+    <form class="office-dialog-card" id="office-taxonomy-form">
+      <button class="office-dialog-close" type="button" data-close-dialog aria-label="Close">×</button>
+      <p class="office-eyebrow">Controlled Tags</p>
+      <h2 id="office-taxonomy-title">Add Taxonomy Term</h2>
+      <input id="office-taxonomy-id" type="hidden" />
+      <label for="office-taxonomy-name">Name</label>
+      <input id="office-taxonomy-name" maxlength="120" required />
+      <div class="office-form-grid">
+        <label for="office-taxonomy-type">Type
+          <select id="office-taxonomy-type">
+            <option value="subject">Subject</option>
+            <option value="event">Event</option>
+            <option value="theme">Theme</option>
+            <option value="entity">Entity</option>
+            <option value="geography">Geography</option>
+          </select>
+        </label>
+        <label for="office-taxonomy-status">Status
+          <select id="office-taxonomy-status">
+            <option value="active">Active</option>
+            <option value="retired">Retired</option>
+          </select>
+        </label>
+      </div>
+      <label for="office-taxonomy-description">Description</label>
+      <textarea id="office-taxonomy-description" rows="3" maxlength="1000"></textarea>
+      <p class="office-form-message" data-form-message></p>
+      <button class="office-button office-button--primary" type="submit">Save Term</button>
+    </form>
+  </dialog>
+
+  <dialog class="office-dialog office-dialog--wide" id="office-reusable-insight-dialog" aria-labelledby="office-reusable-insight-title">
+    <form class="office-dialog-card" id="office-reusable-insight-form">
+      <button class="office-dialog-close" type="button" data-close-dialog aria-label="Close">×</button>
+      <p class="office-eyebrow">Reusable Analysis</p>
+      <h2 id="office-reusable-insight-title">Reusable Owl Insight</h2>
+      <input id="office-reusable-insight-id" type="hidden" />
+      <label for="office-reusable-label">Owl label</label>
+      <input id="office-reusable-label" maxlength="120" placeholder="What readers should notice" />
+      <label for="office-reusable-analysis">Your analysis</label>
+      <textarea id="office-reusable-analysis" rows="8" maxlength="12000"></textarea>
+      <label for="office-reusable-subjects">Applies to confirmed tags <span>(select one or more)</span></label>
+      <select id="office-reusable-subjects" multiple size="9"></select>
+      <div class="office-form-grid">
+        <label for="office-reusable-match">Matching
+          <select id="office-reusable-match">
+            <option value="any">Any selected tag</option>
+            <option value="all">All selected tags</option>
+          </select>
+        </label>
+        <label for="office-reusable-status">Status
+          <select id="office-reusable-status">
+            <option value="draft">Draft</option>
+            <option value="published">Published</option>
+          </select>
+        </label>
+      </div>
+      <label class="office-check-field" for="office-reusable-public">
+        <input id="office-reusable-public" type="checkbox" />
+        <span>Available to readers</span>
+      </label>
+      <p class="office-form-message" data-form-message></p>
+      <button class="office-button office-button--primary" type="submit">Save Reusable Insight</button>
+    </form>
+  </dialog>
+
+  <dialog class="office-dialog office-dialog--wide" id="office-rights-dialog" aria-labelledby="office-rights-title">
+    <form class="office-dialog-card" id="office-rights-form">
+      <button class="office-dialog-close" type="button" data-close-dialog aria-label="Close">×</button>
+      <p class="office-eyebrow">Owl Reader Permissions</p>
+      <h2 id="office-rights-title">Add Rights Record</h2>
+      <input id="office-right-id" type="hidden" />
+      <div class="office-form-grid">
+        <label for="office-right-scope">Scope
+          <select id="office-right-scope">
+            <option value="publisher">Publisher</option>
+            <option value="article">Individual article</option>
+          </select>
+        </label>
+        <label for="office-right-basis">Basis
+          <select id="office-right-basis">
+            <option value="permission">Permission</option>
+            <option value="license">License</option>
+            <option value="open_license">Open license</option>
+            <option value="public_domain">Public domain</option>
+            <option value="owned">Owned</option>
+          </select>
+        </label>
+      </div>
+      <label for="office-right-source">Publisher source</label>
+      <select id="office-right-source"><option value="">Choose a source</option></select>
+      <label for="office-right-item">Article ID <span>(required only for individual article)</span></label>
+      <input id="office-right-item" placeholder="Article UUID" />
+      <label for="office-right-host">Publisher host</label>
+      <input id="office-right-host" placeholder="pbs.org" required />
+      <label for="office-right-reference">Permission or license reference</label>
+      <textarea id="office-right-reference" rows="3" maxlength="4000" required></textarea>
+      <div class="office-right-options">
+        <label class="office-check-field"><input id="office-right-full-text" type="checkbox" /><span>Allow full text</span></label>
+        <label class="office-check-field"><input id="office-right-images" type="checkbox" /><span>Allow images</span></label>
+        <label class="office-check-field"><input id="office-right-active" type="checkbox" checked /><span>Active</span></label>
+      </div>
+      <p class="office-form-message" data-form-message></p>
+      <button class="office-button office-button--primary" type="submit">Save Rights Record</button>
     </form>
   </dialog>
 

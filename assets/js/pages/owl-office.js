@@ -18,7 +18,12 @@
   let newsSources = [];
   let newsSourceRequests = [];
   let newsItems = [];
+  let newsTaxonomy = [];
+  let reusableInsights = [];
+  let readerRights = [];
+  let taxonomyFilter = "all";
   let selectedNewsItem = null;
+  let editingReusableInsight = null;
   let reviewingSourceRequestId = "";
   let editingNewsSourceId = "";
   let newsAdminLoading = false;
@@ -674,9 +679,145 @@
         action: "article-insight",
         id: item.id
       }));
+      actions.appendChild(newsArticleAction({
+        label: "Review Tags",
+        icon: "insight",
+        action: "article-tags",
+        id: item.id
+      }));
       card.appendChild(actions);
       list.appendChild(card);
     }
+  }
+
+  function taxonomyName(term) {
+    return term?.subject_name || term?.news_subjects?.subject_name || "Taxonomy term";
+  }
+
+  function renderTaxonomy() {
+    const list = byId("office-taxonomy-list");
+    if (!list) return;
+    const filtered = newsTaxonomy.filter((term) => taxonomyFilter === "all" || term.subject_type === taxonomyFilter);
+    byId("office-taxonomy-count").textContent = String(newsTaxonomy.length);
+    list.replaceChildren();
+    if (!filtered.length) {
+      appendText(list, "p", "No taxonomy terms match this view.", "office-empty");
+      return;
+    }
+    for (const term of filtered) {
+      const card = document.createElement("article");
+      card.className = "office-news-card";
+      card.dataset.taxonomyId = term.id;
+      const header = document.createElement("div");
+      header.className = "office-news-card-header";
+      appendText(header, "h3", term.subject_name);
+      header.appendChild(newsStatusBadge(`${term.subject_type} · ${term.status}`));
+      card.appendChild(header);
+      if (term.description) appendText(card, "p", term.description);
+      const aliases = Array.isArray(term.news_subject_aliases) ? term.news_subject_aliases : [];
+      appendText(card, "p", aliases.length
+        ? `Matches: ${aliases.map((alias) => alias.alias_text).join(", ")}`
+        : "No matching phrases yet.");
+      const controls = document.createElement("div");
+      controls.className = "office-inline-entry";
+      const input = document.createElement("input");
+      input.placeholder = "Add matching phrase";
+      input.maxLength = 160;
+      input.dataset.aliasInput = "";
+      controls.append(input, newsButton("Add Phrase", "office-news-text-action", "taxonomy-alias", term.id));
+      card.appendChild(controls);
+      const actions = document.createElement("div");
+      actions.className = "office-news-card-actions";
+      actions.appendChild(newsButton("Edit Term", "office-news-text-action", "taxonomy-edit", term.id));
+      card.appendChild(actions);
+      list.appendChild(card);
+    }
+  }
+
+  function renderReusableInsights() {
+    const list = byId("office-reusable-insight-list");
+    if (!list) return;
+    byId("office-reusable-insight-count").textContent = String(reusableInsights.length);
+    list.replaceChildren();
+    if (!reusableInsights.length) {
+      appendText(list, "p", "No reusable Insights yet.", "office-empty");
+      return;
+    }
+    for (const insight of reusableInsights) {
+      const card = document.createElement("article");
+      card.className = "office-news-card";
+      const header = document.createElement("div");
+      header.className = "office-news-card-header";
+      appendText(header, "h3", insight.owl_label || "Reusable Owl Insight");
+      header.appendChild(newsStatusBadge(insight.review_status));
+      card.appendChild(header);
+      if (insight.owl_analysis) appendText(card, "p", insight.owl_analysis);
+      const subjects = (insight.owl_insight_subjects || []).map((row) => taxonomyName(row)).filter(Boolean);
+      appendText(card, "p", subjects.length ? `Applies to: ${subjects.join(", ")}` : "No taxonomy terms connected.");
+      const actions = document.createElement("div");
+      actions.className = "office-news-card-actions";
+      actions.appendChild(newsButton("Edit Insight", "office-news-text-action", "reusable-edit", insight.id));
+      card.appendChild(actions);
+      list.appendChild(card);
+    }
+  }
+
+  function renderReaderRights() {
+    const list = byId("office-rights-list");
+    if (!list) return;
+    byId("office-rights-count").textContent = String(readerRights.length);
+    list.replaceChildren();
+    if (!readerRights.length) {
+      appendText(list, "p", "No Reader-rights records. Full text remains blocked.", "office-empty");
+      return;
+    }
+    for (const right of readerRights) {
+      const card = document.createElement("article");
+      card.className = "office-news-card";
+      const header = document.createElement("div");
+      header.className = "office-news-card-header";
+      appendText(header, "h3", right.publisher_host || "Publisher rights");
+      header.appendChild(newsStatusBadge(right.is_active ? "active" : "inactive"));
+      card.appendChild(header);
+      appendText(card, "p", `${right.scope_type} · ${String(right.rights_basis || "").replaceAll("_", " ")}`);
+      appendText(card, "p", `Full text: ${right.allow_full_text ? "Allowed" : "Blocked"} · Images: ${right.allow_images ? "Allowed" : "Blocked"}`);
+      appendText(card, "p", right.rights_reference || "No reference recorded.");
+      const actions = document.createElement("div");
+      actions.className = "office-news-card-actions";
+      actions.appendChild(newsButton("Edit", "office-news-text-action", "right-edit", right.id));
+      actions.appendChild(newsButton("Delete", "office-news-text-action", "right-delete", right.id));
+      card.appendChild(actions);
+      list.appendChild(card);
+    }
+  }
+
+  function populateTaxonomySelect() {
+    const select = byId("office-reusable-subjects");
+    const tagSelect = byId("office-tag-add-term");
+    if (!select || !tagSelect) return;
+    select.replaceChildren();
+    tagSelect.innerHTML = '<option value="">Add a confirmed tag</option>';
+    for (const term of newsTaxonomy.filter((entry) => entry.status === "active")) {
+      const option = document.createElement("option");
+      option.value = term.id;
+      option.textContent = `${term.subject_type}: ${term.subject_name}`;
+      select.appendChild(option);
+      tagSelect.appendChild(option.cloneNode(true));
+    }
+  }
+
+  function populateRightsSources() {
+    const select = byId("office-right-source");
+    if (!select) return;
+    const current = select.value;
+    select.innerHTML = '<option value="">Choose a source</option>';
+    for (const source of newsSources) {
+      const option = document.createElement("option");
+      option.value = source.id;
+      option.textContent = source.source_name;
+      select.appendChild(option);
+    }
+    select.value = current;
   }
 
   function updateNewsAdminView() {
@@ -707,19 +848,30 @@
     setBusy(refresh, true, "Refreshing…", "Refresh");
     setNewsMessage("Loading news administration…");
     try {
-      const [dashboardResult, sourceResult, requestResult, itemResult] = await Promise.all([
+      const [dashboardResult, sourceResult, requestResult, itemResult, taxonomyResult, reusableResult, rightsResult] = await Promise.all([
         invokeNewsAdmin("getAdminDashboard"),
         invokeNewsAdmin("listNewsSources"),
         invokeNewsAdmin("listSourceRequests", { status: "all", limit: 200 }),
-        invokeNewsAdmin("listNewsItems", { status: "active", limit: 50 })
+        invokeNewsAdmin("listNewsItems", { status: "active", limit: 50 }),
+        invokeNewsAdmin("listTaxonomy", { taxonomyType: "all" }),
+        invokeNewsAdmin("listReusableInsights", { reviewStatus: "all", limit: 100 }),
+        invokeNewsAdmin("listReaderRights")
       ]);
       newsSources = Array.isArray(sourceResult.sources) ? sourceResult.sources : [];
       newsSourceRequests = Array.isArray(requestResult.requests) ? requestResult.requests : [];
       newsItems = Array.isArray(itemResult.items) ? itemResult.items : [];
+      newsTaxonomy = Array.isArray(taxonomyResult.taxonomy) ? taxonomyResult.taxonomy : [];
+      reusableInsights = Array.isArray(reusableResult.insights) ? reusableResult.insights : [];
+      readerRights = Array.isArray(rightsResult.rights) ? rightsResult.rights : [];
       updateNewsDashboard(dashboardResult.dashboard || {});
       renderNewsSources();
       renderNewsRequests();
       renderNewsItems();
+      renderTaxonomy();
+      renderReusableInsights();
+      renderReaderRights();
+      populateTaxonomySelect();
+      populateRightsSources();
       setNewsMessage("");
     } catch (error) {
       console.error("News administration load failed", error);
@@ -1032,6 +1184,248 @@
     }
   }
 
+  function renderTagAssignments(assignments) {
+    const list = byId("office-tag-review-list");
+    list.replaceChildren();
+    if (!assignments.length) {
+      appendText(list, "p", "No tags have been suggested for this article.", "office-empty");
+      return;
+    }
+    for (const assignment of assignments) {
+      const card = document.createElement("article");
+      card.className = "office-tag-review-card";
+      const name = assignment.news_subjects?.subject_name || "Taxonomy term";
+      appendText(card, "strong", name);
+      appendText(card, "span", `${assignment.news_subjects?.subject_type || "tag"} · ${assignment.assignment_status} · ${Math.round(Number(assignment.confidence || 0) * 100)}%`);
+      const evidence = assignment.evidence?.matches?.map((match) => `${match.scope}: ${match.alias}`).join(" · ");
+      if (evidence) appendText(card, "small", evidence);
+      const actions = document.createElement("div");
+      actions.className = "office-news-card-actions";
+      actions.appendChild(newsButton("Confirm", "office-news-text-action", "tag-confirm", assignment.subject_id));
+      actions.appendChild(newsButton("Reject", "office-news-text-action", "tag-reject", assignment.subject_id));
+      card.appendChild(actions);
+      list.appendChild(card);
+    }
+  }
+
+  async function openTagReview(itemId) {
+    setNewsMessage("Loading article tags…");
+    try {
+      const result = await invokeNewsAdmin("getNewsItem", { itemId });
+      selectedNewsItem = result.item;
+      if (!selectedNewsItem) throw new Error("The article could not be found.");
+      byId("office-tag-title").textContent = selectedNewsItem.headline || "Review Suggested Tags";
+      byId("office-tag-source").textContent = selectedNewsItem.source?.source_name || "News article";
+      byId("office-tag-item-id").value = selectedNewsItem.id;
+      byId("office-tag-access").value = selectedNewsItem.article_access_override || "";
+      byId("office-tag-message").textContent = "";
+      renderTagAssignments(selectedNewsItem.subjectAssignments || []);
+      openDialog(byId("office-tag-dialog"));
+      setNewsMessage("");
+    } catch (error) {
+      setNewsMessage(error?.message || "Article tags could not be loaded.");
+    }
+  }
+
+  async function reviewTag(subjectId, status, manual = false) {
+    const itemId = byId("office-tag-item-id").value;
+    try {
+      await invokeNewsAdmin("reviewItemSubject", {
+        itemId,
+        subjectId,
+        assignmentStatus: status,
+        manual
+      });
+      await openTagReview(itemId);
+      showToast(status === "confirmed" ? "Tag confirmed." : "Tag rejected.");
+    } catch (error) {
+      byId("office-tag-message").textContent = error?.message || "The tag could not be reviewed.";
+    }
+  }
+
+  async function saveArticleAccessOverride() {
+    const button = byId("office-save-tag-access");
+    setBusy(button, true, "Saving…", "Save Access Setting");
+    try {
+      await invokeNewsAdmin("updateNewsItem", {
+        itemId: byId("office-tag-item-id").value,
+        articleAccessOverride: byId("office-tag-access").value
+      });
+      showToast("Article access setting saved.");
+    } catch (error) {
+      byId("office-tag-message").textContent = error?.message || "The access setting could not be saved.";
+    } finally {
+      setBusy(button, false, "Saving…", "Save Access Setting");
+    }
+  }
+
+  function openTaxonomyEditor(term = null) {
+    const form = byId("office-taxonomy-form");
+    form.reset();
+    form.querySelector("[data-form-message]").textContent = "";
+    byId("office-taxonomy-id").value = term?.id || "";
+    byId("office-taxonomy-name").value = term?.subject_name || "";
+    byId("office-taxonomy-type").value = term?.subject_type || "subject";
+    byId("office-taxonomy-status").value = term?.status || "active";
+    byId("office-taxonomy-description").value = term?.description || "";
+    byId("office-taxonomy-title").textContent = term ? "Edit Taxonomy Term" : "Add Taxonomy Term";
+    openDialog(byId("office-taxonomy-dialog"));
+  }
+
+  async function saveTaxonomyTerm(event) {
+    event.preventDefault();
+    const form = event.currentTarget;
+    const button = form.querySelector('button[type="submit"]');
+    const message = form.querySelector("[data-form-message]");
+    setBusy(button, true, "Saving…", "Save Term");
+    try {
+      await invokeNewsAdmin("saveTaxonomyTerm", {
+        subjectId: byId("office-taxonomy-id").value || undefined,
+        subjectName: byId("office-taxonomy-name").value.trim(),
+        taxonomyType: byId("office-taxonomy-type").value,
+        status: byId("office-taxonomy-status").value,
+        description: byId("office-taxonomy-description").value.trim()
+      });
+      closeDialog(byId("office-taxonomy-dialog"));
+      showToast("Taxonomy term saved.");
+      await loadNewsAdministration();
+    } catch (error) {
+      message.textContent = error?.message || "The taxonomy term could not be saved.";
+    } finally {
+      setBusy(button, false, "Saving…", "Save Term");
+    }
+  }
+
+  async function addTaxonomyAlias(card, subjectId) {
+    const input = card.querySelector("[data-alias-input]");
+    const aliasText = input?.value.trim();
+    if (!aliasText) return;
+    try {
+      await invokeNewsAdmin("saveTaxonomyAlias", {
+        subjectId,
+        aliasText,
+        matchScope: "any",
+        matchType: "phrase",
+        weight: 1,
+        active: true
+      });
+      showToast("Matching phrase added.");
+      await loadNewsAdministration();
+    } catch (error) {
+      setNewsMessage(error?.message || "The matching phrase could not be added.");
+    }
+  }
+
+  function openReusableInsightEditor(insight = null) {
+    const form = byId("office-reusable-insight-form");
+    form.reset();
+    form.querySelector("[data-form-message]").textContent = "";
+    editingReusableInsight = insight;
+    byId("office-reusable-insight-id").value = insight?.id || "";
+    byId("office-reusable-label").value = insight?.owl_label || "";
+    byId("office-reusable-analysis").value = insight?.owl_analysis || "";
+    byId("office-reusable-match").value = insight?.subject_match_mode || "any";
+    byId("office-reusable-status").value = insight?.review_status === "published" ? "published" : "draft";
+    byId("office-reusable-public").checked = Boolean(insight?.is_public);
+    const selected = new Set((insight?.owl_insight_subjects || []).map((row) => row.subject_id));
+    Array.from(byId("office-reusable-subjects").options).forEach((option) => {
+      option.selected = selected.has(option.value);
+    });
+    openDialog(byId("office-reusable-insight-dialog"));
+  }
+
+  async function saveReusableInsight(event) {
+    event.preventDefault();
+    const form = event.currentTarget;
+    const button = form.querySelector('button[type="submit"]');
+    const message = form.querySelector("[data-form-message]");
+    const subjectIds = Array.from(byId("office-reusable-subjects").selectedOptions).map((option) => option.value);
+    setBusy(button, true, "Saving…", "Save Reusable Insight");
+    try {
+      await invokeNewsAdmin("saveReusableInsight", {
+        insightId: byId("office-reusable-insight-id").value || undefined,
+        owlLabel: byId("office-reusable-label").value.trim(),
+        owlAnalysis: byId("office-reusable-analysis").value.trim(),
+        subjectIds,
+        subjectMatchMode: byId("office-reusable-match").value,
+        reviewStatus: byId("office-reusable-status").value,
+        public: byId("office-reusable-public").checked,
+        itemLinks: (editingReusableInsight?.owl_insight_items || []).map((row) => ({
+          itemId: row.news_item_id,
+          relationship: row.relationship
+        }))
+      });
+      closeDialog(byId("office-reusable-insight-dialog"));
+      showToast("Reusable Owl Insight saved.");
+      await loadNewsAdministration();
+    } catch (error) {
+      message.textContent = error?.message || "The reusable Insight could not be saved.";
+    } finally {
+      setBusy(button, false, "Saving…", "Save Reusable Insight");
+    }
+  }
+
+  function sourceForRight(right) {
+    return newsSources.find((source) => source.id === right?.news_source_id) || null;
+  }
+
+  function openRightsEditor(right = null) {
+    const form = byId("office-rights-form");
+    form.reset();
+    form.querySelector("[data-form-message]").textContent = "";
+    byId("office-right-id").value = right?.id || "";
+    byId("office-right-scope").value = right?.scope_type || "publisher";
+    byId("office-right-basis").value = right?.rights_basis || "permission";
+    byId("office-right-source").value = right?.news_source_id || "";
+    byId("office-right-item").value = right?.news_item_id || "";
+    byId("office-right-host").value = right?.publisher_host || "";
+    byId("office-right-reference").value = right?.rights_reference || "";
+    byId("office-right-full-text").checked = Boolean(right?.allow_full_text);
+    byId("office-right-images").checked = Boolean(right?.allow_images);
+    byId("office-right-active").checked = right ? Boolean(right.is_active) : true;
+    openDialog(byId("office-rights-dialog"));
+  }
+
+  async function saveReaderRight(event) {
+    event.preventDefault();
+    const form = event.currentTarget;
+    const button = form.querySelector('button[type="submit"]');
+    const message = form.querySelector("[data-form-message]");
+    setBusy(button, true, "Saving…", "Save Rights Record");
+    try {
+      await invokeNewsAdmin("saveReaderRight", {
+        rightId: byId("office-right-id").value || undefined,
+        scopeType: byId("office-right-scope").value,
+        rightsBasis: byId("office-right-basis").value,
+        sourceId: byId("office-right-source").value || undefined,
+        itemId: byId("office-right-item").value.trim() || undefined,
+        publisherHost: byId("office-right-host").value.trim(),
+        rightsReference: byId("office-right-reference").value.trim(),
+        allowFullText: byId("office-right-full-text").checked,
+        allowImages: byId("office-right-images").checked,
+        active: byId("office-right-active").checked
+      });
+      closeDialog(byId("office-rights-dialog"));
+      showToast("Reader-rights record saved.");
+      await loadNewsAdministration();
+    } catch (error) {
+      message.textContent = error?.message || "The rights record could not be saved.";
+    } finally {
+      setBusy(button, false, "Saving…", "Save Rights Record");
+    }
+  }
+
+  async function deleteReaderRight(rightId) {
+    if (!window.confirm("Delete this Reader-rights record? Full text may become unavailable.")) return;
+    try {
+      await invokeNewsAdmin("deleteReaderRight", { rightId });
+      showToast("Reader-rights record deleted.");
+      await loadNewsAdministration();
+    } catch (error) {
+      setNewsMessage(error?.message || "The rights record could not be deleted.");
+    }
+  }
+
   function renderInbox() {
     const list = byId("office-inbox-list");
     const active = inboxRequests.filter((request) => request.status !== "archived");
@@ -1222,8 +1616,70 @@
       }
     });
     byId("office-news-item-list")?.addEventListener("click", (event) => {
-      const button = event.target.closest("[data-news-action='article-insight']");
-      if (button) openNewsInsight(button.dataset.newsId);
+      const button = event.target.closest("[data-news-action^='article-']");
+      if (!button) return;
+      if (button.dataset.newsAction === "article-insight") openNewsInsight(button.dataset.newsId);
+      if (button.dataset.newsAction === "article-tags") openTagReview(button.dataset.newsId);
+    });
+    document.querySelectorAll("[data-taxonomy-filter]").forEach((button) => {
+      button.addEventListener("click", () => {
+        taxonomyFilter = button.dataset.taxonomyFilter || "all";
+        document.querySelectorAll("[data-taxonomy-filter]").forEach((entry) => {
+          entry.setAttribute("aria-pressed", String(entry === button));
+        });
+        renderTaxonomy();
+      });
+    });
+    byId("office-taxonomy-list")?.addEventListener("click", (event) => {
+      const button = event.target.closest("[data-news-action^='taxonomy-']");
+      if (!button) return;
+      const term = newsTaxonomy.find((entry) => entry.id === button.dataset.newsId);
+      if (button.dataset.newsAction === "taxonomy-edit" && term) openTaxonomyEditor(term);
+      if (button.dataset.newsAction === "taxonomy-alias") {
+        addTaxonomyAlias(button.closest("[data-taxonomy-id]"), button.dataset.newsId);
+      }
+    });
+    byId("office-reusable-insight-list")?.addEventListener("click", async (event) => {
+      const button = event.target.closest("[data-news-action='reusable-edit']");
+      if (!button) return;
+      try {
+        const result = await invokeNewsAdmin("getReusableInsight", { insightId: button.dataset.newsId });
+        openReusableInsightEditor(result.insight);
+      } catch (error) {
+        setNewsMessage(error?.message || "The reusable Insight could not be loaded.");
+      }
+    });
+    byId("office-rights-list")?.addEventListener("click", (event) => {
+      const button = event.target.closest("[data-news-action^='right-']");
+      if (!button) return;
+      const right = readerRights.find((entry) => entry.id === button.dataset.newsId);
+      if (button.dataset.newsAction === "right-edit" && right) openRightsEditor(right);
+      if (button.dataset.newsAction === "right-delete") deleteReaderRight(button.dataset.newsId);
+    });
+    byId("office-tag-review-list")?.addEventListener("click", (event) => {
+      const button = event.target.closest("[data-news-action^='tag-']");
+      if (!button) return;
+      reviewTag(button.dataset.newsId, button.dataset.newsAction === "tag-confirm" ? "confirmed" : "rejected");
+    });
+    byId("office-add-confirmed-tag")?.addEventListener("click", () => {
+      const subjectId = byId("office-tag-add-term").value;
+      if (subjectId) reviewTag(subjectId, "confirmed", true);
+    });
+    byId("office-save-tag-access")?.addEventListener("click", saveArticleAccessOverride);
+    byId("office-add-taxonomy")?.addEventListener("click", () => openTaxonomyEditor());
+    byId("office-taxonomy-form")?.addEventListener("submit", saveTaxonomyTerm);
+    byId("office-add-reusable-insight")?.addEventListener("click", () => openReusableInsightEditor());
+    byId("office-reusable-insight-form")?.addEventListener("submit", saveReusableInsight);
+    byId("office-add-right")?.addEventListener("click", () => openRightsEditor());
+    byId("office-rights-form")?.addEventListener("submit", saveReaderRight);
+    byId("office-right-source")?.addEventListener("change", (event) => {
+      const source = newsSources.find((entry) => entry.id === event.target.value);
+      if (!source?.website_url) return;
+      try {
+        byId("office-right-host").value = new URL(source.website_url).hostname.replace(/^www\./, "");
+      } catch {
+        // Leave the host available for manual entry.
+      }
     });
     byId("office-add-source")?.addEventListener("click", () => openSourceEditor());
     byId("office-source-form")?.addEventListener("submit", submitNewsSource);
