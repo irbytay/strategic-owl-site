@@ -40,6 +40,8 @@
   let selectedAdminNewsItem = null;
   let editingReusableInsightId = "";
   let editingReusableInsightItemLinks = [];
+  let insightTaxonomy = [];
+  let insightSubjectAssignments = new Map();
   let activeReaderItem = null;
   let pendingOriginalUrl = "";
   let renderedItemsById = new Map();
@@ -1505,36 +1507,86 @@ Use clear, approachable, nonpartisan language. Do not assume the article, headli
     }
   }
 
-  function populateInsightTaxonomy(taxonomy, selectedIds = new Set()) {
-    const host = byId("news-insight-subjects");
-    if (!host) return;
-    const activeTerms = taxonomy
-      .filter((term) => String(term?.status || "").toLowerCase() === "active")
-      .sort((left, right) => {
-        const typeOrder = String(left?.subject_type || "").localeCompare(String(right?.subject_type || ""));
-        return typeOrder || String(left?.subject_name || "").localeCompare(String(right?.subject_name || ""));
-      });
+  function subjectOption(term, selectedIds, assignment = null) {
+    const label = document.createElement("label");
+    label.className = "news-insight-taxonomy-option";
+    const input = document.createElement("input");
+    input.type = "checkbox";
+    input.name = "insightSubject";
+    input.value = String(term.id || "");
+    input.checked = selectedIds.has(input.value);
+    const copy = document.createElement("span");
+    copy.textContent = String(term.subject_name || "Taxonomy term");
+    const detail = document.createElement("small");
+    if (assignment) {
+      const confidence = Number(assignment.confidence);
+      const confidenceText = Number.isFinite(confidence) ? ` · ${Math.round(confidence * 100)}%` : "";
+      detail.textContent = `${assignment.assignment_status === "confirmed" ? "Confirmed" : "Suggested"}${confidenceText}`;
+    } else {
+      detail.textContent = String(term.subject_type || "subject");
+    }
+    label.append(input, copy, detail);
+    return label;
+  }
 
-    if (!activeTerms.length) {
-      host.innerHTML = '<p class="news-insight-taxonomy-empty">No active taxonomy terms are available.</p>';
+  function selectedInsightSubjectIds() {
+    return new Set(Array.from(document.querySelectorAll('input[name="insightSubject"]:checked'))
+      .map((input) => input.value)
+      .filter(Boolean));
+  }
+
+  function renderInsightTaxonomySearch(query = "") {
+    const host = byId("news-insight-taxonomy-results");
+    if (!host) return;
+    const selectedIds = selectedInsightSubjectIds();
+    const normalized = String(query || "").trim().toLowerCase();
+    const matches = insightTaxonomy
+      .filter((term) => !normalized || `${term.subject_name} ${term.subject_type}`.toLowerCase().includes(normalized))
+      .slice(0, 30);
+    if (!matches.length) {
+      host.innerHTML = '<p class="news-insight-taxonomy-empty">No subjects match that search.</p>';
       return;
     }
+    host.replaceChildren(...matches.map((term) => subjectOption(term, selectedIds)));
+  }
 
-    host.replaceChildren(...activeTerms.map((term) => {
-      const label = document.createElement("label");
-      label.className = "news-insight-taxonomy-option";
-      const input = document.createElement("input");
-      input.type = "checkbox";
-      input.name = "insightSubject";
-      input.value = String(term.id || "");
-      input.checked = selectedIds.has(input.value);
-      const copy = document.createElement("span");
-      copy.textContent = String(term.subject_name || "Taxonomy term");
-      const type = document.createElement("small");
-      type.textContent = String(term.subject_type || "subject");
-      label.append(input, copy, type);
-      return label;
-    }));
+  function populateInsightTaxonomy(taxonomy, assignments, selectedIds = new Set()) {
+    const host = byId("news-insight-subjects");
+    if (!host) return;
+    insightTaxonomy = taxonomy
+      .filter((term) => String(term?.status || "").toLowerCase() === "active")
+      .sort((left, right) => {
+        return String(left?.subject_name || "").localeCompare(String(right?.subject_name || ""));
+      });
+    const termsById = new Map(insightTaxonomy.map((term) => [String(term.id || ""), term]));
+    insightSubjectAssignments = new Map(assignments.map((row) => [String(row.subject_id || ""), row]));
+    const rankedAssignments = [...assignments].sort((left, right) => {
+      const statusDifference = Number(right.assignment_status === "confirmed") - Number(left.assignment_status === "confirmed");
+      return statusDifference || Number(right.confidence || 0) - Number(left.confidence || 0);
+    });
+    const relevantIds = [...selectedIds];
+    for (const assignment of rankedAssignments) {
+      const subjectId = String(assignment.subject_id || "");
+      if (subjectId && !relevantIds.includes(subjectId) && relevantIds.length < 6) relevantIds.push(subjectId);
+    }
+    const relevantTerms = relevantIds.map((id) => termsById.get(id)).filter(Boolean);
+
+    if (!relevantTerms.length) {
+      host.innerHTML = '<p class="news-insight-taxonomy-empty">No strong subject matches yet. Add one below.</p>';
+    } else {
+      host.replaceChildren(...relevantTerms.map((term) => (
+        subjectOption(term, selectedIds, insightSubjectAssignments.get(String(term.id || "")))
+      )));
+    }
+    if (!insightTaxonomy.length) {
+      byId("news-insight-add-subject").hidden = true;
+      return;
+    }
+    byId("news-insight-add-subject").hidden = false;
+    byId("news-insight-add-subject").textContent = "Add another subject";
+    byId("news-insight-taxonomy-search").hidden = true;
+    byId("news-insight-subject-search").value = "";
+    renderInsightTaxonomySearch();
   }
 
   async function openNewsInsight(itemId, trigger) {
@@ -1575,18 +1627,21 @@ Use clear, approachable, nonpartisan language. Do not assume the article, headli
       byId("news-insight-item-id").value = selectedAdminNewsItem.id;
       byId("news-insight-label").value = insight.owl_label || "";
       byId("news-insight-analysis").value = insight.owl_analysis || "";
-      byId("news-insight-match").value = insight.subject_match_mode === "all" ? "all" : "any";
       const reusableSubjectIds = new Set(
         (reusableInsight?.owl_insight_subjects || []).map((row) => String(row.subject_id || ""))
       );
-      const confirmedArticleSubjectIds = new Set(
-        (selectedAdminNewsItem.subjectAssignments || [])
-          .filter((row) => row.assignment_status === "confirmed")
+      const assignments = Array.isArray(selectedAdminNewsItem.subjectAssignments)
+        ? selectedAdminNewsItem.subjectAssignments
+        : [];
+      const recommendedSubjectIds = new Set(
+        assignments
+          .filter((row) => row.assignment_status === "confirmed" || Number(row.confidence || 0) >= 0.90)
           .map((row) => String(row.subject_id || ""))
       );
       populateInsightTaxonomy(
         Array.isArray(taxonomyResult.taxonomy) ? taxonomyResult.taxonomy : [],
-        reusableSubjectIds.size ? reusableSubjectIds : confirmedArticleSubjectIds
+        assignments,
+        reusableSubjectIds.size ? reusableSubjectIds : recommendedSubjectIds
       );
       byId("news-insight-status").value = insight.review_status === "published"
         ? "published"
@@ -1618,9 +1673,7 @@ Use clear, approachable, nonpartisan language. Do not assume the article, headli
     event.preventDefault();
     const button = byId("news-insight-save");
     const message = byId("news-insight-message");
-    const subjectIds = Array.from(document.querySelectorAll('#news-insight-subjects input[name="insightSubject"]:checked'))
-      .map((input) => input.value)
-      .filter(Boolean);
+    const subjectIds = [...selectedInsightSubjectIds()];
     if (!subjectIds.length) {
       message.textContent = "Choose at least one subject this Insight applies to.";
       return;
@@ -1630,6 +1683,16 @@ Use clear, approachable, nonpartisan language. Do not assume the article, headli
 
     try {
       const itemId = byId("news-insight-item-id").value;
+      await Promise.all(subjectIds.map((subjectId) => {
+        const assignment = insightSubjectAssignments.get(subjectId);
+        if (assignment?.assignment_status === "confirmed") return Promise.resolve();
+        return invokeNewsAdmin("reviewItemSubject", {
+          itemId,
+          subjectId,
+          assignmentStatus: "confirmed",
+          manual: !assignment
+        });
+      }));
       const itemLinks = editingReusableInsightItemLinks.filter((link) => link.itemId !== itemId);
       itemLinks.push({ itemId, relationship: "include" });
       await invokeNewsAdmin("saveReusableInsight", {
@@ -1638,7 +1701,7 @@ Use clear, approachable, nonpartisan language. Do not assume the article, headli
         labels: [],
         owlAnalysis: byId("news-insight-analysis").value.trim(),
         subjectIds,
-        subjectMatchMode: byId("news-insight-match").value,
+        subjectMatchMode: "any",
         itemLinks,
         reviewStatus: byId("news-insight-status").value,
         public: byId("news-insight-public").checked
@@ -2102,6 +2165,23 @@ Use clear, approachable, nonpartisan language. Do not assume the article, headli
   byId("news-insight-form")?.addEventListener("submit", saveNewsInsight);
   byId("news-insight-hide")?.addEventListener("click", hideNewsInsight);
   byId("news-insight-status")?.addEventListener("change", syncInsightPublicControl);
+  byId("news-insight-add-subject")?.addEventListener("click", () => {
+    const panel = byId("news-insight-taxonomy-search");
+    if (!panel) return;
+    panel.hidden = !panel.hidden;
+    byId("news-insight-add-subject").textContent = panel.hidden ? "Add another subject" : "Hide subject search";
+    if (!panel.hidden) window.setTimeout(() => byId("news-insight-subject-search")?.focus(), 0);
+  });
+  byId("news-insight-subject-search")?.addEventListener("input", (event) => {
+    renderInsightTaxonomySearch(event.currentTarget.value);
+  });
+  byId("news-insight-dialog")?.addEventListener("change", (event) => {
+    const input = event.target.closest('input[name="insightSubject"]');
+    if (!input) return;
+    document.querySelectorAll('input[name="insightSubject"]').forEach((matchingInput) => {
+      if (matchingInput.value === input.value) matchingInput.checked = input.checked;
+    });
+  });
   byId("news-insight-dialog")?.addEventListener("click", (event) => {
     if (event.target === event.currentTarget) closeNewsInsightDialog();
   });

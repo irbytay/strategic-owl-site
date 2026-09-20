@@ -10,11 +10,11 @@
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
   <link rel="icon" type="image/png" href="assets/images/3X.png" />
   <link rel="stylesheet" href="assets/css/site.css?v=20260908-4" />
-  <link rel="stylesheet" href="assets/css/pages/news-feed.css?v=20260920-2" />
+  <link rel="stylesheet" href="assets/css/pages/news-feed.css?v=20260920-3" />
   <script src="assets/js/site-shell.js?v=20260908-2" defer></script>
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2" defer></script>
   <script src="assets/js/owl-access.js?v=20260909-2" defer></script>
-  <script src="assets/js/pages/news-feed.js?v=20260920-2" defer></script>
+  <script src="assets/js/pages/news-feed.js?v=20260920-3" defer></script>
 </head>
 <body class="site-body" data-page="news-feed">
   <a class="skip-link" href="#main-content">Skip to content</a>
@@ -172,16 +172,15 @@
       <textarea id="news-insight-analysis" name="owlAnalysis" rows="8" maxlength="12000" required></textarea>
 
       <fieldset class="news-insight-taxonomy">
-        <legend>Applies to <span>(select one or more)</span></legend>
+        <legend>Applies to</legend>
+        <p class="news-insight-taxonomy-help">Suggested from this article. Strong matches are already selected.</p>
         <div class="news-insight-taxonomy-options" id="news-insight-subjects"></div>
+        <button class="news-insight-add-subject" id="news-insight-add-subject" type="button">Add another subject</button>
+        <div class="news-insight-taxonomy-search" id="news-insight-taxonomy-search" hidden>
+          <input id="news-insight-subject-search" type="search" placeholder="Search subjects" aria-label="Search taxonomy subjects" />
+          <div class="news-insight-taxonomy-results" id="news-insight-taxonomy-results"></div>
+        </div>
       </fieldset>
-
-      <label for="news-insight-match">Matching
-        <select id="news-insight-match" name="subjectMatchMode">
-          <option value="any">Any selected subject</option>
-          <option value="all">All selected subjects</option>
-        </select>
-      </label>
 
       <div class="news-insight-settings">
         <label for="news-insight-status">Status
