@@ -33,6 +33,7 @@
   let activeStoryFilter = "";
   let selectedNewsItem = null;
   let editingReusableInsight = null;
+  let coverageGroupDraft = { itemIds: [], onSaved: null, onCancel: null };
   let reviewingSourceRequestId = "";
   let editingNewsSourceId = "";
   let newsAdminLoading = false;
@@ -751,6 +752,12 @@
         action: "article-coverage",
         id: item.id
       }));
+      actions.appendChild(newsArticleAction({
+        label: "New Group",
+        icon: "insight",
+        action: "article-new-group",
+        id: item.id
+      }));
       card.appendChild(actions);
       list.appendChild(card);
     }
@@ -776,6 +783,8 @@
     if (countNode) countNode.textContent = String(count);
     const assign = byId("office-assign-selected-articles");
     if (assign) assign.disabled = !count || !byId("office-bulk-coverage-group")?.value;
+    const create = byId("office-create-group-selected");
+    if (create) create.disabled = !count;
   }
 
   function taxonomyName(term) {
@@ -1787,7 +1796,7 @@
     }
   }
 
-  function openCoverageGroupEditor(group = null) {
+  function openCoverageGroupEditor(group = null, options = {}) {
     const form = byId("office-coverage-group-form");
     form.reset();
     form.querySelector("[data-form-message]").textContent = "";
@@ -1796,6 +1805,11 @@
     byId("office-coverage-group-type").value = group?.group_type || "story";
     byId("office-coverage-group-visibility").value = group?.visibility || "private";
     byId("office-coverage-group-summary").value = group?.summary || "";
+    coverageGroupDraft = {
+      itemIds: group ? [] : [...new Set((options.itemIds || []).map(String).filter(Boolean))],
+      onSaved: typeof options.onSaved === "function" ? options.onSaved : null,
+      onCancel: typeof options.onCancel === "function" ? options.onCancel : null
+    };
     byId("office-coverage-group-title").textContent = group ? "Edit Coverage Group" : "New Coverage Group";
     openDialog(byId("office-coverage-group-dialog"));
   }
@@ -1808,18 +1822,23 @@
     setBusy(button, true, "Saving…", "Save Coverage Group");
     message.textContent = "";
     try {
-      await invokeNewsAdmin("saveCoverageGroup", {
+      const result = await invokeNewsAdmin("saveCoverageGroup", {
         coverageGroupId: byId("office-coverage-group-id").value || undefined,
         title: byId("office-coverage-group-name").value.trim(),
         groupType: byId("office-coverage-group-type").value,
         visibility: byId("office-coverage-group-visibility").value,
         reviewStatus: "confirmed",
         status: "active",
-        summary: byId("office-coverage-group-summary").value.trim()
+        summary: byId("office-coverage-group-summary").value.trim(),
+        itemIds: coverageGroupDraft.itemIds
       });
+      const savedGroupId = String(result.coverageGroup?.id || result.storyCluster?.id || byId("office-coverage-group-id").value || "");
+      const onSaved = coverageGroupDraft.onSaved;
+      coverageGroupDraft.onCancel = null;
       closeDialog(byId("office-coverage-group-dialog"));
       showToast("Coverage Group saved.");
       await loadNewsAdministration();
+      if (onSaved && savedGroupId) onSaved(savedGroupId);
     } catch (error) {
       message.textContent = error?.message || "The Coverage Group could not be saved.";
     } finally {
@@ -2113,6 +2132,11 @@
         if (event.target === dialog) closeDialog(dialog);
       });
       dialog.addEventListener("close", () => {
+        if (dialog.id === "office-coverage-group-dialog" && coverageGroupDraft.onCancel) {
+          const onCancel = coverageGroupDraft.onCancel;
+          coverageGroupDraft.onCancel = null;
+          onCancel();
+        }
         if (!document.querySelector(".office-dialog[open]")) {
           document.body.classList.remove("owl-dialog-open");
         }
@@ -2216,6 +2240,11 @@
       if (!button) return;
       if (button.dataset.newsAction === "article-insight") openReusableInsightForArticle(button.dataset.newsId);
       if (button.dataset.newsAction === "article-coverage") openArticleCoverage(button.dataset.newsId);
+      if (button.dataset.newsAction === "article-new-group") {
+        const item = newsItems.find((entry) => String(entry.id) === String(button.dataset.newsId));
+        openCoverageGroupEditor(null, { itemIds: [button.dataset.newsId], title: item?.headline || "" });
+        if (item?.headline) byId("office-coverage-group-name").value = item.headline;
+      }
     });
     byId("office-news-item-list")?.addEventListener("change", (event) => {
       const checkbox = event.target.closest("[data-select-article]");
@@ -2270,6 +2299,41 @@
     byId("office-article-coverage-form")?.addEventListener("submit", saveArticleCoverage);
     byId("office-bulk-coverage-group")?.addEventListener("change", syncArticleBulkToolbar);
     byId("office-assign-selected-articles")?.addEventListener("click", assignSelectedArticles);
+    byId("office-create-group-selected")?.addEventListener("click", () => {
+      const ids = [...selectedArticleIds];
+      const first = newsItems.find((entry) => ids.includes(String(entry.id)));
+      openCoverageGroupEditor(null, { itemIds: ids });
+      if (first?.headline) byId("office-coverage-group-name").value = first.headline;
+    });
+    byId("office-article-create-group")?.addEventListener("click", () => {
+      const itemId = byId("office-article-coverage-item-id")?.value || "";
+      closeDialog(byId("office-article-coverage-dialog"));
+      openCoverageGroupEditor(null, { itemIds: [itemId] });
+      if (selectedNewsItem?.headline) byId("office-coverage-group-name").value = selectedNewsItem.headline;
+    });
+    byId("office-insight-create-group")?.addEventListener("click", () => {
+      const itemIds = (editingReusableInsight?.owl_insight_items || []).map((row) => row.news_item_id).filter(Boolean);
+      const draftInsight = {
+        ...(editingReusableInsight || {}),
+        owl_label: byId("office-reusable-label")?.value || "",
+        owl_analysis: byId("office-reusable-analysis")?.value || "",
+        review_status: byId("office-reusable-status")?.value || "draft",
+        is_public: Boolean(byId("office-reusable-public")?.checked),
+        scope_type: "cluster",
+        owl_insight_clusters: Array.from(byId("office-reusable-story")?.selectedOptions || []).map((option) => ({
+          story_cluster_id: option.value
+        })),
+        owl_insight_items: editingReusableInsight?.owl_insight_items || []
+      };
+      closeDialog(byId("office-reusable-insight-dialog"));
+      openCoverageGroupEditor(null, {
+        itemIds,
+        onSaved: (groupId) => {
+          openReusableInsightEditor(draftInsight, { coverageGroupId: groupId });
+        },
+        onCancel: () => openReusableInsightEditor(draftInsight)
+      });
+    });
     byId("office-clear-selected-articles")?.addEventListener("click", () => {
       selectedArticleIds.clear();
       renderNewsItems();

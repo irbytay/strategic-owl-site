@@ -13,7 +13,7 @@
   <script src="assets/js/site-shell.js?v=20260908-2" defer></script>
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2" defer></script>
   <script src="assets/js/owl-access.js?v=20260909-2" defer></script>
-  <script src="assets/js/pages/owl-office.js?v=20260920-4" defer></script>
+  <script src="assets/js/pages/owl-office.js?v=20260920-5" defer></script>
 </head>
 <body class="site-body" data-page="owl-office">
   <a class="skip-link" href="#main-content">Skip to content</a>
@@ -240,6 +240,7 @@
             <option value="">Choose a Coverage Group</option>
           </select>
           <button class="office-refresh-button" id="office-assign-selected-articles" type="button" disabled>Apply Group</button>
+          <button class="office-refresh-button" id="office-create-group-selected" type="button" disabled>New Group</button>
           <button class="office-news-text-action" id="office-clear-selected-articles" type="button">Clear</button>
         </div>
         <div class="office-news-list" id="office-news-item-list"></div>
@@ -489,7 +490,10 @@
         <label><input type="radio" name="officeReusableScope" value="article" disabled /> Selected articles <small>Use only for specific exceptions</small></label>
       </fieldset>
       <div id="office-reusable-story-fields">
-        <label for="office-reusable-story">Coverage Groups <span>(select one or more)</span></label>
+        <div class="office-news-panel-heading">
+          <label for="office-reusable-story">Coverage Groups <span>(select one or more)</span></label>
+          <button class="office-source-add" id="office-insight-create-group" type="button"><span aria-hidden="true">＋</span> New Group</button>
+        </div>
         <select id="office-reusable-story" multiple size="8"></select>
         <p class="office-field-help">Choose the smallest useful set. New confirmed articles in these groups inherit this Insight.</p>
       </div>
@@ -553,6 +557,7 @@
       <input id="office-article-coverage-item-id" type="hidden" />
       <label for="office-article-coverage-groups">Coverage Groups <span>(select one or more)</span></label>
       <select id="office-article-coverage-groups" multiple size="8"></select>
+      <button class="office-source-add" id="office-article-create-group" type="button"><span aria-hidden="true">＋</span> New Group From This Article</button>
       <div class="office-coverage-signals" id="office-article-coverage-signals"></div>
       <p class="office-form-message" data-form-message></p>
       <button class="office-button office-button--primary" type="submit">Apply Coverage</button>
