@@ -18,6 +18,7 @@
   let newsSources = [];
   let newsSourceRequests = [];
   let newsItems = [];
+  let newsSearchMeta = { query: "", total: 0, offset: 0, limit: 50, hasMore: false };
   let newsTaxonomy = [];
   let reusableInsights = [];
   let readerRights = [];
@@ -663,6 +664,8 @@
         String(row.story_cluster_id) === String(group.id) && row.membership_status !== "rejected"))
       : newsItems;
 
+    renderNewsSearchMeta(visibleItems.length);
+
     if (group) {
       const notice = appendText(list, "p", `Showing articles in ${group.title}.`, "office-filter-notice");
       const clear = document.createElement("button");
@@ -700,6 +703,15 @@
       const sourceName = item.source?.source_name || "News source";
       const sourceLine = [sourceName, item.source?.alignment_label, formatDate(item.published_at)].filter(Boolean).join(" · ");
       appendText(card, "p", sourceLine);
+      const matchedFields = Array.isArray(item.matched_fields) ? item.matched_fields : [];
+      if (newsSearchMeta.query && matchedFields.length) {
+        appendText(
+          card,
+          "p",
+          `Matched: ${matchedFields.map((field) => String(field).replace(/^./, (letter) => letter.toUpperCase())).join(", ")}`,
+          "office-search-match"
+        );
+      }
       if (item.summary_text) appendText(card, "p", item.summary_text);
       const memberships = Array.isArray(item.coverageGroups) ? item.coverageGroups : [];
       const confirmedGroups = memberships
@@ -743,6 +755,19 @@
       list.appendChild(card);
     }
     syncArticleBulkToolbar();
+  }
+
+  function renderNewsSearchMeta(visibleCount = newsItems.length) {
+    const count = byId("office-news-result-count");
+    const loadMore = byId("office-news-load-more");
+    const total = Number(newsSearchMeta.total || visibleCount || 0);
+    const query = String(newsSearchMeta.query || "").trim();
+    if (count) {
+      count.textContent = query
+        ? `${total} matching article${total === 1 ? "" : "s"} for “${query}”`
+        : `Showing ${visibleCount} of ${total || visibleCount} article${(total || visibleCount) === 1 ? "" : "s"}`;
+    }
+    if (loadMore) loadMore.hidden = !newsSearchMeta.hasMore || Boolean(activeStoryFilter);
   }
 
   function syncArticleBulkToolbar() {
@@ -1148,6 +1173,13 @@
       newsSources = Array.isArray(sourceResult.sources) ? sourceResult.sources : [];
       newsSourceRequests = Array.isArray(requestResult.requests) ? requestResult.requests : [];
       newsItems = Array.isArray(itemResult.items) ? itemResult.items : [];
+      newsSearchMeta = itemResult.search || {
+        query: "",
+        total: newsItems.length,
+        offset: 0,
+        limit: 50,
+        hasMore: false
+      };
       newsTaxonomy = [];
       reusableInsights = Array.isArray(reusableResult.insights) ? reusableResult.insights : [];
       readerRights = Array.isArray(rightsResult.rights) ? rightsResult.rights : [];
@@ -1375,16 +1407,53 @@
       const result = await invokeNewsAdmin("listNewsItems", {
         status: "active",
         limit: 50,
+        offset: 0,
         sourceId: byId("office-news-source-filter").value,
         search: byId("office-news-search").value.trim()
       });
       newsItems = Array.isArray(result.items) ? result.items : [];
+      newsSearchMeta = result.search || {
+        query: byId("office-news-search").value.trim(),
+        total: newsItems.length,
+        offset: 0,
+        limit: 50,
+        hasMore: false
+      };
       renderNewsItems();
     } catch (error) {
       console.error("News article search failed", error);
       setNewsMessage(error?.message || "The articles could not be loaded.");
     } finally {
       setBusy(button, false, "Searching…", "Search");
+    }
+  }
+
+  async function loadMoreNewsItems() {
+    const button = byId("office-news-load-more");
+    if (!newsSearchMeta.hasMore || button?.disabled) return;
+    setBusy(button, true, "Loading…", "Load More");
+    try {
+      const result = await invokeNewsAdmin("listNewsItems", {
+        status: "active",
+        limit: Number(newsSearchMeta.limit || 50),
+        offset: newsItems.length,
+        sourceId: byId("office-news-source-filter").value,
+        search: byId("office-news-search").value.trim()
+      });
+      const incoming = Array.isArray(result.items) ? result.items : [];
+      const knownIds = new Set(newsItems.map((item) => String(item.id)));
+      newsItems.push(...incoming.filter((item) => !knownIds.has(String(item.id))));
+      newsSearchMeta = result.search || {
+        ...newsSearchMeta,
+        offset: newsItems.length,
+        hasMore: incoming.length === Number(newsSearchMeta.limit || 50)
+      };
+      renderNewsItems();
+    } catch (error) {
+      console.error("More news articles could not be loaded", error);
+      showToast(error?.message || "More articles could not be loaded.");
+    } finally {
+      setBusy(button, false, "Loading…", "Load More");
     }
   }
 
@@ -1398,6 +1467,13 @@
         storyClusterId
       });
       newsItems = Array.isArray(result.items) ? result.items : [];
+      newsSearchMeta = result.search || {
+        query: "",
+        total: newsItems.length,
+        offset: 0,
+        limit: 100,
+        hasMore: false
+      };
       activeSubjectFilter = subjectId;
       activeStoryFilter = storyClusterId;
       renderNewsItems();
@@ -2212,6 +2288,7 @@
     byId("office-add-source")?.addEventListener("click", () => openSourceEditor());
     byId("office-source-form")?.addEventListener("submit", submitNewsSource);
     byId("office-news-filter-form")?.addEventListener("submit", filterNewsItems);
+    byId("office-news-load-more")?.addEventListener("click", loadMoreNewsItems);
     byId("office-insight-status")?.addEventListener("change", syncInsightPublicControl);
     byId("office-insight-form")?.addEventListener("submit", saveNewsInsight);
     byId("office-hide-insight")?.addEventListener("click", hideNewsInsight);

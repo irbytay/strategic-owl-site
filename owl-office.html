@@ -9,11 +9,11 @@
 
   <link rel="icon" type="image/png" href="assets/images/3X.png" />
   <link rel="stylesheet" href="assets/css/site.css?v=20260908-4" />
-  <link rel="stylesheet" href="assets/css/pages/owl-office.css?v=20260920-3" />
+  <link rel="stylesheet" href="assets/css/pages/owl-office.css?v=20260920-4" />
   <script src="assets/js/site-shell.js?v=20260908-2" defer></script>
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2" defer></script>
   <script src="assets/js/owl-access.js?v=20260909-2" defer></script>
-  <script src="assets/js/pages/owl-office.js?v=20260920-3" defer></script>
+  <script src="assets/js/pages/owl-office.js?v=20260920-4" defer></script>
 </head>
 <body class="site-body" data-page="owl-office">
   <a class="skip-link" href="#main-content">Skip to content</a>
@@ -227,9 +227,13 @@
           <select id="office-news-source-filter" aria-label="Filter articles by source">
             <option value="">All Sources</option>
           </select>
-          <input id="office-news-search" type="search" maxlength="100" placeholder="Search headlines" aria-label="Search article headlines" />
+          <input id="office-news-search" type="search" maxlength="100" placeholder="Search articles" aria-label="Search articles, sources, and Coverage Groups" />
           <button class="office-refresh-button" type="submit">Search</button>
         </form>
+        <div class="office-search-results" id="office-news-search-results">
+          <p id="office-news-result-count" aria-live="polite"></p>
+          <button class="office-refresh-button" id="office-news-load-more" type="button" hidden>Load More</button>
+        </div>
         <div class="office-bulk-toolbar" id="office-article-bulk-toolbar">
           <strong><span id="office-selected-article-count">0</span> selected</strong>
           <select id="office-bulk-coverage-group" aria-label="Coverage Group for selected articles">
