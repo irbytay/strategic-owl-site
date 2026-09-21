@@ -36,29 +36,17 @@
 
   function installKeyboardDismissal() {
     const editableSelector = "input, textarea, select, [contenteditable='true']";
-    let dragStartY = null;
     const dismiss = () => {
       const active = document.activeElement;
       if (active?.matches?.(editableSelector)) active.blur();
     };
 
     document.addEventListener("pointerdown", (event) => {
-      dragStartY = event.pointerType === "touch" || event.pointerType === "pen"
-        ? event.clientY
-        : null;
       const active = document.activeElement;
       if (!active?.matches?.(editableSelector)) return;
       if (!event.target.closest?.(editableSelector)) dismiss();
     }, true);
 
-    document.addEventListener("pointermove", (event) => {
-      if (dragStartY === null || Math.abs(event.clientY - dragStartY) < 10) return;
-      dragStartY = null;
-      dismiss();
-    }, { capture: true, passive: true });
-    document.addEventListener("pointerup", () => { dragStartY = null; }, true);
-    document.addEventListener("pointercancel", () => { dragStartY = null; }, true);
-    document.addEventListener("wheel", dismiss, { capture: true, passive: true });
   }
 
   function renderShell() {
