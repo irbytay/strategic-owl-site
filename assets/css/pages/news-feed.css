@@ -2751,8 +2751,6 @@
     position: static;
     display: flex;
     align-items: center;
-    flex-direction: column;
-    gap: 12px;
     justify-content: center;
   }
 
@@ -2762,18 +2760,24 @@
   }
 
   .news-feed-toolbar {
-    position: static;
-    justify-content: center;
-    margin-top: 2px;
+    position: absolute;
+    top: 8px;
+    right: 0;
+    z-index: 2;
   }
 
   .news-manage-sources {
-    min-height: 44px;
-    padding: 8px 14px;
+    min-height: 36px;
+    padding: 6px 10px;
     border: 1px solid rgba(212, 175, 55, 0.5);
     border-radius: 999px;
     background: rgba(10, 27, 45, 0.72);
-    font-size: 0.88rem;
+    font-size: 0.78rem;
+  }
+
+  .news-manage-sources svg {
+    width: 15px;
+    height: 15px;
   }
 
   .news-manage-sources:hover,
