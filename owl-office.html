@@ -9,11 +9,11 @@
 
   <link rel="icon" type="image/png" href="assets/images/3X.png" />
   <link rel="stylesheet" href="assets/css/site.css?v=20260908-4" />
-  <link rel="stylesheet" href="assets/css/pages/owl-office.css?v=20260920-4" />
+  <link rel="stylesheet" href="assets/css/pages/owl-office.css?v=20260924-1" />
   <script src="assets/js/site-shell.js?v=20260920-4" defer></script>
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2" defer></script>
   <script src="assets/js/owl-access.js?v=20260909-2" defer></script>
-  <script src="assets/js/pages/owl-office.js?v=20260920-5" defer></script>
+  <script src="assets/js/pages/owl-office.js?v=20260924-1" defer></script>
 </head>
 <body class="site-body" data-page="owl-office">
   <a class="skip-link" href="#main-content">Skip to content</a>
@@ -180,8 +180,19 @@
         <div class="office-dashboard-grid">
           <section class="office-dashboard-section">
             <div class="office-dashboard-heading">
-              <div><p class="office-section-kicker">Coverage</p><h3>What sources are covering</h3></div>
+              <div><p class="office-section-kicker">Coverage</p><h3 id="office-coverage-heading">Most Covered Stories</h3></div>
               <button class="office-news-text-action" type="button" data-dashboard-target="articles">View articles</button>
+            </div>
+            <div class="office-coverage-controls" aria-label="Coverage dashboard controls">
+              <div role="group" aria-label="Sort coverage">
+                <button type="button" data-coverage-sort="coverage" aria-pressed="true">Most Covered</button>
+                <button type="button" data-coverage-sort="newest" aria-pressed="false">Newest</button>
+              </div>
+              <div role="group" aria-label="Coverage time window">
+                <button type="button" data-coverage-window="1" aria-pressed="false">24 Hours</button>
+                <button type="button" data-coverage-window="7" aria-pressed="true">7 Days</button>
+                <button type="button" data-coverage-window="30" aria-pressed="false">30 Days</button>
+              </div>
             </div>
             <div class="office-subject-dashboard" id="office-subject-dashboard"></div>
           </section>

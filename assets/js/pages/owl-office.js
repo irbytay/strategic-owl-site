@@ -24,6 +24,9 @@
   let readerRights = [];
   let storyClusters = [];
   let coverageGroups = [];
+  let dashboardCoverageGroups = [];
+  let dashboardCoverageSort = "coverage";
+  let dashboardCoverageWindowDays = 7;
   let selectedArticleIds = new Set();
   let newsDashboardSummary = {};
   let taxonomyFilter = "all";
@@ -930,7 +933,7 @@
     if (!list) return;
     list.replaceChildren();
     const query = deskSearch.toLocaleLowerCase();
-    const groups = coverageGroups.filter((group) => !query || [
+    const groups = dashboardCoverageGroups.filter((group) => !query || [
       group.title,
       group.summary,
       ...(group.recentArticles || []).map((item) => item?.headline),
@@ -951,7 +954,18 @@
       appendText(title, "h4", group.title || "Coverage Group");
       const articleCount = Number(group.stats?.article_count || 0);
       const sourceCount = Number(group.stats?.source_count || 0);
-      appendText(title, "p", `${articleCount} article${articleCount === 1 ? "" : "s"} · ${sourceCount} source${sourceCount === 1 ? "" : "s"}`);
+      const totals = document.createElement("div");
+      totals.className = "office-coverage-totals";
+      const sourceTotal = document.createElement("span");
+      sourceTotal.className = "office-coverage-total";
+      appendText(sourceTotal, "strong", String(sourceCount));
+      sourceTotal.append(document.createTextNode(` source${sourceCount === 1 ? "" : "s"}`));
+      const articleTotal = document.createElement("span");
+      articleTotal.className = "office-coverage-total";
+      appendText(articleTotal, "strong", String(articleCount));
+      articleTotal.append(document.createTextNode(` article${articleCount === 1 ? "" : "s"}`));
+      totals.append(sourceTotal, articleTotal);
+      title.appendChild(totals);
       const insightCount = Array.isArray(group.insights) ? group.insights.length : 0;
       top.append(title, newsStatusBadge(insightCount ? `${insightCount} insight${insightCount === 1 ? "" : "s"}` : group.review_status));
       card.appendChild(top);
@@ -959,6 +973,8 @@
         .map((row) => `${row.alignment_label}: ${row.source_count}`)
         .join(" · ");
       appendText(card, "p", alignment || `${group.group_type || "story"} · source alignment not assessed`, "office-subject-sources");
+      const sourceNames = (group.sources || []).map((source) => source?.source_name).filter(Boolean).slice(0, 8);
+      if (sourceNames.length) appendText(card, "p", sourceNames.join(" · "), "office-subject-sources");
       const headlines = document.createElement("ul");
       for (const item of (group.recentArticles || []).slice(0, 3)) appendText(headlines, "li", item?.headline || "Untitled article");
       card.appendChild(headlines);
@@ -1035,9 +1051,42 @@
   }
 
   function renderEditorialDashboard() {
+    const heading = byId("office-coverage-heading");
+    if (heading) heading.textContent = dashboardCoverageSort === "coverage"
+      ? "Most Covered Stories"
+      : "Newest Stories";
+    document.querySelectorAll("[data-coverage-sort]").forEach((button) => {
+      button.setAttribute("aria-pressed", String(button.dataset.coverageSort === dashboardCoverageSort));
+    });
+    document.querySelectorAll("[data-coverage-window]").forEach((button) => {
+      button.setAttribute("aria-pressed", String(Number(button.dataset.coverageWindow) === dashboardCoverageWindowDays));
+    });
     renderSubjectDashboard();
     renderStoryClusters();
     renderDashboardQueue();
+  }
+
+  async function loadDashboardCoverage() {
+    const list = byId("office-subject-dashboard");
+    if (list) {
+      list.replaceChildren();
+      appendText(list, "p", "Loading stories…", "office-empty");
+    }
+    try {
+      const result = await invokeNewsAdmin("listCoverageGroups", {
+        status: "active",
+        reviewStatus: "all",
+        visibility: "all",
+        groupType: "story",
+        sortBy: dashboardCoverageSort,
+        windowDays: dashboardCoverageWindowDays,
+        limit: 100
+      });
+      dashboardCoverageGroups = Array.isArray(result.coverageGroups) ? result.coverageGroups : [];
+      renderEditorialDashboard();
+    } catch (error) {
+      setNewsMessage(error?.message || "Coverage could not be loaded.");
+    }
   }
 
   function renderReaderRights() {
@@ -1170,14 +1219,23 @@
     setBusy(refresh, true, "Refreshing…", "Refresh");
     setNewsMessage("Loading news administration…");
     try {
-      const [dashboardResult, sourceResult, requestResult, itemResult, reusableResult, rightsResult, coverageResult] = await Promise.all([
+      const [dashboardResult, sourceResult, requestResult, itemResult, reusableResult, rightsResult, coverageResult, dashboardCoverageResult] = await Promise.all([
         invokeNewsAdmin("getAdminDashboard"),
         invokeNewsAdmin("listNewsSources"),
         invokeNewsAdmin("listSourceRequests", { status: "all", limit: 200 }),
         invokeNewsAdmin("listNewsItems", { status: "active", limit: 50 }),
         invokeNewsAdmin("listReusableInsights", { reviewStatus: "all", limit: 100 }),
         invokeNewsAdmin("listReaderRights"),
-        invokeNewsAdmin("listCoverageGroups", { status: "active", reviewStatus: "all", visibility: "all", limit: 100 })
+        invokeNewsAdmin("listCoverageGroups", { status: "active", reviewStatus: "all", visibility: "all", limit: 100 }),
+        invokeNewsAdmin("listCoverageGroups", {
+          status: "active",
+          reviewStatus: "all",
+          visibility: "all",
+          groupType: "story",
+          sortBy: dashboardCoverageSort,
+          windowDays: dashboardCoverageWindowDays,
+          limit: 100
+        })
       ]);
       newsSources = Array.isArray(sourceResult.sources) ? sourceResult.sources : [];
       newsSourceRequests = Array.isArray(requestResult.requests) ? requestResult.requests : [];
@@ -1193,6 +1251,9 @@
       reusableInsights = Array.isArray(reusableResult.insights) ? reusableResult.insights : [];
       readerRights = Array.isArray(rightsResult.rights) ? rightsResult.rights : [];
       coverageGroups = Array.isArray(coverageResult.coverageGroups) ? coverageResult.coverageGroups : [];
+      dashboardCoverageGroups = Array.isArray(dashboardCoverageResult.coverageGroups)
+        ? dashboardCoverageResult.coverageGroups
+        : [];
       storyClusters = coverageGroups;
       updateNewsDashboard(dashboardResult.dashboard || {});
       renderNewsSources();
@@ -2167,6 +2228,24 @@
     document.querySelectorAll("[data-news-admin-view]").forEach((button) => {
       button.addEventListener("click", () => {
         showNewsAdminView(button.dataset.newsAdminView);
+      });
+    });
+    document.querySelectorAll("[data-coverage-sort]").forEach((button) => {
+      button.addEventListener("click", async () => {
+        const nextSort = button.dataset.coverageSort === "newest" ? "newest" : "coverage";
+        if (nextSort === dashboardCoverageSort) return;
+        dashboardCoverageSort = nextSort;
+        renderEditorialDashboard();
+        await loadDashboardCoverage();
+      });
+    });
+    document.querySelectorAll("[data-coverage-window]").forEach((button) => {
+      button.addEventListener("click", async () => {
+        const nextWindow = Number(button.dataset.coverageWindow || 7);
+        if (![1, 7, 30].includes(nextWindow) || nextWindow === dashboardCoverageWindowDays) return;
+        dashboardCoverageWindowDays = nextWindow;
+        renderEditorialDashboard();
+        await loadDashboardCoverage();
       });
     });
     byId("office-news-dialog")?.addEventListener("click", (event) => {

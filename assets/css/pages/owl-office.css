@@ -753,6 +753,58 @@
   gap: 10px;
 }
 
+.office-coverage-controls {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 9px 14px;
+  margin: 0 0 14px;
+}
+
+.office-coverage-controls > div {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.office-coverage-controls button {
+  min-height: 44px;
+  padding: 10px 15px;
+  border: 1px solid rgba(124, 138, 155, 0.38);
+  border-radius: 13px;
+  background: rgba(255, 255, 255, 0.045);
+  color: var(--owl-body);
+  font: 800 0.82rem/1 Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  cursor: pointer;
+}
+
+.office-coverage-controls button[aria-pressed="true"] {
+  border-color: var(--owl-gold);
+  background: var(--owl-gold);
+  color: #0b1c3d;
+}
+
+.office-coverage-totals {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 11px;
+}
+
+.office-coverage-total {
+  padding: 8px 11px;
+  border: 1px solid rgba(124, 138, 155, 0.24);
+  border-radius: 11px;
+  background: rgba(255, 255, 255, 0.035);
+  color: var(--owl-muted);
+  font: 700 0.78rem/1 Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+}
+
+.office-coverage-total strong {
+  margin-right: 4px;
+  color: var(--owl-gold);
+  font-size: 1rem;
+}
+
 .office-subject-card,
 .office-story-card {
   padding: 15px;
