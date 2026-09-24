@@ -1497,6 +1497,38 @@ If stronger or newer evidence contradicts the original source, explain the discr
 
 If the original source exaggerates, oversimplifies, omits important context, or presents speculation as fact, explain that clearly.
 
+### T.R.U. score
+
+Score the publisher, speaker, organization, or creator associated with the original URL.
+
+Use a scale from -10 to +10.
+
+Evaluate:
+
+- **Truth:** Its broader record of getting important facts right or wrong.
+- **Reliability:** Its broader pattern of showing evidence, using credible sources, correcting errors, and remaining consistent with the record.
+- **Understanding:** How well this specific source explains the subject, includes necessary context, and helps the reader understand what the evidence actually shows.
+
+Consider all three equally and return one combined score rounded to the nearest whole number.
+
+Return:
+
+**T.R.U.: [score]**
+
+**Why:** [In one or two plain-English sentences, identify the specific record, correction, evidence, omission, or distortion that most affected the score.]
+
+Do not score political viewpoint, tone, or popularity.
+
+Do not assume a reputation is evidence.
+
+Do not lower a score merely because reliable sources disagree. Determine whether the source represents that disagreement accurately and provides the context needed to understand it.
+
+If there is not enough reliable information to evaluate both the broader record and this specific source, return:
+
+**T.R.U.: Not enough evidence**
+
+Briefly explain what could not be established.
+
 ### Sources
 
 Prioritize primary sources whenever possible, including original documents, datasets, studies, court records, legislation, transcripts, government records, company filings, official reports, research papers, direct statements, and other firsthand evidence.
