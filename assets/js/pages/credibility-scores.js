@@ -862,6 +862,8 @@ if (!isTRUSubscriberValidated) {
     const navMenu = document.getElementById("navMenu");
     const menuToggle = document.querySelector(".menu-toggle");
 
+    if (!navMenu || !menuToggle) return;
+
     if (
       navMenu.classList.contains("show") &&
       !navMenu.contains(event.target) &&
@@ -908,4 +910,3 @@ window.addEventListener("strategic-owl-access-change", (event) => {
     if (status) status.textContent = "Owl Access is signed out on this device.";
   }
 });
-

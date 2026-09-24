@@ -7,7 +7,6 @@
     ["home", "Home", "index.html"],
     ["owl-feed", "Owl Feed", "owl-feed.html"],
     ["news-feed", "News", "news-feed.html", NEWS_BETA_ADMINISTRATOR_ONLY ? "administrator" : ""],
-    ["credibility-scores", "Credibility", "credibility-scores.html"],
     ["tru-rankings", "T.R.U. Rankings", "tru-rankings.html"],
     ["voter-resources", "Voter Resources", "voter-resources.html"],
     ["media-influence-quiz", "Media Quiz", "media-influence-quiz.html"],

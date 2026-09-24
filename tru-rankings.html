@@ -4,12 +4,14 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>T.R.U. Rankings | The Strategic Owl</title>
-  <meta name="description" content="Compare the highest and lowest T.R.U. credibility scores by public role." />
+  <meta name="description" content="Compare T.R.U. Rankings and explore complete Truth, Reliability, and Understanding profiles." />
+  <link rel="canonical" href="https://thestrategicowl.com/tru-rankings.html" />
 
   <link rel="icon" type="image/png" href="assets/images/3X.png" />
   <link rel="stylesheet" href="assets/css/site.css?v=20260908-4" />
-  <link rel="stylesheet" href="assets/css/pages/tru-rankings.css?v=20260906-2" />
-  <script src="assets/js/site-shell.js?v=20260908-2" defer></script>
+  <link rel="stylesheet" href="assets/css/pages/credibility-scores.css?v=20260923-1" />
+  <link rel="stylesheet" href="assets/css/pages/tru-rankings.css?v=20260923-1" />
+  <script src="assets/js/site-shell.js?v=20260920-4" defer></script>
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2" defer></script>
   <script src="assets/js/owl-access.js?v=20260909-2" defer></script>
 </head>
@@ -42,7 +44,6 @@
         </div>
         <div id="dashboard-ready" hidden>
           <p>See the highest and lowest T.R.U. scores by public role.</p>
-          <p>For complete profiles and score breakdowns, open Credibility from the menu.</p>
         </div>
         <div id="dashboard-error" class="dashboard-message" hidden>
           <p>The T.R.U. dashboard is temporarily unavailable.</p>
@@ -92,10 +93,136 @@
         <p id="ranking-group-title">Highest Scores</p>
         <ol id="ranking-list" class="ranking-list"></ol>
       </section>
+
+      <section class="tru-profile-explorer" aria-labelledby="tru-profile-explorer-title">
+        <div class="tru-profile-explorer-heading">
+          <p class="tru-section-kicker">Complete profiles</p>
+          <h2 id="tru-profile-explorer-title">Explore T.R.U. Scores</h2>
+          <button id="scoring-trigger" class="tru-scoring-button" type="button">How Scoring Works</button>
+        </div>
+
+        <div id="modal-overlay" onclick="hidePopup()"></div>
+        <div id="role-box-wrapper">
+          <div id="modal-close-btn" onclick="hidePopup()">&#10006; Close</div>
+          <div class="role-box">
+            <h3>T.R.U. Owl 3.0 Scoring</h3>
+            <p style="color: var(--understanding); font-weight: 700;">Scores measure civic credibility, not popularity.</p>
+            <h3>The Scale</h3>
+            <p><span class="num-font">+1 to +10</span> = informs the public with observable facts.</p>
+            <p><span class="num-font">0</span> = neutral or unverified record.</p>
+            <p><span class="num-font">-1 to -10</span> = misrepresents facts, pushes fear, or subverts constitutional reality.</p>
+            <h3>What Gets Scored</h3>
+            <p><strong>Truth:</strong> Facts and certified records vs. reality subversion.</p>
+            <p><strong>Reliability:</strong> Audited records vs. direct manipulation.</p>
+            <p><strong>Understanding:</strong> Clear context vs. fear-mongering.</p>
+            <h3>Election Baseline</h3>
+            <small>Major U.S. elections are decentralized, secure, and backed by paper trails. Baseless mass-fraud claims are scored as credibility damage.</small>
+            <h3>Final Score</h3>
+            <p><strong>Category Score</strong> × <strong>Accountability Weight</strong></p>
+            <small>The more public power someone has, the more their words count.</small>
+          </div>
+        </div>
+
+        <div class="dropdowns-wrapper tru-profile-selectors">
+          <div class="dropdown-group">
+            <label for="role-filter">Role</label>
+            <select id="role-filter">
+              <option value="">Select Role</option>
+            </select>
+          </div>
+          <div class="dropdown-group">
+            <label for="person-select">Profile</label>
+            <select id="person-select">
+              <option value="">Select Name</option>
+            </select>
+          </div>
+        </div>
+
+        <section class="tru-profile-search-card" aria-labelledby="tru-profile-search-title">
+          <h3 id="tru-profile-search-title">Find a Profile</h3>
+          <input
+            id="truProfileSearchInput"
+            class="tru-profile-search-input"
+            type="search"
+            placeholder="Search name or organization"
+            autocomplete="off"
+          />
+          <div id="truProfileSearchResults" class="tru-profile-search-results" aria-live="polite"></div>
+        </section>
+
+        <div id="output-container" style="display:none;">
+          <div class="tru-language-toggle" aria-label="Choose explanation style">
+            <button id="tru-point-button" class="tru-language-toggle-button active" type="button" onclick="setTRULanguageMode('point')">The Point</button>
+            <button id="tru-score-logic-button" class="tru-language-toggle-button" type="button" onclick="setTRULanguageMode('scoreLogic')">Score Logic</button>
+          </div>
+          <table id="score-table" class="tru-table">
+            <thead>
+              <tr><th style="text-align: center;">Score</th><th>Explanation</th></tr>
+            </thead>
+            <tbody id="score-body"></tbody>
+          </table>
+          <div id="total-score-box">
+            <div class="score-bar">
+              <div id="indicator-bar" class="bar-indicator"></div>
+              <div id="total-score-comment" class="total-score-comment-text"></div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="tru-name-submit-card" aria-labelledby="tru-name-submit-title">
+        <h2 id="tru-name-submit-title">Owl Access</h2>
+        <p id="tru-name-submit-description">Stripe and paid Substack subscribers unlock T.R.U. Owl profile suggestions, AI tech tips, and tools for navigating the Neonascent Age.</p>
+        <div class="tru-subscriber-validation-row" id="truSubscriberValidationRow">
+          <input id="truSubscriberEmail" class="tru-subscriber-validation-input" type="email" placeholder="Stripe or paid Substack email" autocomplete="email" />
+          <button class="tru-name-submit-button" type="button" onclick="validateTRUSubscriberEmail()">Validate Email</button>
+        </div>
+        <div id="truSubscriberValidationStatus" class="tru-subscriber-validation-status" role="status" aria-live="polite"></div>
+        <div id="truProfileSubmissionFields" class="tru-profile-fields-locked">
+          <div class="tru-name-submit-row">
+            <input id="truSuggestedName" class="tru-name-submit-input" type="text" placeholder="Name or organization" autocomplete="off" />
+            <button class="tru-name-submit-button" type="button" onclick="submitTRUProfileSuggestion()">Submit</button>
+          </div>
+          <div id="truSubmitStatus" class="tru-name-submit-status" role="status" aria-live="polite"></div>
+        </div>
+      </section>
+
+      <section class="tru-status-check-card" aria-labelledby="tru-status-check-title">
+        <h2 id="tru-status-check-title">Check Submission Status</h2>
+        <p>Enter the name or TRU-ID to see whether your submission is Pending or Completed.</p>
+        <div class="tru-status-check-row">
+          <input id="truStatusLookupValue" class="tru-status-check-input" type="text" placeholder="Name or TRU-ID" autocomplete="off" />
+          <button class="tru-status-check-button" type="button" onclick="checkTRUSubmissionStatus()">Check Status</button>
+        </div>
+        <div id="truStatusLookupResult" class="tru-status-check-result" role="status" aria-live="polite"></div>
+      </section>
+
+      <div class="tru-owl-modal" id="truOwlAccessModal" role="dialog" aria-modal="true" aria-labelledby="truOwlAccessTitle" hidden>
+        <div class="tru-owl-modal-card">
+          <div class="tru-owl-modal-header">
+            <div>
+              <h2 id="truOwlAccessTitle">Owl Access</h2>
+              <p>Owl Access includes T.R.U. profile suggestions and expanded candidate research.</p>
+            </div>
+            <button class="tru-owl-close-button" type="button" data-tru-owl-close aria-label="Close Owl Access">&times;</button>
+          </div>
+          <div class="tru-owl-form">
+            <label for="truOwlAccessEmail">Email used for Stripe or paid Substack</label>
+            <input class="tru-owl-field" id="truOwlAccessEmail" type="email" autocomplete="email" placeholder="you@example.com" />
+            <button class="tru-owl-primary-button" id="truOwlAccessContinue" type="button">Validate Owl Access</button>
+            <p class="tru-owl-message" id="truOwlAccessMessage" role="status"></p>
+          </div>
+          <div class="tru-owl-links">
+            <a class="tru-owl-primary-button" href="https://buy.stripe.com/cNicN5eVt24X2c6aEhdwc05" target="_blank" rel="noopener noreferrer">View Stripe Option</a>
+            <a class="tru-owl-secondary-button" href="https://strategicowl.substack.com/subscribe" target="_blank" rel="noopener noreferrer">View Substack Options</a>
+          </div>
+        </div>
+      </div>
     </div>
   </main>
 
   <div id="site-footer"></div>
   <script src="assets/js/pages/tru-rankings.js?v=20260906-2" defer></script>
+  <script src="assets/js/pages/credibility-scores.js?v=20260923-1" defer></script>
 </body>
 </html>
