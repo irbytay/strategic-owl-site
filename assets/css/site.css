@@ -843,3 +843,63 @@ body.site-body .divider-labels > span {
 ::view-transition-new(root) {
   animation-duration: 160ms;
 }
+/* Shared Supabase-driven election countdown. */
+.owl-countdown-home {
+  margin: 18px auto 24px;
+  color: var(--understanding, #d4af37);
+  font-family: Inter, system-ui, sans-serif;
+  font-size: 1rem;
+  font-weight: 700;
+  text-align: center;
+}
+
+.owl-countdown-card {
+  box-sizing: border-box;
+  width: 100%;
+  margin: 0 0 28px;
+  padding: 24px 20px 20px;
+  border: 1px solid rgba(212, 175, 55, 0.34);
+  border-radius: 20px;
+  background: linear-gradient(145deg, rgba(23, 42, 72, 0.96), rgba(15, 32, 54, 0.96));
+  text-align: center;
+}
+
+.owl-countdown-result {
+  color: var(--understanding, #d4af37);
+  font-family: "Playfair Display", Georgia, serif;
+  font-size: clamp(1.8rem, 7vw, 3rem);
+  font-weight: 700;
+  line-height: 1.08;
+}
+
+.owl-countdown-label {
+  margin-top: 6px;
+  color: var(--text, #eee);
+  font-family: Inter, system-ui, sans-serif;
+  font-size: 1.05rem;
+  font-weight: 700;
+}
+
+.owl-countdown-date {
+  margin-top: 8px;
+  color: var(--text-muted, #a7b3c1);
+  font-family: Inter, system-ui, sans-serif;
+  font-size: 0.9rem;
+}
+
+.owl-countdown-action {
+  min-height: 46px;
+  margin-top: 16px;
+  padding: 10px 20px;
+  border: 1px solid rgba(212, 175, 55, 0.68);
+  border-radius: 14px;
+  background: transparent;
+  color: var(--understanding, #d4af37);
+  font: 700 0.95rem Inter, system-ui, sans-serif;
+  cursor: pointer;
+}
+
+.owl-countdown-action:hover,
+.owl-countdown-action:focus-visible {
+  background: rgba(212, 175, 55, 0.1);
+}
