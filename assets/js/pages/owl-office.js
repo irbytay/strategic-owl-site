@@ -980,8 +980,9 @@
       card.appendChild(headlines);
       const actions = document.createElement("div");
       actions.className = "office-news-card-actions";
-      actions.appendChild(newsButton("Review Articles", "office-news-text-action", "story-view", group.id));
+      actions.appendChild(newsButton("View Articles", "office-news-text-action", "story-view", group.id));
       actions.appendChild(newsButton("Apply Insight", "office-news-text-action", "story-insight", group.id));
+      actions.appendChild(newsButton("Copy Research Prompt", "office-news-text-action", "story-prompt", group.id));
       card.appendChild(actions);
       list.appendChild(card);
     }
@@ -1018,6 +1019,7 @@
       actions.className = "office-news-card-actions";
       actions.appendChild(newsButton("View Articles", "office-news-text-action", "story-view", story.id));
       actions.appendChild(newsButton(story.insights?.length ? "Manage Insights" : "Add Insight", "office-news-text-action", "story-insight", story.id));
+      actions.appendChild(newsButton("Copy Research Prompt", "office-news-text-action", "story-prompt", story.id));
       actions.appendChild(newsButton("Edit Group", "office-news-text-action", "coverage-edit", story.id));
       card.appendChild(actions);
       list.appendChild(card);
@@ -1082,10 +1084,288 @@
         windowDays: dashboardCoverageWindowDays,
         limit: 100
       });
-      dashboardCoverageGroups = Array.isArray(result.coverageGroups) ? result.coverageGroups : [];
+      const returnedGroups = Array.isArray(result.coverageGroups) ? result.coverageGroups : [];
+      dashboardCoverageGroups = returnedGroups.length ? returnedGroups : fallbackDashboardCoverage();
       renderEditorialDashboard();
     } catch (error) {
       setNewsMessage(error?.message || "Coverage could not be loaded.");
+    }
+  }
+
+  function fallbackDashboardCoverage() {
+    const cutoff = Date.now() - dashboardCoverageWindowDays * 24 * 60 * 60 * 1000;
+    const latestTime = (group) => {
+      const dates = [
+        group?.stats?.latest_confirmed_article_at,
+        ...(group?.recentArticles || []).map((article) => article?.published_at)
+      ].map((value) => Date.parse(value || "")).filter(Number.isFinite);
+      return dates.length ? Math.max(...dates) : 0;
+    };
+    return coverageGroups
+      .filter((group) =>
+        group?.group_type === "story" &&
+        group?.status === "active" &&
+        group?.review_status !== "rejected" &&
+        latestTime(group) >= cutoff
+      )
+      .sort((left, right) => {
+        if (dashboardCoverageSort === "newest") return latestTime(right) - latestTime(left);
+        return Number(right?.stats?.source_count || 0) - Number(left?.stats?.source_count || 0) ||
+          Number(right?.stats?.article_count || 0) - Number(left?.stats?.article_count || 0) ||
+          latestTime(right) - latestTime(left);
+      });
+  }
+
+  function coverageResearchPromptFor(group, articles) {
+    const coverage = articles.length
+      ? articles.map((article, index) => {
+          const source = article?.source || {};
+          return `${index + 1}. ${article?.headline || "Untitled article"}\nPublisher: ${source.source_name || "Unknown publisher"}\nURL: ${article?.canonical_url || "Not available"}`;
+        }).join("\n\n")
+      : "No associated articles were available.";
+    return `Use the articles, reports, posts, videos, claims, studies, speeches, interviews, announcements, and other material associated with this Coverage Group as starting points for researching the larger issue they collectively represent.
+
+My goal is not simply to summarize the supplied coverage. I want to understand the underlying issue, determine what is actually important, compare the reporting with the broader record, and avoid mistaking repeated attention for real-world consequence.
+
+Coverage Group: ${group?.title || "Untitled coverage group"}
+
+Associated coverage:
+
+${coverage}
+
+Treat every supplied article as a lead, not as an authoritative account. Do not assume that a claim is true merely because several articles repeat it. Research the larger issue using current, reliable evidence beyond the supplied coverage.
+
+### First: What is actually going on?
+
+Explain the larger issue in plain English.
+
+Tell me:
+
+- what happened
+- what is verified
+- who or what is involved
+- what has actually changed, if anything
+- what remains uncertain
+
+Separate documented facts and actions from allegations, rhetoric, opinion, prediction, speculation, marketing, advocacy, and political or promotional messaging.
+
+### Then: Is this worth my attention?
+
+Do not assume something is important simply because politicians, media outlets, social media, companies, celebrities, influencers, organizations, or other powerful or popular people are talking about it.
+
+Look for concrete consequences.
+
+Ask:
+
+- Did something actually happen, or did somebody mainly say something?
+- Did a law, policy, court ruling, government action, scientific finding, financial event, military action, business decision, technological development, public-health development, or other meaningful event occur?
+- Does this affect people's rights, money, safety, government, work, health, technology, community, environment, or daily life?
+- Is there credible evidence that the situation could have meaningful consequences?
+- Is the attention surrounding the issue much larger than its documented significance?
+- Is this mostly a continuation of an existing argument, controversy, or news cycle rather than a meaningful new development?
+
+If the issue appears to have little concrete consequence, say so plainly and briefly explain why.
+
+Do not call something a "distraction" merely because it is controversial or heavily covered. Only use that description when there is credible evidence supporting it.
+
+Otherwise, explain that the issue may be receiving substantial attention despite limited evidence of material consequence.
+
+### What might deserve more attention?
+
+Look at the broader context surrounding the issue.
+
+If another development directly connected to this issue has substantially greater documented consequences, explain that.
+
+Do not change the subject simply because something else seems more interesting.
+
+Any comparison should have a clear factual connection to the event, people, organizations, institutions, industries, or larger situation represented by this Coverage Group.
+
+The purpose is to distinguish attention from consequence.
+
+### Give me the context I actually need
+
+Provide whatever background materially improves understanding.
+
+Depending on the issue, that could include:
+
+- historical context
+- legal or constitutional context
+- scientific evidence
+- economic data
+- technical explanation
+- geopolitical context
+- cultural or social context
+- previous statements or actions
+- court decisions
+- legislation
+- government records
+- company filings
+- research
+- datasets
+- relevant timelines
+
+Do not bury me in background that does not materially change my understanding of the issue.
+
+### When government power, law, elections, or constitutional issues are involved
+
+If the issue involves an elected official, government agency, use of public power, elections, civil rights, constitutional authority, law enforcement, military authority, or an oath of office, do not reduce substantive legal or constitutional questions to partisan disagreement.
+
+Check the relevant Constitution, statutes, court decisions, official records, congressional or legislative records, executive actions, election records, agency documents, or other primary evidence when available.
+
+Clearly distinguish between:
+
+- what the Constitution or law actually says
+- documented actions
+- findings by courts or other official bodies
+- allegations or interpretations
+- unresolved legal or constitutional questions
+
+Do not declare that someone violated a law, Constitution, oath, rule, or ethical standard merely because a politician, commentator, article, activist, company, or organization says so.
+
+Show the relevant record and explain what has and has not been formally established.
+
+Apply the same evidentiary standard regardless of the person, party, ideology, organization, company, institution, or government involved.
+
+### Check the coverage against the broader record
+
+Verify the most important shared claims independently.
+
+Identify:
+
+- what the articles broadly agree on
+- where their accounts, numbers, timelines, or descriptions differ
+- which claims appear to come from the same original source
+- whether repetition is being mistaken for independent confirmation
+- how different sources frame the same facts
+- primary records
+- newer developments
+- corrections
+- missing context
+- contradictory evidence
+- direct quotes in their original context
+- reliable reporting from multiple sources
+- original research or data
+- official documents
+- relevant expert analysis
+
+Explain meaningful disagreement among reliable sources without manufacturing disagreement where the evidence is strong.
+
+Use primary records and reliable outside sources to determine what the combined coverage gets right, exaggerates, oversimplifies, or leaves unresolved.
+
+Do not evaluate every article separately unless a meaningful difference affects how the larger issue should be understood.
+
+### Sources
+
+Prioritize primary sources whenever possible, including original documents, datasets, studies, court records, legislation, transcripts, government records, company filings, official reports, research papers, direct statements, and other firsthand evidence.
+
+Use reliable secondary sources when they provide useful reporting, analysis, explanation, or independent verification.
+
+Link to the strongest primary and reliable secondary sources so I can examine the evidence myself.
+
+### Writing style
+
+Write for an average person who wants enough context to genuinely understand what is happening without spending an hour researching it.
+
+Use normal, direct, conversational language.
+
+Do not sound like a government report, academic paper, corporate memo, public-relations statement, cable-news segment, or institutional press release.
+
+Avoid jargon when ordinary language works. Explain any important technical, legal, scientific, financial, political, or industry-specific term simply.
+
+Use short paragraphs and useful headings. Do not overwhelm me with every available fact.
+
+Prioritize information that materially changes how the issue should be understood.
+
+Do not manufacture importance. Do not manufacture outrage. Do not dismiss something merely because it is receiving excessive attention.
+
+Help me distinguish what people are talking about from what actually happened and what has meaningful consequences.
+
+### TL;DR
+
+End the research with a short TL;DR in plain English.
+
+Answer:
+
+What happened?
+What is actually verified?
+
+Does it matter?
+What concrete consequence, if any, makes this worth paying attention to?
+
+What should I not get distracted by?
+What part of the conversation is mostly rhetoric, speculation, repetition, hype, outrage, or attention without much supporting consequence?
+
+What should I notice instead?
+What fact, development, evidence, or context most changes how the issue should be understood?
+
+What don't we know yet?
+What remains unresolved, disputed, uncertain, or developing?
+
+Write the TL;DR so someone who reads nothing else still walks away with an accurate and useful understanding of the issue.
+
+### Draft the Owl Insight
+
+After completing the research and TL;DR, use the findings to draft one Owl Insight for this Coverage Group.
+
+The Insight must identify the most useful thing readers should notice about the larger issue. It should be grounded in the completed research and fair to every article associated with the group.
+
+Do not merely summarize the event or repeat the Coverage Group title.
+
+Focus on the fact, distinction, missing context, comparison, consequence, uncertainty, or larger pattern that most changes how the coverage should be understood.
+
+The Insight must not depend on a detail that appears in only one article unless independent research establishes that the detail is central to the larger issue.
+
+Return:
+
+**Insight label:** [A clear, memorable label of two to six words.]
+
+**Owl Insight:** [A concise, plain-English explanation of what readers should notice and why it matters. Clearly distinguish what is established from what remains uncertain. Write this so it can fairly appear alongside every article in the Coverage Group.]
+
+Keep the Insight direct, useful, and conversational. Do not make it sound institutional, promotional, academic, or AI-generated.
+
+Do not include a T.R.U. score.
+
+After the Owl Insight, do not offer additional help, suggest follow-up questions, recommend further research, or ask whether I want anything else. End with the Owl Insight.`;
+  }
+
+  async function copyCoverageResearchPrompt(groupId, button) {
+    const group = [...dashboardCoverageGroups, ...coverageGroups]
+      .find((entry) => String(entry?.id) === String(groupId));
+    if (!group) {
+      showToast("That Coverage Group could not be found.");
+      return;
+    }
+    const readyLabel = button.textContent.trim() || "Copy Research Prompt";
+    setBusy(button, true, "Preparing…", readyLabel);
+    try {
+      const articles = [];
+      let offset = 0;
+      let hasMore = true;
+      while (hasMore) {
+        const result = await invokeNewsAdmin("listNewsItems", {
+          status: "all",
+          limit: 100,
+          offset,
+          storyClusterId: group.id
+        });
+        const incoming = Array.isArray(result.items) ? result.items : [];
+        articles.push(...incoming);
+        offset += incoming.length;
+        hasMore = result.search?.hasMore === true && incoming.length > 0;
+      }
+      const confirmed = articles.filter((article) =>
+        (article.coverageGroups || []).some((membership) =>
+          String(membership.story_cluster_id) === String(group.id) &&
+          membership.membership_status === "confirmed"
+        )
+      );
+      const prompt = coverageResearchPromptFor(group, confirmed.length ? confirmed : articles);
+      await navigator.clipboard.writeText(prompt);
+      showToast("Coverage research prompt copied.");
+    } catch (error) {
+      showToast(error?.message || "The coverage research prompt could not be copied.");
+    } finally {
+      setBusy(button, false, "Preparing…", readyLabel);
     }
   }
 
@@ -1254,6 +1534,7 @@
       dashboardCoverageGroups = Array.isArray(dashboardCoverageResult.coverageGroups)
         ? dashboardCoverageResult.coverageGroups
         : [];
+      if (!dashboardCoverageGroups.length) dashboardCoverageGroups = fallbackDashboardCoverage();
       storyClusters = coverageGroups;
       updateNewsDashboard(dashboardResult.dashboard || {});
       renderNewsSources();
@@ -2274,6 +2555,9 @@
         byId("office-news-search").value = "";
         showNewsAdminView("articles");
         loadScopedNewsItems({ storyClusterId });
+      }
+      if (action.dataset.newsAction === "story-prompt") {
+        copyCoverageResearchPrompt(action.dataset.newsId || "", action);
       }
       if (action.dataset.newsAction === "coverage-edit") {
         const group = coverageGroups.find((entry) => String(entry.id) === String(action.dataset.newsId));
