@@ -3,107 +3,125 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Fact Check Hub | The Strategic Owl</title>
-  <meta name="description" content="Review sourced claims and reality checks from The Strategic Owl." />
-
-  <!-- Open Graph Meta (Facebook, LinkedIn, Discord, etc.) -->
-  <meta property="og:title" content="The Strategic Owl | Truth. Reliability. Understanding." />
-  <meta property="og:description" content="Measure credibility and uncover truth using the TRU OWL Score — a tool for independent thinkers." />
-  <meta property="og:image" content="https://thestrategicowl.com/STOInsightQuiz.png" />
-  <meta property="og:image:type" content="image/png" />
-  <meta property="og:image:width" content="1200" />
-  <meta property="og:image:height" content="630" />
-  <meta property="og:url" content="https://thestrategicowl.com" />
+  <title>Election Data | The Strategic Owl</title>
+  <meta name="description" content="Compare U.S. election participation, national vote totals, documented fraud records, and the standards used to verify election claims." />
+  <meta property="og:title" content="Election Data | The Strategic Owl" />
+  <meta property="og:description" content="Participation, documented records, and the evidence required to prove election claims." />
+  <meta property="og:image" content="https://thestrategicowl.com/assets/images/3X.png" />
+  <meta property="og:url" content="https://thestrategicowl.com/fact-check-hub.html" />
   <meta property="og:type" content="website" />
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&family=Playfair+Display:wght@600;700&display=swap" rel="stylesheet" />
-
-  
   <link rel="icon" type="image/png" href="assets/images/3X.png" />
-  <link rel="stylesheet" href="assets/css/pages/fact-check-hub.css" />
+  <link rel="stylesheet" href="assets/css/pages/fact-check-hub.css?v=20260925-1" />
   <link rel="stylesheet" href="assets/css/site.css?v=20260908-4" />
-  <script src="assets/js/site-shell.js?v=20260920-4" defer></script>
+  <script src="assets/js/site-shell.js?v=20260925-1" defer></script>
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2" defer></script>
   <script src="assets/js/owl-access.js?v=20260909-2" defer></script>
+  <script src="assets/js/pages/fact-check-hub.js?v=20260925-1" defer></script>
 </head>
-  <body class="site-body" data-page="fact-check-hub">
+<body class="site-body" data-page="fact-check-hub">
   <a class="skip-link" href="#main-content">Skip to content</a>
   <div id="site-header"></div>
-  <main id="main-content" class="site-page site-page--fact-check-hub" tabindex="-1">
-<div class="container">
-    <h1>Reality Check</h1>
-    <!-- 🎯 Divider -->
-    <section class="divider-section">
-      <div class="divider-bar">
-        <div class="truth"></div>
-        <div class="reliability"></div>
-        <div class="understanding"></div>
+
+  <main id="main-content" class="site-page election-page" tabindex="-1">
+    <header class="election-page-header">
+      <img src="assets/images/3X.png" alt="" />
+      <h1>Election Data</h1>
+    </header>
+
+    <div id="dashboard-status" class="election-status" role="status">Loading election records…</div>
+
+    <section id="election-dashboard" class="election-stack" hidden aria-label="Election overview">
+      <article class="election-card participation-card">
+        <h2>Participation Rates</h2>
+        <div class="election-legend" aria-label="Chart legend">
+          <span><i class="legend-line voted"></i>Voted</span>
+          <span><i class="legend-line did-not-vote"></i>Did not vote</span>
+        </div>
+        <div class="participation-chart-wrap">
+          <canvas id="participation-chart" aria-label="Election participation by year"></canvas>
+        </div>
+        <p id="participation-hint" class="participation-hint">Tap the chart to see a year.</p>
+        <div id="participation-readout" class="participation-readout" hidden></div>
+        <div class="range-years"><span id="range-start-label"></span><span id="range-end-label"></span></div>
+        <div class="range-controls" aria-label="Election year range">
+          <input id="range-start" type="range" aria-label="First election year" />
+          <input id="range-end" type="range" aria-label="Last election year" />
+        </div>
+      </article>
+
+      <article class="election-card national-card" id="national-card" hidden>
+        <h2>A National Mandate?</h2>
+        <p class="population-label">Estimated voting-age population</p>
+        <div id="population-total" class="population-total"></div>
+        <div id="share-bar" class="share-bar" aria-label="Share of estimated voting-age population"></div>
+        <div id="share-grid" class="share-grid"></div>
+      </article>
+
+      <article class="election-card fraud-card">
+        <h2>Mass Voter Fraud?</h2>
+        <div id="fraud-total" class="fraud-total"></div>
+        <p class="fraud-caption">records in the Heritage database</p>
+        <div class="fraud-toggle" role="group" aria-label="Fraud record grouping">
+          <button id="fraud-by-year" class="active" type="button">By Year</button>
+          <button id="fraud-by-state" type="button">By State</button>
+        </div>
+        <p id="fraud-bars-heading" class="fraud-bars-heading">Most records by year</p>
+        <div id="fraud-bars"></div>
+      </article>
+    </section>
+
+    <section class="election-card confidence-card" id="confidence-card">
+      <div id="confidence-intro">
+        <p class="election-eyebrow">THE CONFIDENCE TEST</p>
+        <h2>Can you spot weak evidence when the claim agrees with you?</h2>
+        <p class="confidence-subtitle">Six claims. One standard. No side gets a pass.</p>
+        <button class="election-text-action" id="start-claims" type="button"><span>START WITH THE FIRST CLAIM</span><span aria-hidden="true">→</span></button>
       </div>
-      <div class="divider-labels">
-        <span>Truth</span>
-        <span>Reliability</span>
-        <span>Understanding</span>
+      <div id="claim-panel" hidden>
+        <div class="claim-counter"><span id="claim-counter"></span><span id="claim-dots" class="claim-dots"></span></div>
+        <p class="election-eyebrow claim-eyebrow">THE CLAIM</p>
+        <h2 id="claim-title"></h2>
+        <div id="claim-answers"></div>
+        <button class="election-text-action" id="next-claim" type="button"><span id="next-claim-label">NEXT CLAIM</span><span aria-hidden="true">→</span></button>
       </div>
     </section>
 
-    <h1>Misconception Hub</h1>
-    <div class="misconception-intro-container">
-  <p>This is your Misconception Hub — where popular myths are stripped down and tested against verifiable facts. Select a topic to examine widely accepted claims and break them apart — one layer at a time.</p>
-</div>
-    <!-- 🧠 Culture Subs UI Section -->
-    <div id="culture-subs">
-      <div class="custom-dropdown">
-        <select id="culture-select" onchange="showCultureSubs()">
-          <option value="">Misconception</option>
-        </select>
-      </div>
-      <div class="table-wrapper" style="display:none;" id="culture-results">
+    <section id="hava" class="election-card hava-card">
+      <h2>The Law That Makes Fraud Provable</h2>
+      <p>Passed in 2002, the Help America Vote Act requires voting systems to create a permanent paper record that can be manually audited.</p>
+      <p class="hava-proof">Mass illegal voting or machine manipulation would have to leave evidence in voter records, paper ballots, audits, and the certified count. No evidence means no proven claim.</p>
+    </section>
+
+    <section class="election-card heritage-disclosure">
+      Heritage’s database mixes individual cases involving both parties across local, state, and federal elections; it is not a measure of presidential fraud. Sweeping claims about machines, mail ballots, noncitizen voting, or outside interference still have to match the paper records, audits, and certified count required by HAVA and state law.
+    </section>
+
+    <section class="state-explorer" aria-labelledby="state-explorer-title">
+      <h2 id="state-explorer-title">Explore Cases by State</h2>
+      <label class="sr-only" for="state-select">Select a state</label>
+      <select id="state-select"><option value="">Select a state</option></select>
+      <p id="state-summary" class="state-summary" aria-live="polite"></p>
+      <div id="state-results" class="state-results" hidden>
         <table>
-          <tbody id="culture-body"></tbody>
-        </table>
-      </div>
-    </div>
-    <!-- 🗳️ Voter Fraud Section -->
-    <div id="voter-fraud-section">
-      <h1>Voter Fraud?</h1>
-      <div class="misconception-intro-container">
-  <p>Look past the headlines — here’s the actual data. Some claim voter fraud is rampant; others say it’s virtually nonexistent. The truth lives in the details. The Heritage Foundation tracks every confirmed case of voter fraud — often to amplify the threat. This tool uses that same dataset, but with the context it lacks. Because yes, voter fraud exists. But not in the way you’ve been led to believe.</p>
-</div>
-      <div class="custom-dropdown">
-        <select id="state-select">
-          <option value="">Choose a state</option>
-        </select>
-      </div>
-      <p id="state-summary" class="subtext"></p>
-      <div class="table-wrapper" style="display:none;" id="state-results">
-        <table>
-          <thead>
-            <tr>
-              <th>Year</th>
-              <th>State</th>
-              <th>Name</th>
-            </tr>
-          </thead>
+          <thead><tr><th>Year</th><th>State</th><th>Name</th></tr></thead>
           <tbody id="state-data-body"></tbody>
         </table>
       </div>
-      <p>Source:</p>
-      <p><a href="https://www.heritage.org/voterfraud" class="important-link" target="_blank">Heritage Foundation Voter Fraud Database</a></p>
-    </div>
-    <section class="divider-section" aria-label="Truth, Reliability, Understanding">
-      <div class="divider-bar" aria-hidden="true">
-        <div class="truth"></div>
-        <div class="reliability"></div>
-        <div class="understanding"></div>
-      </div>
-      <div class="divider-labels">
-        <span>Truth</span>
-        <span>Reliability</span>
-        <span>Understanding</span>
-      </div>
     </section>
-  </div>
+
+    <section class="election-card owl-rule">
+      <h2>The Owl's Rule</h2>
+      <p>Do not dismiss fraud. Do not inflate it. Follow the evidence and ask whether it could change the result.</p>
+    </section>
+
+    <section class="election-sources" aria-labelledby="source-title">
+      <h2 id="source-title">Sources</h2>
+      <a href="https://www.congress.gov/107/plaws/publ252/PLAW-107publ252.pdf" target="_blank" rel="noopener noreferrer"><span><strong>Help America Vote Act of 2002</strong><small>Full text of Public Law 107-252</small></span><b aria-hidden="true">↗</b></a>
+      <a href="https://www.eac.gov/about/help_america_vote_act.aspx" target="_blank" rel="noopener noreferrer"><span><strong>U.S. Election Assistance Commission</strong><small>A plain-language overview of HAVA</small></span><b aria-hidden="true">↗</b></a>
+      <a href="https://www.heritage.org/voterfraud" target="_blank" rel="noopener noreferrer"><span><strong>Heritage Foundation Election Fraud Database</strong><small>Source of the documented records shown above</small></span><b aria-hidden="true">↗</b></a>
+    </section>
   </main>
+
   <div id="site-footer"></div>
-  <script src="assets/js/pages/fact-check-hub.js?v=20260906-2" defer></script>
 </body>
 </html>

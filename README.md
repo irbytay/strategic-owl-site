@@ -11,7 +11,7 @@ This is the clean, GitHub Pages-ready version of The Strategic Owl website.
 - `tru-rankings.html` — T.R.U. Rankings
 - `voter-resources.html` — Voter Resources
 - `media-influence-quiz.html` — Media Influence Quiz
-- `fact-check-hub.html` — Fact Check Hub
+- `fact-check-hub.html` — Election Data
 - `constitution.html` — The Constitution
 - `support.html` — Support & Connect
 

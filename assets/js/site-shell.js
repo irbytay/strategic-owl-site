@@ -10,7 +10,7 @@
     ["tru-rankings", "T.R.U. Rankings", "tru-rankings.html"],
     ["voter-resources", "Voter Resources", "voter-resources.html"],
     ["media-influence-quiz", "Media Quiz", "media-influence-quiz.html"],
-    ["fact-check-hub", "Fact Check", "fact-check-hub.html"],
+    ["fact-check-hub", "Election Data", "fact-check-hub.html"],
     ["constitution", "Constitution", "constitution.html"],
     ["support", "Support", "support.html"]
   ];
