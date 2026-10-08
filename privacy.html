@@ -1,202 +1,139 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Privacy Policy for The Strategic Owl. Learn what information the app uses, why it is used, and how to request deletion.">
+  <meta name="theme-color" content="#0D1B2A">
   <title>Privacy Policy | The Strategic Owl</title>
   <style>
-    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@600&display=swap');
-
+    :root {
+      color-scheme: dark light;
+      --navy: #0D1B2A;
+      --panel: #112D4E;
+      --gold: #D4AF37;
+      --gold-soft: #F8E9A1;
+      --text: #F5F5F5;
+      --muted: #C8D0DA;
+      --line: rgba(212, 175, 55, .32);
+    }
+    * { box-sizing: border-box; }
     body {
-      font-family: 'Merriweather', serif;
-      background-color: #0D1B2A;
-      color: #F5F5F5;
       margin: 0;
-      padding: 2rem;
-      line-height: 1.7;
+      padding: 28px 16px;
+      background: radial-gradient(ellipse at top, #183453 0, var(--navy) 58%);
+      color: var(--text);
+      font: 17px/1.72 Georgia, "Times New Roman", serif;
     }
-
-    h1, h2 {
-      font-family: 'Times New Roman', serif;
-      color: #D4AF37;
-      text-transform: uppercase;
-      letter-spacing: 1px;
-      text-align: center;
-    }
-
-    h2 {
-      font-size: 1.75rem;
-    }
-
-    a {
-      color: #D4AF37;
-      text-decoration: none;
-    }
-
-    a:hover {
-      text-decoration: underline;
-      color: #F8E9A1;
-    }
-
-    .container {
-      max-width: 800px;
+    main {
+      max-width: 850px;
       margin: 0 auto;
-      background-color: #112D4E;
-      border-radius: 8px;
-      padding: 3rem;
-      border: 2px solid #D4AF37;
-      box-shadow: 0 0 20px rgba(212, 175, 55, 0.6);
+      padding: clamp(24px, 6vw, 56px);
+      border: 1px solid var(--line);
+      border-radius: 22px;
+      background: color-mix(in srgb, var(--panel) 91%, transparent);
+      box-shadow: 0 20px 70px rgba(0, 0, 0, .28);
     }
-
-    p, ul {
-      font-size: 1.05rem;
-      max-width: 700px;
-      margin-left: auto;
-      margin-right: auto;
+    header { text-align: center; margin-bottom: 38px; }
+    .brand { color: var(--gold); font: 700 1.45rem/1.2 Georgia, serif; }
+    .motto { margin: 8px 0 26px; color: var(--muted); font-style: italic; }
+    h1, h2 { color: var(--gold-soft); font-family: Georgia, "Times New Roman", serif; line-height: 1.25; }
+    h1 { margin: 0 0 12px; font-size: clamp(2rem, 6vw, 2.65rem); }
+    h2 { margin: 2.1em 0 .55em; font-size: 1.45rem; }
+    p, ul { max-width: 720px; margin: 0 auto 1.1em; }
+    ul { padding-left: 1.35em; }
+    li { margin: .42em 0; padding-left: .15em; }
+    strong { color: #FFF1B8; }
+    a { color: #F4D66F; text-underline-offset: 3px; }
+    a:hover { color: #FFF1B8; }
+    .updated { color: var(--muted); font-size: .92rem; text-align: center; }
+    .callout { padding: 16px 18px; border-left: 3px solid var(--gold); background: rgba(0, 0, 0, .16); border-radius: 0 12px 12px 0; }
+    footer { margin-top: 42px; padding-top: 22px; border-top: 1px solid var(--line); text-align: center; color: var(--muted); font: .9rem/1.6 system-ui, sans-serif; }
+    @media (max-width: 560px) {
+      body { padding: 12px; font-size: 16px; }
+      main { padding: 23px 19px; border-radius: 17px; }
+      h2 { font-size: 1.28rem; }
     }
-
-    p {
-      margin-bottom: 1.25rem;
-    }
-
-    ul {
-      padding-left: 1.5rem;
-    }
-
-    li {
-      margin-bottom: 0.75rem;
-      line-height: 1.6;
-    }
-
-    strong {
-      color: #F8E9A1;
-      font-weight: 600;
-    }
-
-    footer {
-      margin-top: 3rem;
-      padding-top: 2rem;
-      font-size: 0.9rem;
-      text-align: center;
-      color: #C4A000;
-      border-top: 1px solid #C4A000;
-    }
-
-    @media (max-width: 640px) {
-      body {
-        padding: 1rem;
-      }
-
-      .container {
-        padding: 1.5rem;
-      }
-    }
-
     @media print {
-      body {
-        background: #ffffff;
-        color: #000000;
-        font-family: serif;
-      }
-
-      a {
-        color: #000000;
-      }
+      body { padding: 0; color: #171717; background: white; font: 12pt/1.6 Georgia, serif; }
+      main { max-width: none; padding: 0; color: #171717; background: white; border: 0; box-shadow: none; }
+      h1, h2, strong, .brand { color: #222; }
+      a { color: #111; }
     }
   </style>
-  <meta name="description" content="Privacy Policy for The Strategic Owl. No advertising, cross-app tracking, or sale of personal data." />
-  <meta name="theme-color" content="#0D1B2A" />
 </head>
 <body>
-  <div class="container">
-    <h1 style="font-size: 2rem; margin-bottom: 2rem;">The Strategic Owl</h1>
-    <p style="text-align:center; font-style: italic; color: #C4A000;">Truth. Reliability. Understanding.</p>
-    <hr style="border-color:#2C3E50; margin-bottom: 2rem;" />
-
+<main>
+  <header>
+    <div class="brand">The Strategic Owl</div>
+    <p class="motto">Truth. Reliability. Understanding.</p>
     <h1>Privacy Policy</h1>
-   <p><strong>Last updated:</strong> September 4, 2026</p>
+    <p class="updated"><strong>Last updated:</strong> October 8, 2026</p>
+  </header>
 
-    <p>The Strategic Owl is built to provide civic tools without advertising surveillance. We do not sell personal information, use advertising networks, or track people across apps and websites. This policy explains the limited information used to operate optional app features.</p>
+  <p>The Strategic Owl provides news coverage tools, civic resources, and a searchable Constitution reference. This policy describes information used by the current native iOS app and how it is handled. We do not sell personal information or use the app for third-party targeted advertising or cross-app tracking.</p>
 
-    <h2>The Short Version</h2>
-    <ul>
-      <li>No advertising or cross-app tracking.</li>
-      <li>No sale of personal information.</li>
-      <li>No access to contacts, microphone, precise location, or device advertising identifiers.</li>
-      <li>Most civic tools can be used without providing a name or email address.</li>
-      <li>Subscriber email is used to validate paid access and identify Ask the Owl submissions.</li>
-      <li>Optional quiz history and Helpful reactions use a randomly assigned Supabase account identifier.</li>
-    </ul>
+  <h2>At a glance</h2>
+  <ul>
+    <li>Radar, the all-source chronological News Feed, voter resources, and the Constitution reference are available without membership.</li>
+    <li>If you choose to check existing access, we send the email you enter to our secure service to verify Apple, Owl Access, Substack, or complimentary access.</li>
+    <li>Owl Membership enables source following, Owl Reader on supported stories, and Constitution research prompts. Your choices and the requests needed to provide these features are processed by our services.</li>
+    <li>Apple processes App Store purchases. We receive transaction information needed to verify or restore membership—not your payment-card details.</li>
+    <li>The app creates a random Supabase account identifier and keeps its authentication session in the device Keychain to support app features and secure access.</li>
+    <li>We do not include advertising networks or third-party analytics SDKs in the current native app.</li>
+  </ul>
 
-    <h2>Information Used by the App</h2>
+  <h2>Information you provide</h2>
+  <p><strong>Membership email.</strong> If you choose “Check membership,” the email address you enter is sent to a Supabase service to check eligible subscription and approved-access records. It is used to validate access and associate the result with the appropriate entitlement. The app does not ask for an email to browse public Radar, news, voter resources, or the Constitution.</p>
 
-    <p><strong>Subscriber email.</strong> A paid subscriber may voluntarily enter the email associated with an Owl or Substack subscription. The app sends that email to a protected Supabase function to confirm access against active subscription or approved-user records. A validated email may be stored on the device so access does not need to be rechecked on every screen.</p>
+  <p><strong>Administrator sign-in.</strong> If an address is recognized for publisher access, the administrator must complete Sign in with Apple. Apple provides an identity token to establish and verify that protected session. Depending on your Apple settings and prior authorization, Apple may also provide your name or email address. Administrator tools can process content and actions you submit, such as analyses attached to stories, source requests, and changes to complimentary reader access.</p>
 
-    <p><strong>Ask the Owl submissions.</strong> Authorized subscribers may submit a topic and an optional audience take. The topic, optional text, access source, status, and related timestamps are stored in Supabase so the administrator can review, research, complete, or archive the request. For email-validated subscribers, the associated subscriber email may be stored. For Apple subscribers, requests are associated with a randomly assigned app account identifier rather than an Apple Account email.</p>
-    
-    <p><strong>Anonymous app identifier.</strong> Supabase assigns the app session a random account identifier. It is used to associate Helpful reactions, optional saved quiz history, Ask the Owl submissions, and verified Apple subscription access with the same app profile. It is not an advertising identifier and is not used for cross-app tracking.</p>
+  <p><strong>Saved sources and article requests.</strong> If you have membership and choose to follow or unfollow a source, the app sends that choice to our service and associates it with your app profile. When you open an article or choose Owl Reader, the app sends the relevant article identifier and access information needed to return the article or reader result. Owl Reader is available only when the publisher and source material make the story accessible.</p>
 
-    <p><strong>Media Influence Quiz.</strong> The quiz can be completed without saving anything to the server. An authorized subscriber may affirmatively choose to save a result. When saved, the app stores the ten responses, calculated score, result label, quiz version, consent version, date, and random participant identifier. The quiz record does not store the subscriber email. Saved responses may involve civic or political opinions. Results are retained for up to 12 months and can be deleted from within the app. Aggregated, non-identifying statistics may be used to understand overall response patterns.</p>
+  <h2>Information created for app operation</h2>
+  <p><strong>Random app identifier and session.</strong> The app obtains a random identifier from Supabase authentication, including for people who use the app without entering an email. The identifier supports secure service requests, source choices, and the association of an Apple purchase with the app profile. The authentication session is stored in the iOS Keychain. It is not an advertising identifier and is not used to track you across other companies’ apps or websites.</p>
 
-    <p><strong>Helpful reactions.</strong> When a user marks an Owl post Helpful, Supabase stores the post reference and random app identifier. This prevents duplicate reactions and allows the app to display totals.</p>
+  <p><strong>Apple purchase and entitlement information.</strong> When you buy or restore Owl Membership, StoreKit and Apple handle payment. The app sends Apple-signed transaction information to Supabase for server-side verification. The information may include product and transaction identifiers, purchase and expiration dates, subscription status, revocation or refund status, and the random app account token. We use it to confirm, restore, and maintain access and respond to subscription changes. We do not receive your payment-card number through this process.</p>
 
-    <p><strong>Administrator publishing.</strong> Photo-library access is available only within protected administrator tools. It allows the administrator to select optional Owl Feed or profile images for upload to Supabase Storage. Regular users are not asked to provide photos.</p>
+  <p><strong>News, Radar, and service data.</strong> The app requests public story, source, and coverage information from our services. Requests may include article or source identifiers and the session or membership information needed to return the appropriate public or member feature. The server may process technical request information, such as IP address and request time, as part of delivering and protecting the service. We do not use this information for advertising profiles.</p>
 
-    <h2>Information We Do Not Collect</h2>
-    <p>The app does not collect payment-card numbers, bank information, contacts, microphone recordings, precise location, health information, advertising identifiers, or browsing history. A ZIP code entered in Candidate Check is processed in the app against downloaded civic data and is not saved by The Strategic Owl.</p>
+  <p><strong>Voter resources.</strong> State registration links, candidate information, and district reference data are downloaded from a Google Sheets API. Candidate-name search and ZIP-to-district lookup are performed on the data already loaded in the app; the search term and ZIP are not sent as lookup requests by the current app. If you open an official or other external link, that destination’s privacy practices apply.</p>
 
-    <h2>Subscriptions and Payments</h2>
+  <p><strong>Local storage.</strong> The app may keep the Supabase session in Keychain and cache public content, such as the latest homepage update or election countdown, on the device. Signing out clears the app’s saved session and local access state. Cached public content may remain until refreshed or removed by iOS when app data is deleted.</p>
 
-<p><strong>Apple In-App Purchase.</strong> Owl Access may be purchased through Apple’s In-App Purchase system. Apple processes payment and does not provide The Strategic Owl with payment-card information or the subscriber’s Apple Account email address. To confirm access, restore purchases, and maintain subscription status, the app and its secure services process Apple-signed transaction information, transaction identifiers, subscription status, expiration information, and a random app account identifier. This information is used only to verify Owl Access, restore access on an eligible device, and respond to subscription events such as renewal, expiration, refund, or revocation.</p>
+  <h2>Services that process information</h2>
+  <ul>
+    <li><strong>Supabase</strong> provides authentication, databases, and server functions used for access verification, news and Radar requests, member source choices, purchase verification, and administrator tools.</li>
+    <li><strong>Cloudflare</strong> delivers the Owl Reader service endpoint used to process a requested article when reader content is available.</li>
+    <li><strong>Apple</strong> provides StoreKit purchases, purchase restoration and subscription status, and Sign in with Apple for the protected administrator session.</li>
+    <li><strong>Google</strong> provides the Sheets API used to retrieve civic and candidate reference data.</li>
+    <li><strong>Stripe and Substack</strong> may be sources of existing subscription eligibility records checked by our membership service. Their own services and privacy policies govern information they collect directly.</li>
+    <li><strong>News publishers and external websites</strong> receive information under their own practices when you choose to open their links or content.</li>
+  </ul>
+  <p>These providers process information to deliver the requested service, maintain security, or meet legal obligations. Their independent handling of information is governed by their own privacy notices and applicable agreements.</p>
 
-<p><strong>Stripe and Substack.</strong> Owl subscriptions may also be processed on Stripe-hosted pages, and Substack subscriptions are managed by Substack. The Strategic Owl does not receive or store payment-card information. Stripe or Substack may provide an email address, subscription status, customer reference, and related subscription information so paid access can be validated. Their handling of information is governed by their own privacy policies.</p>
+  <h2>Information we do not request</h2>
+  <p>The current native app does not request access to your contacts, microphone, precise location, health information, or advertising identifier. It does not include the legacy Media Influence Quiz, Owl Feed/Perch, or T.R.U. Rankings. The app’s ZIP lookup is performed locally as described above.</p>
 
-    <h2>Services Used</h2>
-    <p>The app uses limited third-party infrastructure to provide its features:</p>
-    <ul>
-      <li><strong>Supabase</strong> for authentication, protected database records, storage, and server functions.</li>
-      <li><strong>Google Sheets APIs</strong> for read-only civic and educational datasets.</li>
-      <li><strong>Stripe</strong> for externally hosted Owl subscription and support payments.</li>
-      <li><strong>Substack</strong> for newsletter subscriptions and subscriber eligibility.</li>
-      <li><strong>Sign in with Apple</strong> for protected administrator authentication.</li>
-      <li><strong>Apple</strong> for In-App Purchase processing, subscription management, purchase restoration, and subscription-status notifications.</li>
-    </ul>
-    <p>The app also opens user-selected external resources, including official election websites, House.gov, campaign websites, Instagram, and research tools. Once opened, those services operate under their own privacy policies.</p>
+  <h2>Retention and deletion choices</h2>
+  <p>Information is kept for as long as reasonably needed to provide the feature, maintain access and security, resolve disputes, and satisfy accounting or legal requirements. Subscription and transaction records may need to be retained for the duration required to administer purchases and related obligations. Operational logs are subject to the retention settings of the provider handling them.</p>
 
-    <h2>How Information Is Used</h2>
-    <p>Information described in this policy is used only to operate app features, validate subscriber access, maintain security, display saved history and reaction totals, manage submitted topics, and produce aggregated statistics. It is not used for third-party advertising, targeted advertising, or data-broker profiling.</p>
+  <p>The app currently provides a “Sign out on this device” option. Signing out clears the device session; it does <strong>not</strong> by itself erase server-side records or cancel an Apple, Stripe, or Substack subscription. To request access, correction, or deletion of information associated with your app profile, contact <a href="mailto:team@thestrategicowl.com">team@thestrategicowl.com</a> from the email associated with your access, if applicable. We may need enough information to verify and locate the relevant records. Some records may be retained where required for security, legal, accounting, or transaction purposes.</p>
 
-    <h2>Retention and Your Choices</h2>
-<ul>
-  <li>Saved quiz results are retained for up to 12 months and can be deleted individually or together from within the app.</li>
-  <li>Ask the Owl requests may be retained while they are reviewed, researched, completed, or archived.</li>
-  <li>Helpful reaction records may be retained while needed to maintain accurate reaction totals and prevent duplicate reactions.</li>
-  <li>Subscription records may be retained while access is active and as reasonably necessary for payment, security, accounting, or legal obligations.</li>
-</ul>
+  <p>Cancel subscriptions through the provider that bills you. Apple subscriptions are managed in your Apple Account subscription settings; Stripe and Substack subscriptions are managed through their respective services.</p>
 
-<p><strong>Deleting an app account.</strong> A confirmed subscriber can delete their app account and associated app data directly in the app through <strong>Profile → Account &amp; Data → Delete App Account &amp; Data</strong>. This permanently deletes the current app profile, saved quiz history, Ask the Owl requests, Helpful reactions, and the app’s subscription-access link.</p>
+  <p class="callout"><strong>Legacy app data.</strong> This policy describes the current native app. It does not automatically erase information collected through an earlier version of The Strategic Owl, its website, or related services. Contact us if you want us to locate and review a legacy record.</p>
 
-<p>Deleting an app account does not automatically cancel an active Apple, Stripe, or Substack subscription. Apple subscriptions can be managed through Apple Account subscription settings. Stripe and Substack subscriptions must be managed through the provider that bills the subscriber.</p>
+  <h2>Children’s privacy</h2>
+  <p>The app is not designed to collect personal information from children under 13. If you believe a child has provided personal information to us, contact us so we can review the request.</p>
 
-<h2>Contact</h2>
-<p>
-  Questions or privacy requests are welcome.<br />
-  Email:
-  <a href="mailto:team@thestrategicowl.com">team@thestrategicowl.com</a><br />
-  Website:
-  <a
-    href="https://thestrategicowl.com"
-    target="_blank"
-    rel="noopener noreferrer"
-  >https://thestrategicowl.com</a>
-</p>
+  <h2>Changes to this policy</h2>
+  <p>We may update this policy when the app or its data practices change. We will revise the date above when an update is published. Material changes will be communicated through an appropriate app or website notice.</p>
 
-    <h2>Signal Over Noise</h2>
-    <p>The principle remains simple: collect less, explain clearly, and never turn the audience into the product.</p>
+  <h2>Contact</h2>
+  <p>For privacy questions or requests, email <a href="mailto:team@thestrategicowl.com">team@thestrategicowl.com</a> or visit <a href="https://thestrategicowl.com">thestrategicowl.com</a>.</p>
 
-    <footer>
-      &copy; 2026 The Strategic Owl.
-    </footer>
-  </div>
+  <footer>© 2026 The Strategic Owl</footer>
+</main>
 </body>
 </html>
