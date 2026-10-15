@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Coverage | The Strategic Owl</title>
+  <meta name="description" content="Compare developing coverage and read the latest reporting with The Strategic Owl." />
+  <link rel="canonical" href="https://thestrategicowl.com/coverage.html" />
+  <link rel="icon" type="image/png" href="assets/images/3X.png" />
+  <link rel="stylesheet" href="assets/css/site.css?v=20261015-1" />
+  <link rel="stylesheet" href="assets/css/pages/coverage.css?v=20261015-2" />
+  <script src="assets/js/site-shell.js?v=20261015-1" defer></script>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2" defer></script>
+  <script src="assets/js/owl-access.js?v=20261015-1" defer></script>
+  <script src="assets/js/pages/coverage.js?v=20261015-2" defer></script>
+</head>
+<body class="site-body" data-page="coverage">
+  <a class="skip-link" href="#main-content">Skip to content</a>
+  <div id="site-header"></div>
+  <main id="main-content" class="site-page coverage-page" tabindex="-1">
+    <section class="owl-page-intro" aria-labelledby="coverage-title">
+      <img src="assets/images/3X.png" alt="" />
+      <p class="owl-eyebrow">The Strategic Owl</p>
+      <h1 id="coverage-title">Coverage</h1>
+      <p>Compare how stories are developing, then move into the newest reporting.</p>
+    </section>
+    <nav class="owl-segmented-control coverage-switcher" aria-label="Coverage view">
+      <button type="button" data-coverage-view="radar" aria-pressed="true">Radar</button>
+      <button type="button" data-coverage-view="feed" aria-pressed="false">Feed</button>
+    </nav>
+
+    <section class="coverage-view" id="coverage-radar" data-coverage-panel="radar" aria-labelledby="radar-title">
+      <div class="coverage-heading-row">
+        <div>
+          <p class="owl-eyebrow">Public coverage</p>
+          <h2 id="radar-title">Today’s Coverage</h2>
+          <p>Confirmed story groups, newest developments first.</p>
+        </div>
+        <button class="coverage-refresh" type="button" data-refresh="radar" aria-label="Refresh Radar">Refresh</button>
+      </div>
+      <div class="coverage-split">
+        <div>
+          <p class="coverage-status" id="radar-status" role="status" aria-live="polite">Gathering today’s coverage…</p>
+          <div class="coverage-list" id="radar-list"></div>
+          <button class="coverage-load-more" id="radar-load-more" type="button" hidden>Load more coverage</button>
+        </div>
+        <aside class="coverage-detail-pane" id="radar-detail-pane" aria-label="Selected Radar story">
+          <div class="coverage-detail-empty">
+            <img src="assets/images/3X.png" alt="" />
+            <h3>Choose a story</h3>
+            <p>Open a story to compare its confirmed coverage.</p>
+          </div>
+        </aside>
+      </div>
+    </section>
+
+    <section class="coverage-view" id="coverage-feed" data-coverage-panel="feed" aria-labelledby="feed-title" hidden>
+      <div class="coverage-heading-row">
+        <div>
+          <p class="owl-eyebrow" id="feed-eyebrow">Free for everyone</p>
+          <h2 id="feed-title">All Sources</h2>
+          <p id="feed-description">All reporting in one chronological stream. No source filtering in free access.</p>
+        </div>
+        <button class="coverage-refresh" type="button" data-refresh="feed" aria-label="Refresh News Feed">Refresh</button>
+      </div>
+      <div class="coverage-member-bar" id="feed-free-membership-bar">
+        <div><strong>Make the Feed yours.</strong><span>Owl Membership adds followed sources, filters, Owl Reader, and research prompts.</span></div>
+        <button type="button" data-open-membership>View Owl Membership</button>
+      </div>
+      <div class="coverage-member-tools" id="feed-member-tools" hidden>
+        <label>Source
+          <select id="feed-source-filter"><option value="">All followed sources</option></select>
+        </label>
+        <label>Perspective
+          <select id="feed-viewpoint-filter">
+            <option value="all">All perspectives</option><option value="left">Left</option><option value="center">Center</option><option value="right">Right</option><option value="primary">Primary sources</option>
+          </select>
+        </label>
+        <button type="button" id="manage-sources-button">Manage Sources</button>
+      </div>
+      <div class="coverage-split">
+        <div>
+          <p class="coverage-status" id="feed-status" role="status" aria-live="polite">Gathering the latest reporting…</p>
+          <div class="coverage-list" id="feed-list"></div>
+          <button class="coverage-load-more" id="feed-load-more" type="button" hidden>Load more reporting</button>
+        </div>
+        <aside class="coverage-detail-pane" id="feed-detail-pane" aria-label="Selected article">
+          <div class="coverage-detail-empty">
+            <img src="assets/images/3X.png" alt="" />
+            <h3>Choose an article</h3>
+            <p>Open an article to see its summary and source details.</p>
+          </div>
+        </aside>
+      </div>
+    </section>
+  </main>
+
+  <dialog class="coverage-dialog" id="coverage-detail-dialog" aria-labelledby="coverage-dialog-title">
+    <div class="coverage-dialog-shell">
+      <button class="coverage-dialog-close" type="button" aria-label="Close details">×</button>
+      <div id="coverage-dialog-content"></div>
+    </div>
+  </dialog>
+  <dialog class="coverage-dialog coverage-sources-dialog" id="coverage-sources-dialog" aria-labelledby="coverage-sources-title">
+    <div class="coverage-dialog-shell">
+      <button class="coverage-dialog-close" type="button" aria-label="Close source manager">×</button>
+      <p class="owl-eyebrow">Owl Membership</p>
+      <h2 id="coverage-sources-title">Choose Your Sources</h2>
+      <p>Follow the publishers you want in your personal Feed.</p>
+      <p class="coverage-status" id="coverage-sources-status" role="status" aria-live="polite"></p>
+      <div class="coverage-source-list" id="coverage-source-list"></div>
+    </div>
+  </dialog>
+  <div id="site-footer"></div>
+</body>
+</html>

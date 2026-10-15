@@ -14,6 +14,7 @@ This is the clean, GitHub Pages-ready version of The Strategic Owl website.
 - `fact-check-hub.html` — Election Data
 - `constitution.html` — The Constitution
 - `support.html` — Support & Connect
+- `privacy.html` — Current native app privacy policy (also exposed at `/privacy`)
 
 ## Shared files
 

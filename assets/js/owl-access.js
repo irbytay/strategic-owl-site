@@ -2,11 +2,13 @@
   "use strict";
 
   const STORAGE_KEY = "strategicOwlAccessSession";
+  const IDENTITY_KEY = "strategicOwlMembershipIdentity";
   const LEGACY_TRU_KEY = "truSubscriberValidationCache";
   const ADMIN_PENDING_KEY = "strategicOwlAdministratorPending";
-  const DEFAULT_ACCESS_DAYS = 7;
   const SUPABASE_URL = "https://gopyzkcmvkbusdnwjlbb.supabase.co";
-  const SUPABASE_FUNCTION_URL = `${SUPABASE_URL}/functions/v1/validate-subscriber`;
+  const SUPABASE_FUNCTION_URL = ["127.0.0.1", "localhost"].includes(window.location.hostname)
+    ? "/api/validate-subscriber"
+    : `${SUPABASE_URL}/functions/v1/validate-subscriber`;
   const SUPABASE_PUBLISHABLE_KEY =
     "sb_publishable_CYM_aXzslre6SE8P-tTYBw_sw_-gQ1h";
   const STRIPE_URL = "https://buy.stripe.com/cNicN5eVt24X2c6aEhdwc05";
@@ -19,6 +21,21 @@
   let memorySession = null;
   let supabaseClient = null;
   let administratorAuthError = "";
+  let restorationPromise = null;
+
+  const PUBLIC_CAPABILITIES = Object.freeze({
+    radar: true,
+    newsFeed: true,
+    voterResources: true,
+    constitution: true
+  });
+
+  const MEMBER_CAPABILITIES = Object.freeze({
+    savedSources: true,
+    owlReader: true,
+    researchPrompt: true,
+    candidatePositions: true
+  });
 
   function normalizeSources(source, sources) {
     const normalized = Array.isArray(sources)
@@ -32,46 +49,37 @@
   function normalizeSession(value) {
     if (!value || typeof value !== "object") return null;
     const email = String(value.email || "").trim().toLowerCase();
-    const expiresAt = Number(value.expiresAt);
-    if (!email || !Number.isFinite(expiresAt) || expiresAt <= Date.now()) return null;
     const source = String(value.source || "").trim().toLowerCase();
+    if (!source || (!email && source !== "apple")) return null;
+    const rawExpiration = value.expiresAt;
+    const expiresAt = rawExpiration == null || rawExpiration === "" ? null : Number(rawExpiration);
+    if (expiresAt !== null && (!Number.isFinite(expiresAt) || expiresAt <= Date.now())) return null;
     const activeSources = normalizeSources(source, value.activeSources || value.sources);
-    return { email, expiresAt, source, activeSources };
+    const verifiedAt = Number(value.verifiedAt) || Date.now();
+    return { email, expiresAt, source, activeSources, verifiedAt };
   }
 
   function readStoredSession(key) {
     try {
       const raw = localStorage.getItem(key);
       if (!raw) return null;
-      const session = normalizeSession(JSON.parse(raw));
+      const parsed = JSON.parse(raw);
+      if (key === STORAGE_KEY && (parsed?.cacheVersion !== 2 || parsed?.serverVerifiedExpiration !== true)) {
+        localStorage.removeItem(key);
+        return null;
+      }
+      const session = normalizeSession(parsed);
       if (!session) localStorage.removeItem(key);
       return session;
     } catch (error) {
-      console.warn("Unable to read Owl Access status", error);
+      console.warn("Unable to read Owl Membership status", error);
       return null;
     }
   }
 
   function getSession() {
-    const stored = readStoredSession(STORAGE_KEY);
-    if (stored) {
-      memorySession = stored;
-      return stored;
-    }
-
-    const legacy = readStoredSession(LEGACY_TRU_KEY);
-    if (legacy) {
-      memorySession = legacy;
-      try {
-        localStorage.setItem(STORAGE_KEY, JSON.stringify(legacy));
-      } catch (error) {
-        console.warn("Unable to migrate Owl Access status", error);
-      }
-      return legacy;
-    }
-
-    memorySession = null;
-    return null;
+    if (memorySession?.expiresAt && memorySession.expiresAt <= Date.now()) memorySession = null;
+    return memorySession;
   }
 
   function isActive() {
@@ -80,6 +88,41 @@
 
   function isAdministrator() {
     return getSession()?.source === "administrator";
+  }
+
+  function readIdentity() {
+    try {
+      const value = JSON.parse(localStorage.getItem(IDENTITY_KEY) || "null");
+      const email = String(value?.email || "").trim().toLowerCase();
+      const source = String(value?.source || "").trim().toLowerCase();
+      return email || source === "apple" ? { email, source } : null;
+    } catch {
+      localStorage.removeItem(IDENTITY_KEY);
+      return null;
+    }
+  }
+
+  function saveIdentity(email, source) {
+    const identity = {
+      email: String(email || "").trim().toLowerCase(),
+      source: String(source || "").trim().toLowerCase()
+    };
+    if (!identity.email && identity.source !== "apple") return;
+    localStorage.setItem(IDENTITY_KEY, JSON.stringify(identity));
+  }
+
+  function getCapabilities() {
+    const active = isActive();
+    const administrator = isAdministrator();
+    return Object.freeze({
+      ...PUBLIC_CAPABILITIES,
+      ...Object.fromEntries(Object.keys(MEMBER_CAPABILITIES).map((key) => [key, active])),
+      publisherTools: administrator
+    });
+  }
+
+  function can(capability) {
+    return getCapabilities()[capability] === true;
   }
 
   function getSupabaseClient() {
@@ -181,7 +224,7 @@
     if (activeLabel) {
       activeLabel.textContent = session?.source === "administrator"
         ? "Administrator access is active on this device."
-        : "Owl Access is active on this device.";
+        : "Owl Membership is active on this device.";
     }
     const sources = session?.activeSources || [];
     const showStripe = sources.includes("owl_access");
@@ -202,54 +245,63 @@
         email: session ? session.email : "",
         expiresAt: session ? session.expiresAt : null,
         source: session ? session.source : "",
-        activeSources: session ? session.activeSources : []
+        activeSources: session ? session.activeSources : [],
+        capabilities: getCapabilities()
       }
     }));
   }
 
-  function activate(email, expiresAt, source, activeSources) {
+  function activate(email, expiresAt, source, activeSources, options = {}) {
     const normalizedEmail = String(email || "").trim().toLowerCase();
     const existingSession = getSession();
     const preserveExistingSource =
       source === undefined && existingSession?.email === normalizedEmail;
     const session = normalizeSession({
       email: normalizedEmail,
-      expiresAt: expiresAt || Date.now() + DEFAULT_ACCESS_DAYS * 86400000,
+      expiresAt: expiresAt || null,
       source: preserveExistingSource ? existingSession.source : source,
       activeSources: preserveExistingSource
         ? existingSession.activeSources
-        : activeSources
+        : activeSources,
+      verifiedAt: Date.now()
     });
     if (!session) return false;
     memorySession = session;
     try {
-      localStorage.setItem(STORAGE_KEY, JSON.stringify(session));
+      if (session.expiresAt && options.serverVerifiedExpiration === true) {
+        localStorage.setItem(STORAGE_KEY, JSON.stringify({
+          ...session,
+          cacheVersion: 2,
+          serverVerifiedExpiration: true
+        }));
+      } else {
+        localStorage.removeItem(STORAGE_KEY);
+      }
+      saveIdentity(session.email, session.source);
     } catch (error) {
-      console.warn("Unable to save Owl Access status", error);
+      console.warn("Unable to save Owl Membership status", error);
     }
     announceChange(session);
     return true;
   }
 
   function clear() {
-    const previousSession = getSession();
     memorySession = null;
     try {
       localStorage.removeItem(STORAGE_KEY);
+      localStorage.removeItem(IDENTITY_KEY);
       localStorage.removeItem(LEGACY_TRU_KEY);
       clearPendingAdministrator();
     } catch (error) {
-      console.warn("Unable to clear Owl Access status", error);
+      console.warn("Unable to clear Owl Membership status", error);
     }
     administratorAuthError = "";
-    if (previousSession?.source === "administrator") {
-      try {
-        getSupabaseClient().auth.signOut().catch((error) => {
-          console.warn("Unable to end administrator sign in", error);
-        });
-      } catch (error) {
-        console.warn("Unable to end administrator sign in", error);
-      }
+    try {
+      getSupabaseClient().auth.signOut().catch((error) => {
+        console.warn("Unable to end the secure website session", error);
+      });
+    } catch (error) {
+      console.warn("Unable to end the secure website session", error);
     }
     announceChange(null);
   }
@@ -260,7 +312,7 @@
       return {
         ok: false,
         valid: false,
-        error: "Enter the email used for your Stripe or paid Substack subscription."
+        error: "Enter the email used for your Owl Membership."
       };
     }
 
@@ -279,7 +331,7 @@
     try {
       result = await response.json();
     } catch {
-      result = { ok: false, valid: false, error: "Owl Access could not be checked. Please try again." };
+      result = { ok: false, valid: false, error: "Owl Membership could not be checked. Please try again." };
     }
 
     if (!response.ok || result.ok !== true) {
@@ -287,7 +339,7 @@
         ...result,
         ok: false,
         valid: false,
-        error: result.error || "Owl Access could not be checked. Please try again."
+        error: result.error || "Owl Membership could not be checked. Please try again."
       };
     }
 
@@ -295,22 +347,112 @@
       const providedExpiration = Date.parse(result.accessExpiresAt || "");
       const expiresAt = Number.isFinite(providedExpiration)
         ? providedExpiration
-        : Date.now() + DEFAULT_ACCESS_DAYS * 86400000;
+        : null;
       activate(
         normalizedEmail,
         expiresAt,
         result.source,
-        result.activeSources
+        result.activeSources,
+        { serverVerifiedExpiration: expiresAt !== null }
       );
+    } else if (result.requiresAdministratorSignIn !== true) {
+      memorySession = null;
+      localStorage.removeItem(STORAGE_KEY);
+      announceChange(null);
     }
 
     return result;
   }
 
+  async function checkAppleAccess() {
+    const session = await ensureSupabaseSession();
+    const response = await fetch(SUPABASE_FUNCTION_URL, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        apikey: SUPABASE_PUBLISHABLE_KEY,
+        Authorization: `Bearer ${session.access_token}`
+      },
+      body: JSON.stringify({ action: "checkAppleAccess" })
+    });
+    let result = {};
+    try { result = await response.json(); } catch { result = {}; }
+    if (!response.ok || result.ok !== true) {
+      throw new Error(result.error || "Apple membership could not be restored.");
+    }
+    if (result.valid === true) {
+      const providedExpiration = Date.parse(result.accessExpiresAt || "");
+      activate(
+        "",
+        Number.isFinite(providedExpiration) ? providedExpiration : null,
+        "apple",
+        result.activeSources || ["apple"],
+        { serverVerifiedExpiration: Number.isFinite(providedExpiration) }
+      );
+    }
+    return result;
+  }
+
+  async function restoreMembership() {
+    if (restorationPromise) return restorationPromise;
+    restorationPromise = (async () => {
+      const cachedGrant = readStoredSession(STORAGE_KEY);
+      if (cachedGrant) {
+        memorySession = cachedGrant;
+        announceChange(cachedGrant);
+      }
+
+      const pendingAdministrator = readPendingAdministrator();
+      if (pendingAdministrator) return finishPendingAdministratorSignIn();
+
+      const identity = readIdentity();
+      if (identity?.source === "administrator") return restoreAdministratorSession();
+
+      try {
+        const appleResult = await checkAppleAccess();
+        if (appleResult.valid === true) return true;
+      } catch (error) {
+        console.warn("Unable to check Apple membership", error);
+      }
+
+      if (identity?.email) {
+        try {
+          const result = await validateEmail(identity.email);
+          return result.valid === true;
+        } catch (error) {
+          console.warn("Unable to restore Owl Membership", error);
+        }
+      }
+
+      if (!cachedGrant) announceChange(null);
+      return false;
+    })().finally(() => { restorationPromise = null; });
+    return restorationPromise;
+  }
+
+  async function requireMembership() {
+    const current = getSession();
+    let result;
+    if (current?.source === "apple") {
+      result = await checkAppleAccess();
+    } else {
+      const email = current?.email || readIdentity()?.email || "";
+      result = email ? await validateEmail(email) : { valid: false };
+    }
+    if (result.valid !== true) {
+      memorySession = null;
+      localStorage.removeItem(STORAGE_KEY);
+      announceChange(null);
+      throw new Error("Owl Membership is required.");
+    }
+    return getSession();
+  }
+
   async function invokeAudienceAction(action, values = {}) {
+    await requireMembership();
     const owlSession = getSession();
     if (!owlSession || owlSession.source === "administrator") {
-      throw new Error("Owl Access is required.");
+      throw new Error("Owl Membership is required.");
     }
 
     const session = await ensureSupabaseSession();
@@ -336,8 +478,11 @@
     }
 
     if (!response.ok || result.ok !== true || result.valid !== true) {
+      memorySession = null;
+      localStorage.removeItem(STORAGE_KEY);
+      announceChange(null);
       throw new Error(
-        result.error || "Owl Access could not be confirmed. Please try again."
+        result.error || "Owl Membership could not be confirmed. Please try again."
       );
     }
 
@@ -401,7 +546,7 @@
       await authorizeAdministrator(pending.email, session);
       activate(
         pending.email,
-        Date.now() + DEFAULT_ACCESS_DAYS * 86400000,
+        null,
         "administrator",
         ["administrator"]
       );
@@ -423,8 +568,8 @@
     if (readPendingAdministrator()) {
       return finishPendingAdministratorSignIn();
     }
-    const owlSession = getSession();
-    if (owlSession?.source !== "administrator") return false;
+    const identity = readIdentity();
+    if (identity?.source !== "administrator" || !identity.email) return false;
 
     const client = getSupabaseClient();
     const { data, error } = await client.auth.getSession();
@@ -433,7 +578,8 @@
       return false;
     }
     try {
-      await authorizeAdministrator(owlSession.email, data.session);
+      await authorizeAdministrator(identity.email, data.session);
+      activate(identity.email, null, "administrator", ["administrator"]);
       return true;
     } catch {
       clear();
@@ -442,13 +588,18 @@
   }
 
   async function requireAdministrator() {
-    const owlSession = getSession();
-    if (owlSession?.source !== "administrator") return null;
+    const identity = readIdentity();
+    if (identity?.source !== "administrator" || !identity.email) return null;
 
     const client = getSupabaseClient();
     const { data, error } = await client.auth.getSession();
     if (error || !data.session || data.session.user?.is_anonymous) return null;
-    await authorizeAdministrator(owlSession.email, data.session);
+    await authorizeAdministrator(identity.email, data.session);
+    const owlSession = getSession() || normalizeSession({
+      email: identity.email,
+      source: "administrator",
+      activeSources: ["administrator"]
+    });
     return { client, session: data.session, owlSession };
   }
 
@@ -462,28 +613,28 @@
     dialog.setAttribute("aria-labelledby", "owl-access-heading");
     dialog.innerHTML = `
       <div class="owl-access-card">
-        <button class="owl-access-close" type="button" aria-label="Close Owl Access">×</button>
-        <h2 class="owl-access-heading" id="owl-access-heading">Owl Access</h2>
+        <button class="owl-access-close" type="button" aria-label="Close Owl Membership">×</button>
+        <h2 class="owl-access-heading" id="owl-access-heading">Owl Membership</h2>
         <div class="owl-access-intro">
           <p class="owl-access-promise">
-            <span class="owl-access-promise-intro">Choose the sources in your News Feed.</span>
+            <span class="owl-access-promise-intro">Make your coverage personal.</span>
             <span class="owl-access-principle">No ads.</span>
             <span class="owl-access-principle">No algorithms.</span>
           </p>
-          <p class="owl-access-benefits">Owl Access includes Owl Insights, expanded candidate research, Ask the Owl, T.R.U. suggestions, and saved quiz history.</p>
+          <p class="owl-access-benefits">Follow sources, filter your Feed, use Owl Reader where publishers permit it, copy research prompts, and unlock candidate issue positions.</p>
         </div>
         <section class="owl-access-locked">
           <form class="owl-access-form" novalidate>
-            <label for="owl-access-email">Email used for Stripe or paid Substack</label>
+            <label for="owl-access-email">Membership email</label>
             <input id="owl-access-email" name="email" type="email" inputmode="email" autocomplete="email" spellcheck="false" required />
-            <button class="owl-access-primary" type="submit">Check Owl Access</button>
+            <button class="owl-access-primary" type="submit">Check Membership</button>
           </form>
           <p class="owl-access-message" role="status" aria-live="polite"></p>
           <div class="owl-access-administrator-sign-in owl-access-apple-subscriber" data-owl-apple-subscriber>
             <p>or</p>
             <strong>Subscribed through Apple?</strong>
-            <p>Apple subscriptions are verified in The Strategic Owl app.</p>
-            <a class="owl-access-secondary" href="${APP_STORE_URL}" target="_blank" rel="noopener noreferrer">Check Apple Access in the App</a>
+            <p>Apple purchases are restored through The Strategic Owl app and linked to its secure session.</p>
+            <a class="owl-access-secondary" href="${APP_STORE_URL}" target="_blank" rel="noopener noreferrer">Restore Apple Membership in the App</a>
           </div>
           <div class="owl-access-administrator-sign-in" data-owl-administrator-sign-in hidden>
             <p>Administrator email confirmed. Continue with Apple to securely open The Owl’s Office.</p>
@@ -491,7 +642,7 @@
             <p class="owl-access-administrator-message" data-owl-administrator-message role="status" aria-live="polite"></p>
           </div>
           <div class="owl-access-offers">
-            <p>Need Owl Access?</p>
+            <p>Need Owl Membership?</p>
             <div class="owl-access-links">
               <a class="owl-access-subscribe-link" href="${STRIPE_URL}" target="_blank" rel="noopener noreferrer">Stripe</a>
               <a class="owl-access-subscribe-link" href="${SUBSTACK_URL}" target="_blank" rel="noopener noreferrer">Substack</a>
@@ -503,7 +654,7 @@
             <svg viewBox="0 0 24 24"><circle cx="12" cy="7.5" r="3.5"></circle><path d="M5 20c.55-4.15 3.15-6.4 7-6.4s6.45 2.25 7 6.4"></path></svg>
             <span>✓</span>
           </div>
-          <strong data-owl-active-label>Owl Access is active on this device.</strong>
+          <strong data-owl-active-label>Owl Membership is active on this device.</strong>
           <p class="owl-access-session-email"></p>
           <div class="owl-access-management" data-owl-management hidden>
             <p>Manage your subscription through the provider that bills you.</p>
@@ -560,7 +711,7 @@
       }
 
       if (submit) submit.disabled = true;
-      if (message) message.textContent = "Checking Owl Access…";
+      if (message) message.textContent = "Checking Owl Membership…";
       try {
         const result = await validateEmail(email);
         if (result.valid === true) {
@@ -579,8 +730,8 @@
           message.textContent = result.message || result.error || "No active subscription was found for that email.";
         }
       } catch (error) {
-        console.error("Owl Access validation failed", error);
-        if (message) message.textContent = "Owl Access could not be checked. Please try again.";
+        console.error("Owl Membership validation failed", error);
+        if (message) message.textContent = "Owl Membership could not be checked. Please try again.";
       } finally {
         if (submit) submit.disabled = false;
       }
@@ -651,14 +802,14 @@
         administrator
           ? "Open The Owl's Office"
           : active
-          ? "Owl Access is active"
-          : "Open Owl Access"
+          ? "Owl Membership is active"
+          : "Open Owl Membership"
       );
       button.title = administrator
         ? "The Owl's Office"
         : active
-        ? "Owl Access active"
-        : "Owl Access";
+        ? "Owl Membership active"
+        : "Owl Membership";
     }
   }
 
@@ -669,27 +820,34 @@
   window.StrategicOwlAccess = Object.freeze({
     storageKey: STORAGE_KEY,
     activate,
+    can,
+    checkAppleAccess,
     clear,
+    getCapabilities,
     getSupabaseClient,
     getSession,
     isActive,
     isAdministrator,
     invokeAudienceAction,
     open,
+    requireMembership,
     requireAdministrator,
+    restoreMembership,
     refreshButtons,
     validateEmail
   });
 
   window.addEventListener("storage", (event) => {
-    if (event.key === STORAGE_KEY || event.key === LEGACY_TRU_KEY) {
-      memorySession = null;
-      announceChange(getSession());
+    if (event.key === STORAGE_KEY || event.key === IDENTITY_KEY || event.key === LEGACY_TRU_KEY) {
+      memorySession = readStoredSession(STORAGE_KEY);
+      announceChange(memorySession);
+      restoreMembership().catch((error) => console.warn("Unable to refresh Owl Membership", error));
     }
   });
 
-  getSession();
-  restoreAdministratorSession().catch((error) => {
-    console.warn("Unable to restore administrator access", error);
+  localStorage.removeItem(LEGACY_TRU_KEY);
+  memorySession = readStoredSession(STORAGE_KEY);
+  restoreMembership().catch((error) => {
+    console.warn("Unable to restore Owl Membership", error);
   });
 })();

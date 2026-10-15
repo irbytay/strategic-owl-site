@@ -1,0 +1,7 @@
+/news-feed.html        /coverage.html?view=feed 301
+/news-sources.html     /coverage.html?view=feed&panel=sources 301
+/owl-feed.html         / 301
+/tru-rankings.html     /coverage.html 301
+/media-influence-quiz.html /coverage.html 301
+/fact-check-hub.html   /coverage.html 301
+/credibility-scores.html /coverage.html 301
