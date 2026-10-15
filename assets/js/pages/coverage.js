@@ -79,15 +79,25 @@
 
   async function memberRequest(action, values = {}) {
     const access = window.StrategicOwlAccess;
-    const owlSession = await access?.requireMembership();
-    if (!owlSession) throw new Error("Owl Membership is required.");
-    const client = access.getSupabaseClient();
-    let { data: sessionData, error: sessionError } = await client.auth.getSession();
-    if (sessionError) throw sessionError;
-    if (!sessionData.session) {
-      const anonymous = await client.auth.signInAnonymously();
-      if (anonymous.error) throw anonymous.error;
-      sessionData = anonymous.data;
+    const currentSession = access?.getSession();
+    if (!currentSession) throw new Error("Owl Membership is required.");
+
+    let client;
+    let owlSession = currentSession;
+    if (currentSession.source === "administrator") {
+      const administrator = await access.requireAdministrator();
+      if (!administrator) throw new Error("Administrator access is required.");
+      client = administrator.client;
+      owlSession = administrator.owlSession || currentSession;
+    } else {
+      owlSession = await access.requireMembership();
+      client = access.getSupabaseClient();
+      let { data: sessionData, error: sessionError } = await client.auth.getSession();
+      if (sessionError) throw sessionError;
+      if (!sessionData.session) {
+        const anonymous = await client.auth.signInAnonymously();
+        if (anonymous.error) throw anonymous.error;
+      }
     }
     const { data, error } = await client.functions.invoke("news-reader", {
       body: { action, email: owlSession.email || "", ...values }
@@ -269,7 +279,7 @@
     host.innerHTML = state.feed.sources.map((source) => `
       <div class="coverage-source-row">
         <div><strong>${escapeHtml(cleanText(source.name, "News source"))}</strong><small>${escapeHtml([source.alignmentLabel, source.sourceCategory].filter(Boolean).join(" · "))}</small></div>
-        <button class="coverage-source-action" type="button" data-source-follow="${escapeHtml(source.id)}" data-following="${source.following === true}">${source.following === true ? "Following" : "Follow"}</button>
+        <button class="coverage-source-action" type="button" data-source-follow="${escapeHtml(source.id)}" data-following="${source.following === true}">${source.following === true ? "Saved" : "Save Source"}</button>
       </div>`).join("") || '<p>No sources are available right now.</p>';
   }
 
@@ -439,7 +449,7 @@
     document.body.classList.add("owl-dialog-open");
     try {
       await loadMemberSources();
-      byId("coverage-sources-status").textContent = `${state.feed.sources.filter((source) => source.following).length} followed sources`;
+      byId("coverage-sources-status").textContent = `${state.feed.sources.filter((source) => source.following).length} saved sources`;
     } catch (error) {
       byId("coverage-sources-status").textContent = error.message || "Sources could not be loaded.";
     }
@@ -453,14 +463,14 @@
     const source = state.feed.sources.find((item) => item.id === button.dataset.sourceFollow);
     if (!source) return;
     button.disabled = true;
-    byId("coverage-sources-status").textContent = source.following ? `Removing ${source.name}…` : `Following ${source.name}…`;
+    byId("coverage-sources-status").textContent = source.following ? `Removing ${source.name}…` : `Saving ${source.name}…`;
     try {
       await memberRequest(source.following ? "unfollowNewsSource" : "followNewsSource", { sourceId: source.id });
       source.following = !source.following;
       if (!source.following && state.feed.sourceId === source.id) state.feed.sourceId = "";
       renderSourceManager();
       renderMemberChrome();
-      byId("coverage-sources-status").textContent = `${state.feed.sources.filter((item) => item.following).length} followed sources`;
+      byId("coverage-sources-status").textContent = `${state.feed.sources.filter((item) => item.following).length} saved sources`;
       state.feed.items = [];
       await loadFeed();
     } catch (error) {
@@ -498,7 +508,10 @@
   }
 
   window.addEventListener("strategic-owl-access-change", syncMembership);
-  renderMemberChrome();
+  syncMembership().catch((error) => {
+    console.warn("Unable to initialize Owl Membership tools", error);
+    renderMemberChrome();
+  });
 
   switchView(state.view, { updateHistory: false });
   if (new URLSearchParams(window.location.search).get("panel") === "sources") {
