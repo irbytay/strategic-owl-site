@@ -161,8 +161,9 @@ let birthStateMap = {};
   // ============================================================
 
   // Match the Flutter Voter Dashboard ranges exactly.
-  // AO:AY contain the 11 researched candidate positions.
-  const RANGE_ROSTER   = encodeURIComponent("'State Elections'!AH1:AY100000");
+  // Basic candidate data is public. AO:AY are requested only after membership verification.
+  const RANGE_ROSTER   = encodeURIComponent("'State Elections'!AH1:AN100000");
+  const RANGE_POSITIONS = encodeURIComponent("'State Elections'!AO1:AY100000");
   const RANGE_ZIPMAP   = encodeURIComponent("'District2Zipcode'!A1:F46654");
 
   // State -> [{ position, name, district }]
@@ -335,9 +336,7 @@ let birthStateMap = {};
   let pendingCandidateKey = null;
 
   function hasOwlAccess() {
-    return Boolean(
-      window.StrategicOwlAccess && window.StrategicOwlAccess.isActive()
-    );
+    return window.StrategicOwlAccess?.can?.('candidatePositions') === true;
   }
 
   // Two-letter → full state name (to align C=abbr with AH=full)
@@ -397,9 +396,8 @@ let birthStateMap = {};
           aligned,
           impeach,
           website,
-          positionValues: Array.from({ length: 11 }, (_, positionIndex) =>
-            String(r[positionIndex + 7] || "").trim()
-          )
+          sheetRowIndex: i,
+          positionValues: []
         };
         (stateRosterMap[stFull] ||= []).push(candidate);
         allCandidateRows.push(candidate);
@@ -421,11 +419,26 @@ let birthStateMap = {};
         }
       }
       rosterReady = true;
+      if (hasOwlAccess()) await loadCandidatePositions();
     } catch (err) {
       console.error("Failed to fetch roster/zip data:", err);
       rosterReady = false;
       rosterLoadError = true;
     }
+  }
+
+  async function loadCandidatePositions() {
+    if (!hasOwlAccess()) return false;
+    await window.StrategicOwlAccess.requireMembership();
+    const url = `https://sheets.googleapis.com/v4/spreadsheets/${SHEET_ID}/values/${RANGE_POSITIONS}?key=${API_KEY}`;
+    const response = await fetch(url);
+    if (!response.ok) throw new Error(`HTTP ${response.status}`);
+    const rows = (await response.json()).values || [];
+    for (const candidate of allCandidateRows) {
+      const row = rows[candidate.sheetRowIndex] || [];
+      candidate.positionValues = Array.from({ length: 11 }, (_, index) => String(row[index] || "").trim());
+    }
+    return true;
   }
 
   // Simple, brand-friendly results
@@ -569,7 +582,7 @@ let birthStateMap = {};
       ? `<a class="candidate-site" href="${escapeHtml(websiteUrl)}" target="_blank" rel="noopener">Website <span aria-hidden="true">↗</span></a>`
       : "";
 
-    const positions = c.key && hasPositionResearch(c)
+    const positions = c.key && (!hasOwlAccess() || hasPositionResearch(c))
       ? `<button class="owl-position-button" type="button" data-candidate-key="${escapeHtml(c.key)}" data-unlocked="${hasOwlAccess()}">
           <span class="position-button-icon" aria-hidden="true"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor"><rect x="5" y="10" width="14" height="10" rx="3"></rect><path d="M8 10V7a4 4 0 0 1 8 0v3"></path></svg></span>
           <span>Positions</span>
@@ -614,7 +627,7 @@ let birthStateMap = {};
         <div>${candidateBadges(candidate)}</div>
         <div class="candidate-card-actions">
           ${website}
-          ${hasPositionResearch(candidate) ? `<button class="owl-position-button" type="button" data-candidate-key="${escapeHtml(candidate.key)}" data-unlocked="${hasOwlAccess()}">
+          ${(!hasOwlAccess() || hasPositionResearch(candidate)) ? `<button class="owl-position-button" type="button" data-candidate-key="${escapeHtml(candidate.key)}" data-unlocked="${hasOwlAccess()}">
             <span class="position-button-icon" aria-hidden="true"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor"><rect x="5" y="10" width="14" height="10" rx="3"></rect><path d="M8 10V7a4 4 0 0 1 8 0v3"></path></svg></span>
             <span>Positions</span>
           </button>` : ""}
@@ -687,18 +700,27 @@ let birthStateMap = {};
     });
   }
 
-  function openCandidatePositions(candidateKey) {
+  async function openCandidatePositions(candidateKey) {
     const candidate = candidateByKey.get(candidateKey);
     if (!candidate) return;
-
-    const positions = buildPositionSummaries(candidate);
-    if (!positions.length) return;
 
     if (!hasOwlAccess()) {
       pendingCandidateKey = candidateKey;
       if (window.StrategicOwlAccess) window.StrategicOwlAccess.open();
       return;
     }
+
+    try {
+      await window.StrategicOwlAccess.requireMembership();
+      if (!candidate.positionValues?.length) await loadCandidatePositions();
+    } catch {
+      pendingCandidateKey = candidateKey;
+      window.StrategicOwlAccess?.open();
+      return;
+    }
+
+    const positions = buildPositionSummaries(candidate);
+    if (!positions.length) return;
 
     const heading = document.getElementById('owl-positions-title');
     const title = document.getElementById('owl-positions-candidate');
@@ -849,12 +871,13 @@ document.addEventListener("DOMContentLoaded", () => {
     document.querySelectorAll('.owl-modal:not([hidden])').forEach(closeOwlModal);
   });
 
-  window.addEventListener('strategic-owl-access-change', event => {
+  window.addEventListener('strategic-owl-access-change', async event => {
     updateOwlAccessState();
 
     if (event.detail && event.detail.active && pendingCandidateKey) {
       const candidateKey = pendingCandidateKey;
       pendingCandidateKey = null;
+      try { await loadCandidatePositions(); } catch { /* The guarded action will reopen membership if needed. */ }
       openCandidatePositions(candidateKey);
     }
   });

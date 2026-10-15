@@ -455,3 +455,14 @@
   font-family: 'Times New Roman', serif;
   box-shadow: 0 0 10px rgba(196, 160, 0, 0.2);
 }
+
+/* Current app-aligned finish */
+.site-page--constitution { width: min(100% - 28px, 980px); margin-inline: auto; padding: 38px 0 70px; }
+.site-page--constitution * { font-family: var(--owl-font-body) !important; }
+.site-page--constitution h1, .site-page--constitution h2, .site-page--constitution h3 { font-family: var(--owl-font-display) !important; color: var(--owl-heading); }
+.site-page--constitution > h1 { font-size: clamp(2.2rem, 6vw, 4rem); }
+.site-page--constitution .strategic-intro-box,
+.site-page--constitution .content-box { border: 1px solid var(--owl-border) !important; border-radius: 22px !important; background: var(--owl-surface) !important; color: var(--owl-text) !important; box-shadow: var(--owl-card-shadow) !important; }
+.site-page--constitution select { min-height: 48px; border: 1px solid rgba(212,175,55,.45) !important; border-radius: 14px !important; background-color: var(--owl-surface) !important; color: var(--owl-text) !important; }
+#prompt-capture-btn { box-shadow: none !important; }
+@media (max-width: 720px) { .site-page--constitution { padding-bottom: 105px; } }

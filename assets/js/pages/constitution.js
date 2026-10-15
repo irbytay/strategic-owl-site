@@ -181,12 +181,20 @@ const SHEET_ID = "19wBEj9hEkvIyQcoR5E_mBGVAxTzMnddMxk8nuQLAumA";
       }, 0);
       // Show prompt box and instructions only if there is a prompt
       if (promptBox.value.trim()) {
-        promptBox.style.display = "block";
-        if (instructions) instructions.style.display = "block";
+        document.getElementById("prompt-capture-btn")?.remove();
+        const promptText = promptBox.value.trim();
+        const hasResearchPrompt = window.StrategicOwlAccess?.can?.("researchPrompt") === true;
+        promptBox.style.display = hasResearchPrompt ? "block" : "none";
+        if (instructions) {
+          instructions.style.display = "block";
+          instructions.textContent = hasResearchPrompt
+            ? "Use this ready-to-copy prompt to continue your research."
+            : "Research prompts are included with Owl Membership. The founding document remains free to read.";
+        }
         // Add capture button for prompt
         const promptCaptureBtn = document.createElement("button");
         promptCaptureBtn.id = "prompt-capture-btn";
-        promptCaptureBtn.textContent = "Capture";
+        promptCaptureBtn.textContent = hasResearchPrompt ? "Copy Research Prompt" : "Unlock Research Prompt";
         // Style the button to match prompt visually and structurally
         promptCaptureBtn.style.backgroundColor = "#C4A000";
         promptCaptureBtn.style.border = "1px solid #C4A000";
@@ -205,15 +213,18 @@ const SHEET_ID = "19wBEj9hEkvIyQcoR5E_mBGVAxTzMnddMxk8nuQLAumA";
         promptCaptureBtn.style.textAlign = "center";
         // Insert the button immediately after the promptBox
         promptBox.insertAdjacentElement("afterend", promptCaptureBtn);
-        promptCaptureBtn.addEventListener("click", () => {
-          const text = promptBox.value || promptBox.textContent;
-          if (text.trim()) {
-            navigator.clipboard.writeText(text.trim()).then(() => {
-              promptCaptureBtn.textContent = "Captured";
-              setTimeout(() => {
-                promptCaptureBtn.textContent = "Capture";
-              }, 5000);
-            });
+        promptCaptureBtn.addEventListener("click", async () => {
+          if (!window.StrategicOwlAccess?.can?.("researchPrompt")) {
+            window.StrategicOwlAccess?.open();
+            return;
+          }
+          try {
+            await window.StrategicOwlAccess.requireMembership();
+            await navigator.clipboard.writeText(promptText);
+            promptCaptureBtn.textContent = "Prompt Copied";
+            setTimeout(() => { promptCaptureBtn.textContent = "Copy Research Prompt"; }, 1800);
+          } catch {
+            window.StrategicOwlAccess?.open();
           }
         });
       }
