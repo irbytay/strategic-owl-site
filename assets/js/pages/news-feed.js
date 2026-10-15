@@ -170,27 +170,13 @@
   }
 
   function savedReaderTheme() {
-    try {
-      const saved = window.localStorage.getItem(NEWS_READER_THEME_KEY);
-      if (saved === "light" || saved === "dark") return saved;
-    } catch {
-      // Browser privacy settings may disable local storage.
-    }
-    return window.matchMedia?.("(prefers-color-scheme: dark)")?.matches ? "dark" : "light";
+    return "dark";
   }
 
   function applyReaderTheme(theme, { persist = false } = {}) {
-    const resolvedTheme = theme === "dark" ? "dark" : "light";
+    const resolvedTheme = "dark";
     const dialog = byId("news-reader-dialog");
-    const button = byId("news-reader-theme");
     if (dialog) dialog.dataset.readerTheme = resolvedTheme;
-    if (button) {
-      const label = resolvedTheme === "dark"
-        ? "Use light reading mode"
-        : "Use dark reading mode";
-      button.setAttribute("aria-label", label);
-      button.title = label;
-    }
     if (persist) {
       try {
         window.localStorage.setItem(NEWS_READER_THEME_KEY, resolvedTheme);
@@ -201,8 +187,7 @@
   }
 
   function toggleReaderTheme() {
-    const currentTheme = byId("news-reader-dialog")?.dataset.readerTheme || savedReaderTheme();
-    applyReaderTheme(currentTheme === "dark" ? "light" : "dark", { persist: true });
+    applyReaderTheme("dark");
   }
 
   function newsCacheKey() {

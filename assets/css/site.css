@@ -23,7 +23,7 @@
 }
 
 :root {
-  color-scheme: light dark;
+  color-scheme: dark;
   --owl-navy: #0d1b2a;
   --owl-deep: #0a0f1c;
   --owl-header: #1a2b4c;
@@ -969,16 +969,6 @@ body.site-body .divider-labels > span {
 .owl-segmented-control a { display: grid; place-items: center; min-height: 40px; border-radius: 999px; color: var(--owl-body); font-weight: 700; text-decoration: none; }
 .owl-segmented-control a[aria-current="page"] { background: var(--owl-gold); color: var(--owl-navy); }
 
-@media (prefers-color-scheme: light) {
-  html { background: var(--owl-parchment); }
-  body.site-body { background: radial-gradient(circle at 50% -140px, rgba(212, 175, 55, 0.12), transparent 440px), linear-gradient(145deg, var(--owl-parchment), #fff 58%, rgba(212, 175, 55, 0.07)) fixed !important; color: var(--owl-navy); }
-  .owl-site-header { background: rgba(248, 245, 235, 0.88); box-shadow: 0 10px 28px rgba(13, 27, 42, 0.1); }
-  .owl-primary-nav a, .owl-segmented-control a { color: var(--owl-navy); }
-  .owl-card { background: rgba(255, 255, 255, 0.82); box-shadow: 0 16px 38px rgba(13, 27, 42, 0.1); }
-  .owl-page-intro > p:last-child, .owl-step-placeholder p:not(.owl-eyebrow), .owl-footer-brand span, .owl-site-footer p { color: #5c6874; }
-  .owl-site-footer { border-color: rgba(13, 27, 42, 0.12); }
-}
-
 @media (max-width: 1240px) {
   .owl-header-inner { display: grid; grid-template-columns: 44px minmax(0, 1fr) 44px; }
   .owl-brand { grid-column: 2; }
@@ -1001,7 +991,21 @@ body.site-body .divider-labels > span {
   .owl-page-intro > img { width: 86px; height: 86px; }
 }
 
-@media (prefers-color-scheme: light) and (max-width: 760px) {
-  .owl-mobile-nav { background: rgba(248, 245, 235, 0.94); box-shadow: 0 -10px 28px rgba(13, 27, 42, 0.1); }
-  .owl-mobile-nav a { color: #65717d; }
+
+.site-page.owl-view-entering {
+  animation: owl-view-enter 180ms ease-out both;
+}
+
+body.owl-view-loading .site-page {
+  opacity: 0.58;
+  pointer-events: none;
+}
+
+@keyframes owl-view-enter {
+  from { opacity: 0; transform: translateY(7px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .site-page.owl-view-entering { animation: none; }
 }

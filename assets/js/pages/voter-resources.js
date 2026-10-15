@@ -818,7 +818,7 @@ const statusLine = [primaryText, deadlineText].filter(Boolean).join(" • ");
   }
 
   // --- INIT (kept your calls; added our fetch + listeners) ---
-document.addEventListener("DOMContentLoaded", () => {
+(function initializeVoterResources() {
   // Yours:
   fetchStateLinks();
   const stateSel = document.getElementById("state-select");
@@ -883,4 +883,4 @@ document.addEventListener("DOMContentLoaded", () => {
   });
 
   updateOwlAccessState();
-});
+})();

@@ -347,15 +347,6 @@
   cursor: pointer;
 }
 
-@media (prefers-color-scheme: light) {
-  .coverage-switcher button { color: var(--owl-navy); }
-  .coverage-card, .coverage-detail-pane { background: rgba(255, 255, 255, 0.88); box-shadow: 0 14px 30px rgba(13, 27, 42, 0.1); }
-  .coverage-card h3, .coverage-article-link { color: var(--owl-navy); }
-  .coverage-card-summary, .coverage-card-meta, .coverage-article-meta, .coverage-heading-row div > p:last-child, .coverage-status, .coverage-detail > p, .coverage-detail-empty { color: #5c6874; }
-  .coverage-article-link { background: rgba(13, 27, 42, 0.025); }
-  .coverage-dialog { background: var(--owl-parchment); color: var(--owl-navy); }
-}
-
 @media (max-width: 920px) {
   .coverage-split { grid-template-columns: 1fr; }
   .coverage-detail-pane { display: none; }

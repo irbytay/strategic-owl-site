@@ -8,6 +8,180 @@
     ["constitution", "Constitution", "constitution.html", "M7 4h10a2 2 0 0 1 2 2v14H7a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2Zm2 4h6M9 12h6M9 16h4"]
   ];
 
+  const spaPaths = new Set(pages.map(([, , href]) => `/${href}`));
+  const viewCache = new Map();
+  const loadedScripts = new Set(
+    [...document.scripts].map((script) => script.src).filter(Boolean)
+  );
+  let navigationInProgress = false;
+  let activeRouteKey = routePath(new URL(window.location.href));
+
+  function routePath(url) {
+    const path = url.pathname === "/" ? "/index.html" : url.pathname;
+    return path.replace(/\/+/g, "/");
+  }
+
+  function isSpaRoute(url) {
+    return url.origin === window.location.origin && spaPaths.has(routePath(url));
+  }
+
+  function currentRouteKey() {
+    return activeRouteKey;
+  }
+
+  function pageIdFromDocument(documentValue) {
+    return documentValue.body?.dataset?.page || "home";
+  }
+
+  function updateCurrentNavigation(page) {
+    const normalized = normalizedPage(page);
+    document.querySelectorAll(".owl-primary-nav a, .owl-mobile-nav a").forEach((link) => {
+      const linkUrl = new URL(link.href, window.location.href);
+      const match = pages.find(([, , href]) => routePath(linkUrl) === `/${href}`);
+      if (match?.[0] === normalized) link.setAttribute("aria-current", "page");
+      else link.removeAttribute("aria-current");
+    });
+  }
+
+  function installPageStyles(parsedDocument) {
+    parsedDocument.querySelectorAll('link[rel="stylesheet"][href*="assets/css/pages/"]').forEach((source) => {
+      const absoluteHref = new URL(source.getAttribute("href"), window.location.href).href;
+      if (document.querySelector(`link[rel="stylesheet"][href="${absoluteHref}"]`)) return;
+      const link = document.createElement("link");
+      link.rel = "stylesheet";
+      link.href = absoluteHref;
+      link.dataset.owlSpaStyle = "true";
+      document.head.appendChild(link);
+    });
+  }
+
+  async function installPageScripts(parsedDocument) {
+    const scripts = [...parsedDocument.querySelectorAll("script[src]")]
+      .map((script) => new URL(script.getAttribute("src"), window.location.href).href)
+      .filter((src) => src.includes("/assets/js/") &&
+        !src.includes("/site-shell.js") &&
+        !src.includes("/owl-access.js"));
+
+    for (const src of scripts) {
+      if (loadedScripts.has(src)) continue;
+      await new Promise((resolve, reject) => {
+        const script = document.createElement("script");
+        script.src = src;
+        script.onload = () => { loadedScripts.add(src); resolve(); };
+        script.onerror = () => reject(new Error(`Unable to load ${src}`));
+        document.body.appendChild(script);
+      });
+    }
+  }
+
+  function applyDocumentDetails(parsedDocument) {
+    const page = pageIdFromDocument(parsedDocument);
+    document.body.className = parsedDocument.body.className || "site-body";
+    document.body.dataset.page = page;
+    document.title = parsedDocument.title || "The Strategic Owl";
+    const nextDescription = parsedDocument.querySelector('meta[name="description"]')?.content;
+    const description = document.querySelector('meta[name="description"]');
+    if (description && nextDescription) description.content = nextDescription;
+    updateCurrentNavigation(page);
+  }
+
+  async function navigateWithinSite(destination, { replace = false, fromHistory = false } = {}) {
+    const url = new URL(destination, window.location.href);
+    if (!isSpaRoute(url) || navigationInProgress) return false;
+    const nextKey = routePath(url);
+    const currentMain = document.getElementById("main-content");
+    if (!currentMain) return false;
+
+    if (nextKey === currentRouteKey()) {
+      if (!fromHistory) window.history[replace ? "replaceState" : "pushState"]({}, "", url);
+      currentMain.focus({ preventScroll: true });
+      return true;
+    }
+
+    navigationInProgress = true;
+    document.body.classList.add("owl-view-loading");
+    try {
+      viewCache.set(currentRouteKey(), {
+        main: currentMain,
+        bodyClass: document.body.className.replace(/\s*owl-view-loading\b/g, ""),
+        page: document.body.dataset.page || "home",
+        title: document.title,
+        description: document.querySelector('meta[name="description"]')?.content || ""
+      });
+
+      let nextView = viewCache.get(nextKey);
+      if (!nextView) {
+        const response = await fetch(url.href, { headers: { "X-Strategic-Owl-View": "1" } });
+        if (!response.ok) throw new Error(`View returned ${response.status}`);
+        const parsed = new DOMParser().parseFromString(await response.text(), "text/html");
+        const parsedMain = parsed.getElementById("main-content");
+        if (!parsedMain) throw new Error("The requested view is unavailable.");
+        installPageStyles(parsed);
+        nextView = {
+          main: document.importNode(parsedMain, true),
+          bodyClass: parsed.body.className || "site-body",
+          page: pageIdFromDocument(parsed),
+          title: parsed.title || "The Strategic Owl",
+          description: parsed.querySelector('meta[name="description"]')?.content || "",
+          parsed
+        };
+        viewCache.set(nextKey, nextView);
+      }
+
+      currentMain.replaceWith(nextView.main);
+      document.body.className = nextView.bodyClass;
+      document.body.dataset.page = nextView.page;
+      document.title = nextView.title;
+      const description = document.querySelector('meta[name="description"]');
+      if (description && nextView.description) description.content = nextView.description;
+      updateCurrentNavigation(nextView.page);
+      if (nextView.parsed) {
+        await installPageScripts(nextView.parsed);
+        delete nextView.parsed;
+      }
+      if (!fromHistory) window.history[replace ? "replaceState" : "pushState"]({}, "", url);
+      activeRouteKey = nextKey;
+      window.scrollTo({ top: 0, behavior: "auto" });
+      nextView.main.classList.add("owl-view-entering");
+      window.setTimeout(() => nextView.main.classList.remove("owl-view-entering"), 220);
+      nextView.main.focus({ preventScroll: true });
+      return true;
+    } catch (error) {
+      console.warn("In-place navigation was unavailable; using a standard page load.", error);
+      window.location.assign(url.href);
+      return false;
+    } finally {
+      navigationInProgress = false;
+      document.body.classList.remove("owl-view-loading");
+    }
+  }
+
+  function installSpaNavigation() {
+    viewCache.set(currentRouteKey(), {
+      main: document.getElementById("main-content"),
+      bodyClass: document.body.className,
+      page: document.body.dataset.page || "home",
+      title: document.title,
+      description: document.querySelector('meta[name="description"]')?.content || ""
+    });
+
+    document.addEventListener("click", (event) => {
+      const link = event.target.closest(".owl-brand, .owl-primary-nav a, .owl-mobile-nav a");
+      if (!link || event.defaultPrevented || event.button !== 0 ||
+          event.metaKey || event.ctrlKey || event.shiftKey || event.altKey ||
+          link.target || link.hasAttribute("download")) return;
+      const url = new URL(link.href, window.location.href);
+      if (!isSpaRoute(url)) return;
+      event.preventDefault();
+      navigateWithinSite(url);
+    });
+
+    window.addEventListener("popstate", () => {
+      const url = new URL(window.location.href);
+      if (isSpaRoute(url)) navigateWithinSite(url, { fromHistory: true });
+    });
+  }
+
   function normalizedPage(page) {
     return page === "news-feed" || page === "news-sources" ? "coverage" : page;
   }
@@ -115,4 +289,5 @@
 
   renderShell();
   installKeyboardDismissal();
+  installSpaNavigation();
 })();

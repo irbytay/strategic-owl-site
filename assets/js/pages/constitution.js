@@ -358,17 +358,18 @@ function initRightsDropdown() {
   });
 }
 
-  window.addEventListener("DOMContentLoaded", () => {
+  (function initializeConstitution() {
     initAmendmentDropdown();
     initRightsDropdown();
     // No longer auto-select rights dropdown when founding text is changed.
     // Remove logic that updates rights dropdown based on founding text selection.
-  });
+  })();
 
   // Close mobile menu when clicking outside of it
   document.addEventListener("click", function(event) {
     const navMenu = document.getElementById("navMenu");
     const menuToggle = document.querySelector(".menu-toggle");
+    if (!navMenu || !menuToggle) return;
     const isClickInsideMenu = navMenu.contains(event.target);
     const isClickOnToggle = menuToggle.contains(event.target);
 
