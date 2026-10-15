@@ -5,6 +5,7 @@
   const IDENTITY_KEY = "strategicOwlMembershipIdentity";
   const LEGACY_TRU_KEY = "truSubscriberValidationCache";
   const ADMIN_PENDING_KEY = "strategicOwlAdministratorPending";
+  const DEFAULT_ACCESS_DAYS = 7;
   const SUPABASE_URL = "https://gopyzkcmvkbusdnwjlbb.supabase.co";
   const SUPABASE_FUNCTION_URL = ["127.0.0.1", "localhost"].includes(window.location.hostname)
     ? "/api/validate-subscriber"
@@ -50,7 +51,7 @@
     if (!value || typeof value !== "object") return null;
     const email = String(value.email || "").trim().toLowerCase();
     const source = String(value.source || "").trim().toLowerCase();
-    if (!source || (!email && source !== "apple")) return null;
+    if (!email && source !== "apple") return null;
     const rawExpiration = value.expiresAt;
     const expiresAt = rawExpiration == null || rawExpiration === "" ? null : Number(rawExpiration);
     if (expiresAt !== null && (!Number.isFinite(expiresAt) || expiresAt <= Date.now())) return null;
@@ -64,10 +65,6 @@
       const raw = localStorage.getItem(key);
       if (!raw) return null;
       const parsed = JSON.parse(raw);
-      if (key === STORAGE_KEY && (parsed?.cacheVersion !== 2 || parsed?.serverVerifiedExpiration !== true)) {
-        localStorage.removeItem(key);
-        return null;
-      }
       const session = normalizeSession(parsed);
       if (!session) localStorage.removeItem(key);
       return session;
@@ -79,7 +76,16 @@
 
   function getSession() {
     if (memorySession?.expiresAt && memorySession.expiresAt <= Date.now()) memorySession = null;
-    return memorySession;
+    if (memorySession) return memorySession;
+    const stored = readStoredSession(STORAGE_KEY);
+    if (stored) return (memorySession = stored);
+    const legacy = readStoredSession(LEGACY_TRU_KEY);
+    if (legacy) {
+      memorySession = legacy;
+      try { localStorage.setItem(STORAGE_KEY, JSON.stringify(legacy)); } catch { /* Memory access remains available. */ }
+      return legacy;
+    }
+    return null;
   }
 
   function isActive() {
@@ -251,14 +257,14 @@
     }));
   }
 
-  function activate(email, expiresAt, source, activeSources, options = {}) {
+  function activate(email, expiresAt, source, activeSources) {
     const normalizedEmail = String(email || "").trim().toLowerCase();
     const existingSession = getSession();
     const preserveExistingSource =
       source === undefined && existingSession?.email === normalizedEmail;
     const session = normalizeSession({
       email: normalizedEmail,
-      expiresAt: expiresAt || null,
+      expiresAt: expiresAt || Date.now() + DEFAULT_ACCESS_DAYS * 86400000,
       source: preserveExistingSource ? existingSession.source : source,
       activeSources: preserveExistingSource
         ? existingSession.activeSources
@@ -268,15 +274,7 @@
     if (!session) return false;
     memorySession = session;
     try {
-      if (session.expiresAt && options.serverVerifiedExpiration === true) {
-        localStorage.setItem(STORAGE_KEY, JSON.stringify({
-          ...session,
-          cacheVersion: 2,
-          serverVerifiedExpiration: true
-        }));
-      } else {
-        localStorage.removeItem(STORAGE_KEY);
-      }
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(session));
       saveIdentity(session.email, session.source);
     } catch (error) {
       console.warn("Unable to save Owl Membership status", error);
@@ -352,8 +350,7 @@
         normalizedEmail,
         expiresAt,
         result.source,
-        result.activeSources,
-        { serverVerifiedExpiration: expiresAt !== null }
+        result.activeSources
       );
     } else if (result.requiresAdministratorSignIn !== true) {
       memorySession = null;
@@ -386,8 +383,7 @@
         "",
         Number.isFinite(providedExpiration) ? providedExpiration : null,
         "apple",
-        result.activeSources || ["apple"],
-        { serverVerifiedExpiration: Number.isFinite(providedExpiration) }
+        result.activeSources || ["apple"]
       );
     }
     return result;
@@ -399,7 +395,10 @@
       const cachedGrant = readStoredSession(STORAGE_KEY);
       if (cachedGrant) {
         memorySession = cachedGrant;
+        saveIdentity(cachedGrant.email, cachedGrant.source);
         announceChange(cachedGrant);
+        if (cachedGrant.source === "administrator") return restoreAdministratorSession();
+        return true;
       }
 
       const pendingAdministrator = readPendingAdministrator();
@@ -407,24 +406,7 @@
 
       const identity = readIdentity();
       if (identity?.source === "administrator") return restoreAdministratorSession();
-
-      try {
-        const appleResult = await checkAppleAccess();
-        if (appleResult.valid === true) return true;
-      } catch (error) {
-        console.warn("Unable to check Apple membership", error);
-      }
-
-      if (identity?.email) {
-        try {
-          const result = await validateEmail(identity.email);
-          return result.valid === true;
-        } catch (error) {
-          console.warn("Unable to restore Owl Membership", error);
-        }
-      }
-
-      if (!cachedGrant) announceChange(null);
+      announceChange(null);
       return false;
     })().finally(() => { restorationPromise = null; });
     return restorationPromise;
@@ -432,20 +414,11 @@
 
   async function requireMembership() {
     const current = getSession();
-    let result;
-    if (current?.source === "apple") {
-      result = await checkAppleAccess();
-    } else {
-      const email = current?.email || readIdentity()?.email || "";
-      result = email ? await validateEmail(email) : { valid: false };
-    }
-    if (result.valid !== true) {
-      memorySession = null;
-      localStorage.removeItem(STORAGE_KEY);
-      announceChange(null);
-      throw new Error("Owl Membership is required.");
-    }
-    return getSession();
+    if (current && current.source !== "administrator") return current;
+    await restoreMembership();
+    const restored = getSession();
+    if (!restored || restored.source === "administrator") throw new Error("Owl Membership is required.");
+    return restored;
   }
 
   async function invokeAudienceAction(action, values = {}) {
@@ -568,8 +541,10 @@
     if (readPendingAdministrator()) {
       return finishPendingAdministratorSignIn();
     }
+    const owlSession = getSession();
     const identity = readIdentity();
-    if (identity?.source !== "administrator" || !identity.email) return false;
+    const administratorEmail = owlSession?.source === "administrator" ? owlSession.email : identity?.source === "administrator" ? identity.email : "";
+    if (!administratorEmail) return false;
 
     const client = getSupabaseClient();
     const { data, error } = await client.auth.getSession();
@@ -578,8 +553,8 @@
       return false;
     }
     try {
-      await authorizeAdministrator(identity.email, data.session);
-      activate(identity.email, null, "administrator", ["administrator"]);
+      await authorizeAdministrator(administratorEmail, data.session);
+      activate(administratorEmail, owlSession?.expiresAt || null, "administrator", ["administrator"]);
       return true;
     } catch {
       clear();
@@ -588,15 +563,17 @@
   }
 
   async function requireAdministrator() {
+    const current = getSession();
     const identity = readIdentity();
-    if (identity?.source !== "administrator" || !identity.email) return null;
+    const administratorEmail = current?.source === "administrator" ? current.email : identity?.source === "administrator" ? identity.email : "";
+    if (!administratorEmail) return null;
 
     const client = getSupabaseClient();
     const { data, error } = await client.auth.getSession();
     if (error || !data.session || data.session.user?.is_anonymous) return null;
-    await authorizeAdministrator(identity.email, data.session);
+    await authorizeAdministrator(administratorEmail, data.session);
     const owlSession = getSession() || normalizeSession({
-      email: identity.email,
+      email: administratorEmail,
       source: "administrator",
       activeSources: ["administrator"]
     });
@@ -845,8 +822,7 @@
     }
   });
 
-  localStorage.removeItem(LEGACY_TRU_KEY);
-  memorySession = readStoredSession(STORAGE_KEY);
+  memorySession = getSession();
   restoreMembership().catch((error) => {
     console.warn("Unable to restore Owl Membership", error);
   });
