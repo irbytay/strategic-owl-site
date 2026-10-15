@@ -14,7 +14,7 @@
   <meta name="twitter:card" content="summary_large_image" />
   <link rel="icon" type="image/png" href="assets/images/3X.png" />
   <link rel="stylesheet" href="assets/css/site.css?v=20261015-2" />
-  <link rel="stylesheet" href="assets/css/pages/home.css?v=20261015-2" />
+  <link rel="stylesheet" href="assets/css/pages/home.css?v=20261015-3" />
   <script src="assets/js/site-shell.js?v=20261015-2" defer></script>
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2" defer></script>
   <script src="assets/js/owl-access.js?v=20261015-3" defer></script>
@@ -26,45 +26,65 @@
   <div id="site-header"></div>
   <main id="main-content" class="site-page home-page" tabindex="-1">
     <section class="home-hero" aria-labelledby="home-title">
-      <img src="assets/images/3X.png" alt="" />
-      <p class="owl-eyebrow">Truth · Reliability · Understanding</p>
-      <h1 id="home-title">The Strategic Owl</h1>
-      <p>News and civic information designed to help you look closer, compare carefully, and decide for yourself.</p>
-      <p class="owl-countdown-home" data-app-countdown="compact" aria-live="polite" hidden></p>
+      <div class="home-hero-mark" aria-hidden="true">
+        <span></span><span></span>
+        <img src="assets/images/3X.png" alt="" />
+      </div>
+      <div class="home-hero-copy">
+        <p class="owl-eyebrow">Independent civic intelligence</p>
+        <h1 id="home-title">See the story.<br /><em>Study the signal.</em></h1>
+        <p>News and civic information designed to help you look closer, compare carefully, and decide for yourself.</p>
+        <div class="home-principles" aria-label="Truth, Reliability, Understanding">
+          <span><i class="truth"></i>Truth</span>
+          <span><i class="reliability"></i>Reliability</span>
+          <span><i class="understanding"></i>Understanding</span>
+        </div>
+        <div class="home-hero-actions">
+          <a class="home-primary-action" href="coverage.html">Open Radar <span aria-hidden="true">→</span></a>
+          <a class="home-secondary-action" href="coverage.html?view=feed">Read the Feed</a>
+        </div>
+        <p class="owl-countdown-home" data-app-countdown="compact" aria-live="polite" hidden></p>
+      </div>
     </section>
 
+    <div class="home-dashboard">
     <section class="home-card home-card--latest" aria-labelledby="latest-title">
       <div class="home-card-heading">
-        <div><p class="owl-eyebrow">Latest from the Owl</p><h2 id="latest-title">What’s new</h2></div>
+        <div class="home-card-title-row">
+          <span class="home-card-symbol home-card-symbol--green" aria-hidden="true">✦</span>
+          <div><p class="owl-eyebrow">Latest from the Owl</p><h2 id="latest-title">What’s new</h2></div>
+        </div>
         <span id="mission-update-timestamp"></span>
       </div>
       <div class="home-update-list" id="mission-update-list" aria-live="polite">
         <p class="home-muted">Gathering the latest update…</p>
       </div>
-      <a class="home-primary-action" href="coverage.html">Open Coverage <span aria-hidden="true">→</span></a>
+      <a class="home-card-action" href="coverage.html"><span>Open Coverage</span><b aria-hidden="true">→</b></a>
     </section>
 
     <section class="home-card" id="civic-knowledge-card" aria-labelledby="civic-title">
-      <p class="owl-eyebrow">If You Didn’t Know</p>
+      <div class="home-card-kicker"><span class="home-card-symbol" aria-hidden="true">⌘</span><p class="owl-eyebrow">If You Didn’t Know</p><small>Daily</small></div>
       <h2 id="civic-title">A civic thought for today</h2>
       <div id="civic-knowledge-copy"><p class="home-muted">Loading today’s civic note…</p></div>
-      <a class="home-text-link" href="constitution.html">Explore the Constitution <span aria-hidden="true">→</span></a>
+      <a class="home-card-action" href="constitution.html"><span>Explore the Constitution</span><b aria-hidden="true">→</b></a>
     </section>
 
     <section class="home-card home-card--begin" aria-labelledby="begin-title">
-      <img src="assets/images/owl-mark.png" alt="" />
-      <div>
+      <div class="home-resume-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M3 12h3m12 0h3M5.6 5.6l2.1 2.1m8.6 8.6 2.1 2.1M12 3v3m0 12v3M5.6 18.4l2.1-2.1m8.6-8.6 2.1-2.1M9 12a3 3 0 1 1 6 0 3 3 0 0 1-6 0Z"></path></svg></div>
+      <div class="home-resume-copy">
         <p class="owl-eyebrow" id="begin-eyebrow">A Good Place to Begin</p>
         <h2 id="begin-title">Compare today’s coverage</h2>
         <p id="begin-copy">Start with Radar to see which stories are developing across more than one source.</p>
       </div>
-      <a class="home-primary-action" id="continue-action" href="coverage.html">Open Radar <span aria-hidden="true">→</span></a>
+      <a class="home-resume-action" id="continue-action" href="coverage.html">Open Radar <span aria-hidden="true">→</span></a>
+      <small>Saved only on this device.</small>
     </section>
+    </div>
 
     <section class="home-paths" aria-label="Explore The Strategic Owl">
-      <a href="coverage.html?view=feed"><strong>News Feed</strong><span>Newest reporting from all sources</span></a>
-      <a href="voter-resources.html"><strong>Voter Resources</strong><span>Election information and candidate lookup</span></a>
-      <a href="constitution.html"><strong>Constitution</strong><span>Founding text and plain-language context</span></a>
+      <a href="coverage.html?view=feed"><i aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M6 4h12v16H6zM9 8h6M9 12h6M9 16h4"></path></svg></i><span><strong>News Feed</strong><small>Newest reporting from all sources</small></span><b aria-hidden="true">→</b></a>
+      <a href="voter-resources.html"><i aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M12 3 5 6v5c0 4.8 2.9 8.1 7 10 4.1-1.9 7-5.2 7-10V6zM9 12l2 2 4-5"></path></svg></i><span><strong>Voter Resources</strong><small>Election information and candidate lookup</small></span><b aria-hidden="true">→</b></a>
+      <a href="constitution.html"><i aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M7 4h10a2 2 0 0 1 2 2v14H7a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2Zm2 4h6M9 12h6M9 16h4"></path></svg></i><span><strong>Constitution</strong><small>Founding text and plain-language context</small></span><b aria-hidden="true">→</b></a>
     </section>
   </main>
   <div id="site-footer"></div>
