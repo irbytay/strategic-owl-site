@@ -7,9 +7,9 @@
   const ADMIN_PENDING_KEY = "strategicOwlAdministratorPending";
   const DEFAULT_ACCESS_DAYS = 7;
   const SUPABASE_URL = "https://gopyzkcmvkbusdnwjlbb.supabase.co";
-  const SUPABASE_FUNCTION_URL = ["127.0.0.1", "localhost"].includes(window.location.hostname)
-    ? "/api/validate-subscriber"
-    : `${SUPABASE_URL}/functions/v1/validate-subscriber`;
+  // Keep membership verification on the website origin. Netlify proxies this
+  // path to the Supabase Edge Function, avoiding cross-origin preflight errors.
+  const SUPABASE_FUNCTION_URL = "/api/validate-subscriber";
   const SUPABASE_PUBLISHABLE_KEY =
     "sb_publishable_CYM_aXzslre6SE8P-tTYBw_sw_-gQ1h";
   const STRIPE_URL = "https://buy.stripe.com/cNicN5eVt24X2c6aEhdwc05";

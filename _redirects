@@ -1,3 +1,5 @@
+/api/validate-subscriber https://gopyzkcmvkbusdnwjlbb.supabase.co/functions/v1/validate-subscriber 200
+
 /news-feed.html        /coverage.html?view=feed 301
 /news-sources.html     /coverage.html?view=feed&panel=sources 301
 /owl-feed.html         / 301
