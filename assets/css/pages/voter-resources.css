@@ -791,11 +791,3 @@ body.owl-modal-open {
     transition: none;
   }
 }
-
-/* Current app-aligned finish */
-.site-page--voter-resources { font-family: var(--owl-font-body); }
-.site-page--voter-resources h1, .site-page--voter-resources h2, .site-page--voter-resources h3 { font-family: var(--owl-font-display); }
-.site-page--voter-resources .voter-glass-card,
-.site-page--voter-resources .candidate-card { border-radius: 22px; border-color: var(--owl-border); box-shadow: var(--owl-card-shadow); }
-.site-page--voter-resources input, .site-page--voter-resources select { min-height: 46px; border-radius: 13px; }
-@media (max-width: 720px) { .site-page--voter-resources { padding-bottom: 105px; } }
