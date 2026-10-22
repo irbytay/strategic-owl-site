@@ -198,6 +198,7 @@
 
   function secondaryLinks() {
     return [
+      ["Projects & Links", "projects.html"],
       ["Support", "support.html"],
       ["Privacy", "privacy.html"],
       ["iPhone App", "https://apps.apple.com/app/the-strategic-owl/id6748349497"],
