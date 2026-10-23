@@ -262,7 +262,7 @@
 .projects-section-heading { margin-bottom: 25px; text-align: center; }
 .projects-section-heading .projects-eyebrow { margin-top: 0; }
 .projects-section-heading h2, .projects-support h2 { margin: 7px 0 0; color: #f6f4eb; font-size: clamp(2rem, 4vw, 3.2rem); font-weight: 400; letter-spacing: -0.025em; }
-.projects-shop-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 18px; }
+.projects-shop-grid { display: grid; width: min(100%, 640px); margin-inline: auto; gap: 18px; }
 
 .projects-link-card {
   display: grid;
@@ -279,7 +279,6 @@
 
 .projects-link-card:hover { border-color: rgba(212,175,55,.34); transform: translateY(-3px); }
 .projects-link-icon { display: grid; width: 52px; height: 52px; place-items: center; border-radius: 17px; background: rgba(67,124,255,.13); color: #89a8ff; }
-.projects-link-icon--vip { background: rgba(212,175,55,.13); color: var(--owl-gold); }
 .projects-link-icon svg { width: 26px; height: 26px; fill: none; stroke: currentColor; stroke-width: 1.55; stroke-linecap: round; stroke-linejoin: round; }
 .projects-link-card > span:nth-child(2) { display: flex; min-width: 0; flex-direction: column; }
 .projects-link-card small { color: var(--owl-muted); font-family: Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; font-size: .66rem; font-weight: 750; letter-spacing: .07em; text-transform: uppercase; }
