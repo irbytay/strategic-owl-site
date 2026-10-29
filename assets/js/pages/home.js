@@ -4,6 +4,7 @@
   const SHEET_ID = "19wBEj9hEkvIyQcoR5E_mBGVAxTzMnddMxk8nuQLAumA";
   const API_KEY = "AIzaSyCzuh9HBfe0r70r9U35Pe406PPZ-tz6I78";
   const LAST_PATH_KEY = "strategicOwlLastPrimaryPath";
+  const STATUS_URL = "https://status.thestrategicowl.com/api/status";
 
   function escapeHtml(value) {
     return String(value || "").replace(/[&<>'"]/g, (character) => ({
@@ -47,10 +48,11 @@
 
   function restoreContinueCard() {
     const destinations = {
-      "coverage.html": ["Coverage", "Return to Radar and compare developing stories.", "Open Coverage"],
+      "coverage.html": ["Owl Radar", "Return to Radar and compare developing stories.", "Open Radar"],
       "coverage.html?view=feed": ["News Feed", "Return to the newest reporting across every source.", "Open Feed"],
-      "voter-resources.html": ["Voter Resources", "Continue preparing with election and candidate information.", "Open Voter Resources"],
-      "constitution.html": ["Constitution", "Continue exploring the founding documents.", "Open Constitution"]
+      "civic-owl.html": ["Civic Owl", "Continue building your civic knowledge and mastery.", "Open Challenge"],
+      "voter-resources.html": ["Civic Resources", "Return to official voter and vital-record links.", "Open Resources"],
+      "constitution.html": ["Library", "Continue exploring the founding documents.", "Open Library"]
     };
     const saved = localStorage.getItem(LAST_PATH_KEY);
     if (!saved || !destinations[saved]) return;
@@ -63,11 +65,31 @@
     link.innerHTML = `${action} <span aria-hidden="true">→</span>`;
   }
 
+  async function loadSystemStatus() {
+    const card = document.getElementById("home-system-status");
+    const copy = document.getElementById("home-system-status-copy");
+    if (!card || !copy) return;
+    try {
+      const response = await fetch(STATUS_URL, { headers: { Accept: "application/json" } });
+      if (!response.ok) throw new Error("Status unavailable");
+      const status = await response.json();
+      const state = status.overall === "operational" ? "operational" : status.overall === "outage" ? "outage" : "degraded";
+      card.dataset.state = state;
+      copy.textContent = state === "operational"
+        ? "All systems operational"
+        : String(status.headline || "A service needs attention");
+    } catch {
+      card.dataset.state = "unknown";
+      copy.textContent = "Status could not be confirmed";
+    }
+  }
+
   document.addEventListener("click", (event) => {
-    const link = event.target.closest('a[href^="coverage.html"], a[href="voter-resources.html"], a[href="constitution.html"]');
+    const link = event.target.closest('a[href^="coverage.html"], a[href="civic-owl.html"], a[href="voter-resources.html"], a[href="constitution.html"]');
     if (link) localStorage.setItem(LAST_PATH_KEY, link.getAttribute("href"));
   });
 
   restoreContinueCard();
   loadHomeData();
+  loadSystemStatus();
 })();

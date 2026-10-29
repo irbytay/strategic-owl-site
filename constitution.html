@@ -2,67 +2,71 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>The Constitution | The Strategic Owl</title>
-  <meta name="description" content="Read and explore the Constitution of the United States." />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <title>Library | The Strategic Owl</title>
+  <meta name="description" content="Read America's founding documents, landmark cases, civic texts, and the arguments that shaped public life." />
   <link rel="canonical" href="https://thestrategicowl.com/constitution.html" />
   <link rel="icon" type="image/png" href="assets/images/3X.png" />
-  <link rel="stylesheet" href="assets/css/pages/constitution.css?v=20261015-1" />
-  <link rel="stylesheet" href="assets/css/site.css?v=20261015-2" />
-  <script src="assets/js/site-shell.js?v=20261015-2" defer></script>
+  <link rel="stylesheet" href="assets/css/site.css?v=20261028-1" />
+  <link rel="stylesheet" href="assets/css/pages/constitution.css?v=20261029-1" />
+  <script src="assets/js/site-shell.js?v=20261028-1" defer></script>
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2" defer></script>
-  <script src="assets/js/owl-access.js?v=20261015-3" defer></script>
+  <script src="assets/js/owl-access.js?v=20261028-1" defer></script>
+  <script src="assets/js/pages/constitution.js?v=20261029-1" defer></script>
 </head>
 <body class="site-body" data-page="constitution">
   <a class="skip-link" href="#main-content">Skip to content</a>
   <div id="site-header"></div>
-  <main id="main-content" class="site-page site-page--constitution" tabindex="-1">
-<div class="container">
-    <h1>The Constitution</h1>
-<!-- 🎯 Divider -->
-    <section class="divider-section">
-      <div class="divider-bar">
-        <div class="truth"></div>
-        <div class="reliability"></div>
-        <div class="understanding"></div>
+
+  <main id="main-content" class="site-page library-page" tabindex="-1">
+    <section class="library-hero" aria-labelledby="library-title">
+      <div class="library-brand-lockup" aria-hidden="true">
+        <img src="assets/images/owl-mark.png" alt="" />
+        <span>STRATEGIC OWL LIBRARY</span>
       </div>
-      <div class="divider-labels">
-        <span>Truth</span>
-        <span>Reliability</span>
-        <span>Understanding</span>
+      <h1 id="library-title">Read the source</h1>
+      <p>Founding documents, landmark cases, and the public arguments that shaped American civic life.</p>
+
+      <label class="library-search" for="library-search-input">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="m21 21-4.7-4.7m2.2-5.3a7.5 7.5 0 1 1-15 0 7.5 7.5 0 0 1 15 0Z" /></svg>
+        <input id="library-search-input" type="search" autocomplete="off" placeholder="Search the founding library" />
+      </label>
+    </section>
+
+    <section class="library-shell" aria-live="polite" aria-busy="true">
+      <nav id="library-breadcrumbs" class="library-breadcrumbs" aria-label="Library location" hidden></nav>
+      <div id="library-content" class="library-content">
+        <div class="library-loading">
+          <span class="library-loading-mark" aria-hidden="true">S</span>
+          <strong>Opening the Library</strong>
+          <span>Preparing the complete civic collection.</span>
+        </div>
       </div>
     </section>
-    <!-- 🦉 Strategic Intro Box -->
-    <div class="strategic-intro-box" style="background: linear-gradient(to bottom right, #1A2B4C, #0D1B2A); border: 1px solid #D4AF37; border-radius: 12px; padding: 20px; box-shadow: 0 0 12px rgba(212, 175, 55, 0.3); max-width: 800px; margin: 0 auto 2rem auto;">
-      <p style="font-family: 'Roboto', sans-serif; font-size: 14px; color: rgba(255, 255, 255, 0.7); line-height: 1.6; text-align: center; margin: 0;">
-        You can explore the Constitution two ways: select a right granted (like free speech or equal protection), or directly select any part of the original text. Once selected, you’ll see the full text, have the option to capture it, read a plain-language breakdown, and even copy an AI research prompt for deeper exploration.
-      </p>
+
+    <aside id="library-player" class="library-player" hidden>
+    <div class="library-player__summary">
+      <img src="assets/images/owl-mark.png" alt="" />
+      <button id="library-player-toggle" class="library-player__title" type="button" aria-expanded="true">
+        <strong id="library-player-title">Library audio</strong>
+        <span id="library-player-subtitle">Civic Owl conversation</span>
+      </button>
+      <button id="library-player-collapse" class="library-player__icon" type="button" aria-label="Collapse audio controls">⌃</button>
+      <button id="library-player-close" class="library-player__icon" type="button" aria-label="Close audio player">×</button>
     </div>
-   <!-- 🦉 Subject → Amendment Lookup (Strategic Owl Style) -->
-<div style="display: flex; flex-direction: column; gap: 12px; align-items: center; margin-top: 40px;">
-
-
-
-  <select id="subject-quick"
-    style="padding: 12px 14px; background-color: rgba(255,255,255,0.05); color: var(--understanding); font-family: 'Copperplate', serif; font-size: 15px; font-weight: 500; border: 1px solid rgba(212,175,55,0.4); border-radius: 12px; width: 100%; max-width: 420px; box-shadow: 0 4px 12px rgba(212, 175, 55, 0.2); appearance: none; background-image: url('data:image/svg+xml;utf8,<svg fill=\'%23D4AF37\' height=\'18\' viewBox=\'0 0 24 24\' width=\'18\' xmlns=\'http://www.w3.org/2000/svg\'><path d=\'M7 10l5 5 5-5z\'/></svg>'); background-repeat: no-repeat; background-position: right 10px center; background-size: 16px; transition: box-shadow 0.3s ease, border-color 0.3s ease; text-align: center; text-align-last: center;">
-    <option value="">-- Select a Right --</option>
-  </select>
-
-  <div id="subject-quick-output"
-    style="margin-top: 4px; font-size: 1.05rem; color: var(--understanding); font-family: 'Montserrat', sans-serif; text-align: center;">
-  </div>
-</div>
-  <div style="display: flex; justify-content: center;">
-    <select id="subject-select" data-user-selected="false" style="padding: 12px 14px; background-color: rgba(255,255,255,0.05); color: var(--understanding); font-family: 'Copperplate', serif; font-size: 15px; font-weight: 500; border: 1px solid rgba(212,175,55,0.4); border-radius: 12px; width: 100%; max-width: 420px; box-shadow: 0 4px 12px rgba(212, 175, 55, 0.2); appearance: none; background-image: url('data:image/svg+xml;utf8,<svg fill=\'%23D4AF37\' height=\'18\' viewBox=\'0 0 24 24\' width=\'18\' xmlns=\'http://www.w3.org/2000/svg\'><path d=\'M7 10l5 5 5-5z\'/></svg>'); background-repeat: no-repeat; background-position: right 10px center; background-size: 16px; transition: box-shadow 0.3s ease, border-color 0.3s ease; text-align: center; text-align-last: center;">
-      <option value="">-- Select the Founding Text --</option>
-    </select>
-  </div>
-
-<div id="insight-output" style="max-width: 960px; margin: 40px auto 0; font-family: 'Montserrat', sans-serif; color: var(--text);">
-  <!-- Content is inserted here dynamically -->
-</div>
+    <div id="library-player-controls" class="library-player__controls">
+      <input id="library-player-progress" type="range" min="0" max="100" value="0" aria-label="Audio progress" />
+      <div class="library-player__buttons">
+        <span id="library-player-current">0:00</span>
+        <button id="library-player-back" type="button" aria-label="Go back 15 seconds">↶<small>15</small></button>
+        <button id="library-player-play" class="library-player__play" type="button" aria-label="Play">▶</button>
+        <button id="library-player-forward" type="button" aria-label="Go forward 15 seconds">↷<small>15</small></button>
+        <span id="library-player-duration">0:00</span>
+      </div>
+    </div>
+    </aside>
   </main>
+
   <div id="site-footer"></div>
-  <script src="assets/js/pages/constitution.js?v=20261015-2" defer></script>
 </body>
 </html>

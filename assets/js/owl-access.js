@@ -1,10 +1,13 @@
 (function () {
   "use strict";
 
-  const STORAGE_KEY = "strategicOwlAccessSession";
+  const STORAGE_KEY = "strategicOwlVerifiedAccessSession";
+  const UNVERIFIED_ACCESS_KEY = "strategicOwlAccessSession";
   const IDENTITY_KEY = "strategicOwlMembershipIdentity";
   const LEGACY_TRU_KEY = "truSubscriberValidationCache";
   const ADMIN_PENDING_KEY = "strategicOwlAdministratorPending";
+  const EMAIL_VERIFICATION_KEY = "strategicOwlEmailVerificationPending";
+  const EMAIL_VERIFICATION_MINUTES = 15;
   const DEFAULT_ACCESS_DAYS = 7;
   const SUPABASE_URL = "https://gopyzkcmvkbusdnwjlbb.supabase.co";
   // Keep membership verification on the website origin. Netlify proxies this
@@ -79,12 +82,6 @@
     if (memorySession) return memorySession;
     const stored = readStoredSession(STORAGE_KEY);
     if (stored) return (memorySession = stored);
-    const legacy = readStoredSession(LEGACY_TRU_KEY);
-    if (legacy) {
-      memorySession = legacy;
-      try { localStorage.setItem(STORAGE_KEY, JSON.stringify(legacy)); } catch { /* Memory access remains available. */ }
-      return legacy;
-    }
     return null;
   }
 
@@ -194,6 +191,43 @@
     localStorage.removeItem(ADMIN_PENDING_KEY);
   }
 
+  function normalizePendingEmailVerification(value) {
+    if (!value || typeof value !== "object") return null;
+    const email = String(value.email || "").trim().toLowerCase();
+    const type = value.type === "email" ? "email" : value.type === "email_change" ? "email_change" : "";
+    const purpose = value.purpose === "civic_identity" ? "civic_identity" : "membership";
+    const startedAt = Number(value.startedAt);
+    const previousUserID = String(value.previousUserID || "").trim();
+    const grant = value.grant && typeof value.grant === "object" ? value.grant : null;
+    if (!email || !type || !Number.isFinite(startedAt)) return null;
+    if (Date.now() - startedAt > EMAIL_VERIFICATION_MINUTES * 60000) return null;
+    return { email, type, purpose, startedAt, previousUserID, grant };
+  }
+
+  function readPendingEmailVerification() {
+    try {
+      const pending = normalizePendingEmailVerification(
+        JSON.parse(sessionStorage.getItem(EMAIL_VERIFICATION_KEY) || "null")
+      );
+      if (!pending) sessionStorage.removeItem(EMAIL_VERIFICATION_KEY);
+      return pending;
+    } catch {
+      sessionStorage.removeItem(EMAIL_VERIFICATION_KEY);
+      return null;
+    }
+  }
+
+  function savePendingEmailVerification(value) {
+    const pending = normalizePendingEmailVerification({ ...value, startedAt: Date.now() });
+    if (!pending) throw new Error("Email verification could not be started.");
+    sessionStorage.setItem(EMAIL_VERIFICATION_KEY, JSON.stringify(pending));
+    return pending;
+  }
+
+  function clearPendingEmailVerification() {
+    sessionStorage.removeItem(EMAIL_VERIFICATION_KEY);
+  }
+
   function refreshButtons() {
     document.querySelectorAll("owl-access-button").forEach((element) => {
       if (typeof element.refresh === "function") element.refresh();
@@ -287,9 +321,11 @@
     memorySession = null;
     try {
       localStorage.removeItem(STORAGE_KEY);
+      localStorage.removeItem(UNVERIFIED_ACCESS_KEY);
       localStorage.removeItem(IDENTITY_KEY);
       localStorage.removeItem(LEGACY_TRU_KEY);
       clearPendingAdministrator();
+      clearPendingEmailVerification();
     } catch (error) {
       console.warn("Unable to clear Owl Membership status", error);
     }
@@ -342,13 +378,29 @@
     }
 
     if (result.valid === true) {
+      const verificationRequired = await beginEmailVerification(
+        normalizedEmail,
+        "membership",
+        {
+          accessExpiresAt: result.accessExpiresAt || null,
+          source: result.source || "",
+          activeSources: result.activeSources || []
+        }
+      );
+      if (verificationRequired) {
+        return {
+          ...result,
+          eligible: true,
+          valid: false,
+          verificationRequired: true,
+          message: `Enter the six-digit code sent to ${normalizedEmail}.`
+        };
+      }
+
       const providedExpiration = Date.parse(result.accessExpiresAt || "");
-      const expiresAt = Number.isFinite(providedExpiration)
-        ? providedExpiration
-        : null;
       activate(
         normalizedEmail,
-        expiresAt,
+        Number.isFinite(providedExpiration) ? providedExpiration : null,
         result.source,
         result.activeSources
       );
@@ -359,6 +411,92 @@
     }
 
     return result;
+  }
+
+  async function beginEmailVerification(email, purpose = "civic_identity", grant = null) {
+    const normalizedEmail = String(email || "").trim().toLowerCase();
+    if (!normalizedEmail || !normalizedEmail.includes("@") || !normalizedEmail.includes(".")) {
+      throw new Error("Enter a valid email address.");
+    }
+
+    const client = getSupabaseClient();
+    const session = await ensureSupabaseSession();
+    const currentEmail = String(session.user?.email || "").trim().toLowerCase();
+    if (!session.user?.is_anonymous) {
+      if (currentEmail !== normalizedEmail) {
+        throw new Error("This browser is signed in with a different verified email. Sign out before connecting another email.");
+      }
+      clearPendingEmailVerification();
+      return false;
+    }
+
+    let type = "email_change";
+    const previousUserID = String(session.user?.id || "");
+    const updateResult = await client.auth.updateUser({ email: normalizedEmail });
+    if (updateResult.error) {
+      const status = Number(updateResult.error.status || 0);
+      if (status !== 400 && status !== 422) throw updateResult.error;
+      const otpResult = await client.auth.signInWithOtp({
+        email: normalizedEmail,
+        options: { shouldCreateUser: false }
+      });
+      if (otpResult.error) throw otpResult.error;
+      type = "email";
+    }
+
+    savePendingEmailVerification({
+      email: normalizedEmail,
+      type,
+      purpose,
+      previousUserID,
+      grant
+    });
+    return true;
+  }
+
+  async function completeEmailVerification(email, code) {
+    const normalizedEmail = String(email || "").trim().toLowerCase();
+    const normalizedCode = String(code || "").replace(/\D/g, "");
+    const pending = readPendingEmailVerification();
+    if (!pending || pending.email !== normalizedEmail) {
+      throw new Error("Request a new verification code and try again.");
+    }
+    if (normalizedCode.length !== 6) {
+      throw new Error("Enter the six-digit code sent to your email.");
+    }
+
+    const client = getSupabaseClient();
+    const verification = await client.auth.verifyOtp({
+      email: normalizedEmail,
+      token: normalizedCode,
+      type: pending.type
+    });
+    if (verification.error) throw verification.error;
+    const session = verification.data.session || (await client.auth.getSession()).data.session;
+    const verifiedEmail = String(session?.user?.email || "").trim().toLowerCase();
+    if (!session || session.user?.is_anonymous || verifiedEmail !== normalizedEmail) {
+      throw new Error("That code did not finish verifying this email. Request a new code and try again.");
+    }
+    if (pending.type === "email_change" && pending.previousUserID && session.user.id !== pending.previousUserID) {
+      throw new Error("Email verification returned a different profile identity, so no access was changed.");
+    }
+
+    clearPendingEmailVerification();
+    if (pending.purpose === "membership") {
+      const grant = pending.grant || {};
+      const providedExpiration = Date.parse(grant.accessExpiresAt || "");
+      activate(
+        normalizedEmail,
+        Number.isFinite(providedExpiration) ? providedExpiration : null,
+        grant.source,
+        grant.activeSources
+      );
+    }
+    return {
+      email: normalizedEmail,
+      purpose: pending.purpose,
+      userID: session.user.id
+    };
   }
 
   async function checkAppleAccess() {
@@ -460,6 +598,73 @@
     }
 
     return result;
+  }
+
+  async function deleteAccountData() {
+    const client = getSupabaseClient();
+    const { data, error } = await client.auth.getSession();
+    if (error) throw error;
+    const session = data.session;
+    if (!session || session.user?.is_anonymous) {
+      throw new Error("Verify your email before deleting your account and app data.");
+    }
+    const response = await fetch(SUPABASE_FUNCTION_URL, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        apikey: SUPABASE_PUBLISHABLE_KEY,
+        Authorization: `Bearer ${session.access_token}`
+      },
+      body: JSON.stringify({ action: "deleteAccountData" })
+    });
+    let result = {};
+    try { result = await response.json(); } catch { result = {}; }
+    if (!response.ok || result.ok !== true || result.deleted !== true) {
+      throw new Error(result.error || "Your account and app data could not be deleted.");
+    }
+    memorySession = null;
+    localStorage.removeItem(STORAGE_KEY);
+    localStorage.removeItem(IDENTITY_KEY);
+    clearPendingEmailVerification();
+    clearPendingAdministrator();
+    await client.auth.signOut().catch(() => {});
+    announceChange(null);
+    return result;
+  }
+
+  function confirmAccountDeletion() {
+    return new Promise((resolve) => {
+      let confirmation = document.getElementById("owl-delete-account-dialog");
+      if (!confirmation) {
+        confirmation = document.createElement("dialog");
+        confirmation.id = "owl-delete-account-dialog";
+        confirmation.className = "owl-delete-account-dialog";
+        confirmation.innerHTML = `
+          <div class="owl-delete-account-card">
+            <p class="owl-access-code-heading">Delete account and app data?</p>
+            <p>This permanently removes your profile, Civic Owl progress, ratings, badges, saved sources, and personal app activity.</p>
+            <p>Your Apple, Google, Stripe, or Substack subscription is managed separately and will not be canceled.</p>
+            <p class="owl-delete-account-message" role="status" aria-live="polite"></p>
+            <div class="owl-delete-account-actions">
+              <button class="owl-access-secondary" type="button" data-keep-account>Keep my account</button>
+              <button class="owl-access-danger" type="button" data-confirm-account-delete>Delete permanently</button>
+            </div>
+          </div>`;
+        document.body.appendChild(confirmation);
+      }
+      const finish = (value) => {
+        confirmation.close();
+        confirmation.removeEventListener("cancel", cancel);
+        resolve(value);
+      };
+      const cancel = (event) => { event.preventDefault(); finish(false); };
+      confirmation.addEventListener("cancel", cancel, { once: true });
+      confirmation.querySelector("[data-keep-account]").onclick = () => finish(false);
+      confirmation.querySelector("[data-confirm-account-delete]").onclick = () => finish(true);
+      confirmation.querySelector(".owl-delete-account-message").textContent = "";
+      confirmation.showModal();
+      confirmation.querySelector("[data-keep-account]").focus();
+    });
   }
 
   async function beginAdministratorSignIn(email) {
@@ -604,7 +809,15 @@
           <form class="owl-access-form" novalidate>
             <label for="owl-access-email">Membership email</label>
             <input id="owl-access-email" name="email" type="email" inputmode="email" autocomplete="email" spellcheck="false" required />
-            <button class="owl-access-primary" type="submit">Check Membership</button>
+            <button class="owl-access-primary" type="submit">Continue</button>
+          </form>
+          <form class="owl-access-form owl-access-code-form" data-owl-code-form hidden novalidate>
+            <p class="owl-access-code-heading">Confirm your email</p>
+            <p class="owl-access-code-instruction" data-owl-code-instruction></p>
+            <label for="owl-access-code">Six-digit code</label>
+            <input id="owl-access-code" name="code" type="text" inputmode="numeric" autocomplete="one-time-code" pattern="[0-9]{6}" maxlength="6" required />
+            <button class="owl-access-primary" type="submit">Confirm Membership</button>
+            <button class="owl-access-secondary" type="button" data-owl-cancel-code>Use another email</button>
           </form>
           <p class="owl-access-message" role="status" aria-live="polite"></p>
           <div class="owl-access-administrator-sign-in owl-access-apple-subscriber" data-owl-apple-subscriber>
@@ -641,6 +854,8 @@
             </div>
           </div>
           <button class="owl-access-secondary" type="button" data-owl-sign-out>Sign Out</button>
+          <button class="owl-access-danger" type="button" data-owl-delete-account>Delete account and app data</button>
+          <small class="owl-access-deletion-note">Profile deletion does not cancel a subscription with its billing provider.</small>
         </section>
       </div>`;
     document.body.appendChild(dialog);
@@ -648,6 +863,11 @@
     const form = dialog.querySelector(".owl-access-form");
     const input = dialog.querySelector("#owl-access-email");
     const submit = form?.querySelector('button[type="submit"]');
+    const codeForm = dialog.querySelector("[data-owl-code-form]");
+    const codeInput = dialog.querySelector("#owl-access-code");
+    const codeSubmit = codeForm?.querySelector('button[type="submit"]');
+    const codeInstruction = dialog.querySelector("[data-owl-code-instruction]");
+    const cancelCode = dialog.querySelector("[data-owl-cancel-code]");
     const message = dialog.querySelector(".owl-access-message");
     const administratorButton = dialog.querySelector("[data-owl-continue-apple]");
     const administratorMessage = dialog.querySelector("[data-owl-administrator-message]");
@@ -657,6 +877,21 @@
       clear();
       if (message) message.textContent = "Signed out on this device.";
       input?.focus();
+    });
+    dialog.querySelector("[data-owl-delete-account]")?.addEventListener("click", async () => {
+      if (!await confirmAccountDeletion()) return;
+      const button = dialog.querySelector("[data-owl-delete-account]");
+      button.disabled = true;
+      button.textContent = "Deleting account";
+      try {
+        await deleteAccountData();
+        if (dialog.open) dialog.close();
+        window.location.assign("civic-owl.html?account=deleted");
+      } catch (error) {
+        if (message) message.textContent = error?.message || "Your account could not be deleted.";
+        button.disabled = false;
+        button.textContent = "Delete account and app data";
+      }
     });
     administratorButton?.addEventListener("click", async () => {
       const pending = readPendingAdministrator();
@@ -678,6 +913,60 @@
     });
     dialog.addEventListener("close", () => document.body.classList.remove("owl-dialog-open"));
 
+    function syncEmailVerificationForm() {
+      const pending = readPendingEmailVerification();
+      const membershipPending = pending?.purpose === "membership" ? pending : null;
+      if (form) form.hidden = Boolean(membershipPending);
+      if (codeForm) codeForm.hidden = !membershipPending;
+      if (codeInstruction) {
+        codeInstruction.textContent = membershipPending
+          ? `Enter the code sent to ${membershipPending.email}.`
+          : "";
+      }
+      if (membershipPending && input) input.value = membershipPending.email;
+    }
+
+    cancelCode?.addEventListener("click", () => {
+      clearPendingEmailVerification();
+      if (codeInput) codeInput.value = "";
+      if (message) message.textContent = "";
+      syncEmailVerificationForm();
+      input?.focus();
+    });
+
+    codeInput?.addEventListener("input", () => {
+      codeInput.value = codeInput.value.replace(/\D/g, "").slice(0, 6);
+    });
+
+    codeForm?.addEventListener("submit", async (event) => {
+      event.preventDefault();
+      const pending = readPendingEmailVerification();
+      const code = codeInput?.value || "";
+      if (!pending || pending.purpose !== "membership") {
+        clearPendingEmailVerification();
+        syncEmailVerificationForm();
+        if (message) message.textContent = "Request a new verification code and try again.";
+        return;
+      }
+      if (code.replace(/\D/g, "").length !== 6) {
+        if (message) message.textContent = "Enter the six-digit code sent to your email.";
+        codeInput?.focus();
+        return;
+      }
+
+      if (codeSubmit) codeSubmit.disabled = true;
+      if (message) message.textContent = "Confirming your email...";
+      try {
+        await completeEmailVerification(pending.email, code);
+        if (message) message.textContent = "Owl Membership confirmed.";
+      } catch (error) {
+        console.error("Email verification failed", error);
+        if (message) message.textContent = error?.message || "That code could not be verified.";
+      } finally {
+        if (codeSubmit) codeSubmit.disabled = false;
+      }
+    });
+
     form?.addEventListener("submit", async (event) => {
       event.preventDefault();
       const email = input ? input.value.trim().toLowerCase() : "";
@@ -691,7 +980,13 @@
       if (message) message.textContent = "Checking Owl Membership…";
       try {
         const result = await validateEmail(email);
-        if (result.valid === true) {
+        if (result.verificationRequired === true) {
+          clearPendingAdministrator();
+          administratorAuthError = "";
+          if (message) message.textContent = result.message || "Enter the six-digit code sent to your email.";
+          syncEmailVerificationForm();
+          codeInput?.focus();
+        } else if (result.valid === true) {
           clearPendingAdministrator();
           administratorAuthError = "";
           if (dialog.open) dialog.close();
@@ -714,6 +1009,7 @@
       }
     });
 
+    syncEmailVerificationForm();
     updateDialog();
     return dialog;
   }
@@ -726,6 +1022,8 @@
     window.setTimeout(() => {
       const focusTarget = isActive()
         ? dialog.querySelector("[data-owl-sign-out]")
+        : readPendingEmailVerification()?.purpose === "membership"
+        ? dialog.querySelector("#owl-access-code")
         : dialog.querySelector("#owl-access-email");
       focusTarget?.focus();
     }, 0);
@@ -796,10 +1094,13 @@
 
   window.StrategicOwlAccess = Object.freeze({
     storageKey: STORAGE_KEY,
-    activate,
+    beginEmailVerification,
     can,
     checkAppleAccess,
     clear,
+    confirmAccountDeletion,
+    completeEmailVerification,
+    deleteAccountData,
     getCapabilities,
     getSupabaseClient,
     getSession,
@@ -815,13 +1116,19 @@
   });
 
   window.addEventListener("storage", (event) => {
-    if (event.key === STORAGE_KEY || event.key === IDENTITY_KEY || event.key === LEGACY_TRU_KEY) {
+    if (event.key === STORAGE_KEY || event.key === IDENTITY_KEY) {
       memorySession = readStoredSession(STORAGE_KEY);
       announceChange(memorySession);
       restoreMembership().catch((error) => console.warn("Unable to refresh Owl Membership", error));
     }
   });
 
+  try {
+    localStorage.removeItem(UNVERIFIED_ACCESS_KEY);
+    localStorage.removeItem(LEGACY_TRU_KEY);
+  } catch {
+    // The verified session can still live in memory when storage is unavailable.
+  }
   memorySession = getSession();
   restoreMembership().catch((error) => {
     console.warn("Unable to restore Owl Membership", error);

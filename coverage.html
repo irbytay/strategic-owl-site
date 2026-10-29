@@ -2,17 +2,17 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
   <title>Coverage | The Strategic Owl</title>
   <meta name="description" content="Compare developing coverage and read the latest reporting with The Strategic Owl." />
   <link rel="canonical" href="https://thestrategicowl.com/coverage.html" />
   <link rel="icon" type="image/png" href="assets/images/3X.png" />
-  <link rel="stylesheet" href="assets/css/site.css?v=20261015-2" />
-  <link rel="stylesheet" href="assets/css/pages/coverage.css?v=20261015-2" />
-  <script src="assets/js/site-shell.js?v=20261015-2" defer></script>
+  <link rel="stylesheet" href="assets/css/site.css?v=20261028-1" />
+  <link rel="stylesheet" href="assets/css/pages/coverage.css?v=20261028-1" />
+  <script src="assets/js/site-shell.js?v=20261028-1" defer></script>
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2" defer></script>
-  <script src="assets/js/owl-access.js?v=20261015-3" defer></script>
-  <script src="assets/js/pages/coverage.js?v=20261015-4" defer></script>
+  <script src="assets/js/owl-access.js?v=20261028-1" defer></script>
+  <script src="assets/js/pages/coverage.js?v=20261028-1" defer></script>
 </head>
 <body class="site-body" data-page="coverage">
   <a class="skip-link" href="#main-content">Skip to content</a>
@@ -21,8 +21,8 @@
     <section class="owl-page-intro" aria-labelledby="coverage-title">
       <img src="assets/images/3X.png" alt="" />
       <p class="owl-eyebrow">The Strategic Owl</p>
-      <h1 id="coverage-title">Coverage</h1>
-      <p>Compare how stories are developing, then move into the newest reporting.</p>
+      <h1 id="coverage-title">Owl Radar</h1>
+      <p>Compare the coverage or read every report in time order.</p>
     </section>
     <nav class="owl-segmented-control coverage-switcher" aria-label="Coverage view">
       <button type="button" data-coverage-view="radar" aria-pressed="true">Radar</button>
@@ -32,9 +32,8 @@
     <section class="coverage-view" id="coverage-radar" data-coverage-panel="radar" aria-labelledby="radar-title">
       <div class="coverage-heading-row">
         <div>
-          <p class="owl-eyebrow">Public coverage</p>
           <h2 id="radar-title">Today’s Coverage</h2>
-          <p>Confirmed story groups, newest developments first.</p>
+          <p>Related reporting, grouped so you can compare.</p>
         </div>
         <button class="coverage-refresh" type="button" data-refresh="radar" aria-label="Refresh Radar">Refresh</button>
       </div>
@@ -57,9 +56,9 @@
     <section class="coverage-view" id="coverage-feed" data-coverage-panel="feed" aria-labelledby="feed-title" hidden>
       <div class="coverage-heading-row">
         <div>
-          <p class="owl-eyebrow" id="feed-eyebrow">Free for everyone</p>
-          <h2 id="feed-title">All Sources</h2>
-          <p id="feed-description">All reporting in one chronological stream. No source filtering in free access.</p>
+          <p class="owl-eyebrow" id="feed-eyebrow">Newest first</p>
+          <h2 id="feed-title">All sources</h2>
+          <p id="feed-description">A chronological stream without engagement ranking.</p>
         </div>
         <button class="coverage-refresh" type="button" data-refresh="feed" aria-label="Refresh News Feed">Refresh</button>
       </div>

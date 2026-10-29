@@ -194,11 +194,11 @@
   function renderMemberChrome() {
     byId("feed-free-membership-bar").hidden = state.feed.member;
     byId("feed-member-tools").hidden = !state.feed.member;
-    byId("feed-eyebrow").textContent = state.feed.member ? "Owl Membership" : "Free for everyone";
-    byId("feed-title").textContent = state.feed.member ? "Your Feed" : "All Sources";
+    byId("feed-eyebrow").textContent = state.feed.member ? "Your sources" : "Newest first";
+    byId("feed-title").textContent = state.feed.member ? "Your feed" : "All sources";
     byId("feed-description").textContent = state.feed.member
       ? "The newest reporting from the sources you follow."
-      : "All reporting in one chronological stream. No source filtering in free access.";
+      : "A chronological stream without engagement ranking.";
     const sourceFilter = byId("feed-source-filter");
     if (sourceFilter) {
       sourceFilter.innerHTML = '<option value="">All followed sources</option>' + state.feed.sources

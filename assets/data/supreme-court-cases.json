@@ -1,0 +1,2772 @@
+{
+  "schemaVersion": 2,
+  "editionDate": "2026-10-12",
+  "metadataEdition": "SCDB 2026 Release 01",
+  "metadataSourceName": "Supreme Court Database",
+  "metadataSourceURL": "https://scdb.la.psu.edu/data/2026-release-01/",
+  "editorialScope": "A curated educational canon of 100 decisions selected for constitutional impact, doctrinal influence, and historical significance. It is not an exhaustive collection of Supreme Court opinions.",
+  "cases": [
+    {
+      "id": "marbury-v-madison",
+      "name": "Marbury v. Madison",
+      "year": 1803,
+      "citation": "5 U.S. 137",
+      "area": "Judicial Power",
+      "legalQuestion": "May the Court refuse to apply a federal law that conflicts with the Constitution?",
+      "holding": "The Constitution controls over an inconsistent ordinary statute; the statutory grant of original mandamus jurisdiction at issue was unconstitutional.",
+      "significance": "Foundational statement of judicial review.",
+      "status": "Controlling landmark",
+      "constitution": "Article III; Article VI",
+      "sourceURL": "https://www.supremecourt.gov/about/constitutional.aspx",
+      "relationships": [
+        {
+          "caseID": "cooper-v-aaron",
+          "relationship": "Reinforced by",
+          "note": "Cooper reaffirmed that constitutional rulings bind the states."
+        }
+      ],
+      "pulse": {
+        "reference": "Marbury v. Madison (1803)",
+        "fact": "In Marbury v. Madison, the Constitution controls over an inconsistent ordinary statute; the statutory grant of original mandamus jurisdiction at issue was unconstitutional.",
+        "context": "Marbury v. Madison is remembered for this legal impact: Foundational statement of judicial review.",
+        "actionTitle": "Open the case",
+        "reviewed": true,
+        "reviewVersion": 1
+      }
+    },
+    {
+      "id": "mcculloch-v-maryland",
+      "name": "McCulloch v. Maryland",
+      "year": 1819,
+      "citation": "17 U.S. 316",
+      "area": "Federal Power",
+      "legalQuestion": "Could Congress create a national bank, and could Maryland tax it?",
+      "holding": "Congress possessed implied power to create the bank, and Maryland could not tax the federal instrument.",
+      "significance": "Major interpretation of implied powers and federal supremacy.",
+      "status": "Controlling landmark",
+      "constitution": "Necessary and Proper Clause; Supremacy Clause",
+      "sourceURL": "https://constitution.congress.gov/",
+      "relationships": [
+        {
+          "caseID": "nfib-v-sebelius",
+          "relationship": "Later federal-power limit",
+          "note": "NFIB applied limits while preserving much of McCulloch’s structural approach."
+        }
+      ],
+      "pulse": {
+        "reference": "McCulloch v. Maryland (1819)",
+        "fact": "In McCulloch v. Maryland, congress possessed implied power to create the bank, and Maryland could not tax the federal instrument.",
+        "context": "McCulloch v. Maryland is remembered for this legal impact: Major interpretation of implied powers and federal supremacy.",
+        "actionTitle": "Open the case",
+        "reviewed": true,
+        "reviewVersion": 1
+      }
+    },
+    {
+      "id": "gibbons-v-ogden",
+      "name": "Gibbons v. Ogden",
+      "year": 1824,
+      "citation": "22 U.S. 1",
+      "area": "Commerce",
+      "legalQuestion": "Could a state-granted steamboat monopoly obstruct federally licensed interstate navigation?",
+      "holding": "Navigation among states fell within federal commerce power, and conflicting state law yielded.",
+      "significance": "Early broad interpretation of interstate commerce power.",
+      "status": "Controlling historical foundation",
+      "constitution": "Commerce Clause; Supremacy Clause",
+      "sourceURL": "https://constitution.congress.gov/",
+      "relationships": [
+        {
+          "caseID": "wickard-v-filburn",
+          "relationship": "Expanded by",
+          "note": "Wickard extended commerce power to local activity through aggregate effects."
+        }
+      ],
+      "pulse": {
+        "reference": "Gibbons v. Ogden (1824)",
+        "fact": "In Gibbons v. Ogden, navigation among states fell within federal commerce power, and conflicting state law yielded.",
+        "context": "Gibbons v. Ogden is remembered for this legal impact: Early broad interpretation of interstate commerce power.",
+        "actionTitle": "Open the case",
+        "reviewed": true,
+        "reviewVersion": 1
+      }
+    },
+    {
+      "id": "dred-scott",
+      "name": "Dred Scott v. Sandford",
+      "year": 1857,
+      "citation": "60 U.S. 393",
+      "area": "Citizenship",
+      "legalQuestion": "Could an enslaved person or descendant claim federal citizenship, and could Congress restrict slavery in territories?",
+      "holding": "The Court denied citizenship and invalidated the territorial restriction on slavery.",
+      "significance": "A notorious decision repudiated by the Civil War Amendments.",
+      "status": "Overruled by constitutional amendments",
+      "constitution": "Thirteenth and Fourteenth Amendments",
+      "sourceURL": "https://constitution.congress.gov/",
+      "pulse": {
+        "reference": "Dred Scott v. Sandford (1857)",
+        "fact": "In Dred Scott v. Sandford, the Court denied citizenship and invalidated the territorial restriction on slavery.",
+        "context": "Dred Scott v. Sandford is remembered for this legal impact: A notorious decision repudiated by the Civil War Amendments.",
+        "actionTitle": "Open the case",
+        "reviewed": true,
+        "reviewVersion": 1
+      }
+    },
+    {
+      "id": "plessy-v-ferguson",
+      "name": "Plessy v. Ferguson",
+      "year": 1896,
+      "citation": "163 U.S. 537",
+      "area": "Equal Protection",
+      "legalQuestion": "Did legally required racial separation violate equal protection?",
+      "holding": "The Court upheld segregation under the discredited ‘separate but equal’ doctrine.",
+      "significance": "Provided constitutional cover for Jim Crow segregation.",
+      "status": "Overruled by Brown and later cases",
+      "constitution": "Fourteenth Amendment",
+      "sourceURL": "https://constitution.congress.gov/",
+      "relationships": [
+        {
+          "caseID": "brown-v-board",
+          "relationship": "Overruled by",
+          "note": "Brown rejected separate-but-equal in public education."
+        }
+      ],
+      "pulse": {
+        "reference": "Plessy v. Ferguson (1896)",
+        "fact": "In Plessy v. Ferguson, the Court upheld segregation under the discredited ‘separate but equal’ doctrine.",
+        "context": "Plessy v. Ferguson is remembered for this legal impact: Provided constitutional cover for Jim Crow segregation.",
+        "actionTitle": "Open the case",
+        "reviewed": true,
+        "reviewVersion": 1
+      }
+    },
+    {
+      "id": "schenck",
+      "name": "Schenck v. United States",
+      "year": 1919,
+      "citation": "249 U.S. 47",
+      "area": "Speech",
+      "legalQuestion": "Could wartime anti-draft advocacy be punished?",
+      "holding": "The Court upheld the convictions under the speech test it used at the time.",
+      "significance": "Historically important, but its speech standard did not survive modern doctrine.",
+      "status": "Test abandoned and superseded by Brandenburg",
+      "constitution": "First Amendment",
+      "sourceURL": "https://constitution.congress.gov/",
+      "relationships": [
+        {
+          "caseID": "brandenburg",
+          "relationship": "Superseded by",
+          "note": "Brandenburg adopted the more protective imminent-lawless-action test."
+        }
+      ],
+      "pulse": {
+        "reference": "Schenck v. United States (1919)",
+        "fact": "In Schenck v. United States, the Court upheld the convictions under the speech test it used at the time.",
+        "context": "Schenck v. United States is remembered for this legal impact: Historically important, but its speech standard did not survive modern doctrine.",
+        "actionTitle": "Open the case",
+        "reviewed": true,
+        "reviewVersion": 1
+      }
+    },
+    {
+      "id": "barnette",
+      "name": "West Virginia State Board of Education v. Barnette",
+      "year": 1943,
+      "citation": "319 U.S. 624",
+      "area": "Speech & Religion",
+      "legalQuestion": "Could public schools compel students to salute the flag?",
+      "holding": "Compelled flag salutes violated freedom of speech and belief.",
+      "significance": "Canonical protection against government-compelled orthodoxy.",
+      "status": "Controlling landmark",
+      "constitution": "First and Fourteenth Amendments",
+      "sourceURL": "https://constitution.congress.gov/",
+      "pulse": {
+        "reference": "West Virginia State Board of Education v. Barnette (1943)",
+        "fact": "In West Virginia State Board of Education v. Barnette, compelled flag salutes violated freedom of speech and belief.",
+        "context": "West Virginia State Board of Education v. Barnette is remembered for this legal impact: Canonical protection against government-compelled orthodoxy.",
+        "actionTitle": "Open the case",
+        "reviewed": true,
+        "reviewVersion": 1
+      }
+    },
+    {
+      "id": "brown-v-board",
+      "name": "Brown v. Board of Education",
+      "year": 1954,
+      "citation": "347 U.S. 483",
+      "area": "Equal Protection",
+      "legalQuestion": "Did state-mandated racial segregation in public schools violate equal protection?",
+      "holding": "Separate public schools based on race are inherently unequal.",
+      "significance": "Repudiated school segregation and Plessy’s application to public education.",
+      "status": "Controlling landmark",
+      "constitution": "Fourteenth Amendment",
+      "sourceURL": "https://constitution.congress.gov/",
+      "decisionDate": "1954-05-17",
+      "docketNumber": "1",
+      "vote": "9–0",
+      "majorityAuthor": "Chief Justice Earl Warren",
+      "relationships": [
+        {
+          "caseID": "plessy-v-ferguson",
+          "relationship": "Overruled",
+          "note": "Brown rejected Plessy’s rule in public education."
+        },
+        {
+          "caseID": "cooper-v-aaron",
+          "relationship": "Enforced by",
+          "note": "Cooper required state officials to comply with Brown."
+        }
+      ],
+      "pulse": {
+        "reference": "Brown v. Board of Education (1954)",
+        "fact": "In Brown v. Board of Education, separate public schools based on race are inherently unequal.",
+        "context": "Brown v. Board of Education is remembered for this legal impact: Repudiated school segregation and Plessy’s application to public education.",
+        "actionTitle": "Open the case",
+        "reviewed": true,
+        "reviewVersion": 1
+      }
+    },
+    {
+      "id": "youngstown",
+      "name": "Youngstown Sheet & Tube Co. v. Sawyer",
+      "year": 1952,
+      "citation": "343 U.S. 579",
+      "area": "Executive Power",
+      "legalQuestion": "Could the President seize steel mills without congressional authorization?",
+      "holding": "The President lacked constitutional or statutory authority for the seizure.",
+      "significance": "Jackson’s concurrence supplies an enduring framework for presidential power.",
+      "status": "Controlling landmark",
+      "constitution": "Article II; separation of powers",
+      "sourceURL": "https://constitution.congress.gov/",
+      "decisionDate": "1952-06-02",
+      "docketNumber": "744",
+      "vote": "6–3",
+      "majorityAuthor": "Justice Hugo Black",
+      "relationships": [
+        {
+          "caseID": "united-states-v-nixon",
+          "relationship": "Framework carried forward",
+          "note": "Nixon likewise rejected an unlimited claim of presidential power."
+        },
+        {
+          "caseID": "trump-v-united-states-immunity",
+          "relationship": "Modern presidential-power context",
+          "note": "Trump addressed immunity using a distinct separation-of-powers framework."
+        }
+      ],
+      "pulse": {
+        "reference": "Youngstown Sheet & Tube Co. v. Sawyer (1952)",
+        "fact": "In Youngstown Sheet & Tube Co. v. Sawyer, the President lacked constitutional or statutory authority for the seizure.",
+        "context": "Youngstown Sheet & Tube Co. v. Sawyer is remembered for this legal impact: Jackson’s concurrence supplies an enduring framework for presidential power.",
+        "actionTitle": "Open the case",
+        "reviewed": true,
+        "reviewVersion": 1
+      }
+    },
+    {
+      "id": "mapp-v-ohio",
+      "name": "Mapp v. Ohio",
+      "year": 1961,
+      "citation": "367 U.S. 643",
+      "area": "Search & Seizure",
+      "legalQuestion": "Must states exclude evidence obtained through unconstitutional searches?",
+      "holding": "The exclusionary rule applies to states through the Fourteenth Amendment.",
+      "significance": "Made the Fourth Amendment remedy applicable in state prosecutions.",
+      "status": "Controlling, subject to exceptions",
+      "constitution": "Fourth and Fourteenth Amendments",
+      "sourceURL": "https://constitution.congress.gov/",
+      "decisionDate": "1961-06-19",
+      "docketNumber": "236",
+      "vote": "6–3",
+      "majorityAuthor": "Justice Tom Clark",
+      "pulse": {
+        "reference": "Mapp v. Ohio (1961)",
+        "fact": "In Mapp v. Ohio, the exclusionary rule applies to states through the Fourteenth Amendment.",
+        "context": "Mapp v. Ohio is remembered for this legal impact: Made the Fourth Amendment remedy applicable in state prosecutions.",
+        "actionTitle": "Open the case",
+        "reviewed": true,
+        "reviewVersion": 1
+      }
+    },
+    {
+      "id": "baker-v-carr",
+      "name": "Baker v. Carr",
+      "year": 1962,
+      "citation": "369 U.S. 186",
+      "area": "Voting & Courts",
+      "legalQuestion": "Could federal courts hear an equal-protection challenge to legislative apportionment?",
+      "holding": "The claim was justiciable and not barred as a political question.",
+      "significance": "Opened federal courts to major redistricting litigation.",
+      "status": "Controlling landmark",
+      "constitution": "Article III; Fourteenth Amendment",
+      "sourceURL": "https://constitution.congress.gov/",
+      "decisionDate": "1962-03-26",
+      "docketNumber": "6",
+      "vote": "6–2",
+      "majorityAuthor": "Justice William Brennan",
+      "relationships": [
+        {
+          "caseID": "reynolds-v-sims",
+          "relationship": "Applied by",
+          "note": "Reynolds used Baker’s justiciability holding to require population equality."
+        }
+      ],
+      "pulse": {
+        "reference": "Baker v. Carr (1962)",
+        "fact": "In Baker v. Carr, the claim was justiciable and not barred as a political question.",
+        "context": "Baker v. Carr is remembered for this legal impact: Opened federal courts to major redistricting litigation.",
+        "actionTitle": "Open the case",
+        "reviewed": true,
+        "reviewVersion": 1
+      }
+    },
+    {
+      "id": "engel-v-vitale",
+      "name": "Engel v. Vitale",
+      "year": 1962,
+      "citation": "370 U.S. 421",
+      "area": "Religion",
+      "legalQuestion": "Could public schools sponsor an official prayer?",
+      "holding": "Government-directed prayer in public schools violated the Establishment Clause.",
+      "significance": "Key application of religious-establishment limits in schools.",
+      "status": "Controlling core rule",
+      "constitution": "First and Fourteenth Amendments",
+      "sourceURL": "https://constitution.congress.gov/",
+      "decisionDate": "1962-06-25",
+      "docketNumber": "468",
+      "vote": "6–1",
+      "majorityAuthor": "Justice Hugo Black",
+      "relationships": [
+        {
+          "caseID": "abington-school-district-v-schempp",
+          "relationship": "Extended by",
+          "note": "Schempp applied the school-prayer principle to devotional Bible reading."
+        }
+      ],
+      "pulse": {
+        "reference": "Engel v. Vitale (1962)",
+        "fact": "In Engel v. Vitale, government-directed prayer in public schools violated the Establishment Clause.",
+        "context": "Engel v. Vitale is remembered for this legal impact: Key application of religious-establishment limits in schools.",
+        "actionTitle": "Open the case",
+        "reviewed": true,
+        "reviewVersion": 1
+      }
+    },
+    {
+      "id": "gideon-v-wainwright",
+      "name": "Gideon v. Wainwright",
+      "year": 1963,
+      "citation": "372 U.S. 335",
+      "area": "Criminal Procedure",
+      "legalQuestion": "Must states provide counsel to indigent felony defendants?",
+      "holding": "The Sixth Amendment right to counsel is fundamental and applies to states.",
+      "significance": "Transformed access to defense counsel.",
+      "status": "Controlling landmark",
+      "constitution": "Sixth and Fourteenth Amendments",
+      "sourceURL": "https://constitution.congress.gov/",
+      "decisionDate": "1963-03-18",
+      "docketNumber": "155",
+      "vote": "9–0",
+      "majorityAuthor": "Justice Hugo Black",
+      "pulse": {
+        "reference": "Gideon v. Wainwright (1963)",
+        "fact": "In Gideon v. Wainwright, the Sixth Amendment right to counsel is fundamental and applies to states.",
+        "context": "Gideon v. Wainwright is remembered for this legal impact: Transformed access to defense counsel.",
+        "actionTitle": "Open the case",
+        "reviewed": true,
+        "reviewVersion": 1
+      }
+    },
+    {
+      "id": "new-york-times-sullivan",
+      "name": "New York Times Co. v. Sullivan",
+      "year": 1964,
+      "citation": "376 U.S. 254",
+      "area": "Press & Defamation",
+      "legalQuestion": "What must public officials prove in defamation claims concerning official conduct?",
+      "holding": "They must prove actual malice: knowledge of falsity or reckless disregard for truth.",
+      "significance": "Protects robust criticism of public officials.",
+      "status": "Controlling, debated precedent",
+      "constitution": "First and Fourteenth Amendments",
+      "sourceURL": "https://constitution.congress.gov/",
+      "decisionDate": "1964-03-09",
+      "docketNumber": "39",
+      "vote": "9–0",
+      "majorityAuthor": "Justice William Brennan",
+      "pulse": {
+        "reference": "New York Times Co. v. Sullivan (1964)",
+        "fact": "In New York Times Co. v. Sullivan, they must prove actual malice: knowledge of falsity or reckless disregard for truth.",
+        "context": "New York Times Co. v. Sullivan is remembered for this legal impact: Protects robust criticism of public officials.",
+        "actionTitle": "Open the case",
+        "reviewed": true,
+        "reviewVersion": 1
+      }
+    },
+    {
+      "id": "heart-of-atlanta",
+      "name": "Heart of Atlanta Motel v. United States",
+      "year": 1964,
+      "citation": "379 U.S. 241",
+      "area": "Commerce & Civil Rights",
+      "legalQuestion": "Could Congress prohibit racial discrimination by interstate accommodations?",
+      "holding": "The Commerce Clause supported applying the Civil Rights Act to the motel.",
+      "significance": "Confirmed federal power behind a central civil-rights protection.",
+      "status": "Controlling landmark",
+      "constitution": "Commerce Clause",
+      "sourceURL": "https://constitution.congress.gov/",
+      "decisionDate": "1964-12-14",
+      "docketNumber": "515",
+      "vote": "9–0",
+      "majorityAuthor": "Justice Tom Clark",
+      "pulse": {
+        "reference": "Heart of Atlanta Motel v. United States (1964)",
+        "fact": "In Heart of Atlanta Motel v. United States, the Commerce Clause supported applying the Civil Rights Act to the motel.",
+        "context": "Heart of Atlanta Motel v. United States is remembered for this legal impact: Confirmed federal power behind a central civil-rights protection.",
+        "actionTitle": "Open the case",
+        "reviewed": true,
+        "reviewVersion": 1
+      }
+    },
+    {
+      "id": "griswold",
+      "name": "Griswold v. Connecticut",
+      "year": 1965,
+      "citation": "381 U.S. 479",
+      "area": "Privacy",
+      "legalQuestion": "Could a state criminalize married couples’ use of contraception?",
+      "holding": "The law violated constitutional marital privacy.",
+      "significance": "A major foundation of modern privacy doctrine.",
+      "status": "Not overruled; reasoning debated",
+      "constitution": "Bill of Rights; Fourteenth Amendment",
+      "sourceURL": "https://constitution.congress.gov/",
+      "decisionDate": "1965-06-07",
+      "docketNumber": "496",
+      "vote": "7–2",
+      "majorityAuthor": "Justice William O. Douglas",
+      "relationships": [
+        {
+          "caseID": "roe-v-wade",
+          "relationship": "Extended by",
+          "note": "Roe drew on Griswold’s privacy reasoning."
+        },
+        {
+          "caseID": "lawrence-v-texas",
+          "relationship": "Later liberty development",
+          "note": "Lawrence continued the constitutional protection of intimate decisions."
+        }
+      ],
+      "pulse": {
+        "reference": "Griswold v. Connecticut (1965)",
+        "fact": "In Griswold v. Connecticut, the law violated constitutional marital privacy.",
+        "context": "Griswold v. Connecticut is remembered for this legal impact: A major foundation of modern privacy doctrine.",
+        "actionTitle": "Open the case",
+        "reviewed": true,
+        "reviewVersion": 1
+      }
+    },
+    {
+      "id": "miranda-v-arizona",
+      "name": "Miranda v. Arizona",
+      "year": 1966,
+      "citation": "384 U.S. 436",
+      "area": "Criminal Procedure",
+      "legalQuestion": "What safeguards are required before custodial interrogation?",
+      "holding": "Suspects must receive specified warnings before custodial interrogation unless an exception applies.",
+      "significance": "Created the familiar Miranda warning framework.",
+      "status": "Controlling, refined by later cases",
+      "constitution": "Fifth and Fourteenth Amendments",
+      "sourceURL": "https://constitution.congress.gov/",
+      "decisionDate": "1966-06-13",
+      "docketNumber": "759",
+      "vote": "5–4",
+      "majorityAuthor": "Chief Justice Earl Warren",
+      "pulse": {
+        "reference": "Miranda v. Arizona (1966)",
+        "fact": "In Miranda v. Arizona, suspects must receive specified warnings before custodial interrogation unless an exception applies.",
+        "context": "Miranda v. Arizona is remembered for this legal impact: Created the familiar Miranda warning framework.",
+        "actionTitle": "Open the case",
+        "reviewed": true,
+        "reviewVersion": 1
+      }
+    },
+    {
+      "id": "tinker",
+      "name": "Tinker v. Des Moines",
+      "year": 1969,
+      "citation": "393 U.S. 503",
+      "area": "Student Speech",
+      "legalQuestion": "Could a school punish silent political armbands without evidence of substantial disruption?",
+      "holding": "Students retained speech rights, and the record did not justify the prohibition.",
+      "significance": "Established the substantial-disruption framework for student expression.",
+      "status": "Controlling, limited by later school-speech cases",
+      "constitution": "First and Fourteenth Amendments",
+      "sourceURL": "https://constitution.congress.gov/",
+      "decisionDate": "1969-02-24",
+      "docketNumber": "21",
+      "vote": "7–2",
+      "majorityAuthor": "Justice Abe Fortas",
+      "pulse": {
+        "reference": "Tinker v. Des Moines (1969)",
+        "fact": "In Tinker v. Des Moines, students retained speech rights, and the record did not justify the prohibition.",
+        "context": "Tinker v. Des Moines is remembered for this legal impact: Established the substantial-disruption framework for student expression.",
+        "actionTitle": "Open the case",
+        "reviewed": true,
+        "reviewVersion": 1
+      }
+    },
+    {
+      "id": "brandenburg",
+      "name": "Brandenburg v. Ohio",
+      "year": 1969,
+      "citation": "395 U.S. 444",
+      "area": "Speech",
+      "legalQuestion": "When may advocacy of illegal action be punished?",
+      "holding": "Advocacy may be punished when directed to inciting imminent lawless action and likely to produce it.",
+      "significance": "Modern core rule protecting inflammatory political advocacy.",
+      "status": "Controlling landmark",
+      "constitution": "First and Fourteenth Amendments",
+      "sourceURL": "https://constitution.congress.gov/",
+      "decisionDate": "1969-06-09",
+      "docketNumber": "492",
+      "vote": "8–0",
+      "majorityAuthor": "Per curiam",
+      "relationships": [
+        {
+          "caseID": "schenck",
+          "relationship": "Replaced standard from",
+          "note": "Brandenburg displaced Schenck’s speech framework."
+        }
+      ],
+      "pulse": {
+        "reference": "Brandenburg v. Ohio (1969)",
+        "fact": "In Brandenburg v. Ohio, advocacy may be punished when directed to inciting imminent lawless action and likely to produce it.",
+        "context": "Brandenburg v. Ohio is remembered for this legal impact: Modern core rule protecting inflammatory political advocacy.",
+        "actionTitle": "Open the case",
+        "reviewed": true,
+        "reviewVersion": 1
+      }
+    },
+    {
+      "id": "united-states-v-nixon",
+      "name": "United States v. Nixon",
+      "year": 1974,
+      "citation": "418 U.S. 683",
+      "area": "Executive Power",
+      "legalQuestion": "Could generalized executive confidentiality defeat a criminal subpoena?",
+      "holding": "The President had to comply; generalized privilege yielded to demonstrated need in the criminal proceeding.",
+      "significance": "Affirmed legal limits on presidential privilege.",
+      "status": "Controlling landmark",
+      "constitution": "Article II; separation of powers",
+      "sourceURL": "https://constitution.congress.gov/",
+      "decisionDate": "1974-07-24",
+      "docketNumber": "73-1766",
+      "vote": "8–0",
+      "majorityAuthor": "Chief Justice Warren Burger",
+      "pulse": {
+        "reference": "United States v. Nixon (1974)",
+        "fact": "In United States v. Nixon, the President had to comply; generalized privilege yielded to demonstrated need in the criminal proceeding.",
+        "context": "United States v. Nixon is remembered for this legal impact: Affirmed legal limits on presidential privilege.",
+        "actionTitle": "Open the case",
+        "reviewed": true,
+        "reviewVersion": 1
+      }
+    },
+    {
+      "id": "roe-v-wade",
+      "name": "Roe v. Wade",
+      "year": 1973,
+      "citation": "410 U.S. 113",
+      "area": "Due Process",
+      "legalQuestion": "Did the Fourteenth Amendment protect a right to abortion?",
+      "holding": "Roe recognized such a right under its framework.",
+      "significance": "Controlled abortion doctrine for decades before Dobbs.",
+      "status": "Overruled by Dobbs v. Jackson Women’s Health Organization (2022)",
+      "constitution": "Fourteenth Amendment",
+      "sourceURL": "https://www.supremecourt.gov/opinions/21pdf/19-1392_6j37.pdf",
+      "decisionDate": "1973-01-22",
+      "docketNumber": "70-18",
+      "vote": "7–2",
+      "majorityAuthor": "Justice Harry Blackmun",
+      "relationships": [
+        {
+          "caseID": "planned-parenthood-v-casey",
+          "relationship": "Reaffirmed and revised by",
+          "note": "Casey retained a pre-viability right while changing the test."
+        },
+        {
+          "caseID": "dobbs-v-jackson",
+          "relationship": "Overruled by",
+          "note": "Dobbs held that the Constitution does not confer a right to abortion."
+        }
+      ],
+      "pulse": {
+        "reference": "Roe v. Wade (1973)",
+        "fact": "In Roe v. Wade, the Court recognized a constitutional right to abortion under the framework it adopted at the time.",
+        "context": "Roe v. Wade is remembered for this legal impact: Controlled abortion doctrine for decades before Dobbs.",
+        "actionTitle": "Open the case",
+        "reviewed": true,
+        "reviewVersion": 1
+      }
+    },
+    {
+      "id": "texas-v-johnson",
+      "name": "Texas v. Johnson",
+      "year": 1989,
+      "citation": "491 U.S. 397",
+      "area": "Speech",
+      "legalQuestion": "Could a state punish flag burning as political protest?",
+      "holding": "The expressive conduct was protected by the First Amendment.",
+      "significance": "Protects political expression despite profound offense.",
+      "status": "Controlling landmark",
+      "constitution": "First and Fourteenth Amendments",
+      "sourceURL": "https://constitution.congress.gov/",
+      "decisionDate": "1989-06-21",
+      "docketNumber": "88-155",
+      "vote": "5–4",
+      "majorityAuthor": "Justice William Brennan",
+      "pulse": {
+        "reference": "Texas v. Johnson (1989)",
+        "fact": "In Texas v. Johnson, the expressive conduct was protected by the First Amendment.",
+        "context": "Texas v. Johnson is remembered for this legal impact: Protects political expression despite profound offense.",
+        "actionTitle": "Open the case",
+        "reviewed": true,
+        "reviewVersion": 1
+      }
+    },
+    {
+      "id": "lawrence-v-texas",
+      "name": "Lawrence v. Texas",
+      "year": 2003,
+      "citation": "539 U.S. 558",
+      "area": "Liberty",
+      "legalQuestion": "Could a state criminalize private consensual same-sex intimacy?",
+      "holding": "The law violated liberty protected by substantive due process.",
+      "significance": "Overruled Bowers and protected intimate adult decisions.",
+      "status": "Controlling; methodology debated",
+      "constitution": "Fourteenth Amendment",
+      "sourceURL": "https://constitution.congress.gov/",
+      "decisionDate": "2003-06-26",
+      "docketNumber": "02-102",
+      "vote": "6–3",
+      "majorityAuthor": "Justice Anthony Kennedy",
+      "pulse": {
+        "reference": "Lawrence v. Texas (2003)",
+        "fact": "In Lawrence v. Texas, the law violated liberty protected by substantive due process.",
+        "context": "Lawrence v. Texas is remembered for this legal impact: Overruled Bowers and protected intimate adult decisions.",
+        "actionTitle": "Open the case",
+        "reviewed": true,
+        "reviewVersion": 1
+      }
+    },
+    {
+      "id": "district-columbia-v-heller",
+      "name": "District of Columbia v. Heller",
+      "year": 2008,
+      "citation": "554 U.S. 570",
+      "area": "Firearms",
+      "legalQuestion": "Does the Second Amendment protect an individual right to possess a firearm for lawful purposes such as home defense?",
+      "holding": "It protects an individual right, while allowing historically grounded regulation.",
+      "significance": "Central modern Second Amendment precedent.",
+      "status": "Controlling; test refined by Bruen",
+      "constitution": "Second Amendment",
+      "sourceURL": "https://constitution.congress.gov/",
+      "decisionDate": "2008-06-26",
+      "docketNumber": "07-290",
+      "vote": "5–4",
+      "majorityAuthor": "Justice Antonin Scalia",
+      "relationships": [
+        {
+          "caseID": "mcdonald-v-chicago",
+          "relationship": "Applied to states by",
+          "note": "McDonald incorporated Heller’s right against state and local governments."
+        },
+        {
+          "caseID": "nysrpa-v-bruen",
+          "relationship": "Extended by",
+          "note": "Bruen supplied the historical-tradition test for firearm regulations."
+        }
+      ],
+      "pulse": {
+        "reference": "District of Columbia v. Heller (2008)",
+        "fact": "In District of Columbia v. Heller, it protects an individual right, while allowing historically grounded regulation.",
+        "context": "District of Columbia v. Heller is remembered for this legal impact: Central modern Second Amendment precedent.",
+        "actionTitle": "Open the case",
+        "reviewed": true,
+        "reviewVersion": 1
+      }
+    },
+    {
+      "id": "obergefell",
+      "name": "Obergefell v. Hodges",
+      "year": 2015,
+      "citation": "576 U.S. 644",
+      "area": "Marriage & Equality",
+      "legalQuestion": "Must states license and recognize marriages between two people of the same sex?",
+      "holding": "The Fourteenth Amendment requires licensing and recognition of same-sex marriages.",
+      "significance": "Established nationwide marriage equality.",
+      "status": "Controlling precedent",
+      "constitution": "Fourteenth Amendment",
+      "sourceURL": "https://constitution.congress.gov/",
+      "decisionDate": "2015-06-26",
+      "docketNumber": "14-556",
+      "vote": "5–4",
+      "majorityAuthor": "Justice Anthony Kennedy",
+      "pulse": {
+        "reference": "Obergefell v. Hodges (2015)",
+        "fact": "In Obergefell v. Hodges, the Fourteenth Amendment requires licensing and recognition of same-sex marriages.",
+        "context": "Obergefell v. Hodges is remembered for this legal impact: Established nationwide marriage equality.",
+        "actionTitle": "Open the case",
+        "reviewed": true,
+        "reviewVersion": 1
+      }
+    },
+    {
+      "id": "worcester-v-georgia",
+      "name": "Worcester v. Georgia",
+      "year": 1832,
+      "citation": "31 U.S. 515",
+      "area": "Tribal Sovereignty",
+      "legalQuestion": "Could Georgia enforce its laws within Cherokee territory?",
+      "holding": "The Cherokee Nation was a distinct political community in which Georgia law had no force.",
+      "significance": "Foundational recognition of tribal sovereignty and federal authority in Indian affairs.",
+      "status": "Controlling historical foundation",
+      "constitution": "Article I; Supremacy Clause; treaties",
+      "sourceURL": "https://constitution.congress.gov/",
+      "pulse": {
+        "reference": "Worcester v. Georgia (1832)",
+        "fact": "In Worcester v. Georgia, the Cherokee Nation was a distinct political community in which Georgia law had no force.",
+        "context": "Worcester v. Georgia is remembered for this legal impact: Foundational recognition of tribal sovereignty and federal authority in Indian affairs.",
+        "actionTitle": "Open the case",
+        "reviewed": true,
+        "reviewVersion": 1
+      }
+    },
+    {
+      "id": "barron-v-baltimore",
+      "name": "Barron v. Baltimore",
+      "year": 1833,
+      "citation": "32 U.S. 243",
+      "area": "Bill of Rights",
+      "legalQuestion": "Did the Fifth Amendment's Takings Clause apply directly to state and local governments?",
+      "holding": "The Bill of Rights constrained the federal government, not the states.",
+      "significance": "Established the original federal-only reach of the Bill of Rights before later incorporation through the Fourteenth Amendment.",
+      "status": "Superseded in substantial part by incorporation doctrine",
+      "constitution": "Fifth and Fourteenth Amendments",
+      "sourceURL": "https://constitution.congress.gov/",
+      "relationships": [
+        {
+          "caseID": "gitlow-v-new-york",
+          "relationship": "Limited by incorporation",
+          "note": "Gitlow marked the shift toward applying Bill of Rights protections to states."
+        }
+      ],
+      "pulse": {
+        "reference": "Barron v. Baltimore (1833)",
+        "fact": "In Barron v. Baltimore, the Bill of Rights constrained the federal government, not the states.",
+        "context": "Barron v. Baltimore is remembered for this legal impact: Established the original federal-only reach of the Bill of Rights before later incorporation through the Fourteenth Amendment.",
+        "actionTitle": "Open the case",
+        "reviewed": true,
+        "reviewVersion": 1
+      }
+    },
+    {
+      "id": "slaughter-house-cases",
+      "name": "Slaughter-House Cases",
+      "year": 1873,
+      "citation": "83 U.S. 36",
+      "area": "Reconstruction Amendments",
+      "legalQuestion": "What rights are protected by the Fourteenth Amendment's Privileges or Immunities Clause?",
+      "holding": "The Clause protects a narrow set of rights of national citizenship rather than the broader civil rights asserted by the challengers.",
+      "significance": "Greatly limited the Privileges or Immunities Clause and redirected later rights litigation toward due process and equal protection.",
+      "status": "Controlling but heavily criticized",
+      "constitution": "Fourteenth Amendment",
+      "sourceURL": "https://constitution.congress.gov/",
+      "pulse": {
+        "reference": "Slaughter-House Cases (1873)",
+        "fact": "In Slaughter-House Cases, the Clause protects a narrow set of rights of national citizenship rather than the broader civil rights asserted by the challengers.",
+        "context": "Slaughter-House Cases is remembered for this legal impact: Greatly limited the Privileges or Immunities Clause and redirected later rights litigation toward due process and equal protection.",
+        "actionTitle": "Open the case",
+        "reviewed": true,
+        "reviewVersion": 1
+      }
+    },
+    {
+      "id": "yick-wo-v-hopkins",
+      "name": "Yick Wo v. Hopkins",
+      "year": 1886,
+      "citation": "118 U.S. 356",
+      "area": "Equal Protection",
+      "legalQuestion": "Could a facially neutral licensing law be administered discriminatorily against Chinese laundry owners?",
+      "holding": "Discriminatory enforcement violated equal protection even though the ordinance was neutral on its face.",
+      "significance": "Early recognition that equal protection reaches intentional discrimination in administration of law.",
+      "status": "Controlling landmark",
+      "constitution": "Fourteenth Amendment",
+      "sourceURL": "https://constitution.congress.gov/",
+      "pulse": {
+        "reference": "Yick Wo v. Hopkins (1886)",
+        "fact": "In Yick Wo v. Hopkins, discriminatory enforcement violated equal protection even though the ordinance was neutral on its face.",
+        "context": "Yick Wo v. Hopkins is remembered for this legal impact: Early recognition that equal protection reaches intentional discrimination in administration of law.",
+        "actionTitle": "Open the case",
+        "reviewed": true,
+        "reviewVersion": 1
+      }
+    },
+    {
+      "id": "lochner-v-new-york",
+      "name": "Lochner v. New York",
+      "year": 1905,
+      "citation": "198 U.S. 45",
+      "area": "Economic Due Process",
+      "legalQuestion": "Did a state limit on bakers' working hours violate liberty of contract?",
+      "holding": "The Court invalidated the law under substantive due process protection for liberty of contract.",
+      "significance": "Symbolizes an abandoned era of aggressive judicial review of economic regulation.",
+      "status": "Repudiated by later cases",
+      "constitution": "Fourteenth Amendment",
+      "sourceURL": "https://constitution.congress.gov/",
+      "relationships": [
+        {
+          "caseID": "west-coast-hotel-v-parrish",
+          "relationship": "Era ended by",
+          "note": "West Coast Hotel marked the rejection of Lochner-era economic due process."
+        }
+      ],
+      "pulse": {
+        "reference": "Lochner v. New York (1905)",
+        "fact": "In Lochner v. New York, the Court invalidated the law under substantive due process protection for liberty of contract.",
+        "context": "Lochner v. New York is remembered for this legal impact: Symbolizes an abandoned era of aggressive judicial review of economic regulation.",
+        "actionTitle": "Open the case",
+        "reviewed": true,
+        "reviewVersion": 1
+      }
+    },
+    {
+      "id": "gitlow-v-new-york",
+      "name": "Gitlow v. New York",
+      "year": 1925,
+      "citation": "268 U.S. 652",
+      "area": "Speech & Incorporation",
+      "legalQuestion": "Do freedom of speech and press constrain state governments through the Fourteenth Amendment?",
+      "holding": "The Court assumed those freedoms are protected from state infringement, while upholding the conviction under the test then used.",
+      "significance": "A major early step in incorporating the First Amendment against the states.",
+      "status": "Incorporation principle controlling; speech test superseded",
+      "constitution": "First and Fourteenth Amendments",
+      "sourceURL": "https://constitution.congress.gov/",
+      "pulse": {
+        "reference": "Gitlow v. New York (1925)",
+        "fact": "In Gitlow v. New York, the Court assumed those freedoms are protected from state infringement, while upholding the conviction under the test then used.",
+        "context": "Gitlow v. New York is remembered for this legal impact: A major early step in incorporating the First Amendment against the states.",
+        "actionTitle": "Open the case",
+        "reviewed": true,
+        "reviewVersion": 1
+      }
+    },
+    {
+      "id": "near-v-minnesota",
+      "name": "Near v. Minnesota",
+      "year": 1931,
+      "citation": "283 U.S. 697",
+      "area": "Freedom of the Press",
+      "legalQuestion": "Could a state shut down a publication in advance as a public nuisance?",
+      "holding": "The injunction was an unconstitutional prior restraint on publication.",
+      "significance": "Established the strong constitutional presumption against prior restraints.",
+      "status": "Controlling landmark",
+      "constitution": "First and Fourteenth Amendments",
+      "sourceURL": "https://constitution.congress.gov/",
+      "pulse": {
+        "reference": "Near v. Minnesota (1931)",
+        "fact": "In Near v. Minnesota, the injunction was an unconstitutional prior restraint on publication.",
+        "context": "Near v. Minnesota is remembered for this legal impact: Established the strong constitutional presumption against prior restraints.",
+        "actionTitle": "Open the case",
+        "reviewed": true,
+        "reviewVersion": 1
+      }
+    },
+    {
+      "id": "powell-v-alabama",
+      "name": "Powell v. Alabama",
+      "year": 1932,
+      "citation": "287 U.S. 45",
+      "area": "Right to Counsel",
+      "legalQuestion": "Did the rushed capital prosecutions deny the defendants due process and meaningful assistance of counsel?",
+      "holding": "In the circumstances, failure to provide effective access to counsel violated due process.",
+      "significance": "An important precursor to incorporation of the right to appointed counsel.",
+      "status": "Controlling historical foundation",
+      "constitution": "Sixth and Fourteenth Amendments",
+      "sourceURL": "https://constitution.congress.gov/",
+      "pulse": {
+        "reference": "Powell v. Alabama (1932)",
+        "fact": "In Powell v. Alabama, in the circumstances, failure to provide effective access to counsel violated due process.",
+        "context": "Powell v. Alabama is remembered for this legal impact: An important precursor to incorporation of the right to appointed counsel.",
+        "actionTitle": "Open the case",
+        "reviewed": true,
+        "reviewVersion": 1
+      }
+    },
+    {
+      "id": "west-coast-hotel-v-parrish",
+      "name": "West Coast Hotel Co. v. Parrish",
+      "year": 1937,
+      "citation": "300 U.S. 379",
+      "area": "Economic Regulation",
+      "legalQuestion": "Could a state establish a minimum wage for women?",
+      "holding": "The minimum-wage law was consistent with due process and legitimate regulation of employment.",
+      "significance": "Marked the Court's retreat from Lochner-era review of economic legislation.",
+      "status": "Controlling historical foundation",
+      "constitution": "Fourteenth Amendment",
+      "sourceURL": "https://constitution.congress.gov/",
+      "relationships": [
+        {
+          "caseID": "lochner-v-new-york",
+          "relationship": "Rejected approach of",
+          "note": "West Coast Hotel ended aggressive review of ordinary economic regulation."
+        }
+      ],
+      "pulse": {
+        "reference": "West Coast Hotel Co. v. Parrish (1937)",
+        "fact": "In West Coast Hotel Co. v. Parrish, the minimum-wage law was consistent with due process and legitimate regulation of employment.",
+        "context": "West Coast Hotel Co. v. Parrish is remembered for this legal impact: Marked the Court's retreat from Lochner-era review of economic legislation.",
+        "actionTitle": "Open the case",
+        "reviewed": true,
+        "reviewVersion": 1
+      }
+    },
+    {
+      "id": "carolene-products",
+      "name": "United States v. Carolene Products Co.",
+      "year": 1938,
+      "citation": "304 U.S. 144",
+      "area": "Judicial Review",
+      "legalQuestion": "What level of constitutional review applies to ordinary economic legislation?",
+      "holding": "The Court applied deferential review and upheld the federal law.",
+      "significance": "Footnote Four helped frame heightened review for specific rights and discrimination against discrete and insular minorities.",
+      "status": "Controlling doctrinal foundation",
+      "constitution": "Fifth Amendment; Article I",
+      "sourceURL": "https://constitution.congress.gov/",
+      "pulse": {
+        "reference": "United States v. Carolene Products Co. (1938)",
+        "fact": "In United States v. Carolene Products Co., the Court applied deferential review and upheld the federal law.",
+        "context": "United States v. Carolene Products Co. is remembered for this legal impact: Footnote Four helped frame heightened review for specific rights and discrimination against discrete and insular minorities.",
+        "actionTitle": "Open the case",
+        "reviewed": true,
+        "reviewVersion": 1
+      }
+    },
+    {
+      "id": "korematsu-v-united-states",
+      "name": "Korematsu v. United States",
+      "year": 1944,
+      "citation": "323 U.S. 214",
+      "area": "Equal Protection & War Powers",
+      "legalQuestion": "Could the government exclude Japanese Americans from designated West Coast areas during World War II?",
+      "holding": "The Court upheld the exclusion order under the wartime rationale presented.",
+      "significance": "A notorious civil-liberties failure involving racial exclusion and wartime power.",
+      "status": "Repudiated in Trump v. Hawaii; no longer precedential",
+      "constitution": "Fifth Amendment; war powers",
+      "sourceURL": "https://constitution.congress.gov/",
+      "pulse": {
+        "reference": "Korematsu v. United States (1944)",
+        "fact": "In Korematsu v. United States, the Court upheld the exclusion order under the wartime rationale presented.",
+        "context": "Korematsu v. United States is remembered for this legal impact: A notorious civil-liberties failure involving racial exclusion and wartime power.",
+        "actionTitle": "Open the case",
+        "reviewed": true,
+        "reviewVersion": 1
+      }
+    },
+    {
+      "id": "everson-v-board",
+      "name": "Everson v. Board of Education",
+      "year": 1947,
+      "citation": "330 U.S. 1",
+      "area": "Religion & Incorporation",
+      "legalQuestion": "Did reimbursing transportation costs for students attending religious schools violate the Establishment Clause?",
+      "holding": "The reimbursement program was upheld, while the Establishment Clause was treated as applicable to the states.",
+      "significance": "A foundational incorporation and Establishment Clause decision.",
+      "status": "Incorporation principle controlling; doctrine later revised",
+      "constitution": "First and Fourteenth Amendments",
+      "sourceURL": "https://constitution.congress.gov/",
+      "decisionDate": "1947-02-10",
+      "docketNumber": "52",
+      "vote": "5–4",
+      "majorityAuthor": "Justice Hugo Black",
+      "relationships": [
+        {
+          "caseID": "lemon-v-kurtzman",
+          "relationship": "Doctrine developed by",
+          "note": "Lemon created a test for the Establishment Clause framework associated with Everson."
+        }
+      ],
+      "pulse": {
+        "reference": "Everson v. Board of Education (1947)",
+        "fact": "In Everson v. Board of Education, the reimbursement program was upheld, while the Establishment Clause was treated as applicable to the states.",
+        "context": "Everson v. Board of Education is remembered for this legal impact: A foundational incorporation and Establishment Clause decision.",
+        "actionTitle": "Open the case",
+        "reviewed": true,
+        "reviewVersion": 1
+      }
+    },
+    {
+      "id": "shelley-v-kraemer",
+      "name": "Shelley v. Kraemer",
+      "year": 1948,
+      "citation": "334 U.S. 1",
+      "area": "Equal Protection",
+      "legalQuestion": "Could courts enforce racially restrictive property covenants?",
+      "holding": "Judicial enforcement constituted state action and violated equal protection.",
+      "significance": "Applied the state-action doctrine to prevent courts from enforcing racial exclusion.",
+      "status": "Controlling landmark",
+      "constitution": "Fourteenth Amendment",
+      "sourceURL": "https://constitution.congress.gov/",
+      "decisionDate": "1948-05-03",
+      "docketNumber": "72",
+      "vote": "6–0",
+      "majorityAuthor": "Chief Justice Fred Vinson",
+      "pulse": {
+        "reference": "Shelley v. Kraemer (1948)",
+        "fact": "In Shelley v. Kraemer, judicial enforcement constituted state action and violated equal protection.",
+        "context": "Shelley v. Kraemer is remembered for this legal impact: Applied the state-action doctrine to prevent courts from enforcing racial exclusion.",
+        "actionTitle": "Open the case",
+        "reviewed": true,
+        "reviewVersion": 1
+      }
+    },
+    {
+      "id": "cooper-v-aaron",
+      "name": "Cooper v. Aaron",
+      "year": 1958,
+      "citation": "358 U.S. 1",
+      "area": "Judicial Authority",
+      "legalQuestion": "Could state officials delay desegregation because of local opposition?",
+      "holding": "State officials were bound by the Constitution and the Court's interpretation in Brown.",
+      "significance": "Reaffirmed federal supremacy and the binding force of constitutional judgments.",
+      "status": "Controlling landmark",
+      "constitution": "Article VI; Fourteenth Amendment",
+      "sourceURL": "https://constitution.congress.gov/",
+      "decisionDate": "1958-09-12",
+      "docketNumber": "1",
+      "vote": "9–0",
+      "majorityAuthor": "Per curiam",
+      "pulse": {
+        "reference": "Cooper v. Aaron (1958)",
+        "fact": "In Cooper v. Aaron, state officials were bound by the Constitution and the Court's interpretation in Brown.",
+        "context": "Cooper v. Aaron is remembered for this legal impact: Reaffirmed federal supremacy and the binding force of constitutional judgments.",
+        "actionTitle": "Open the case",
+        "reviewed": true,
+        "reviewVersion": 1
+      }
+    },
+    {
+      "id": "naacp-v-alabama",
+      "name": "NAACP v. Alabama ex rel. Patterson",
+      "year": 1958,
+      "citation": "357 U.S. 449",
+      "area": "Freedom of Association",
+      "legalQuestion": "Could Alabama compel the NAACP to disclose its membership list?",
+      "holding": "Compelled disclosure would impermissibly burden freedom of association.",
+      "significance": "Established strong protection for private political association.",
+      "status": "Controlling landmark",
+      "constitution": "First and Fourteenth Amendments",
+      "sourceURL": "https://constitution.congress.gov/",
+      "decisionDate": "1958-06-30",
+      "docketNumber": "91",
+      "vote": "9–0",
+      "majorityAuthor": "Justice John Marshall Harlan II",
+      "pulse": {
+        "reference": "NAACP v. Alabama ex rel. Patterson (1958)",
+        "fact": "In NAACP v. Alabama ex rel. Patterson, compelled disclosure would impermissibly burden freedom of association.",
+        "context": "NAACP v. Alabama ex rel. Patterson is remembered for this legal impact: Established strong protection for private political association.",
+        "actionTitle": "Open the case",
+        "reviewed": true,
+        "reviewVersion": 1
+      }
+    },
+    {
+      "id": "reynolds-v-sims",
+      "name": "Reynolds v. Sims",
+      "year": 1964,
+      "citation": "377 U.S. 533",
+      "area": "Voting Rights",
+      "legalQuestion": "Must state legislative districts contain substantially equal populations?",
+      "holding": "Equal protection requires substantially equal legislative representation by population.",
+      "significance": "Established the one-person, one-vote rule for state legislatures.",
+      "status": "Controlling landmark",
+      "constitution": "Fourteenth Amendment",
+      "sourceURL": "https://constitution.congress.gov/",
+      "decisionDate": "1964-06-15",
+      "docketNumber": "23",
+      "vote": "8–1",
+      "majorityAuthor": "Chief Justice Earl Warren",
+      "relationships": [
+        {
+          "caseID": "baker-v-carr",
+          "relationship": "Built on",
+          "note": "Reynolds followed Baker’s opening of federal courts to apportionment claims."
+        }
+      ],
+      "pulse": {
+        "reference": "Reynolds v. Sims (1964)",
+        "fact": "In Reynolds v. Sims, equal protection requires substantially equal legislative representation by population.",
+        "context": "Reynolds v. Sims is remembered for this legal impact: Established the one-person, one-vote rule for state legislatures.",
+        "actionTitle": "Open the case",
+        "reviewed": true,
+        "reviewVersion": 1
+      }
+    },
+    {
+      "id": "loving-v-virginia",
+      "name": "Loving v. Virginia",
+      "year": 1967,
+      "citation": "388 U.S. 1",
+      "area": "Marriage & Equality",
+      "legalQuestion": "Could a state prohibit interracial marriage?",
+      "holding": "Racial marriage restrictions violated equal protection and due process.",
+      "significance": "Recognized marriage as a fundamental liberty and invalidated racial classifications in marriage laws.",
+      "status": "Controlling landmark",
+      "constitution": "Fourteenth Amendment",
+      "sourceURL": "https://constitution.congress.gov/",
+      "decisionDate": "1967-06-12",
+      "docketNumber": "395",
+      "vote": "9–0",
+      "majorityAuthor": "Chief Justice Earl Warren",
+      "pulse": {
+        "reference": "Loving v. Virginia (1967)",
+        "fact": "In Loving v. Virginia, racial marriage restrictions violated equal protection and due process.",
+        "context": "Loving v. Virginia is remembered for this legal impact: Recognized marriage as a fundamental liberty and invalidated racial classifications in marriage laws.",
+        "actionTitle": "Open the case",
+        "reviewed": true,
+        "reviewVersion": 1
+      }
+    },
+    {
+      "id": "katz-v-united-states",
+      "name": "Katz v. United States",
+      "year": 1967,
+      "citation": "389 U.S. 347",
+      "area": "Search & Seizure",
+      "legalQuestion": "Did electronic monitoring of a public phone booth constitute a Fourth Amendment search?",
+      "holding": "The Fourth Amendment protects people and their reasonable expectations of privacy, not merely physical places.",
+      "significance": "Moved search doctrine beyond property trespass toward privacy expectations.",
+      "status": "Controlling, supplemented by later property and digital-privacy cases",
+      "constitution": "Fourth Amendment",
+      "sourceURL": "https://constitution.congress.gov/",
+      "decisionDate": "1967-12-18",
+      "docketNumber": "35",
+      "vote": "7–1",
+      "majorityAuthor": "Justice Potter Stewart",
+      "relationships": [
+        {
+          "caseID": "riley-v-california",
+          "relationship": "Applied in digital setting",
+          "note": "Riley protected the extensive digital information stored on phones."
+        },
+        {
+          "caseID": "carpenter-v-united-states",
+          "relationship": "Extended in digital setting",
+          "note": "Carpenter applied privacy principles to historical cell-site records."
+        }
+      ],
+      "pulse": {
+        "reference": "Katz v. United States (1967)",
+        "fact": "In Katz v. United States, the Fourth Amendment protects people and their reasonable expectations of privacy, not merely physical places.",
+        "context": "Katz v. United States is remembered for this legal impact: Moved search doctrine beyond property trespass toward privacy expectations.",
+        "actionTitle": "Open the case",
+        "reviewed": true,
+        "reviewVersion": 1
+      }
+    },
+    {
+      "id": "terry-v-ohio",
+      "name": "Terry v. Ohio",
+      "year": 1968,
+      "citation": "392 U.S. 1",
+      "area": "Search & Seizure",
+      "legalQuestion": "May police briefly stop and frisk a person based on reasonable suspicion rather than probable cause?",
+      "holding": "A limited stop and protective frisk may be reasonable when supported by specific reasonable suspicion.",
+      "significance": "Created the stop-and-frisk framework under the Fourth Amendment.",
+      "status": "Controlling, extensively refined",
+      "constitution": "Fourth Amendment",
+      "sourceURL": "https://constitution.congress.gov/",
+      "decisionDate": "1968-06-10",
+      "docketNumber": "67",
+      "vote": "8–1",
+      "majorityAuthor": "Chief Justice Earl Warren",
+      "pulse": {
+        "reference": "Terry v. Ohio (1968)",
+        "fact": "In Terry v. Ohio, a limited stop and protective frisk may be reasonable when supported by specific reasonable suspicion.",
+        "context": "Terry v. Ohio is remembered for this legal impact: Created the stop-and-frisk framework under the Fourth Amendment.",
+        "actionTitle": "Open the case",
+        "reviewed": true,
+        "reviewVersion": 1
+      }
+    },
+    {
+      "id": "in-re-gault",
+      "name": "In re Gault",
+      "year": 1967,
+      "citation": "387 U.S. 1",
+      "area": "Juvenile Justice",
+      "legalQuestion": "What procedural protections apply when a juvenile faces confinement for delinquency?",
+      "holding": "Juveniles are entitled to core due-process protections including notice, counsel, confrontation, and the privilege against self-incrimination.",
+      "significance": "Constitutionalized essential fairness protections in juvenile proceedings.",
+      "status": "Controlling landmark",
+      "constitution": "Fifth, Sixth, and Fourteenth Amendments",
+      "sourceURL": "https://constitution.congress.gov/",
+      "decisionDate": "1967-05-15",
+      "docketNumber": "116",
+      "vote": "8–1",
+      "majorityAuthor": "Justice Abe Fortas",
+      "pulse": {
+        "reference": "In re Gault (1967)",
+        "fact": "In In re Gault, juveniles are entitled to core due-process protections including notice, counsel, confrontation, and the privilege against self-incrimination.",
+        "context": "In re Gault is remembered for this legal impact: Constitutionalized essential fairness protections in juvenile proceedings.",
+        "actionTitle": "Open the case",
+        "reviewed": true,
+        "reviewVersion": 1
+      }
+    },
+    {
+      "id": "new-york-times-v-united-states",
+      "name": "New York Times Co. v. United States",
+      "year": 1971,
+      "citation": "403 U.S. 713",
+      "area": "Freedom of the Press",
+      "legalQuestion": "Could the federal government stop newspapers from publishing the Pentagon Papers?",
+      "holding": "The government did not meet the heavy burden required to justify a prior restraint.",
+      "significance": "A central press-freedom decision limiting government censorship before publication.",
+      "status": "Controlling landmark",
+      "constitution": "First Amendment",
+      "sourceURL": "https://constitution.congress.gov/",
+      "decisionDate": "1971-06-30",
+      "docketNumber": "1873",
+      "vote": "6–3",
+      "majorityAuthor": "Per curiam",
+      "pulse": {
+        "reference": "New York Times Co. v. United States (1971)",
+        "fact": "In New York Times Co. v. United States, the government did not meet the heavy burden required to justify a prior restraint.",
+        "context": "New York Times Co. v. United States is remembered for this legal impact: A central press-freedom decision limiting government censorship before publication.",
+        "actionTitle": "Open the case",
+        "reviewed": true,
+        "reviewVersion": 1
+      }
+    },
+    {
+      "id": "wisconsin-v-yoder",
+      "name": "Wisconsin v. Yoder",
+      "year": 1972,
+      "citation": "406 U.S. 205",
+      "area": "Free Exercise",
+      "legalQuestion": "Could compulsory-school-attendance law require Amish families to keep children in school beyond eighth grade?",
+      "holding": "As applied to these families, the requirement violated the Free Exercise Clause.",
+      "significance": "Recognized strong protection for demonstrated religious practice in a specific educational setting.",
+      "status": "Controlling, narrowed by later doctrine",
+      "constitution": "First and Fourteenth Amendments",
+      "sourceURL": "https://constitution.congress.gov/",
+      "decisionDate": "1972-05-15",
+      "docketNumber": "70-110",
+      "vote": "7–0",
+      "majorityAuthor": "Chief Justice Warren Burger",
+      "pulse": {
+        "reference": "Wisconsin v. Yoder (1972)",
+        "fact": "In Wisconsin v. Yoder, as applied to these families, the requirement violated the Free Exercise Clause.",
+        "context": "Wisconsin v. Yoder is remembered for this legal impact: Recognized strong protection for demonstrated religious practice in a specific educational setting.",
+        "actionTitle": "Open the case",
+        "reviewed": true,
+        "reviewVersion": 1
+      }
+    },
+    {
+      "id": "furman-v-georgia",
+      "name": "Furman v. Georgia",
+      "year": 1972,
+      "citation": "408 U.S. 238",
+      "area": "Capital Punishment",
+      "legalQuestion": "Did then-existing death-penalty schemes impose punishment arbitrarily?",
+      "holding": "The death sentences at issue violated the Eighth and Fourteenth Amendments, producing a temporary nationwide halt.",
+      "significance": "Forced states to restructure capital-sentencing systems.",
+      "status": "Superseded in part by revised statutes upheld beginning with Gregg",
+      "constitution": "Eighth and Fourteenth Amendments",
+      "sourceURL": "https://constitution.congress.gov/",
+      "decisionDate": "1972-06-29",
+      "docketNumber": "69-5003",
+      "vote": "5–4",
+      "majorityAuthor": "Per curiam",
+      "relationships": [
+        {
+          "caseID": "gregg-v-georgia",
+          "relationship": "Followed by",
+          "note": "Gregg approved revised guided-discretion capital systems after Furman."
+        }
+      ],
+      "pulse": {
+        "reference": "Furman v. Georgia (1972)",
+        "fact": "In Furman v. Georgia, the death sentences at issue violated the Eighth and Fourteenth Amendments, producing a temporary nationwide halt.",
+        "context": "Furman v. Georgia is remembered for this legal impact: Forced states to restructure capital-sentencing systems.",
+        "actionTitle": "Open the case",
+        "reviewed": true,
+        "reviewVersion": 1
+      }
+    },
+    {
+      "id": "miller-v-california",
+      "name": "Miller v. California",
+      "year": 1973,
+      "citation": "413 U.S. 15",
+      "area": "Speech & Obscenity",
+      "legalQuestion": "What material may government classify as unprotected obscenity?",
+      "holding": "The Court established a three-part test involving community standards, specifically defined sexual conduct, and serious value.",
+      "significance": "Supplies the modern constitutional test for obscenity.",
+      "status": "Controlling test",
+      "constitution": "First and Fourteenth Amendments",
+      "sourceURL": "https://constitution.congress.gov/",
+      "decisionDate": "1973-06-21",
+      "docketNumber": "70-73",
+      "vote": "5–4",
+      "majorityAuthor": "Chief Justice Warren Burger",
+      "pulse": {
+        "reference": "Miller v. California (1973)",
+        "fact": "In Miller v. California, the Court established a three-part test involving community standards, specifically defined sexual conduct, and serious value.",
+        "context": "Miller v. California is remembered for this legal impact: Supplies the modern constitutional test for obscenity.",
+        "actionTitle": "Open the case",
+        "reviewed": true,
+        "reviewVersion": 1
+      }
+    },
+    {
+      "id": "san-antonio-v-rodriguez",
+      "name": "San Antonio Independent School District v. Rodriguez",
+      "year": 1973,
+      "citation": "411 U.S. 1",
+      "area": "Education & Equality",
+      "legalQuestion": "Did disparities caused by local school financing violate equal protection?",
+      "holding": "Education was not recognized as a fundamental federal constitutional right, and wealth-based school districts were not treated as a suspect classification.",
+      "significance": "Limited federal equal-protection challenges to unequal school funding.",
+      "status": "Controlling precedent",
+      "constitution": "Fourteenth Amendment",
+      "sourceURL": "https://constitution.congress.gov/",
+      "decisionDate": "1973-03-21",
+      "docketNumber": "71-1332",
+      "vote": "5–4",
+      "majorityAuthor": "Justice Lewis Powell",
+      "pulse": {
+        "reference": "San Antonio Independent School District v. Rodriguez (1973)",
+        "fact": "In San Antonio Independent School District v. Rodriguez, education was not recognized as a fundamental federal constitutional right, and wealth-based school districts were not treated as a suspect classification.",
+        "context": "San Antonio Independent School District v. Rodriguez is remembered for this legal impact: Limited federal equal-protection challenges to unequal school funding.",
+        "actionTitle": "Open the case",
+        "reviewed": true,
+        "reviewVersion": 1
+      }
+    },
+    {
+      "id": "buckley-v-valeo",
+      "name": "Buckley v. Valeo",
+      "year": 1976,
+      "citation": "424 U.S. 1",
+      "area": "Elections & Speech",
+      "legalQuestion": "Which federal campaign-finance limits were consistent with the First Amendment?",
+      "holding": "The Court generally upheld contribution limits but invalidated expenditure limits and parts of the appointment structure.",
+      "significance": "Established the modern constitutional framework for campaign-finance regulation.",
+      "status": "Controlling, modified by later cases",
+      "constitution": "First Amendment; Appointments Clause",
+      "sourceURL": "https://constitution.congress.gov/",
+      "decisionDate": "1976-01-30",
+      "docketNumber": "75-436",
+      "vote": "7–1",
+      "majorityAuthor": "Per curiam",
+      "relationships": [
+        {
+          "caseID": "citizens-united",
+          "relationship": "Extended by",
+          "note": "Citizens United applied strong political-speech protection to independent corporate expenditures."
+        }
+      ],
+      "pulse": {
+        "reference": "Buckley v. Valeo (1976)",
+        "fact": "In Buckley v. Valeo, the Court generally upheld contribution limits but invalidated expenditure limits and parts of the appointment structure.",
+        "context": "Buckley v. Valeo is remembered for this legal impact: Established the modern constitutional framework for campaign-finance regulation.",
+        "actionTitle": "Open the case",
+        "reviewed": true,
+        "reviewVersion": 1
+      }
+    },
+    {
+      "id": "regents-v-bakke",
+      "name": "Regents of the University of California v. Bakke",
+      "year": 1978,
+      "citation": "438 U.S. 265",
+      "area": "Equal Protection",
+      "legalQuestion": "Could a public medical school reserve seats by race while considering diversity in admissions?",
+      "holding": "The specific quota was invalid, while one controlling opinion allowed limited consideration of race for diversity.",
+      "significance": "Shaped affirmative-action doctrine for decades.",
+      "status": "Race-conscious admissions framework superseded by Students for Fair Admissions",
+      "constitution": "Fourteenth Amendment; Title VI",
+      "sourceURL": "https://constitution.congress.gov/",
+      "decisionDate": "1978-06-26",
+      "docketNumber": "76-811",
+      "vote": "5–4",
+      "majorityAuthor": "Justice Lewis Powell",
+      "relationships": [
+        {
+          "caseID": "grutter-v-bollinger",
+          "relationship": "Developed by",
+          "note": "Grutter adopted individualized consideration influenced by Bakke."
+        },
+        {
+          "caseID": "students-for-fair-admissions",
+          "relationship": "Displaced by",
+          "note": "Students for Fair Admissions rejected the admissions framework associated with Bakke and Grutter."
+        }
+      ],
+      "pulse": {
+        "reference": "Regents of the University of California v. Bakke (1978)",
+        "fact": "In Regents of the University of California v. Bakke, the specific quota was invalid, while one controlling opinion allowed limited consideration of race for diversity.",
+        "context": "Regents of the University of California v. Bakke is remembered for this legal impact: Shaped affirmative-action doctrine for decades.",
+        "actionTitle": "Open the case",
+        "reviewed": true,
+        "reviewVersion": 1
+      }
+    },
+    {
+      "id": "ins-v-chadha",
+      "name": "INS v. Chadha",
+      "year": 1983,
+      "citation": "462 U.S. 919",
+      "area": "Separation of Powers",
+      "legalQuestion": "Could one chamber of Congress overturn an executive action through a legislative veto?",
+      "holding": "Legislative action must satisfy bicameralism and presentment unless the Constitution provides otherwise.",
+      "significance": "Invalidated the one-house legislative veto and reinforced formal lawmaking requirements.",
+      "status": "Controlling landmark",
+      "constitution": "Article I; separation of powers",
+      "sourceURL": "https://constitution.congress.gov/",
+      "decisionDate": "1983-06-23",
+      "docketNumber": "80-1832",
+      "vote": "7–2",
+      "majorityAuthor": "Chief Justice Warren Burger",
+      "pulse": {
+        "reference": "INS v. Chadha (1983)",
+        "fact": "In INS v. Chadha, legislative action must satisfy bicameralism and presentment unless the Constitution provides otherwise.",
+        "context": "INS v. Chadha is remembered for this legal impact: Invalidated the one-house legislative veto and reinforced formal lawmaking requirements.",
+        "actionTitle": "Open the case",
+        "reviewed": true,
+        "reviewVersion": 1
+      }
+    },
+    {
+      "id": "chevron-v-nrdc",
+      "name": "Chevron U.S.A. Inc. v. Natural Resources Defense Council",
+      "year": 1984,
+      "citation": "467 U.S. 837",
+      "area": "Administrative Law",
+      "legalQuestion": "When should courts defer to an agency's reasonable interpretation of an ambiguous statute?",
+      "holding": "The Court adopted a two-step framework that often required deference to reasonable agency interpretations.",
+      "significance": "Dominated administrative-law review for four decades.",
+      "status": "Overruled by Loper Bright Enterprises v. Raimondo (2024)",
+      "constitution": "Article III; separation of powers",
+      "sourceURL": "https://www.supremecourt.gov/opinions/23pdf/22-451_7m58.pdf",
+      "decisionDate": "1984-06-25",
+      "docketNumber": "82-1005",
+      "vote": "6–0",
+      "majorityAuthor": "Justice John Paul Stevens",
+      "relationships": [
+        {
+          "caseID": "loper-bright",
+          "relationship": "Overruled by",
+          "note": "Loper Bright ended mandatory Chevron deference."
+        }
+      ],
+      "pulse": {
+        "reference": "Chevron U.S.A. Inc. v. Natural Resources Defense Council (1984)",
+        "fact": "In Chevron U.S.A. Inc. v. Natural Resources Defense Council, the Court adopted a two-step framework that often required deference to reasonable agency interpretations.",
+        "context": "Chevron U.S.A. Inc. v. Natural Resources Defense Council is remembered for this legal impact: Dominated administrative-law review for four decades.",
+        "actionTitle": "Open the case",
+        "reviewed": true,
+        "reviewVersion": 1
+      }
+    },
+    {
+      "id": "batson-v-kentucky",
+      "name": "Batson v. Kentucky",
+      "year": 1986,
+      "citation": "476 U.S. 79",
+      "area": "Juries & Equality",
+      "legalQuestion": "May prosecutors remove prospective jurors because of race?",
+      "holding": "Race-based peremptory strikes violate equal protection, and the Court established a framework for evaluating such claims.",
+      "significance": "Made jury selection subject to enforceable constitutional limits on racial discrimination.",
+      "status": "Controlling, expanded and refined",
+      "constitution": "Fourteenth Amendment",
+      "sourceURL": "https://constitution.congress.gov/",
+      "decisionDate": "1986-04-30",
+      "docketNumber": "84-6263",
+      "vote": "7–2",
+      "majorityAuthor": "Justice Lewis Powell",
+      "pulse": {
+        "reference": "Batson v. Kentucky (1986)",
+        "fact": "In Batson v. Kentucky, race-based peremptory strikes violate equal protection, and the Court established a framework for evaluating such claims.",
+        "context": "Batson v. Kentucky is remembered for this legal impact: Made jury selection subject to enforceable constitutional limits on racial discrimination.",
+        "actionTitle": "Open the case",
+        "reviewed": true,
+        "reviewVersion": 1
+      }
+    },
+    {
+      "id": "employment-division-v-smith",
+      "name": "Employment Division v. Smith",
+      "year": 1990,
+      "citation": "494 U.S. 872",
+      "area": "Free Exercise",
+      "legalQuestion": "Must neutral, generally applicable laws receive religious exemptions under the Free Exercise Clause?",
+      "holding": "The Clause generally does not require exemptions from neutral and generally applicable laws.",
+      "significance": "Reshaped free-exercise doctrine and prompted statutory responses including RFRA.",
+      "status": "Controlling, narrowed and debated",
+      "constitution": "First and Fourteenth Amendments",
+      "sourceURL": "https://constitution.congress.gov/",
+      "decisionDate": "1990-04-17",
+      "docketNumber": "88-1213",
+      "vote": "6–3",
+      "majorityAuthor": "Justice Antonin Scalia",
+      "pulse": {
+        "reference": "Employment Division v. Smith (1990)",
+        "fact": "In Employment Division v. Smith, the Clause generally does not require exemptions from neutral and generally applicable laws.",
+        "context": "Employment Division v. Smith is remembered for this legal impact: Reshaped free-exercise doctrine and prompted statutory responses including RFRA.",
+        "actionTitle": "Open the case",
+        "reviewed": true,
+        "reviewVersion": 1
+      }
+    },
+    {
+      "id": "united-states-v-lopez",
+      "name": "United States v. Lopez",
+      "year": 1995,
+      "citation": "514 U.S. 549",
+      "area": "Federal Power",
+      "legalQuestion": "Did Congress have Commerce Clause authority to prohibit gun possession near schools?",
+      "holding": "The statute exceeded the commerce power because the regulated activity was not sufficiently connected to interstate commerce.",
+      "significance": "The first modern decision in decades to invalidate a federal law as beyond the Commerce Clause.",
+      "status": "Controlling landmark",
+      "constitution": "Commerce Clause",
+      "sourceURL": "https://constitution.congress.gov/",
+      "decisionDate": "1995-04-26",
+      "docketNumber": "93-1260",
+      "vote": "5–4",
+      "majorityAuthor": "Chief Justice William Rehnquist",
+      "relationships": [
+        {
+          "caseID": "united-states-v-morrison",
+          "relationship": "Reinforced by",
+          "note": "Morrison applied Lopez’s limits to noneconomic violent conduct."
+        }
+      ],
+      "pulse": {
+        "reference": "United States v. Lopez (1995)",
+        "fact": "In United States v. Lopez, the statute exceeded the commerce power because the regulated activity was not sufficiently connected to interstate commerce.",
+        "context": "United States v. Lopez is remembered for this legal impact: The first modern decision in decades to invalidate a federal law as beyond the Commerce Clause.",
+        "actionTitle": "Open the case",
+        "reviewed": true,
+        "reviewVersion": 1
+      }
+    },
+    {
+      "id": "romer-v-evans",
+      "name": "Romer v. Evans",
+      "year": 1996,
+      "citation": "517 U.S. 620",
+      "area": "Equal Protection",
+      "legalQuestion": "Could a state constitution broadly bar legal protections for gay and lesbian people?",
+      "holding": "The amendment lacked a rational relationship to a legitimate governmental purpose and violated equal protection.",
+      "significance": "An important foundation of modern LGBTQ equality doctrine.",
+      "status": "Controlling precedent",
+      "constitution": "Fourteenth Amendment",
+      "sourceURL": "https://constitution.congress.gov/",
+      "decisionDate": "1996-05-20",
+      "docketNumber": "94-1039",
+      "vote": "6–3",
+      "majorityAuthor": "Justice Anthony Kennedy",
+      "pulse": {
+        "reference": "Romer v. Evans (1996)",
+        "fact": "In Romer v. Evans, the amendment lacked a rational relationship to a legitimate governmental purpose and violated equal protection.",
+        "context": "Romer v. Evans is remembered for this legal impact: An important foundation of modern LGBTQ equality doctrine.",
+        "actionTitle": "Open the case",
+        "reviewed": true,
+        "reviewVersion": 1
+      }
+    },
+    {
+      "id": "printz-v-united-states",
+      "name": "Printz v. United States",
+      "year": 1997,
+      "citation": "521 U.S. 898",
+      "area": "Federalism",
+      "legalQuestion": "Could Congress require state executive officers to administer a federal background-check program?",
+      "holding": "Congress may not commandeer state executive officers to administer federal regulatory programs.",
+      "significance": "A leading statement of the anti-commandeering principle.",
+      "status": "Controlling landmark",
+      "constitution": "Tenth Amendment; federal structure",
+      "sourceURL": "https://constitution.congress.gov/",
+      "decisionDate": "1997-06-27",
+      "docketNumber": "95-1478",
+      "vote": "5–4",
+      "majorityAuthor": "Justice Antonin Scalia",
+      "pulse": {
+        "reference": "Printz v. United States (1997)",
+        "fact": "In Printz v. United States, congress may not commandeer state executive officers to administer federal regulatory programs.",
+        "context": "Printz v. United States is remembered for this legal impact: A leading statement of the anti-commandeering principle.",
+        "actionTitle": "Open the case",
+        "reviewed": true,
+        "reviewVersion": 1
+      }
+    },
+    {
+      "id": "bush-v-gore",
+      "name": "Bush v. Gore",
+      "year": 2000,
+      "citation": "531 U.S. 98",
+      "area": "Elections",
+      "legalQuestion": "Did differing standards in Florida's presidential-election recount violate equal protection?",
+      "holding": "The recount procedures lacked constitutionally sufficient uniform standards, and the Court ended the ordered recount under the circumstances.",
+      "significance": "Effectively resolved the 2000 presidential election while emphasizing the decision's limited application.",
+      "status": "Precedent with expressly limited reasoning",
+      "constitution": "Fourteenth Amendment",
+      "sourceURL": "https://constitution.congress.gov/",
+      "decisionDate": "2000-12-12",
+      "docketNumber": "00-949",
+      "vote": "5–4",
+      "majorityAuthor": "Per curiam",
+      "pulse": {
+        "reference": "Bush v. Gore (2000)",
+        "fact": "In Bush v. Gore, the recount procedures lacked constitutionally sufficient uniform standards, and the Court ended the ordered recount under the circumstances.",
+        "context": "Bush v. Gore is remembered for this legal impact: Effectively resolved the 2000 presidential election while emphasizing the decision's limited application.",
+        "actionTitle": "Open the case",
+        "reviewed": true,
+        "reviewVersion": 1
+      }
+    },
+    {
+      "id": "citizens-united",
+      "name": "Citizens United v. Federal Election Commission",
+      "year": 2010,
+      "citation": "558 U.S. 310",
+      "area": "Elections & Speech",
+      "legalQuestion": "Could the government restrict independent political expenditures by corporations and unions?",
+      "holding": "The First Amendment bars suppression of independent political expenditures based on the speaker's corporate identity.",
+      "significance": "Reshaped campaign-finance law while leaving direct-contribution restrictions distinct.",
+      "status": "Controlling precedent",
+      "constitution": "First Amendment",
+      "sourceURL": "https://constitution.congress.gov/",
+      "decisionDate": "2010-01-21",
+      "docketNumber": "08-205",
+      "vote": "5–4",
+      "majorityAuthor": "Justice Anthony Kennedy",
+      "pulse": {
+        "reference": "Citizens United v. Federal Election Commission (2010)",
+        "fact": "In Citizens United v. Federal Election Commission, the First Amendment bars suppression of independent political expenditures based on the speaker's corporate identity.",
+        "context": "Citizens United v. Federal Election Commission is remembered for this legal impact: Reshaped campaign-finance law while leaving direct-contribution restrictions distinct.",
+        "actionTitle": "Open the case",
+        "reviewed": true,
+        "reviewVersion": 1
+      }
+    },
+    {
+      "id": "nfib-v-sebelius",
+      "name": "National Federation of Independent Business v. Sebelius",
+      "year": 2012,
+      "citation": "567 U.S. 519",
+      "area": "Federal Power",
+      "legalQuestion": "Were the Affordable Care Act's individual mandate and Medicaid expansion constitutionally authorized?",
+      "holding": "The mandate could be sustained as a tax, not under the Commerce Clause, while the threatened loss of existing Medicaid funds was unconstitutionally coercive.",
+      "significance": "Defined important limits and permissions involving commerce, taxation, and federal spending.",
+      "status": "Controlling precedent",
+      "constitution": "Commerce, Taxing, and Spending Clauses",
+      "sourceURL": "https://constitution.congress.gov/",
+      "decisionDate": "2012-06-28",
+      "docketNumber": "11-393",
+      "vote": "5–4",
+      "majorityAuthor": "Chief Justice John Roberts",
+      "pulse": {
+        "reference": "National Federation of Independent Business v. Sebelius (2012)",
+        "fact": "In National Federation of Independent Business v. Sebelius, the mandate could be sustained as a tax, not under the Commerce Clause, while the threatened loss of existing Medicaid funds was unconstitutionally coercive.",
+        "context": "National Federation of Independent Business v. Sebelius is remembered for this legal impact: Defined important limits and permissions involving commerce, taxation, and federal spending.",
+        "actionTitle": "Open the case",
+        "reviewed": true,
+        "reviewVersion": 1
+      }
+    },
+    {
+      "id": "shelby-county-v-holder",
+      "name": "Shelby County v. Holder",
+      "year": 2013,
+      "citation": "570 U.S. 529",
+      "area": "Voting Rights",
+      "legalQuestion": "Could the Voting Rights Act continue using its existing formula to determine which jurisdictions required federal preclearance?",
+      "holding": "The coverage formula in Section 4(b) was unconstitutional under current conditions, rendering Section 5 preclearance inoperative absent a new formula.",
+      "significance": "Ended the Act's existing preclearance system while leaving other provisions intact.",
+      "status": "Controlling precedent",
+      "constitution": "Fourteenth and Fifteenth Amendments",
+      "sourceURL": "https://constitution.congress.gov/",
+      "decisionDate": "2013-06-25",
+      "docketNumber": "12-96",
+      "vote": "5–4",
+      "majorityAuthor": "Chief Justice John Roberts",
+      "pulse": {
+        "reference": "Shelby County v. Holder (2013)",
+        "fact": "In Shelby County v. Holder, the coverage formula in Section 4(b) was unconstitutional under current conditions, rendering Section 5 preclearance inoperative absent a new formula.",
+        "context": "Shelby County v. Holder is remembered for this legal impact: Ended the Act's existing preclearance system while leaving other provisions intact.",
+        "actionTitle": "Open the case",
+        "reviewed": true,
+        "reviewVersion": 1
+      }
+    },
+    {
+      "id": "carpenter-v-united-states",
+      "name": "Carpenter v. United States",
+      "year": 2018,
+      "citation": "585 U.S. 296",
+      "area": "Digital Privacy",
+      "legalQuestion": "Does government acquisition of historical cell-site location records generally require a warrant?",
+      "holding": "Accessing at least seven days of historical cell-site location information was a Fourth Amendment search generally requiring a warrant.",
+      "significance": "Adapted privacy doctrine to sensitive digital location records.",
+      "status": "Controlling, expressly narrow",
+      "constitution": "Fourth Amendment",
+      "sourceURL": "https://constitution.congress.gov/",
+      "decisionDate": "2018-06-22",
+      "docketNumber": "16-402",
+      "vote": "5–4",
+      "majorityAuthor": "Chief Justice John Roberts",
+      "pulse": {
+        "reference": "Carpenter v. United States (2018)",
+        "fact": "In Carpenter v. United States, accessing at least seven days of historical cell-site location information was a Fourth Amendment search generally requiring a warrant.",
+        "context": "Carpenter v. United States is remembered for this legal impact: Adapted privacy doctrine to sensitive digital location records.",
+        "actionTitle": "Open the case",
+        "reviewed": true,
+        "reviewVersion": 1
+      }
+    },
+    {
+      "id": "dobbs-v-jackson",
+      "name": "Dobbs v. Jackson Women's Health Organization",
+      "year": 2022,
+      "citation": "597 U.S. 215",
+      "area": "Due Process",
+      "legalQuestion": "Does the Constitution confer a right to abortion?",
+      "holding": "The Constitution does not confer such a right; Roe and Casey were overruled and regulatory authority returned to the political process subject to other constitutional limits.",
+      "significance": "Ended the federal substantive-due-process abortion framework established by Roe and Casey.",
+      "status": "Controlling precedent",
+      "constitution": "Fourteenth Amendment",
+      "sourceURL": "https://www.supremecourt.gov/opinions/21pdf/19-1392_6j37.pdf",
+      "decisionDate": "2022-06-24",
+      "docketNumber": "19-1392",
+      "vote": "6–3",
+      "majorityAuthor": "Justice Samuel Alito",
+      "pulse": {
+        "reference": "Dobbs v. Jackson Women's Health Organization (2022)",
+        "fact": "In Dobbs v. Jackson Women's Health Organization, the Constitution does not confer such a right.",
+        "context": "Dobbs v. Jackson Women's Health Organization is remembered for this legal impact: Ended the federal substantive-due-process abortion framework established by Roe and Casey.",
+        "actionTitle": "Open the case",
+        "reviewed": true,
+        "reviewVersion": 1
+      }
+    },
+    {
+      "id": "nysrpa-v-bruen",
+      "name": "New York State Rifle & Pistol Association v. Bruen",
+      "year": 2022,
+      "citation": "597 U.S. 1",
+      "area": "Firearms",
+      "legalQuestion": "Did New York's proper-cause requirement for public carry licenses violate the Second Amendment?",
+      "holding": "The requirement violated the right to bear arms, and firearm regulations must be evaluated through constitutional text and the Nation's historical tradition.",
+      "significance": "Replaced lower courts' means-end framework with a text-and-history approach.",
+      "status": "Controlling; methodology clarified by later cases",
+      "constitution": "Second and Fourteenth Amendments",
+      "sourceURL": "https://www.supremecourt.gov/opinions/21pdf/20-843_7j80.pdf",
+      "decisionDate": "2022-06-23",
+      "docketNumber": "20-843",
+      "vote": "6–3",
+      "majorityAuthor": "Justice Clarence Thomas",
+      "pulse": {
+        "reference": "New York State Rifle & Pistol Association v. Bruen (2022)",
+        "fact": "In New York State Rifle & Pistol Association v. Bruen, the requirement violated the right to bear arms, and firearm regulations must be evaluated through constitutional text and the Nation's historical tradition.",
+        "context": "New York State Rifle & Pistol Association v. Bruen is remembered for this legal impact: Replaced lower courts' means-end framework with a text-and-history approach.",
+        "actionTitle": "Open the case",
+        "reviewed": true,
+        "reviewVersion": 1
+      }
+    },
+    {
+      "id": "students-for-fair-admissions",
+      "name": "Students for Fair Admissions v. Harvard",
+      "year": 2023,
+      "citation": "600 U.S. 181",
+      "area": "Equal Protection & Education",
+      "legalQuestion": "Were Harvard's and the University of North Carolina's race-conscious admissions programs lawful?",
+      "holding": "The programs failed strict scrutiny and could not be reconciled with equal-protection requirements governing the use of race.",
+      "significance": "Ended the admissions frameworks previously permitted under Bakke, Grutter, and related cases while allowing discussion of how race affected an applicant's life.",
+      "status": "Controlling precedent",
+      "constitution": "Fourteenth Amendment; Title VI",
+      "sourceURL": "https://www.supremecourt.gov/opinions/22pdf/20-1199_hgdj.pdf",
+      "decisionDate": "2023-06-29",
+      "docketNumber": "20-1199",
+      "vote": "6–2",
+      "majorityAuthor": "Chief Justice John Roberts",
+      "pulse": {
+        "reference": "Students for Fair Admissions v. Harvard (2023)",
+        "fact": "In Students for Fair Admissions v. Harvard, the programs failed strict scrutiny and could not be reconciled with equal-protection requirements governing the use of race.",
+        "context": "Students for Fair Admissions v. Harvard is remembered for this legal impact: Ended the admissions frameworks previously permitted under Bakke, Grutter, and related cases while allowing discussion of how race affected an applicant's life.",
+        "actionTitle": "Open the case",
+        "reviewed": true,
+        "reviewVersion": 1
+      }
+    },
+    {
+      "id": "loper-bright",
+      "name": "Loper Bright Enterprises v. Raimondo",
+      "year": 2024,
+      "citation": "603 U.S. 369",
+      "area": "Administrative Law",
+      "legalQuestion": "Must courts defer to reasonable agency interpretations of ambiguous statutes under Chevron?",
+      "holding": "Courts must exercise independent judgment on questions of law; Chevron was overruled.",
+      "significance": "Fundamentally changed judicial review of federal agency statutory interpretations while preserving prior case judgments.",
+      "status": "Controlling precedent",
+      "constitution": "Article III; Administrative Procedure Act",
+      "sourceURL": "https://www.supremecourt.gov/opinions/23pdf/22-451_7m58.pdf",
+      "decisionDate": "2024-06-28",
+      "docketNumber": "22-451",
+      "vote": "6–2",
+      "majorityAuthor": "Chief Justice John Roberts",
+      "relationships": [
+        {
+          "caseID": "chevron-v-nrdc",
+          "relationship": "Overruled",
+          "note": "Loper Bright required courts to exercise independent judgment on statutory meaning."
+        }
+      ],
+      "pulse": {
+        "reference": "Loper Bright Enterprises v. Raimondo (2024)",
+        "fact": "In Loper Bright Enterprises v. Raimondo, courts must exercise independent judgment on questions of law; Chevron was overruled.",
+        "context": "Loper Bright Enterprises v. Raimondo is remembered for this legal impact: Fundamentally changed judicial review of federal agency statutory interpretations while preserving prior case judgments.",
+        "actionTitle": "Open the case",
+        "reviewed": true,
+        "reviewVersion": 1
+      }
+    },
+    {
+      "id": "trump-v-united-states-immunity",
+      "name": "Trump v. United States",
+      "year": 2024,
+      "citation": "603 U.S. 593",
+      "area": "Presidential Power",
+      "legalQuestion": "What criminal immunity does a former President have for conduct undertaken while in office?",
+      "holding": "A former President has absolute immunity for conduct within exclusive constitutional authority, at least presumptive immunity for other official acts, and no immunity for unofficial acts.",
+      "significance": "Established the constitutional framework for criminal prosecution of former Presidents for acts taken while in office.",
+      "status": "Controlling precedent",
+      "constitution": "Article II; separation of powers",
+      "sourceURL": "https://www.supremecourt.gov/opinions/23pdf/23-939_e2pg.pdf",
+      "decisionDate": "2024-07-01",
+      "docketNumber": "23-939",
+      "vote": "6–3",
+      "majorityAuthor": "Chief Justice John Roberts",
+      "pulse": {
+        "reference": "Trump v. United States (2024)",
+        "fact": "In Trump v. United States, a former President has absolute immunity for conduct within exclusive constitutional authority, at least presumptive immunity for other official acts, and no immunity for unofficial acts.",
+        "context": "Trump v. United States is remembered for this legal impact: Established the constitutional framework for criminal prosecution of former Presidents for acts taken while in office.",
+        "actionTitle": "Open the case",
+        "reviewed": true,
+        "reviewVersion": 1
+      }
+    },
+    {
+      "id": "fletcher-v-peck",
+      "name": "Fletcher v. Peck",
+      "year": 1810,
+      "citation": "10 U.S. 87",
+      "area": "Contracts & Judicial Review",
+      "legalQuestion": "Could Georgia cancel a land grant after it passed to later purchasers?",
+      "holding": "Georgia’s rescission impaired contractual obligations and could not defeat later purchasers’ title.",
+      "significance": "First Supreme Court decision invalidating a state law.",
+      "status": "Historically controlling; modern Contract Clause doctrine is more deferential.",
+      "constitution": "Article I, Section 10 — Contract Clause",
+      "sourceURL": "https://constitution.congress.gov/",
+      "subjects": [
+        "Judicial Power",
+        "Property, Tribal & Other Powers"
+      ],
+      "pulse": {
+        "reference": "Fletcher v. Peck (1810)",
+        "fact": "In Fletcher v. Peck, georgia’s rescission impaired contractual obligations and could not defeat later purchasers’ title.",
+        "context": "Fletcher v. Peck is remembered for this legal impact: First Supreme Court decision invalidating a state law.",
+        "actionTitle": "Open the case",
+        "reviewed": true,
+        "reviewVersion": 1
+      }
+    },
+    {
+      "id": "martin-v-hunters-lessee",
+      "name": "Martin v. Hunter’s Lessee",
+      "year": 1816,
+      "citation": "14 U.S. 304",
+      "area": "Judicial Authority",
+      "legalQuestion": "May the Supreme Court review state judgments involving federal law?",
+      "holding": "Article III permits Supreme Court review of state decisions on federal questions.",
+      "significance": "Secured national uniformity in federal law.",
+      "status": "Controlling precedent.",
+      "constitution": "Article III; Supremacy Clause",
+      "sourceURL": "https://constitution.congress.gov/",
+      "subjects": [
+        "Judicial Power"
+      ],
+      "pulse": {
+        "reference": "Martin v. Hunter’s Lessee (1816)",
+        "fact": "In Martin v. Hunter’s Lessee, article III permits Supreme Court review of state decisions on federal questions.",
+        "context": "Martin v. Hunter’s Lessee is remembered for this legal impact: Secured national uniformity in federal law.",
+        "actionTitle": "Open the case",
+        "reviewed": true,
+        "reviewVersion": 1
+      }
+    },
+    {
+      "id": "dartmouth-college-v-woodward",
+      "name": "Trustees of Dartmouth College v. Woodward",
+      "year": 1819,
+      "citation": "17 U.S. 518",
+      "area": "Contracts",
+      "legalQuestion": "Could New Hampshire alter Dartmouth’s corporate charter?",
+      "holding": "The charter was a contract protected from substantial state impairment.",
+      "significance": "Strengthened protection for private charters.",
+      "status": "Historically important; later doctrine permits broader regulation.",
+      "constitution": "Contract Clause",
+      "sourceURL": "https://constitution.congress.gov/",
+      "subjects": [
+        "Property, Tribal & Other Powers"
+      ],
+      "pulse": {
+        "reference": "Trustees of Dartmouth College v. Woodward (1819)",
+        "fact": "In Trustees of Dartmouth College v. Woodward, the charter was a contract protected from substantial state impairment.",
+        "context": "Trustees of Dartmouth College v. Woodward is remembered for this legal impact: Strengthened protection for private charters.",
+        "actionTitle": "Open the case",
+        "reviewed": true,
+        "reviewVersion": 1
+      }
+    },
+    {
+      "id": "cohens-v-virginia",
+      "name": "Cohens v. Virginia",
+      "year": 1821,
+      "citation": "19 U.S. 264",
+      "area": "Judicial Authority",
+      "legalQuestion": "Could the Court review a state criminal judgment presenting a federal claim?",
+      "holding": "The Court had appellate jurisdiction over federal questions in state criminal proceedings.",
+      "significance": "Confirmed federal authority even when a state is a party.",
+      "status": "Controlling precedent.",
+      "constitution": "Article III; Supremacy Clause",
+      "sourceURL": "https://constitution.congress.gov/",
+      "subjects": [
+        "Judicial Power"
+      ],
+      "pulse": {
+        "reference": "Cohens v. Virginia (1821)",
+        "fact": "In Cohens v. Virginia, the Court had appellate jurisdiction over federal questions in state criminal proceedings.",
+        "context": "Cohens v. Virginia is remembered for this legal impact: Confirmed federal authority even when a state is a party.",
+        "actionTitle": "Open the case",
+        "reviewed": true,
+        "reviewVersion": 1
+      }
+    },
+    {
+      "id": "ex-parte-mccardle",
+      "name": "Ex parte McCardle",
+      "year": 1869,
+      "citation": "74 U.S. 506",
+      "area": "Congressional Control of Courts",
+      "legalQuestion": "Could Congress repeal a route to Supreme Court review during a pending case?",
+      "holding": "Congress validly repealed the statutory jurisdictional route McCardle used.",
+      "significance": "Central to Congress’s Exceptions Clause power.",
+      "status": "Controlling but read narrowly.",
+      "constitution": "Article III, Section 2",
+      "sourceURL": "https://constitution.congress.gov/",
+      "subjects": [
+        "Judicial Power",
+        "Congressional Power"
+      ],
+      "pulse": {
+        "reference": "Ex parte McCardle (1869)",
+        "fact": "In Ex parte McCardle, congress validly repealed the statutory jurisdictional route McCardle used.",
+        "context": "Ex parte McCardle is remembered for this legal impact: Central to Congress’s Exceptions Clause power.",
+        "actionTitle": "Open the case",
+        "reviewed": true,
+        "reviewVersion": 1
+      }
+    },
+    {
+      "id": "strauder-v-west-virginia",
+      "name": "Strauder v. West Virginia",
+      "year": 1880,
+      "citation": "100 U.S. 303",
+      "area": "Juries & Equality",
+      "legalQuestion": "Could a state exclude Black citizens from juries by statute?",
+      "holding": "Limiting jury service to white men violated equal protection.",
+      "significance": "Early application of the Fourteenth Amendment to racial discrimination.",
+      "status": "Controlling core principle.",
+      "constitution": "Fourteenth Amendment",
+      "sourceURL": "https://constitution.congress.gov/",
+      "subjects": [
+        "Equality & Civil Rights",
+        "Criminal Justice"
+      ],
+      "pulse": {
+        "reference": "Strauder v. West Virginia (1880)",
+        "fact": "In Strauder v. West Virginia, limiting jury service to white men violated equal protection.",
+        "context": "Strauder v. West Virginia is remembered for this legal impact: Early application of the Fourteenth Amendment to racial discrimination.",
+        "actionTitle": "Open the case",
+        "reviewed": true,
+        "reviewVersion": 1
+      }
+    },
+    {
+      "id": "civil-rights-cases",
+      "name": "Civil Rights Cases",
+      "year": 1883,
+      "citation": "109 U.S. 3",
+      "area": "State Action & Civil Rights",
+      "legalQuestion": "Could Congress prohibit private discrimination under the Reconstruction Amendments?",
+      "holding": "The Fourteenth Amendment reaches state action, not purely private conduct.",
+      "significance": "Established the state-action doctrine.",
+      "status": "The principle remains influential; later statutes changed the landscape.",
+      "constitution": "Thirteenth and Fourteenth Amendments",
+      "sourceURL": "https://constitution.congress.gov/",
+      "subjects": [
+        "Equality & Civil Rights",
+        "Congressional Power"
+      ],
+      "pulse": {
+        "reference": "Civil Rights Cases (1883)",
+        "fact": "In Civil Rights Cases, the Fourteenth Amendment reaches state action, not purely private conduct.",
+        "context": "Civil Rights Cases is remembered for this legal impact: Established the state-action doctrine.",
+        "actionTitle": "Open the case",
+        "reviewed": true,
+        "reviewVersion": 1
+      }
+    },
+    {
+      "id": "hammer-v-dagenhart",
+      "name": "Hammer v. Dagenhart",
+      "year": 1918,
+      "citation": "247 U.S. 251",
+      "area": "Commerce & Federalism",
+      "legalQuestion": "Could Congress bar interstate shipment of goods produced with child labor?",
+      "holding": "The Court treated production as local and beyond the commerce power.",
+      "significance": "Represented an early narrow view of federal commerce power.",
+      "status": "Overruled by United States v. Darby.",
+      "constitution": "Commerce Clause; Tenth Amendment",
+      "sourceURL": "https://constitution.congress.gov/",
+      "subjects": [
+        "Congressional Power",
+        "Federalism"
+      ],
+      "relationships": [
+        {
+          "caseID": "united-states-v-darby",
+          "relationship": "Overruled by",
+          "note": "Darby rejected Hammer’s narrow commerce rule."
+        }
+      ],
+      "pulse": {
+        "reference": "Hammer v. Dagenhart (1918)",
+        "fact": "In Hammer v. Dagenhart, the Court treated production as local and beyond the commerce power.",
+        "context": "Hammer v. Dagenhart is remembered for this legal impact: Represented an early narrow view of federal commerce power.",
+        "actionTitle": "Open the case",
+        "reviewed": true,
+        "reviewVersion": 1
+      }
+    },
+    {
+      "id": "nlrb-v-jones-laughlin",
+      "name": "NLRB v. Jones & Laughlin Steel Corp.",
+      "year": 1937,
+      "citation": "301 U.S. 1",
+      "area": "Commerce & Labor",
+      "legalQuestion": "Could Congress regulate labor relations closely connected to interstate commerce?",
+      "holding": "Congress could reach labor practices substantially related to interstate commerce.",
+      "significance": "Marked the shift toward broader national economic regulation.",
+      "status": "Controlling precedent.",
+      "constitution": "Commerce Clause",
+      "sourceURL": "https://constitution.congress.gov/",
+      "subjects": [
+        "Congressional Power"
+      ],
+      "pulse": {
+        "reference": "NLRB v. Jones & Laughlin Steel Corp. (1937)",
+        "fact": "In NLRB v. Jones & Laughlin Steel Corp., congress could reach labor practices substantially related to interstate commerce.",
+        "context": "NLRB v. Jones & Laughlin Steel Corp. is remembered for this legal impact: Marked the shift toward broader national economic regulation.",
+        "actionTitle": "Open the case",
+        "reviewed": true,
+        "reviewVersion": 1
+      }
+    },
+    {
+      "id": "erie-railroad-v-tompkins",
+      "name": "Erie Railroad Co. v. Tompkins",
+      "year": 1938,
+      "citation": "304 U.S. 64",
+      "area": "Federal Courts",
+      "legalQuestion": "May federal courts create general federal common law in state-law cases?",
+      "holding": "Federal diversity courts generally must apply state substantive law.",
+      "significance": "Reoriented federal-state judicial relations.",
+      "status": "Controlling precedent.",
+      "constitution": "Article III; Rules of Decision Act",
+      "sourceURL": "https://constitution.congress.gov/",
+      "subjects": [
+        "Judicial Power",
+        "Federalism"
+      ],
+      "pulse": {
+        "reference": "Erie Railroad Co. v. Tompkins (1938)",
+        "fact": "In Erie Railroad Co. v. Tompkins, federal diversity courts generally must apply state substantive law.",
+        "context": "Erie Railroad Co. v. Tompkins is remembered for this legal impact: Reoriented federal-state judicial relations.",
+        "actionTitle": "Open the case",
+        "reviewed": true,
+        "reviewVersion": 1
+      }
+    },
+    {
+      "id": "united-states-v-darby",
+      "name": "United States v. Darby",
+      "year": 1941,
+      "citation": "312 U.S. 100",
+      "area": "Commerce & Federalism",
+      "legalQuestion": "Could Congress regulate labor standards tied to interstate goods?",
+      "holding": "Congress could regulate interstate shipment and substantially related labor conditions.",
+      "significance": "Overruled Hammer and reshaped Tenth Amendment doctrine.",
+      "status": "Controlling landmark.",
+      "constitution": "Commerce Clause; Tenth Amendment",
+      "sourceURL": "https://constitution.congress.gov/",
+      "subjects": [
+        "Congressional Power",
+        "Federalism"
+      ],
+      "relationships": [
+        {
+          "caseID": "hammer-v-dagenhart",
+          "relationship": "Overruled",
+          "note": "Darby replaced Hammer’s commerce framework."
+        }
+      ],
+      "pulse": {
+        "reference": "United States v. Darby (1941)",
+        "fact": "In United States v. Darby, congress could regulate interstate shipment and substantially related labor conditions.",
+        "context": "United States v. Darby is remembered for this legal impact: Overruled Hammer and reshaped Tenth Amendment doctrine.",
+        "actionTitle": "Open the case",
+        "reviewed": true,
+        "reviewVersion": 1
+      }
+    },
+    {
+      "id": "wickard-v-filburn",
+      "name": "Wickard v. Filburn",
+      "year": 1942,
+      "citation": "317 U.S. 111",
+      "area": "Commerce",
+      "legalQuestion": "Could Congress regulate wheat grown for personal farm use?",
+      "holding": "Congress could reach local activity whose aggregate effect substantially affects interstate commerce.",
+      "significance": "One of the broadest statements of commerce power.",
+      "status": "Controlling, subject to later limits.",
+      "constitution": "Commerce Clause",
+      "sourceURL": "https://constitution.congress.gov/",
+      "subjects": [
+        "Congressional Power"
+      ],
+      "pulse": {
+        "reference": "Wickard v. Filburn (1942)",
+        "fact": "In Wickard v. Filburn, congress could reach local activity whose aggregate effect substantially affects interstate commerce.",
+        "context": "Wickard v. Filburn is remembered for this legal impact: One of the broadest statements of commerce power.",
+        "actionTitle": "Open the case",
+        "reviewed": true,
+        "reviewVersion": 1
+      }
+    },
+    {
+      "id": "abington-school-district-v-schempp",
+      "name": "Abington School District v. Schempp",
+      "year": 1963,
+      "citation": "374 U.S. 203",
+      "area": "Religion",
+      "legalQuestion": "Could public schools sponsor Bible readings and prayer?",
+      "holding": "Government-sponsored devotional exercises violated the Establishment Clause.",
+      "significance": "Extended the school-prayer principle.",
+      "status": "Core prohibition remains; later methodology changed.",
+      "constitution": "First Amendment",
+      "sourceURL": "https://constitution.congress.gov/",
+      "subjects": [
+        "Religion"
+      ],
+      "decisionDate": "1963-06-17",
+      "docketNumber": "142",
+      "vote": "8–1",
+      "majorityAuthor": "Justice Tom Clark",
+      "pulse": {
+        "reference": "Abington School District v. Schempp (1963)",
+        "fact": "In Abington School District v. Schempp, government-sponsored devotional exercises violated the Establishment Clause.",
+        "context": "Abington School District v. Schempp is remembered for this legal impact: Extended the school-prayer principle.",
+        "actionTitle": "Open the case",
+        "reviewed": true,
+        "reviewVersion": 1
+      }
+    },
+    {
+      "id": "harper-v-virginia-board",
+      "name": "Harper v. Virginia Board of Elections",
+      "year": 1966,
+      "citation": "383 U.S. 663",
+      "area": "Voting Rights",
+      "legalQuestion": "Could a state condition voting on payment of a poll tax?",
+      "holding": "Payment had no relation to voter qualifications and violated equal protection.",
+      "significance": "Established that ballot access cannot depend on ability to pay.",
+      "status": "Controlling precedent.",
+      "constitution": "Fourteenth Amendment",
+      "sourceURL": "https://constitution.congress.gov/",
+      "subjects": [
+        "Voting & Elections",
+        "Equality & Civil Rights"
+      ],
+      "decisionDate": "1966-03-24",
+      "docketNumber": "48",
+      "vote": "6–3",
+      "majorityAuthor": "Justice William O. Douglas",
+      "pulse": {
+        "reference": "Harper v. Virginia Board of Elections (1966)",
+        "fact": "In Harper v. Virginia Board of Elections, payment had no relation to voter qualifications and violated equal protection.",
+        "context": "Harper v. Virginia Board of Elections is remembered for this legal impact: Established that ballot access cannot depend on ability to pay.",
+        "actionTitle": "Open the case",
+        "reviewed": true,
+        "reviewVersion": 1
+      }
+    },
+    {
+      "id": "united-states-v-obrien",
+      "name": "United States v. O’Brien",
+      "year": 1968,
+      "citation": "391 U.S. 367",
+      "area": "Expressive Conduct",
+      "legalQuestion": "Could government punish draft-card destruction used as protest?",
+      "holding": "A content-neutral law serving an important unrelated interest was valid.",
+      "significance": "Created the framework for expressive conduct.",
+      "status": "Controlling precedent.",
+      "constitution": "First Amendment",
+      "sourceURL": "https://constitution.congress.gov/",
+      "subjects": [
+        "Speech & Press"
+      ],
+      "decisionDate": "1968-05-27",
+      "docketNumber": "232",
+      "vote": "7–1",
+      "majorityAuthor": "Chief Justice Earl Warren",
+      "pulse": {
+        "reference": "United States v. O’Brien (1968)",
+        "fact": "In United States v. O’Brien, a content-neutral law serving an important unrelated interest was valid.",
+        "context": "United States v. O’Brien is remembered for this legal impact: Created the framework for expressive conduct.",
+        "actionTitle": "Open the case",
+        "reviewed": true,
+        "reviewVersion": 1
+      }
+    },
+    {
+      "id": "lemon-v-kurtzman",
+      "name": "Lemon v. Kurtzman",
+      "year": 1971,
+      "citation": "403 U.S. 602",
+      "area": "Religion",
+      "legalQuestion": "Did state support for religious schools violate the Establishment Clause?",
+      "holding": "The programs failed a test addressing purpose, effect, and entanglement.",
+      "significance": "The Lemon test dominated for decades.",
+      "status": "Its test was abandoned in Kennedy v. Bremerton.",
+      "constitution": "First Amendment",
+      "sourceURL": "https://constitution.congress.gov/",
+      "subjects": [
+        "Religion"
+      ],
+      "decisionDate": "1971-06-28",
+      "docketNumber": "89",
+      "vote": "8–0",
+      "majorityAuthor": "Chief Justice Warren Burger",
+      "relationships": [
+        {
+          "caseID": "kennedy-v-bremerton",
+          "relationship": "Abrogated by",
+          "note": "Kennedy stated that the Court had abandoned Lemon’s test."
+        }
+      ],
+      "pulse": {
+        "reference": "Lemon v. Kurtzman (1971)",
+        "fact": "In Lemon v. Kurtzman, the programs failed a test addressing purpose, effect, and entanglement.",
+        "context": "Lemon v. Kurtzman is remembered for this legal impact: The Lemon test dominated for decades.",
+        "actionTitle": "Open the case",
+        "reviewed": true,
+        "reviewVersion": 1
+      }
+    },
+    {
+      "id": "gregg-v-georgia",
+      "name": "Gregg v. Georgia",
+      "year": 1976,
+      "citation": "428 U.S. 153",
+      "area": "Capital Punishment",
+      "legalQuestion": "Does capital punishment always violate the Constitution?",
+      "holding": "It is not categorically unconstitutional under procedures guiding discretion.",
+      "significance": "Allowed executions to resume after Furman.",
+      "status": "Controlling framework with later limits.",
+      "constitution": "Eighth and Fourteenth Amendments",
+      "sourceURL": "https://constitution.congress.gov/",
+      "subjects": [
+        "Criminal Justice"
+      ],
+      "decisionDate": "1976-07-02",
+      "docketNumber": "74-6257",
+      "vote": "7–2",
+      "majorityAuthor": "Plurality opinion — Justices Stewart, Powell & Stevens",
+      "pulse": {
+        "reference": "Gregg v. Georgia (1976)",
+        "fact": "In Gregg v. Georgia, it is not categorically unconstitutional under procedures guiding discretion.",
+        "context": "Gregg v. Georgia is remembered for this legal impact: Allowed executions to resume after Furman.",
+        "actionTitle": "Open the case",
+        "reviewed": true,
+        "reviewVersion": 1
+      }
+    },
+    {
+      "id": "nixon-v-administrator",
+      "name": "Nixon v. Administrator of General Services",
+      "year": 1977,
+      "citation": "433 U.S. 425",
+      "area": "Presidential Power",
+      "legalQuestion": "Did federal control of Nixon’s records violate separation of powers?",
+      "holding": "The limited intrusion and privilege safeguards did not disrupt executive functions.",
+      "significance": "Applied practical separation-of-powers analysis.",
+      "status": "Controlling precedent.",
+      "constitution": "Article II",
+      "sourceURL": "https://constitution.congress.gov/",
+      "subjects": [
+        "Presidential Power",
+        "Structure of Government"
+      ],
+      "decisionDate": "1977-06-28",
+      "docketNumber": "75-1605",
+      "vote": "7–2",
+      "majorityAuthor": "Justice William Brennan",
+      "pulse": {
+        "reference": "Nixon v. Administrator of General Services (1977)",
+        "fact": "In Nixon v. Administrator of General Services, the limited intrusion and privilege safeguards did not disrupt executive functions.",
+        "context": "Nixon v. Administrator of General Services is remembered for this legal impact: Applied practical separation-of-powers analysis.",
+        "actionTitle": "Open the case",
+        "reviewed": true,
+        "reviewVersion": 1
+      }
+    },
+    {
+      "id": "garcia-v-san-antonio",
+      "name": "Garcia v. San Antonio Metropolitan Transit Authority",
+      "year": 1985,
+      "citation": "469 U.S. 528",
+      "area": "Federalism",
+      "legalQuestion": "Could federal wage law apply to a municipal transit authority?",
+      "holding": "The political process generally protects states from valid commerce regulation.",
+      "significance": "Reshaped Tenth Amendment federalism.",
+      "status": "Controlling, subject to anti-commandeering limits.",
+      "constitution": "Commerce Clause; Tenth Amendment",
+      "sourceURL": "https://constitution.congress.gov/",
+      "subjects": [
+        "Federalism",
+        "Congressional Power"
+      ],
+      "decisionDate": "1985-02-19",
+      "docketNumber": "82-1913",
+      "vote": "5–4",
+      "majorityAuthor": "Justice Harry Blackmun",
+      "pulse": {
+        "reference": "Garcia v. San Antonio Metropolitan Transit Authority (1985)",
+        "fact": "In Garcia v. San Antonio Metropolitan Transit Authority, the political process generally protects states from valid commerce regulation.",
+        "context": "Garcia v. San Antonio Metropolitan Transit Authority is remembered for this legal impact: Reshaped Tenth Amendment federalism.",
+        "actionTitle": "Open the case",
+        "reviewed": true,
+        "reviewVersion": 1
+      }
+    },
+    {
+      "id": "morrison-v-olson",
+      "name": "Morrison v. Olson",
+      "year": 1988,
+      "citation": "487 U.S. 654",
+      "area": "Separation of Powers",
+      "legalQuestion": "Did the independent-counsel system unduly restrict presidential control?",
+      "holding": "Its structure did not impermissibly interfere with executive functions.",
+      "significance": "Major functional approach to appointment and removal.",
+      "status": "Not overruled, but later cases limit it.",
+      "constitution": "Appointments Clause; Article II",
+      "sourceURL": "https://constitution.congress.gov/",
+      "subjects": [
+        "Presidential Power",
+        "Structure of Government"
+      ],
+      "decisionDate": "1988-06-27",
+      "docketNumber": "87-1279",
+      "vote": "7–1",
+      "majorityAuthor": "Chief Justice William Rehnquist",
+      "pulse": {
+        "reference": "Morrison v. Olson (1988)",
+        "fact": "In Morrison v. Olson, its structure did not impermissibly interfere with executive functions.",
+        "context": "Morrison v. Olson is remembered for this legal impact: Major functional approach to appointment and removal.",
+        "actionTitle": "Open the case",
+        "reviewed": true,
+        "reviewVersion": 1
+      }
+    },
+    {
+      "id": "planned-parenthood-v-casey",
+      "name": "Planned Parenthood v. Casey",
+      "year": 1992,
+      "citation": "505 U.S. 833",
+      "area": "Due Process",
+      "legalQuestion": "What standard governed abortion regulations under Roe?",
+      "holding": "A joint opinion retained pre-viability protection but adopted the undue-burden test.",
+      "significance": "Governed abortion regulation for thirty years.",
+      "status": "Overruled by Dobbs in 2022.",
+      "constitution": "Fourteenth Amendment",
+      "sourceURL": "https://constitution.congress.gov/",
+      "subjects": [
+        "Due Process & Liberty"
+      ],
+      "decisionDate": "1992-06-29",
+      "docketNumber": "91-744",
+      "vote": "5–4",
+      "relationships": [
+        {
+          "caseID": "dobbs-v-jackson",
+          "relationship": "Overruled by",
+          "note": "Dobbs held that the Constitution does not confer a right to abortion."
+        }
+      ],
+      "majorityAuthor": "Joint opinion — Justices O’Connor, Kennedy & Souter",
+      "pulse": {
+        "reference": "Planned Parenthood v. Casey (1992)",
+        "fact": "In Planned Parenthood v. Casey, a joint opinion retained pre-viability protection but adopted the undue-burden test.",
+        "context": "Planned Parenthood v. Casey is remembered for this legal impact: Governed abortion regulation for thirty years.",
+        "actionTitle": "Open the case",
+        "reviewed": true,
+        "reviewVersion": 1
+      }
+    },
+    {
+      "id": "united-states-v-morrison",
+      "name": "United States v. Morrison",
+      "year": 2000,
+      "citation": "529 U.S. 598",
+      "area": "Federal Power",
+      "legalQuestion": "Could Congress create a federal remedy for gender-motivated violence?",
+      "holding": "The remedy exceeded commerce and Fourteenth Amendment enforcement powers.",
+      "significance": "Reinforced judicial limits on federal power.",
+      "status": "Controlling precedent.",
+      "constitution": "Commerce Clause; Fourteenth Amendment",
+      "sourceURL": "https://constitution.congress.gov/",
+      "subjects": [
+        "Congressional Power",
+        "Federalism"
+      ],
+      "decisionDate": "2000-05-15",
+      "docketNumber": "99-5",
+      "vote": "5–4",
+      "majorityAuthor": "Chief Justice William Rehnquist",
+      "pulse": {
+        "reference": "United States v. Morrison (2000)",
+        "fact": "In United States v. Morrison, the remedy exceeded commerce and Fourteenth Amendment enforcement powers.",
+        "context": "United States v. Morrison is remembered for this legal impact: Reinforced judicial limits on federal power.",
+        "actionTitle": "Open the case",
+        "reviewed": true,
+        "reviewVersion": 1
+      }
+    },
+    {
+      "id": "grutter-v-bollinger",
+      "name": "Grutter v. Bollinger",
+      "year": 2003,
+      "citation": "539 U.S. 306",
+      "area": "Equal Protection & Education",
+      "legalQuestion": "Could a public law school consider race in individualized admissions?",
+      "holding": "The Court permitted narrowly tailored consideration for educational diversity.",
+      "significance": "Governed admissions for two decades.",
+      "status": "Effectively overruled by Students for Fair Admissions.",
+      "constitution": "Fourteenth Amendment",
+      "sourceURL": "https://constitution.congress.gov/",
+      "subjects": [
+        "Equality & Civil Rights"
+      ],
+      "decisionDate": "2003-06-23",
+      "docketNumber": "02-241",
+      "vote": "5–4",
+      "majorityAuthor": "Justice Sandra Day O’Connor",
+      "relationships": [
+        {
+          "caseID": "students-for-fair-admissions",
+          "relationship": "Overruled by",
+          "note": "Students for Fair Admissions rejected the admissions framework Grutter approved."
+        }
+      ],
+      "pulse": {
+        "reference": "Grutter v. Bollinger (2003)",
+        "fact": "In Grutter v. Bollinger, the Court permitted narrowly tailored consideration for educational diversity.",
+        "context": "Grutter v. Bollinger is remembered for this legal impact: Governed admissions for two decades.",
+        "actionTitle": "Open the case",
+        "reviewed": true,
+        "reviewVersion": 1
+      }
+    },
+    {
+      "id": "hamdi-v-rumsfeld",
+      "name": "Hamdi v. Rumsfeld",
+      "year": 2004,
+      "citation": "542 U.S. 507",
+      "area": "War Powers & Due Process",
+      "legalQuestion": "What process is owed to a citizen detained as an enemy combatant?",
+      "holding": "A citizen must receive notice and a meaningful chance to contest detention.",
+      "significance": "Rejected unchecked detention while recognizing wartime authority.",
+      "status": "Controlling plurality framework.",
+      "constitution": "Article II; Fifth Amendment",
+      "sourceURL": "https://constitution.congress.gov/",
+      "subjects": [
+        "Presidential Power",
+        "Due Process & Liberty"
+      ],
+      "decisionDate": "2004-06-28",
+      "docketNumber": "03-6696",
+      "vote": "8–1",
+      "majorityAuthor": "Justice Sandra Day O’Connor",
+      "pulse": {
+        "reference": "Hamdi v. Rumsfeld (2004)",
+        "fact": "In Hamdi v. Rumsfeld, a citizen must receive notice and a meaningful chance to contest detention.",
+        "context": "Hamdi v. Rumsfeld is remembered for this legal impact: Rejected unchecked detention while recognizing wartime authority.",
+        "actionTitle": "Open the case",
+        "reviewed": true,
+        "reviewVersion": 1
+      }
+    },
+    {
+      "id": "kelo-v-city-of-new-london",
+      "name": "Kelo v. City of New London",
+      "year": 2005,
+      "citation": "545 U.S. 469",
+      "area": "Property",
+      "legalQuestion": "Could a city take property for an economic-development plan?",
+      "holding": "The comprehensive plan qualified as public use under the federal Constitution.",
+      "significance": "Prompted widespread state reforms.",
+      "status": "Controlling federally; many states offer more protection.",
+      "constitution": "Fifth Amendment",
+      "sourceURL": "https://constitution.congress.gov/",
+      "subjects": [
+        "Property, Tribal & Other Powers"
+      ],
+      "decisionDate": "2005-06-23",
+      "docketNumber": "04-108",
+      "vote": "5–4",
+      "majorityAuthor": "Justice John Paul Stevens",
+      "pulse": {
+        "reference": "Kelo v. City of New London (2005)",
+        "fact": "In Kelo v. City of New London, the comprehensive plan qualified as public use under the federal Constitution.",
+        "context": "Kelo v. City of New London is remembered for this legal impact: Prompted widespread state reforms.",
+        "actionTitle": "Open the case",
+        "reviewed": true,
+        "reviewVersion": 1
+      }
+    },
+    {
+      "id": "massachusetts-v-epa",
+      "name": "Massachusetts v. Environmental Protection Agency",
+      "year": 2007,
+      "citation": "549 U.S. 497",
+      "area": "Standing & Administrative Law",
+      "legalQuestion": "Could EPA refuse to consider greenhouse-gas regulation?",
+      "holding": "Massachusetts had standing and EPA had to rely on statutory grounds.",
+      "significance": "Landmark in environmental regulation and agency review.",
+      "status": "Not overruled; later cases constrain related doctrines.",
+      "constitution": "Article III",
+      "sourceURL": "https://constitution.congress.gov/",
+      "subjects": [
+        "Judicial Power",
+        "Structure of Government"
+      ],
+      "decisionDate": "2007-04-02",
+      "docketNumber": "05-1120",
+      "vote": "5–4",
+      "majorityAuthor": "Justice John Paul Stevens",
+      "pulse": {
+        "reference": "Massachusetts v. Environmental Protection Agency (2007)",
+        "fact": "In Massachusetts v. Environmental Protection Agency, massachusetts had standing and EPA had to rely on statutory grounds.",
+        "context": "Massachusetts v. Environmental Protection Agency is remembered for this legal impact: Landmark in environmental regulation and agency review.",
+        "actionTitle": "Open the case",
+        "reviewed": true,
+        "reviewVersion": 1
+      }
+    },
+    {
+      "id": "mcdonald-v-chicago",
+      "name": "McDonald v. City of Chicago",
+      "year": 2010,
+      "citation": "561 U.S. 742",
+      "area": "Firearms & Incorporation",
+      "legalQuestion": "Does Heller’s right apply to states and cities?",
+      "holding": "The self-defense right applies to states through the Fourteenth Amendment.",
+      "significance": "Nationalized Heller’s holding.",
+      "status": "Controlling precedent.",
+      "constitution": "Second and Fourteenth Amendments",
+      "sourceURL": "https://constitution.congress.gov/",
+      "subjects": [
+        "Due Process & Liberty"
+      ],
+      "decisionDate": "2010-06-28",
+      "docketNumber": "08-1521",
+      "vote": "5–4",
+      "majorityAuthor": "Justice Samuel Alito",
+      "relationships": [
+        {
+          "caseID": "district-columbia-v-heller",
+          "relationship": "Incorporated",
+          "note": "McDonald applied Heller’s individual right to states and cities."
+        },
+        {
+          "caseID": "nysrpa-v-bruen",
+          "relationship": "Method refined by",
+          "note": "Bruen later defined the governing historical-tradition method."
+        }
+      ],
+      "pulse": {
+        "reference": "McDonald v. City of Chicago (2010)",
+        "fact": "In McDonald v. City of Chicago, the self-defense right applies to states through the Fourteenth Amendment.",
+        "context": "McDonald v. City of Chicago is remembered for this legal impact: Nationalized Heller’s holding.",
+        "actionTitle": "Open the case",
+        "reviewed": true,
+        "reviewVersion": 1
+      }
+    },
+    {
+      "id": "arizona-v-united-states",
+      "name": "Arizona v. United States",
+      "year": 2012,
+      "citation": "567 U.S. 387",
+      "area": "Federalism & Immigration",
+      "legalQuestion": "Which parts of Arizona’s immigration law were preempted?",
+      "holding": "Federal law preempted three provisions; a fourth survived facial challenge.",
+      "significance": "Reaffirmed federal supremacy over immigration policy.",
+      "status": "Controlling precedent.",
+      "constitution": "Supremacy Clause; Article I",
+      "sourceURL": "https://constitution.congress.gov/",
+      "subjects": [
+        "Federalism",
+        "Congressional Power"
+      ],
+      "decisionDate": "2012-06-25",
+      "docketNumber": "11-182",
+      "vote": "5–3",
+      "majorityAuthor": "Justice Anthony Kennedy",
+      "pulse": {
+        "reference": "Arizona v. United States (2012)",
+        "fact": "In Arizona v. United States, federal law preempted three provisions; a fourth survived facial challenge.",
+        "context": "Arizona v. United States is remembered for this legal impact: Reaffirmed federal supremacy over immigration policy.",
+        "actionTitle": "Open the case",
+        "reviewed": true,
+        "reviewVersion": 1
+      }
+    },
+    {
+      "id": "united-states-v-windsor",
+      "name": "United States v. Windsor",
+      "year": 2013,
+      "citation": "570 U.S. 744",
+      "area": "Marriage & Equality",
+      "legalQuestion": "Could federal law refuse to recognize a lawful same-sex marriage?",
+      "holding": "DOMA’s nonrecognition rule violated Fifth Amendment equality and liberty principles.",
+      "significance": "A major step toward Obergefell.",
+      "status": "Controlling and reinforced by later law.",
+      "constitution": "Fifth Amendment",
+      "sourceURL": "https://constitution.congress.gov/",
+      "subjects": [
+        "Equality & Civil Rights",
+        "Due Process & Liberty"
+      ],
+      "decisionDate": "2013-06-26",
+      "docketNumber": "12-307",
+      "vote": "5–4",
+      "majorityAuthor": "Justice Anthony Kennedy",
+      "pulse": {
+        "reference": "United States v. Windsor (2013)",
+        "fact": "In United States v. Windsor, dOMA’s nonrecognition rule violated Fifth Amendment equality and liberty principles.",
+        "context": "United States v. Windsor is remembered for this legal impact: A major step toward Obergefell.",
+        "actionTitle": "Open the case",
+        "reviewed": true,
+        "reviewVersion": 1
+      }
+    },
+    {
+      "id": "riley-v-california",
+      "name": "Riley v. California",
+      "year": 2014,
+      "citation": "573 U.S. 373",
+      "area": "Digital Privacy",
+      "legalQuestion": "May police search a seized phone’s contents without a warrant?",
+      "holding": "Police generally must obtain a warrant before searching digital phone data.",
+      "significance": "Recognized that digital data differs from physical objects.",
+      "status": "Controlling precedent.",
+      "constitution": "Fourth Amendment",
+      "sourceURL": "https://constitution.congress.gov/",
+      "subjects": [
+        "Criminal Justice",
+        "Due Process & Liberty"
+      ],
+      "decisionDate": "2014-06-25",
+      "docketNumber": "13-132",
+      "vote": "9–0",
+      "majorityAuthor": "Chief Justice John Roberts",
+      "relationships": [
+        {
+          "caseID": "carpenter-v-united-states",
+          "relationship": "Followed by",
+          "note": "Carpenter continued the Court’s recognition that digital data requires distinct treatment."
+        }
+      ],
+      "pulse": {
+        "reference": "Riley v. California (2014)",
+        "fact": "In Riley v. California, police generally must obtain a warrant before searching digital phone data.",
+        "context": "Riley v. California is remembered for this legal impact: Recognized that digital data differs from physical objects.",
+        "actionTitle": "Open the case",
+        "reviewed": true,
+        "reviewVersion": 1
+      }
+    },
+    {
+      "id": "kennedy-v-bremerton",
+      "name": "Kennedy v. Bremerton School District",
+      "year": 2022,
+      "citation": "597 U.S. 507",
+      "area": "Religion & Speech",
+      "legalQuestion": "Could a school discipline a coach for brief personal prayer after games?",
+      "holding": "The discipline violated Free Exercise and Free Speech rights.",
+      "significance": "Abandoned Lemon in favor of historical practices and understandings.",
+      "status": "Controlling precedent.",
+      "constitution": "First Amendment",
+      "sourceURL": "https://www.supremecourt.gov/opinions/21pdf/21-418_i425.pdf",
+      "subjects": [
+        "Religion",
+        "Speech & Press"
+      ],
+      "decisionDate": "2022-06-27",
+      "docketNumber": "21-418",
+      "vote": "6–3",
+      "majorityAuthor": "Justice Neil Gorsuch",
+      "relationships": [
+        {
+          "caseID": "lemon-v-kurtzman",
+          "relationship": "Abrogated",
+          "note": "Kennedy replaced Lemon’s test with an approach grounded in historical practices."
+        }
+      ],
+      "pulse": {
+        "reference": "Kennedy v. Bremerton School District (2022)",
+        "fact": "In Kennedy v. Bremerton School District, the discipline violated Free Exercise and Free Speech rights.",
+        "context": "Kennedy v. Bremerton School District is remembered for this legal impact: Abandoned Lemon in favor of historical practices and understandings.",
+        "actionTitle": "Open the case",
+        "reviewed": true,
+        "reviewVersion": 1
+      }
+    }
+  ]
+}

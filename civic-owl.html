@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <title>Civic Owl | The Strategic Owl</title>
+  <meta name="description" content="Build civic knowledge through the Constitution, Supreme Court cases, and America’s founding library." />
+  <link rel="canonical" href="https://thestrategicowl.com/civic-owl.html" />
+  <link rel="icon" type="image/png" href="assets/images/3X.png" />
+  <link rel="stylesheet" href="assets/css/site.css?v=20261029-1" />
+  <link rel="stylesheet" href="assets/css/pages/civic-owl.css?v=20261029-1" />
+  <script src="assets/js/site-shell.js?v=20261028-2" defer></script>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2" defer></script>
+  <script src="assets/js/owl-access.js?v=20261029-1" defer></script>
+  <script src="assets/js/pages/civic-owl.js?v=20261029-2" defer></script>
+</head>
+<body class="site-body" data-page="civic-owl">
+  <a class="skip-link" href="#main-content">Skip to content</a>
+  <div id="site-header"></div>
+  <main id="main-content" class="site-page civic-page" tabindex="-1">
+    <section class="civic-brand" aria-labelledby="civic-page-title">
+      <img src="assets/images/3X.png" alt="" />
+      <div><p>Civic Owl</p><h1 id="civic-page-title">Challenge</h1></div>
+    </section>
+
+    <section class="civic-identity-strip" id="civic-identity-strip" aria-live="polite">
+      <div class="civic-identity-mark" aria-hidden="true">◎</div>
+      <div class="civic-identity-copy">
+        <p class="owl-eyebrow" id="civic-identity-label">Civic Identity</p>
+        <strong id="civic-identity-name">Loading your progress</strong>
+        <small id="civic-identity-detail">Checking this device securely.</small>
+      </div>
+      <button class="civic-glass-button civic-identity-action" id="civic-identity-action" type="button" hidden>Create identity</button>
+    </section>
+
+    <p class="civic-account-notice" id="civic-account-notice" role="status" hidden>Your Strategic Owl account and personal app data were deleted.</p>
+
+    <section class="civic-progress" aria-label="Challenge progress">
+      <div><span id="civic-mission-label">Mission</span><strong id="civic-mission-value">1</strong></div>
+      <div class="civic-score"><span aria-hidden="true">✦</span><strong id="civic-rating">0</strong><span aria-hidden="true">ϟ</span><strong id="civic-streak">0</strong></div>
+      <div class="civic-progress-track"><i id="civic-progress-fill"></i></div>
+      <p id="civic-progress-copy">Preparing your first question.</p>
+    </section>
+
+    <section class="civic-challenge" id="civic-challenge" aria-live="polite" aria-busy="true">
+      <div class="civic-loading"><span></span><p>Preparing Civic Owl</p></div>
+    </section>
+  </main>
+  <div id="site-footer"></div>
+
+  <dialog class="civic-dialog" id="civic-identity-dialog" aria-labelledby="civic-dialog-title">
+    <form class="civic-dialog-card" id="civic-identity-form" novalidate>
+      <button class="civic-dialog-close" type="button" aria-label="Close">×</button>
+      <p class="owl-eyebrow">Civic Identity</p>
+      <h2 id="civic-dialog-title">Save your progress privately</h2>
+      <p class="civic-dialog-intro">Verify your email to keep your Challenge rating, ranks, badges, and mastery. Your identity stays private unless you choose to share it.</p>
+
+      <div data-identity-step="email">
+        <label for="civic-email">Email address</label>
+        <input id="civic-email" name="email" type="email" inputmode="email" autocomplete="email" required />
+        <button class="civic-primary-button" type="submit">Send my code</button>
+      </div>
+
+      <div data-identity-step="code" hidden>
+        <label for="civic-code">Six-digit code</label>
+        <input id="civic-code" name="code" type="text" inputmode="numeric" autocomplete="one-time-code" maxlength="6" />
+        <button class="civic-primary-button" type="submit">Confirm email</button>
+        <button class="civic-text-button" type="button" data-civic-restart>Use a different email</button>
+      </div>
+
+      <div data-identity-step="profile" hidden>
+        <label for="civic-display-name">Display name</label>
+        <input id="civic-display-name" name="displayName" type="text" autocomplete="name" maxlength="60" />
+        <label for="civic-handle">Unique handle</label>
+        <div class="civic-handle-field"><span>@</span><input id="civic-handle" name="handle" type="text" autocomplete="off" maxlength="24" /></div>
+        <label for="civic-state">Home state <small>Optional</small></label>
+        <select id="civic-state" name="state"><option value="">Choose a state</option></select>
+        <label for="civic-bio">A short civic motto <small>Optional</small></label>
+        <input id="civic-bio" name="bio" type="text" maxlength="120" />
+        <label class="civic-visibility"><input id="civic-public" name="isPublic" type="checkbox" /><span><strong>Show on Civic Standings</strong><small>Off by default. You can change this later.</small></span></label>
+        <button class="civic-primary-button" type="submit" data-save-civic-identity>Create Civic Identity</button>
+        <button class="civic-danger-button" type="button" data-delete-civic-account hidden>Delete account and app data</button>
+        <small class="civic-deletion-note" data-civic-deletion-note hidden>This removes your Strategic Owl account and personal app data. It does not cancel a subscription with Apple, Google, Stripe, or Substack.</small>
+      </div>
+      <p class="civic-dialog-message" id="civic-dialog-message" role="status"></p>
+    </form>
+  </dialog>
+</body>
+</html>

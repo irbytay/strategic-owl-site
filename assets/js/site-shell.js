@@ -3,9 +3,9 @@
 
   const pages = [
     ["home", "Home", "index.html", "M4 11.5 12 5l8 6.5V20a1 1 0 0 1-1 1h-5v-6h-4v6H5a1 1 0 0 1-1-1z"],
-    ["coverage", "Coverage", "coverage.html", "M3 12h3m12 0h3M5.6 5.6l2.1 2.1m8.6 8.6 2.1 2.1M12 3v3m0 12v3M5.6 18.4l2.1-2.1m8.6-8.6 2.1-2.1M9 12a3 3 0 1 1 6 0 3 3 0 0 1-6 0Z"],
-    ["voter-resources", "Voter Resources", "voter-resources.html", "M12 3 5 6v5c0 4.8 2.9 8.1 7 10 4.1-1.9 7-5.2 7-10V6zM9 12l2 2 4-5"],
-    ["constitution", "Constitution", "constitution.html", "M7 4h10a2 2 0 0 1 2 2v14H7a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2Zm2 4h6M9 12h6M9 16h4"]
+    ["coverage", "Owl Radar", "coverage.html", "M3 12h3m12 0h3M5.6 5.6l2.1 2.1m8.6 8.6 2.1 2.1M12 3v3m0 12v3M5.6 18.4l2.1-2.1m8.6-8.6 2.1-2.1M9 12a3 3 0 1 1 6 0 3 3 0 0 1-6 0Z"],
+    ["civic-owl", "Civic Owl", "civic-owl.html", "M12 3.2 14.4 7l4.4.3-2.7 3.5 1.1 4.3-3.2-2.3-3.8 2.3 1.1-4.3-2.7-3.5 4.4-.3zM9.6 15.4 12 13.9l2.4 1.5-.7 2.7H10.3z"],
+    ["constitution", "Library", "constitution.html", "M5 5.5A2.5 2.5 0 0 1 7.5 3H11v16H7.5A2.5 2.5 0 0 0 5 21.5Zm8-2.5h3.5A2.5 2.5 0 0 1 19 5.5v16a2.5 2.5 0 0 0-2.5-2.5H13Z"]
   ];
 
   const spaPaths = new Set(pages.map(([, , href]) => `/${href}`));
@@ -145,6 +145,7 @@
       nextView.main.classList.add("owl-view-entering");
       window.setTimeout(() => nextView.main.classList.remove("owl-view-entering"), 220);
       nextView.main.focus({ preventScroll: true });
+      window.dispatchEvent(new CustomEvent("strategic-owl-view-change", { detail: { page: nextView.page } }));
       return true;
     } catch (error) {
       console.warn("In-place navigation was unavailable; using a standard page load.", error);
@@ -233,7 +234,7 @@
             <button class="owl-menu-button" type="button" aria-label="Open navigation" aria-controls="owl-primary-nav" aria-expanded="false">
               <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 7h16M4 12h16M4 17h16"></path></svg>
             </button>
-            <a class="owl-brand" href="index.html" aria-label="The Strategic Owl home"><span>The Strategic Owl</span></a>
+            <a class="owl-brand" href="index.html" aria-label="The Strategic Owl home"><img src="assets/images/3X.png" alt="" /><span>The Strategic Owl</span></a>
             <nav class="owl-primary-nav" id="owl-primary-nav" aria-label="Primary navigation" data-open="false">
               ${pageLinks(activePage)}
               <a href="owl-office.html" data-administrator-only="true" hidden>Publisher Desk</a>
@@ -250,7 +251,7 @@
         <footer class="owl-site-footer">
           <div class="owl-footer-brand">
             <img src="assets/images/3X.png" alt="" />
-            <div><strong>The Strategic Owl</strong><span>Truth. Reliability. Understanding.</span></div>
+            <div><strong>The Strategic Owl</strong><span>News, civic learning, and the founding library.</span></div>
           </div>
           <nav aria-label="Secondary navigation">${secondaryLinks()}</nav>
           <p>© 2026 The Strategic Owl.</p>

@@ -48,6 +48,11 @@
   --owl-card-radius: 22px;
   --owl-sheet-radius: 30px;
   --owl-mobile-nav-height: 0px;
+  --owl-ui: "Avenir Next", Avenir, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  --owl-editorial: "Owl Times", "Times New Roman", serif;
+  --owl-safe-top: env(safe-area-inset-top, 0px);
+  --owl-header-content-height: 72px;
+  --owl-header-height: calc(var(--owl-header-content-height) + var(--owl-safe-top));
 }
 
 *,
@@ -71,7 +76,7 @@ body.site-body {
     radial-gradient(circle at 50% -140px, rgba(59, 108, 237, 0.12), transparent 440px),
     linear-gradient(180deg, var(--owl-deep), var(--owl-navy) 260px) fixed !important;
   color: var(--owl-body);
-  font-family: "Owl Times", "Times New Roman", serif !important;
+  font-family: var(--owl-ui) !important;
   font-size: 18px;
   line-height: 1.5;
   text-rendering: optimizeLegibility;
@@ -485,6 +490,33 @@ body.site-body .divider-labels > span {
   gap: 10px;
 }
 
+.owl-access-form[hidden] {
+  display: none;
+}
+
+.owl-access-code-heading,
+.owl-access-code-instruction {
+  margin: 0;
+  text-align: center;
+}
+
+.owl-access-code-heading {
+  color: var(--owl-body);
+  font-size: 1.08rem;
+  font-weight: 700;
+}
+
+.owl-access-code-instruction {
+  color: var(--owl-muted);
+  font-size: 0.95rem;
+  line-height: 1.45;
+}
+
+.owl-access-code-form input {
+  letter-spacing: 0.28em;
+  text-align: center;
+}
+
 .owl-access-form label {
   color: white;
   font-size: 1rem;
@@ -505,6 +537,7 @@ body.site-body .divider-labels > span {
 
 .owl-access-primary,
 .owl-access-secondary,
+.owl-access-danger,
 .owl-access-subscribe-link {
   display: inline-flex;
   align-items: center;
@@ -534,6 +567,81 @@ body.site-body .divider-labels > span {
   border: 1px solid rgba(212, 175, 55, 0.78);
   background: transparent;
   color: var(--owl-gold);
+}
+
+.owl-access-danger {
+  width: 100%;
+  border: 1px solid rgba(255, 112, 112, 0.72);
+  background: rgba(118, 27, 38, 0.26);
+  color: #ffb1b1;
+}
+
+.owl-access-danger:hover,
+.owl-access-danger:focus-visible {
+  border-color: #ff9b9b;
+  background: rgba(154, 35, 49, 0.38);
+}
+
+.owl-access-danger:disabled {
+  cursor: wait;
+  opacity: 0.68;
+}
+
+.owl-access-deletion-note {
+  max-width: 370px;
+  color: var(--owl-muted);
+  font-size: 0.82rem;
+  line-height: 1.45;
+}
+
+.owl-delete-account-dialog {
+  width: min(92vw, 470px);
+  margin: auto;
+  padding: 0;
+  border: 1px solid rgba(255, 112, 112, 0.55);
+  border-radius: 24px;
+  background: linear-gradient(145deg, rgba(26, 43, 76, 0.99), rgba(13, 27, 42, 0.99));
+  box-shadow: 0 24px 80px rgba(0, 0, 0, 0.68);
+  color: var(--owl-body);
+}
+
+.owl-delete-account-dialog::backdrop {
+  background: rgba(0, 0, 0, 0.72);
+  -webkit-backdrop-filter: blur(8px);
+  backdrop-filter: blur(8px);
+}
+
+.owl-delete-account-card {
+  display: grid;
+  gap: 14px;
+  padding: 28px;
+}
+
+.owl-delete-account-card p {
+  margin: 0;
+  color: var(--owl-muted);
+  line-height: 1.5;
+  text-align: left;
+}
+
+.owl-delete-account-card .owl-access-code-heading {
+  color: white;
+  font-family: "Inter", Arial, sans-serif;
+  font-size: 1.3rem;
+  text-align: left;
+}
+
+.owl-delete-account-actions {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+  margin-top: 4px;
+}
+
+@media (max-width: 430px) {
+  .owl-delete-account-actions {
+    grid-template-columns: 1fr;
+  }
 }
 
 .owl-access-message {
@@ -1008,4 +1116,126 @@ body.owl-view-loading .site-page {
 
 @media (prefers-reduced-motion: reduce) {
   .site-page.owl-view-entering { animation: none; }
+}
+
+/* 2026 shared app shell. Keep service and authentication behavior separate. */
+.owl-site-header {
+  height: var(--owl-header-height);
+  padding-top: var(--owl-safe-top);
+  border-bottom: 1px solid rgba(212, 175, 55, 0.16);
+  background: linear-gradient(180deg, rgba(35, 48, 67, 0.9), rgba(22, 35, 54, 0.82));
+  box-shadow: 0 10px 34px rgba(0, 0, 0, 0.18);
+  -webkit-backdrop-filter: blur(24px) saturate(150%);
+  backdrop-filter: blur(24px) saturate(150%);
+}
+
+.owl-header-inner {
+  min-height: var(--owl-header-content-height);
+  padding-inline: clamp(14px, 3vw, 34px);
+}
+
+.owl-brand {
+  gap: 10px;
+  min-height: 48px;
+  padding: 5px 12px;
+  border: 1px solid transparent;
+  border-radius: 999px;
+  color: var(--owl-gold);
+  font-family: var(--owl-editorial);
+  text-decoration: none;
+  transition: background 160ms ease, border-color 160ms ease, transform 160ms ease;
+}
+
+.owl-brand:hover,
+.owl-brand:focus-visible {
+  border-color: rgba(212, 175, 55, 0.28);
+  background: rgba(255, 255, 255, 0.055);
+}
+
+.owl-brand:active { transform: scale(0.98); }
+.owl-brand img { width: 34px; height: 34px; object-fit: contain; }
+.owl-brand span { font-family: var(--owl-editorial); font-weight: 700; letter-spacing: 0.015em; }
+
+.owl-primary-nav {
+  gap: 3px;
+  padding: 4px;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 999px;
+  background: rgba(5, 13, 25, 0.22);
+}
+
+.owl-primary-nav a {
+  min-height: 40px;
+  padding: 8px 13px;
+  border-radius: 999px;
+  color: var(--owl-muted);
+  font-family: var(--owl-ui);
+  font-size: 0.84rem;
+  font-weight: 700;
+}
+
+.owl-primary-nav a::after { display: none; }
+.owl-primary-nav a:hover { color: var(--owl-body); background: rgba(255, 255, 255, 0.055); }
+.owl-primary-nav a[aria-current="page"] { color: var(--owl-navy); background: var(--owl-gold); }
+
+.owl-access-slot owl-access-button::part(button) {
+  border-color: rgba(212, 175, 55, 0.3);
+  background: rgba(255, 255, 255, 0.055);
+}
+
+.site-page h1,
+.site-page h2,
+.site-page h3,
+.owl-footer-brand strong {
+  font-family: var(--owl-editorial) !important;
+}
+
+.site-page p,
+.site-page li,
+.site-page label,
+.site-page button,
+.site-page input,
+.site-page select,
+.site-page textarea,
+.owl-button,
+.owl-segmented-control a,
+.owl-site-footer {
+  font-family: var(--owl-ui);
+}
+
+.owl-card {
+  border-color: rgba(212, 175, 55, 0.22);
+  background: linear-gradient(145deg, rgba(39, 47, 60, 0.76), rgba(19, 30, 48, 0.8));
+  box-shadow: inset 0 1px rgba(255, 255, 255, 0.045), 0 18px 42px rgba(0, 0, 0, 0.2);
+  -webkit-backdrop-filter: blur(20px) saturate(135%);
+  backdrop-filter: blur(20px) saturate(135%);
+}
+
+.owl-site-footer {
+  border-top: 1px solid rgba(212, 175, 55, 0.12);
+  background: rgba(8, 16, 29, 0.48);
+}
+
+.owl-footer-brand img { filter: drop-shadow(0 0 13px rgba(212, 175, 55, 0.22)); }
+
+@media (max-width: 760px) {
+  :root { --owl-header-content-height: 64px; }
+  .owl-header-inner { padding-inline: 9px; }
+  .owl-brand { gap: 7px; padding-inline: 7px; }
+  .owl-brand img { width: 31px; height: 31px; }
+  .owl-brand span { font-size: clamp(1.13rem, 5.2vw, 1.34rem); }
+  .owl-mobile-nav {
+    right: 10px;
+    bottom: max(8px, env(safe-area-inset-bottom));
+    left: 10px;
+    min-height: 66px;
+    padding: 5px;
+    border: 1px solid rgba(255, 255, 255, 0.13);
+    border-radius: 28px;
+    background: rgba(28, 30, 38, 0.78);
+    box-shadow: inset 0 1px rgba(255, 255, 255, 0.07), 0 16px 38px rgba(0, 0, 0, 0.34);
+  }
+  .owl-mobile-nav a { border-radius: 22px; font-family: var(--owl-ui); }
+  .owl-mobile-nav a[aria-current="page"] { color: var(--owl-gold); background: rgba(255, 255, 255, 0.12); }
+  .owl-mobile-nav svg { width: 24px; height: 24px; }
 }
