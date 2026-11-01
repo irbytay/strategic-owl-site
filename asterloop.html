@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Asterloop | Endless Cosmic Arcade Game</title>
+  <meta name="description" content="Guide a luminous orb through an endless cosmic gauntlet in Asterloop, a fast and fluid arcade game coming soon to iPhone." />
+  <link rel="canonical" href="https://thestrategicowl.com/asterloop.html" />
+  <meta property="og:title" content="Asterloop | Endless Cosmic Arcade Game" />
+  <meta property="og:description" content="Collect light, destroy celestial hazards, and chase your highest score." />
+  <meta property="og:image" content="https://thestrategicowl.com/assets/images/asterloop-app-icon.png" />
+  <meta property="og:image:width" content="1024" />
+  <meta property="og:image:height" content="1024" />
+  <meta property="og:type" content="website" />
+  <meta name="theme-color" content="#050b1c" />
+  <meta name="apple-mobile-web-app-title" content="Asterloop" />
+
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "VideoGame",
+    "name": "Asterloop",
+    "description": "Guide a luminous orb through an endless cosmic gauntlet. Collect light, destroy celestial hazards, and chase your highest score.",
+    "image": "https://thestrategicowl.com/assets/images/asterloop-app-icon.png",
+    "url": "https://thestrategicowl.com/asterloop.html",
+    "applicationCategory": "GameApplication",
+    "operatingSystem": "iOS and iPadOS",
+    "playMode": "SinglePlayer",
+    "author": {
+      "@type": "Person",
+      "name": "Taylor Irby"
+    }
+  }
+  </script>
+
+  <link rel="icon" type="image/png" href="assets/images/asterloop-app-icon.png" />
+  <link rel="stylesheet" href="assets/css/site.css?v=20261015-2" />
+  <link rel="stylesheet" href="assets/css/pages/projects.css?v=20261101-1" />
+  <link rel="stylesheet" href="assets/css/pages/asterloop.css?v=20261101-1" />
+  <script src="assets/js/site-shell.js?v=20261022-1" defer></script>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2" defer></script>
+  <script src="assets/js/owl-access.js?v=20261015-3" defer></script>
+  <script src="assets/js/pages/projects.js?v=20261101-1" defer></script>
+</head>
+<body class="site-body asterloop-body" data-page="projects">
+  <a class="skip-link" href="#main-content">Skip to content</a>
+  <div id="site-header"></div>
+
+  <main id="main-content" class="site-page site-page--asterloop" tabindex="-1">
+    <div class="asterloop-stars" aria-hidden="true"></div>
+
+    <section class="asterloop-hero" aria-labelledby="asterloop-title">
+      <div class="asterloop-hero-copy">
+        <a class="asterloop-back" href="projects.html"><span aria-hidden="true">←</span> Projects &amp; Links</a>
+        <p class="asterloop-eyebrow">An endless cosmic arcade game</p>
+        <h1 id="asterloop-title">Find your line.<br /><em>Survive the loop.</em></h1>
+        <p class="asterloop-lead">Guide your orb through an endless cosmic gauntlet. Collect light, destroy celestial hazards, and chase your highest score.</p>
+        <div class="asterloop-hero-actions">
+          <div class="asterloop-store-badge" aria-label="Asterloop is coming soon to the iPhone App Store">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M16.7 12.9c0-2.7 2.2-4 2.3-4.1-1.3-1.9-3.3-2.1-4-2.1-1.7-.2-3.3 1-4.2 1-.9 0-2.2-1-3.6-.9-1.9 0-3.6 1.1-4.6 2.8-2 3.4-.5 8.5 1.4 11.2.9 1.4 2.1 2.9 3.6 2.8 1.4-.1 2-.9 3.7-.9 1.7 0 2.2.9 3.7.9 1.5 0 2.5-1.4 3.5-2.8 1.1-1.6 1.5-3.2 1.6-3.3-.1 0-3.4-1.3-3.4-4.6ZM13.9 4.9c.8-1 1.4-2.4 1.2-3.8-1.2.1-2.7.8-3.6 1.8-.8.9-1.5 2.3-1.3 3.7 1.4.1 2.8-.7 3.7-1.7Z"></path></svg>
+            <span><small>Coming soon to the</small><strong>iPhone App Store</strong></span>
+          </div>
+          <span class="asterloop-release">Version 1.0 in development</span>
+        </div>
+      </div>
+
+      <div class="asterloop-hero-art" aria-label="Asterloop app icon">
+        <div class="asterloop-orbit asterloop-orbit--outer" aria-hidden="true"></div>
+        <div class="asterloop-orbit asterloop-orbit--inner" aria-hidden="true"></div>
+        <div class="asterloop-icon-shell">
+          <img src="assets/images/asterloop-app-icon.png" alt="Asterloop app icon" width="1024" height="1024" />
+        </div>
+        <span class="asterloop-orb" aria-hidden="true"></span>
+      </div>
+    </section>
+
+    <section class="asterloop-loop" data-glass-card aria-labelledby="loop-title">
+      <div class="asterloop-loop-visual" aria-hidden="true">
+        <span class="loop-rail"></span>
+        <span class="loop-player"></span>
+        <span class="loop-crystal loop-crystal--one"></span>
+        <span class="loop-crystal loop-crystal--two"></span>
+        <span class="loop-star"></span>
+        <span class="loop-hole"></span>
+      </div>
+      <div class="asterloop-loop-copy">
+        <p class="asterloop-eyebrow">The run</p>
+        <h2 id="loop-title">Simple to control.<br />Hard to leave.</h2>
+        <p>Asterloop begins with one luminous orb and one goal: keep moving. Steer around stars and asteroids, gather crystals, collect ammunition, and fire into the hazards directly ahead.</p>
+        <p>The universe accelerates as your score grows. Collapse a black hole and the course opens into a ten-second wormhole run packed with double-point gems.</p>
+      </div>
+    </section>
+
+    <section class="asterloop-rules" aria-labelledby="rules-title">
+      <header class="asterloop-section-heading">
+        <p class="asterloop-eyebrow">Every action matters</p>
+        <h2 id="rules-title">Read the cosmos. React.</h2>
+      </header>
+      <div class="asterloop-rule-grid">
+        <article data-glass-card>
+          <span class="rule-number">01</span>
+          <h3>Move</h3>
+          <p>Tap high or low to steer. The orb wraps smoothly through the upper and lower edges.</p>
+        </article>
+        <article data-glass-card>
+          <span class="rule-number">02</span>
+          <h3>Collect</h3>
+          <p>Capture crystals for points, energy cells for ammunition, and rare hearts for another chance.</p>
+        </article>
+        <article data-glass-card>
+          <span class="rule-number">03</span>
+          <h3>Fire</h3>
+          <p>Target the closest hazard in your forward path. Save enough light to collapse a black hole.</p>
+        </article>
+        <article data-glass-card>
+          <span class="rule-number">04</span>
+          <h3>Survive</h3>
+          <p>Every run is endless. Speed and obstacle complexity rise until all three hearts are gone.</p>
+        </article>
+      </div>
+    </section>
+
+    <section class="asterloop-difficulty" aria-labelledby="difficulty-title">
+      <header class="asterloop-section-heading">
+        <p class="asterloop-eyebrow">Choose your difficulty</p>
+        <h2 id="difficulty-title">Three ways into the loop.</h2>
+      </header>
+      <div class="asterloop-difficulty-grid">
+        <article class="difficulty-card difficulty-card--explorer" data-glass-card>
+          <span class="difficulty-symbol" aria-hidden="true">✦</span>
+          <p>Gentle pace</p>
+          <h3>Explorer</h3>
+          <span>Learn the rhythm and master the course.</span>
+        </article>
+        <article class="difficulty-card difficulty-card--voyager" data-glass-card>
+          <span class="difficulty-symbol" aria-hidden="true">➤</span>
+          <p>Balanced run</p>
+          <h3>Voyager</h3>
+          <span>The complete Asterloop experience.</span>
+        </article>
+        <article class="difficulty-card difficulty-card--nova" data-glass-card>
+          <span class="difficulty-symbol" aria-hidden="true">☀</span>
+          <p>Maximum intensity</p>
+          <h3>Nova</h3>
+          <span>More speed, denser hazards, sharper decisions.</span>
+        </article>
+      </div>
+    </section>
+
+    <section class="asterloop-systems" data-glass-card aria-labelledby="systems-title">
+      <div>
+        <p class="asterloop-eyebrow">Built for play</p>
+        <h2 id="systems-title">Touch or controller.<br />Your run, your way.</h2>
+      </div>
+      <ul>
+        <li><span aria-hidden="true">◉</span> Standard and mirrored touch layouts</li>
+        <li><span aria-hidden="true">⌁</span> Compatible game controller support</li>
+        <li><span aria-hidden="true">♛</span> Game Center leaderboards</li>
+        <li><span aria-hidden="true">∞</span> Endless, increasingly challenging runs</li>
+      </ul>
+    </section>
+
+    <section class="asterloop-final" aria-labelledby="asterloop-final-title">
+      <img src="assets/images/asterloop-app-icon.png" alt="" width="1024" height="1024" />
+      <p class="asterloop-eyebrow">Asterloop for iPhone</p>
+      <h2 id="asterloop-final-title">How far can you go?</h2>
+      <p>App Store release information will appear here as soon as Asterloop is available.</p>
+      <div class="asterloop-store-badge asterloop-store-badge--center" aria-label="Asterloop is coming soon to the iPhone App Store">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M16.7 12.9c0-2.7 2.2-4 2.3-4.1-1.3-1.9-3.3-2.1-4-2.1-1.7-.2-3.3 1-4.2 1-.9 0-2.2-1-3.6-.9-1.9 0-3.6 1.1-4.6 2.8-2 3.4-.5 8.5 1.4 11.2.9 1.4 2.1 2.9 3.6 2.8 1.4-.1 2-.9 3.7-.9 1.7 0 2.2.9 3.7.9 1.5 0 2.5-1.4 3.5-2.8 1.1-1.6 1.5-3.2 1.6-3.3-.1 0-3.4-1.3-3.4-4.6ZM13.9 4.9c.8-1 1.4-2.4 1.2-3.8-1.2.1-2.7.8-3.6 1.8-.8.9-1.5 2.3-1.3 3.7 1.4.1 2.8-.7 3.7-1.7Z"></path></svg>
+        <span><small>Coming soon to the</small><strong>iPhone App Store</strong></span>
+      </div>
+      <nav class="asterloop-legal-links" aria-label="Asterloop support and legal information">
+        <a href="asterloop-support.html">Support</a>
+        <a href="asterloop-privacy.html">Privacy Policy</a>
+      </nav>
+      <a href="projects.html" class="asterloop-all-projects">View all projects <span aria-hidden="true">→</span></a>
+    </section>
+  </main>
+
+  <div id="site-footer"></div>
+</body>
+</html>
